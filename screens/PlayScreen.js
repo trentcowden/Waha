@@ -5,27 +5,39 @@ import { View, StyleSheet, Button, Text, Slider ***REMOVED*** from 'react-native
 //sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
 
+//components
+import TimeDisplay  from "../components/TimeDisplay";
+
 function PlayScreen(props) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [seekPosition, setSeekPosition] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
+
+  ////STATE////
+  //set early when the screen opens
   const [soundObject, setSoundObject] = useState(new Audio.Sound());
-  const isMounted = useRef(true);
   const [lengthMilli, setLengthMilli] = useState(null);
-  const [shouldSeek, setShouldSeek] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const isMounted = useRef(true);
   const source = props.navigation.getParam("source");
 
+  //keep track of it audio is currently playing
+  const [isPlaying, setIsPlaying] = useState(false);
+  
+  //the current position of the scrubber
+  const [seekPosition, setSeekPosition] = useState(0);
+  
+  //should the scrubber be updating based on the track position?
+  const [shouldTickUpdate, setShouldTickUpdate] = useState(true);
+
+  //update on every api call and every second
   soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
-   
-    //if (isMounted.current) {***REMOVED***
+
   ***REMOVED***)
 
-
+  ////CONSTRUCTOR////
   useEffect(() => {
     //on first open, load audio file and set interval for 
     //updating scrubber
     loadAudioFile();
-    const interval = setInterval(updateSeeker, 1000);
+    const interval = setInterval(updateSeekerTick, 1000);
 
     //when leaving the screen, set ismounted to flase
     //and unload the audio file
@@ -36,31 +48,8 @@ function PlayScreen(props) {
       setSoundObject(null);
     ***REMOVED*** 
   ***REMOVED***, []);
-
-/*   useEffect(() => {
-    setSeekPosition(playbackStatus.positionMillis);
-  ***REMOVED***, [timer]); */
   
-/* 
-  useEffect(() => {
-    soundObject.playFromPositionAsync(seekPosition);
-  ***REMOVED***, [seekPosition])  */ 
-
   //function to load the audio file
-  async function updateSeeker() {
-    if (shouldSeek) {
-      try {
-        await soundObject
-          .getStatusAsync()
-          .then(async playbackStatus => {
-            setSeekPosition(playbackStatus.positionMillis);
-          ***REMOVED***)
-      ***REMOVED*** catch (error) {
-        console.log(error)
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-
   async function loadAudioFile() {
     try {
       await soundObject
@@ -73,13 +62,32 @@ function PlayScreen(props) {
       console.log(error)
     ***REMOVED***
   ***REMOVED***
+  /*useEffect(() => {
+    soundObject.playFromPositionAsync(seekPosition);
+  ***REMOVED***, [seekPosition])  */ 
+
+  //gets called every second, and updates the seeker position
+  //based on the progress through the audio file
+  async function updateSeekerTick() {
+    if (shouldTickUpdate) {
+      try {
+        await soundObject
+          .getStatusAsync()
+          .then(async playbackStatus => {
+            setSeekPosition(playbackStatus.positionMillis);
+          ***REMOVED***)
+      ***REMOVED*** catch (error) {
+        console.log(error)
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
 
   //function gets called whenever user taps the play/pause button
   //if currently playing, pause the track
-  //if currently pause, start playing the track
+  //if currently paused, start playing the track
   function playHandler() {
     if(isLoaded) {
-      updateSeeker();
+      updateSeekerTick();
       isPlaying ? 
       soundObject.setStatusAsync({progressUpdateIntervalMillis: 1000, shouldPlay: false***REMOVED***) : 
       soundObject.setStatusAsync({progressUpdateIntervalMillis: 1000, shouldPlay: true***REMOVED***);
@@ -87,64 +95,33 @@ function PlayScreen(props) {
     ***REMOVED***
   ***REMOVED***
 
-  //function to convert a time in milliseconds to a 
-  //nicely formatted string (for the scrubber)
-  function msToTime(duration) {
-    var seconds = Math.floor((duration / 1000) % 60);
-    var minutes = Math.floor((duration / (1000 * 60)) % 60);
-  
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-  
-    return minutes + ":" + seconds;
-  ***REMOVED***
-
-  //when the user releases the, start playing from the position
-  //they release the scrubber at
-  function onSeekRelease() {
-    updateSeeker();
+  //start playing from the position they release the thumb at
+  function onSeekRelease(value) {
     isPlaying ?
-    soundObject.setStatusAsync({ shouldPlay: true, positionMillis: seekPosition ***REMOVED***) :
-    soundObject.setStatusAsync({ shouldPlay: false, positionMillis: seekPosition ***REMOVED***);
-    updateSeeker();
-    setShouldSeek(true);
-  ***REMOVED***
-
-  //constnatly update the value of the scrubber when the user is scrubbing
-  function onSeekHold(value) {
-    //set the seek position to the new scrubber value
+    soundObject.setStatusAsync({ shouldPlay: true, positionMillis: value ***REMOVED***) :
+    soundObject.setStatusAsync({ shouldPlay: false, positionMillis: value ***REMOVED***);
+    setShouldTickUpdate(true);
     setSeekPosition(value);
-
-    //pause the audio
-    soundObject.setStatusAsync({ shouldPlay: false ***REMOVED***);
-
-    //stop the scrubber from being able to change values with the music
-    setShouldSeek(false);
   ***REMOVED***
 
-  // dont work yet
-  function skipAhead() {
-    setShouldSeek(false);
-    soundObject.setStatusAsync({ shouldPlay: false, positionMillis: seekPosition ***REMOVED***);
-    setSeekPosition(currentSeekPosition => currentSeekPosition + 15000);
-    soundObject.setStatusAsync({ shouldPlay: true, positionMillis: seekPosition ***REMOVED***);
-    setShouldSeek(true);
+  //prevent the seeker from updating every second whenever
+  //the user is dragging the thumb
+  function onSeekHold(value) {
+    setShouldTickUpdate(false);
   ***REMOVED***
 
-  //dont work yet
-  function skipBehind() {
-    setShouldSeek(false);
-    soundObject.setStatusAsync({ shouldPlay: false, positionMillis: seekPosition ***REMOVED***);
-    setSeekPosition(currentSeekPosition => currentSeekPosition - 5000);
-    soundObject.setStatusAsync({ shouldPlay: true, positionMillis: seekPosition ***REMOVED***);
-    setShouldSeek(true);
+  //skips an amount of milliseconds through the audio track
+  function skip(amount) {
+    isPlaying ?
+    soundObject.setStatusAsync({ shouldPlay: true, positionMillis: (seekPosition + amount) ***REMOVED***) :
+    soundObject.setStatusAsync({ shouldPlay: false, positionMillis: (seekPosition + amount) ***REMOVED***);
+    setSeekPosition(seekPosition => seekPosition + amount);
   ***REMOVED***
-
 
   return (
     <View style={styles.screen***REMOVED***>
+      <Text style={{ textAlign: "center" ***REMOVED******REMOVED***>Status: {isLoaded ? "Finished loading" : "Loading"***REMOVED***</Text>
       <View style={styles.scrubberContainer***REMOVED***>
-        <View style={styles.scrubberInfo***REMOVED***><Text>{msToTime(seekPosition)***REMOVED***</Text></View>
         <View style={styles.scrubber***REMOVED***>
           <Slider
             value={seekPosition***REMOVED***
@@ -152,18 +129,19 @@ function PlayScreen(props) {
             onValueChange={onSeekHold***REMOVED***
             minimumValue={0***REMOVED***
             maximumValue={lengthMilli***REMOVED***
-            step={1000***REMOVED*** 
+            step={1000***REMOVED***
           />
         </View>
-        <Text style={styles.scrubberInfo***REMOVED***>{msToTime(lengthMilli)***REMOVED***</Text>
+        <View style={styles.timeInfo***REMOVED***>
+          <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={seekPosition***REMOVED*** max={lengthMilli***REMOVED*** />
+          <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={lengthMilli***REMOVED*** max={lengthMilli***REMOVED***/>
+        </View>
       </View>
-      <Text style={{textAlign: "center"***REMOVED******REMOVED***>Status: {isLoaded ? "Finished loading" : "Loading"***REMOVED***</Text>
       <View style={styles.controlsContainer***REMOVED***>
-        <Button title="Skip behind" onPress={skipBehind***REMOVED***/>
+        <Button title="Skip behind" onPress={skip.bind("this", -5000)***REMOVED*** />
         <Button title={isPlaying ? "Pause" : "Play"***REMOVED*** onPress={playHandler***REMOVED*** />
-        <Button title="Skip ahead" onPress={skipAhead***REMOVED***/>
+        <Button title="Skip ahead" onPress={skip.bind("this", 15000)***REMOVED*** />
       </View>
-
     </View>
   )
 ***REMOVED***
@@ -185,8 +163,8 @@ const styles = StyleSheet.create({
     margin: 25
   ***REMOVED***,
   scrubberContainer: {
-    paddingHorizontal: 20,
-    flexDirection: "row",
+    paddingHorizontal: 10,
+    flexDirection: "column",
     width: "100%"
   ***REMOVED***,
   scrubberInfo: {
@@ -198,7 +176,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   ***REMOVED***,
   scrubber: {
-    flex: 1
+    width: "100%",
+  ***REMOVED***,
+  timeInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%"
   ***REMOVED***
 ***REMOVED***)
 
