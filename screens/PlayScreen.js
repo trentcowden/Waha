@@ -1,6 +1,7 @@
 //basic imports
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
 import { View, StyleSheet, Button, Text, Slider ***REMOVED*** from 'react-native';
+import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 
 //sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
@@ -29,7 +30,7 @@ function PlayScreen(props) {
 
   //update on every api call and every second
   soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
-
+    
   ***REMOVED***)
 
   ////CONSTRUCTOR////
@@ -120,32 +121,56 @@ function PlayScreen(props) {
 
   return (
     <View style={styles.screen***REMOVED***>
-      <Text style={{ textAlign: "center" ***REMOVED******REMOVED***>Status: {isLoaded ? "Finished loading" : "Loading"***REMOVED***</Text>
-      <View style={styles.scrubberContainer***REMOVED***>
-        <View style={styles.scrubber***REMOVED***>
-          <Slider
-            value={seekPosition***REMOVED***
-            onSlidingComplete={onSeekRelease***REMOVED***
-            onValueChange={onSeekHold***REMOVED***
-            minimumValue={0***REMOVED***
-            maximumValue={lengthMilli***REMOVED***
-            step={1000***REMOVED***
+      <View style={styles.titlesContainer***REMOVED***>
+        <Text style={styles.title***REMOVED***>{props.navigation.getParam("title")***REMOVED***</Text>
+        <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("subtitle")***REMOVED***</Text>
+      </View>
+      <Text style={{ textAlign: "center", flex: 1 ***REMOVED******REMOVED***>Status: {isLoaded ? "Finished loading" : "Loading"***REMOVED***</Text>
+      <View style={styles.controlsContainer***REMOVED***>
+        <View style={styles.scrubberContainer***REMOVED***>
+          <View style={styles.scrubber***REMOVED***>
+            <Slider
+              value={seekPosition***REMOVED***
+              onSlidingComplete={onSeekRelease***REMOVED***
+              onValueChange={onSeekHold***REMOVED***
+              minimumValue={0***REMOVED***
+              maximumValue={lengthMilli***REMOVED***
+              step={1000***REMOVED***
+            />
+          </View>
+          <View style={styles.timeInfo***REMOVED***>
+            <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={seekPosition***REMOVED*** max={lengthMilli***REMOVED*** />
+            <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={lengthMilli***REMOVED*** max={lengthMilli***REMOVED*** />
+          </View>
+        </View>
+        <View style={styles.buttonContainer***REMOVED***>
+          <Ionicons.Button 
+            name="md-return-left" 
+            size={85***REMOVED*** 
+            onPress={skip.bind("this", -5000)***REMOVED*** 
+            backgroundColor="rgba(0,0,0,0)"
+            iconStyle={styles.button***REMOVED***
+          />
+          <Ionicons.Button 
+            name={isPlaying ? "ios-pause" : "ios-play"***REMOVED*** 
+            size={125***REMOVED*** 
+            onPress={playHandler***REMOVED***
+            backgroundColor="rgba(0,0,0,0)"
+            iconStyle={styles.button***REMOVED***
+          />
+          <Ionicons.Button 
+            name="md-return-right" 
+            size={85***REMOVED*** 
+            onPress={skip.bind("this", 15000)***REMOVED*** 
+            backgroundColor="rgba(0,0,0,0)"
+            iconStyle={styles.button***REMOVED***
           />
         </View>
-        <View style={styles.timeInfo***REMOVED***>
-          <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={seekPosition***REMOVED*** max={lengthMilli***REMOVED*** />
-          <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={lengthMilli***REMOVED*** max={lengthMilli***REMOVED***/>
-        </View>
-      </View>
-      <View style={styles.controlsContainer***REMOVED***>
-        <Button title="Skip behind" onPress={skip.bind("this", -5000)***REMOVED*** />
-        <Button title={isPlaying ? "Pause" : "Play"***REMOVED*** onPress={playHandler***REMOVED*** />
-        <Button title="Skip ahead" onPress={skip.bind("this", 15000)***REMOVED*** />
       </View>
     </View>
   )
 ***REMOVED***
-
+//<Button></Button>
 PlayScreen.navigationOptions = navigationData => {
   return {
     headerTitle: navigationData.navigation.getParam("title")
@@ -156,6 +181,15 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1
   ***REMOVED***,
+  controlsContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    backgroundColor: "#d3d3d3",
+    borderRadius: 20,
+    marginBottom: 50,
+    marginHorizontal: 15,
+    height: 200
+  ***REMOVED***,
   albumArt: {
     height: 400,
     padding: 50,
@@ -163,14 +197,14 @@ const styles = StyleSheet.create({
     margin: 25
   ***REMOVED***,
   scrubberContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     flexDirection: "column",
     width: "100%"
   ***REMOVED***,
   scrubberInfo: {
     padding: 10
   ***REMOVED***,
-  controlsContainer: {
+  buttonContainer: {
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-around",
@@ -182,6 +216,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%"
+  ***REMOVED***,
+  button: {
+    margin: 10,
+    justifyContent: "center",
+    flexDirection: "row",
+    borderRadius: 0
+  ***REMOVED***,
+  titlesContainer: {
+    flexDirection: "column",
+    marginVertical: 15 
+  ***REMOVED***,
+  title: {
+    textAlign: "center",
+    fontSize: 30
+  ***REMOVED***,
+  subtitle: {
+    textAlign: "center",
+    fontSize: 20,
+    color: "#d3d3d3"
   ***REMOVED***
 ***REMOVED***)
 
