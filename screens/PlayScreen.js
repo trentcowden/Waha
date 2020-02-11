@@ -1,6 +1,6 @@
 //basic imports
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
-import { View, StyleSheet, Button, Text, Slider ***REMOVED*** from 'react-native';
+import { View, StyleSheet, Button, Text, Slider, AsyncStorage ***REMOVED*** from 'react-native';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 
 //sound stuff
@@ -18,7 +18,8 @@ function PlayScreen(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const isMounted = useRef(true);
   const source = props.navigation.getParam("source");
-
+  const [isComplete, setIsComplete] = useState(false);
+  
   //keep track of it audio is currently playing
   const [isPlaying, setIsPlaying] = useState(false);
   
@@ -40,6 +41,8 @@ function PlayScreen(props) {
     loadAudioFile();
     const interval = setInterval(updateSeekerTick, 1000);
 
+    //figure out if lesson is marked as complete or not
+    setIsComplete(getLessonMark());
     //when leaving the screen, set ismounted to flase
     //and unload the audio file
     return function cleanup() {
@@ -49,9 +52,15 @@ function PlayScreen(props) {
       setSoundObject(null);
     ***REMOVED*** 
   ***REMOVED***, []);
+
+  useEffect(() => {
+    props.navigation.setParams({isComplete: isComplete***REMOVED***)
+    props.navigation.setParams({markHandler: markHandler***REMOVED***)
+  ***REMOVED***, [isComplete])
   
   //function to load the audio file
   async function loadAudioFile() {
+    
     try {
       await soundObject
         .loadAsync({uri: source***REMOVED***, {progressUpdateIntervalMillis: 1000***REMOVED***)
@@ -63,6 +72,38 @@ function PlayScreen(props) {
       console.log(error)
     ***REMOVED***
   ***REMOVED***
+
+  //check if lesson is complete or not
+  async function getLessonMark() {
+    try {
+        await AsyncStorage
+            .getItem(props.navigation.getParam("id"))
+            .then(value => {
+                if (value === 'incomplete') 
+                  return false
+                else
+                  return true
+            ***REMOVED***)
+    ***REMOVED*** catch (error) {
+        console.log(error);
+    ***REMOVED***
+***REMOVED***
+
+  function markHandler() {
+    setIsComplete(currentValue => !currentValue)
+  ***REMOVED***
+
+  async function printAsync() {
+     try {
+         await AsyncStorage
+            .getItem('2.1')
+            .then(value => {
+                console.log(value)
+            ***REMOVED***) 
+    ***REMOVED*** catch (error) {
+        console.log(error);
+    ***REMOVED*** 
+***REMOVED***
   /*useEffect(() => {
     soundObject.playFromPositionAsync(seekPosition);
   ***REMOVED***, [seekPosition])  */ 
@@ -119,6 +160,7 @@ function PlayScreen(props) {
     setSeekPosition(seekPosition => seekPosition + amount);
   ***REMOVED***
 
+
   return (
     <View style={styles.screen***REMOVED***>
       <View style={styles.titlesContainer***REMOVED***>
@@ -171,10 +213,22 @@ function PlayScreen(props) {
   )
 ***REMOVED***
 //<Button></Button>
+
 PlayScreen.navigationOptions = navigationData => {
+  const isComplete = navigationData.navigation.getParam("isComplete");
+  const markHandler = navigationData.navigation.getParam("markHandler");
   return {
-    headerTitle: navigationData.navigation.getParam("title")
-  ***REMOVED***;
+    headerTitle: navigationData.navigation.getParam("title"),
+    headerRight: () =>
+      <Ionicons.Button
+        name={isComplete ? "ios-checkmark-circle-outline" : "ios-checkmark-circle"***REMOVED***
+        size={20***REMOVED***
+        onPress={markHandler***REMOVED***
+        backgroundColor="rgba(0,0,0,0)"
+        color="black"
+        iconStyle={styles.markButton***REMOVED***
+      />
+  ***REMOVED***
 ***REMOVED***;
 
 const styles = StyleSheet.create({
@@ -235,6 +289,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     color: "#d3d3d3"
+  ***REMOVED***,
+  markButton: {
+    justifyContent: "center",
+    alignContent: "center"
   ***REMOVED***
 ***REMOVED***)
 
