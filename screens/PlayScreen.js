@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
 import { View, StyleSheet, Button, Text, Slider, AsyncStorage ***REMOVED*** from 'react-native';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
-import { useIsFocused, useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
+import * as FileSystem from 'expo-file-system';
 
 //sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
@@ -28,7 +28,7 @@ function PlayScreen(props) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   //get source url for audio file
-  const source = props.navigation.getParam("source");
+  //const source = props.navigation.getParam("source");
 
   //boolean to determine if the audio file is currently playing or paused
   const [isPlaying, setIsPlaying] = useState(false);
@@ -48,9 +48,9 @@ function PlayScreen(props) {
   //PURPOSE: constructor on first screen open
   useEffect(() => {
 
-    //load our audio file
-    loadAudioFile();
-
+    //check if file is downloaded, then load it
+    checkIsDownloaded();
+ 
     //determine complete status of loaded lesson
     fetchCompleteStatus();
 
@@ -64,18 +64,94 @@ function PlayScreen(props) {
     ***REMOVED***
   ***REMOVED***, []);
 
- /*    //PURPOSE: constructor on first screen open
-    useEffect(() => {
-      
-      console.log('start timer')
-      const interval = setInterval(updateSeekerTick, 1000);
-      //set up our timer tick for updating the seeker every second
-      //interval = null;
-      if (!isPlaying) {
-        console.log('stop timer')
-        clearInterval(interval);
+
+  ///////////////////////////////
+  ////AUDIO CONTROL FUNCTIONS////
+  ///////////////////////////////
+
+  
+  //PURPOSE: check if the lesson is downloaded or not
+  async function checkIsDownloaded() {
+    let source = '';
+    FileSystem.getInfoAsync(FileSystem.documentDirectory + props.navigation.getParam('id') + '.mp3')
+    .then(({exists***REMOVED***) => {
+      if(exists) {
+        console.log('file exists')
+        source = (FileSystem.documentDirectory + props.navigation.getParam('id') + '.mp3')
+      ***REMOVED*** else {
+        console.log('file does not exist')
+        source = props.navigation.getParam('source')
+      ***REMOVED*** 
+      loadAudioFile(source);
+    ***REMOVED***)
+  ***REMOVED***
+
+  //PURPOSE: load the audio file and set isLoaded and 
+  async function loadAudioFile(source) {
+    console.log(source)
+    try {
+      await soundObject
+        .loadAsync({ uri: source ***REMOVED***, { progressUpdateIntervalMillis: 1000 ***REMOVED***)
+        .then(async playbackStatus => {
+          setIsLoaded(playbackStatus.isLoaded);
+          setAudioFileLength(playbackStatus.durationMillis);
+        ***REMOVED***)
+    ***REMOVED*** catch (error) {
+      console.log(error)
+    ***REMOVED***
+  ***REMOVED***
+
+  //PURPOSE: gets called every second by our interval, and updates the seeker position
+  //based on the progress through the audio file
+  async function updateSeekerTick() {
+    if (shouldTickUpdate) {
+      try {
+        await soundObject
+          .getStatusAsync()
+          .then(async playbackStatus => {
+            setSeekPosition(playbackStatus.positionMillis);
+          ***REMOVED***)
+      ***REMOVED*** catch (error) {
+        console.log(error)
       ***REMOVED***
-    ***REMOVED***, [isPlaying]); */
+    ***REMOVED***
+  ***REMOVED***
+
+  //PURPOSE: when user taps the play button, if the audio is playing, 
+  //pause it; if it's paused, start playing it
+  function playHandler() {
+    if (isLoaded) {
+      updateSeekerTick();
+      isPlaying ?
+        soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: false ***REMOVED***) :
+        soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
+      setIsPlaying(currentStatus => !currentStatus);
+    ***REMOVED***
+  ***REMOVED***
+
+  //PURPOSE: start playing from the position they release the thumb at
+  //PARAMETERS: the current seeker value
+  function onSeekRelease(value) {
+    isPlaying ?
+      soundObject.setStatusAsync({ shouldPlay: true, positionMillis: value ***REMOVED***) :
+      soundObject.setStatusAsync({ shouldPlay: false, positionMillis: value ***REMOVED***);
+    setShouldTickUpdate(true);
+    setSeekPosition(value);
+  ***REMOVED***
+
+  //PURPOSE: prevent the seeker from updating every second whenever
+  //the user is dragging the thumb
+  function onSeekDrag(value) {
+    setShouldTickUpdate(false);
+  ***REMOVED***
+
+  //PURPOSE: skips an amount of milliseconds through the audio track
+  function skip(amount) {
+    isPlaying ?
+      soundObject.setStatusAsync({ shouldPlay: true, positionMillis: (seekPosition + amount) ***REMOVED***) :
+      soundObject.setStatusAsync({ shouldPlay: false, positionMillis: (seekPosition + amount) ***REMOVED***);
+    setSeekPosition(seekPosition => seekPosition + amount);
+  ***REMOVED***
 
 
   //////////////////////////////////
@@ -141,79 +217,6 @@ function PlayScreen(props) {
       console.log(error);
     ***REMOVED***
   ***REMOVED***
-
-
-  ///////////////////////////////
-  ////AUDIO CONTROL FUNCTIONS////
-  ///////////////////////////////
-
-  
-  //PURPOSE: load the audio file and set isLoaded and 
-  async function loadAudioFile() {
-    try {
-      await soundObject
-        .loadAsync({ uri: source ***REMOVED***, { progressUpdateIntervalMillis: 1000 ***REMOVED***)
-        .then(async playbackStatus => {
-          setIsLoaded(playbackStatus.isLoaded);
-          setAudioFileLength(playbackStatus.durationMillis);
-        ***REMOVED***)
-    ***REMOVED*** catch (error) {
-      console.log(error)
-    ***REMOVED***
-  ***REMOVED***
-
-  //PURPOSE: gets called every second by our interval, and updates the seeker position
-  //based on the progress through the audio file
-  async function updateSeekerTick() {
-    if (shouldTickUpdate) {
-      try {
-        await soundObject
-          .getStatusAsync()
-          .then(async playbackStatus => {
-            setSeekPosition(playbackStatus.positionMillis);
-          ***REMOVED***)
-      ***REMOVED*** catch (error) {
-        console.log(error)
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-
-  //PURPOSE: when user taps the play button, if the audio is playing, 
-  //pause it; if it's paused, start playing it
-  function playHandler() {
-    if (isLoaded) {
-      updateSeekerTick();
-      isPlaying ?
-        soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: false ***REMOVED***) :
-        soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
-      setIsPlaying(currentStatus => !currentStatus);
-    ***REMOVED***
-  ***REMOVED***
-
-  //PURPOSE: start playing from the position they release the thumb at
-  //PARAMETERS: the current seeker value
-  function onSeekRelease(value) {
-    isPlaying ?
-      soundObject.setStatusAsync({ shouldPlay: true, positionMillis: value ***REMOVED***) :
-      soundObject.setStatusAsync({ shouldPlay: false, positionMillis: value ***REMOVED***);
-    setShouldTickUpdate(true);
-    setSeekPosition(value);
-  ***REMOVED***
-
-  //PURPOSE: prevent the seeker from updating every second whenever
-  //the user is dragging the thumb
-  function onSeekDrag(value) {
-    setShouldTickUpdate(false);
-  ***REMOVED***
-
-  //PURPOSE: skips an amount of milliseconds through the audio track
-  function skip(amount) {
-    isPlaying ?
-      soundObject.setStatusAsync({ shouldPlay: true, positionMillis: (seekPosition + amount) ***REMOVED***) :
-      soundObject.setStatusAsync({ shouldPlay: false, positionMillis: (seekPosition + amount) ***REMOVED***);
-    setSeekPosition(seekPosition => seekPosition + amount);
-  ***REMOVED***
-
 
   return (
     <View style={styles.screen***REMOVED***>
