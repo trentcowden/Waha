@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, AsyncStorage ***REMOVED*** from 'react-native';
 import { useIsFocused, useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
+import * as FileSystem from 'expo-file-system';
 
 //data import
 import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
@@ -27,13 +28,6 @@ function LessonListScreen(props) {
   const [progress, setProgress] = useState({***REMOVED***);
 
   const [refresh, setRefresh] = useState(false);
-
-/*   function refreshments() {
-    console.log('refresh firing')
-    fetchCompleteStatuses();
-  ***REMOVED***
- */
-
 
   //find our specified study set with data taken from the last screen
   selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
@@ -75,9 +69,28 @@ function LessonListScreen(props) {
         title={LessonList.item.title***REMOVED***
         subtitle={LessonList.item.subtitle***REMOVED***
         onLessonSelect={() => navigateToPlay(LessonList.item)***REMOVED***
+        downloadLesson={() => downloadLesson(LessonList.item)***REMOVED***
+        deleteLesson={() => deleteLesson(LessonList.item)***REMOVED***
         isComplete={progress[LessonList.item.id]***REMOVED***
       />
     )
+  ***REMOVED***
+
+  function downloadLesson(item) {
+    FileSystem.downloadAsync(
+      item.source,
+      FileSystem.documentDirectory + item.id + '.mp3'
+    )
+      .then(({ uri ***REMOVED***) => {
+        console.log('Finished downloading to ', uri);
+      ***REMOVED***)
+      .catch(error => {
+        console.error(error);
+      ***REMOVED***);
+  ***REMOVED***
+
+  function deleteLesson(item) {
+    console.log('delete');
   ***REMOVED***
 
   return (
@@ -85,7 +98,6 @@ function LessonListScreen(props) {
       <FlatList
         data={selectedLessonList***REMOVED***
         renderItem={renderLessonItem***REMOVED***
-        //extraData={progress***REMOVED***
       />
     </View>
   )
