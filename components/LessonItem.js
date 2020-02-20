@@ -14,14 +14,29 @@ function LessonItem(props) {
     ***REMOVED***
 
     return(
-        <TouchableOpacity style={styles.lessonItem***REMOVED*** onPress={props.onLessonSelect***REMOVED***>
-            <View style={styles.icon***REMOVED***><Ionicons name={isComplete ? "ios-arrow-dropdown-circle" : "ios-arrow-dropdown"***REMOVED*** size={30***REMOVED***/></View>
-            
-            <View styles={styles.titleContainer***REMOVED***>
-                <Text style={styles.title***REMOVED***>{props.title***REMOVED***</Text>
-                <Text style={styles.subtitle***REMOVED***>{props.subtitle***REMOVED***</Text>
+        <View style={styles.lessonItem***REMOVED***>
+            <TouchableOpacity style={styles.progresAndTitle***REMOVED*** onPress={props.onLessonSelect***REMOVED***>
+                <View style={styles.icon***REMOVED***>
+                    <Ionicons 
+                        name={isComplete ? "ios-arrow-dropdown-circle" : "ios-arrow-dropdown"***REMOVED*** 
+                        size={30***REMOVED***
+                    />
+                </View>
+                <View styles={styles.titleContainer***REMOVED***>
+                    <Text style={styles.title***REMOVED***>{props.title***REMOVED***</Text>
+                    <Text style={styles.subtitle***REMOVED***>{props.subtitle***REMOVED***</Text>
+                </View>
+            </TouchableOpacity>
+            <View style={styles.icon***REMOVED***>
+                <Ionicons.Button 
+                    name={"md-cloud-download"***REMOVED*** 
+                    size={30***REMOVED***
+                    onPress={props.downloadLesson***REMOVED***
+                    backgroundColor="rgba(0,0,0,0)"
+                    color="black"
+                 />
             </View>
-        </TouchableOpacity>
+        </View>
     )
 ***REMOVED***
 
@@ -32,7 +47,7 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
         margin: 5,
-        justifyContent: "flex-start",
+        justifyContent: "space-between",
         flexDirection: "row",
     ***REMOVED***,
     title: {
@@ -53,6 +68,13 @@ const styles = StyleSheet.create({
     icon: {
         justifyContent: "center",
         marginHorizontal: 10
+    ***REMOVED***,
+    progresAndTitle: {
+        justifyContent: "flex-start",
+        flexDirection: 'row',
+        alignContent: "center"
+    ***REMOVED***,
+    downloadButton: {
     ***REMOVED***
 ***REMOVED***)
 
