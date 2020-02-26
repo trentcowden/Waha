@@ -1,17 +1,23 @@
 //basic imports
-import React, {useEffect, useState***REMOVED*** from 'react';
+import React, { useState***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, AsyncStorage***REMOVED*** from 'react-native';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
+import * as FileSystem from 'expo-file-system';
 
 function LessonItem(props) {
 
-    //console.log(props.isComplete);
+    const [isDownloaded, setIsDownloaded] = useState(false);
     var isComplete;
     if(props.isComplete === 'complete') {
         isComplete = true;
     ***REMOVED*** else {
         isComplete = false;
     ***REMOVED***
+
+    FileSystem.getInfoAsync(FileSystem.documentDirectory + props.id + '.mp3')
+        .then(({ exists ***REMOVED***) => {
+            exists ? setIsDownloaded(true) : setIsDownloaded(false)
+        ***REMOVED***)
 
     return(
         <View style={styles.lessonItem***REMOVED***>
@@ -29,9 +35,9 @@ function LessonItem(props) {
             </TouchableOpacity>
             <View style={styles.icon***REMOVED***>
                 <Ionicons.Button 
-                    name={"md-cloud-download"***REMOVED*** 
+                    name={isDownloaded ? "ios-backspace" : "md-cloud-download"***REMOVED*** 
                     size={30***REMOVED***
-                    onPress={props.downloadLesson***REMOVED***
+                    onPress={isDownloaded ? props.deleteLesson : props.downloadLesson***REMOVED***
                     backgroundColor="rgba(0,0,0,0)"
                     color="black"
                  />

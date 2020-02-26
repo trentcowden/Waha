@@ -1,7 +1,7 @@
 //basic imports
 import React, { useEffect, useState, useCallback ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, AsyncStorage ***REMOVED*** from 'react-native';
-import { useIsFocused, useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
+import { useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
 import * as FileSystem from 'expo-file-system';
 
 //data import
@@ -10,20 +10,19 @@ import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 //component import
 import LessonItem from '../components/LessonItem';
 import { Audio ***REMOVED*** from 'expo-av';
+import Lesson from '../models/lesson';
 
 function LessonListScreen(props) {
 
-  //idea: could I have all the progress tracking logic on this screen instead of in the play screen?
-  //send over array of all the progress for that study set and filter on play screen
-  //update it using a function prop passed to play screen that changes the state on 
 
-   useFocusEffect(
+  useFocusEffect(
     React.useCallback(() => {
-      console.log("useFocus has triggered, refreshing...")
+      //console.log("useFocus has triggered, refreshing...")
       fetchCompleteStatuses();
-      return () => {***REMOVED***;
+
+      return () => { ***REMOVED***;
     ***REMOVED***, [])
-  ); 
+  );
 
   const [progress, setProgress] = useState({***REMOVED***);
 
@@ -55,11 +54,33 @@ function LessonListScreen(props) {
   //PURPOSE: get the progress object from async
   async function fetchCompleteStatuses() {
     await AsyncStorage
-          .getItem("progress")
-          .then(value => {
-            setProgress(JSON.parse(value))
-          ***REMOVED***)
+      .getItem("progress")
+      .then(value => {
+        setProgress(JSON.parse(value))
+      ***REMOVED***)
   ***REMOVED***
+
+/*   async function fetchDownloadStatus(id) {
+    var temp = {***REMOVED***
+    await FileSystem
+      .getInfoAsync(FileSystem.documentDirectory + id + '.mp3')
+      .then(({ exists ***REMOVED***) => {
+        //console.log(`${id***REMOVED*** - ${exists***REMOVED***`)
+        if (exists) {
+          return 'downloaded'
+        ***REMOVED*** else {
+          return 'notDownloaded'
+        ***REMOVED***
+      ***REMOVED***)
+  ***REMOVED***
+
+  async function fetchDownloadStatuses() {
+    var temp = {***REMOVED***
+    for (var i = 0; i < selectedLessonList.length; i++) {
+      temp[selectedLessonList[i].id] = fetchDownloadStatus(selectedLessonList[i].id);
+    ***REMOVED***
+    setDownloads(temp);
+  ***REMOVED*** */
 
   //PURPOSE: function to render each individual lesson item in the flatlist
   function renderLessonItem(LessonList) {
@@ -77,20 +98,26 @@ function LessonListScreen(props) {
   ***REMOVED***
 
   function downloadLesson(item) {
+    try {
     FileSystem.downloadAsync(
       item.source,
       FileSystem.documentDirectory + item.id + '.mp3'
     )
       .then(({ uri ***REMOVED***) => {
         console.log('Finished downloading to ', uri);
+        setRefresh(old => !old)
       ***REMOVED***)
       .catch(error => {
         console.error(error);
       ***REMOVED***);
+    ***REMOVED*** catch (error) {
+      console.log(error)
+    ***REMOVED***
   ***REMOVED***
 
   function deleteLesson(item) {
-    console.log('delete');
+    FileSystem.deleteAsync(FileSystem.documentDirectory + item.id + '.mp3')
+    setRefresh(old => !old)
   ***REMOVED***
 
   return (
@@ -98,6 +125,7 @@ function LessonListScreen(props) {
       <FlatList
         data={selectedLessonList***REMOVED***
         renderItem={renderLessonItem***REMOVED***
+        extraData={refresh***REMOVED***
       />
     </View>
   )
