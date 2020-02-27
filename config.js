@@ -1,6 +1,7 @@
-import Firebase from 'firebase';
+import firebase from 'firebase';
+import '@firebase/firestore'
 
-let config = {
+***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
@@ -11,5 +12,5 @@ let config = {
 ***REMOVED***
 ***REMOVED***;
 
-let app = Firebase.initializeApp(config);
-export const db = app.database();
+firebase.initializeApp(config);
+export const db = firebase.firestore()

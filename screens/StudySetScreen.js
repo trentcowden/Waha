@@ -5,12 +5,43 @@ import { View, FlatList, StyleSheet ***REMOVED*** from 'react-native';
 //data import
 import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 import { AsyncStorage ***REMOVED*** from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
+require('firebase/firestore');
+
 //other component imports
 import StudySetItem from '../components/StudySetItem';
-import { Ionicons ***REMOVED*** from '@expo/vector-icons';
+
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***;
+
+firebase.initializeApp(config);
+const db = firebase.firestore()
 
 function StudySetScreen(props) {
+
+    //Get stuff from database
+    db.collection("languages").doc("english").get().then(doc => {
+        if (doc.exists) {
+            //deal with colors and fonts
+            console.log("Document data:", doc.data());
+        ***REMOVED*** else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        ***REMOVED******REMOVED***)
+
+    db.collection("languages").doc("english").collection("studySets").get().then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+            console.log(doc.data())
+        ***REMOVED***)
+    ***REMOVED***)
 
     //state to do stuff on first launch (use for onboarding)
     const [isFirstLaunch, setIsFirstLaunch] = useState(false);
