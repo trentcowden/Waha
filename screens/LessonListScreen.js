@@ -1,7 +1,7 @@
 //basic imports
-import React, { useState ***REMOVED*** from 'react';
+import React, { useState, useEffect ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, AsyncStorage ***REMOVED*** from 'react-native';
-import { useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
+import { useFocusEffect, useIsFocused ***REMOVED*** from 'react-navigation-hooks';
 import * as FileSystem from 'expo-file-system';
 
 //data import
@@ -21,10 +21,23 @@ function LessonListScreen(props) {
     ***REMOVED***, [])
   );
 
+  //don't update download progress if we leave the screen
+  //(but still finish the download)
+  useEffect(() => {
+    return function cleanup() {
+      setIsFocused(false);
+      console.log('unloading')
+    ***REMOVED***
+  ***REMOVED***, [])
+
+  const [isFocused, setIsFocused] = useState(true);
+
   const [progress, setProgress] = useState({***REMOVED***);
 
   const [refresh, setRefresh] = useState(false);
 
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  
   //find our specified study set with data taken from the last screen
   selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
 
@@ -66,25 +79,34 @@ function LessonListScreen(props) {
         downloadLesson={() => downloadLesson(LessonList.item)***REMOVED***
         deleteLesson={() => deleteLesson(LessonList.item)***REMOVED***
         isComplete={progress[LessonList.item.id]***REMOVED***
+        //isDownloading={isDownloading***REMOVED***
+        downloadProgress={downloadProgress***REMOVED***
       />
     )
   ***REMOVED***
 
   //PURPOSE: download a lesson .mp3 from a specified source
-  function downloadLesson(item) {
-    try {
-    FileSystem.downloadAsync(
+  function callback(downloadProgressParam) {
+    const progress = downloadProgressParam.totalBytesWritten / downloadProgressParam.totalBytesExpectedToWrite;
+    if (isFocused) {
+      setDownloadProgress(progress)
+      console.log('attempting to update download progress')
+    ***REMOVED***
+  ***REMOVED***
+
+  async function downloadLesson(item) {
+    const downloadResumable = FileSystem.createDownloadResumable(
       item.source,
-      FileSystem.documentDirectory + item.id + '.mp3'
+      FileSystem.documentDirectory + item.id + '.mp3',
+      {***REMOVED***,
+      callback
     )
-      .then(({ uri ***REMOVED***) => {
-        setRefresh(old => !old)
-      ***REMOVED***)
-      .catch(error => {
-        console.error(error);
-      ***REMOVED***);
+    try {
+      const { uri ***REMOVED*** = await downloadResumable.downloadAsync();
+      console.log('Finished downloading to ', uri);
+      setRefresh(old => !old)
     ***REMOVED*** catch (error) {
-      console.log(error)
+      console.error(error);
     ***REMOVED***
   ***REMOVED***
 
@@ -100,6 +122,7 @@ function LessonListScreen(props) {
         data={selectedLessonList***REMOVED***
         renderItem={renderLessonItem***REMOVED***
         extraData={refresh***REMOVED***
+        //{isDownloading, downloadProgress***REMOVED***
       />
     </View>
   )
