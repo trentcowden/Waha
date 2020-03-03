@@ -3,6 +3,7 @@ import React, { useState, useEffect***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert***REMOVED*** from 'react-native';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 function LessonItem(props) {
 
@@ -36,6 +37,7 @@ function LessonItem(props) {
     //so that the progress can be shown
     function downloadLesson() {
         props.downloadLesson.call();
+
         setIsDownloading(true);
     ***REMOVED***
 
@@ -54,7 +56,7 @@ function LessonItem(props) {
         );
     ***REMOVED***
 
-    var downloadedFeedback;
+/*     var downloadedFeedback;
     if (!isDownloading) {
         downloadedFeedback = 
             <Ionicons.Button 
@@ -67,7 +69,7 @@ function LessonItem(props) {
     ***REMOVED*** else {
         downloadedFeedback = 
             <Text>{Math.ceil(props.downloadProgress * 100).toString() + '%'***REMOVED***</Text>
-    ***REMOVED***
+    ***REMOVED***  */
 
     return(
         <View style={styles.lessonItem***REMOVED***>
@@ -84,7 +86,13 @@ function LessonItem(props) {
                 </View>
             </TouchableOpacity>
             <View style={styles.icon***REMOVED***>
-                {downloadedFeedback***REMOVED***
+                <Ionicons.Button 
+                    name={isDownloaded ? "ios-backspace" : "md-cloud-download"***REMOVED*** 
+                    size={30***REMOVED***
+                    onPress={isDownloaded ? showDeleteAlert : downloadLesson***REMOVED***
+                    backgroundColor="rgba(0,0,0,0)"
+                    color="black"
+                />
             </View>
         </View>
     )
@@ -122,7 +130,8 @@ const styles = StyleSheet.create({
     progresAndTitle: {
         justifyContent: "flex-start",
         flexDirection: 'row',
-        alignContent: "center"
+        alignContent: "center",
+        flex: 1
     ***REMOVED***,
     downloadButton: {
     ***REMOVED***

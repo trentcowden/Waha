@@ -1,8 +1,9 @@
 //basic imports
-import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, AsyncStorage ***REMOVED*** from 'react-native';
+import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
+import { View, FlatList, StyleSheet, AsyncStorage, Alert, Text ***REMOVED*** from 'react-native';
 import { useFocusEffect, useIsFocused ***REMOVED*** from 'react-navigation-hooks';
 import * as FileSystem from 'expo-file-system';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 //data import
 import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
@@ -10,6 +11,8 @@ import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 //component import
 import LessonItem from '../components/LessonItem';
 
+//redux
+import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
   useFocusEffect(
@@ -21,11 +24,13 @@ function LessonListScreen(props) {
     ***REMOVED***, [])
   );
 
+  const isMounted = useRef(true);
+
   //don't update download progress if we leave the screen
   //(but still finish the download)
   useEffect(() => {
     return function cleanup() {
-      setIsFocused(false);
+      isMounted.current = false;
       console.log('unloading')
     ***REMOVED***
   ***REMOVED***, [])
@@ -37,6 +42,8 @@ function LessonListScreen(props) {
   const [refresh, setRefresh] = useState(false);
 
   const [downloadProgress, setDownloadProgress] = useState(0);
+
+  const [showAlert, setShowAlert] = useState(false);
   
   //find our specified study set with data taken from the last screen
   selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
@@ -79,7 +86,6 @@ function LessonListScreen(props) {
         downloadLesson={() => downloadLesson(LessonList.item)***REMOVED***
         deleteLesson={() => deleteLesson(LessonList.item)***REMOVED***
         isComplete={progress[LessonList.item.id]***REMOVED***
-        //isDownloading={isDownloading***REMOVED***
         downloadProgress={downloadProgress***REMOVED***
       />
     )
@@ -88,26 +94,33 @@ function LessonListScreen(props) {
   //PURPOSE: download a lesson .mp3 from a specified source
   function callback(downloadProgressParam) {
     const progress = downloadProgressParam.totalBytesWritten / downloadProgressParam.totalBytesExpectedToWrite;
-    if (isFocused) {
+    if (isMounted.current) {
       setDownloadProgress(progress)
-      console.log('attempting to update download progress')
     ***REMOVED***
   ***REMOVED***
 
+
   async function downloadLesson(item) {
+    //create our download object
     const downloadResumable = FileSystem.createDownloadResumable(
       item.source,
       FileSystem.documentDirectory + item.id + '.mp3',
       {***REMOVED***,
       callback
     )
-    try {
-      const { uri ***REMOVED*** = await downloadResumable.downloadAsync();
-      console.log('Finished downloading to ', uri);
-      setRefresh(old => !old)
-    ***REMOVED*** catch (error) {
-      console.error(error);
-    ***REMOVED***
+
+      //pop up the alert to show download progress
+      setShowAlert(true);
+      props.navigation.setOptions({headerLeft: null***REMOVED***)
+      try {
+        const { uri ***REMOVED*** = await downloadResumable.downloadAsync();
+        console.log('Finished downloading to ', uri);
+        setDownloadProgress(0);
+        setRefresh(old => !old)
+        setShowAlert(false);
+      ***REMOVED*** catch (error) {
+        console.error(error);
+      ***REMOVED***
   ***REMOVED***
 
   //PURPOSE: delete a lesson .mp3 from a specific address
@@ -122,9 +135,20 @@ function LessonListScreen(props) {
         data={selectedLessonList***REMOVED***
         renderItem={renderLessonItem***REMOVED***
         extraData={refresh***REMOVED***
-        //{isDownloading, downloadProgress***REMOVED***
+      />
+      <AwesomeAlert
+        show={showAlert***REMOVED***
+        showProgress={true***REMOVED***
+        title="Downloading lesson..."
+        closeOnTouchOutside={false***REMOVED***
+        closeOnHardwareBackPress={false***REMOVED***
+        showCancelButton={false***REMOVED***
+        showConfirmButton={false***REMOVED***
+        confirmButtonColor="#DD6B55"
+        customView={<Text>{Math.ceil(downloadProgress * 100).toString() + '%'***REMOVED***</Text>***REMOVED***
       />
     </View>
+     
   )
 ***REMOVED***
 
@@ -140,4 +164,4 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-export default LessonListScreen;
+export default connect()(LessonListScreen);
