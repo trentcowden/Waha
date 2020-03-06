@@ -1,5 +1,58 @@
-export const UPDATE_DOWNLOAD_PROGRESS = 'UPDATE_DOWNLOAD_PROGRESS'
+export const ADD_UPDATE_DOWNLOAD = 'ADD_UPDATE_DOWNLOAD'
+export const REMOVE_DOWNLOAD = 'REMOVE_DOWNLOAD'
+export const PURGE = 'PURGE'
 
-export function updateDownloadProgress(progress) {
-    return {type: UPDATE_DOWNLOAD_PROGRESS, progress***REMOVED***
+import * as FileSystem from 'expo-file-system';
+
+export function addUpdateDownload(progress, lessonID) {
+    return {
+        type: ADD_UPDATE_DOWNLOAD,
+        progress,
+        lessonID
+    ***REMOVED***
+***REMOVED***
+
+export function removeDownload(lessonID) {
+    return {
+        type: REMOVE_DOWNLOAD,
+        lessonID
+    ***REMOVED***
+***REMOVED***
+
+export function purge() {
+    return {
+        type: PURGE
+    ***REMOVED***
+***REMOVED***
+
+export function downloadLesson(lessonID) {
+    return dispatch => {
+
+        //callback function
+        function callback({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
+            progress = totalBytesWritten / totalBytesExpectedToWrite
+            if (progress >= 1) 
+                dispatch(removeDownload(lessonID))
+            else
+                dispatch(addUpdateDownload(progress, lessonID))
+        ***REMOVED***
+
+        //create our download object
+        const downloadResumable = FileSystem.createDownloadResumable(
+            'https://dl.airtable.com/.attachments/153694f4bc874577dda5bb4ccfe70187/aeb2055d/Acolyte.mp3',
+            FileSystem.documentDirectory + lessonID + '.mp3',
+            {***REMOVED***,
+            callback
+        )
+
+        //add our download to state with progress 0
+        dispatch(addUpdateDownload(0, lessonID))
+
+        //attempt to download file
+        try {
+            downloadResumable.downloadAsync().then(({uri***REMOVED***) => console.log('Finished downloading to ', uri))
+        ***REMOVED*** catch (error) {
+            console.error(error);
+        ***REMOVED***
+    ***REMOVED***
 ***REMOVED***

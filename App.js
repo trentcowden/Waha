@@ -9,16 +9,19 @@ if (!global.atob) { global.atob = decode ***REMOVED***
 
 //navigation
 import WahaNavigator from './navigation/Navigation';
+import LoadingView from './components/LoadingView';
 
 //redux
 import { Provider ***REMOVED*** from 'react-redux'
-
-
+import {persistor, store***REMOVED*** from './redux/store'
+import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react';
 
 export default function App() {
   return (
     <Provider store={store***REMOVED***>
-      <WahaNavigator/>
+      <PersistGate loading={<LoadingView />***REMOVED*** persistor={persistor***REMOVED***>
+        <WahaNavigator />
+      </PersistGate>
     </Provider>
   );
 ***REMOVED***

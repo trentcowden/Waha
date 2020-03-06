@@ -1,20 +1,40 @@
-//basic imports
+//normal imports imports
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, AsyncStorage, Alert, Text ***REMOVED*** from 'react-native';
-import { useFocusEffect, useIsFocused ***REMOVED*** from 'react-navigation-hooks';
+import { View, FlatList, StyleSheet, AsyncStorage ***REMOVED*** from 'react-native';
+import Modal from 'react-native-modal'
+import LessonItem from '../components/LessonItem';
+import { useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
 import * as FileSystem from 'expo-file-system';
-import AwesomeAlert from 'react-native-awesome-alerts';
+
+//redux imports
+import { downloadLesson, purge ***REMOVED*** from '../redux/actions'
+import { connect ***REMOVED*** from 'react-redux'
 
 //data import
 import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 
-//component import
-import LessonItem from '../components/LessonItem';
-
-//redux
-import { connect ***REMOVED*** from 'react-redux'
-
 function LessonListScreen(props) {
+
+  
+  //////////////////////////////////////////
+  ////STATE, CONSTRUCTOR, AND NAVIGATION////
+  //////////////////////////////////////////
+
+
+  //state to hold a temp version of our progress so we can pass it to 
+  //our flatlist items and re-render whenever it changes
+  const [progress, setProgress] = useState({***REMOVED***);
+
+  //simple state to switch back and forth whenever we want to re-render
+  //the screen. attached to the extraData prop on the flatlist
+  const [refresh, setRefresh] = useState(false);
+
+  //find our specified study set with data taken from the last screen
+  selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
+
+  //make our data only the array of lessons
+  selectedLessonList = selectedStudySetArray[0].lessonList;
+
   useFocusEffect(
     React.useCallback(() => {
       //console.log("useFocus has triggered, refreshing...")
@@ -23,33 +43,6 @@ function LessonListScreen(props) {
       return () => { ***REMOVED***;
     ***REMOVED***, [])
   );
-
-  const isMounted = useRef(true);
-
-  //don't update download progress if we leave the screen
-  //(but still finish the download)
-  useEffect(() => {
-    return function cleanup() {
-      isMounted.current = false;
-      console.log('unloading')
-    ***REMOVED***
-  ***REMOVED***, [])
-
-  const [isFocused, setIsFocused] = useState(true);
-
-  const [progress, setProgress] = useState({***REMOVED***);
-
-  const [refresh, setRefresh] = useState(false);
-
-  const [downloadProgress, setDownloadProgress] = useState(0);
-
-  const [showAlert, setShowAlert] = useState(false);
-  
-  //find our specified study set with data taken from the last screen
-  selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
-
-  //make our data only the array of lessons
-  selectedLessonList = selectedStudySetArray[0].lessonList;
 
   //function to navigate to the play screen
   //props.navigation.navigate takes us to the play screen
@@ -66,7 +59,14 @@ function LessonListScreen(props) {
     ***REMOVED***)
   ***REMOVED***
 
-  //PURPOSE: get the progress object from async
+
+  ///////////////////////
+  ////OTHER FUNCTIONS////
+  ///////////////////////
+
+
+  //PURPOSE: get the progress object from async and set our local 
+  //progress state to whatever we receive
   async function fetchCompleteStatuses() {
     await AsyncStorage
       .getItem("progress")
@@ -74,6 +74,19 @@ function LessonListScreen(props) {
         setProgress(JSON.parse(value))
       ***REMOVED***)
   ***REMOVED***
+
+  //PURPOSE: delete a lesson .mp3 from a specific address
+  //is passed to each lessonlist item
+  function deleteLesson(item) {
+    FileSystem.deleteAsync(FileSystem.documentDirectory + item.id + '.mp3')
+    setRefresh(old => !old)
+  ***REMOVED***
+
+
+  ////////////////////////////////
+  ////RENDER/STYLES/NAVOPTIONS////
+  ////////////////////////////////
+
 
   //PURPOSE: function to render each individual lesson item in the flatlist
   function renderLessonItem(LessonList) {
@@ -83,52 +96,16 @@ function LessonListScreen(props) {
         title={LessonList.item.title***REMOVED***
         subtitle={LessonList.item.subtitle***REMOVED***
         onLessonSelect={() => navigateToPlay(LessonList.item)***REMOVED***
-        downloadLesson={() => downloadLesson(LessonList.item)***REMOVED***
+        downloadLesson={() => props.downloadLesson(LessonList.item.id)***REMOVED***
         deleteLesson={() => deleteLesson(LessonList.item)***REMOVED***
         isComplete={progress[LessonList.item.id]***REMOVED***
-        downloadProgress={downloadProgress***REMOVED***
+        downloadProgress={props.downloads[LessonList.item.id]***REMOVED***
       />
     )
   ***REMOVED***
 
-  //PURPOSE: download a lesson .mp3 from a specified source
-  function callback(downloadProgressParam) {
-    const progress = downloadProgressParam.totalBytesWritten / downloadProgressParam.totalBytesExpectedToWrite;
-    if (isMounted.current) {
-      setDownloadProgress(progress)
-    ***REMOVED***
-  ***REMOVED***
-
-
-  async function downloadLesson(item) {
-    //create our download object
-    const downloadResumable = FileSystem.createDownloadResumable(
-      item.source,
-      FileSystem.documentDirectory + item.id + '.mp3',
-      {***REMOVED***,
-      callback
-    )
-
-      //pop up the alert to show download progress
-      setShowAlert(true);
-      props.navigation.setOptions({headerLeft: null***REMOVED***)
-      try {
-        const { uri ***REMOVED*** = await downloadResumable.downloadAsync();
-        console.log('Finished downloading to ', uri);
-        setDownloadProgress(0);
-        setRefresh(old => !old)
-        setShowAlert(false);
-      ***REMOVED*** catch (error) {
-        console.error(error);
-      ***REMOVED***
-  ***REMOVED***
-
-  //PURPOSE: delete a lesson .mp3 from a specific address
-  function deleteLesson(item) {
-    FileSystem.deleteAsync(FileSystem.documentDirectory + item.id + '.mp3')
-    setRefresh(old => !old)
-  ***REMOVED***
-
+  //create modal in here, pass state to show it to lesson item so lesson item
+  //can change it and show the modal on this screen
   return (
     <View style={styles.screen***REMOVED***>
       <FlatList
@@ -136,19 +113,7 @@ function LessonListScreen(props) {
         renderItem={renderLessonItem***REMOVED***
         extraData={refresh***REMOVED***
       />
-      <AwesomeAlert
-        show={showAlert***REMOVED***
-        showProgress={true***REMOVED***
-        title="Downloading lesson..."
-        closeOnTouchOutside={false***REMOVED***
-        closeOnHardwareBackPress={false***REMOVED***
-        showCancelButton={false***REMOVED***
-        showConfirmButton={false***REMOVED***
-        confirmButtonColor="#DD6B55"
-        customView={<Text>{Math.ceil(downloadProgress * 100).toString() + '%'***REMOVED***</Text>***REMOVED***
-      />
     </View>
-     
   )
 ***REMOVED***
 
@@ -164,4 +129,24 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-export default connect()(LessonListScreen);
+
+/////////////
+////REDUX////
+/////////////
+
+
+function mapStateToProps(state) {
+  //console.log(state)
+  return {
+    downloads: state.downloads,
+  ***REMOVED***
+***REMOVED***;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    downloadLesson: lessonID => {dispatch(downloadLesson(lessonID))***REMOVED***,
+    purge: () => {dispatch(purge())***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps, mapDispatchToProps)(LessonListScreen);
