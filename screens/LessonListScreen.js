@@ -1,13 +1,13 @@
 //normal imports imports
-import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, AsyncStorage ***REMOVED*** from 'react-native';
-import Modal from 'react-native-modal'
+import React, { useState ***REMOVED*** from 'react';
+import { View, FlatList, StyleSheet, AsyncStorage, Button, Modal ***REMOVED*** from 'react-native';
+//import Modal from 'react-native-modal'
 import LessonItem from '../components/LessonItem';
 import { useFocusEffect ***REMOVED*** from 'react-navigation-hooks';
 import * as FileSystem from 'expo-file-system';
 
 //redux imports
-import { downloadLesson, purge ***REMOVED*** from '../redux/actions'
+import { downloadLesson, toggleComplete ***REMOVED*** from '../redux/actions'
 import { connect ***REMOVED*** from 'react-redux'
 
 //data import
@@ -21,28 +21,20 @@ function LessonListScreen(props) {
   //////////////////////////////////////////
 
 
-  //state to hold a temp version of our progress so we can pass it to 
-  //our flatlist items and re-render whenever it changes
-  const [progress, setProgress] = useState({***REMOVED***);
-
   //simple state to switch back and forth whenever we want to re-render
   //the screen. attached to the extraData prop on the flatlist
   const [refresh, setRefresh] = useState(false);
+
+  //modal states
+  const [showSaveLessonModal, setShowSaveLessonModal] = useState(false);
+  const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false);
+  const [idToDownload, setIDToDownload] = useState(null);
 
   //find our specified study set with data taken from the last screen
   selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
 
   //make our data only the array of lessons
   selectedLessonList = selectedStudySetArray[0].lessonList;
-
-  useFocusEffect(
-    React.useCallback(() => {
-      //console.log("useFocus has triggered, refreshing...")
-      fetchCompleteStatuses();
-
-      return () => { ***REMOVED***;
-    ***REMOVED***, [])
-  );
 
   //function to navigate to the play screen
   //props.navigation.navigate takes us to the play screen
@@ -65,21 +57,22 @@ function LessonListScreen(props) {
   ///////////////////////
 
 
-  //PURPOSE: get the progress object from async and set our local 
-  //progress state to whatever we receive
-  async function fetchCompleteStatuses() {
-    await AsyncStorage
-      .getItem("progress")
-      .then(value => {
-        setProgress(JSON.parse(value))
-      ***REMOVED***)
+  //PURPOSE: delete a lesson .mp3 of id set by an individual flatlist item
+  function deleteLesson() {
+    FileSystem.deleteAsync(FileSystem.documentDirectory + idToDownload + '.mp3')
+    setShowDeleteLessonModal(false);
+    setRefresh(old => !old)
   ***REMOVED***
 
-  //PURPOSE: delete a lesson .mp3 from a specific address
-  //is passed to each lessonlist item
-  function deleteLesson(item) {
-    FileSystem.deleteAsync(FileSystem.documentDirectory + item.id + '.mp3')
-    setRefresh(old => !old)
+  //PURPOSE: download a lesson .mp3 of id set by an individual flatlist item
+  function downloadLesson() {
+    props.downloadLesson(idToDownload);
+    setShowSaveLessonModal(false);
+  ***REMOVED***
+
+  //PURPOSE: hide the modal without doing anything
+  function hideModal() {
+    setShowSaveLessonModal(false);
   ***REMOVED***
 
 
@@ -96,10 +89,11 @@ function LessonListScreen(props) {
         title={LessonList.item.title***REMOVED***
         subtitle={LessonList.item.subtitle***REMOVED***
         onLessonSelect={() => navigateToPlay(LessonList.item)***REMOVED***
-        downloadLesson={() => props.downloadLesson(LessonList.item.id)***REMOVED***
-        deleteLesson={() => deleteLesson(LessonList.item)***REMOVED***
-        isComplete={progress[LessonList.item.id]***REMOVED***
+        isComplete={(LessonList.item.id in props.appProgress)***REMOVED***
         downloadProgress={props.downloads[LessonList.item.id]***REMOVED***
+        setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
+        setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
+        setIDToDownload={() => setIDToDownload(LessonList.item.id)***REMOVED***
       />
     )
   ***REMOVED***
@@ -113,6 +107,28 @@ function LessonListScreen(props) {
         renderItem={renderLessonItem***REMOVED***
         extraData={refresh***REMOVED***
       />
+      <Modal 
+        visible={showSaveLessonModal***REMOVED***
+        animationType="slide"
+        presentationStyle="overFullScreen"
+        transparent={true***REMOVED***
+      >
+        <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
+          <Button title="Download lesson" onPress={downloadLesson***REMOVED*** />
+          <Button title="Cancel" onPress={hideModal***REMOVED*** />
+        </View>
+      </Modal>
+      <Modal 
+        visible={showDeleteLessonModal***REMOVED***
+        animationType="slide"
+        presentationStyle="overFullScreen"
+        transparent={true***REMOVED***
+      >
+        <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
+          <Button title="Delete lesson" onPress={deleteLesson***REMOVED*** />
+          <Button title="Cancel" onPress={hideModal***REMOVED*** />
+        </View>
+      </Modal>
     </View>
   )
 ***REMOVED***
@@ -136,16 +152,17 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-  //console.log(state)
+  console.log(state)
   return {
     downloads: state.downloads,
+    appProgress: state.appProgress
   ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
   return {
     downloadLesson: lessonID => {dispatch(downloadLesson(lessonID))***REMOVED***,
-    purge: () => {dispatch(purge())***REMOVED***
+    toggleComplete: lessonID => {dispatch(toggleComplete(lessonID))***REMOVED***
   ***REMOVED***
 ***REMOVED***
 

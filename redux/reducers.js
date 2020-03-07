@@ -1,5 +1,5 @@
 import { combineReducers ***REMOVED*** from 'redux'
-import { ADD_UPDATE_DOWNLOAD, REMOVE_DOWNLOAD, PURGE ***REMOVED*** from './actions'
+import { ADD_UPDATE_DOWNLOAD, REMOVE_DOWNLOAD, PURGE, TOGGLE_COMPLETE, RESET_PROGRESS ***REMOVED*** from './actions'
 
 function downloads(state = {***REMOVED***, action) {
     switch (action.type) {
@@ -7,7 +7,6 @@ function downloads(state = {***REMOVED***, action) {
             return  {
                 ...state, [action.lessonID]: action.progress
             ***REMOVED***
-
         case REMOVE_DOWNLOAD:
             //get the key of the download we want to delete
             var idToDelete = action.lessonID
@@ -19,7 +18,6 @@ function downloads(state = {***REMOVED***, action) {
                 ***REMOVED***
                 return object
               ***REMOVED***, {***REMOVED***)
-
         case PURGE:
             console.log('purging')
             return {***REMOVED***
@@ -28,6 +26,26 @@ function downloads(state = {***REMOVED***, action) {
     ***REMOVED***
 ***REMOVED***
 
+function appProgress(state = {***REMOVED***, action) {
+    switch (action.type) {
+        case TOGGLE_COMPLETE:
+            console.log('made it to reducer...')
+            if (action.lessonID in state) {
+                var idToDelete = action.lessonID
+                const { [idToDelete]: value, ...newObject ***REMOVED*** = state;
+                return newObject
+            ***REMOVED*** else {
+                console.log('lesson not found in progress, adding...')
+                return {...state, [action.lessonID]: 'complete'***REMOVED***
+            ***REMOVED***
+        case RESET_PROGRESS: 
+            return {***REMOVED***
+        default:
+            return state
+    ***REMOVED***
+***REMOVED***
+
 export default rootReducer = combineReducers({
-    downloads
+    downloads,
+    appProgress
 ***REMOVED***)

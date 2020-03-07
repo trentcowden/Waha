@@ -11,49 +11,21 @@ function LessonItem(props) {
     //NOTE: must be state; don't try it with a normal var
     const [isDownloaded, setIsDownloaded] = useState(false);
 
-    //const [downloadProgress, setDownloadProgress] = useState(0);
-    const [isDownloading, setIsDownloading] = useState(false); 
-
-    //var to keep track of whether this lesson is complete
-    //NOTE: must be var; don't try with state
-    var isComplete;
-
-    //check if our info passed is complete or not and set isComplete accordingly
-    if(props.isComplete === 'complete') {
-        isComplete = true;
-    ***REMOVED*** else {
-        isComplete = false;
-    ***REMOVED***
-
-    //check when our download finishes so we can update icon
-    useEffect(() => {
-        if (props.downloadProgress === 1) {
-            setIsDownloading(false);
-        ***REMOVED***
-    ***REMOVED***, [props.downloadProgress])
-
-    //calls the download lesson function passed from props
-    //in addition to signalling that this specific lesson is downloading
-    //so that the progress can be shown
-    // function downloadLesson() {
-    //     props.downloadLesson.call();
-
-    //     setIsDownloading(true);
-    // ***REMOVED***
-
     //check if the lesson is downloaded and set isDownloaded accordingly
     FileSystem.getInfoAsync(FileSystem.documentDirectory + props.id + '.mp3')
         .then(({ exists ***REMOVED***) => {
             exists ? setIsDownloaded(true) : setIsDownloaded(false)
         ***REMOVED***)
 
-    function showDeleteAlert() {
-        Alert.alert(
-            'Lesson Delete',
-            'You are about to delete this lesson. Are you sure you\'d like to do so?',
-            [{text: 'No', onPress: () => {***REMOVED******REMOVED***, {text: 'Yes', onPress: props.deleteLesson***REMOVED***],
-            { cancelable: false ***REMOVED***
-        );
+
+    function showSaveModal() {
+        props.setIDToDownload.call();
+        props.setShowSaveLessonModal.call();
+    ***REMOVED***
+
+    function showDeleteModal() {
+        props.setIDToDownload.call();
+        props.setShowDeleteLessonModal.call();
     ***REMOVED***
 
     //component for what to display on the far right of the list
@@ -66,25 +38,23 @@ function LessonItem(props) {
             <Ionicons.Button 
                 name={isDownloaded ? "ios-backspace" : "md-cloud-download"***REMOVED*** 
                 size={30***REMOVED***
-                onPress={isDownloaded ? showDeleteAlert : props.downloadLesson***REMOVED***
+                onPress={isDownloaded ? showDeleteModal : showSaveModal***REMOVED***
                 backgroundColor="rgba(0,0,0,0)"
                 color="black"
             />
         progressBar = null;
     ***REMOVED*** else {
         downloadedFeedback = <ActivityIndicator size="small" color="black" />
-        
         progressBar = <Progress.Bar progress={props.downloadProgress***REMOVED*** width={400***REMOVED*** color="black" borderColor="black"/>
     ***REMOVED***  
 
-    //<Text>{Math.ceil(props.downloadProgress * 100).toString() + '%'***REMOVED***</Text>
     return (
         <View style={styles.lessonItem***REMOVED***>
             <View style={styles.mainDisplay***REMOVED***>
                 <TouchableOpacity style={styles.progresAndTitle***REMOVED*** onPress={props.onLessonSelect***REMOVED***>
                     <View style={styles.icon***REMOVED***>
                         <Ionicons
-                            name={isComplete ? "ios-arrow-dropdown-circle" : "ios-arrow-dropdown"***REMOVED***
+                            name={props.isComplete ? "ios-arrow-dropdown-circle" : "ios-arrow-dropdown"***REMOVED***
                             size={30***REMOVED***
                         />
                     </View>
