@@ -26,9 +26,11 @@ function LessonListScreen(props) {
   const [refresh, setRefresh] = useState(false);
 
   //modal states
+  const [idToDownload, setIDToDownload] = useState(null);
   const [showSaveLessonModal, setShowSaveLessonModal] = useState(false);
   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false);
-  const [idToDownload, setIDToDownload] = useState(null);
+  const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false);
+
 
   //find our specified study set with data taken from the last screen
   selectedStudySetArray = STUDYSETS.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
@@ -60,22 +62,33 @@ function LessonListScreen(props) {
   //PURPOSE: delete a lesson .mp3 of id set by an individual flatlist item
   function deleteLesson() {
     FileSystem.deleteAsync(FileSystem.documentDirectory + idToDownload + '.mp3')
-    setShowDeleteLessonModal(false);
+    hideModals();
     setRefresh(old => !old)
   ***REMOVED***
 
   //PURPOSE: download a lesson .mp3 of id set by an individual flatlist item
   function downloadLesson() {
     props.downloadLesson(idToDownload);
-    setShowSaveLessonModal(false);
+    hideModals();
   ***REMOVED***
 
   //PURPOSE: hide the modal without doing anything
-  function hideModal() {
+  function hideModals() {
     setShowSaveLessonModal(false);
+    setShowDeleteLessonModal(false);
+    setShowLessonOptionsModal(false);
+  ***REMOVED***
+  
+  function toggleComplete(whatToMark) {
+    if (idToDownload in props.appProgress && whatToMark === 'incomplete') {
+      props.toggleComplete(idToDownload);
+    ***REMOVED*** else if (!(idToDownload in props.appProgress) && whatToMark === 'complete') {
+      props.toggleComplete(idToDownload); 
+    ***REMOVED***
+    hideModals();
   ***REMOVED***
 
-
+  
   ////////////////////////////////
   ////RENDER/STYLES/NAVOPTIONS////
   ////////////////////////////////
@@ -94,6 +107,7 @@ function LessonListScreen(props) {
         setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
         setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
         setIDToDownload={() => setIDToDownload(LessonList.item.id)***REMOVED***
+        setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
       />
     )
   ***REMOVED***
@@ -115,7 +129,7 @@ function LessonListScreen(props) {
       >
         <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
           <Button title="Download lesson" onPress={downloadLesson***REMOVED*** />
-          <Button title="Cancel" onPress={hideModal***REMOVED*** />
+          <Button title="Cancel" onPress={hideModals***REMOVED*** />
         </View>
       </Modal>
       <Modal 
@@ -126,7 +140,19 @@ function LessonListScreen(props) {
       >
         <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
           <Button title="Delete lesson" onPress={deleteLesson***REMOVED*** />
-          <Button title="Cancel" onPress={hideModal***REMOVED*** />
+          <Button title="Cancel" onPress={hideModals***REMOVED*** />
+        </View>
+      </Modal>
+      <Modal 
+        visible={showLessonOptionsModal***REMOVED***
+        animationType="slide"
+        presentationStyle="overFullScreen"
+        transparent={true***REMOVED***
+      >
+        <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
+          <Button title="Mark lesson as complete" onPress={() => toggleComplete('complete')***REMOVED*** />
+          <Button title="Mark lesson as incomplete" onPress={() => toggleComplete('incomplete')***REMOVED*** />
+          <Button title="Cancel" onPress={hideModals***REMOVED*** />
         </View>
       </Modal>
     </View>
