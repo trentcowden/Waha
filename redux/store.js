@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware ***REMOVED*** from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import rootReducer from './reducers'
+import rootReducer from './reducers/combiner'
 import { persistStore, persistReducer ***REMOVED*** from 'redux-persist'
 import { AsyncStorage ***REMOVED*** from 'react-native';
 

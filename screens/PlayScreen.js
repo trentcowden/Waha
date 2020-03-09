@@ -11,7 +11,7 @@ import { Audio ***REMOVED*** from 'expo-av';
 import TimeDisplay from "../components/TimeDisplay";
 
 //redux
-import { toggleComplete ***REMOVED*** from '../redux/actions'
+import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
 import { connect ***REMOVED*** from 'react-redux'
 
 function PlayScreen(props) {
