@@ -1,4 +1,4 @@
-export const FETCH_DATA = 'FETCH_DATA'
+export const ADD_LANGUAGE = 'ADD_LANGUAGE'
 export const FETCH_ERROR = 'FETCH_ERROR'
 export const STORE_DATA = 'STORE_DATA'
 //export const CHOOSE_LANGUAGE = 'CHOOSE_LANGUAGE'
@@ -20,10 +20,11 @@ import '@firebase/firestore'
 firebase.initializeApp(config);
 const db = firebase.firestore();
 
-export function storeData(data) {
+export function storeData(data, language) {
     return {
         type: STORE_DATA,
-        data
+        data,
+        language
     ***REMOVED***
 ***REMOVED***
 
@@ -33,16 +34,21 @@ export function fetchError() {
     ***REMOVED***
 ***REMOVED***
 
-export function fetchData() {
+export function addLanguage(language) {
     return dispatch => {
         //Get stuff from database
-        //console.log(db)
-        db.collection("languages").doc("english").get().then(doc => {
+        db.collection("languages").doc(language).get().then(doc => {
             if (doc.exists) {
-                //console.log(doc.data())
-                dispatch(storeData(doc.data()))
+                dispatch(storeData(doc.data(), language))
             ***REMOVED*** else {
                 console.log("error: doc doesn't exist")
             ***REMOVED******REMOVED***)
+    ***REMOVED***
+***REMOVED***
+
+export function changeSelectedLanguage(language) {
+    return {
+        type: CHANGE_SELECTED_LANGUAGE,
+        language
     ***REMOVED***
 ***REMOVED***

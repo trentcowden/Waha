@@ -1,7 +1,7 @@
 //basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, Button ***REMOVED*** from 'react-native';
-
+import { AppLoading ***REMOVED*** from 'expo'
 //data import
 import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 import { AsyncStorage ***REMOVED*** from 'react-native';
@@ -12,36 +12,20 @@ import StudySetItem from '../components/StudySetItem';
 
 //redux
 import { connect ***REMOVED*** from 'react-redux'
-import { fetchData ***REMOVED*** from '../redux/actions/databaseActions'
+import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
+import { changeLanguage ***REMOVED*** from '../redux/actions/currentLanguageActions'
 
 function StudySetScreen(props) {
-
-    // //Get stuff from database
-    // db.collection("languages").doc("english").get().then(doc => {
-    //     if (doc.exists) {
-    //         //deal with colors and fonts
-    //         //console.log("Document data:", doc.data());
-    //     ***REMOVED*** else {
-    //         // doc.data() will be undefined in this case
-    //         //console.log("No such document!");
-    //     ***REMOVED******REMOVED***)
-
-    // db.collection("languages").doc("english").collection("studySets").get().then(querySnapshot => {
-    //     querySnapshot.forEach(doc => {
-    //         //console.log(doc.data())
-    //     ***REMOVED***)
-    // ***REMOVED***) 
-    //console.log(db)
 
     //state to do stuff on first launch (use for onboarding)
     const [isFirstLaunch, setIsFirstLaunch] = useState(false);
 
     async function checkFirstLaunch() {
         //UNCOMMENT TO CLEAR ASYNC STORAGE
-          const asyncStorageKeys = await AsyncStorage.getAllKeys();
-        if (asyncStorageKeys.length > 0) {
-            AsyncStorage.clear();
-        ***REMOVED***  
+        //   const asyncStorageKeys = await AsyncStorage.getAllKeys();
+        // if (asyncStorageKeys.length > 0) {
+        //     AsyncStorage.clear();
+        // ***REMOVED***  
         try {
             await AsyncStorage
                 .getItem('alreadyLaunched')
@@ -49,7 +33,6 @@ function StudySetScreen(props) {
                     if (value == null) {
                         AsyncStorage.setItem('alreadyLaunched', 'true');
                         setIsFirstLaunch(true);
-                        setProgress();
                     ***REMOVED***
                 ***REMOVED***)
         ***REMOVED*** catch (error) {
@@ -57,16 +40,6 @@ function StudySetScreen(props) {
         ***REMOVED***
     ***REMOVED***
 
-    //Purpose: set status of all lessons to 'incomplete'
-    function setProgress() {
-        var progress = {***REMOVED***;
-        for (i = 0; i < STUDYSETS.length; i++) {
-            for (j = 0; j < STUDYSETS[i].lessonList.length; j++) {
-                progress[STUDYSETS[i].lessonList[j].id] = 'incomplete'
-            ***REMOVED***
-        ***REMOVED***
-        AsyncStorage.setItem('progress', JSON.stringify(progress))
-    ***REMOVED***
 
     //check if we're on first launch (maybe get better solution later;
     //this does an async operation every time this screen opens)
@@ -98,14 +71,19 @@ function StudySetScreen(props) {
         )
     ***REMOVED***
 
+    function dummyLanguageSetup() {
+        props.changeLanguage("english")
+        props.addLanguage("english");
+    ***REMOVED***
+
     return (
         <View style={styles.screen***REMOVED***>
             <FlatList
                 data={STUDYSETS***REMOVED***
                 renderItem={renderStudySetItem***REMOVED***
             />
-            <View>
-                <Button title="fetch data" onPress={props.fetchData***REMOVED***/>
+            <View style={{height: 100***REMOVED******REMOVED***>
+                <Button title="fetch data" onPress={dummyLanguageSetup***REMOVED***/>
             </View>
         </View>
     )
@@ -126,14 +104,16 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     console.log(state)
     return {
-        database: state.database
+        database: state.database,
+        currentLanguage: state.language.currentLanguage
     ***REMOVED***
-  ***REMOVED***;
+***REMOVED***;
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      fetchData: () => dispatch(fetchData())
-    ***REMOVED***
-  ***REMOVED***;
+function mapDispatchToProps(dispatch) {
+return {
+    addLanguage: language => dispatch(addLanguage(language)),
+    changeLanguage: language => dispatch(changeLanguage(language))
+***REMOVED***
+***REMOVED***;
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudySetScreen);
