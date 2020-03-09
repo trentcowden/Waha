@@ -2,10 +2,12 @@
 
 import { downloads ***REMOVED*** from '../reducers/downloads'
 import { appProgress ***REMOVED*** from '../reducers/appProgress'
+import { database ***REMOVED*** from '../reducers/database'
 
 import { combineReducers ***REMOVED*** from 'redux'
 
 export default rootReducer = combineReducers({
     downloads,
-    appProgress
+    appProgress,
+    database
 ***REMOVED***)

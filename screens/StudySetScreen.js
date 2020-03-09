@@ -1,50 +1,37 @@
 //basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Text ***REMOVED*** from 'react-native';
+import { View, FlatList, StyleSheet, Button ***REMOVED*** from 'react-native';
 
 //data import
 import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 import { AsyncStorage ***REMOVED*** from 'react-native';
-import firebase from 'firebase';
-require('firebase/firestore');
+import db from '../config'
 
 //other component imports
 import StudySetItem from '../components/StudySetItem';
 
 //redux
 import { connect ***REMOVED*** from 'react-redux'
-
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***;
-
-firebase.initializeApp(config);
-const db = firebase.firestore()
+import { fetchData ***REMOVED*** from '../redux/actions/databaseActions'
 
 function StudySetScreen(props) {
 
-     //Get stuff from database
-    db.collection("languages").doc("english").get().then(doc => {
-        if (doc.exists) {
-            //deal with colors and fonts
-            //console.log("Document data:", doc.data());
-        ***REMOVED*** else {
-            // doc.data() will be undefined in this case
-            //console.log("No such document!");
-        ***REMOVED******REMOVED***)
+    // //Get stuff from database
+    // db.collection("languages").doc("english").get().then(doc => {
+    //     if (doc.exists) {
+    //         //deal with colors and fonts
+    //         //console.log("Document data:", doc.data());
+    //     ***REMOVED*** else {
+    //         // doc.data() will be undefined in this case
+    //         //console.log("No such document!");
+    //     ***REMOVED******REMOVED***)
 
-    db.collection("languages").doc("english").collection("studySets").get().then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-            //console.log(doc.data())
-        ***REMOVED***)
-    ***REMOVED***) 
+    // db.collection("languages").doc("english").collection("studySets").get().then(querySnapshot => {
+    //     querySnapshot.forEach(doc => {
+    //         //console.log(doc.data())
+    //     ***REMOVED***)
+    // ***REMOVED***) 
+    //console.log(db)
 
     //state to do stuff on first launch (use for onboarding)
     const [isFirstLaunch, setIsFirstLaunch] = useState(false);
@@ -118,7 +105,7 @@ function StudySetScreen(props) {
                 renderItem={renderStudySetItem***REMOVED***
             />
             <View>
-                <Text>{JSON.stringify(props.downloadProgress)***REMOVED***</Text>
+                <Button title="fetch data" onPress={props.fetchData***REMOVED***/>
             </View>
         </View>
     )
@@ -137,10 +124,16 @@ const styles = StyleSheet.create({
 ***REMOVED***)
 
 function mapStateToProps(state) {
+    console.log(state)
     return {
-      downloadProgress: state.downloadProgress,
-      somethingDownloading: state.somethingDownloading
+        database: state.database
     ***REMOVED***
   ***REMOVED***;
 
-export default connect(mapStateToProps)(StudySetScreen);
+  function mapDispatchToProps(dispatch) {
+    return {
+      fetchData: () => dispatch(fetchData())
+    ***REMOVED***
+  ***REMOVED***;
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudySetScreen);
