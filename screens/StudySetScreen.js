@@ -1,19 +1,18 @@
 //basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Button ***REMOVED*** from 'react-native';
-import { AppLoading ***REMOVED*** from 'expo'
+import { View, FlatList, StyleSheet, Text, ActivityIndicator ***REMOVED*** from 'react-native';
+import { purgeStoredState ***REMOVED*** from 'redux-persist'
+
 //data import
-import { STUDYSETS ***REMOVED*** from '../data/dummy-data';
 import { AsyncStorage ***REMOVED*** from 'react-native';
-import db from '../config'
+
 
 //other component imports
 import StudySetItem from '../components/StudySetItem';
 
 //redux
 import { connect ***REMOVED*** from 'react-redux'
-import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import { changeLanguage ***REMOVED*** from '../redux/actions/currentLanguageActions'
+import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 
 function StudySetScreen(props) {
 
@@ -45,6 +44,8 @@ function StudySetScreen(props) {
     //this does an async operation every time this screen opens)
     useEffect(() => {
         checkFirstLaunch();
+        props.changeLanguage("english");
+        props.addLanguage("english");
     ***REMOVED***, [])
 
     //function to navigate to the lesson list screen
@@ -55,7 +56,7 @@ function StudySetScreen(props) {
             routeName: "LessonList",
             params: {
                 title: item.title,
-                studySetID: item.id
+                studySetID: item.id,
             ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
@@ -71,22 +72,25 @@ function StudySetScreen(props) {
         )
     ***REMOVED***
 
-    function dummyLanguageSetup() {
-        props.changeLanguage("english")
-        props.addLanguage("english");
-    ***REMOVED***
-
-    return (
-        <View style={styles.screen***REMOVED***>
-            <FlatList
-                data={STUDYSETS***REMOVED***
-                renderItem={renderStudySetItem***REMOVED***
-            />
-            <View style={{height: 100***REMOVED******REMOVED***>
-                <Button title="fetch data" onPress={dummyLanguageSetup***REMOVED***/>
+    if (!props.isFetching) {
+        return (
+            <View style={styles.screen***REMOVED***>
+                <FlatList
+                    data={props.database[props.database.currentLanguage].studySets***REMOVED***
+                    renderItem={renderStudySetItem***REMOVED***
+                />
+                <Text style={{...styles.text, color: props.primaryColor***REMOVED******REMOVED***>This text is the primary color from the database! How cool!</Text>
+                <Text style={{...styles.text, color: props.secondaryColor***REMOVED******REMOVED***>This text is the secondary color from the database! Radical!</Text>
             </View>
-        </View>
-    )
+        )
+    ***REMOVED*** else {
+        return (
+            <View style={{flex: 1, justifyContent: "center"***REMOVED******REMOVED***>
+                <Text style={{textAlign: "center", fontSize: 30, marginVertical: 20***REMOVED******REMOVED***>Hang on, we're setting things up...</Text>
+                <ActivityIndicator size="large" color="black" />
+            </View>
+        )
+    ***REMOVED***
 ***REMOVED***
 
 StudySetScreen.navigationOptions = navData => {
@@ -98,14 +102,25 @@ StudySetScreen.navigationOptions = navData => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1
+    ***REMOVED***,
+    text: {
+        textAlign: "center",
+        margin: 40
     ***REMOVED***
 ***REMOVED***)
 
 function mapStateToProps(state) {
     console.log(state)
-    return {
-        database: state.database,
-        currentLanguage: state.language.currentLanguage
+    if(!state.database.isFetching)
+        return {
+            database: state.database,
+            primaryColor: state.database[state.database.currentLanguage].colors.primaryColor,
+            secondaryColor: state.database[state.database.currentLanguage].colors.secondaryColor
+        ***REMOVED***
+    else {
+        return {
+            isFetching: state.database.isFetching,
+        ***REMOVED***
     ***REMOVED***
 ***REMOVED***;
 
