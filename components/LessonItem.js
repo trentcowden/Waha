@@ -1,6 +1,6 @@
-//basic imports
+//imports
 import React, { useState, useEffect***REMOVED*** from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator***REMOVED*** from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator***REMOVED*** from 'react-native';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
@@ -18,6 +18,8 @@ function LessonItem(props) {
         ***REMOVED***)
 
 
+    //functions to call modals from lessonlistscreen
+    //function are setState functions passed from lessonlistscreen
     function showSaveModal() {
         props.setIDToDownload.call();
         props.setShowSaveLessonModal.call();
@@ -32,6 +34,12 @@ function LessonItem(props) {
         props.setIDToDownload.call();
         props.setShowLessonOptionsModal.call();
     ***REMOVED***
+
+
+    ////////////////////////////////
+    ////RENDER/STYLES/NAVOPTIONS////
+    ////////////////////////////////
+
 
     //component for what to display on the far right of the list
     //can either be cloud down arrow (click to download), x (click to delete),
