@@ -2,7 +2,6 @@
 //ADD_UPDATE_DOWNLOAD: store download progress of a download in redux to track its progress
 //globally
 //REMOVE_DOWNLOAD: deletes a download from the object once it's finished
-//PURGE: removes all downloads from object in case of errors
 
 //action imports
 import { ADD_UPDATE_DOWNLOAD, REMOVE_DOWNLOAD, PURGE ***REMOVED*** from '../actions/downloadActions'
@@ -17,16 +16,13 @@ export function downloads(state = {***REMOVED***, action) {
             //get the key of the download we want to delete
             var idToDelete = action.lessonID
 
-            //return new object with the lesson we want to delete taken out
-            Object.keys(state).reduce((object, key) => {
-                if (key !== idToDelete) {
-                  object[key] = state[key]
-                ***REMOVED***
-                return object
-              ***REMOVED***, {***REMOVED***)
-        case PURGE:
-            console.log('purging')
-            return {***REMOVED***
+            //filters the key that should be deleted then builds a new object from the remaining keys and the initial object.
+            return Object.keys(state)
+                .filter(key => key !== idToDelete)
+                .reduce((result, current) => {
+                result[current] = state[current];
+                return result;
+            ***REMOVED***, {***REMOVED***);
         default:
             return state
     ***REMOVED***

@@ -1,6 +1,7 @@
 //basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, Text, ActivityIndicator ***REMOVED*** from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 //other component imports
 import StudySetItem from '../components/StudySetItem';
@@ -15,8 +16,16 @@ function StudySetScreen(props) {
     //this does an async operation every time this screen opens)
     useEffect(() => {
         props.changeLanguage("english");
-        props.addLanguage("english");
+        //props.addLanguage("english");
     ***REMOVED***, [])
+
+    FileSystem.getFreeDiskStorageAsync().then(freeDiskStorage => {
+        //console.log(freeDiskStorage)
+      ***REMOVED***);
+    
+    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
+        //console.log(contents)
+    ***REMOVED***);
 
     //function to navigate to the lesson list screen
     //props.navigation.navigate takes us to lessonlist screen

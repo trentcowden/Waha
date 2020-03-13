@@ -1,8 +1,9 @@
 //basic imports
-import React, { useState, useEffect ***REMOVED*** from 'react';
+import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
 import { View, StyleSheet, Text, Slider, Alert, Button, TouchableOpacity, ActivityIndicator ***REMOVED*** from 'react-native';
 import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
+import * as Progress from 'react-native-progress';
 
 //sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
@@ -13,6 +14,8 @@ import TimeDisplay from "../components/TimeDisplay";
 //redux
 import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
 import { connect ***REMOVED*** from 'react-redux'
+import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
+console.disableYellowBox = true;
 
 function PlayScreen(props) {
   
@@ -31,6 +34,7 @@ function PlayScreen(props) {
   //boolean to determine if the audio file has finished loading 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isBuffering, setIsBuffering] = useState(true);
+
   //boolean to determine if the audio file is currently playing or paused
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -38,11 +42,14 @@ function PlayScreen(props) {
   const [seekPosition, setSeekPosition] = useState(0);
 
   //boolean to determine if the seeker should update every second
-  //NOTE: only time it shouldn't is during seeking or skipping
-  /////////maybe should switch to useref???
-  const [shouldTickUpdate, setShouldTickUpdate] = useState(true);
+  //NOTE: only time it shouldn't is during seeking, skipping, or loading a new chapter
+  const shouldTickUpdate = useRef(false);
 
   const [activeChapter, setActiveChapter] = useState('fellowship')
+
+  const [chapter1Source, setChapter1Source] = useState(FileSystem.documentDirectory + props.currentLanguage + 'chapter1.mp3');
+  const [chapter2Source, setChapter2Source] = useState(FileSystem.documentDirectory + props.navigation.getParam('id') + '.mp3');
+  const [chapter3Source, setChapter3Source] = useState(FileSystem.documentDirectory + props.currentLanguage + 'chapter3.mp3');
 
   //PURPOSE: update something on every api call to audio object and every second
   soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
@@ -55,10 +62,29 @@ function PlayScreen(props) {
     ***REMOVED*** else {
       setIsBuffering(false)
     ***REMOVED***
+
+    //depending on what chapter we're on, either jump to the next chapter once we finish or 
+    //toggle the whole lesson as complete
+    if (playbackStatus.didJustFinish) {
+      if (activeChapter === 'fellowship') {
+        changeChapter('passage') 
+      ***REMOVED*** else if (activeChapter === 'passage') {
+        changeChapter('application')
+      ***REMOVED*** else if (activeChapter === 'application') {
+        changeCompleteStatus();
+      ***REMOVED***
+    ***REMOVED***
   ***REMOVED***)
 
   //PURPOSE: constructor on first screen open
   useEffect(() => {
+    //load up chapter 1 initially
+    try {
+      console.log('loading chapter 1')
+      loadAudioFile(chapter1Source);
+    ***REMOVED*** catch (error) {
+      console.log(error)
+    ***REMOVED***
 
     //check if file is downloaded, then load it
     checkIsDownloaded(); // -> loadAudioFile()
@@ -88,29 +114,26 @@ function PlayScreen(props) {
   
   //PURPOSE: check if the lesson is downloaded or not
   async function checkIsDownloaded() {
-    let source = '';
     FileSystem.getInfoAsync(FileSystem.documentDirectory + props.navigation.getParam('id') + '.mp3')
     .then(({exists***REMOVED***) => {
-      if(exists) {
-        //console.log('file exists')
-        source = (FileSystem.documentDirectory + props.navigation.getParam('id') + '.mp3')  
-      ***REMOVED*** else {
-        //console.log('file does not exist')
-        source = props.navigation.getParam('source')
+      if (!exists && !(props.navigation.getParam('id') in props.downloads)){
+        props.downloadLesson(props.navigation.getParam('id'), props.navigation.getParam('source'));
       ***REMOVED*** 
-      loadAudioFile(source);
     ***REMOVED***)
   ***REMOVED***
 
   //PURPOSE: load the audio file and set isLoaded and 
   //PARAMETERS: source to load file from
   async function loadAudioFile(source) {
-    console.log(source);
+    //console.log(source);
     try {
       await soundObject
         .loadAsync({ uri: source ***REMOVED***, { progressUpdateIntervalMillis: 1000 ***REMOVED***)
-        .then(async playbackStatus => {
+        .then(playbackStatus => {
           setAudioFileLength(playbackStatus.durationMillis);
+          soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
+          shouldTickUpdate.current = true;
+          setIsPlaying(true)
         ***REMOVED***)
     ***REMOVED*** catch (error) {
       console.log(error)
@@ -120,13 +143,15 @@ function PlayScreen(props) {
   //PURPOSE: gets called every second by our interval, and updates the seeker position
   //based on the progress through the audio file
   async function updateSeekerTick() {
-    if (shouldTickUpdate) {
+    //console.log(shouldTickUpdate.current)
+    if (shouldTickUpdate.current) {
       try {
         await soundObject
           .getStatusAsync()
-          .then(async playbackStatus => {
+          .then(playbackStatus => {
             setSeekPosition(playbackStatus.positionMillis);
           ***REMOVED***)
+          //.catch(err => console.log(err))
       ***REMOVED*** catch (error) {
         console.log(error)
       ***REMOVED***
@@ -147,21 +172,38 @@ function PlayScreen(props) {
 
   //PURPOSE: start playing from the position they release the thumb at
   //PARAMETERS: the current seeker value
+  //NOTE: .catchs are empty because of a weird ios-only warning appearing
+  //that doesn't seem to affect any functionality. it's being ignored
   function onSeekRelease(value) {
     if (isPlaying) {
-      soundObject.setStatusAsync({ shouldPlay: false, positionMillis: value ***REMOVED***)
-      soundObject.setStatusAsync({ shouldPlay: true, positionMillis: value ***REMOVED***)
+      soundObject.setStatusAsync({ 
+        shouldPlay: false, 
+        positionMillis: value,
+        seekMillisToleranceBefore: 10000,
+        seekMillisToleranceAfter: 10000
+     ***REMOVED***).catch(err => {***REMOVED***)
+     soundObject.setStatusAsync({ 
+      shouldPlay: true, 
+      positionMillis: value,
+      seekMillisToleranceBefore: 10000,
+      seekMillisToleranceAfter: 10000
+   ***REMOVED***).catch(err => {***REMOVED***)
     ***REMOVED*** else {
-      soundObject.setStatusAsync({ shouldPlay: false, positionMillis: value ***REMOVED***)
+      soundObject.setStatusAsync({ 
+        shouldPlay: false, 
+        positionMillis: value,
+        seekMillisToleranceBefore: 10000,
+        seekMillisToleranceAfter: 10000
+     ***REMOVED***).catch(err => {***REMOVED***)
     ***REMOVED***
-    setShouldTickUpdate(true);
+    shouldTickUpdate.current = true;
     setSeekPosition(value);
   ***REMOVED***
 
   //PURPOSE: prevent the seeker from updating every second whenever
   //the user is dragging the thumb
   function onSeekDrag(value) {
-    setShouldTickUpdate(false);
+    shouldTickUpdate.current = false;
   ***REMOVED***
 
   //PURPOSE: skips an amount of milliseconds through the audio track
@@ -172,8 +214,30 @@ function PlayScreen(props) {
     setSeekPosition(seekPosition => seekPosition + amount);
   ***REMOVED***
 
+
   function changeChapter(chapter) {
+    //stop updating ticker
+    shouldTickUpdate.current = false;
+
+    //set seek position back to 0
+    setSeekPosition(0)
+
+    //unload whatever old sound object was loaded
+    soundObject.unloadAsync();  
+
+    //set the button to show the new active chapter
     setActiveChapter(chapter)
+
+    //load the new audio file
+    if (chapter === 'fellowship') {
+      loadAudioFile(chapter1Source)
+    ***REMOVED*** else if (chapter === 'passage') {
+      loadAudioFile(chapter2Source)
+    ***REMOVED*** else if (chapter === 'application') {
+      loadAudioFile(chapter3Source)
+    ***REMOVED***
+
+
   ***REMOVED***
 
 
@@ -204,6 +268,12 @@ function PlayScreen(props) {
       ***REMOVED***])
     ***REMOVED*** 
   ***REMOVED***
+
+
+  ////////////////////////////////
+  ////RENDER/STYLES/NAVOPTIONS////
+  ////////////////////////////////
+
 
   var playButton;
   if (!isBuffering) {
@@ -266,11 +336,19 @@ function PlayScreen(props) {
         
   ***REMOVED***
 
-
-  ////////////////////////////////
-  ////RENDER/STYLES/NAVOPTIONS////
-  ////////////////////////////////
-
+  if ((props.navigation.getParam('id') in props.downloads)) {
+    chapter2Button = 
+      <View style={{...styles.chapterSelect, flexDirection: "column", backgroundColor: "#3D4849"***REMOVED******REMOVED***>
+        <Text style={{color: "gray", fontSize: 18, flex: 1***REMOVED******REMOVED***>Passage</Text>
+        <Progress.Bar progress={props.downloads[props.navigation.getParam("id")]***REMOVED*** color="black" borderColor="black" width={40***REMOVED***/>
+      </View>
+  ***REMOVED*** else {
+    chapter2Button = 
+      <TouchableOpacity style={styles.chapterSelect***REMOVED*** onPress={() => changeChapter('passage')***REMOVED***>
+        <MaterialCommunityIcons name={(activeChapter === 'passage') ? "numeric-2-box" : "numeric-2"***REMOVED*** size={30***REMOVED***/>
+        <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Passage</Text>
+      </TouchableOpacity>
+  ***REMOVED***
 
   return (
     <View style={styles.screen***REMOVED***>
@@ -284,10 +362,7 @@ function PlayScreen(props) {
             <MaterialCommunityIcons name={(activeChapter === 'fellowship') ? "numeric-1-box" : "numeric-1"***REMOVED*** size={30***REMOVED***/>
             <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Fellowship</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.chapterSelect***REMOVED*** onPress={() => changeChapter('passage')***REMOVED***>
-            <MaterialCommunityIcons name={(activeChapter === 'passage') ? "numeric-2-box" : "numeric-2"***REMOVED*** size={30***REMOVED***/>
-            <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Passage</Text>
-          </TouchableOpacity>
+          {chapter2Button***REMOVED***
           <TouchableOpacity style={styles.chapterSelect***REMOVED*** onPress={() => changeChapter('application')***REMOVED***>
             <MaterialCommunityIcons name={(activeChapter === 'application') ? "numeric-3-box" : "numeric-3"***REMOVED*** size={30***REMOVED***/>
             <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Application</Text>
@@ -402,18 +477,20 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-  //console.log(state)
+  //console.log(state.downloads)
   return {
     appProgress: state.appProgress,
     database: state.database,
     currentLanguage: state.database.currentLanguage,
-    translations: state.database[state.database.currentLanguage].translations
+    translations: state.database[state.database.currentLanguage].translations,
+    downloads: state.downloads,
   ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleComplete: lessonID => {dispatch(toggleComplete(lessonID))***REMOVED***
+    toggleComplete: lessonID => {dispatch(toggleComplete(lessonID))***REMOVED***,
+    downloadLesson: (lessonID, source) => {dispatch(downloadLesson(lessonID, source))***REMOVED***,
   ***REMOVED***
 ***REMOVED***
 
