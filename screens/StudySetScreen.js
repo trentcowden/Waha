@@ -9,13 +9,20 @@ import StudySetItem from '../components/StudySetItem';
 //redux
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
+import { setFirstOpen ***REMOVED*** from '../redux/actions/databaseActions'
 
 function StudySetScreen(props) {
 
     //check if we're on first launch (maybe get better solution later;
     //this does an async operation every time this screen opens)
     useEffect(() => {
-        props.changeLanguage("english");
+        if (props.isFirstOpen) {
+            console.log('true')
+            props.navigation.replace("LanguageSelect")
+        ***REMOVED*** else {
+            console.log(':(')
+        ***REMOVED***
+        //props.changeLanguage("english");
         //props.addLanguage("english");
     ***REMOVED***, [])
 
@@ -41,6 +48,7 @@ function StudySetScreen(props) {
     ***REMOVED***
 
 
+
     ////////////////////////////////
     ////RENDER/STYLES/NAVOPTIONS////
     ////////////////////////////////
@@ -58,7 +66,7 @@ function StudySetScreen(props) {
     ***REMOVED***
 
     //if we're not fetching data, render the flatlist. if we are, render a loading screen
-    if (!props.isFetching) {
+    if (!props.isFirstOpen) {
         return (
             <View style={styles.screen***REMOVED***>
                 <FlatList
@@ -72,8 +80,8 @@ function StudySetScreen(props) {
     ***REMOVED*** else {
         return (
             <View style={{flex: 1, justifyContent: "center"***REMOVED******REMOVED***>
-                <Text style={{textAlign: "center", fontSize: 30, marginVertical: 20***REMOVED******REMOVED***>Hang on, we're setting things up...</Text>
-                <ActivityIndicator size="large" color="black" />
+                {/* <Text style={{textAlign: "center", fontSize: 30, marginVertical: 20***REMOVED******REMOVED***>Hang on, we're setting things up...</Text>
+                <ActivityIndicator size="large" color="black" /> */***REMOVED***
             </View>
         )
     ***REMOVED***
@@ -109,6 +117,7 @@ function mapStateToProps(state) {
     else {
         return {
             isFetching: state.database.isFetching,
+            isFirstOpen: state.database.isFirstOpen
         ***REMOVED***
     ***REMOVED***
 ***REMOVED***;
@@ -116,7 +125,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 return {
     addLanguage: language => dispatch(addLanguage(language)),
-    changeLanguage: language => dispatch(changeLanguage(language))
+    changeLanguage: language => dispatch(changeLanguage(language)),
+    setFirstOpen: toSet => dispatch(setFirstOpen(toSet))
 ***REMOVED***
 ***REMOVED***;
 
