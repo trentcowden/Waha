@@ -17,10 +17,7 @@ function StudySetScreen(props) {
     //this does an async operation every time this screen opens)
     useEffect(() => {
         if (props.isFirstOpen) {
-            console.log('true')
             props.navigation.replace("LanguageSelect")
-        ***REMOVED*** else {
-            console.log(':(')
         ***REMOVED***
         //props.changeLanguage("english");
         //props.addLanguage("english");
@@ -66,7 +63,7 @@ function StudySetScreen(props) {
     ***REMOVED***
 
     //if we're not fetching data, render the flatlist. if we are, render a loading screen
-    if (!props.isFirstOpen) {
+    if (!props.isFetching) {
         return (
             <View style={styles.screen***REMOVED***>
                 <FlatList
@@ -80,8 +77,8 @@ function StudySetScreen(props) {
     ***REMOVED*** else {
         return (
             <View style={{flex: 1, justifyContent: "center"***REMOVED******REMOVED***>
-                {/* <Text style={{textAlign: "center", fontSize: 30, marginVertical: 20***REMOVED******REMOVED***>Hang on, we're setting things up...</Text>
-                <ActivityIndicator size="large" color="black" /> */***REMOVED***
+                <Text style={{textAlign: "center", fontSize: 30, marginVertical: 20***REMOVED******REMOVED***>Hang on, we're setting things up...</Text>
+                <ActivityIndicator size="large" color="black" />
             </View>
         )
     ***REMOVED***
