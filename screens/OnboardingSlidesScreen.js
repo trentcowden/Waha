@@ -1,7 +1,7 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, Text, Button, Image ***REMOVED*** from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import { View, StyleSheet, Text, Button, Image, FlatList, Dimensions ***REMOVED*** from 'react-native';
+import i18n from 'i18n-js';
 
 //redux imports
 import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
@@ -25,11 +25,26 @@ function OnboardingSlidesScreen(props) {
   useEffect(() => {
     props.setFirstOpen(false)
     var language = props.navigation.getParam("selectedLanguage")
-    props.changeLanguage(language)
-    props.addLanguage(language)
+    //props.changeLanguage(language)
+    //props.addLanguage(language)
   ***REMOVED***, [])
 
-  const [pageNumber, setPageNumber] = useState(1)
+  const [pageNumber, setPageNumber] = useState(0)
+  const [flatListRef, setFlatListRef] = useState()
+
+  const onViewRef = React.useRef(({viewableItems***REMOVED***)=> {
+    if(viewableItems) {
+      setPageNumber(viewableItems[0].index)
+    ***REMOVED***
+  ***REMOVED***)
+
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+
+  useEffect(() => {
+    if(flatListRef) {
+      flatListRef.scrollToIndex({index: pageNumber***REMOVED***)
+    ***REMOVED***
+  ***REMOVED***, [pageNumber])
 
   ///////////////////////
   ////OTHER FUNCTIONS////
@@ -43,63 +58,105 @@ function OnboardingSlidesScreen(props) {
     ***REMOVED***
   ***REMOVED***
 
-  useEffect(() => {
-    console.log(pageNumber)
-  ***REMOVED***, [pageNumber])
+  i18n.translations = {
+    en: { 
+      title0: 'Welcome to the app!',
+      body0: 'Jeff keeps adding new features for me to do :)' ,
+      title1: 'I enjoy it though',
+      body1: 'Here\'s a picture of me as a kid',
+      title2: 'Sometimes when I code,',
+      body2: 'I get frustrated and make the face of this cat',
+      title3: 'And then I ask myself',
+      body3: 'Why do I do it?',
+      prev: 'Previous',
+      next: 'Next',
+      finish: 'Finish'
+    ***REMOVED***,
+    es: {
+      title0: 'Bienvenido a la aplicación!',
+      body0: 'Jeff sigue agregando nuevas funciones para que yo haga :)' ,
+      title1: 'Aunque lo disfruto',
+      body1: 'Aquí hay una foto mía de niño',
+      title2: 'A veces cuando codifico,',
+      body2: 'Me frustro y hago la cara de este gato',
+      title3: 'Y luego me pregunto',
+      body3: '¿Por qué lo hago?',
+      prev: 'Previo',
+      next: 'Siguiente',
+      finish: 'Terminar'
+    ***REMOVED***
+  ***REMOVED***;
 
   
   ////////////////////////////////
   ////RENDER/STYLES/NAVOPTIONS////
   ////////////////////////////////
-  var image;
-  var title;
-  var body;
-  switch (pageNumber) {
-    case 1:
-      image = <Image source={require('../assets/meme1.png')***REMOVED*** style={styles.image***REMOVED***/>
-      title = <Text style={styles.title***REMOVED***>Welcome to the app!</Text>
-      body = <Text style={styles.body***REMOVED***>Jeff keeps adding new features for me to do :)</Text>
-      break;
-    case 2:
-      image = <Image source={require('../assets/meme2.jpg')***REMOVED*** style={styles.image***REMOVED***/>
-      title = <Text style={styles.title***REMOVED***>I enjoy it though</Text>
-      body = <Text style={styles.body***REMOVED***>Here's a picture of me as a kid</Text>
-      break;
-    case 3:
-      image = <Image source={require('../assets/meme3.jpg')***REMOVED*** style={styles.image***REMOVED***/>
-      title = <Text style={styles.title***REMOVED***>Sometimes when I code</Text>
-      body = <Text style={styles.body***REMOVED***>I get frustrated and make the face of this cat</Text>
-      break;
-    case 4:
-      image = <Image source={require('../assets/meme4.jpg')***REMOVED*** style={styles.image***REMOVED***/>
-      title = <Text style={styles.title***REMOVED***>And then I ask myself</Text>
-      body = <Text style={styles.body***REMOVED***>Why do I do it?</Text>
-      break;
-    default:
-      console.log('out of page number bounds')
+
+  const onboardingData = [
+    {
+      key: '0',
+      imageSource: require('../assets/onboarding/meme1.png'),
+      title: i18n.t('title0'),
+      body: i18n.t('body0'),
+    ***REMOVED***,
+    {
+      key: '1',
+      imageSource: require('../assets/onboarding/meme2.jpg'),
+      title: i18n.t('title1'),
+      body: i18n.t('body1'),
+    ***REMOVED***,
+    {
+      key: '2',
+      imageSource: require('../assets/onboarding/meme3.jpg'),
+      title: i18n.t('title2'),
+      body: i18n.t('body2'),
+    ***REMOVED***,
+    {
+      key: '3',
+      imageSource: require('../assets/onboarding/meme4.jpg'),
+      title: i18n.t('title3'),
+      body: i18n.t('body3'),
+    ***REMOVED***
+  ]
+
+  function renderOnboardingSlide(slideList) {
+    return (
+      <View style={styles.pageContainer***REMOVED***>
+        <View style={styles.imageContainer***REMOVED***>
+          <Image source={slideList.item.imageSource***REMOVED*** style={styles.image***REMOVED*** />
+        </View>
+        <View style={styles.titleContainer***REMOVED***>
+          <Text style={styles.title***REMOVED***>{slideList.item.title***REMOVED***</Text>
+        </View>
+        <View style={styles.bodyContainer***REMOVED***>
+          <Text style={styles.body***REMOVED***>{slideList.item.body***REMOVED***</Text>
+        </View>
+      </View>
+    )
   ***REMOVED***
 
   //create modal in here, pass state to show it to lesson item so lesson item
   //can change it and show the modal on this screen
   return (
     <View style={styles.screen***REMOVED***>
-      <View style={styles.pageContainer***REMOVED***>
-        <View style={styles.imageContainer***REMOVED***>
-          {image***REMOVED***
-        </View>
-        <View style={styles.titleContainer***REMOVED***>
-          {title***REMOVED***
-        </View>
-        <View style={styles.bodyContainer***REMOVED***>
-          {body***REMOVED***
-        </View>
-      </View>
+        <FlatList 
+          renderItem={renderOnboardingSlide***REMOVED***
+          data={onboardingData***REMOVED***
+          ref={(ref) => {setFlatListRef(ref)***REMOVED******REMOVED***
+          horizontal={true***REMOVED***
+          pagingEnabled={true***REMOVED***
+          snapToAlignment={"start"***REMOVED***
+          snapToInterval={Dimensions.get('window').width***REMOVED***
+          decelerationRate={"fast"***REMOVED***
+          onViewableItemsChanged={onViewRef.current***REMOVED***
+          viewabilityConfig={viewConfigRef.current***REMOVED***
+        />
       <View style={styles.buttonsContainer***REMOVED***>
         <View>
-          {pageNumber > 1 ? <Button title="Prev" onPress={() => incrementPageNumber("prev")***REMOVED***/>: null***REMOVED***
+          {pageNumber > 0 ? <Button title= {i18n.t('prev')***REMOVED*** onPress={() => incrementPageNumber("prev")***REMOVED***/>: null***REMOVED***
         </View>
         <View>
-          <Button title={pageNumber !== 4 ? "Next" : "Finish"***REMOVED*** onPress={pageNumber !== 4 ? () => incrementPageNumber("next") : () => props.navigation.replace("StudySet")***REMOVED***/>
+          <Button title={pageNumber !== 3 ? i18n.t('next') : i18n.t('finish')***REMOVED*** onPress={pageNumber !== 3 ? () => incrementPageNumber("next") : () => props.navigation.replace("StudySet")***REMOVED***/>
         </View>
       </View>
     </View>
@@ -121,7 +178,7 @@ const styles = StyleSheet.create({
   pageContainer: {
     flexDirection: "column",
     justifyContent: "center",
-    width: "100%",
+    width: Dimensions.get('window').width,
     flex: 1
   ***REMOVED***,
   imageContainer: {
