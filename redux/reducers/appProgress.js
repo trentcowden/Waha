@@ -9,13 +9,11 @@ import { TOGGLE_COMPLETE, RESET_PROGRESS ***REMOVED*** from '../actions/appProgr
 export function appProgress(state = {***REMOVED***, action) {
     switch (action.type) {
         case TOGGLE_COMPLETE:
-            console.log('made it to reducer...')
             if (action.lessonID in state) {
                 var idToDelete = action.lessonID
                 const { [idToDelete]: value, ...newObject ***REMOVED*** = state;
                 return newObject
             ***REMOVED*** else {
-                console.log('lesson not found in progress, adding...')
                 return {...state, [action.lessonID]: 'complete'***REMOVED***
             ***REMOVED***
         case RESET_PROGRESS: 

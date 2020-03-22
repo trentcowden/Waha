@@ -4,6 +4,8 @@ import { View, FlatList, StyleSheet, Text, ActivityIndicator ***REMOVED*** from 
 import * as FileSystem from 'expo-file-system';
 import i18n from 'i18n-js';
 
+
+
 //other component imports
 import StudySetItem from '../components/StudySetItem';
 
@@ -20,6 +22,7 @@ function StudySetScreen(props) {
         if (props.isFirstOpen) {
             props.navigation.replace("LanguageSelect")
         ***REMOVED***
+        console.log(props.appProgress)
         //props.changeLanguage("english");
         //props.addLanguage("english");
     ***REMOVED***, [])
@@ -55,7 +58,6 @@ function StudySetScreen(props) {
       ***REMOVED***;
 
 
-
     ////////////////////////////////
     ////RENDER/STYLES/NAVOPTIONS////
     ////////////////////////////////
@@ -68,10 +70,12 @@ function StudySetScreen(props) {
             <StudySetItem
                 title={studySetList.item.title***REMOVED***
                 onStudySetSelect={() => navigateToLessonList(studySetList.item)***REMOVED***
+                id={studySetList.item.id***REMOVED***
             />
         )
     ***REMOVED***
 
+    
     //if we're not fetching data, render the flatlist. if we are, render a loading screen
     if (!props.isFetching) {
         return (
@@ -79,6 +83,7 @@ function StudySetScreen(props) {
                 <FlatList
                     data={props.database[props.database.currentLanguage].studySets***REMOVED***
                     renderItem={renderStudySetItem***REMOVED***
+                    extraData={props.appProgress***REMOVED***
                 />
                 <Text style={{...styles.text, color: props.primaryColor***REMOVED******REMOVED***>This text is the primary color from the database! How cool!</Text>
                 <Text style={{...styles.text, color: props.secondaryColor***REMOVED******REMOVED***>This text is the secondary color from the database! Radical!</Text>
@@ -96,7 +101,7 @@ function StudySetScreen(props) {
 
 StudySetScreen.navigationOptions = navData => {
     return {
-        headerTitle: 'Study Sets'
+        headerTitle: "waha"
     ***REMOVED***;
 ***REMOVED***;
 
@@ -115,11 +120,13 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
+    //console.log(state.appProgress)
     if(!state.database.isFetching)
         return {
             database: state.database,
             primaryColor: state.database[state.database.currentLanguage].colors.primaryColor,
-            secondaryColor: state.database[state.database.currentLanguage].colors.secondaryColor
+            secondaryColor: state.database[state.database.currentLanguage].colors.secondaryColor,
+            appProgress: state.appProgress
         ***REMOVED***
     else {
         return {
