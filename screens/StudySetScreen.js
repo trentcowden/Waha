@@ -22,28 +22,16 @@ function StudySetScreen(props) {
     useEffect(() => {
         if (props.isFirstOpen) {
             props.navigation.replace("LanguageSelect")
-        ***REMOVED*** else {
-            try {
-                props.navigation.setParams({primaryColor: props.colors.primaryColor***REMOVED***)
-            ***REMOVED*** catch (error) {
-                props.addLanguage(props.database[props.database.currentLanguage])
-            ***REMOVED***
-        ***REMOVED***
+        ***REMOVED*** 
     ***REMOVED***, [])
 
-    if (props.database)
-
     useEffect(() => {
-        if (props.database) {
-        if (!props.isFirstOpen) {
-            
-        ***REMOVED*** else {
-            if (!props.database.colors) {
-                
-            ***REMOVED***
-        ***REMOVED***
-    ***REMOVED***
-    ***REMOVED***, [props.isFirstOpen])
+      if (!props.isFirstOpen && !props.isFetching) {
+         props.navigation.setParams({primaryColor: props.colors.primaryColor***REMOVED***)
+      ***REMOVED*** 
+   ***REMOVED***, [props.isFirstOpen])
+    
+
 
 
     FileSystem.getFreeDiskStorageAsync().then(freeDiskStorage => {
@@ -153,7 +141,6 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
-    //console.log(state.database)
     if(!state.database.isFetching)
         return {
             database: state.database,

@@ -3,6 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text ***REMOVED*** from 'react-native';
 import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
+import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 
 function ChapterSelect(props) {
 
@@ -20,13 +21,13 @@ function ChapterSelect(props) {
    var chapter2Button;   
 
    //CHAPTER 2 BUTTON
-   if (props.id in props.downloads) {
+   if (props.lessonID in props.downloads) {
       chapter2Button =
          <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: props.colors.grayedOut ***REMOVED******REMOVED***>
             <AnimatedCircularProgress
                size={20***REMOVED***
                width={4***REMOVED***
-               fill={(props.downloads[props.id] * 100)***REMOVED***
+               fill={(props.downloads[props.lessonID] * 100)***REMOVED***
                tintColor={props.colors.grayedOut***REMOVED***
                rotation={0***REMOVED***
                backgroundColor="white"
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
    //console.log(state.downloads)
    return {
-      colors: state.database[state.database.currentLanguage].colors
+      colors: state.database[state.database.currentLanguage].colors,
+      downloads: state.downloads,
    ***REMOVED***
 ***REMOVED***;
 

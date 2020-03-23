@@ -64,7 +64,7 @@ function LessonItem(props) {
     ***REMOVED***  
 
     return (
-        <View style={styles.lessonItem***REMOVED***>
+        <View style={{...styles.lessonItem, ...props.isComplete ? {backgroundColor: "#D3D3D3"***REMOVED*** : null***REMOVED******REMOVED***>
             <View style={styles.mainDisplay***REMOVED***>
                 <TouchableOpacity 
                     style={styles.progresAndTitle***REMOVED*** 
@@ -96,9 +96,8 @@ function LessonItem(props) {
 
 const styles = StyleSheet.create({
     lessonItem: {
-        flex: 1,
         height: 75,
-        margin: 5,
+        padding: 5,
         justifyContent: "center",
         flexDirection: "column",
         alignContent: "center"
