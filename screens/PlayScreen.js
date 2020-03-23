@@ -1,16 +1,19 @@
 //basic imports
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
-import { View, StyleSheet, Text, Slider, Alert, Button, TouchableOpacity, ActivityIndicator, Modal ***REMOVED*** from 'react-native';
-import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
+import { View, StyleSheet, Text, Slider, Alert, TouchableOpacity, ActivityIndicator, ScrollView, FlatList, Dimensions ***REMOVED*** from 'react-native';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
 import * as Sharing from 'expo-sharing';
+import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 
 //sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
 
 //components
 import TimeDisplay from "../components/TimeDisplay";
+import WahaModal from '../components/WahaModal'
+import ModalButton from '../components/ModalButton'
 
 //redux
 import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
@@ -19,7 +22,7 @@ import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
 console.disableYellowBox = true;
 
 function PlayScreen(props) {
-  
+
 
   ///////////////////////////
   ////STATE & CONSTRUCTOR////
@@ -55,11 +58,35 @@ function PlayScreen(props) {
   //share modal
   const [showShareLessonModal, setShowShareLessonModal] = useState(false);
 
+
+  //ALBUM ART SLIDER STUFF
+  const [flatListRef, setFlatListRef] = useState()
+
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+
+  const albumSlidesData = [
+    {
+      key: '0',
+      type: 'text',
+      body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    ***REMOVED***,
+    {
+      key: '1',
+      type: 'image',
+      iconName: props.navigation.getParam("iconName")
+    ***REMOVED***,
+    {
+      key: '2',
+      type: 'text',
+      body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    ***REMOVED***,
+  ]
+
   //PURPOSE: update something on every api call to audio object and every second
   soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
     if (playbackStatus.isLoaded) {
       setIsLoaded(true)
-    ***REMOVED*** 
+    ***REMOVED***
 
     if (playbackStatus.isBuffering) {
       setIsBuffering(true)
@@ -71,7 +98,7 @@ function PlayScreen(props) {
     //toggle the whole lesson as complete
     if (playbackStatus.didJustFinish) {
       if (activeChapter === 'fellowship') {
-        changeChapter('passage') 
+        changeChapter('passage')
       ***REMOVED*** else if (activeChapter === 'passage') {
         changeChapter('application')
       ***REMOVED*** else if (activeChapter === 'application') {
@@ -92,14 +119,15 @@ function PlayScreen(props) {
 
     //check if file is downloaded, then load it
     checkIsDownloaded(); // -> loadAudioFile()
- 
+
     //determine complete status of loaded lesson
     var id = props.navigation.getParam('id');
 
     //send completion info over to navigation (appProgress is from redux)
-    props.navigation.setParams({ navIsComplete: (id in props.appProgress) ***REMOVED***);
+    props.navigation.setParams({ navIsComplete: (id in props.progress) ***REMOVED***);
     props.navigation.setParams({ navMarkHandler: changeCompleteStatus ***REMOVED***);
     props.navigation.setParams({ setShowShareLessonModal: setShowShareLessonModal ***REMOVED***)
+    props.navigation.setParams({ primaryColor: props.colors.primaryColor ***REMOVED***)
 
     //set up our timer tick for updating the seeker every second
     const interval = setInterval(updateSeekerTick, 1000);
@@ -107,24 +135,29 @@ function PlayScreen(props) {
     //when leaving the screen, cancel the interval timer and unload the audio file
     return function cleanup() {
       clearInterval(interval);
-      soundObject.unloadAsync();
+      if (soundObject) {
+        soundObject.unloadAsync();
+        setSoundObject(null);
+      ***REMOVED***
     ***REMOVED***
   ***REMOVED***, []);
+
+
 
 
   ///////////////////////////////
   ////AUDIO CONTROL FUNCTIONS////
   ///////////////////////////////
 
-  
+
   //PURPOSE: check if the lesson is downloaded or not
   async function checkIsDownloaded() {
     FileSystem.getInfoAsync(FileSystem.documentDirectory + props.navigation.getParam('id') + '.mp3')
-    .then(({exists***REMOVED***) => {
-      if (!exists && !(props.navigation.getParam('id') in props.downloads)){
-        props.downloadLesson(props.navigation.getParam('id'), props.navigation.getParam('source'));
-      ***REMOVED*** 
-    ***REMOVED***)
+      .then(({ exists ***REMOVED***) => {
+        if (!exists && !(props.navigation.getParam('id') in props.downloads)) {
+          props.downloadLesson(props.navigation.getParam('id'), props.navigation.getParam('source'));
+        ***REMOVED***
+      ***REMOVED***)
   ***REMOVED***
 
   //PURPOSE: load the audio file and set isLoaded and 
@@ -156,7 +189,7 @@ function PlayScreen(props) {
           .then(playbackStatus => {
             setSeekPosition(playbackStatus.positionMillis);
           ***REMOVED***)
-          //.catch(err => console.log(err))
+        //.catch(err => console.log(err))
       ***REMOVED*** catch (error) {
         console.log(error)
       ***REMOVED***
@@ -181,25 +214,25 @@ function PlayScreen(props) {
   //that doesn't seem to affect any functionality. it's being ignored
   function onSeekRelease(value) {
     if (isPlaying) {
-      soundObject.setStatusAsync({ 
-        shouldPlay: false, 
+      soundObject.setStatusAsync({
+        shouldPlay: false,
         positionMillis: value,
         seekMillisToleranceBefore: 10000,
         seekMillisToleranceAfter: 10000
-     ***REMOVED***).catch(err => {***REMOVED***)
-     soundObject.setStatusAsync({ 
-      shouldPlay: true, 
-      positionMillis: value,
-      seekMillisToleranceBefore: 10000,
-      seekMillisToleranceAfter: 10000
-   ***REMOVED***).catch(err => {***REMOVED***)
+      ***REMOVED***).catch(err => { ***REMOVED***)
+      soundObject.setStatusAsync({
+        shouldPlay: true,
+        positionMillis: value,
+        seekMillisToleranceBefore: 10000,
+        seekMillisToleranceAfter: 10000
+      ***REMOVED***).catch(err => { ***REMOVED***)
     ***REMOVED*** else {
-      soundObject.setStatusAsync({ 
-        shouldPlay: false, 
+      soundObject.setStatusAsync({
+        shouldPlay: false,
         positionMillis: value,
         seekMillisToleranceBefore: 10000,
         seekMillisToleranceAfter: 10000
-     ***REMOVED***).catch(err => {***REMOVED***)
+      ***REMOVED***).catch(err => { ***REMOVED***)
     ***REMOVED***
     shouldTickUpdate.current = true;
     setSeekPosition(value);
@@ -228,7 +261,7 @@ function PlayScreen(props) {
     setSeekPosition(0)
 
     //unload whatever old sound object was loaded
-    soundObject.unloadAsync();  
+    soundObject.unloadAsync();
 
     //set the button to show the new active chapter
     setActiveChapter(chapter)
@@ -247,29 +280,29 @@ function PlayScreen(props) {
   //////////////////////////////////
   ////PROGRESS STORAGE FUNCTIONS////
   //////////////////////////////////
-  
+
 
   function changeCompleteStatus() {
     var id = props.navigation.getParam('id');
-    var isComplete = (id in props.appProgress)
+    var isComplete = (id in props.progress)
     //redux action: change the complete status
     props.toggleComplete(id)
 
     if (isComplete) {
-      Alert.alert('Lesson marked as incomplete!', 
-      'Don\' forget to select when your next lesson is!',
-      [{
-        text: 'OK', 
-        onPress: () => {props.navigation.goBack();***REMOVED***
-      ***REMOVED***])
+      Alert.alert('Lesson marked as incomplete!',
+        'Don\' forget to select when your next lesson is!',
+        [{
+          text: 'OK',
+          onPress: () => { props.navigation.goBack(); ***REMOVED***
+        ***REMOVED***])
     ***REMOVED*** else {
-      Alert.alert(props.translations['completeMessageTitle'], 
+      Alert.alert(props.translations['completeMessageTitle'],
         props.translations['completeMessageBody'],
-      [{
-        text: 'OK', 
-        onPress: () => {props.navigation.goBack();***REMOVED***
-      ***REMOVED***])
-    ***REMOVED*** 
+        [{
+          text: 'OK',
+          onPress: () => { props.navigation.goBack(); ***REMOVED***
+        ***REMOVED***])
+    ***REMOVED***
   ***REMOVED***
 
 
@@ -299,78 +332,110 @@ function PlayScreen(props) {
   ////////////////////////////////
 
 
-  var playButton;
-  if (!isBuffering) {
-    playButton = 
-    <Ionicons.Button
-      name={isPlaying ? "ios-pause" : "ios-play"***REMOVED***
-      size={125***REMOVED***
-      onPress={playHandler***REMOVED***
-      backgroundColor="rgba(0,0,0,0)"
-      iconStyle={styles.button***REMOVED***
-    />
-  ***REMOVED*** else {
-    playButton = 
-     <ActivityIndicator size="large" color="black" />
+  function renderAlbumSlide(slideList) {
+    var content;
+    if (slideList.item.type === 'text') {
+      content = <Text style={{ flexWrap: "wrap", fontFamily: 'open-sans-regular' ***REMOVED******REMOVED***>{slideList.item.body***REMOVED***</Text>
+    ***REMOVED*** else {
+      content = <MaterialCommunityIcons name={slideList.item.iconName***REMOVED*** size={350***REMOVED*** />
+    ***REMOVED***
+    return (
+      <ScrollView style={{...styles.albumArtContainer, ...{backgroundColor: props.colors.lessonSetScreenBG, ***REMOVED******REMOVED******REMOVED***>
+        {content***REMOVED***
+      </ScrollView>
+    )
   ***REMOVED***
 
-  var controlsContainer;
+
+  //PLAY/PAUSE/SKIP CONTAINER
+  var audioControlContainer;
   if (!isLoaded) {
-    controlsContainer = 
-      <View style={{...styles.controlsContainer, justifyContent: "center"***REMOVED******REMOVED***>
+    audioControlContainer =
+      <View style={styles.audioControlContainer***REMOVED***>
         <ActivityIndicator size="large" color="black" />
       </View>
-    ***REMOVED*** else {
-    controlsContainer =
-      <View style={styles.controlsContainer***REMOVED***>
-          <View style={styles.scrubberContainer***REMOVED***>
-            <View style={styles.scrubber***REMOVED***>
-              <Slider
-                value={seekPosition***REMOVED***
-                onSlidingComplete={onSeekRelease***REMOVED***
-                onValueChange={onSeekDrag***REMOVED***
-                minimumValue={0***REMOVED***
-                maximumValue={audioFileLength***REMOVED***
-                step={1000***REMOVED***
-              />
-            </View>
-            <View style={styles.timeInfo***REMOVED***>
-              <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={seekPosition***REMOVED*** max={audioFileLength***REMOVED*** />
-              <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={audioFileLength***REMOVED*** max={audioFileLength***REMOVED*** />
-            </View>
+  ***REMOVED*** else {
+    audioControlContainer =
+      <View style={styles.audioControlContainer***REMOVED***>
+        <View style={styles.scrubberContainer***REMOVED***>
+          <View style={styles.scrubber***REMOVED***>
+            <Slider
+              value={seekPosition***REMOVED***
+              onSlidingComplete={onSeekRelease***REMOVED***
+              onValueChange={onSeekDrag***REMOVED***
+              minimumValue={0***REMOVED***
+              maximumValue={audioFileLength***REMOVED***
+              step={1000***REMOVED***
+              minimumTrackTintColor={props.colors.primaryColor***REMOVED***
+              thumbTintColor={props.colors.accentColor***REMOVED***
+            />
           </View>
-          <View style={styles.buttonContainer***REMOVED***>
-            <Ionicons.Button
-              name="md-return-left"
-              size={85***REMOVED***
-              onPress={skip.bind("this", -5000)***REMOVED***
-              backgroundColor="rgba(0,0,0,0)"
-              iconStyle={styles.button***REMOVED***
-            />
-            {playButton***REMOVED***
-            <Ionicons.Button
-              name="md-return-right"
-              size={85***REMOVED***
-              onPress={skip.bind("this", 15000)***REMOVED***
-              backgroundColor="rgba(0,0,0,0)"
-              iconStyle={styles.button***REMOVED***
-            />
+          <View style={styles.timeInfo***REMOVED***>
+            <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={seekPosition***REMOVED*** max={audioFileLength***REMOVED*** />
+            <TimeDisplay style={styles.scrubberInfo***REMOVED*** time={audioFileLength***REMOVED*** max={audioFileLength***REMOVED*** />
           </View>
         </View>
-        
+        <View style={styles.playPauseSkipContainer***REMOVED***>
+          <TouchableOpacity
+            style={styles.playPauseSkipButton***REMOVED***
+            onPress={skip.bind("this", -10000)***REMOVED***
+          >
+            <MaterialIcons name="replay-10" size={60***REMOVED*** />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.playPauseSkipButton***REMOVED***
+            onPress={playHandler***REMOVED***
+          >
+            <MaterialCommunityIcons 
+              name={isPlaying ? "pause-circle" : "play-circle"***REMOVED*** 
+              size={125***REMOVED*** 
+              color={props.colors.accentColor***REMOVED***
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.playPauseSkipButton***REMOVED***
+            onPress={skip.bind("this", 10000)***REMOVED***
+          >
+            <MaterialIcons name="forward-10" size={60***REMOVED*** />
+          </TouchableOpacity>
+        </View>
+      </View>
+
   ***REMOVED***
 
+  //CHAPTE 2 BUTTON ICON
+  var chapter2IconName
+  if (activeChapter === 'fellowship') {
+    chapter2IconName = 'numeric-2'
+  ***REMOVED*** else if (activeChapter === 'passage') {
+    chapter2IconName = 'numeric-2-box'
+  ***REMOVED*** else {
+    chapter2IconName = 'checkbox-marked'
+  ***REMOVED***
+    
+  //CHAPTER 2 BUTTON
   if ((props.navigation.getParam('id') in props.downloads)) {
-    chapter2Button = 
-      <View style={{...styles.chapterSelect, flexDirection: "column", backgroundColor: "#3D4849"***REMOVED******REMOVED***>
-        <Text style={{color: "gray", fontSize: 18, flex: 1***REMOVED******REMOVED***>Passage</Text>
-        <Progress.Bar progress={props.downloads[props.navigation.getParam("id")]***REMOVED*** color="black" borderColor="black" width={40***REMOVED***/>
+    chapter2Button =
+      <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: props.colors.grayedOut ***REMOVED******REMOVED***>
+        <AnimatedCircularProgress
+          size={20***REMOVED***
+          width={4***REMOVED***
+          fill={(props.downloads[props.navigation.getParam("id")] * 100)***REMOVED***
+          tintColor={props.colors.grayedOut***REMOVED***
+          rotation={0***REMOVED***
+          backgroundColor="white"
+        />
+        <Text style={{...styles.chapterSelectText, ...{color: props.colors.grayedOut***REMOVED******REMOVED******REMOVED***>Passage</Text>
       </View>
   ***REMOVED*** else {
-    chapter2Button = 
-      <TouchableOpacity style={styles.chapterSelect***REMOVED*** onPress={() => changeChapter('passage')***REMOVED***>
-        <MaterialCommunityIcons name={(activeChapter === 'passage') ? "numeric-2-box" : "numeric-2"***REMOVED*** size={30***REMOVED***/>
-        <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Passage</Text>
+    chapter2Button =
+      <TouchableOpacity style={{...styles.chapterSelect, ...{borderColor: props.colors.accentColor***REMOVED******REMOVED******REMOVED*** onPress={() => changeChapter('passage')***REMOVED***>
+        <MaterialCommunityIcons 
+          name={chapter2IconName***REMOVED*** 
+          size={30***REMOVED*** 
+          color={props.colors.accentColor***REMOVED***
+        />
+        <Text style={{...styles.chapterSelectText, ...{color: props.colors.accentColor***REMOVED******REMOVED******REMOVED***>Passage</Text>
       </TouchableOpacity>
   ***REMOVED***
 
@@ -380,35 +445,46 @@ function PlayScreen(props) {
         <Text style={styles.title***REMOVED***>{props.navigation.getParam("title")***REMOVED***</Text>
         <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text>
       </View>
-      <Text style={{ textAlign: "center", flex: 1 ***REMOVED******REMOVED***>Status: {isLoaded ? "Finished loading" : "Loading"***REMOVED***</Text>
-      <View style={styles.chapterSelectContainer***REMOVED***>
-          <TouchableOpacity style={styles.chapterSelect***REMOVED*** onPress={() => changeChapter('fellowship')***REMOVED***>
-            <MaterialCommunityIcons name={(activeChapter === 'fellowship') ? "numeric-1-box" : "numeric-1"***REMOVED*** size={30***REMOVED***/>
-            <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Fellowship</Text>
+      <FlatList
+        renderItem={renderAlbumSlide***REMOVED***
+        data={albumSlidesData***REMOVED***
+        ref={(ref) => { setFlatListRef(ref) ***REMOVED******REMOVED***
+        horizontal={true***REMOVED***
+        pagingEnabled={true***REMOVED***
+        snapToAlignment={"start"***REMOVED***
+        snapToInterval={Dimensions.get('window').width***REMOVED***
+        decelerationRate={"fast"***REMOVED***
+        viewabilityConfig={viewConfigRef.current***REMOVED***
+        initialScrollIndex={0***REMOVED***
+      />
+      <View style={styles.controlsContainer***REMOVED***>
+        <View style={styles.chapterSelectContainer***REMOVED***>
+          <TouchableOpacity style={{...styles.chapterSelect, ...{borderColor: props.colors.accentColor***REMOVED******REMOVED******REMOVED*** onPress={() => changeChapter('fellowship')***REMOVED***>
+            <MaterialCommunityIcons 
+              name={(activeChapter === 'fellowship')   ? "numeric-1-box" : "checkbox-marked"***REMOVED*** 
+              size={30***REMOVED*** 
+              color={props.colors.accentColor***REMOVED***
+            />
+            <Text style={{...styles.chapterSelectText, ...{color: props.colors.accentColor***REMOVED******REMOVED******REMOVED***>Fellowship</Text>
           </TouchableOpacity>
-          {chapter2Button***REMOVED***
-          <TouchableOpacity style={styles.chapterSelect***REMOVED*** onPress={() => changeChapter('application')***REMOVED***>
-            <MaterialCommunityIcons name={(activeChapter === 'application') ? "numeric-3-box" : "numeric-3"***REMOVED*** size={30***REMOVED***/>
-            <Text style={{color: "white", fontSize: 18, flex: 1***REMOVED******REMOVED***>Application</Text>
+            {chapter2Button***REMOVED***
+          <TouchableOpacity style={{...styles.chapterSelect, ...{borderColor: props.colors.accentColor***REMOVED******REMOVED******REMOVED*** onPress={() => changeChapter('application')***REMOVED***>
+            <MaterialCommunityIcons 
+              name={(activeChapter === 'application') ? "numeric-3-box" : "numeric-3"***REMOVED*** 
+              size={30***REMOVED*** 
+              color={props.colors.accentColor***REMOVED***
+            />
+            <Text style={{...styles.chapterSelectText, ...{color: props.colors.accentColor***REMOVED******REMOVED******REMOVED***>Application</Text>
           </TouchableOpacity>
         </View>
-      {controlsContainer***REMOVED***
-
-      <Modal
-        visible={showShareLessonModal***REMOVED***
-        animationType="slide"
-        presentationStyle="overFullScreen"
-        transparent={true***REMOVED***
-      >
-        <View style={{flex: 1, flexDirection: "column", justifyContent: "flex-end"***REMOVED******REMOVED***>
-          <View style={{backgroundColor: "white", paddingBottom: 20, paddingTop: 10***REMOVED******REMOVED***>
-            <Button title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
-            <Button title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
-            <Button title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
-            <Button title="Close" onPress={() => setShowShareLessonModal(false)***REMOVED*** />
-          </View>
-        </View>
-      </Modal>
+        {audioControlContainer***REMOVED***
+      </View>
+      <WahaModal isVisible={showShareLessonModal***REMOVED***>
+        <ModalButton title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
+        <ModalButton title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
+        <ModalButton title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
+        <ModalButton title="Close" onPress={() => setShowShareLessonModal(false)***REMOVED*** style={{color: "red"***REMOVED******REMOVED***/>
+      </WahaModal>
     </View>
 
   )
@@ -418,108 +494,138 @@ PlayScreen.navigationOptions = navigationData => {
   const navIsComplete = navigationData.navigation.getParam("navIsComplete");
   const navMarkHandler = navigationData.navigation.getParam("navMarkHandler");
   const setShowShareLessonModal = navigationData.navigation.getParam("setShowShareLessonModal");
+  const primaryColor = navigationData.navigation.getParam("primaryColor");
 
   return {
-    headerTitle: navigationData.navigation.getParam("title"),
+    headerTitle: navigationData.navigation.getParam("subtitle"),
+    headerBackTitle: "Back",
+    headerStyle: {
+      backgroundColor: primaryColor
+    ***REMOVED***,
+    headerTitleStyle: {
+      color: "#fff",
+      fontFamily: 'open-sans-bold'
+    ***REMOVED***,
+    gestureEnabled: false,
     headerRight: () =>
-      <View style={{flexDirection: "row"***REMOVED******REMOVED***>
-        <Ionicons.Button
-          name="md-share"
-          size={20***REMOVED***
-          onPress={() => setShowShareLessonModal(true)***REMOVED***
-          backgroundColor="rgba(0,0,0,0)"
-          color="black"
-          iconStyle={styles.markButton***REMOVED***
-        />
-        <Ionicons.Button
-          name={navIsComplete ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"***REMOVED***
-          size={20***REMOVED***
-          onPress={navMarkHandler***REMOVED***
-          backgroundColor="rgba(0,0,0,0)"
-          color="black"
-          iconStyle={styles.markButton***REMOVED***
-        />
+      <View style={styles.headerButtonsContainer***REMOVED***>
+        <TouchableOpacity 
+            style={styles.headerButton***REMOVED***
+            onPress={() => setShowShareLessonModal(true)***REMOVED***
+          >
+            <Ionicons 
+              name='md-share'
+              size={30***REMOVED*** 
+              color="white"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.headerButton***REMOVED***
+            onPress={navMarkHandler***REMOVED***
+          >
+            <Ionicons 
+              name={navIsComplete ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"***REMOVED***
+              size={30***REMOVED*** 
+              color='white'
+            />
+          </TouchableOpacity>
       </View>
   ***REMOVED***
 ***REMOVED***;
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
+    justifyContent: "space-between"
+  ***REMOVED***,
+  titlesContainer: {
+    flexDirection: "column",
+    marginTop: 10
+  ***REMOVED***,
+  title: {
+    textAlign: "center",
+    fontSize: 30,
+    fontFamily: 'open-sans-bold'
+  ***REMOVED***,
+  subtitle: {
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: 'open-sans-light'
+  ***REMOVED***,
+  albumArtContainer: { 
+    width: (Dimensions.get('window').width - 40), 
+    padding: 20, 
+    margin: 20, 
+    borderRadius: 10 
   ***REMOVED***,
   controlsContainer: {
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: "#d3d3d3",
-    borderRadius: 20,
-    marginBottom: 50,
-    marginHorizontal: 15,
-    height: 200,
-  ***REMOVED***,
-  albumArt: {
-    height: 400,
-    padding: 50,
-    backgroundColor: "black",
-    margin: 25
-  ***REMOVED***,
-  scrubberContainer: {
-    paddingHorizontal: 8,
-    flexDirection: "column",
-    justifyContent: "space-between"
+    alignItems: "center",
+    width: "100%",
   ***REMOVED***,
   chapterSelectContainer: {
     flexDirection: "row",
-    margin: 20,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   ***REMOVED***,
   chapterSelect: {
-    backgroundColor: "gray",
-    borderRadius: 5,
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     height: 50,
-    margin: 2,
-    justifyContent: "center"
+    justifyContent: "center",
+    borderTopWidth: 2,
+    borderBottomWidth: 2
+  ***REMOVED***,
+  chapterSelectText: {
+    fontFamily: 'open-sans-regular',
+    fontSize: 16
+  ***REMOVED***,
+  audioControlContainer: {
+    justifyContent: "space-around",
+    flexDirection: "column",
+    marginBottom: 5,
+    marginHorizontal: 10,
+    width: "100%",
+    height: 200
+  ***REMOVED***,
+  scrubberContainer: {
+    paddingHorizontal: 8,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%"
+  ***REMOVED***,
+  scrubber: {
+    width: "100%"
   ***REMOVED***,
   scrubberInfo: {
     padding: 10
   ***REMOVED***,
-  buttonContainer: {
+  playPauseSkipContainer: {
     flexDirection: "row",
-    width: "100%",
     justifyContent: "space-around",
-  ***REMOVED***,
-  scrubber: {
+    alignItems: "center",
     width: "100%",
+  ***REMOVED***,
+  playPauseSkipButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1
   ***REMOVED***,
   timeInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%"
   ***REMOVED***,
-  button: {
-    margin: 10,
-    justifyContent: "center",
+  headerButtonsContainer: {
     flexDirection: "row",
-    borderRadius: 0
+    width: 80
   ***REMOVED***,
-  titlesContainer: {
-    flexDirection: "column",
-    marginVertical: 15
-  ***REMOVED***,
-  title: {
-    textAlign: "center",
-    fontSize: 30
-  ***REMOVED***,
-  subtitle: {
-    textAlign: "center",
-    fontSize: 20,
-    color: "#d3d3d3"
-  ***REMOVED***,
-  markButton: {
+  headerButton: {
+    alignItems: "center",
     justifyContent: "center",
-    alignContent: "center"
+    flex: 1
   ***REMOVED***
 ***REMOVED***)
 
@@ -532,18 +638,19 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   //console.log(state.downloads)
   return {
-    appProgress: state.appProgress,
+    progress: state.appProgress,
     database: state.database,
     currentLanguage: state.database.currentLanguage,
     translations: state.database[state.database.currentLanguage].translations,
     downloads: state.downloads,
+    colors: state.database[state.database.currentLanguage].colors
   ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleComplete: lessonID => {dispatch(toggleComplete(lessonID))***REMOVED***,
-    downloadLesson: (lessonID, source) => {dispatch(downloadLesson(lessonID, source))***REMOVED***,
+    toggleComplete: lessonID => { dispatch(toggleComplete(lessonID)) ***REMOVED***,
+    downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
   ***REMOVED***
 ***REMOVED***
 

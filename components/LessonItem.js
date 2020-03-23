@@ -1,9 +1,10 @@
 //imports
 import React, { useState, useEffect***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator***REMOVED*** from 'react-native';
-import { Ionicons ***REMOVED*** from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
+import { connect ***REMOVED*** from 'react-redux'
 
 function LessonItem(props) {
 
@@ -36,6 +37,7 @@ function LessonItem(props) {
     ***REMOVED***
 
 
+
     ////////////////////////////////
     ////RENDER/STYLES/NAVOPTIONS////
     ////////////////////////////////
@@ -49,11 +51,11 @@ function LessonItem(props) {
     if (!props.downloadProgress) {
         downloadedFeedback = 
             <Ionicons.Button 
-                name={isDownloaded ? "ios-backspace" : "md-cloud-download"***REMOVED*** 
+                name={isDownloaded ? "md-cloud-done" : "md-cloud-download"***REMOVED*** 
+                color={isDownloaded ? props.grayedOut : "black"***REMOVED***
                 size={30***REMOVED***
                 onPress={isDownloaded ? showDeleteModal : showSaveModal***REMOVED***
                 backgroundColor="rgba(0,0,0,0)"
-                color="black"
             />
         progressBar = null;
     ***REMOVED*** else {
@@ -70,13 +72,14 @@ function LessonItem(props) {
                     onLongPress={showLessonOptionsModal***REMOVED***
                 >
                     <View style={styles.icon***REMOVED***>
-                        <Ionicons
-                            name={props.isComplete ? "ios-arrow-dropdown-circle" : "ios-arrow-dropdown"***REMOVED***
+                        <MaterialCommunityIcons
+                            name={props.isComplete ? "play-circle" : "play-box-outline"***REMOVED***
+                            color={props.isComplete ? props.grayedOut : props.accentColor***REMOVED***
                             size={30***REMOVED***
                         />
                     </View>
                     <View styles={styles.titleContainer***REMOVED***>
-                        <Text style={styles.title***REMOVED***>{props.title***REMOVED***</Text>
+                        <Text style={{...styles.title,...{color: props.isComplete ? props.grayedOut : "black"***REMOVED******REMOVED******REMOVED***>{props.title***REMOVED***</Text>
                         <Text style={styles.subtitle***REMOVED***>{props.subtitle***REMOVED***</Text>
                     </View>
                 </TouchableOpacity>
@@ -95,11 +98,10 @@ const styles = StyleSheet.create({
     lessonItem: {
         flex: 1,
         height: 75,
-        borderColor: "black",
-        borderWidth: 2,
         margin: 5,
-        justifyContent: "space-between",
+        justifyContent: "center",
         flexDirection: "column",
+        alignContent: "center"
     ***REMOVED***,
     mainDisplay: {
         flexDirection: "row"
@@ -107,17 +109,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         textAlignVertical: "center",
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        fontFamily: 'open-sans-regular'
     ***REMOVED***,
     subtitle: {
         fontSize: 15,
         paddingHorizontal: 10,
-        color: "gray"
+        fontFamily: 'open-sans-light'
     ***REMOVED***,
     titleContainer: {
         flexDirection: "column",
         justifyContent: "space-around",
-        
     ***REMOVED***,
     icon: {
         justifyContent: "center",
@@ -134,4 +136,19 @@ const styles = StyleSheet.create({
     ***REMOVED***
 ***REMOVED***)
 
-export default LessonItem;
+function mapStateToProps(state) {
+    return {
+      grayedOut: state.database[state.database.currentLanguage].colors.grayedOut,
+      accentColor: state.database[state.database.currentLanguage].colors.accentColor,
+      progress: state.appProgress,
+    ***REMOVED***
+  ***REMOVED***;
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      downloadLesson: (lessonID, source) => {dispatch(downloadLesson(lessonID, source))***REMOVED***,
+      toggleComplete: lessonID => {dispatch(toggleComplete(lessonID))***REMOVED***
+    ***REMOVED***
+  ***REMOVED***
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(LessonItem);

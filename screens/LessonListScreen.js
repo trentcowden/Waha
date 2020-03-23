@@ -1,9 +1,13 @@
 //imports
-import React, { useState ***REMOVED*** from 'react';
+import React, { useState, useEffect ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, Button, Modal, Alert ***REMOVED*** from 'react-native';
 import LessonItem from '../components/LessonItem';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+import StudySetItem from '../components/StudySetItem';
+import FlatListSeparator from '../components/FlatListSeparator'
+import WahaModal from '../components/WahaModal'
+import ModalButton from '../components/ModalButton'
 
 //redux imports
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
@@ -12,7 +16,6 @@ import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
 
-  
   //////////////////////////////////////////
   ////STATE, CONSTRUCTOR, AND NAVIGATION////
   //////////////////////////////////////////
@@ -34,6 +37,10 @@ function LessonListScreen(props) {
   //make our data only the array of lessons
   selectedLessonList = selectedStudySetArray[0].lessons;
 
+  useEffect(() => {
+    props.navigation.setParams({primaryColor: props.colors.primaryColor***REMOVED***)
+  ***REMOVED***, [])
+
   //function to navigate to the play screen
   //props.navigation.navigate takes us to the play screen
   //params is the information we want to pass to play screen
@@ -45,7 +52,8 @@ function LessonListScreen(props) {
         title: item.title,
         subtitle: item.subtitle,
         source: item.source,
-        scripture: item.scripture
+        scripture: item.scripture,
+        iconName: props.navigation.getParam("iconName")
       ***REMOVED***
     ***REMOVED***)
   ***REMOVED***
@@ -142,63 +150,72 @@ function LessonListScreen(props) {
   //create modal in here, pass state to show it to lesson item so lesson item
   //can change it and show the modal on this screen
   return (
-    <View style={styles.screen***REMOVED***>
-      <FlatList
-        data={selectedLessonList***REMOVED***
-        renderItem={renderLessonItem***REMOVED***
-        extraData={refresh***REMOVED***
-      />
-      <Modal 
-        visible={showSaveLessonModal***REMOVED***
-        animationType="slide"
-        presentationStyle="overFullScreen"
-        transparent={true***REMOVED***
-      >
-        <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
-          <Button title="Download lesson" onPress={downloadLesson***REMOVED*** />
-          <Button title="Cancel" onPress={hideModals***REMOVED*** />
-        </View>
-      </Modal>
-      <Modal 
-        visible={showDeleteLessonModal***REMOVED***
-        animationType="slide"
-        presentationStyle="overFullScreen"
-        transparent={true***REMOVED***
-      >
-        <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
-          <Button title="Delete lesson" onPress={deleteLesson***REMOVED*** />
-          <Button title="Cancel" onPress={hideModals***REMOVED*** />
-        </View>
-      </Modal>
-      <Modal 
-        visible={showLessonOptionsModal***REMOVED***
-        animationType="slide"
-        presentationStyle="overFullScreen"
-        transparent={true***REMOVED***
-      >
-        <View style={{ flex: 1, flexDirection: "column", justifyContent: "flex-end", paddingBottom: "5%"***REMOVED******REMOVED***>
-          <Button title="Mark lesson as complete" onPress={() => toggleComplete('complete')***REMOVED*** />
-          <Button title="Mark lesson as incomplete" onPress={() => toggleComplete('incomplete')***REMOVED*** />
-          <Button title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
-          <Button title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
-          <Button title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
-          <Button title="Mark lesson as incomplete" onPress={() => toggleComplete('incomplete')***REMOVED*** />
-          <Button title="Close" onPress={hideModals***REMOVED*** />
-        </View>
-      </Modal>
+    <View style={{...styles.screen, ...{backgroundColor: props.colors.lessonListScreenBG***REMOVED******REMOVED******REMOVED***>
+      <View style={styles.studySetItemContainer***REMOVED***>
+        <StudySetItem
+            title={props.navigation.getParam("title")***REMOVED***
+            subtitle={props.navigation.getParam("subtitle")***REMOVED***
+            onStudySetSelect={() => {***REMOVED******REMOVED***
+            id={props.navigation.getParam("studySetID")***REMOVED***
+            iconName={props.navigation.getParam("iconName")***REMOVED***
+        />
+      </View>
+      <View style={styles.lessonListContainer***REMOVED***>
+        <FlatList
+          data={selectedLessonList***REMOVED***
+          renderItem={renderLessonItem***REMOVED***
+          extraData={refresh***REMOVED***
+          ItemSeparatorComponent = {FlatListSeparator***REMOVED***
+        />
+      </View>
+      <WahaModal isVisible={showSaveLessonModal***REMOVED***>
+        <ModalButton title="Download lesson" onPress={downloadLesson***REMOVED*** />
+        <ModalButton title="Cancel" onPress={hideModals***REMOVED*** style={{color: "red"***REMOVED******REMOVED***/>
+      </WahaModal>
+      <WahaModal isVisible={showDeleteLessonModal***REMOVED***>
+        <ModalButton title="Delete lesson" onPress={deleteLesson***REMOVED*** />
+        <ModalButton title="Cancel" onPress={hideModals***REMOVED*** style={{color: "red"***REMOVED******REMOVED***/>
+      </WahaModal>
+      <WahaModal isVisible={showLessonOptionsModal***REMOVED***>
+          <ModalButton title="Mark lesson as complete" onPress={() => toggleComplete('complete')***REMOVED*** />
+          <ModalButton title="Mark lesson as incomplete" onPress={() => toggleComplete('incomplete')***REMOVED*** />
+          <ModalButton title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
+          <ModalButton title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
+          <ModalButton title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
+          <ModalButton title="Mark to this point at complete" onPress={() => {***REMOVED******REMOVED*** />
+          <ModalButton title="Close" onPress={hideModals***REMOVED*** style={{color: "red"***REMOVED******REMOVED***/>
+      </WahaModal>
     </View>
   )
 ***REMOVED***
 
 LessonListScreen.navigationOptions = navigationData => {
+  const primaryColor = navigationData.navigation.getParam("primaryColor");
+
   return {
-    headerTitle: "waha"
+      headerTitle: "waha",
+      headerBackTitle: "Back",
+      headerStyle: {
+          backgroundColor: primaryColor
+      ***REMOVED***,
+      headerTitleStyle: {
+          color: "#fff",
+          fontFamily: 'open-sans-bold'
+      ***REMOVED***
   ***REMOVED***;
 ***REMOVED***;
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
+    flexDirection: "column"
+  ***REMOVED***,
+  studySetItemContainer: {
+    width: "100%",
+    height: 150,
+  ***REMOVED***,
+  lessonListContainer: {
+    width: "100%"
   ***REMOVED***
 ***REMOVED***)
 
@@ -209,12 +226,12 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-  console.log(state.downloads)
   return {
     downloads: state.downloads,
     appProgress: state.appProgress,
     database: state.database,
-    currentLanguage: state.database.currentLanguage
+    currentLanguage: state.database.currentLanguage,
+    colors: state.database[state.database.currentLanguage].colors
   ***REMOVED***
 ***REMOVED***;
 
