@@ -36,8 +36,8 @@ function StudySetItem(props) {
             <View style={{flexDirection: "row"***REMOVED******REMOVED***>   
                 <View style={styles.progressImage***REMOVED***>
                     <AnimatedCircularProgress
-                        size={120***REMOVED***
-                        width={15***REMOVED***
+                        size={100***REMOVED***
+                        width={8***REMOVED***
                         fill={(numCompleted / numLessons) * 100***REMOVED***
                         tintColor={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED***
                         rotation={0***REMOVED***
@@ -58,19 +58,19 @@ function StudySetItem(props) {
 const styles = StyleSheet.create({
     studySetItem: {
         flex: 1,
-        height: 150,
+        height: 128,
         margin: 5,
         justifyContent: "center"
     ***REMOVED***,
     title: {
-        fontSize: 22,
+        fontSize: 18,
         textAlignVertical: "center",
         paddingHorizontal: 10,
         flexWrap: "wrap",
         fontFamily: 'open-sans-bold'
     ***REMOVED***,
     subtitle: {
-        fontSize: 14,
+        fontSize: 12,
         textAlignVertical: "center",
         paddingHorizontal: 10,
         flexWrap: "wrap",

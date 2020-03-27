@@ -1,8 +1,9 @@
 //basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Text, ActivityIndicator ***REMOVED*** from 'react-native';
+import { View, FlatList, StyleSheet, Text, ActivityIndicator, TouchableOpacity ***REMOVED*** from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import i18n from 'i18n-js';
+import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 
 
 //other component imports
@@ -13,127 +14,144 @@ import FlatListSeparator from '../components/FlatListSeparator'
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import { setFirstOpen ***REMOVED*** from '../redux/actions/databaseActions'
+import { Header ***REMOVED*** from 'react-native/Libraries/NewAppScreen';
+import HeaderButtons from '../components/HeaderButtons';
 
 function StudySetScreen(props) {
 
-    
-    //check if we're on first launch (maybe get better solution later;
-    //this does an async operation every time this screen opens)
-    useEffect(() => {
-        if (props.isFirstOpen) {
-            props.navigation.replace("LanguageSelect")
-        ***REMOVED*** 
-    ***REMOVED***, [])
 
-    useEffect(() => {
+   //check if we're on first launch (maybe get better solution later;
+   //this does an async operation every time this screen opens)
+   useEffect(() => {
+      if (props.isFirstOpen) {
+         props.navigation.replace("LanguageSelect")
+      ***REMOVED***
+   ***REMOVED***, [])
+
+   useEffect(() => {
       if (!props.isFirstOpen && !props.isFetching) {
-         props.navigation.setParams({primaryColor: props.colors.primaryColor***REMOVED***)
-      ***REMOVED*** 
+         props.navigation.setParams({ primaryColor: props.colors.primaryColor ***REMOVED***)
+      ***REMOVED***
    ***REMOVED***, [props.isFirstOpen])
-    
 
 
 
-    FileSystem.getFreeDiskStorageAsync().then(freeDiskStorage => {
-        //console.log(freeDiskStorage)
-      ***REMOVED***);
-    
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
-        //console.log(contents)
-    ***REMOVED***);
 
-    //function to navigate to the lesson list screen
-    //props.navigation.navigate takes us to lessonlist screen
-    //params is the information we want to pass to lessonlist screen
-    function navigateToLessonList(item) {
-        props.navigation.navigate({
-            routeName: "LessonList",
-            params: {
-                title: item.title,
-                studySetID: item.id,
-                subtitle: item.subtitle,
-                iconName: item.iconName
-            ***REMOVED***
-        ***REMOVED***)
-    ***REMOVED***
+   FileSystem.getFreeDiskStorageAsync().then(freeDiskStorage => {
+      //console.log(freeDiskStorage)
+   ***REMOVED***);
 
-    i18n.translations = {
-        en: { 
-          loadingMessage: "Hang on, we're setting things up..."
-        ***REMOVED***,
-        es: {
-          loadingMessage: "Espera, estamos preparando las cosas..."
-        ***REMOVED***
-      ***REMOVED***;
+   FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
+      //console.log(contents)
+   ***REMOVED***);
 
+   //function to navigate to the lesson list screen
+   //props.navigation.navigate takes us to lessonlist screen
+   //params is the information we want to pass to lessonlist screen
+   function navigateToLessonList(item) {
+      props.navigation.navigate({
+         routeName: "LessonList",
+         params: {
+            title: item.title,
+            studySetID: item.id,
+            subtitle: item.subtitle,
+            iconName: item.iconName
+         ***REMOVED***
+      ***REMOVED***)
+   ***REMOVED***
 
-
-    ////////////////////////////////
-    ////RENDER/STYLES/NAVOPTIONS////
-    ////////////////////////////////
+   i18n.translations = {
+      en: {
+         loadingMessage: "Hang on, we're setting things up..."
+      ***REMOVED***,
+      es: {
+         loadingMessage: "Espera, estamos preparando las cosas..."
+      ***REMOVED***
+   ***REMOVED***;
 
 
-    
-    //function to render the studyset items
-    //includes onSelect which navigates to the appropriate lesson list screen
-    function renderStudySetItem(studySetList) {
-        return (
-            <StudySetItem
-                title={studySetList.item.title***REMOVED***
-                subtitle={studySetList.item.subtitle***REMOVED***
-                onStudySetSelect={() => navigateToLessonList(studySetList.item)***REMOVED***
-                id={studySetList.item.id***REMOVED***
-                iconName={studySetList.item.iconName***REMOVED***
+
+   ////////////////////////////////
+   ////RENDER/STYLES/NAVOPTIONS////
+   ////////////////////////////////
+
+
+
+   //function to render the studyset items
+   //includes onSelect which navigates to the appropriate lesson list screen
+   function renderStudySetItem(studySetList) {
+      return (
+         <StudySetItem
+            title={studySetList.item.title***REMOVED***
+            subtitle={studySetList.item.subtitle***REMOVED***
+            onStudySetSelect={() => navigateToLessonList(studySetList.item)***REMOVED***
+            id={studySetList.item.id***REMOVED***
+            iconName={studySetList.item.iconName***REMOVED***
+         />
+      )
+   ***REMOVED***
+
+
+   //if we're not fetching data, render the flatlist. if we are, render a loading screen
+   if (!props.isFetching) {
+      return (
+         <View style={{ ...styles.screen, ...{ backgroundColor: props.colors.lessonSetScreenBG ***REMOVED*** ***REMOVED******REMOVED***>
+            <FlatList
+               data={props.database[props.database.currentLanguage].studySets***REMOVED***
+               renderItem={renderStudySetItem***REMOVED***
+               ItemSeparatorComponent={FlatListSeparator***REMOVED***
             />
-        )
-    ***REMOVED***
-
-    
-    //if we're not fetching data, render the flatlist. if we are, render a loading screen
-    if (!props.isFetching) {
-        return (
-            <View style={{...styles.screen, ...{backgroundColor: props.colors.lessonSetScreenBG***REMOVED******REMOVED******REMOVED***>
-                <FlatList
-                    data={props.database[props.database.currentLanguage].studySets***REMOVED***
-                    renderItem={renderStudySetItem***REMOVED***
-                    ItemSeparatorComponent = {FlatListSeparator***REMOVED***
-                />
-            </View>
-        )
-    ***REMOVED*** else {
-        return (
-            <View style={{flex: 1, justifyContent: "center"***REMOVED******REMOVED***>
-                <Text style={{textAlign: "center", fontSize: 30, marginVertical: 20***REMOVED******REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
-                <ActivityIndicator size="large" color="black" />
-            </View>
-        )
-    ***REMOVED***
+         </View>
+      )
+   ***REMOVED*** else {
+      return (
+         <View style={{ flex: 1, justifyContent: "center" ***REMOVED******REMOVED***>
+            <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 20 ***REMOVED******REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
+            <ActivityIndicator size="large" color="black" />
+         </View>
+      )
+   ***REMOVED***
 ***REMOVED***
 
 StudySetScreen.navigationOptions = navigationData => {
-    const primaryColor = navigationData.navigation.getParam("primaryColor");
+   const primaryColor = navigationData.navigation.getParam("primaryColor");
 
-    return {
-        headerTitle: "waha",
-        headerBackTitle: "Back",
-        headerStyle: {
-            backgroundColor: primaryColor
-        ***REMOVED***,
-        headerTitleStyle: {
-            color: "#fff",
-            fontFamily: 'open-sans-bold'
-        ***REMOVED***
-    ***REMOVED***;
+   return {
+      headerTitle: "waha",
+      headerBackTitle: "Back",
+      headerStyle: {
+         backgroundColor: primaryColor
+      ***REMOVED***,
+      headerTitleStyle: {
+         color: "#fff",
+         fontFamily: 'open-sans-bold'
+      ***REMOVED***,
+      headerRight: () =>
+         <HeaderButtons
+            name='md-settings'
+            onPress1={() => navigationData.navigation.navigate("Settings")***REMOVED***
+            hasCompleteButton={false***REMOVED***
+         />
+   ***REMOVED***;
 ***REMOVED***;
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-    ***REMOVED***,
-    text: {
-        textAlign: "center",
-        margin: 40
-    ***REMOVED***
+   screen: {
+      flex: 1,
+   ***REMOVED***,
+   text: {
+      textAlign: "center",
+      margin: 40
+   ***REMOVED***,
+   headerButtonsContainer: {
+      flexDirection: "row",
+      width: 80
+   ***REMOVED***,
+   headerButton: {
+      alignItems: "center",
+      justifyContent: "center",
+      flex: 1
+   ***REMOVED***
 ***REMOVED***)
 
 /////////////
@@ -141,26 +159,26 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
-    if(!state.database.isFetching)
-        return {
-            database: state.database,
-            colors: state.database[state.database.currentLanguage].colors,
-            appProgress: state.appProgress
-        ***REMOVED***
-    else {
-        return {
-            isFetching: state.database.isFetching,
-            isFirstOpen: state.database.isFirstOpen
-        ***REMOVED***
-    ***REMOVED***
+   if (!state.database.isFetching)
+      return {
+         database: state.database,
+         colors: state.database[state.database.currentLanguage].colors,
+         appProgress: state.appProgress
+      ***REMOVED***
+   else {
+      return {
+         isFetching: state.database.isFetching,
+         isFirstOpen: state.database.isFirstOpen
+      ***REMOVED***
+   ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
-return {
-    addLanguage: language => dispatch(addLanguage(language)),
-    changeLanguage: language => dispatch(changeLanguage(language)),
-    setFirstOpen: toSet => dispatch(setFirstOpen(toSet))
-***REMOVED***
+   return {
+      addLanguage: language => dispatch(addLanguage(language)),
+      changeLanguage: language => dispatch(changeLanguage(language)),
+      setFirstOpen: toSet => dispatch(setFirstOpen(toSet))
+   ***REMOVED***
 ***REMOVED***;
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudySetScreen);

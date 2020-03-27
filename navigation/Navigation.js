@@ -8,6 +8,8 @@ import LessonListScreen from '../screens/LessonListScreen';
 import PlayScreen from '../screens/PlayScreen'
 import LanguageSelectScreen from '../screens/LanguageSelectScreen';
 import OnboardingSlidesScreen from '../screens/OnboardingSlidesScreen';
+import SettingsScreen from '../screens/SettingsScreen'
+import LanguageInstancesScreen from '../screens/LanguageInstancesScreen';
 
 const DefaultWahaNavigatorOptions = {
     headerStyle: {
@@ -32,6 +34,12 @@ const WahaNavigator = createStackNavigator(
         OnboardingSlides: {
             screen: OnboardingSlidesScreen
         ***REMOVED***, 
+        Settings: {
+           screen: SettingsScreen
+        ***REMOVED***,
+        LanguageInstances: {
+           screen: LanguageInstancesScreen
+        ***REMOVED***
     ***REMOVED***,
     {
         defaultNavigationOptions: DefaultWahaNavigatorOptions

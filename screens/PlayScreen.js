@@ -14,6 +14,7 @@ import ModalButton from '../components/ModalButton'
 import Scrubber from '../components/Scrubber'
 import PlayPauseSkip from '../components/PlayPauseSkip';
 import ChapterSelect from '../components/ChapterSelect'
+import HeaderButtons from '../components/HeaderButtons'
 
 //redux
 import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
@@ -422,28 +423,13 @@ PlayScreen.navigationOptions = navigationData => {
       ***REMOVED***,
       gestureEnabled: false,
       headerRight: () =>
-         <View style={styles.headerButtonsContainer***REMOVED***>
-            <TouchableOpacity
-               style={styles.headerButton***REMOVED***
-               onPress={() => setShowShareLessonModal(true)***REMOVED***
-            >
-               <Ionicons
-                  name='md-share'
-                  size={30***REMOVED***
-                  color="white"
-               />
-            </TouchableOpacity>
-            <TouchableOpacity
-               style={styles.headerButton***REMOVED***
-               onPress={navMarkHandler***REMOVED***
-            >
-               <Ionicons
-                  name={navIsComplete ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"***REMOVED***
-                  size={30***REMOVED***
-                  color='white'
-               />
-            </TouchableOpacity>
-         </View>
+         <HeaderButtons
+            name='md-share'
+            onPress1={() => setShowShareLessonModal(true)***REMOVED***
+            hasCompleteButton={true***REMOVED***
+            completeOnPress={navMarkHandler***REMOVED***
+            completeCondition={navIsComplete***REMOVED***
+         />
    ***REMOVED***
 ***REMOVED***;
 
@@ -486,15 +472,7 @@ const styles = StyleSheet.create({
       width: "100%",
       height: 200
    ***REMOVED***,
-   headerButtonsContainer: {
-      flexDirection: "row",
-      width: 80
-   ***REMOVED***,
-   headerButton: {
-      alignItems: "center",
-      justifyContent: "center",
-      flex: 1
-   ***REMOVED***
+
 ***REMOVED***)
 
 

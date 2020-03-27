@@ -8,16 +8,16 @@ import { connect ***REMOVED*** from 'react-redux'
 
 function LessonItem(props) {
 
-    //state to keep track of whether this lesson is downloaded
-    //NOTE: must be state; don't try it with a normal var
-    const [isDownloaded, setIsDownloaded] = useState(false);
 
-    //check if the lesson is downloaded and set isDownloaded accordingly
-    FileSystem.getInfoAsync(FileSystem.documentDirectory + props.id + '.mp3')
-        .then(({ exists ***REMOVED***) => {
-            exists ? setIsDownloaded(true) : setIsDownloaded(false)
-        ***REMOVED***)
+   const [isDownloaded, setIsDownloaded] = useState(false)
 
+   //check if the lesson is downloaded and set isDownloaded accordingly
+   FileSystem.getInfoAsync(FileSystem.documentDirectory + props.id + '.mp3')
+   .then(({ exists ***REMOVED***) => {
+      exists ? setIsDownloaded(true) : setIsDownloaded(false)
+      props.setRefresh(old => !old)
+      ***REMOVED***
+   )
 
     //functions to call modals from lessonlistscreen
     //function are setState functions passed from lessonlistscreen
@@ -36,6 +36,7 @@ function LessonItem(props) {
         props.setShowLessonOptionsModal.call();
     ***REMOVED***
 
+      //console.log(props.isDownloaded)
 
 
     ////////////////////////////////
@@ -73,7 +74,7 @@ function LessonItem(props) {
                 >
                     <View style={styles.icon***REMOVED***>
                         <MaterialCommunityIcons
-                            name={props.isComplete ? "play-circle" : "play-box-outline"***REMOVED***
+                            name={props.isComplete ? "check-circle" : "play-box-outline"***REMOVED***
                             color={props.isComplete ? props.grayedOut : props.accentColor***REMOVED***
                             size={30***REMOVED***
                         />
