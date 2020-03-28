@@ -1,6 +1,6 @@
 //basic imports
 import React from 'react';
-import { View, Text***REMOVED*** from 'react-native';
+import { View, Text, StyleSheet***REMOVED*** from 'react-native';
 
 function TimeDisplay(props) {
 
@@ -24,9 +24,16 @@ function TimeDisplay(props) {
 
     return (
         <View styles={props.style***REMOVED***>
-            <Text>{msToTime(props.time)***REMOVED***</Text>
+            <Text style={styles.timeText***REMOVED***>{msToTime(props.time)***REMOVED***</Text>
         </View>
     )
 ***REMOVED***
+
+const styles = StyleSheet.create({
+   timeText: {
+      fontFamily: 'regular',
+      fontSize: 12
+   ***REMOVED***
+***REMOVED***)
 
 export default TimeDisplay;

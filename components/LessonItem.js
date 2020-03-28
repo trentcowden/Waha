@@ -51,13 +51,13 @@ function LessonItem(props) {
     var progressBar;
     if (!props.downloadProgress) {
         downloadedFeedback = 
-            <Ionicons.Button 
-                name={isDownloaded ? "md-cloud-done" : "md-cloud-download"***REMOVED*** 
-                color={isDownloaded ? props.grayedOut : "black"***REMOVED***
-                size={30***REMOVED***
-                onPress={isDownloaded ? showDeleteModal : showSaveModal***REMOVED***
-                backgroundColor="rgba(0,0,0,0)"
-            />
+            <TouchableOpacity onPress={isDownloaded ? showDeleteModal : showSaveModal***REMOVED*** style={styles.downloadButtonContainer***REMOVED***>
+               <Ionicons 
+                  name={isDownloaded ? "md-cloud-done" : "md-cloud-download"***REMOVED*** 
+                  color={isDownloaded ? props.grayedOut : "black"***REMOVED***
+                  size={25***REMOVED***
+               />
+            </TouchableOpacity>
         progressBar = null;
     ***REMOVED*** else {
         downloadedFeedback = <ActivityIndicator size="small" color="black" />
@@ -65,28 +65,27 @@ function LessonItem(props) {
     ***REMOVED***  
 
     return (
-        <View style={{...styles.lessonItem, ...props.isComplete ? {backgroundColor: "#D3D3D3"***REMOVED*** : null***REMOVED******REMOVED***>
+        <View style={styles.lessonItem***REMOVED***>
             <View style={styles.mainDisplay***REMOVED***>
-                <TouchableOpacity 
-                    style={styles.progresAndTitle***REMOVED*** 
+               <TouchableOpacity 
+                    style={styles.progressAndTitle***REMOVED*** 
                     onPress={props.onLessonSelect***REMOVED***
                     onLongPress={showLessonOptionsModal***REMOVED***
-                >
-                    <View style={styles.icon***REMOVED***>
-                        <MaterialCommunityIcons
-                            name={props.isComplete ? "check-circle" : "play-box-outline"***REMOVED***
-                            color={props.isComplete ? props.grayedOut : props.accentColor***REMOVED***
-                            size={30***REMOVED***
-                        />
-                    </View>
-                    <View styles={styles.titleContainer***REMOVED***>
-                        <Text style={{...styles.title,...{color: props.isComplete ? props.grayedOut : "black"***REMOVED******REMOVED******REMOVED***>{props.title***REMOVED***</Text>
-                        <Text style={styles.subtitle***REMOVED***>{props.subtitle***REMOVED***</Text>
-                    </View>
+               >
+                  <View style={styles.completeStatusContainer***REMOVED***>
+                     <MaterialCommunityIcons
+                        name={props.isComplete ? "check-circle" : "play-box-outline"***REMOVED***
+                        size={30***REMOVED***
+                        color={props.isComplete ? props.grayedOut : props.accentColor***REMOVED***
+                     />
+                  </View>
+                  <View style={styles.titleContainer***REMOVED***>
+                     <Text style={{...styles.title,...{color: props.isComplete ? "#9FA5AD" : "black"***REMOVED******REMOVED******REMOVED***>{props.title***REMOVED***</Text>
+                     <Text style={{...styles.subtitle,...{color: props.isComplete ? "#9FA5AD" : "black"***REMOVED******REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
+                  </View>
+                    
                 </TouchableOpacity>
-                <View style={styles.icon***REMOVED***>
-                    {downloadedFeedback***REMOVED***
-                </View>
+               {downloadedFeedback***REMOVED***
             </View>
             <View style={styles.progressBar***REMOVED***>
                 {progressBar***REMOVED***
@@ -97,39 +96,44 @@ function LessonItem(props) {
 
 const styles = StyleSheet.create({
     lessonItem: {
-        height: 75,
-        padding: 5,
+        height: 64,
         justifyContent: "center",
         flexDirection: "column",
-        alignContent: "center"
+        alignContent: "center",
     ***REMOVED***,
     mainDisplay: {
-        flexDirection: "row"
+        flexDirection: "row",
     ***REMOVED***,
+    progressAndTitle: {
+      justifyContent: "flex-start",
+      flexDirection: 'row',
+      alignContent: "center",
+      flex: 1,
+   ***REMOVED***,
+   completeStatusContainer: {
+      justifyContent: "center",
+      marginHorizontal: 10,
+ ***REMOVED***,
+   titleContainer: {
+      flexDirection: "column",
+      justifyContent: "center",
+      flex: 1
+  ***REMOVED***,
     title: {
-        fontSize: 22,
+        fontSize: 18,
         textAlignVertical: "center",
         paddingHorizontal: 10,
-        fontFamily: 'open-sans-regular'
+        fontFamily: 'medium'
     ***REMOVED***,
     subtitle: {
-        fontSize: 15,
+        fontSize: 14,
         paddingHorizontal: 10,
-        fontFamily: 'open-sans-light'
+        fontFamily: 'regular'
     ***REMOVED***,
-    titleContainer: {
-        flexDirection: "column",
-        justifyContent: "space-around",
-    ***REMOVED***,
-    icon: {
-        justifyContent: "center",
-        marginHorizontal: 10
-    ***REMOVED***,
-    progresAndTitle: {
-        justifyContent: "flex-start",
-        flexDirection: 'row',
-        alignContent: "center",
-        flex: 1
+    downloadButtonContainer: {
+      justifyContent: "center",
+      marginLeft: 5,
+      marginRight: 15
     ***REMOVED***,
     progressBar: {
         width: "100%"

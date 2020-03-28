@@ -99,7 +99,6 @@ function StudySetScreen(props) {
             <FlatList
                data={props.database[props.database.currentLanguage].studySets***REMOVED***
                renderItem={renderStudySetItem***REMOVED***
-               ItemSeparatorComponent={FlatListSeparator***REMOVED***
             />
          </View>
       )
@@ -124,7 +123,7 @@ StudySetScreen.navigationOptions = navigationData => {
       ***REMOVED***,
       headerTitleStyle: {
          color: "#fff",
-         fontFamily: 'open-sans-bold'
+         fontFamily: 'bold'
       ***REMOVED***,
       headerRight: () =>
          <HeaderButtons

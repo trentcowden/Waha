@@ -5,6 +5,7 @@ import * as FileSystem from 'expo-file-system';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import SettingsItem from '../components/SettingsItem'
 import * as WebBrowser from 'expo-web-browser';
+import HeaderButtons from '../components/HeaderButtons'
 
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
@@ -123,8 +124,14 @@ SettingsScreen.navigationOptions = navigationData => {
        ***REMOVED***,
        headerTitleStyle: {
            color: "#fff",
-           fontFamily: 'open-sans-bold'
+           fontFamily: 'bold'
        ***REMOVED***,
+       headerLeft: () => 
+         <HeaderButtons
+            name='ios-arrow-back'
+            onPress1={() => navigationData.navigation.goBack()***REMOVED***
+            hasCompleteButton={false***REMOVED***
+         />,
        
    ***REMOVED***;
 ***REMOVED***;

@@ -11,7 +11,7 @@ function ChapterSelect(props) {
    var chapter2IconName;
 
    if (props.activeChapter === 'fellowship') {
-      chapter2IconName = 'numeric-2'
+      chapter2IconName = 'numeric-2-box'
    ***REMOVED*** else if (props.activeChapter === 'passage') {
       chapter2IconName = 'numeric-2-box'
    ***REMOVED*** else {
@@ -36,38 +36,53 @@ function ChapterSelect(props) {
          </View>
    ***REMOVED*** else {
       chapter2Button =
-         <TouchableOpacity 
-            style={{ ...styles.chapterSelect, ...{ borderColor: props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED*** 
-            onPress={() => props.onPress('passage')***REMOVED***
-         >
-            <MaterialCommunityIcons
-               name={chapter2IconName***REMOVED***
-               size={30***REMOVED***
-               color={props.colors.accentColor***REMOVED***
-            />
-            <Text style={{ ...styles.chapterSelectText, ...{ color: props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Passage</Text>
-         </TouchableOpacity>
+      <TouchableOpacity 
+         style={{ ...styles.chapterSelect, ...{ 
+            borderColor: props.colors.accentColor,
+            backgroundColor: (props.activeChapter === 'passage') ? props.colors.accentColor : "#EFF2F4"***REMOVED***,
+         ***REMOVED******REMOVED*** 
+         onPress={() => props.onPress('passage')***REMOVED***
+      >
+         <MaterialCommunityIcons
+            name={chapter2IconName***REMOVED***
+            size={25***REMOVED***
+            color={(props.activeChapter === 'passage') ? "white" : props.colors.accentColor***REMOVED***
+         />
+         <Text style={{ ...styles.chapterSelectText, ...{ color: (props.activeChapter === 'passage') ? "white" : props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Passage</Text>
+      </TouchableOpacity>
    ***REMOVED***
 
 
    return (
       <View style={styles.chapterSelectContainer***REMOVED***>
-         <TouchableOpacity style={{ ...styles.chapterSelect, ...{ borderColor: props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED*** onPress={() => props.onPress('fellowship')***REMOVED***>
+         <TouchableOpacity 
+            style={{ ...styles.chapterSelect, ...{ 
+               borderColor: props.colors.accentColor,
+               backgroundColor: (props.activeChapter === 'fellowship') ? props.colors.accentColor : "#EFF2F4"***REMOVED***,
+            ***REMOVED******REMOVED*** 
+            onPress={() => props.onPress('fellowship')***REMOVED***
+         >
             <MaterialCommunityIcons
                name={(props.activeChapter === 'fellowship') ? "numeric-1-box" : "checkbox-marked"***REMOVED***
-               size={30***REMOVED***
-               color={props.colors.accentColor***REMOVED***
+               size={25***REMOVED***
+               color={(props.activeChapter === 'fellowship') ? "white" : props.colors.accentColor***REMOVED***
             />
-            <Text style={{ ...styles.chapterSelectText, ...{ color: props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Fellowship</Text>
+            <Text style={{ ...styles.chapterSelectText, ...{ color: (props.activeChapter === 'fellowship') ? "white" : props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Fellowship</Text>
          </TouchableOpacity>
          {chapter2Button***REMOVED***
-         <TouchableOpacity style={{ ...styles.chapterSelect, ...{ borderColor: props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED*** onPress={() => props.onPress('application')***REMOVED***>
+         <TouchableOpacity 
+            style={{ ...styles.chapterSelect, ...{ 
+               borderColor: props.colors.accentColor , 
+               backgroundColor: (props.activeChapter === 'application') ? props.colors.accentColor : "#EFF2F4"***REMOVED***, 
+            ***REMOVED******REMOVED*** 
+            onPress={() => props.onPress('application')***REMOVED***
+         >
             <MaterialCommunityIcons
-               name={(props.activeChapter === 'application') ? "numeric-3-box" : "numeric-3"***REMOVED***
-               size={30***REMOVED***
-               color={props.colors.accentColor***REMOVED***
+               name="numeric-3-box"
+               size={25***REMOVED***
+               color={(props.activeChapter === 'application') ? "white" : props.colors.accentColor***REMOVED***
             />
-            <Text style={{ ...styles.chapterSelectText, ...{ color: props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Application</Text>
+            <Text style={{ ...styles.chapterSelectText, ...{ color: (props.activeChapter === 'application') ? "white" : props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Fellowship</Text>
          </TouchableOpacity>
       </View>
    )
@@ -84,11 +99,10 @@ const styles = StyleSheet.create({
       alignItems: "center",
       height: 50,
       justifyContent: "center",
-      borderTopWidth: 2,
-      borderBottomWidth: 2
+      borderWidth: 2
    ***REMOVED***,
    chapterSelectText: {
-      fontFamily: 'open-sans-regular',
+      fontFamily: 'black',
       fontSize: 16
    ***REMOVED***,
 ***REMOVED***)

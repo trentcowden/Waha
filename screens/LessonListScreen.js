@@ -4,7 +4,7 @@ import { View, FlatList, StyleSheet, Button, Modal, Alert ***REMOVED*** from 're
 import LessonItem from '../components/LessonItem';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import StudySetItem from '../components/StudySetItem';
+import StudySetItemSmall from '../components/StudySetItemSmall';
 import FlatListSeparator from '../components/FlatListSeparator'
 import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
@@ -154,14 +154,14 @@ function LessonListScreen(props) {
    return (
       <View style={{ ...styles.screen, ...{ backgroundColor: props.colors.lessonListScreenBG ***REMOVED*** ***REMOVED******REMOVED***>
          <View style={styles.studySetItemContainer***REMOVED***>
-            <StudySetItem
+            <StudySetItemSmall
                title={props.navigation.getParam("title")***REMOVED***
                subtitle={props.navigation.getParam("subtitle")***REMOVED***
-               onStudySetSelect={() => { ***REMOVED******REMOVED***
                id={props.navigation.getParam("studySetID")***REMOVED***
                iconName={props.navigation.getParam("iconName")***REMOVED***
             />
          </View>
+         <FlatListSeparator/>
          <FlatList
             data={selectedLessonList***REMOVED***
             renderItem={renderLessonItem***REMOVED***
@@ -200,14 +200,20 @@ LessonListScreen.navigationOptions = navigationData => {
       ***REMOVED***,
       headerTitleStyle: {
          color: "#fff",
-         fontFamily: 'open-sans-bold'
+         fontFamily: 'bold'
       ***REMOVED***,
       headerRight: () =>
          <HeaderButtons
             name='md-settings'
             onPress1={() => navigationData.navigation.navigate("Settings")***REMOVED***
             hasCompleteButton={false***REMOVED***
-         />
+         />,
+      headerLeft: () => 
+         <HeaderButtons
+            name='ios-arrow-back'
+            onPress1={() => navigationData.navigation.goBack()***REMOVED***
+            hasCompleteButton={false***REMOVED***
+         />,
    ***REMOVED***;
 ***REMOVED***;
 
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    studySetItemContainer: {
       width: "100%",
-      height: 150,
+      height: 80
    ***REMOVED***,
    lessonListContainer: {
    ***REMOVED***

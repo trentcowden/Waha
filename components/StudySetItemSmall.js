@@ -1,11 +1,11 @@
 //basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
-import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
+import { View, Text, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
 
-function StudySetItem(props) {
+function StudySetItemSmall(props) {
 
    const [numCompleted, setNumCompleted] = useState(0)
    const [fullyCompleted, setFullyCompleted] = useState(false)
@@ -32,59 +32,38 @@ function StudySetItem(props) {
 
 
    return (
-      <TouchableOpacity style={styles.studySetItem***REMOVED*** onPress={props.onStudySetSelect***REMOVED***>
-            <View style={styles.progressContainer***REMOVED***>
+      <View style={styles.studySetItem***REMOVED***>
+         <View style={{ flexDirection: "row" ***REMOVED******REMOVED***>
+            <View style={styles.progressImage***REMOVED***>
                <AnimatedCircularProgress
-                  size={85***REMOVED***
-                  width={8***REMOVED***
+                  size={65***REMOVED***
+                  width={5***REMOVED***
                   fill={(numCompleted / numLessons) * 100***REMOVED***
                   tintColor={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED***
                   rotation={0***REMOVED***
                   backgroundColor="#fff"
                >
-                  {(fill) => (<MaterialCommunityIcons name={props.iconName***REMOVED*** size={50***REMOVED*** color={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED*** />)***REMOVED***
+                  {(fill) => (<MaterialCommunityIcons name={props.iconName***REMOVED*** size={40***REMOVED*** color={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED*** />)***REMOVED***
                </AnimatedCircularProgress>
-               <View style={styles.percentageTextContainer***REMOVED***>
-                  <Text style={styles.percentageText***REMOVED***>{(numCompleted / numLessons) * 100***REMOVED***%</Text>
-               </View>
             </View>
             <View style={styles.titleContainer***REMOVED***>
                <Text style={{ ...styles.subtitle, ...{ color: fullyCompleted ? props.grayedOut : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
                <Text style={{ ...styles.title, ...{ color: fullyCompleted ? props.grayedOut : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
             </View>
-            <View style={styles.iconContainer***REMOVED***>
-               <Entypo
-                  name='triangle-right'
-                  size={40***REMOVED***
-                  color="gray"
-               />
-            </View>
-      </TouchableOpacity>
+         </View>
+      </View>
    )
 ***REMOVED***
 
 const styles = StyleSheet.create({
    studySetItem: {
-      flexDirection: "row",
       flex: 1,
-      height: 128,
+      height: 75,
       margin: 5,
       justifyContent: "center"
    ***REMOVED***,
-   progressContainer: {
-      flexDirection: "column",
-      justifyContent: "center",
+   progressImage: {
       margin: 5
-   ***REMOVED***,
-   percentageTextContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      marginTop: 5
-   ***REMOVED***,
-   percentageText: {
-      fontFamily: 'light',
-      color: "#9FA5AD",
-      fontSize: 10
    ***REMOVED***,
    titleContainer: {
       flex: 1,
@@ -94,21 +73,17 @@ const styles = StyleSheet.create({
       marginRight: 5
    ***REMOVED***,
    title: {
-      fontSize: 18,
+      fontSize: 14,
       textAlignVertical: "center",
       flexWrap: "wrap",
-      fontFamily: 'bold'
+      fontFamily: 'medium'
    ***REMOVED***,
    subtitle: {
-      fontSize: 12,
+      fontSize: 10,
       textAlignVertical: "center",
       flexWrap: "wrap",
       fontFamily: 'light'
    ***REMOVED***,
-   iconContainer: {
-      justifyContent: "center",
-      marginRight: 15
-   ***REMOVED***
 ***REMOVED***)
 
 
@@ -121,4 +96,4 @@ function mapStateToProps(state) {
    ***REMOVED***
 ***REMOVED***;
 
-export default connect(mapStateToProps)(StudySetItem);
+export default connect(mapStateToProps)(StudySetItemSmall);

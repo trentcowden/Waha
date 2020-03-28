@@ -328,7 +328,7 @@ function PlayScreen(props) {
    function renderAlbumSlide(slideList) {
       var content;
       if (slideList.item.type === 'text') {
-         content = <Text style={{ flexWrap: "wrap", fontFamily: 'open-sans-regular' ***REMOVED******REMOVED***>{slideList.item.body***REMOVED***</Text>
+         content = <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>{slideList.item.body***REMOVED***</Text>
       ***REMOVED*** else {
          content = <MaterialCommunityIcons name={slideList.item.iconName***REMOVED*** size={350***REMOVED*** />
       ***REMOVED***
@@ -346,7 +346,7 @@ function PlayScreen(props) {
       //special case when audio is still loading
       audioControlContainer =
          <View style={styles.audioControlContainer***REMOVED***>
-            <ActivityIndicator size="large" color={props.colors.grayedOut***REMOVED*** />
+            <ActivityIndicator size="large" color="black" />
          </View>
    ***REMOVED*** else {
       //general case which shows scrubber/play controls
@@ -373,17 +373,19 @@ function PlayScreen(props) {
             <Text style={styles.title***REMOVED***>{props.navigation.getParam("title")***REMOVED***</Text>
             <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text>
          </View>
-         <FlatList
-            renderItem={renderAlbumSlide***REMOVED***
-            data={albumSlidesData***REMOVED***
-            horizontal={true***REMOVED***
-            pagingEnabled={true***REMOVED***
-            snapToAlignment={"start"***REMOVED***
-            snapToInterval={Dimensions.get('window').width***REMOVED***
-            decelerationRate={"fast"***REMOVED***
-            viewabilityConfig={viewConfigRef.current***REMOVED***
-            initialScrollIndex={0***REMOVED***
-         />
+         <View>
+            <FlatList
+               renderItem={renderAlbumSlide***REMOVED***
+               data={albumSlidesData***REMOVED***
+               horizontal={true***REMOVED***
+               pagingEnabled={true***REMOVED***
+               snapToAlignment={"start"***REMOVED***
+               snapToInterval={Dimensions.get('window').width***REMOVED***
+               decelerationRate={"fast"***REMOVED***
+               viewabilityConfig={viewConfigRef.current***REMOVED***
+               initialScrollIndex={0***REMOVED***
+            />
+         </View>
          <View style={styles.controlsContainer***REMOVED***>
             <ChapterSelect
                activeChapter={activeChapter***REMOVED***
@@ -419,7 +421,7 @@ PlayScreen.navigationOptions = navigationData => {
       ***REMOVED***,
       headerTitleStyle: {
          color: "#fff",
-         fontFamily: 'open-sans-bold'
+         fontFamily: 'bold'
       ***REMOVED***,
       gestureEnabled: false,
       headerRight: () =>
@@ -429,7 +431,13 @@ PlayScreen.navigationOptions = navigationData => {
             hasCompleteButton={true***REMOVED***
             completeOnPress={navMarkHandler***REMOVED***
             completeCondition={navIsComplete***REMOVED***
-         />
+         />,
+      headerLeft: () => 
+      <HeaderButtons
+            name='ios-arrow-back'
+            onPress1={() => navigationData.navigation.goBack()***REMOVED***
+            hasCompleteButton={false***REMOVED***
+         />,
    ***REMOVED***
 ***REMOVED***;
 
@@ -445,32 +453,33 @@ const styles = StyleSheet.create({
    title: {
       textAlign: "center",
       fontSize: 30,
-      fontFamily: 'open-sans-bold'
+      fontFamily: 'black'
    ***REMOVED***,
    subtitle: {
       textAlign: "center",
-      fontSize: 20,
-      fontFamily: 'open-sans-light'
+      fontSize: 18,
+      fontFamily: 'regular'
    ***REMOVED***,
    albumArtContainer: {
       width: (Dimensions.get('window').width - 40),
+      height: (Dimensions.get('window').width - 40),
       padding: 20,
       margin: 20,
-      borderRadius: 10
+      borderRadius: 10,
    ***REMOVED***,
    controlsContainer: {
       flexDirection: "column",
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
       width: "100%",
+      marginBottom: 10
    ***REMOVED***,
    audioControlContainer: {
-      justifyContent: "space-around",
+      justifyContent: "center",
       flexDirection: "column",
-      marginBottom: 5,
       marginHorizontal: 10,
       width: "100%",
-      height: 200
+      height: 160
    ***REMOVED***,
 
 ***REMOVED***)
