@@ -5,6 +5,7 @@ import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
 import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function SettingsItem(props) {
 

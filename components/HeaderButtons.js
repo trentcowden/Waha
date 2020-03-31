@@ -13,7 +13,7 @@ function HeaderButtons(props) {
             <Ionicons
                name={props.completeCondition ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"***REMOVED***
                size={30***REMOVED***
-               color='white'
+               color='#828282'
             />
          </TouchableOpacity>
    ***REMOVED*** else {
@@ -22,13 +22,13 @@ function HeaderButtons(props) {
    return (
       <View style={{...styles.headerButtonsContainer, ...{justifyContent: props.name === 'ios-arrow-back' ? "flex-start" : "flex-end"***REMOVED******REMOVED******REMOVED***>
          <TouchableOpacity
-            style={{...styles.headerButton, ...{width: props.name === 'ios-arrow-back' ? 50 : null***REMOVED******REMOVED******REMOVED***
+            style={{...styles.headerButton, ...{width: props.name === 'ios-arrow-back' ? 120 : null***REMOVED******REMOVED******REMOVED***
             onPress={props.onPress1***REMOVED***
          >
             <Ionicons
                name={props.name***REMOVED***
                size={30***REMOVED***
-               color="white"
+               color="#828282"
             />
          </TouchableOpacity>
          {secondButton***REMOVED***

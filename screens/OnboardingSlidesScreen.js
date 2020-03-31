@@ -8,6 +8,7 @@ import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
 import { setFirstOpen ***REMOVED*** from '../redux/actions/databaseActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 
 function OnboardingSlidesScreen(props) {

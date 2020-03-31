@@ -4,8 +4,24 @@ import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-nati
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function StudySetItem(props) {
+
+   function chooseAccentColor() {
+
+      value = parseInt(props.id.substr(2,4)) % 4
+
+      if (value === 1) {
+         return props.colors.primaryColor
+      ***REMOVED*** else if (value === 2) {
+         return props.colors.accentColor1
+      ***REMOVED*** else if (value === 3) {
+         return props.colors.accentColor3
+      ***REMOVED*** else {
+         return props.colors.accentColor4
+      ***REMOVED***
+   ***REMOVED***
 
    const [numCompleted, setNumCompleted] = useState(0)
    const [fullyCompleted, setFullyCompleted] = useState(false)
@@ -35,22 +51,22 @@ function StudySetItem(props) {
       <TouchableOpacity style={styles.studySetItem***REMOVED*** onPress={props.onStudySetSelect***REMOVED***>
             <View style={styles.progressContainer***REMOVED***>
                <AnimatedCircularProgress
-                  size={85***REMOVED***
-                  width={8***REMOVED***
+                  size={85 * scaleMultiplier***REMOVED***
+                  width={8 * scaleMultiplier***REMOVED***
                   fill={(numCompleted / numLessons) * 100***REMOVED***
-                  tintColor={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED***
+                  tintColor={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED***
                   rotation={0***REMOVED***
-                  backgroundColor="#fff"
+                  backgroundColor="#FFFFFF"
                >
-                  {(fill) => (<MaterialCommunityIcons name={props.iconName***REMOVED*** size={50***REMOVED*** color={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED*** />)***REMOVED***
+                  {(fill) => (<View style={{backgroundColor: chooseAccentColor(), width: "100%", height: "100%", justifyContent: "center", alignItems: "center"***REMOVED******REMOVED***><MaterialCommunityIcons name={props.iconName***REMOVED*** size={50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** /></View>)***REMOVED***
                </AnimatedCircularProgress>
                <View style={styles.percentageTextContainer***REMOVED***>
                   <Text style={styles.percentageText***REMOVED***>{Math.round((numCompleted / numLessons) * 100)***REMOVED***%</Text>
                </View>
             </View>
             <View style={styles.titleContainer***REMOVED***>
-               <Text style={{ ...styles.subtitle, ...{ color: fullyCompleted ? props.grayedOut : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
-               <Text style={{ ...styles.title, ...{ color: fullyCompleted ? props.grayedOut : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
+               <Text style={{ ...styles.subtitle, ...{ color: fullyCompleted ? "#9FA5AD" : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
+               <Text style={{ ...styles.title, ...{ color: fullyCompleted ? "#9FA5AD" : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
             </View>
             <View style={styles.iconContainer***REMOVED***>
                <Entypo
@@ -67,7 +83,7 @@ const styles = StyleSheet.create({
    studySetItem: {
       flexDirection: "row",
       flex: 1,
-      height: 128,
+      height: 128 * scaleMultiplier,
       margin: 5,
       justifyContent: "center"
    ***REMOVED***,
@@ -94,13 +110,13 @@ const styles = StyleSheet.create({
       marginRight: 5
    ***REMOVED***,
    title: {
-      fontSize: 18,
+      fontSize: 18 * scaleMultiplier,
       textAlignVertical: "center",
       flexWrap: "wrap",
       fontFamily: 'bold'
    ***REMOVED***,
    subtitle: {
-      fontSize: 12,
+      fontSize: 12 * scaleMultiplier,
       textAlignVertical: "center",
       flexWrap: "wrap",
       fontFamily: 'light'
@@ -113,11 +129,9 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-
    return {
       progress: state.appProgress,
-      primaryColor: state.database[state.database.currentLanguage].colors.primaryColor,
-      grayedOut: state.database[state.database.currentLanguage].colors.grayedOut,
+      colors: state.database[state.database.currentLanguage].colors,
    ***REMOVED***
 ***REMOVED***;
 

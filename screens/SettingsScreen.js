@@ -6,6 +6,7 @@ import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import SettingsItem from '../components/SettingsItem'
 import * as WebBrowser from 'expo-web-browser';
 import HeaderButtons from '../components/HeaderButtons'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
@@ -117,13 +118,13 @@ SettingsScreen.navigationOptions = navigationData => {
    const primaryColor = navigationData.navigation.getParam("primaryColor");
 
    return {
-       headerTitle: "waha",
+       headerTitle: "Settings",
        headerBackTitle: "Back",
        headerStyle: {
-           backgroundColor: primaryColor
+           backgroundColor: "#F7F7F7",
        ***REMOVED***,
        headerTitleStyle: {
-           color: "#fff",
+           color: primaryColor,
            fontFamily: 'bold'
        ***REMOVED***,
        headerLeft: () => 
@@ -139,6 +140,7 @@ SettingsScreen.navigationOptions = navigationData => {
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
+      backgroundColor: "#F7F7F7"
       //justifyContent: "flex-start"
    ***REMOVED***,
 ***REMOVED***)

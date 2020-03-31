@@ -4,8 +4,24 @@ import { View, Text, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function StudySetItemSmall(props) {
+
+   function chooseAccentColor() {
+
+      value = parseInt(props.id.substr(2,4)) % 4
+
+      if (value === 1) {
+         return props.colors.primaryColor
+      ***REMOVED*** else if (value === 2) {
+         return props.colors.accentColor1
+      ***REMOVED*** else if (value === 3) {
+         return props.colors.accentColor3
+      ***REMOVED*** else {
+         return props.colors.accentColor4
+      ***REMOVED***
+   ***REMOVED***
 
    const [numCompleted, setNumCompleted] = useState(0)
    const [fullyCompleted, setFullyCompleted] = useState(false)
@@ -36,14 +52,14 @@ function StudySetItemSmall(props) {
          <View style={{ flexDirection: "row" ***REMOVED******REMOVED***>
             <View style={styles.progressImage***REMOVED***>
                <AnimatedCircularProgress
-                  size={65***REMOVED***
-                  width={5***REMOVED***
+                  size={65 * scaleMultiplier***REMOVED***
+                  width={5 * scaleMultiplier***REMOVED***
                   fill={(numCompleted / numLessons) * 100***REMOVED***
-                  tintColor={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED***
+                  tintColor={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED***
                   rotation={0***REMOVED***
-                  backgroundColor="#fff"
+                  backgroundColor="#FFFFFF"
                >
-                  {(fill) => (<MaterialCommunityIcons name={props.iconName***REMOVED*** size={40***REMOVED*** color={fullyCompleted ? props.grayedOut : props.primaryColor***REMOVED*** />)***REMOVED***
+                  {(fill) => (<View style={{backgroundColor: chooseAccentColor(), width: "100%", height: "100%", justifyContent: "center", alignItems: "center"***REMOVED******REMOVED***><MaterialCommunityIcons name={props.iconName***REMOVED*** size={40 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** /></View>)***REMOVED***
                </AnimatedCircularProgress>
             </View>
             <View style={styles.titleContainer***REMOVED***>
@@ -58,7 +74,7 @@ function StudySetItemSmall(props) {
 const styles = StyleSheet.create({
    studySetItem: {
       flex: 1,
-      height: 75,
+      height: 75 * scaleMultiplier,
       margin: 5,
       justifyContent: "center"
    ***REMOVED***,
@@ -73,13 +89,13 @@ const styles = StyleSheet.create({
       marginRight: 5
    ***REMOVED***,
    title: {
-      fontSize: 14,
+      fontSize: 14 * scaleMultiplier,
       textAlignVertical: "center",
       flexWrap: "wrap",
       fontFamily: 'medium'
    ***REMOVED***,
    subtitle: {
-      fontSize: 10,
+      fontSize: 10 * scaleMultiplier, 
       textAlignVertical: "center",
       flexWrap: "wrap",
       fontFamily: 'light'
@@ -91,8 +107,7 @@ function mapStateToProps(state) {
 
    return {
       progress: state.appProgress,
-      primaryColor: state.database[state.database.currentLanguage].colors.primaryColor,
-      grayedOut: state.database[state.database.currentLanguage].colors.grayedOut,
+      colors: state.database[state.database.currentLanguage].colors,
    ***REMOVED***
 ***REMOVED***;
 

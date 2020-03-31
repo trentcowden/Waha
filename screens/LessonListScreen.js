@@ -1,6 +1,6 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Button, Modal, Alert ***REMOVED*** from 'react-native';
+import { View, FlatList, StyleSheet, Alert, Image ***REMOVED*** from 'react-native';
 import LessonItem from '../components/LessonItem';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -10,6 +10,7 @@ import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
 import HeaderButtons from '../components/HeaderButtons'
 import NetInfo from '@react-native-community/netinfo';
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 //redux imports
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
@@ -175,7 +176,7 @@ function LessonListScreen(props) {
    //create modal in here, pass state to show it to lesson item so lesson item
    //can change it and show the modal on this screen
    return (
-      <View style={{ ...styles.screen, ...{ backgroundColor: props.colors.lessonListScreenBG ***REMOVED*** ***REMOVED******REMOVED***>
+      <View style={styles.screen***REMOVED***>
          <View style={styles.studySetItemContainer***REMOVED***>
             <StudySetItemSmall
                title={props.navigation.getParam("title")***REMOVED***
@@ -216,14 +217,10 @@ LessonListScreen.navigationOptions = navigationData => {
    const primaryColor = navigationData.navigation.getParam("primaryColor");
 
    return {
-      headerTitle: "waha",
+      headerTitle:  <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
       headerBackTitle: "Back",
       headerStyle: {
-         backgroundColor: primaryColor
-      ***REMOVED***,
-      headerTitleStyle: {
-         color: "#fff",
-         fontFamily: 'bold'
+         backgroundColor: "#F7F9FA",
       ***REMOVED***,
       headerLeft: () => 
          <HeaderButtons
@@ -237,13 +234,17 @@ LessonListScreen.navigationOptions = navigationData => {
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
-      flexDirection: "column"
+      flexDirection: "column",
+      backgroundColor: "#F7F9FA"
    ***REMOVED***,
    studySetItemContainer: {
       width: "100%",
-      height: 80
+      height: 80 * scaleMultiplier
    ***REMOVED***,
-   lessonListContainer: {
+   headerImage: {
+      resizeMode: "center",
+      width: 120,
+      height: 40,
    ***REMOVED***
 ***REMOVED***)
 

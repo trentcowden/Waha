@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Alert, TouchableOpacity, ActivityIndicator, Scr
 import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 //sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
@@ -334,7 +335,7 @@ function PlayScreen(props) {
          content = <MaterialCommunityIcons name={slideList.item.iconName***REMOVED*** size={350***REMOVED*** />
       ***REMOVED***
       return (
-         <ScrollView style={{ ...styles.albumArtContainer, ...{ backgroundColor: props.colors.lessonSetScreenBG, ***REMOVED*** ***REMOVED******REMOVED***>
+         <ScrollView style={styles.albumArtContainer***REMOVED***>
             {content***REMOVED***
          </ScrollView>
       )
@@ -355,6 +356,11 @@ function PlayScreen(props) {
       //general case which shows scrubber/play controls
       audioControlContainer =
          <View style={styles.audioControlContainer***REMOVED***>
+            <ChapterSelect
+               activeChapter={activeChapter***REMOVED***
+               lessonID={props.navigation.getParam('id')***REMOVED***
+               onPress={chapter => changeChapter(chapter)***REMOVED***
+            />
             <Scrubber
                value={seekPosition***REMOVED***
                onSlidingComplete={onSeekRelease***REMOVED***
@@ -372,43 +378,42 @@ function PlayScreen(props) {
 
    return (
       <View style={styles.screen***REMOVED***>
-         <View style={styles.titlesContainer***REMOVED***>
-            <Text style={styles.title***REMOVED***>{props.navigation.getParam("title")***REMOVED***</Text>
-            <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text>
+         <View style={styles.topHalfContainer***REMOVED***>
+            <View style={styles.titlesContainer***REMOVED***>
+               <Text style={styles.title***REMOVED***>{props.navigation.getParam("title")***REMOVED***</Text>
+               {/* <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text> */***REMOVED***
+            </View>
+            <View style={styles.albumArtListContainer***REMOVED***>
+               <ScrollView
+                  horizontal={true***REMOVED***
+                  pagingEnabled={true***REMOVED***
+                  snapToAlignment={"start"***REMOVED***
+                  snapToInterval={Dimensions.get('window').width - 70***REMOVED***
+                  decelerationRate={"fast"***REMOVED***
+                  initialScrollIndex={1***REMOVED***
+                  contentOffset={{ x: Dimensions.get('window').width - 70, y: 0 ***REMOVED******REMOVED***
+               >
+                  <View style={{ ...styles.albumArtContainer, ...{ marginLeft: 30 ***REMOVED*** ***REMOVED******REMOVED***>
+                     <ScrollView>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular', textAlign: "center" ***REMOVED******REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>dummy text</Text>
+                     </ScrollView>
+                  </View>
+                  <View style={{ ...styles.albumArtContainer, ...{ justifyContent: "center", alignItems: "center" ***REMOVED*** ***REMOVED******REMOVED***>
+                     <MaterialCommunityIcons name={props.navigation.getParam("iconName")***REMOVED*** size={200***REMOVED*** />
+                  </View>
+                  <View style={{ ...styles.albumArtContainer, ...{ marginRight: 30 ***REMOVED*** ***REMOVED******REMOVED***>
+                     <ScrollView>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>questions</Text>
+                     </ScrollView>
+                  </View>
+               </ScrollView>
+            </View>
          </View>
-         <View style={styles.albumArtListContainer***REMOVED***>
-            <ScrollView
-               horizontal={true***REMOVED***
-               pagingEnabled={true***REMOVED***
-               snapToAlignment={"start"***REMOVED***
-               snapToInterval={Dimensions.get('window').width - 70***REMOVED***
-               decelerationRate={"fast"***REMOVED***
-               initialScrollIndex={1***REMOVED***
-               contentOffset={{x: Dimensions.get('window').width - 70, y: 0***REMOVED******REMOVED***
-            >
-               <View style={{...styles.albumArtContainer, ...{marginLeft: 30***REMOVED******REMOVED******REMOVED***>
-                  <ScrollView>
-                     <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>scripture</Text>
-                  </ScrollView>
-               </View>
-               <View style={{...styles.albumArtContainer, ...{justifyContent: "center", alignItems: "center"***REMOVED******REMOVED******REMOVED***>
-                  <MaterialCommunityIcons name={props.navigation.getParam("iconName")***REMOVED*** size={200***REMOVED*** />
-               </View>
-               <View style={{...styles.albumArtContainer, ...{marginRight: 30***REMOVED******REMOVED******REMOVED***>
-                  <ScrollView>
-                     <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>questions</Text>
-                  </ScrollView>
-               </View>
-            </ScrollView>
-         </View>
-         <View style={styles.controlsContainer***REMOVED***>
-            <ChapterSelect
-               activeChapter={activeChapter***REMOVED***
-               lessonID={props.navigation.getParam('id')***REMOVED***
-               onPress={chapter => changeChapter(chapter)***REMOVED***
-            />
-            {audioControlContainer***REMOVED***
-         </View>
+         {/* <View style={styles.controlsContainer***REMOVED***> */***REMOVED***
+         {/* <View style={styles.audioControlContainer***REMOVED***> */***REMOVED***
+         {audioControlContainer***REMOVED***
+         {/* </View> */***REMOVED***
 
          {/* MODALS */***REMOVED***
          <WahaModal isVisible={showShareLessonModal***REMOVED***>
@@ -432,10 +437,10 @@ PlayScreen.navigationOptions = navigationData => {
       headerTitle: navigationData.navigation.getParam("subtitle"),
       headerBackTitle: "Back",
       headerStyle: {
-         backgroundColor: primaryColor
+         backgroundColor: "#FFFFFF",
       ***REMOVED***,
       headerTitleStyle: {
-         color: "#fff",
+         color: "#82868D",
          fontFamily: 'bold'
       ***REMOVED***,
       gestureEnabled: false,
@@ -447,61 +452,71 @@ PlayScreen.navigationOptions = navigationData => {
             completeOnPress={navMarkHandler***REMOVED***
             completeCondition={navIsComplete***REMOVED***
          />,
-      headerLeft: () => 
-      <HeaderButtons
+      headerLeft: () =>
+         <HeaderButtons
             name='ios-arrow-back'
             onPress1={() => navigationData.navigation.goBack()***REMOVED***
             hasCompleteButton={false***REMOVED***
          />,
+      //gestureDirection: 'horizontal-inverted',
    ***REMOVED***
 ***REMOVED***;
 
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      height: "100%",
+      width: "100%",
+      backgroundColor: "#FFFFFF"
+   ***REMOVED***,
+   topHalfContainer: {
+      justifyContent: "space-evenly",
+      flex: 1
    ***REMOVED***,
    titlesContainer: {
       flexDirection: "column",
-      marginTop: 10
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+      flexWrap: "nowrap"
    ***REMOVED***,
    title: {
       textAlign: "center",
-      fontSize: 30,
-      fontFamily: 'black'
+      fontSize: 30 * scaleMultiplier,
+      fontFamily: 'black',
+      flexWrap: "nowrap"
    ***REMOVED***,
    subtitle: {
       textAlign: "center",
-      fontSize: 18,
+      fontSize: 18 * scaleMultiplier,
       fontFamily: 'regular'
    ***REMOVED***,
    albumArtListContainer: {
-      width: (Dimensions.get('window').width),
-      height: (Dimensions.get('window').width),
+      width: "100%",
    ***REMOVED***,
    albumArtContainer: {
       width: (Dimensions.get('window').width - 80),
       height: (Dimensions.get('window').width - 80),
       borderRadius: 10,
-      margin: 10,
-      padding: 10,
+      marginHorizontal: 10,
+      paddingHorizontal: 10,
       backgroundColor: "#DEE3E9"
    ***REMOVED***,
-   controlsContainer: {
+   // controlsContainer: {
+   //    flexDirection: "column",
+   //    justifyContent: "space-between",
+   //    alignItems: "center",
+   //    width: "100%",
+   //    marginBottom: 10,
+   // ***REMOVED***,
+   audioControlContainer: {
+      justifyContent: "space-evenly",
       flexDirection: "column",
-      justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      marginBottom: 10
+      height: "33%",
    ***REMOVED***,
-   audioControlContainer: {
-      justifyContent: "center",
-      flexDirection: "column",
-      marginHorizontal: 10,
-      width: "100%",
-      height: 160
-   ***REMOVED***,
-
 ***REMOVED***)
 
 

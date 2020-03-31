@@ -6,6 +6,7 @@ import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import { Audio ***REMOVED*** from 'expo-av';
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
