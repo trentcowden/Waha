@@ -225,12 +225,6 @@ LessonListScreen.navigationOptions = navigationData => {
          color: "#fff",
          fontFamily: 'bold'
       ***REMOVED***,
-      headerRight: () =>
-         <HeaderButtons
-            name='md-settings'
-            onPress1={() => navigationData.navigation.navigate("Settings")***REMOVED***
-            hasCompleteButton={false***REMOVED***
-         />,
       headerLeft: () => 
          <HeaderButtons
             name='ios-arrow-back'

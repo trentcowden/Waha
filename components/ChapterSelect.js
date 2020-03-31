@@ -82,7 +82,7 @@ function ChapterSelect(props) {
                size={25***REMOVED***
                color={(props.activeChapter === 'application') ? "white" : props.colors.accentColor***REMOVED***
             />
-            <Text style={{ ...styles.chapterSelectText, ...{ color: (props.activeChapter === 'application') ? "white" : props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Fellowship</Text>
+            <Text style={{ ...styles.chapterSelectText, ...{ color: (props.activeChapter === 'application') ? "white" : props.colors.accentColor ***REMOVED*** ***REMOVED******REMOVED***>Application</Text>
          </TouchableOpacity>
       </View>
    )

@@ -61,23 +61,24 @@ function PlayScreen(props) {
    const [showShareLessonModal, setShowShareLessonModal] = useState(false);
 
    //ALBUM ART SLIDER STUFF
-   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+   //const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
 
    const albumSlidesData = [
       {
-         key: '0',
+         index: '0',
          type: 'text',
-         body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+         body: "QUESTIONS",
+         marginLeft: 10
       ***REMOVED***,
       {
-         key: '1',
+         index: '1',
          type: 'image',
          iconName: props.navigation.getParam("iconName")
       ***REMOVED***,
       {
-         key: '2',
+         index: '2',
          type: 'text',
-         body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+         body: "SCRIPTURE"
       ***REMOVED***,
    ]
 
@@ -339,6 +340,8 @@ function PlayScreen(props) {
       )
    ***REMOVED***
 
+
+
    //PLAY/PAUSE/SKIP CONTAINER
    //conditionally rendered because we don't want to show controls when the audio is loading
    var audioControlContainer;
@@ -373,18 +376,30 @@ function PlayScreen(props) {
             <Text style={styles.title***REMOVED***>{props.navigation.getParam("title")***REMOVED***</Text>
             <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text>
          </View>
-         <View>
-            <FlatList
-               renderItem={renderAlbumSlide***REMOVED***
-               data={albumSlidesData***REMOVED***
+         <View style={styles.albumArtListContainer***REMOVED***>
+            <ScrollView
                horizontal={true***REMOVED***
                pagingEnabled={true***REMOVED***
                snapToAlignment={"start"***REMOVED***
-               snapToInterval={Dimensions.get('window').width***REMOVED***
+               snapToInterval={Dimensions.get('window').width - 70***REMOVED***
                decelerationRate={"fast"***REMOVED***
-               viewabilityConfig={viewConfigRef.current***REMOVED***
-               initialScrollIndex={0***REMOVED***
-            />
+               initialScrollIndex={1***REMOVED***
+               contentOffset={{x: Dimensions.get('window').width - 70, y: 0***REMOVED******REMOVED***
+            >
+               <View style={{...styles.albumArtContainer, ...{marginLeft: 30***REMOVED******REMOVED******REMOVED***>
+                  <ScrollView>
+                     <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>scripture</Text>
+                  </ScrollView>
+               </View>
+               <View style={{...styles.albumArtContainer, ...{justifyContent: "center", alignItems: "center"***REMOVED******REMOVED******REMOVED***>
+                  <MaterialCommunityIcons name={props.navigation.getParam("iconName")***REMOVED*** size={200***REMOVED*** />
+               </View>
+               <View style={{...styles.albumArtContainer, ...{marginRight: 30***REMOVED******REMOVED******REMOVED***>
+                  <ScrollView>
+                     <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>questions</Text>
+                  </ScrollView>
+               </View>
+            </ScrollView>
          </View>
          <View style={styles.controlsContainer***REMOVED***>
             <ChapterSelect
@@ -460,12 +475,17 @@ const styles = StyleSheet.create({
       fontSize: 18,
       fontFamily: 'regular'
    ***REMOVED***,
+   albumArtListContainer: {
+      width: (Dimensions.get('window').width),
+      height: (Dimensions.get('window').width),
+   ***REMOVED***,
    albumArtContainer: {
-      width: (Dimensions.get('window').width - 40),
-      height: (Dimensions.get('window').width - 40),
-      padding: 20,
-      margin: 20,
+      width: (Dimensions.get('window').width - 80),
+      height: (Dimensions.get('window').width - 80),
       borderRadius: 10,
+      margin: 10,
+      padding: 10,
+      backgroundColor: "#DEE3E9"
    ***REMOVED***,
    controlsContainer: {
       flexDirection: "column",

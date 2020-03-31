@@ -46,7 +46,7 @@ function SettingsScreen(props) {
             FileSystem.deleteAsync(FileSystem.documentDirectory + contents[i])
       ***REMOVED***
   ***REMOVED***);
-   
+   props.navigation.replace("StudySet")
   ***REMOVED***
 
   ////////////////////////////////
