@@ -4,7 +4,7 @@ import { View, Text, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier, isRTL ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function StudySetItemSmall(props) {
 
