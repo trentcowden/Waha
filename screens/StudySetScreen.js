@@ -102,7 +102,7 @@ function StudySetScreen(props) {
    ***REMOVED*** else {
       return (
          <View style={{ flex: 1, justifyContent: "center" ***REMOVED******REMOVED***>
-            <Text style={{ textAlign: "center", fontSize: 30, marginVertical: 20 ***REMOVED******REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
+            <Text style={{ textAlign: "center", fontSize: 30, padding: 10, fontFamily: "medium" ***REMOVED******REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
             <ActivityIndicator size="large" color="black" />
          </View>
       )
@@ -113,7 +113,7 @@ StudySetScreen.navigationOptions = navigationData => {
    const primaryColor = navigationData.navigation.getParam("primaryColor");
 
    return {
-      headerTitle:  <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
+      headerTitle:  () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
       headerBackTitle: "Back",
       headerStyle: {
          backgroundColor: "#EAEEF0",

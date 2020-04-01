@@ -217,7 +217,7 @@ LessonListScreen.navigationOptions = navigationData => {
    const primaryColor = navigationData.navigation.getParam("primaryColor");
 
    return {
-      headerTitle:  <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
+      headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
       headerBackTitle: "Back",
       headerStyle: {
          backgroundColor: "#F7F9FA",

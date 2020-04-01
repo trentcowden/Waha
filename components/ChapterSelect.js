@@ -24,16 +24,16 @@ function ChapterSelect(props) {
    //CHAPTER 2 BUTTON
    if (props.lessonID in props.downloads) {
       chapter2Button =
-         <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: props.colors.grayedOut ***REMOVED******REMOVED***>
+         <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: "#82868D" ***REMOVED******REMOVED***>
             <AnimatedCircularProgress
                size={20***REMOVED***
                width={4***REMOVED***
                fill={(props.downloads[props.lessonID] * 100)***REMOVED***
-               tintColor={props.colors.grayedOut***REMOVED***
+               tintColor="#82868D"
                rotation={0***REMOVED***
                backgroundColor="white"
             />
-            <Text style={{ ...styles.chapterSelectText, ...{ color: props.colors.grayedOut ***REMOVED*** ***REMOVED******REMOVED***>Passage</Text>
+            <Text style={{ ...styles.chapterSelectText, ...{ color: "#82868D"  ***REMOVED*** ***REMOVED******REMOVED***>Passage</Text>
          </View>
    ***REMOVED*** else {
       chapter2Button =
