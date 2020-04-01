@@ -14,10 +14,10 @@ function SettingsItem(props) {
    ////////////////////////////////
 
    return (
-      <TouchableOpacity style={styles.settingsItem***REMOVED*** onPress={props.onPress***REMOVED***>
+      <TouchableOpacity style={[styles.settingsItem, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={props.onPress***REMOVED***>
          <Text style={styles.title***REMOVED***>{props.text***REMOVED***</Text>
          <Ionicons
-            name='ios-arrow-forward'
+            name={props.isRTL ? 'ios-arrow-back' : 'ios-arrow-forward'***REMOVED***
             size={50***REMOVED***
             color="gray"
          />
@@ -47,6 +47,7 @@ function mapStateToProps(state) {
       grayedOut: state.database[state.database.currentLanguage].colors.grayedOut,
       accentColor: state.database[state.database.currentLanguage].colors.accentColor,
       progress: state.appProgress,
+      isRTL: state.database[state.database.currentLanguage].isRTL,
    ***REMOVED***
 ***REMOVED***;
 

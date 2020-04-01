@@ -16,6 +16,7 @@ import Scrubber from '../components/Scrubber'
 import PlayPauseSkip from '../components/PlayPauseSkip';
 import ChapterSelect from '../components/ChapterSelect'
 import HeaderButtons from '../components/HeaderButtons'
+import BackButton from '../components/BackButton'
 
 //redux
 import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
@@ -108,7 +109,7 @@ function PlayScreen(props) {
       props.navigation.setParams({ navIsComplete: (id in props.progress) ***REMOVED***);
       props.navigation.setParams({ navMarkHandler: changeCompleteStatus ***REMOVED***);
       props.navigation.setParams({ setShowShareLessonModal: setShowShareLessonModal ***REMOVED***)
-      props.navigation.setParams({ primaryColor: props.colors.primaryColor ***REMOVED***)
+      // props.navigation.setParams({ isRTL: props.isRTL ***REMOVED***)
 
       //set up our timer tick for updating the seeker every second
       const interval = setInterval(updateSeekerTick, 1000);
@@ -431,7 +432,7 @@ PlayScreen.navigationOptions = navigationData => {
    const navIsComplete = navigationData.navigation.getParam("navIsComplete");
    const navMarkHandler = navigationData.navigation.getParam("navMarkHandler");
    const setShowShareLessonModal = navigationData.navigation.getParam("setShowShareLessonModal");
-   const primaryColor = navigationData.navigation.getParam("primaryColor");
+   const isRTL = navigationData.navigation.getParam("isRTL");
 
    return {
       headerTitle: navigationData.navigation.getParam("subtitle"),
@@ -444,21 +445,38 @@ PlayScreen.navigationOptions = navigationData => {
          fontFamily: 'bold'
       ***REMOVED***,
       gestureEnabled: false,
-      headerRight: () =>
-         <HeaderButtons
-            name='md-share'
-            onPress1={() => setShowShareLessonModal(true)***REMOVED***
-            hasCompleteButton={true***REMOVED***
-            completeOnPress={navMarkHandler***REMOVED***
-            completeCondition={navIsComplete***REMOVED***
-         />,
+
       headerLeft: () =>
          <HeaderButtons
             name='ios-arrow-back'
             onPress1={() => navigationData.navigation.goBack()***REMOVED***
             hasCompleteButton={false***REMOVED***
          />,
-      //gestureDirection: 'horizontal-inverted',
+      headerRight: isRTL ? () =>
+         <BackButton
+            isRTL={isRTL***REMOVED***
+            onPress={() => navigationData.navigation.goBack()***REMOVED***
+         /> :
+         () => <HeaderButtons
+            name='md-share'
+            onPress1={() => setShowShareLessonModal(true)***REMOVED***
+            hasCompleteButton={true***REMOVED***
+            completeOnPress={navMarkHandler***REMOVED***
+            completeCondition={navIsComplete***REMOVED***
+         />,
+      headerLeft: isRTL ? 
+         () => <HeaderButtons
+            name='md-share'
+            onPress1={() => setShowShareLessonModal(true)***REMOVED***
+            hasCompleteButton={true***REMOVED***
+            completeOnPress={navMarkHandler***REMOVED***
+            completeCondition={navIsComplete***REMOVED***
+         /> : 
+            () => <BackButton
+               isRTL={isRTL***REMOVED***
+               onPress={() => navigationData.navigation.goBack()***REMOVED***
+            />,
+      gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal'
    ***REMOVED***
 ***REMOVED***;
 
@@ -533,7 +551,8 @@ function mapStateToProps(state) {
       currentLanguage: state.database.currentLanguage,
       translations: state.database[state.database.currentLanguage].translations,
       downloads: state.downloads,
-      colors: state.database[state.database.currentLanguage].colors
+      colors: state.database[state.database.currentLanguage].colors,
+      isRTL: state.database[state.database.currentLanguage].isRTL,
    ***REMOVED***
 ***REMOVED***;
 

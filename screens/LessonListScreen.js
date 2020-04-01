@@ -11,6 +11,7 @@ import ModalButton from '../components/ModalButton'
 import HeaderButtons from '../components/HeaderButtons'
 import NetInfo from '@react-native-community/netinfo';
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import BackButton from '../components/BackButton'
 
 //redux imports
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
@@ -63,7 +64,8 @@ function LessonListScreen(props) {
             subtitle: item.subtitle,
             source: item.source,
             scripture: item.scripture,
-            iconName: props.navigation.getParam("iconName")
+            iconName: props.navigation.getParam("iconName"),
+            isRTL: props.navigation.getParam("isRTL")
          ***REMOVED***
       ***REMOVED***)
    ***REMOVED***
@@ -135,14 +137,14 @@ function LessonListScreen(props) {
 
    function markUpToThisPointAsComplete(id) {
       languageAndStudySet = id.substr(0, 4)
-      markToLesson = id.substr(4,5)
+      markToLesson = id.substr(4, 5)
 
       for (var i = 1; i <= parseInt(markToLesson); i++) {
          var formattedID = ("0" + i).slice(-2);
          idToMark = languageAndStudySet + formattedID
          if (!(idToMark in props.appProgress)) {
             props.toggleComplete(idToMark)
-         ***REMOVED***  
+         ***REMOVED***
       ***REMOVED***
       hideModals();
    ***REMOVED***
@@ -185,7 +187,7 @@ function LessonListScreen(props) {
                iconName={props.navigation.getParam("iconName")***REMOVED***
             />
          </View>
-         <FlatListSeparator/>
+         <FlatListSeparator />
          <FlatList
             data={selectedLessonList***REMOVED***
             renderItem={renderLessonItem***REMOVED***
@@ -214,20 +216,32 @@ function LessonListScreen(props) {
 ***REMOVED***
 
 LessonListScreen.navigationOptions = navigationData => {
-   const primaryColor = navigationData.navigation.getParam("primaryColor");
+   const isRTL = navigationData.navigation.getParam("isRTL");
 
    return {
-      headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
+      headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED*** />,
       headerBackTitle: "Back",
       headerStyle: {
          backgroundColor: "#F7F9FA",
       ***REMOVED***,
-      headerLeft: () => 
-         <HeaderButtons
-            name='ios-arrow-back'
-            onPress1={() => navigationData.navigation.goBack()***REMOVED***
-            hasCompleteButton={false***REMOVED***
+      headerRight: isRTL ? () =>
+         <BackButton
+            isRTL={isRTL***REMOVED***
+            onPress={() => navigationData.navigation.goBack()***REMOVED***
+         /> :
+         () => <View></View>,
+      headerLeft: isRTL ? () =>
+         <View></View> :
+         () =>
+         <BackButton
+            isRTL={isRTL***REMOVED***
+            onPress={() => navigationData.navigation.goBack()***REMOVED***
          />,
+      gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
+      // transitionSpec: {
+      //    open: () => fromRight(),
+      //    close: () => fromRight(),
+      // ***REMOVED***
    ***REMOVED***;
 ***REMOVED***;
 
@@ -260,7 +274,8 @@ function mapStateToProps(state) {
       appProgress: state.appProgress,
       database: state.database,
       currentLanguage: state.database.currentLanguage,
-      colors: state.database[state.database.currentLanguage].colors
+      colors: state.database[state.database.currentLanguage].colors,
+      isRTL: state.database[state.database.currentLanguage].isRTL,
    ***REMOVED***
 ***REMOVED***;
 

@@ -13,6 +13,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import { setFirstOpen ***REMOVED*** from '../redux/actions/databaseActions'
 import HeaderButtons from '../components/HeaderButtons';
+import { fromRight, fromLeft ***REMOVED*** from 'react-navigation-transitions';
 
 function StudySetScreen(props) {
 
@@ -27,7 +28,7 @@ function StudySetScreen(props) {
 
    useEffect(() => {
       if (!props.isFirstOpen && !props.isFetching) {
-         props.navigation.setParams({ primaryColor: props.colors.primaryColor ***REMOVED***)
+         props.navigation.setParams({ primaryColor: props.colors.primaryColor, isRTL: props.isRTL ***REMOVED***)
       ***REMOVED***
    ***REMOVED***, [props.isFirstOpen])
 
@@ -52,7 +53,8 @@ function StudySetScreen(props) {
             title: item.title,
             studySetID: item.id,
             subtitle: item.subtitle,
-            iconName: item.iconName
+            iconName: item.iconName,
+            isRTL: props.isRTL
          ***REMOVED***
       ***REMOVED***)
    ***REMOVED***
@@ -110,7 +112,7 @@ function StudySetScreen(props) {
 ***REMOVED***
 
 StudySetScreen.navigationOptions = navigationData => {
-   const primaryColor = navigationData.navigation.getParam("primaryColor");
+   const isRTL = navigationData.navigation.getParam("isRTL");
 
    return {
       headerTitle:  () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED***/>,
@@ -121,9 +123,19 @@ StudySetScreen.navigationOptions = navigationData => {
       headerRight: () =>
          <HeaderButtons
             name='md-settings'
-            onPress1={() => navigationData.navigation.navigate("Settings")***REMOVED***
+            onPress1={() => navigationData.navigation.navigate({
+               routeName: "Settings",
+               params: {
+                  isRTL: isRTL
+               ***REMOVED***
+            ***REMOVED***)***REMOVED***
             hasCompleteButton={false***REMOVED***
-         />
+         />,
+      // gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
+      // transitionSpec: {
+      //    open: () => fromRight(),
+      //    close: () => fromRight(),
+      // ***REMOVED***
    ***REMOVED***;
 ***REMOVED***;
 
@@ -162,7 +174,8 @@ function mapStateToProps(state) {
       return {
          database: state.database,
          colors: state.database[state.database.currentLanguage].colors,
-         appProgress: state.appProgress
+         appProgress: state.appProgress,
+         isRTL: state.database[state.database.currentLanguage].isRTL,
       ***REMOVED***
    else {
       return {

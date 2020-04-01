@@ -4,7 +4,7 @@ import { View, Text, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier, isRTL ***REMOVED*** from '../constants'
 
 function StudySetItemSmall(props) {
 
@@ -48,7 +48,7 @@ function StudySetItemSmall(props) {
 
 
    return (
-      <View style={styles.studySetItem***REMOVED***>
+      <View style={[styles.studySetItem, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED***>
          <View style={{ flexDirection: "row" ***REMOVED******REMOVED***>
             <View style={styles.progressImage***REMOVED***>
                <AnimatedCircularProgress
@@ -92,13 +92,15 @@ const styles = StyleSheet.create({
       fontSize: 14 * scaleMultiplier,
       textAlignVertical: "center",
       flexWrap: "wrap",
-      fontFamily: 'medium'
+      fontFamily: 'medium',
+      textAlign: "left"
    ***REMOVED***,
    subtitle: {
       fontSize: 10 * scaleMultiplier, 
       textAlignVertical: "center",
       flexWrap: "wrap",
-      fontFamily: 'light'
+      fontFamily: 'light',
+      textAlign: "left"
    ***REMOVED***,
 ***REMOVED***)
 
@@ -108,6 +110,7 @@ function mapStateToProps(state) {
    return {
       progress: state.appProgress,
       colors: state.database[state.database.currentLanguage].colors,
+      isRTL: state.database[state.database.currentLanguage].isRTL
    ***REMOVED***
 ***REMOVED***;
 
