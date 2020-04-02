@@ -1,0 +1,119 @@
+import SafeAreaView from 'react-native-safe-area-view';
+import { DrawerItems ***REMOVED*** from 'react-navigation-drawer';
+import React from 'react';
+import { View, Text, StyleSheet, Button ***REMOVED*** from 'react-native';
+import { connect ***REMOVED*** from 'react-redux'
+import { Ionicons ***REMOVED*** from '@expo/vector-icons';
+import DrawerItem from '../components/DrawerItem'
+import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler';
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import * as WebBrowser from 'expo-web-browser';
+
+function WahaDrawer(props) {
+   async function openBrowser(url) {
+      await WebBrowser.openBrowserAsync(url);
+   ***REMOVED***
+
+   return(
+   <SafeAreaView
+      style={styles.container***REMOVED***
+      forceInset={{ top: 'always', horizontal: 'never' ***REMOVED******REMOVED***
+   >
+      <View style={[styles.drawerHeaderContainer, {backgroundColor: props.colors.primaryColor***REMOVED***]***REMOVED***>
+         <View style={styles.groupIconContainer***REMOVED***>
+            <Ionicons 
+               name="ios-people"
+               size={100***REMOVED***
+            />
+         </View>
+         <Text style={styles.groupName***REMOVED***>Hard-coded group name</Text>
+      </View>
+      <View style={styles.bigDrawerItemsContainer***REMOVED***>
+      <DrawerItem 
+         name="ios-people"
+         text="Groups & Languages"
+         onPress={() => props.navigation.navigate('Groups', {isRTL: props.isRTL***REMOVED***)***REMOVED***
+      />
+      <DrawerItem 
+         name="md-glasses"
+         text="Incognito Mode (todo)"
+      />
+      <DrawerItem 
+         name="ios-mail"
+         text="Submit Feedback"
+         onPress={() => openBrowser('https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif')***REMOVED***
+      />
+      <DrawerItem 
+         name="ios-save"
+         text="Storage (todo)"
+      />
+      </View>
+      <View style={styles.smallDrawerItemsContainer***REMOVED***>
+         <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => {***REMOVED******REMOVED***>
+            <Text style={styles.smallDrawerItemText***REMOVED***>Coaching Tools (todo)</Text>
+         </TouchableOpacity>
+         <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
+            <Text style={styles.smallDrawerItemText***REMOVED***>Privacy Policy</Text>
+         </TouchableOpacity>
+         <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
+            <Text style={styles.smallDrawerItemText***REMOVED***>View Credits</Text>
+         </TouchableOpacity>
+      </View>
+   </SafeAreaView >
+   )
+***REMOVED***
+
+const styles = StyleSheet.create({
+   container: {
+      flex: 1,
+   ***REMOVED***,
+   drawerHeaderContainer: {
+      width: "100%",
+      height: 233 * scaleMultiplier,
+      justifyContent: "center",
+      alignContent: "center",
+      padding: 15
+   ***REMOVED***,
+   groupIconContainer: {
+      alignItems: "center",
+   ***REMOVED***,
+   groupName: {
+      color: "white",
+      textAlign: "center",
+      fontFamily: "bold",
+      fontSize: 25 * scaleMultiplier
+   ***REMOVED***,
+   smallDrawerItemsContainer: {
+      justifyContent: "flex-end",
+      flex: 1
+   ***REMOVED***,
+   smallDrawerItemContainer: {
+      margin: 5,
+      padding: 5
+   ***REMOVED***,
+   smallDrawerItemText: {
+      fontFamily: 'medium',
+      fontSize: 18 * scaleMultiplier,
+      color: '#82868D'
+   ***REMOVED***
+***REMOVED***);
+
+/////////////
+////REDUX////
+/////////////
+
+function mapStateToProps(state) {
+      return {
+         database: state.database,
+         colors: state.database[state.database.currentLanguage].colors,
+         appProgress: state.appProgress,
+         isRTL: state.database[state.database.currentLanguage].isRTL,
+      ***REMOVED***
+***REMOVED***;
+
+function mapDispatchToProps(dispatch) {
+   return {
+   ***REMOVED***
+***REMOVED***;
+
+export default connect(mapStateToProps, mapDispatchToProps)(WahaDrawer);

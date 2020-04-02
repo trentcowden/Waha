@@ -37,13 +37,13 @@ function LessonListScreen(props) {
    const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false);
 
    //find our specified study set with data taken from the last screen
-   selectedStudySetArray = props.database[props.database.currentLanguage].studySets.filter(studyset => studyset.id === props.navigation.getParam("studySetID"));
+   selectedStudySetArray = props.database[props.database.currentLanguage].studySets.filter(studyset => studyset.id === props.route.params.studySetID);
 
    //make our data only the array of lessons
    selectedLessonList = selectedStudySetArray[0].lessons;
 
    useEffect(() => {
-      props.navigation.setParams({ primaryColor: props.colors.primaryColor ***REMOVED***)
+      props.navigation.setOptions(getNavOptions())
       const unsubscribe = NetInfo.addEventListener(state => {
          setIsConnected(state.isConnected)
       ***REMOVED***);
@@ -52,21 +52,35 @@ function LessonListScreen(props) {
       ***REMOVED***
    ***REMOVED***, [])
 
+   function getNavOptions() {
+      return {
+         headerRight: props.route.params.isRTL ? () =>
+            <BackButton
+               isRTL={props.route.params.isRTL***REMOVED***
+               onPress={() => props.navigation.goBack()***REMOVED***
+            /> :
+            () => <View></View>,
+         headerLeft: props.route.params.isRTL ? () =>
+            <View></View> :
+            () =>
+               <BackButton
+                  isRTL={props.route.params.isRTL***REMOVED***
+                  onPress={() => props.navigation.goBack()***REMOVED***
+               />,
+      ***REMOVED***
+   ***REMOVED***
    //function to navigate to the play screen
    //props.navigation.navigate takes us to the play screen
    //params is the information we want to pass to play screen
    function navigateToPlay(item) {
-      props.navigation.navigate({
-         routeName: "Play",
-         params: {
+      props.navigation.navigate('Play', {
             id: item.id,
             title: item.title,
             subtitle: item.subtitle,
             source: item.source,
             scripture: item.scripture,
-            iconName: props.navigation.getParam("iconName"),
-            isRTL: props.navigation.getParam("isRTL")
-         ***REMOVED***
+            iconName: props.route.params.iconName,
+            isRTL: props.route.params.isRTL
       ***REMOVED***)
    ***REMOVED***
 
@@ -181,10 +195,10 @@ function LessonListScreen(props) {
       <View style={styles.screen***REMOVED***>
          <View style={styles.studySetItemContainer***REMOVED***>
             <StudySetItemSmall
-               title={props.navigation.getParam("title")***REMOVED***
-               subtitle={props.navigation.getParam("subtitle")***REMOVED***
-               id={props.navigation.getParam("studySetID")***REMOVED***
-               iconName={props.navigation.getParam("iconName")***REMOVED***
+               title={props.route.params.title***REMOVED***
+               subtitle={props.route.params.subtitle***REMOVED***
+               id={props.route.params.studySetID***REMOVED***
+               iconName={props.route.params.iconName***REMOVED***
             />
          </View>
          <FlatListSeparator />
@@ -214,36 +228,6 @@ function LessonListScreen(props) {
       </View>
    )
 ***REMOVED***
-
-LessonListScreen.navigationOptions = navigationData => {
-   const isRTL = navigationData.navigation.getParam("isRTL");
-
-   return {
-      headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED*** />,
-      headerBackTitle: "Back",
-      headerStyle: {
-         backgroundColor: "#F7F9FA",
-      ***REMOVED***,
-      headerRight: isRTL ? () =>
-         <BackButton
-            isRTL={isRTL***REMOVED***
-            onPress={() => navigationData.navigation.goBack()***REMOVED***
-         /> :
-         () => <View></View>,
-      headerLeft: isRTL ? () =>
-         <View></View> :
-         () =>
-         <BackButton
-            isRTL={isRTL***REMOVED***
-            onPress={() => navigationData.navigation.goBack()***REMOVED***
-         />,
-      gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
-      // transitionSpec: {
-      //    open: () => fromRight(),
-      //    close: () => fromRight(),
-      // ***REMOVED***
-   ***REMOVED***;
-***REMOVED***;
 
 const styles = StyleSheet.create({
    screen: {

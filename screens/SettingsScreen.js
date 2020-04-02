@@ -12,6 +12,7 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import { resetProgress ***REMOVED*** from '../redux/actions/appProgressActions';
+import { getActiveChildNavigationOptions ***REMOVED*** from 'react-navigation';
 
 function SettingsScreen(props) {
 
@@ -24,9 +25,26 @@ function SettingsScreen(props) {
   
   //set language based on user's language vs user's location?
   useEffect(() => {
-   props.navigation.setParams({primaryColor: props.colors.primaryColor***REMOVED***)
+     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
+  function getNavOptions() {
+   return {
+       headerRight: props.route.params.isRTL ? () =>
+         <BackButton
+            isRTL={props.route.params.isRTL***REMOVED***
+            onPress={() => props.navigation.goBack()***REMOVED***
+         /> :
+         () => <View></View>,
+      headerLeft: props.route.params.isRTL ? () =>
+         <View></View> :
+         () =>
+         <BackButton
+            isRTL={props.route.params.isRTL***REMOVED***
+            onPress={() => props.navigation.goBack()***REMOVED***
+         />,
+   ***REMOVED***
+***REMOVED***
 
   ///////////////////////
   ////OTHER FUNCTIONS////
@@ -113,36 +131,7 @@ function SettingsScreen(props) {
   )
 ***REMOVED***
 
-SettingsScreen.navigationOptions = navigationData => {
-   const isRTL = navigationData.navigation.getParam("isRTL");
-   const primaryColor = navigationData.navigation.getParam("primaryColor");
 
-   return {
-       headerTitle: "Settings",
-       headerBackTitle: "Back",
-       headerStyle: {
-           backgroundColor: "#F7F7F7",
-       ***REMOVED***,
-       headerTitleStyle: {
-           color: primaryColor,
-           fontFamily: 'bold'
-       ***REMOVED***,
-       headerRight: isRTL ? () =>
-         <BackButton
-            isRTL={isRTL***REMOVED***
-            onPress={() => navigationData.navigation.goBack()***REMOVED***
-         /> :
-         () => <View></View>,
-      headerLeft: isRTL ? () =>
-         <View></View> :
-         () =>
-         <BackButton
-            isRTL={isRTL***REMOVED***
-            onPress={() => navigationData.navigation.goBack()***REMOVED***
-         />,
-      gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
-   ***REMOVED***;
-***REMOVED***;
 
 const styles = StyleSheet.create({
    screen: {
