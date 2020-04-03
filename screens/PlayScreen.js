@@ -103,7 +103,36 @@ function PlayScreen(props) {
       ***REMOVED***
    ***REMOVED***, []);
 
-   
+   function getNavOptions() {
+      return {
+         headerTitle: props.route.params.subtitle,
+         headerRight: props.route.params.isRTL ? () =>
+            <BackButton
+               isRTL={props.route.params.isRTL***REMOVED***
+               onPress={() => props.navigation.goBack()***REMOVED***
+            /> :
+            () => <HeaderButtons
+               name='md-share'
+               onPress1={() => setShowShareLessonModal(true)***REMOVED***
+               hasCompleteButton={true***REMOVED***
+               completeOnPress={changeCompleteStatus***REMOVED***
+               completeCondition={props.route.params.id in props.progress***REMOVED***
+            />,
+         headerLeft: props.route.params.isRTL ?
+            () => <HeaderButtons
+               name='md-share'
+               onPress1={() => setShowShareLessonModal(true)***REMOVED***
+               hasCompleteButton={true***REMOVED***
+               completeOnPress={changeCompleteStatus***REMOVED***
+               completeCondition={props.route.params.id in props.progress***REMOVED***
+            /> :
+            () => <BackButton
+               isRTL={props.route.params.isRTL***REMOVED***
+               onPress={() => props.navigation.goBack()***REMOVED***
+            />,
+            //gestureDirection: props.route.params.isRTL ? 'horizontal-inverted' : 'horizontal'
+      ***REMOVED***
+   ***REMOVED***
 
       ///////////////////////////////
       ////AUDIO CONTROL FUNCTIONS////
@@ -275,14 +304,14 @@ function PlayScreen(props) {
                'Don\' forget to select when your next lesson is!',
                [{
                   text: 'OK',
-                  onPress: () => console.log('test')
+                  onPress: () => props.navigation.goBack()
                ***REMOVED***])
          ***REMOVED*** else {
             Alert.alert(props.translations['completeMessageTitle'],
                props.translations['completeMessageBody'],
                [{
                   text: 'OK',
-                  onPress: () => console.log('test')
+                  onPress: () => props.navigation.goBack()
                ***REMOVED***])
          ***REMOVED***
       ***REMOVED***
@@ -301,37 +330,6 @@ function PlayScreen(props) {
                break;
          ***REMOVED***
       ***REMOVED***
-
-      function getNavOptions() {
-         return {
-            headerTitle: props.route.params.subtitle,
-            headerRight: props.route.params.isRTL ? () =>
-               <BackButton
-                  isRTL={props.route.params.isRTL***REMOVED***
-                  onPress={() => props.navigation.goBack()***REMOVED***
-               /> :
-               () => <HeaderButtons
-                  name='md-share'
-                  onPress1={() => setShowShareLessonModal(true)***REMOVED***
-                  hasCompleteButton={true***REMOVED***
-                  completeOnPress={changeCompleteStatus***REMOVED***
-                  completeCondition={props.route.params.id in props.progress***REMOVED***
-               />,
-            headerLeft: props.route.params.isRTL ?
-               () => <HeaderButtons
-                  name='md-share'
-                  onPress1={() => setShowShareLessonModal(true)***REMOVED***
-                  hasCompleteButton={true***REMOVED***
-                  completeOnPress={changeCompleteStatus***REMOVED***
-                  completeCondition={props.route.params.id in props.progress***REMOVED***
-               /> :
-               () => <BackButton
-                  isRTL={props.route.params.isRTL***REMOVED***
-                  onPress={() => props.navigation.goBack()***REMOVED***
-               />,
-         ***REMOVED***
-      ***REMOVED***
-
 
       ////////////////////////////////
       ////RENDER/STYLES/NAVOPTIONS////
@@ -483,15 +481,15 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-   //console.log(state.downloads)
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
       progress: state.appProgress,
       database: state.database,
       currentLanguage: state.database.currentLanguage,
-      translations: state.database[state.database.currentLanguage].translations,
+      translations: state.database[activeGroup.language].translations,
       downloads: state.downloads,
-      colors: state.database[state.database.currentLanguage].colors,
-      isRTL: state.database[state.database.currentLanguage].isRTL,
+      colors: state.database[activeGroup.language].colors,
+      isRTL: state.database[activeGroup.language].isRTL,
    ***REMOVED***
 ***REMOVED***;
 

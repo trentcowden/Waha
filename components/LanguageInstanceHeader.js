@@ -5,20 +5,20 @@ import GroupListItem from '../components/GroupListItem'
 import {scaleMultiplier***REMOVED*** from '../constants'
 
 function LanguageInstanceHeader(props) {
-
    function renderGroupItem(groups) {
       return (
          <GroupListItem
             name={groups.item.name***REMOVED***
+            isEditing={props.isEditing***REMOVED***
          />
       )
    ***REMOVED***
 
    return (
       <View style={styles.languageHeaderContainer***REMOVED***>
-         <Text style={styles.languageHeaderText***REMOVED***>{props.languageInstance***REMOVED***</Text>
+         <Text style={styles.languageHeaderText***REMOVED***>{props.languageName***REMOVED***</Text>
          <FlatList
-            data={props.groups.filter(group => group.language === props.languageInstance)***REMOVED***
+            data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
             renderItem={renderGroupItem***REMOVED***
             keyExtractor={item => item.name***REMOVED***
          />

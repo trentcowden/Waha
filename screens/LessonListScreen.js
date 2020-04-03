@@ -60,6 +60,7 @@ function LessonListScreen(props) {
                   isRTL={props.route.params.isRTL***REMOVED***
                   onPress={() => props.navigation.goBack()***REMOVED***
                />,
+         //gestureDirection: props.route.params.isRTL ? 'horizontal-inverted' : 'horizontal'
       ***REMOVED***
    ***REMOVED***
    //function to navigate to the play screen

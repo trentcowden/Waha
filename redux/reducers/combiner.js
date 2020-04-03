@@ -4,6 +4,7 @@ import { downloads ***REMOVED*** from '../reducers/downloads'
 import { appProgress ***REMOVED*** from '../reducers/appProgress'
 import { database ***REMOVED*** from '../reducers/database'
 import { groups ***REMOVED*** from '../reducers/groups'
+import { activeGroup ***REMOVED*** from '../reducers/activeGroup'
 
 import { combineReducers ***REMOVED*** from 'redux'
 
@@ -11,5 +12,6 @@ export default rootReducer = combineReducers({
     downloads,
     appProgress,
     database,
-    groups
+    groups,
+    activeGroup
 ***REMOVED***)

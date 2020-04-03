@@ -19,14 +19,14 @@ function WahaDrawer(props) {
          style={styles.container***REMOVED***
          forceInset={{ top: 'always', horizontal: 'never' ***REMOVED******REMOVED***
       >
-         <View style={[styles.drawerHeaderContainer, { backgroundColor: props.isFetching ? null : props.colors.primaryColor ***REMOVED***]***REMOVED***>
+         <View style={[styles.drawerHeaderContainer, { backgroundColor: props.colors.primaryColor ***REMOVED***]***REMOVED***>
             <View style={styles.groupIconContainer***REMOVED***>
                <Ionicons
                   name="ios-people"
                   size={100***REMOVED***
                />
             </View>
-            <Text style={styles.groupName***REMOVED***>Hard-coded group name</Text>
+            <Text style={styles.groupName***REMOVED***>{props.activeGroup***REMOVED***</Text>
          </View>
          <View style={styles.bigDrawerItemsContainer***REMOVED***>
             <DrawerItem
@@ -103,19 +103,13 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
-   if (!state.database.isFetching) {
-      return {
-         database: state.database,
-         colors: state.database[state.database.currentLanguage].colors,
-         appProgress: state.appProgress,
-         isRTL: state.database[state.database.currentLanguage].isRTL,
-      ***REMOVED***
-   ***REMOVED***
-   else {
-      return {
-         isFetching: state.database.isFetching,
-         isFirstOpen: state.database.isFirstOpen
-      ***REMOVED***
+   var activeLanguage = state.groups.filter(item => item.name === state.activeGroup)[0].language
+   return {
+      database: state.database,
+      colors: state.database[activeLanguage].colors,
+      appProgress: state.appProgress,
+      isRTL: state.database[activeLanguage].isRTL,
+      activeGroup: state.activeGroup
    ***REMOVED***
 ***REMOVED***;
 

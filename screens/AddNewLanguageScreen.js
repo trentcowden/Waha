@@ -1,6 +1,6 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity ***REMOVED*** from 'react-native';
+import { View, StyleSheet, FlatList, Text, TouchableOpacity, Alert ***REMOVED*** from 'react-native';
 
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -8,6 +8,7 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
 import { createGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 
 function AddNewLanguageScreen(props) {
 
@@ -40,45 +41,65 @@ function AddNewLanguageScreen(props) {
       ***REMOVED***
    ***REMOVED***
 
+   var languageInstanceList = [
+      {
+         id: 'en',
+         displayName: 'English'
+      ***REMOVED***,
+      {
+         id: 'kl',
+         displayName: 'Klingon'
+      ***REMOVED***,
+   ]
+
+   var installedLanguageInstances = []
+   for (key in props.database) {
+      if (key.length === 2) {
+         installedLanguageInstances.push(key)
+      ***REMOVED***
+   ***REMOVED***
+
    ///////////////////////
    ////OTHER FUNCTIONS////
    ///////////////////////
 
-   function addNewGroup() {
-      props.createGroup(groupName, props.route.params.languageInstance)
-      props.navigation.goBack()
+   function addNewLanguage(language) {
+      props.addLanguage(language)
    ***REMOVED***
 
    ////////////////////////////////
    ////RENDER/STYLES/NAVOPTIONS////
    ////////////////////////////////
 
+   function renderLanguageInstanceItem(languageInstanceList) {
+      return (
+         <TouchableOpacity
+            style={styles.languageInstanceItem***REMOVED***
+            onPress={() => Alert.alert
+               ("Are you sure you'd like to add a new language instance?",
+                  "You will not be able to use the app until the language instance is added",
+                  [{
+                     text: 'Cancel',
+                     onPress: () => { ***REMOVED***
+                  ***REMOVED***,
+                  {
+                     text: 'OK',
+                     onPress: () => addNewLanguage(languageInstanceList.item.id)
+                  ***REMOVED***
+                  ])***REMOVED***>
+            <Text style={styles.languageInstanceText***REMOVED***>{languageInstanceList.item.displayName***REMOVED***</Text>
+         </TouchableOpacity>
+      )
+   ***REMOVED***
 
    //create modal in here, pass state to show it to lesson item so lesson item
    //can change it and show the modal on this screen
    return (
       <View style={styles.screen***REMOVED***>
-         <View style={styles.photoContainer***REMOVED***>
-            <Text>Todo: photo stuff</Text>
-         </View>
-         <View style={styles.bottomHalfContainer***REMOVED***>
-            <View style={styles.inputContainer***REMOVED***>
-               <Text style={styles.groupNameLabel***REMOVED***>Group Name</Text>
-               <TextInput
-                  style={styles.addNewGroupContainer***REMOVED***
-                  onChangeText={text => setGroupName(text)***REMOVED*** value={groupName***REMOVED***
-                  autoCapitalize='words'
-                  autoCorrect={false***REMOVED***
-                  placeholder='Group name here'
-                  placeholderTextColor='#9FA5AD'
-                  maxLength={50***REMOVED***
-                  returnKeyType='done'
-               />
-            </View>
-            <TouchableOpacity style={styles.saveButtonContainer***REMOVED*** onPress={addNewGroup***REMOVED***>
-               <Text style={styles.saveButtonText***REMOVED***>Save</Text>
-            </TouchableOpacity>
-         </View>
+         <FlatList
+            data={languageInstanceList.filter(item => !installedLanguageInstances.includes(item.id))***REMOVED***
+            renderItem={renderLanguageInstanceItem***REMOVED***
+         />
       </View>
    )
 ***REMOVED***
@@ -89,48 +110,20 @@ const styles = StyleSheet.create({
       backgroundColor: "#F7F7F7"
       //justifyContent: "flex-start"
    ***REMOVED***,
-   photoContainer: {
-      width: "100%",
-      height: "30%",
-      justifyContent: "center",
-      alignItems: "center"
+   languageInstanceItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      height: 60,
+      margin: 5,
+      borderWidth: 2,
+      borderColor: "#9FA5AD"
    ***REMOVED***,
-   bottomHalfContainer: {
-      flex: 1,
-      justifyContent: "space-between",
-   ***REMOVED***,
-   inputContainer: {
-      marginHorizontal: 25,
-      padding: 3,
-   ***REMOVED***,
-   groupNameLabel: {
-      fontFamily: "regular",
-      fontSize: 14,
-      color: '#9FA5AD'
-   ***REMOVED***,
-   addNewGroupContainer: {
-      borderBottomColor: '#EFF2F4',
-      borderBottomWidth: 2,
-      height: 40,
-
+   languageInstanceText: {
+      color: '#82868D',
+      paddingLeft: 10,
       fontSize: 18,
       fontFamily: 'regular'
-   ***REMOVED***,
-   saveButtonContainer: {
-      width: 127,
-      height: 52,
-      borderRadius: 5,
-      backgroundColor: "#60C239",
-      justifyContent: "center",
-      alignItems: "center",
-      alignSelf: "flex-end",
-      margin: 30
-   ***REMOVED***,
-   saveButtonText: {
-      fontSize: 18,
-      fontFamily: 'bold',
-      color: "#FFFFFF"
-   ***REMOVED***,
+   ***REMOVED***
 ***REMOVED***)
 
 
@@ -140,7 +133,6 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-   console.log(state.groups)
    return {
       downloads: state.downloads,
       appProgress: state.appProgress,
@@ -152,7 +144,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
    return {
-      createGroup: (groupName, language) => dispatch(createGroup(groupName, language)),
+      addLanguage: language => dispatch(addLanguage(language)),
    ***REMOVED***
 ***REMOVED***
 

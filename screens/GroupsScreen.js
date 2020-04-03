@@ -18,21 +18,25 @@ function GroupsScreen(props) {
    ////STATE, CONSTRUCTOR, AND NAVIGATION////
    //////////////////////////////////////////
 
-
+   const [isEditing, setIsEditing] = useState(false)
 
    //set language based on user's language vs user's location?
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
-   ***REMOVED***, [])
+   ***REMOVED***, [isEditing])
 
    function getNavOptions() {
       return {
-         headerRight: props.isRTL ? () =>
-            <BackButton
-               isRTL={props.isRTL***REMOVED***
-               onPress={() => props.navigation.goBack()***REMOVED***
-            /> :
-            () => <View></View>,
+         headerRight: props.isRTL ? 
+            () =>
+               <BackButton
+                  isRTL={props.isRTL***REMOVED***
+                  onPress={() => props.navigation.goBack()***REMOVED***
+               /> :
+            () => 
+               <TouchableOpacity style={styles.editButtonContainer***REMOVED*** onPress={() => setIsEditing(old => !old)***REMOVED***>
+                  <Text style={styles.editButtonText***REMOVED***>{isEditing ? 'Done' : 'Edit'***REMOVED***</Text>
+               </TouchableOpacity>,
          headerLeft: props.isRTL ? () =>
             <View></View> :
             () =>
@@ -47,6 +51,19 @@ function GroupsScreen(props) {
    ////OTHER FUNCTIONS////
    ///////////////////////
 
+   function getInstalledLanguageInstances() {
+      var installedLanguageInstances = []
+      for (key in props.database) {
+         if (key.length === 2) {
+            var languageObject = {***REMOVED***;
+            languageObject['languageName'] = props.database[key].displayName
+            languageObject['languageID'] = key
+            installedLanguageInstances.push(languageObject)
+         ***REMOVED***
+      ***REMOVED***
+      return installedLanguageInstances
+   ***REMOVED***
+
 
 
    ////////////////////////////////
@@ -56,8 +73,10 @@ function GroupsScreen(props) {
    function renderLanguageInstanceItem(languageInstances) {
       return (
          <LanguageInstanceHeader
-            languageInstance={languageInstances.item***REMOVED***
-            goToAddNewGroupScreen={() => props.navigation.navigate('AddNewGroup', {languageInstance: languageInstances.item***REMOVED***)***REMOVED***
+            languageName={languageInstances.item.languageName***REMOVED***
+            languageID={languageInstances.item.languageID***REMOVED***
+            goToAddNewGroupScreen={() => props.navigation.navigate('AddNewGroup', {languageID: languageInstances.item.languageID***REMOVED***)***REMOVED***
+            isEditing={isEditing***REMOVED***
          />
       )
    ***REMOVED***
@@ -67,13 +86,13 @@ function GroupsScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.languageList***REMOVED***>
-         <FlatList
-            data={Object.keys(props.database)***REMOVED***
+         <FlatList   
+            data={getInstalledLanguageInstances()***REMOVED***
             renderItem={renderLanguageInstanceItem***REMOVED***
-            keyExtractor={item => item***REMOVED***
+            keyExtractor={item => item.languageID***REMOVED***
          />
          </View>
-         <TouchableOpacity style={styles.addNewLanguageContainer***REMOVED*** onPress={() => props.addLanguage('TestLanguageOne')***REMOVED***>
+         <TouchableOpacity style={styles.addNewLanguageContainer***REMOVED*** onPress={() => props.navigation.navigate('AddNewLanguage', {installedLanguageInstances: getInstalledLanguageInstances()***REMOVED***)***REMOVED***>
             <Text style={styles.addNewLanguageText***REMOVED***>Add new language</Text>
          </TouchableOpacity>
       </View>
@@ -92,13 +111,26 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    addNewLanguageContainer: {
       width: "100%",
-      height: 50
+      height: 70,
+      justifyContent: "center",
+      borderTopWidth: 2,
+      borderTopColor: '#EFF2F4'
    ***REMOVED***,
    addNewLanguageText: {
       fontFamily: 'regular',
       fontSize: 18,
       color: '#9FA5AD',
       marginHorizontal: 15
+   ***REMOVED***,
+   editButtonContainer: {
+      width: 80,
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center"
+   ***REMOVED***,
+   editButtonText: {
+      fontFamily: 'regular',
+      fontSize: 18
    ***REMOVED***
 ***REMOVED***)
 
@@ -109,7 +141,7 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-   console.log(state.database)
+   //console.log(state.activeGroup)
    return {
       downloads: state.downloads,
       appProgress: state.appProgress,

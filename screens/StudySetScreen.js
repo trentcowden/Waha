@@ -1,19 +1,14 @@
 //basic imports
 import React, { useEffect ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Text, ActivityIndicator, Image ***REMOVED*** from 'react-native';
+import { View, FlatList, StyleSheet ***REMOVED*** from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import i18n from 'i18n-js';
-import { scaleMultiplier ***REMOVED*** from '../constants'
 
 //other component imports
 import StudySetItem from '../components/StudySetItem';
 
 //redux
 import { connect ***REMOVED*** from 'react-redux'
-import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import { setFirstOpen ***REMOVED*** from '../redux/actions/databaseActions'
 import HeaderButtons from '../components/HeaderButtons';
-import { fromRight, fromLeft ***REMOVED*** from 'react-navigation-transitions';
 
 function StudySetScreen(props) {
    useEffect(() => {
@@ -22,19 +17,13 @@ function StudySetScreen(props) {
 
    function getNavOptions() {
       return {
-         headerRight: props.isRTL ?
-            () =>
-               <HeaderButtons
-                  name='ios-people'
-                  onPress1={() => props.navigation.toggleDrawer()***REMOVED***
-                  hasCompleteButton={false***REMOVED***
-               /> : null,
-         headerLeft: props.isRTL ? null : () =>
+         headerLeft: () =>
             <HeaderButtons
                name='ios-people'
                onPress1={() => props.navigation.toggleDrawer()***REMOVED***
                hasCompleteButton={false***REMOVED***
             />,
+         //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal'
       ***REMOVED***
    ***REMOVED***
 
@@ -83,7 +72,7 @@ function StudySetScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <FlatList
-            data={props.database[props.database.currentLanguage].studySets***REMOVED***
+            data={props.studySets***REMOVED***
             renderItem={renderStudySetItem***REMOVED***
          />
       </View>
@@ -121,10 +110,12 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      database: state.database,
-      colors: state.database[state.database.currentLanguage].colors,
-      isRTL: state.database[state.database.currentLanguage].isRTL,
+      database: state.database[activeGroup.language],
+      colors: state.database[activeGroup.language].colors,
+      isRTL: state.database[activeGroup.language].isRTL,
+      studySets: state.database[activeGroup.language].studySets
    ***REMOVED***
 ***REMOVED***;
 
