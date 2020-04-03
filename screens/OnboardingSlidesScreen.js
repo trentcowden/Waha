@@ -5,7 +5,7 @@ import i18n from 'i18n-js';
 
 //redux imports
 import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
-import { setFirstOpen ***REMOVED*** from '../redux/actions/databaseActions'
+import { setFirstOpen, setIsReadyToStart ***REMOVED*** from '../redux/actions/databaseActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -21,7 +21,7 @@ function OnboardingSlidesScreen(props) {
 
    useEffect(() => {
       props.setFirstOpen(false)
-      var language = props.navigation.getParam("selectedLanguage")
+      var language = props.route.params.selectedLanguage
       props.changeLanguage(language)
       props.addLanguage(language)
    ***REMOVED***, [])
@@ -69,21 +69,7 @@ function OnboardingSlidesScreen(props) {
          next: 'Next',
          finish: 'Finish'
       ***REMOVED***,
-      es: {
-         title0: 'Bienvenido a la aplicación!',
-         body0: 'Jeff sigue agregando nuevas funciones para que yo haga :)',
-         title1: 'Aunque lo disfruto',
-         body1: 'Aquí hay una foto mía de niño',
-         title2: 'A veces cuando codifico,',
-         body2: 'Me frustro y hago la cara de este gato',
-         title3: 'Y luego me pregunto',
-         body3: '¿Por qué lo hago?',
-         prev: 'Previo',
-         next: 'Siguiente',
-         finish: 'Terminar'
-      ***REMOVED***
    ***REMOVED***;
-
 
    ////////////////////////////////
    ////RENDER/STYLES/NAVOPTIONS////
@@ -115,6 +101,11 @@ function OnboardingSlidesScreen(props) {
          body: i18n.t('body3'),
       ***REMOVED***
    ]
+
+   function finishOnboarding() {
+      props.setIsReadyToStart(true)
+      props.navigation.navigate('Loading')
+   ***REMOVED***
 
    function renderOnboardingSlide(slideList) {
       return (
@@ -154,19 +145,13 @@ function OnboardingSlidesScreen(props) {
                   {pageNumber > 0 ? <Button title={i18n.t('prev')***REMOVED*** onPress={() => incrementPageNumber("prev")***REMOVED*** /> : null***REMOVED***
                </View>
                <View>
-                  <Button title={pageNumber !== 3 ? i18n.t('next') : i18n.t('finish')***REMOVED*** onPress={pageNumber !== 3 ? () => incrementPageNumber("next") : () => props.navigation.replace("StudySet")***REMOVED*** />
+                  <Button title={pageNumber !== 3 ? i18n.t('next') : i18n.t('finish')***REMOVED*** onPress={pageNumber !== 3 ? () => incrementPageNumber("next") : finishOnboarding***REMOVED*** />
                </View>
             </View>
          </View>
       </View>
    )
 ***REMOVED***
-
-OnboardingSlidesScreen.navigationOptions = navigationData => {
-   return {
-      headerShown: false
-   ***REMOVED***;
-***REMOVED***;
 
 const styles = StyleSheet.create({
    screen: {
@@ -237,8 +222,8 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-   //console.log(state)
    return {
+      isFetching: state.database.isFetching
    ***REMOVED***
 ***REMOVED***;
 
@@ -247,6 +232,7 @@ function mapDispatchToProps(dispatch) {
       setFirstOpen: toSet => dispatch(setFirstOpen(toSet)),
       addLanguage: language => dispatch(addLanguage(language)),
       changeLanguage: language => dispatch(changeLanguage(language)),
+      setIsReadyToStart: toSet => dispatch(setIsReadyToStart(toSet))
    ***REMOVED***
 ***REMOVED***
 

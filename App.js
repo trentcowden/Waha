@@ -3,7 +3,7 @@ import React, { useEffect, useState ***REMOVED*** from 'react';
 import * as Font from 'expo-font'
 
 //navigation
-import Navigator from './Navigator';
+import WahaNavigator from './navigation/WahaNavigator';
 import LoadingView from './components/LoadingView';
 
 //redux
@@ -46,7 +46,7 @@ export default function App() {
       return (
          <Provider store={store***REMOVED***>
             <PersistGate loading={<LoadingView />***REMOVED*** persistor={persistor***REMOVED***>
-               <Navigator/>
+               <WahaNavigator/>
             </PersistGate>
          </Provider>
       );

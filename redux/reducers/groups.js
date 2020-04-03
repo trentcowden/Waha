@@ -6,12 +6,13 @@
 //action imports
 import { CHANGE_ACTIVE_GROUP, CREATE_GROUP, DELETE_GROUP ***REMOVED*** from '../actions/groupsActions'
 
-export function groups(state = {***REMOVED***, action) {
+export function groups(state = [], action) {
    switch (action.type) {
       case CHANGE_ACTIVE_GROUP:
          return { ...state, activeGroup: action.groupName ***REMOVED***
       case CREATE_GROUP:
-         return { ...state, [action.groupName]: { progress: {***REMOVED***, language: action.language ***REMOVED*** ***REMOVED***
+         return [...state, {name: action.groupName, progress: {***REMOVED***, language: action.language***REMOVED***]
+         //return { ...state, [action.groupName]: { progress: {***REMOVED***, language: action.language ***REMOVED*** ***REMOVED***
       case DELETE_GROUP:
          var groupNameToDelete = action.groupName
          const { [groupNameToDelete]: value, ...newObject ***REMOVED*** = state;

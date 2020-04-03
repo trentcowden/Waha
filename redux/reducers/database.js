@@ -6,9 +6,9 @@
 //FETCH_ERROR: stll todo
 
 //action imports
-import { STORE_DATA, FETCH_ERROR, SET_IS_FETCHING, CHANGE_LANGUAGE, SET_FIRST_OPEN ***REMOVED*** from '../actions/databaseActions'
+import { STORE_DATA, FETCH_ERROR, SET_IS_FETCHING, CHANGE_LANGUAGE, SET_FIRST_OPEN, SET_IS_READY_TO_START ***REMOVED*** from '../actions/databaseActions'
 
-export function database(state = {isFetching: true, isFirstOpen: true***REMOVED***, action) {
+export function database(state = {isFetching: true, isFirstOpen: true, readyToStart: false***REMOVED***, action) {
     switch (action.type) {
         case STORE_DATA:
             return {...state, [action.language]: action.data***REMOVED***
@@ -18,6 +18,8 @@ export function database(state = {isFetching: true, isFirstOpen: true***REMOVED*
             return {...state, isFetching: action.isFetching***REMOVED***
         case SET_FIRST_OPEN:
             return {...state, isFirstOpen: action.isFirstOpen***REMOVED***
+         case SET_IS_READY_TO_START:
+            return {...state, isReadyToStart: action.isReadyToStart***REMOVED***
         default:
             return state
     ***REMOVED***

@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, Image ***REMOVED*** from 'react-native';
-import HeaderButtons from './components/HeaderButtons'
-import { scaleMultiplier ***REMOVED*** from './constants'
-import WahaDrawer from './components/WahaDrawer'
+import HeaderButtons from '../components/HeaderButtons'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import WahaDrawer from '../components/WahaDrawer'
 
-import LessonListScreen from './screens/LessonListScreen';
-import PlayScreen from './screens/PlayScreen'
-import LanguageSelectScreen from './screens/LanguageSelectScreen';
-import OnboardingSlidesScreen from './screens/OnboardingSlidesScreen';
-import SettingsScreen from './screens/SettingsScreen'
-import StudySetScreen from './screens/StudySetScreen';
-import GroupsScreen from './screens/GroupsScreen';
-import AddNewGroupScreen from './screens/AddNewGroupScreen';
+import LessonListScreen from '../screens/LessonListScreen';
+import PlayScreen from '../screens/PlayScreen'
+import LanguageSelectScreen from '../screens/LanguageSelectScreen';
+import OnboardingSlidesScreen from '../screens/OnboardingSlidesScreen';
+import SettingsScreen from '../screens/SettingsScreen'
+import StudySetScreen from '../screens/StudySetScreen';
+import GroupsScreen from '../screens/GroupsScreen';
+import AddNewGroupScreen from '../screens/AddNewGroupScreen';
 
 import { NavigationContainer ***REMOVED*** from '@react-navigation/native';
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack';
@@ -39,25 +39,38 @@ function getGestureEnabled(route) {
 ***REMOVED***
 
 //Drawer navigator contains stack navigator as only screen
-function DrawerNavigator(props) {
-   
+
+
+
+const styles = StyleSheet.create({
+   headerImage: {
+      resizeMode: "center",
+      width: 120,
+      height: 40,
+      alignSelf: "center",
+   ***REMOVED***
+***REMOVED***)
+
+function MainNavigator(props) {
    //main navigator through all app screens
    function StackNavigator() {
       return (
          //global navigation options
-         <Stack.Navigator initialRouteName="Groups" screenOptions={{
-            headerStyle: {
-               height: 90 * scaleMultiplier,
-            ***REMOVED***,
-            gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
-         ***REMOVED******REMOVED***>
+         <Stack.Navigator
+            initialRouteName='StudySet'
+            screenOptions={{
+               headerStyle: {
+                  height: 90 * scaleMultiplier,
+               ***REMOVED***,
+               //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
+            ***REMOVED******REMOVED***>
 
             {/* Study Set Screen */***REMOVED***
             <Stack.Screen
                name="StudySet"
                component={StudySetScreen***REMOVED***
                options={{
-                  headerTitle: <Image style={styles.headerImage***REMOVED*** source={require('./assets/headerLogo.png')***REMOVED*** />,
+                  headerTitle: <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED*** />,
                   headerStyle: {
                      backgroundColor: "#EAEEF0",
                   ***REMOVED***,
@@ -71,8 +84,8 @@ function DrawerNavigator(props) {
                name="LessonList"
                component={LessonListScreen***REMOVED***
                options={{
-                  gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
-                  headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('./assets/headerLogo.png')***REMOVED*** />,
+                  //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
+                  headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED*** />,
                   headerStyle: {
                      backgroundColor: "#F7F9FA",
                   ***REMOVED***,
@@ -95,18 +108,6 @@ function DrawerNavigator(props) {
                   gestureEnabled: false
                ***REMOVED******REMOVED***
             />
-
-            {/* Language Select Screen (Onboarding) */***REMOVED***
-            <Stack.Screen
-               name="LanguageSelect"
-               component={LanguageSelectScreen***REMOVED***
-            />
-
-            {/* Onboarding Slides Screen */***REMOVED***
-            <Stack.Screen
-               name="OnboardingSlides"
-               component={OnboardingSlidesScreen***REMOVED***
-            />
             <Stack.Screen
                name="Settings"
                component={SettingsScreen***REMOVED***
@@ -116,7 +117,7 @@ function DrawerNavigator(props) {
                      backgroundColor: "#F7F7F7",
                   ***REMOVED***,
                   headerTitleStyle: {
-                     color: props.colors.primaryColor,
+                     //color: props.colors.primaryColor,
                      fontFamily: 'bold'
                   ***REMOVED***,
                ***REMOVED******REMOVED***
@@ -154,40 +155,23 @@ function DrawerNavigator(props) {
    ***REMOVED***
    return (
       <NavigationContainer>
-         <Drawer.Navigator drawerContent={props => <WahaDrawer {...props***REMOVED***/>***REMOVED***>
+         <Drawer.Navigator drawerContent={props => <WahaDrawer {...props***REMOVED*** />***REMOVED***>
             <Drawer.Screen options={({ route ***REMOVED***) => ({ gestureEnabled: getGestureEnabled(route) ***REMOVED***)***REMOVED*** name="StackNavigator" component={StackNavigator***REMOVED*** />
          </Drawer.Navigator>
       </NavigationContainer>
    )
 ***REMOVED***
 
-
-const styles = StyleSheet.create({
-   headerImage: {
-      resizeMode: "center",
-      width: 120,
-      height: 40,
-      alignSelf: "center",
-   ***REMOVED***
-***REMOVED***)
-
 /////////////
 ////REDUX////
 /////////////
 
 function mapStateToProps(state) {
-   if (!state.database.isFetching)
-      return {
-         database: state.database,
-         colors: state.database[state.database.currentLanguage].colors,
-         appProgress: state.appProgress,
-         isRTL: state.database[state.database.currentLanguage].isRTL,
-      ***REMOVED***
-   else {
-      return {
-         isFetching: state.database.isFetching,
-         isFirstOpen: state.database.isFirstOpen
-      ***REMOVED***
+   return {
+      database: state.database,
+      colors: state.database[state.database.currentLanguage].colors,
+      appProgress: state.appProgress,
+      isRTL: state.database[state.database.currentLanguage].isRTL,
    ***REMOVED***
 ***REMOVED***;
 
@@ -196,4 +180,4 @@ function mapDispatchToProps(dispatch) {
    ***REMOVED***
 ***REMOVED***;
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerNavigator);
+export default connect(mapStateToProps, mapDispatchToProps)(MainNavigator);

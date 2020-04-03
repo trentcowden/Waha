@@ -14,52 +14,52 @@ function WahaDrawer(props) {
       await WebBrowser.openBrowserAsync(url);
    ***REMOVED***
 
-   return(
-   <SafeAreaView
-      style={styles.container***REMOVED***
-      forceInset={{ top: 'always', horizontal: 'never' ***REMOVED******REMOVED***
-   >
-      <View style={[styles.drawerHeaderContainer, {backgroundColor: props.colors.primaryColor***REMOVED***]***REMOVED***>
-         <View style={styles.groupIconContainer***REMOVED***>
-            <Ionicons 
+   return (
+      <SafeAreaView
+         style={styles.container***REMOVED***
+         forceInset={{ top: 'always', horizontal: 'never' ***REMOVED******REMOVED***
+      >
+         <View style={[styles.drawerHeaderContainer, { backgroundColor: props.isFetching ? null : props.colors.primaryColor ***REMOVED***]***REMOVED***>
+            <View style={styles.groupIconContainer***REMOVED***>
+               <Ionicons
+                  name="ios-people"
+                  size={100***REMOVED***
+               />
+            </View>
+            <Text style={styles.groupName***REMOVED***>Hard-coded group name</Text>
+         </View>
+         <View style={styles.bigDrawerItemsContainer***REMOVED***>
+            <DrawerItem
                name="ios-people"
-               size={100***REMOVED***
+               text="Groups & Languages"
+               onPress={() => props.navigation.navigate('Groups', { isRTL: props.isFetching ? null : props.isRTL ***REMOVED***)***REMOVED***
+            />
+            <DrawerItem
+               name="md-glasses"
+               text="Incognito Mode (todo)"
+            />
+            <DrawerItem
+               name="ios-mail"
+               text="Submit Feedback"
+               onPress={() => openBrowser('https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif')***REMOVED***
+            />
+            <DrawerItem
+               name="ios-save"
+               text="Storage (todo)"
             />
          </View>
-         <Text style={styles.groupName***REMOVED***>Hard-coded group name</Text>
-      </View>
-      <View style={styles.bigDrawerItemsContainer***REMOVED***>
-      <DrawerItem 
-         name="ios-people"
-         text="Groups & Languages"
-         onPress={() => props.navigation.navigate('Groups', {isRTL: props.isRTL***REMOVED***)***REMOVED***
-      />
-      <DrawerItem 
-         name="md-glasses"
-         text="Incognito Mode (todo)"
-      />
-      <DrawerItem 
-         name="ios-mail"
-         text="Submit Feedback"
-         onPress={() => openBrowser('https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif')***REMOVED***
-      />
-      <DrawerItem 
-         name="ios-save"
-         text="Storage (todo)"
-      />
-      </View>
-      <View style={styles.smallDrawerItemsContainer***REMOVED***>
-         <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => {***REMOVED******REMOVED***>
-            <Text style={styles.smallDrawerItemText***REMOVED***>Coaching Tools (todo)</Text>
-         </TouchableOpacity>
-         <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
-            <Text style={styles.smallDrawerItemText***REMOVED***>Privacy Policy</Text>
-         </TouchableOpacity>
-         <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
-            <Text style={styles.smallDrawerItemText***REMOVED***>View Credits</Text>
-         </TouchableOpacity>
-      </View>
-   </SafeAreaView >
+         <View style={styles.smallDrawerItemsContainer***REMOVED***>
+            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => { ***REMOVED******REMOVED***>
+               <Text style={styles.smallDrawerItemText***REMOVED***>Coaching Tools (todo)</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
+               <Text style={styles.smallDrawerItemText***REMOVED***>Privacy Policy</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
+               <Text style={styles.smallDrawerItemText***REMOVED***>View Credits</Text>
+            </TouchableOpacity>
+         </View>
+      </SafeAreaView >
    )
 ***REMOVED***
 
@@ -103,12 +103,20 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
+   if (!state.database.isFetching) {
       return {
          database: state.database,
          colors: state.database[state.database.currentLanguage].colors,
          appProgress: state.appProgress,
          isRTL: state.database[state.database.currentLanguage].isRTL,
       ***REMOVED***
+   ***REMOVED***
+   else {
+      return {
+         isFetching: state.database.isFetching,
+         isFirstOpen: state.database.isFirstOpen
+      ***REMOVED***
+   ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
