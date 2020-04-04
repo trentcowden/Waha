@@ -5,7 +5,7 @@ import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
 import { connect ***REMOVED*** from 'react-redux'
-import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
+import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function LessonItem(props) {
@@ -89,7 +89,7 @@ function LessonItem(props) {
                ***REMOVED***
                onLongPress={showLessonOptionsModal***REMOVED***
             >
-               <TouchableOpacity style={styles.completeStatusContainer***REMOVED*** onPress={() => props.toggleComplete(props.id)***REMOVED***>
+               <TouchableOpacity style={styles.completeStatusContainer***REMOVED*** onPress={() => props.toggleComplete(props.activeGroupName, props.id)***REMOVED***>
                   <MaterialCommunityIcons
                      name={props.isComplete ? "check-circle" : "play-box-outline"***REMOVED***
                      size={30***REMOVED***
@@ -165,13 +165,14 @@ function mapStateToProps(state) {
       colors: state.database[activeGroup.language].colors,
       progress: state.appProgress,
       isRTL: state.database[activeGroup.language].isRTL,
+      activeGroupName: state.activeGroup
    ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
    return {
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      toggleComplete: lessonID => { dispatch(toggleComplete(lessonID)) ***REMOVED***
+      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

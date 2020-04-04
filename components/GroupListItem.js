@@ -14,7 +14,7 @@ function GroupListItem(props) {
    ////RENDER/STYLES/NAVOPTIONS////
    ////////////////////////////////
    var deleteButton;
-   if (props.isEditing) {
+   if (props.isEditing && props.activeGroup != props.name) {
       deleteButton =
          <TouchableOpacity
             style={styles.iconContainer***REMOVED***
@@ -36,10 +36,9 @@ function GroupListItem(props) {
                color="black"
             />
          </View>
-   ***REMOVED***
-   if (props.isEditing) {
+   ***REMOVED*** else if (props.isEditing) {
       rightButton =
-         <TouchableOpacity
+         <View
             style={styles.iconContainer***REMOVED***
             onPress={() => { ***REMOVED******REMOVED***
          >
@@ -48,13 +47,15 @@ function GroupListItem(props) {
                size={50***REMOVED***
                color="gray"
             />
-         </TouchableOpacity>
+         </View>
+   ***REMOVED*** else {
+      rightButton = null;
    ***REMOVED***
 
    return (
       <TouchableOpacity 
          style={[styles.groupListItemContainer, { direction: props.isRTL ? "rtl" : "ltr" ***REMOVED***]***REMOVED***
-         onPress={() => {props.changeActiveGroup(props.name)***REMOVED******REMOVED***
+         onPress={props.isEditing ? () => props.goToEditGroupScreen(props.name) : () => {props.changeActiveGroup(props.name)***REMOVED******REMOVED***
       >
          {deleteButton***REMOVED***
          <View style={styles.iconContainer***REMOVED***>

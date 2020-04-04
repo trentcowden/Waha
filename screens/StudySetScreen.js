@@ -23,7 +23,6 @@ function StudySetScreen(props) {
                onPress1={() => props.navigation.toggleDrawer()***REMOVED***
                hasCompleteButton={false***REMOVED***
             />,
-         //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal'
       ***REMOVED***
    ***REMOVED***
 

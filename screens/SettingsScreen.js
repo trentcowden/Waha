@@ -11,7 +11,6 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import { resetProgress ***REMOVED*** from '../redux/actions/appProgressActions';
 import { getActiveChildNavigationOptions ***REMOVED*** from 'react-navigation';
 
 function SettingsScreen(props) {
@@ -99,7 +98,7 @@ function SettingsScreen(props) {
             ***REMOVED***,
             {
                text: 'Yes',
-               onPress: () => props.resetProgress()
+               onPress: () => {***REMOVED***
             ***REMOVED***
             ])
          ***REMOVED***

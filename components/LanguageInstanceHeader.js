@@ -10,10 +10,11 @@ function LanguageInstanceHeader(props) {
          <GroupListItem
             name={groups.item.name***REMOVED***
             isEditing={props.isEditing***REMOVED***
+            goToEditGroupScreen={props.goToEditGroupScreen***REMOVED***
          />
       )
    ***REMOVED***
-
+   
    return (
       <View style={styles.languageHeaderContainer***REMOVED***>
          <Text style={styles.languageHeaderText***REMOVED***>{props.languageName***REMOVED***</Text>

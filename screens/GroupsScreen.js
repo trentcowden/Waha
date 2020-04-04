@@ -8,7 +8,6 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import { resetProgress ***REMOVED*** from '../redux/actions/appProgressActions';
 import LanguageInstanceHeader from '../components/LanguageInstanceHeader';
 
 function GroupsScreen(props) {
@@ -76,6 +75,7 @@ function GroupsScreen(props) {
             languageName={languageInstances.item.languageName***REMOVED***
             languageID={languageInstances.item.languageID***REMOVED***
             goToAddNewGroupScreen={() => props.navigation.navigate('AddNewGroup', {languageID: languageInstances.item.languageID***REMOVED***)***REMOVED***
+            goToEditGroupScreen={groupName => props.navigation.navigate('EditGroup', {groupName: groupName***REMOVED***)***REMOVED***
             isEditing={isEditing***REMOVED***
          />
       )
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-   //console.log(state.activeGroup)
+   //console.log(state.groups)
    return {
       downloads: state.downloads,
       appProgress: state.appProgress,

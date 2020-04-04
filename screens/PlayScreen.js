@@ -19,7 +19,7 @@ import HeaderButtons from '../components/HeaderButtons'
 import BackButton from '../components/BackButton'
 
 //redux
-import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
+import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
 console.disableYellowBox = true;
@@ -116,7 +116,7 @@ function PlayScreen(props) {
                onPress1={() => setShowShareLessonModal(true)***REMOVED***
                hasCompleteButton={true***REMOVED***
                completeOnPress={changeCompleteStatus***REMOVED***
-               completeCondition={props.route.params.id in props.progress***REMOVED***
+               completeCondition={props.currentProgress.includes(props.route.params.id)***REMOVED***
             />,
          headerLeft: props.route.params.isRTL ?
             () => <HeaderButtons
@@ -124,7 +124,7 @@ function PlayScreen(props) {
                onPress1={() => setShowShareLessonModal(true)***REMOVED***
                hasCompleteButton={true***REMOVED***
                completeOnPress={changeCompleteStatus***REMOVED***
-               completeCondition={props.route.params.id in props.progress***REMOVED***
+               completeCondition={props.currentProgress.includes(props.route.params.id)***REMOVED***
             /> :
             () => <BackButton
                isRTL={props.route.params.isRTL***REMOVED***
@@ -154,7 +154,7 @@ function PlayScreen(props) {
                changeChapter('application')
             ***REMOVED*** else if (activeChapter === 'application') {
                var id = props.route.params.id;
-               var isComplete = (id in props.progress)
+               var isComplete = (props.currentProgress.includes(id))
                if (!isComplete)
                   changeCompleteStatus();
             ***REMOVED***
@@ -295,9 +295,9 @@ function PlayScreen(props) {
       //PURPOSE: switch the complete status of a lesson to the opposite of its current status
       function changeCompleteStatus() {
          var id = props.route.params.id;
-         var isComplete = (id in props.progress)
+         var isComplete = (props.currentProgress.includes(id))
          //redux action: change the complete status
-         props.toggleComplete(id)
+         props.toggleComplete(props.activeGroupName, id)
 
          if (isComplete) {
             Alert.alert('Lesson marked as incomplete!',
@@ -483,19 +483,20 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      progress: state.appProgress,
+      currentProgress: activeGroup.progress,
       database: state.database,
       currentLanguage: state.database.currentLanguage,
       translations: state.database[activeGroup.language].translations,
       downloads: state.downloads,
       colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
+      activeGroupName: state.activeGroup
    ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
    return {
-      toggleComplete: lessonID => { dispatch(toggleComplete(lessonID)) ***REMOVED***,
+      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***,
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
    ***REMOVED***
 ***REMOVED***

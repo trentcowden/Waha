@@ -9,7 +9,7 @@ import StudySetScreen from '../screens/StudySetScreen';
 import GroupsScreen from '../screens/GroupsScreen';
 import AddNewGroupScreen from '../screens/AddNewGroupScreen';
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen';
-
+import EditGroupScreen from '../screens/EditGroupScreen'
 import { NavigationContainer ***REMOVED*** from '@react-navigation/native';
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack';
 import { connect ***REMOVED*** from 'react-redux'
@@ -137,7 +137,20 @@ function StackNavigator(props) {
                   ***REMOVED***,
                ***REMOVED******REMOVED***
             />
-
+            <Stack.Screen
+               name="EditGroup"
+               component={EditGroupScreen***REMOVED***
+               options={{
+                  headerTitle: "Edit Group",
+                  headerStyle: {
+                     backgroundColor: "#F7F7F7",
+                  ***REMOVED***,
+                  headerTitleStyle: {
+                     color: "#000000",
+                     fontFamily: 'bold'
+                  ***REMOVED***,
+               ***REMOVED******REMOVED***
+            />
          </Stack.Navigator>
       )
 ***REMOVED***

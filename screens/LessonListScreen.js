@@ -14,7 +14,7 @@ import BackButton from '../components/BackButton'
 
 //redux imports
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
-import { toggleComplete ***REMOVED*** from '../redux/actions/appProgressActions'
+import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
@@ -109,10 +109,10 @@ function LessonListScreen(props) {
 
    //PURPOSE: change the complete status via redux dispatch
    function toggleComplete(whatToMark) {
-      if (idToDownload in props.appProgress && whatToMark === 'incomplete') {
-         props.toggleComplete(idToDownload);
-      ***REMOVED*** else if (!(idToDownload in props.appProgress) && whatToMark === 'complete') {
-         props.toggleComplete(idToDownload);
+      if (props.currentProgress.includes(idToDownload) && whatToMark === 'incomplete') {
+         props.toggleComplete(props.activeGroupName, idToDownload);
+      ***REMOVED*** else if (!props.currentProgress.includes(idToDownload) && whatToMark === 'complete') {
+         props.toggleComplete(props.activeGroupName, idToDownload);
       ***REMOVED***
       hideModals();
    ***REMOVED***
@@ -144,14 +144,14 @@ function LessonListScreen(props) {
    ***REMOVED***
 
    function markUpToThisPointAsComplete(id) {
-      languageAndStudySet = id.substr(0, 4)
-      markToLesson = id.substr(4, 5)
+      var languageAndStudySet = id.substr(0, 4)
+      var markToLesson = id.substr(4, 5)
 
       for (var i = 1; i <= parseInt(markToLesson); i++) {
          var formattedID = ("0" + i).slice(-2);
          idToMark = languageAndStudySet + formattedID
-         if (!(idToMark in props.appProgress)) {
-            props.toggleComplete(idToMark)
+         if (!props.currentProgress.includes(idToMark)) {
+            props.toggleComplete(props.activeGroupName, idToMark)
          ***REMOVED***
       ***REMOVED***
       hideModals();
@@ -171,7 +171,7 @@ function LessonListScreen(props) {
             title={LessonList.item.title***REMOVED***
             subtitle={LessonList.item.subtitle***REMOVED***
             onLessonSelect={() => navigateToPlay(LessonList.item)***REMOVED***
-            isComplete={(LessonList.item.id in props.appProgress)***REMOVED***
+            isComplete={props.currentProgress.includes(LessonList.item.id)***REMOVED***
             downloadProgress={props.downloads[LessonList.item.id]***REMOVED***
             setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
             setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
@@ -197,7 +197,7 @@ function LessonListScreen(props) {
          </View>
          <FlatListSeparator />
          <FlatList
-            data={props.database[props.database.currentLanguage].studySets.filter(studyset => studyset.id === props.route.params.studySetID)[0].lessons***REMOVED***
+            data={props.database[props.currentLanguage].studySets.filter(studyset => studyset.id === props.route.params.studySetID)[0].lessons***REMOVED***
             renderItem={renderLessonItem***REMOVED***
             extraData={refresh***REMOVED***
             ItemSeparatorComponent={FlatListSeparator***REMOVED***
@@ -247,20 +247,24 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
+   console.log(activeGroup.progress)
+
    return {
       downloads: state.downloads,
-      appProgress: state.appProgress,
+      currentProgress: activeGroup.progress,
       database: state.database,
-      currentLanguage: state.database.currentLanguage,
-      colors: state.database[state.database.currentLanguage].colors,
-      isRTL: state.database[state.database.currentLanguage].isRTL,
+      currentLanguage: activeGroup.language,
+      colors: state.database[activeGroup.language].colors,
+      isRTL: state.database[activeGroup.language].isRTL,
+      activeGroupName: state.activeGroup
    ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
    return {
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      toggleComplete: lessonID => { dispatch(toggleComplete(lessonID)) ***REMOVED***
+      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 
