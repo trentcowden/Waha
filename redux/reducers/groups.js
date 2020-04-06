@@ -4,13 +4,20 @@
 //RESET_PROGRESS: marks all lessons as incomplete by removing everything from object
 
 //action imports
-import { CREATE_GROUP, DELETE_GROUP, TOGGLE_COMPLETE, RESET_PROGRESS ***REMOVED*** from '../actions/groupsActions'
+import { CREATE_GROUP, DELETE_GROUP, TOGGLE_COMPLETE, RESET_PROGRESS, EDIT_GROUP ***REMOVED*** from '../actions/groupsActions'
 
 export function groups(state = [], action) {
    switch (action.type) {
       case CREATE_GROUP:
          return [...state, { name: action.groupName, progress: [], language: action.language ***REMOVED***]
       //return { ...state, [action.groupName]: { progress: {***REMOVED***, language: action.language ***REMOVED*** ***REMOVED***
+      case EDIT_GROUP:
+         return state.map(group => {
+            if (group.name === action.oldGroupName) {
+               return {...group, name: action.newGroupName***REMOVED***
+            ***REMOVED***
+            return group
+         ***REMOVED***)
       case DELETE_GROUP:
          return state.filter(group => group.name != action.groupName)
       case TOGGLE_COMPLETE:
@@ -25,7 +32,12 @@ export function groups(state = [], action) {
             return item
           ***REMOVED***)
       case RESET_PROGRESS:
-         return {***REMOVED***
+         return state.map((group) => {
+            if (group.name === action.groupName) {
+               return {...group, progress: []***REMOVED***
+            ***REMOVED***
+            return group
+         ***REMOVED***)
       default:
          return state
    ***REMOVED***
