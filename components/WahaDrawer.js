@@ -8,6 +8,7 @@ import DrawerItem from '../components/DrawerItem'
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler';
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as WebBrowser from 'expo-web-browser';
+import AvatarImage from '../components/AvatarImage'
 
 function WahaDrawer(props) {
    async function openBrowser(url) {
@@ -21,12 +22,9 @@ function WahaDrawer(props) {
       >
          <View style={[styles.drawerHeaderContainer, { backgroundColor: props.colors.primaryColor ***REMOVED***]***REMOVED***>
             <View style={styles.groupIconContainer***REMOVED***>
-               <Ionicons
-                  name="ios-people"
-                  size={100***REMOVED***
-               />
+               <AvatarImage source={props.activeGroupImageSource***REMOVED*** size={120***REMOVED***/>
             </View>
-            <Text style={styles.groupName***REMOVED***>{props.activeGroup***REMOVED***</Text>
+            <Text style={styles.groupName***REMOVED***>{props.activeGroupName***REMOVED***</Text>
          </View>
          <View style={styles.bigDrawerItemsContainer***REMOVED***>
             <DrawerItem
@@ -76,6 +74,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    groupIconContainer: {
       alignItems: "center",
+      marginVertical: 10
    ***REMOVED***,
    groupName: {
       color: "white",
@@ -103,13 +102,14 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
-   var activeLanguage = state.groups.filter(item => item.name === state.activeGroup)[0].language
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
       database: state.database,
-      colors: state.database[activeLanguage].colors,
+      colors: state.database[activeGroup.language].colors,
       appProgress: state.appProgress,
-      isRTL: state.database[activeLanguage].isRTL,
-      activeGroup: state.activeGroup
+      isRTL: state.database[activeGroup.language].isRTL,
+      activeGroupName: activeGroup.name,
+      activeGroupImageSource: activeGroup.imageSource,
    ***REMOVED***
 ***REMOVED***;
 

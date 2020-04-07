@@ -4,10 +4,14 @@ import { View, StyleSheet, TextInput, Text, TouchableOpacity, Alert ***REMOVED**
 
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import * as ImagePicker from 'expo-image-picker';
 
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
-import { editGroup, deleteGroup, resetProgress ***REMOVED*** from '../redux/actions/groupsActions'
+import { editGroup, deleteGroup, resetProgress, changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import WahaModal from '../components/WahaModal'
+import ModalButton from '../components/ModalButton'
+import AvatarImage from '../components/AvatarImage'
 
 function EditGroupScreen(props) {
 
@@ -19,6 +23,9 @@ function EditGroupScreen(props) {
    const [groupName, setGroupName] = useState(props.route.params.groupName)
 
    const [isActive, setIsActive] = useState(props.activeGroupName === props.route.params.groupName)
+
+   const [avatarSource, setAvatarSource] = useState(props.activeGroupImageSource)
+   const [showImagePickerModal, setShowImagePickerModal] = useState(false)
 
    //set language based on user's language vs user's location?
    useEffect(() => {
@@ -48,8 +55,69 @@ function EditGroupScreen(props) {
    ///////////////////////
 
    function editGroup() {
-      props.editGroup(props.route.params.groupName, groupName)
+      props.changeActiveGroup(groupName)
+      props.editGroup(props.route.params.groupName, groupName, avatarSource)
       props.navigation.goBack()
+   ***REMOVED***
+
+   async function openImageLibraryHandler() {
+      var permissionGranted = false
+      await ImagePicker.getCameraRollPermissionsAsync()
+         .then((permissionResponse) => {
+            //console.log(permissionResponse)
+            if (permissionResponse.status !== 'granted') {
+               console.log('not granted')
+               // console.log('not granted')
+               ImagePicker.requestCameraRollPermissionsAsync()
+                  .then(permissionResponse => {
+                     if (permissionResponse.status === 'granted') {
+                        openImageLibraryHandler()
+                     ***REMOVED***
+                  ***REMOVED***)
+            ***REMOVED***
+            else {
+               permissionGranted = true
+            ***REMOVED***
+         ***REMOVED***)
+      if (permissionGranted) {
+         ImagePicker.launchImageLibraryAsync({***REMOVED***)
+            .then(returnObject => {
+               if (returnObject.cancelled !== true) {
+                  setAvatarSource(returnObject.uri)
+               ***REMOVED***
+               setShowImagePickerModal(false)
+            ***REMOVED***)
+      ***REMOVED***
+   ***REMOVED***
+
+   async function openCameraHandler() {
+      var permissionGranted = false
+      await ImagePicker.getCameraPermissionsAsync()
+         .then((permissionResponse) => {
+            //console.log(permissionResponse)
+            if (permissionResponse.status !== 'granted') {
+               console.log('not granted')
+               // console.log('not granted')
+               ImagePicker.requestCameraPermissionsAsync()
+                  .then(permissionResponse => {
+                     if (permissionResponse.status === 'granted') {
+                        openCameraHandler()
+                     ***REMOVED***
+                  ***REMOVED***)
+            ***REMOVED***
+            else {
+               permissionGranted = true
+            ***REMOVED***
+         ***REMOVED***)
+      if (permissionGranted) {
+         ImagePicker.launchCameraAsync({***REMOVED***)
+            .then(returnObject => {
+               if (returnObject.cancelled !== true) {
+                  setAvatarSource(returnObject.uri)
+               ***REMOVED***
+               setShowImagePickerModal(false)
+            ***REMOVED***)
+      ***REMOVED***
    ***REMOVED***
 
    ////////////////////////////////
@@ -66,7 +134,7 @@ function EditGroupScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.photoContainer***REMOVED***>
-            <Text>Todo: photo stuff</Text>
+            <AvatarImage source={avatarSource***REMOVED*** onPress={() => setShowImagePickerModal(true)***REMOVED*** size={120***REMOVED*** />
          </View>
          <View style={styles.bottomHalfContainer***REMOVED***>
             <View style={styles.inputContainer***REMOVED***>
@@ -105,6 +173,11 @@ function EditGroupScreen(props) {
                <Text style={styles.saveButtonText***REMOVED***>Save</Text>
             </TouchableOpacity>
          </View>
+         <WahaModal isVisible={showImagePickerModal***REMOVED***>
+            <ModalButton title='Take Photo' onPress={openCameraHandler***REMOVED*** />
+            <ModalButton title='Choose from Library...' onPress={openImageLibraryHandler***REMOVED*** />
+            <ModalButton title='Cancel' onPress={() => setShowImagePickerModal(false)***REMOVED*** />
+         </WahaModal>
       </View>
    )
 ***REMOVED***
@@ -112,7 +185,7 @@ function EditGroupScreen(props) {
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
-      backgroundColor: "#F7F7F7"
+      backgroundColor: "#FFFFFF"
       //justifyContent: "flex-start"
    ***REMOVED***,
    photoContainer: {
@@ -131,15 +204,14 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    groupNameLabel: {
       fontFamily: "regular",
-      fontSize: 14,
+      fontSize: 14 * scaleMultiplier,
       color: '#9FA5AD'
    ***REMOVED***,
    addNewGroupContainer: {
       borderBottomColor: '#EFF2F4',
       borderBottomWidth: 2,
-      height: 40,
-
-      fontSize: 18,
+      height: 40 * scaleMultiplier,
+      fontSize: 18 * scaleMultiplier,
       fontFamily: 'regular'
    ***REMOVED***,
    resetProgressButtonContainer: {
@@ -147,7 +219,7 @@ const styles = StyleSheet.create({
       borderColor: '#FF0800',
       borderWidth: 1,
       borderRadius: 5,
-      height: 55,
+      height: 55 * scaleMultiplier,
       marginVertical: 20,
       justifyContent: "center",
       paddingLeft: 15
@@ -155,12 +227,12 @@ const styles = StyleSheet.create({
    resetProgressButtonText: {
       color: '#FF0800',
       fontFamily: 'regular',
-      fontSize: 18
+      fontSize: 18 * scaleMultiplier,
    ***REMOVED***,
    deleteGroupButtonContainer: {
       width: "100%",
       borderRadius: 5,
-      height: 55,
+      height: 55 * scaleMultiplier,
       justifyContent: "center",
       paddingLeft: 15,
       backgroundColor: '#FF0800'
@@ -168,16 +240,16 @@ const styles = StyleSheet.create({
    deleteGroupButtonText: {
       color: '#FFFFFF',
       fontFamily: 'regular',
-      fontSize: 18
+      fontSize: 18 * scaleMultiplier
    ***REMOVED***,
    cantDeleteText: {
       fontFamily: 'regular',
-      fontSize: 14,
+      fontSize: 14 * scaleMultiplier,
       color: '#9FA5AD'
    ***REMOVED***,
    saveButtonContainer: {
-      width: 127,
-      height: 52,
+      width: 127 * scaleMultiplier,
+      height: 52 * scaleMultiplier,
       borderRadius: 5,
       backgroundColor: "#60C239",
       justifyContent: "center",
@@ -186,7 +258,7 @@ const styles = StyleSheet.create({
       margin: 30,
    ***REMOVED***,
    saveButtonText: {
-      fontSize: 18,
+      fontSize: 18 * scaleMultiplier,
       fontFamily: 'bold',
       color: "#FFFFFF",
    ***REMOVED***,
@@ -203,15 +275,18 @@ function mapStateToProps(state) {
    return {
       colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
-      activeGroupName: activeGroup.name
+      activeGroupName: activeGroup.name,
+      activeGroupImageSource: activeGroup.imageSource
+
    ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
    return {
-      editGroup: (oldGroupName, newGroupName) => dispatch(editGroup(oldGroupName, newGroupName)),
+      editGroup: (oldGroupName, newGroupName, imageSource) => dispatch(editGroup(oldGroupName, newGroupName, imageSource)),
       deleteGroup: name => { dispatch(deleteGroup(name)) ***REMOVED***,
       resetProgress: name => { dispatch(resetProgress(name)) ***REMOVED***,
+      changeActiveGroup: name => { dispatch(changeActiveGroup(name)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

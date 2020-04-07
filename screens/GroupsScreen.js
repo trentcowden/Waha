@@ -1,6 +1,6 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, Text ***REMOVED*** from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, Text, ScrollView ***REMOVED*** from 'react-native';
 
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -22,7 +22,7 @@ function GroupsScreen(props) {
    //set language based on user's language vs user's location?
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
-   ***REMOVED***, [isEditing])
+   ***REMOVED***, [isEditing, props])
 
    function getNavOptions() {
       return {
@@ -36,8 +36,11 @@ function GroupsScreen(props) {
                <TouchableOpacity style={styles.editButtonContainer***REMOVED*** onPress={() => setIsEditing(old => !old)***REMOVED***>
                   <Text style={styles.editButtonText***REMOVED***>{isEditing ? 'Done' : 'Edit'***REMOVED***</Text>
                </TouchableOpacity>,
-         headerLeft: props.isRTL ? () =>
-            <View></View> :
+         headerLeft: props.isRTL ? 
+            () =>
+               <TouchableOpacity style={styles.editButtonContainer***REMOVED*** onPress={() => setIsEditing(old => !old)***REMOVED***>
+                  <Text style={styles.editButtonText***REMOVED***>{isEditing ? 'Done' : 'Edit'***REMOVED***</Text>
+               </TouchableOpacity> :
             () =>
                <BackButton
                   isRTL={props.isRTL***REMOVED***
@@ -86,15 +89,18 @@ function GroupsScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.languageList***REMOVED***>
-         <FlatList   
-            data={getInstalledLanguageInstances()***REMOVED***
-            renderItem={renderLanguageInstanceItem***REMOVED***
-            keyExtractor={item => item.languageID***REMOVED***
-         />
+            <FlatList
+               data={getInstalledLanguageInstances()***REMOVED***
+               renderItem={renderLanguageInstanceItem***REMOVED***
+               keyExtractor={item => item.languageID***REMOVED***
+               ListFooterComponent={
+                  <TouchableOpacity style={[styles.addNewLanguageContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => props.navigation.navigate('AddNewLanguage', { installedLanguageInstances: getInstalledLanguageInstances() ***REMOVED***)***REMOVED***>
+                     <Text style={styles.addNewLanguageText***REMOVED***>+ New language</Text>
+                  </TouchableOpacity>
+               ***REMOVED***
+            />
          </View>
-         <TouchableOpacity style={styles.addNewLanguageContainer***REMOVED*** onPress={() => props.navigation.navigate('AddNewLanguage', {installedLanguageInstances: getInstalledLanguageInstances()***REMOVED***)***REMOVED***>
-            <Text style={styles.addNewLanguageText***REMOVED***>+ New language</Text>
-         </TouchableOpacity>
+
       </View>
    )
 ***REMOVED***
@@ -102,35 +108,34 @@ function GroupsScreen(props) {
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
-      backgroundColor: "#DEE3E9",
+      backgroundColor: "#EFF2F4",
       //justifyContent: "flex-start"
    ***REMOVED***,
    languageList: {
-      marginTop: 10,
       flex: 1
    ***REMOVED***,
    addNewLanguageContainer: {
       width: "100%",
       height: 80 * scaleMultiplier,
       justifyContent: "center",
-      borderTopWidth: 2,
       borderTopColor: '#EFF2F4'
    ***REMOVED***,
    addNewLanguageText: {
       fontFamily: 'medium',
-      fontSize: 18,
+      fontSize: 18  * scaleMultiplier,
       color: '#9FA5AD',
-      marginHorizontal: 15
+      marginHorizontal: 15,
+      textAlign: "left"
    ***REMOVED***,
    editButtonContainer: {
       width: 80,
       height: "100%",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
    ***REMOVED***,
    editButtonText: {
       fontFamily: 'regular',
-      fontSize: 18
+      fontSize: 18 * scaleMultiplier
    ***REMOVED***
 ***REMOVED***)
 
@@ -142,13 +147,13 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
    //console.log(state.groups)
-   console.log(state.database)
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
       downloads: state.downloads,
       appProgress: state.appProgress,
       database: state.database,
-      colors: state.database[state.database.currentLanguage].colors,
-      isRTL: state.database[state.database.currentLanguage].isRTL,
+      colors: state.database[activeGroup.language].colors,
+      isRTL: state.database[activeGroup.language].isRTL,
    ***REMOVED***
 ***REMOVED***;
 

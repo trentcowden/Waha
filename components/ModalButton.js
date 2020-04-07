@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text ***REMOVED*** from 'react-native';
+import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function ModalButton(props) {
     return (
@@ -15,13 +16,13 @@ function ModalButton(props) {
 const styles = StyleSheet.create({
     modalButtonStyle: {
       width: "100%",
-      height: 60,
+      height: 60 * scaleMultiplier,
       justifyContent: "center"
     ***REMOVED***,
     text: {
         textAlign: "center",
         fontFamily: 'medium',
-        fontSize: 21
+        fontSize: 21 * scaleMultiplier
     ***REMOVED***
   ***REMOVED***)
 

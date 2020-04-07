@@ -33,16 +33,13 @@ function LanguageInstanceHeader(props) {
       props.deleteLanguage(props.languageID)
    ***REMOVED***
 
-   FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
-      console.log(contents)
-   ***REMOVED***);
-
    function renderGroupItem(groups) {
       return (
          <GroupListItem
             name={groups.item.name***REMOVED***
             isEditing={props.isEditing***REMOVED***
             goToEditGroupScreen={props.goToEditGroupScreen***REMOVED***
+            avatarSource={groups.item.imageSource***REMOVED***
          />
       )
    ***REMOVED***
@@ -65,7 +62,7 @@ function LanguageInstanceHeader(props) {
             )
          ***REMOVED***
       >
-         <Ionicons name='md-trash' size={29***REMOVED*** color='#FF0800'/>
+         <Ionicons name='md-trash' size={25 * scaleMultiplier***REMOVED*** color='#FF0800'/>
       </TouchableOpacity> : null
    
    return (
@@ -79,8 +76,8 @@ function LanguageInstanceHeader(props) {
             renderItem={renderGroupItem***REMOVED***
             keyExtractor={item => item.name***REMOVED***
          />
-         <TouchableOpacity style={styles.addGroupContainer***REMOVED*** onPress={props.goToAddNewGroupScreen***REMOVED***>
-            <MaterialIcons name='group-add' size={49***REMOVED*** color='#DEE3E9' style={{marginLeft: 10***REMOVED******REMOVED***/>
+         <TouchableOpacity style={[styles.addGroupContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={props.goToAddNewGroupScreen***REMOVED***>
+            <MaterialIcons name='group-add' size={30 * scaleMultiplier***REMOVED*** color='#DEE3E9' style={{marginLeft: 10***REMOVED******REMOVED***/>
             <Text style={styles.addGroupText***REMOVED***>New group</Text>
          </TouchableOpacity>
       </View>
@@ -90,19 +87,21 @@ function LanguageInstanceHeader(props) {
 const styles = StyleSheet.create({
    languageHeaderListContainer: {
       width: "100%",
-      marginBottom: 15
+      marginBottom: 15,
+      marginTop: 3
    ***REMOVED***,
    languageHeaderContainer: {
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
    ***REMOVED***, 
    trashButtonContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginLeft: 15
+      marginLeft: 15,
+      marginRight: -15
    ***REMOVED***, 
    languageHeaderText: {
-      fontSize: 18,
+      fontSize: 18 * scaleMultiplier,
       fontFamily: "regular",
       color: "#9FA5AD",
       marginLeft: 30
@@ -117,9 +116,10 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    addGroupText: {
       color: "#2D9CDB",
-      fontSize: 18,
+      fontSize: 18 * scaleMultiplier,
       fontFamily: 'medium-italic',
-      marginLeft: 15
+      marginLeft: 15,
+      textAlign: 'left'
    ***REMOVED***
 ***REMOVED***)
 function mapStateToProps(state) {

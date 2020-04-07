@@ -1,13 +1,13 @@
 //imports
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image ***REMOVED*** from 'react-native';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
 import { deleteGroup, changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import AvatarImage from '../components/AvatarImage'
 
 function GroupListItem(props) {
-
    function getBookmarkText() {
       var bookmarkInt = 0;
       var thisGroupProgress = props.groups.filter(item => item.name === props.name)[0].progress
@@ -69,7 +69,7 @@ function GroupListItem(props) {
             style={styles.minusButtonContainer***REMOVED***
             onPress={() => props.deleteGroup(props.name)***REMOVED***
          >
-            <MaterialCommunityIcons name='minus-circle' size={24***REMOVED*** color="#FF0800" />
+            <MaterialCommunityIcons name='minus-circle' size={24 * scaleMultiplier***REMOVED*** color="#FF0800" />
          </TouchableOpacity>
    ***REMOVED*** else if (props.isEditing && props.activeGroup === props.name) {
       deleteButton =
@@ -77,7 +77,7 @@ function GroupListItem(props) {
             style={styles.minusButtonContainer***REMOVED***
             onPress={() => props.deleteGroup(props.name)***REMOVED***
          >
-            <MaterialCommunityIcons name='minus-circle' size={24***REMOVED*** color="#DEE3E9" />
+            <MaterialCommunityIcons name='minus-circle' size={24 * scaleMultiplier***REMOVED*** color="#DEE3E9" />
          </View>
    ***REMOVED***
 
@@ -90,7 +90,7 @@ function GroupListItem(props) {
          >
             <Ionicons
                name={props.isRTL ? 'ios-arrow-back' : 'ios-arrow-forward'***REMOVED***
-               size={36***REMOVED***
+               size={36 * scaleMultiplier***REMOVED***
                color="gray"
             />
          </View>
@@ -99,8 +99,8 @@ function GroupListItem(props) {
          <View style={styles.iconContainer***REMOVED***>
             <Ionicons
                name="md-checkmark"
-               size={24***REMOVED***
-               color="black"
+               size={24 * scaleMultiplier***REMOVED***
+               color="#2D9CDB"
             />
          </View>
    ***REMOVED*** else {
@@ -114,9 +114,8 @@ function GroupListItem(props) {
          style={[styles.touchableContainer, { direction: props.isRTL ? "rtl" : "ltr" ***REMOVED***]***REMOVED***
          onPress={props.isEditing ? () => props.goToEditGroupScreen(props.name) : () => { props.changeActiveGroup(props.name) ***REMOVED******REMOVED***
       >
-         <View style={styles.iconContainer***REMOVED***>
-            <MaterialIcons name='group' size={49***REMOVED*** />
-         </View>
+         <AvatarImage size={50***REMOVED*** onPress={() => {***REMOVED******REMOVED*** source={props.avatarSource***REMOVED*** isActive={props.activeGroup === props.name***REMOVED***/>
+        
          <View style={styles.groupNameContainer***REMOVED***>
             <Text style={styles.groupNameText***REMOVED***>{props.name***REMOVED***</Text>
             <Text style={styles.checkpointText***REMOVED***>{getBookmarkText()***REMOVED***</Text>
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
       margin: 3
    ***REMOVED***,
    touchableContainer: {
-      width: "100%",
+      flex: 1,
       height: "100%",
       justifyContent: "flex-start",
       flexDirection: "row",
@@ -164,13 +163,15 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    groupNameText: {
       color: "#3A3C3F",
-      fontSize: 18,
-      fontFamily: 'bold'
+      fontSize: 18 * scaleMultiplier,
+      fontFamily: 'bold',
+      textAlign: "left"
    ***REMOVED***,
    checkpointText: {
       fontFamily: 'regular',
-      fontSize: 12,
-      color: '#9FA5AD'
+      fontSize: 12 * scaleMultiplier,
+      color: '#9FA5AD',
+      textAlign: "left"
    ***REMOVED***
 ***REMOVED***)
 
