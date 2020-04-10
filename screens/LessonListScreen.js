@@ -1,6 +1,6 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Alert ***REMOVED*** from 'react-native';
+import { View, FlatList, StyleSheet, Alert, Image ***REMOVED*** from 'react-native';
 import LessonItem from '../components/LessonItem';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -9,7 +9,7 @@ import FlatListSeparator from '../components/FlatListSeparator'
 import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
 import NetInfo from '@react-native-community/netinfo';
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier, headerImages ***REMOVED*** from '../constants'
 import BackButton from '../components/BackButton'
 
 //redux imports
@@ -46,7 +46,9 @@ function LessonListScreen(props) {
    ***REMOVED***, [])
 
    function getNavOptions() {
+
       return {
+         headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={headerImages[props.activeGroupLanguage]***REMOVED*** />,
          headerRight: props.route.params.isRTL ? () =>
             <BackButton
                isRTL={props.route.params.isRTL***REMOVED***
@@ -200,7 +202,6 @@ function LessonListScreen(props) {
             data={props.currentDatabase.studySets.filter(studyset => studyset.id === props.route.params.studySetID)[0].lessons***REMOVED***
             renderItem={renderLessonItem***REMOVED***
             extraData={refresh***REMOVED***
-            ItemSeparatorComponent={FlatListSeparator***REMOVED***
          />
          <WahaModal isVisible={showSaveLessonModal***REMOVED***>
             <ModalButton title="Download lesson" onPress={downloadLesson***REMOVED*** />
@@ -231,12 +232,13 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    studySetItemContainer: {
       width: "100%",
-      height: 80 * scaleMultiplier
+      height: 90 * scaleMultiplier
    ***REMOVED***,
    headerImage: {
       resizeMode: "center",
       width: 120,
       height: 40,
+      alignSelf: "center",
    ***REMOVED***
 ***REMOVED***)
 
@@ -255,7 +257,8 @@ function mapStateToProps(state) {
       currentLanguage: activeGroup.language,
       colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
-      activeGroupName: state.activeGroup
+      activeGroupName: activeGroup.name,
+      activeGroupLanguage: activeGroup.language
    ***REMOVED***
 ***REMOVED***;
 

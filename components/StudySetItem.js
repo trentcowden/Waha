@@ -5,6 +5,7 @@ import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-prog
 import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier***REMOVED*** from '../constants'
+import Icon from '../assets/fonts/icons'
 
 function StudySetItem(props) {
 
@@ -58,7 +59,10 @@ function StudySetItem(props) {
                   rotation={0***REMOVED***
                   backgroundColor="#FFFFFF"
                >
-                  {(fill) => (<View style={{backgroundColor: chooseAccentColor(), width: "100%", height: "100%", justifyContent: "center", alignItems: "center"***REMOVED******REMOVED***><MaterialCommunityIcons name={props.iconName***REMOVED*** size={50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** /></View>)***REMOVED***
+                  {(fill) => (
+                     <View style={{backgroundColor: chooseAccentColor(), width: "100%", height: "100%", justifyContent: "center", alignItems: "center"***REMOVED******REMOVED***>
+                        <MaterialCommunityIcons name={props.iconName***REMOVED*** size={50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
+                     </View>)***REMOVED***
                </AnimatedCircularProgress>
                <View style={styles.percentageTextContainer***REMOVED***>
                   <Text style={styles.percentageText***REMOVED***>{Math.round((numCompleted / numLessons) * 100)***REMOVED***%</Text>
@@ -69,10 +73,10 @@ function StudySetItem(props) {
                <Text style={[styles.title, { color: fullyCompleted ? "#9FA5AD" : "black" ***REMOVED***]***REMOVED***>{props.title***REMOVED***</Text>
             </View>
             <View style={styles.iconContainer***REMOVED***>
-               <Entypo
+               <Icon
                   name= {props.isRTL ? 'triangle-left' : 'triangle-right'***REMOVED***
-                  size={40***REMOVED***
-                  color="gray"
+                  size={37 * scaleMultiplier***REMOVED***
+                  color="#828282"
                />
             </View>
       </TouchableOpacity>

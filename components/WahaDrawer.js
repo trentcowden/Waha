@@ -1,9 +1,7 @@
 import SafeAreaView from 'react-native-safe-area-view';
-import { DrawerItems ***REMOVED*** from 'react-navigation-drawer';
 import React from 'react';
 import { View, Text, StyleSheet, Button ***REMOVED*** from 'react-native';
 import { connect ***REMOVED*** from 'react-redux'
-import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import DrawerItem from '../components/DrawerItem'
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler';
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -28,32 +26,33 @@ function WahaDrawer(props) {
          </View>
          <View style={styles.bigDrawerItemsContainer***REMOVED***>
             <DrawerItem
-               name="ios-people"
+               name="group"
                text="Groups & Languages"
                onPress={() => props.navigation.navigate('Groups', { isRTL: props.isFetching ? null : props.isRTL ***REMOVED***)***REMOVED***
             />
-            <DrawerItem
+            {/* <DrawerItem
                name="md-glasses"
                text="Incognito Mode (todo)"
-            />
+            /> */***REMOVED***
             <DrawerItem
-               name="ios-mail"
+               name="email"
                text="Submit Feedback"
                onPress={() => openBrowser('https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif')***REMOVED***
             />
             <DrawerItem
-               name="ios-save"
-               text="Storage (todo)"
+               name="storage"
+               text="Storage"
+               onPress={() => props.navigation.navigate('Storage', { isRTL: props.isFetching ? null : props.isRTL ***REMOVED***)***REMOVED***
             />
          </View>
          <View style={styles.smallDrawerItemsContainer***REMOVED***>
-            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => { ***REMOVED******REMOVED***>
-               <Text style={styles.smallDrawerItemText***REMOVED***>Coaching Tools (todo)</Text>
+            <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => { ***REMOVED******REMOVED***>
+               {/* <Text style={styles.smallDrawerItemText***REMOVED***>Coaching Tools (todo)</Text> */***REMOVED***
             </TouchableOpacity>
-            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
+            <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
                <Text style={styles.smallDrawerItemText***REMOVED***>Privacy Policy</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
+            <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
                <Text style={styles.smallDrawerItemText***REMOVED***>View Credits</Text>
             </TouchableOpacity>
          </View>
@@ -93,7 +92,8 @@ const styles = StyleSheet.create({
    smallDrawerItemText: {
       fontFamily: 'medium',
       fontSize: 18 * scaleMultiplier,
-      color: '#82868D'
+      color: '#82868D',
+      textAlign: 'left'
    ***REMOVED***
 ***REMOVED***);
 

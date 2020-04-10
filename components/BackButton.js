@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text ***REMOVED*** from 'react-native';
-import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
+import { TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
+import { scaleMultiplier ***REMOVED*** from '../constants';
 
 function BackButton(props) {
    return (
@@ -8,9 +8,9 @@ function BackButton(props) {
             style={[styles.backButtonContainer, {justifyContent: props.isRTL ? 'flex-end' : 'flex-start'***REMOVED***]***REMOVED***
             onPress={props.onPress***REMOVED***
          >
-            <Ionicons
-               name={props.isRTL ? 'ios-arrow-forward' : 'ios-arrow-back'***REMOVED***
-               size={30***REMOVED***
+            <Icon
+               name={props.isRTL ? 'arrow-right' : 'arrow-left'***REMOVED***
+               size={45 * scaleMultiplier***REMOVED***
                color="#828282"
             />
          </TouchableOpacity>
@@ -20,7 +20,6 @@ function BackButton(props) {
 const styles = StyleSheet.create({
    backButtonContainer: {
       flexDirection: "row",
-      marginHorizontal: 10,
       width: 100,
    ***REMOVED***
 ***REMOVED***)

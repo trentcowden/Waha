@@ -1,9 +1,9 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, FlatList, Text, TouchableOpacity, Alert ***REMOVED*** from 'react-native';
+import { View, StyleSheet, FlatList, Text, TouchableOpacity, Alert, Image ***REMOVED*** from 'react-native';
 
 import BackButton from '../components/BackButton'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier, headerImages ***REMOVED*** from '../constants'
 
 //redux imports
 import { connect ***REMOVED*** from 'react-redux'
@@ -74,7 +74,7 @@ function AddNewLanguageScreen(props) {
    function renderLanguageInstanceItem(languageInstanceList) {
       return (
          <TouchableOpacity
-            style={styles.languageInstanceItem***REMOVED***
+            style={[styles.languageInstanceItem, {direction: props.isRTL ? 'rtl' : 'ltr'***REMOVED***]***REMOVED***
             onPress={() => Alert.alert
                ("Are you sure you'd like to add a new language instance?",
                   "You will not be able to use the app until the language instance is added",
@@ -88,6 +88,7 @@ function AddNewLanguageScreen(props) {
                   ***REMOVED***
                   ])***REMOVED***>
             <Text style={styles.languageInstanceText***REMOVED***>{languageInstanceList.item.displayName***REMOVED***</Text>
+            <Image style={styles.languageLogo***REMOVED*** source={headerImages[languageInstanceList.item.id]***REMOVED*** />
          </TouchableOpacity>
       )
    ***REMOVED***
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    languageInstanceItem: {
       flexDirection: "row",
+      justifyContent: 'space-between',
       alignItems: "center",
       height: 60,
       margin: 5,
@@ -123,6 +125,12 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       fontSize: 18,
       fontFamily: 'regular'
+   ***REMOVED***,
+   languageLogo: {
+      resizeMode: "stretch",
+      width: 96 * scaleMultiplier,
+      height: 32 * scaleMultiplier,
+      marginRight: 10
    ***REMOVED***
 ***REMOVED***)
 
@@ -133,10 +141,11 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      downloads: state.downloads,
-      appProgress: state.appProgress,
+      isRTL: state.database[activeGroup.language].isRTL,
       database: state.database,
+      activeGroupLanguage: activeGroup.language
    ***REMOVED***
 ***REMOVED***;
 

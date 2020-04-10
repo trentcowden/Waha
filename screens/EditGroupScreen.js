@@ -30,7 +30,7 @@ function EditGroupScreen(props) {
    //set language based on user's language vs user's location?
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
-   ***REMOVED***, [])
+   ***REMOVED***, [props.isRTL])
 
    function getNavOptions() {
       return {
@@ -126,7 +126,7 @@ function EditGroupScreen(props) {
 
    var deleteButton = isActive ? <Text style={styles.cantDeleteText***REMOVED***>Can't delete currently selected group</Text> :
    <TouchableOpacity style={styles.deleteGroupButtonContainer***REMOVED*** onPress={() => {props.deleteGroup(props.route.params.groupName); props.navigation.goBack();***REMOVED******REMOVED***>
-      <Text style={styles.deleteGroupButtonText***REMOVED***>Delete Group</Text>
+      <Text style={[styles.deleteGroupButtonText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Delete Group</Text>
    </TouchableOpacity> 
 
    //create modal in here, pass state to show it to lesson item so lesson item
@@ -134,13 +134,13 @@ function EditGroupScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.photoContainer***REMOVED***>
-            <AvatarImage source={avatarSource***REMOVED*** onPress={() => setShowImagePickerModal(true)***REMOVED*** size={120***REMOVED*** />
+            <AvatarImage source={avatarSource***REMOVED*** onPress={() => setShowImagePickerModal(true)***REMOVED*** size={120***REMOVED*** isChangeable={true***REMOVED***/>
          </View>
          <View style={styles.bottomHalfContainer***REMOVED***>
             <View style={styles.inputContainer***REMOVED***>
-               <Text style={styles.groupNameLabel***REMOVED***>Group Name</Text>
+               <Text style={[styles.groupNameLabel, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Group Name</Text>
                <TextInput
-                  style={styles.addNewGroupContainer***REMOVED***
+                  style={[styles.addNewGroupContainer, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***
                   onChangeText={text => setGroupName(text)***REMOVED*** value={groupName***REMOVED***
                   autoCapitalize='words'
                   autoCorrect={false***REMOVED***
@@ -165,11 +165,11 @@ function EditGroupScreen(props) {
                      )
                   ***REMOVED***
                >
-                  <Text style={styles.resetProgressButtonText***REMOVED***>Reset Progress</Text>
+                  <Text style={[styles.resetProgressButtonText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Reset Progress</Text>
                </TouchableOpacity>
                {deleteButton***REMOVED***
             </View>
-            <TouchableOpacity style={styles.saveButtonContainer***REMOVED*** onPress={editGroup***REMOVED***>
+            <TouchableOpacity style={[styles.saveButtonContainer, {alignSelf: props.isRTL ? 'flex-start' : "flex-end",***REMOVED***]***REMOVED*** onPress={editGroup***REMOVED***>
                <Text style={styles.saveButtonText***REMOVED***>Save</Text>
             </TouchableOpacity>
          </View>
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
       height: 55 * scaleMultiplier,
       marginVertical: 20,
       justifyContent: "center",
-      paddingLeft: 15
+      paddingHorizontal: 15
    ***REMOVED***,
    resetProgressButtonText: {
       color: '#FF0800',
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       height: 55 * scaleMultiplier,
       justifyContent: "center",
-      paddingLeft: 15,
+      paddingHorizontal: 15,
       backgroundColor: '#FF0800'
    ***REMOVED***,
    deleteGroupButtonText: {
@@ -277,7 +277,6 @@ function mapStateToProps(state) {
       isRTL: state.database[activeGroup.language].isRTL,
       activeGroupName: activeGroup.name,
       activeGroupImageSource: activeGroup.imageSource
-
    ***REMOVED***
 ***REMOVED***;
 

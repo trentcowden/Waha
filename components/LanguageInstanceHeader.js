@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, FlatList, Alert ***REMOVED*** from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text, FlatList, Alert, Image ***REMOVED*** from 'react-native';
 import { connect ***REMOVED*** from 'react-redux'
 import GroupListItem from '../components/GroupListItem'
-import {scaleMultiplier***REMOVED*** from '../constants'
-import { MaterialIcons, Ionicons ***REMOVED*** from '@expo/vector-icons';
+import { scaleMultiplier, headerImages ***REMOVED*** from '../constants'
 import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { deleteLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import * as FileSystem from 'expo-file-system';
@@ -62,14 +61,15 @@ function LanguageInstanceHeader(props) {
             )
          ***REMOVED***
       >
-         <Ionicons name='md-trash' size={25 * scaleMultiplier***REMOVED*** color='#FF0800'/>
+         <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color='#FF0800'/>
       </TouchableOpacity> : null
    
    return (
       <View style={styles.languageHeaderListContainer***REMOVED***>
-         <View style={styles.languageHeaderContainer***REMOVED***>
+         <View style={[styles.languageHeaderContainer, {direction: props.isRTL ? 'rtl' : 'ltr'***REMOVED***]***REMOVED***>
             {trashButton***REMOVED***
             <Text style={styles.languageHeaderText***REMOVED***>{props.languageName***REMOVED***</Text>
+            <Image style={styles.languageLogo***REMOVED*** source={headerImages[props.languageID]***REMOVED*** />
          </View>
          <FlatList
             data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
@@ -77,7 +77,7 @@ function LanguageInstanceHeader(props) {
             keyExtractor={item => item.name***REMOVED***
          />
          <TouchableOpacity style={[styles.addGroupContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={props.goToAddNewGroupScreen***REMOVED***>
-            <MaterialIcons name='group-add' size={30 * scaleMultiplier***REMOVED*** color='#DEE3E9' style={{marginLeft: 10***REMOVED******REMOVED***/>
+            <Icon name='group-add' size={35 * scaleMultiplier***REMOVED*** color='#DEE3E9' style={{marginHorizontal: 15***REMOVED******REMOVED***/>
             <Text style={styles.addGroupText***REMOVED***>New group</Text>
          </TouchableOpacity>
       </View>
@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
    languageHeaderContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      width: '100%',
+      height: 30,
    ***REMOVED***, 
    trashButtonContainer: {
       justifyContent: 'center',
@@ -104,7 +106,16 @@ const styles = StyleSheet.create({
       fontSize: 18 * scaleMultiplier,
       fontFamily: "regular",
       color: "#9FA5AD",
-      marginLeft: 30
+      marginHorizontal: 30,
+      flex: 1,
+      textAlign: 'left'
+   ***REMOVED***,
+   languageLogo: {
+      resizeMode: "stretch",
+      width: 96 * scaleMultiplier,
+      height: 32 * scaleMultiplier,
+      alignSelf: "flex-end",
+      marginRight: 10
    ***REMOVED***,
    addGroupContainer: {
       height: 80 * scaleMultiplier,
@@ -118,9 +129,8 @@ const styles = StyleSheet.create({
       color: "#2D9CDB",
       fontSize: 18 * scaleMultiplier,
       fontFamily: 'medium-italic',
-      marginLeft: 15,
       textAlign: 'left'
-   ***REMOVED***
+   ***REMOVED***,
 ***REMOVED***)
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
@@ -130,7 +140,8 @@ function mapStateToProps(state) {
       isRTL: state.database[activeGroup.language].isRTL,
       groups: state.groups,
       activeLanguage: activeGroup.language,
-      database: state.database
+      database: state.database,
+      activeGroupLanguage: activeGroup.language
    ***REMOVED***
 ***REMOVED***;
 

@@ -1,7 +1,6 @@
 //basic imports
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Dimensions ***REMOVED*** from 'react-native';
-import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -12,11 +11,11 @@ function ChapterSelect(props) {
    var chapter2IconName;
 
    if (props.activeChapter === 'fellowship') {
-      chapter2IconName = 'numeric-2-box'
+      chapter2IconName = '2-filled'
    ***REMOVED*** else if (props.activeChapter === 'passage') {
-      chapter2IconName = 'numeric-2-box'
+      chapter2IconName = '2-unfilled'
    ***REMOVED*** else {
-      chapter2IconName = 'checkbox-marked'
+      chapter2IconName = 'check-filled'
    ***REMOVED***
 
    var chapter2Button;   
@@ -44,7 +43,7 @@ function ChapterSelect(props) {
          ***REMOVED******REMOVED*** 
          onPress={() => props.onPress('passage')***REMOVED***
       >
-         <MaterialCommunityIcons
+         <Icon
             name={chapter2IconName***REMOVED***
             size={25***REMOVED***
             color={(props.activeChapter === 'passage') ? "white" : props.colors.primaryColor***REMOVED***
@@ -63,8 +62,8 @@ function ChapterSelect(props) {
             ***REMOVED******REMOVED*** 
             onPress={() => props.onPress('fellowship')***REMOVED***
          >
-            <MaterialCommunityIcons
-               name={(props.activeChapter === 'fellowship') ? "numeric-1-box" : "checkbox-marked"***REMOVED***
+            <Icon
+               name={(props.activeChapter === 'fellowship') ? "1-unfilled" : "check-filled"***REMOVED***
                size={25***REMOVED***
                color={(props.activeChapter === 'fellowship') ? "white" : props.colors.primaryColor***REMOVED***
             />
@@ -78,8 +77,8 @@ function ChapterSelect(props) {
             ***REMOVED******REMOVED*** 
             onPress={() => props.onPress('application')***REMOVED***
          >
-            <MaterialCommunityIcons
-               name="numeric-3-box"
+            <Icon
+               name={props.activeChapter === 'application' ? "3-unfilled" : '3-filled'***REMOVED***
                size={25***REMOVED***
                color={(props.activeChapter === 'application') ? "white" : props.colors.primaryColor***REMOVED***
             />

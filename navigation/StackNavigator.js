@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, Image ***REMOVED*** from 'react-native';
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
 import LessonListScreen from '../screens/LessonListScreen';
@@ -9,19 +8,11 @@ import GroupsScreen from '../screens/GroupsScreen';
 import AddNewGroupScreen from '../screens/AddNewGroupScreen';
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen';
 import EditGroupScreen from '../screens/EditGroupScreen'
+import StorageScreen from '../screens/StorageScreen'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack';
 import { connect ***REMOVED*** from 'react-redux'
 
 const Stack = createStackNavigator();
-
-const styles = StyleSheet.create({
-   headerImage: {
-      resizeMode: "center",
-      width: 120,
-      height: 40,
-      alignSelf: "center",
-   ***REMOVED***
-***REMOVED***)
 
 function StackNavigator(props) {
   
@@ -41,7 +32,6 @@ function StackNavigator(props) {
                name="StudySet"
                component={StudySetScreen***REMOVED***
                options={{
-                  headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED*** />,
                   headerStyle: {
                      backgroundColor: "#EAEEF0",
                   ***REMOVED***,
@@ -56,7 +46,6 @@ function StackNavigator(props) {
                component={LessonListScreen***REMOVED***
                options={{
                   //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
-                  headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={require('../assets/headerLogo.png')***REMOVED*** />,
                   headerStyle: {
                      backgroundColor: "#F7F9FA",
                   ***REMOVED***,
@@ -127,6 +116,20 @@ function StackNavigator(props) {
                   headerTitle: "Edit Group",
                   headerStyle: {
                      backgroundColor: "#F7F7F7",
+                  ***REMOVED***,
+                  headerTitleStyle: {
+                     color: "#000000",
+                     fontFamily: 'bold'
+                  ***REMOVED***,
+               ***REMOVED******REMOVED***
+            />
+            <Stack.Screen
+               name="Storage"
+               component={StorageScreen***REMOVED***
+               options={{
+                  headerTitle: "Storage",
+                  headerStyle: {
+                     backgroundColor: "#FFFFFF",
                   ***REMOVED***,
                   headerTitleStyle: {
                      color: "#000000",

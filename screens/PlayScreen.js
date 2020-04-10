@@ -1,7 +1,7 @@
 //basic imports
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
-import { View, StyleSheet, Text, Alert, TouchableOpacity, ActivityIndicator, ScrollView, FlatList, Dimensions ***REMOVED*** from 'react-native';
-import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
+import { View, StyleSheet, Text, Alert, ActivityIndicator, ScrollView, Dimensions ***REMOVED*** from 'react-native';
+import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -15,7 +15,7 @@ import ModalButton from '../components/ModalButton'
 import Scrubber from '../components/Scrubber'
 import PlayPauseSkip from '../components/PlayPauseSkip';
 import ChapterSelect from '../components/ChapterSelect'
-import HeaderButtons from '../components/HeaderButtons'
+import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import BackButton from '../components/BackButton'
 
 //redux
@@ -111,18 +111,14 @@ function PlayScreen(props) {
                isRTL={props.route.params.isRTL***REMOVED***
                onPress={() => props.navigation.goBack()***REMOVED***
             /> :
-            () => <HeaderButtons
-               name='md-share'
-               onPress1={() => setShowShareLessonModal(true)***REMOVED***
-               hasCompleteButton={true***REMOVED***
+            () => <PlayScreenHeaderButtons
+               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
                completeOnPress={changeCompleteStatus***REMOVED***
                completeCondition={props.currentProgress.includes(props.route.params.id)***REMOVED***
             />,
          headerLeft: props.route.params.isRTL ?
-            () => <HeaderButtons
-               name='md-share'
-               onPress1={() => setShowShareLessonModal(true)***REMOVED***
-               hasCompleteButton={true***REMOVED***
+            () => <PlayScreenHeaderButtons
+               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
                completeOnPress={changeCompleteStatus***REMOVED***
                completeCondition={props.currentProgress.includes(props.route.params.id)***REMOVED***
             /> :
@@ -490,6 +486,7 @@ function mapStateToProps(state) {
       downloads: state.downloads,
       colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
+      activeGroupName: activeGroup.name
    ***REMOVED***
 ***REMOVED***;
 

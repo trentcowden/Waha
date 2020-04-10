@@ -1,7 +1,6 @@
 //basic imports
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Dimensions ***REMOVED*** from 'react-native';
-import { MaterialCommunityIcons, MaterialIcons ***REMOVED*** from '@expo/vector-icons';
+import { View, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
@@ -13,14 +12,14 @@ function PlayPauseSkip(props) {
             style={styles.playPauseSkipButton***REMOVED***
             onPress={() => props.onSkipPress(-10000)***REMOVED***
          >
-            <MaterialIcons name="replay-10" size={69 * scaleMultiplier***REMOVED*** />
+            <Icon name="skip-back" size={69 * scaleMultiplier***REMOVED*** />
          </TouchableOpacity>
          <TouchableOpacity
             style={styles.playPauseSkipButton***REMOVED***
             onPress={props.onPlayPress***REMOVED***
          >
-            <MaterialCommunityIcons
-               name={props.isPlaying ? "pause-circle" : "play-circle"***REMOVED***
+            <Icon
+               name={props.isPlaying ? "pause-filled" : "play-filled"***REMOVED***
                size={100 * scaleMultiplier***REMOVED***
                color={props.colors.primaryColor***REMOVED***
             />
@@ -29,7 +28,7 @@ function PlayPauseSkip(props) {
             style={styles.playPauseSkipButton***REMOVED***
             onPress={() => props.onSkipPress(10000)***REMOVED***
          >
-            <MaterialIcons name="forward-10" size={69 * scaleMultiplier***REMOVED*** />
+            <Icon name="skip-forward" size={69 * scaleMultiplier***REMOVED*** />
          </TouchableOpacity>
       </View>
    )

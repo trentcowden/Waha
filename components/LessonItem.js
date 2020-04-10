@@ -1,7 +1,6 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert ***REMOVED*** from 'react-native';
-import { Ionicons, MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
 import { connect ***REMOVED*** from 'react-redux'
@@ -62,8 +61,8 @@ function LessonItem(props) {
                      [{ text: 'OK', onPress: () => { ***REMOVED*** ***REMOVED***]))***REMOVED***
             style={styles.downloadButtonContainer***REMOVED***
          >
-            <MaterialCommunityIcons
-               name={isDownloaded ? "cloud-check" : (props.isConnected ? "cloud-download" : "cloud-off-outline")***REMOVED***
+            <Icon
+               name={isDownloaded ? "downloaded" : (props.isConnected ? "download" : "download")***REMOVED***
                color={isDownloaded ? "#9FA5AD" : "#3A3C3F"***REMOVED***
                size={25 * scaleMultiplier***REMOVED***
             />
@@ -90,9 +89,9 @@ function LessonItem(props) {
                onLongPress={showLessonOptionsModal***REMOVED***
             >
                <TouchableOpacity style={styles.completeStatusContainer***REMOVED*** onPress={() => props.toggleComplete(props.activeGroupName, props.id)***REMOVED***>
-                  <MaterialCommunityIcons
-                     name={props.isComplete ? "check-circle" : "play-box-outline"***REMOVED***
-                     size={30***REMOVED***
+                  <Icon
+                     name={props.isComplete ? "check-unfilled" : "triangle-right"***REMOVED***
+                     size={30 * scaleMultiplier***REMOVED***
                      color={props.isComplete ? "#828282" : props.colors.primaryColor***REMOVED***
                   />
                </TouchableOpacity>

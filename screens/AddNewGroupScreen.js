@@ -1,6 +1,6 @@
 //imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity, Image ***REMOVED*** from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity, Alert ***REMOVED*** from 'react-native';
 
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -28,7 +28,7 @@ function AddNewGroupScreen(props) {
    //set language based on user's language vs user's location?
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
-   ***REMOVED***, [])
+   ***REMOVED***, [props.isRTL])
 
    function getNavOptions() {
       return {
@@ -53,6 +53,36 @@ function AddNewGroupScreen(props) {
    ///////////////////////
 
    function addNewGroup() {
+      var isDuplicate = false
+      props.groups.map(group => {
+         if (group.name === groupName) {
+            isDuplicate = true
+            return
+         ***REMOVED***
+         return
+      ***REMOVED***)
+      if (isDuplicate) {
+         Alert.alert(
+            'Error',
+            "Group name cannot be the same as another group's",
+            [{
+               text: 'OK',
+               onPress: () => { ***REMOVED***
+            ***REMOVED***]
+         )
+         return
+      ***REMOVED***
+      if (groupName === '') {
+         Alert.alert(
+            'Error',
+            "Group name cannot be blank",
+            [{
+               text: 'OK',
+               onPress: () => { ***REMOVED***
+            ***REMOVED***]
+         )
+         return
+      ***REMOVED***
       props.createGroup(groupName, props.route.params.languageID, avatarSource)
       props.navigation.goBack()
    ***REMOVED***
@@ -128,13 +158,13 @@ function AddNewGroupScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.photoContainer***REMOVED***>
-            <AvatarImage source={avatarSource***REMOVED*** onPress={() => setShowImagePickerModal(true)***REMOVED*** size={120***REMOVED*** />
+            <AvatarImage source={avatarSource***REMOVED*** onPress={() => setShowImagePickerModal(true)***REMOVED*** size={120***REMOVED*** isChangeable={true***REMOVED***/>
          </View>
          <View style={styles.bottomHalfContainer***REMOVED***>
             <View style={styles.inputContainer***REMOVED***>
-               <Text style={styles.groupNameLabel***REMOVED***>Group Name</Text>
+               <Text style={[styles.groupNameLabel, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Group Name</Text>
                <TextInput
-                  style={styles.addNewGroupContainer***REMOVED***
+                  style={[styles.addNewGroupContainer, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***
                   onChangeText={text => setGroupName(text)***REMOVED*** value={groupName***REMOVED***
                   autoCapitalize='words'
                   autoCorrect={false***REMOVED***
@@ -144,7 +174,7 @@ function AddNewGroupScreen(props) {
                   returnKeyType='done'
                />
             </View>
-            <TouchableOpacity style={styles.saveButtonContainer***REMOVED*** onPress={addNewGroup***REMOVED***>
+            <TouchableOpacity style={[styles.saveButtonContainer, {alignSelf: props.isRTL ? 'flex-start' : "flex-end",***REMOVED***]***REMOVED*** onPress={addNewGroup***REMOVED***>
                <Text style={styles.saveButtonText***REMOVED***>Save</Text>
             </TouchableOpacity>
          </View>
@@ -169,7 +199,6 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center"
    ***REMOVED***,
-
    bottomHalfContainer: {
       flex: 1,
       justifyContent: "space-between",
@@ -187,7 +216,6 @@ const styles = StyleSheet.create({
       borderBottomColor: '#EFF2F4',
       borderBottomWidth: 2,
       height: 40 * scaleMultiplier,
-
       fontSize: 18 * scaleMultiplier,
       fontFamily: 'regular'
    ***REMOVED***,
@@ -198,7 +226,6 @@ const styles = StyleSheet.create({
       backgroundColor: "#60C239",
       justifyContent: "center",
       alignItems: "center",
-      alignSelf: "flex-end",
       margin: 30,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 ***REMOVED***,
@@ -219,11 +246,13 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-   //console.log(state.groups)
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      downloads: state.downloads,
-      appProgress: state.appProgress,
-      database: state.database
+      groups: state.groups,
+      colors: state.database[activeGroup.language].colors,
+      isRTL: state.database[activeGroup.language].isRTL,
+      activeGroupName: activeGroup.name,
+      activeGroupImageSource: activeGroup.imageSource
    ***REMOVED***
 ***REMOVED***;
 
