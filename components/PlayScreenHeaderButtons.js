@@ -5,7 +5,7 @@ import { connect ***REMOVED*** from 'react-redux'
 
 function PlayScreenHeaderButtons(props) {
    return (
-      <View style={[styles.headerButtonsContainer, {direction: props.isRTL ? 'rtl' : 'ltr'***REMOVED***]***REMOVED***>
+      <View style={[styles.headerButtonsContainer, {flexDirection: props.isRTL ? 'row-reverse' : 'row', marginHorizonal: 5***REMOVED***]***REMOVED***>
          <TouchableOpacity
             onPress={props.shareOnPress***REMOVED***
          >
@@ -16,7 +16,7 @@ function PlayScreenHeaderButtons(props) {
             />
          </TouchableOpacity>
          <TouchableOpacity
-            style={{marginLeft: 5, marginRight: 10***REMOVED******REMOVED***
+            style={{marginHorizontal: 5***REMOVED******REMOVED***
             onPress={props.completeOnPress***REMOVED***
          >
             <Icon

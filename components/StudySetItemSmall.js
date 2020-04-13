@@ -25,7 +25,7 @@ function StudySetItemSmall(props) {
 
    const [numCompleted, setNumCompleted] = useState(0)
    const [fullyCompleted, setFullyCompleted] = useState(false)
-   const [numLessons, setNumLessons] = useState(0)
+   const [numLessons, setNumLessons] = useState(1)
    
    useEffect(() => {
      
@@ -53,7 +53,7 @@ function StudySetItemSmall(props) {
 
 
    return (
-      <View style={[styles.studySetItem, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED***>
+      <View style={[styles.studySetItem, {flexDirection: props.isRTL ? "row-reverse" : "row"***REMOVED***]***REMOVED***>
          <View style={{ flexDirection: "row" ***REMOVED******REMOVED***>
             <View style={styles.progressImage***REMOVED***>
                <AnimatedCircularProgress
@@ -68,8 +68,8 @@ function StudySetItemSmall(props) {
                </AnimatedCircularProgress>
             </View>
             <View style={styles.titleContainer***REMOVED***>
-               <Text style={{ ...styles.subtitle, ...{ color: fullyCompleted ? props.grayedOut : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
-               <Text style={{ ...styles.title, ...{ color: fullyCompleted ? props.grayedOut : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
+               <Text style={{ ...styles.subtitle, ...{ color: fullyCompleted ? props.grayedOut : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
+               <Text style={{ ...styles.title, ...{ color: fullyCompleted ? props.grayedOut : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
             </View>
          </View>
       </View>

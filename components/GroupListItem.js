@@ -67,14 +67,14 @@ function GroupListItem(props) {
    if (props.isEditing && props.activeGroup != props.name) {
       deleteButton =
          <TouchableOpacity
-            style={styles.minusButtonContainer***REMOVED***
+            style={[styles.minusButtonContainer, { marginLeft: props.isRTL ? -5 : 10, marginRight: props.isRTL ? 10 : -5,***REMOVED***]***REMOVED***
             onPress={() => props.deleteGroup(props.name)***REMOVED***
          >
             <Icon name='minus-filled' size={24 * scaleMultiplier***REMOVED*** color="#FF0800" />
          </TouchableOpacity>
    ***REMOVED*** else if (props.isEditing && props.activeGroup === props.name) {
       deleteButton =
-         <View style={styles.minusButtonContainer***REMOVED***>
+         <View style={[styles.minusButtonContainer, { marginLeft: props.isRTL ? -5 : 10, marginRight: props.isRTL ? 10 : -5,***REMOVED***]***REMOVED***>
             <Icon
                name="check"
                size={24 * scaleMultiplier***REMOVED***
@@ -110,16 +110,16 @@ function GroupListItem(props) {
    ***REMOVED***
 
    return (
-      <View style={[styles.groupListItemContainer, { direction: props.isRTL ? "rtl" : "ltr" ***REMOVED***]***REMOVED***>
+      <View style={[styles.groupListItemContainer, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED***>
       {deleteButton***REMOVED***
       <TouchableOpacity
-         style={[styles.touchableContainer, { direction: props.isRTL ? "rtl" : "ltr" ***REMOVED***]***REMOVED***
+         style={[styles.touchableContainer, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED***
          onPress={props.isEditing ? () => props.goToEditGroupScreen(props.name) : () => { props.changeActiveGroup(props.name) ***REMOVED******REMOVED***
       >
          <AvatarImage size={50 * scaleMultiplier***REMOVED*** onPress={() => {***REMOVED******REMOVED*** source={props.avatarSource***REMOVED*** isActive={props.activeGroup === props.name***REMOVED***/>
          <View style={styles.groupNameContainer***REMOVED***>
-            <Text style={styles.groupNameText***REMOVED***>{props.name***REMOVED***</Text>
-            <Text style={styles.checkpointText***REMOVED***>{getBookmarkText()***REMOVED***</Text>
+            <Text style={[styles.groupNameText, {textAlign: props.isRTL ? 'right' :'left'***REMOVED***]***REMOVED***>{props.name***REMOVED***</Text>
+            <Text style={[styles.checkpointText, {textAlign: props.isRTL ? 'right' :'left'***REMOVED***]***REMOVED***>{getBookmarkText()***REMOVED***</Text>
          </View>
          {rightButton***REMOVED***
       </TouchableOpacity>
@@ -152,8 +152,6 @@ const styles = StyleSheet.create({
    minusButtonContainer: {
       justifyContent: "center",
       alignItems: "center",
-      marginLeft: 10,
-      marginRight: -5,
       height: "100%",
       width: 30
    ***REMOVED***,

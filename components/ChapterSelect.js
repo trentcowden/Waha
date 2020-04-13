@@ -13,10 +13,6 @@ function ChapterSelect(props) {
    //    if ()
    // ***REMOVED***
 
-   console.log('re-rendering')
-
-   const [localDownloadProgress, setLocalDownloadProgress] = useState(0)
-
    //CHAPTE 2 BUTTON ICON
    var chapter2IconName;
 

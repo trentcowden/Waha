@@ -74,10 +74,10 @@ function LessonItem(props) {
    ***REMOVED***
 
    return (
-      <View style={[styles.lessonItem, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED***>
-         <View style={styles.mainDisplay***REMOVED***>
+      <View style={styles.lessonItem***REMOVED***>
+         <View style={[styles.mainDisplay, {flexDirection: props.isRTL ? "row-reverse" : "row"***REMOVED***]***REMOVED***>
             <TouchableOpacity
-               style={styles.progressAndTitle***REMOVED***
+               style={[styles.progressAndTitle, {flexDirection: props.isRTL ? "row-reverse" : "row"***REMOVED***]***REMOVED***
                onPress={
                   (!props.isConnected && !isDownloaded) ?
                      () => Alert.alert(
@@ -96,8 +96,8 @@ function LessonItem(props) {
                   />
                </TouchableOpacity>
                <View style={styles.titleContainer***REMOVED***>
-                  <Text style={{ ...styles.title, ...{ color: props.isComplete ? "#9FA5AD" : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
-                  <Text style={{ ...styles.subtitle, ...{ color: props.isComplete ? "#9FA5AD" : "black" ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
+                  <Text style={{ ...styles.title, ...{ color: props.isComplete ? "#9FA5AD" : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
+                  <Text style={{ ...styles.subtitle, ...{ color: props.isComplete ? "#9FA5AD" : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
                </View>
 
             </TouchableOpacity>
@@ -140,18 +140,15 @@ const styles = StyleSheet.create({
       textAlignVertical: "center",
       //paddingHorizontal: 10,
       fontFamily: 'medium',
-      textAlign: "left"
    ***REMOVED***,
    subtitle: {
       fontSize: 14 * scaleMultiplier,
       //paddingHorizontal: 10,
       fontFamily: 'regular',
-      textAlign: "left"
    ***REMOVED***,
    downloadButtonContainer: {
       justifyContent: "center",
-      marginLeft: 5,
-      marginRight: 15
+      marginHorizontal: 15
    ***REMOVED***,
    progressBar: {
       width: "100%"

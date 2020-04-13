@@ -45,7 +45,7 @@ function LanguageInstanceHeader(props) {
 
    var trashButton = (props.isEditing && !(props.activeLanguage === props.languageID)) ?
       <TouchableOpacity
-         style={styles.trashButtonContainer***REMOVED***
+         style={[styles.trashButtonContainer, {marginRight: props.isRTL ? 15 : -15, marginLeft: props.isRTL ? -15 : 15***REMOVED***]***REMOVED***
          onPress={
             () => Alert.alert(
                'Warning',
@@ -66,9 +66,9 @@ function LanguageInstanceHeader(props) {
    
    return (
       <View style={styles.languageHeaderListContainer***REMOVED***>
-         <View style={[styles.languageHeaderContainer, {direction: props.isRTL ? 'rtl' : 'ltr'***REMOVED***]***REMOVED***>
+         <View style={[styles.languageHeaderContainer, {flexDirection: props.isRTL ? 'row-reverse' : 'row'***REMOVED***]***REMOVED***>
             {trashButton***REMOVED***
-            <Text style={styles.languageHeaderText***REMOVED***>{props.languageName***REMOVED***</Text>
+            <Text style={[styles.languageHeaderText, {textAlign: props.isRTL ? 'right' :'left'***REMOVED***]***REMOVED***>{props.languageName***REMOVED***</Text>
             <Image style={styles.languageLogo***REMOVED*** source={headerImages[props.languageID]***REMOVED*** />
          </View>
          <FlatList
@@ -76,9 +76,9 @@ function LanguageInstanceHeader(props) {
             renderItem={renderGroupItem***REMOVED***
             keyExtractor={item => item.name***REMOVED***
          />
-         <TouchableOpacity style={[styles.addGroupContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={props.goToAddNewGroupScreen***REMOVED***>
+         <TouchableOpacity style={[styles.addGroupContainer, {flexDirection: props.isRTL ? "row-reverse" : "row"***REMOVED***]***REMOVED*** onPress={props.goToAddNewGroupScreen***REMOVED***>
             <Icon name='group-add' size={35 * scaleMultiplier***REMOVED*** color='#DEE3E9' style={{marginHorizontal: 15***REMOVED******REMOVED***/>
-            <Text style={styles.addGroupText***REMOVED***>New group</Text>
+            <Text style={[styles.addGroupText, {textAlign: props.isRTL ? 'right' :'left'***REMOVED***]***REMOVED***>New group</Text>
          </TouchableOpacity>
       </View>
    )
@@ -99,8 +99,6 @@ const styles = StyleSheet.create({
    trashButtonContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginLeft: 15,
-      marginRight: -15
    ***REMOVED***, 
    languageHeaderText: {
       fontSize: 18 * scaleMultiplier,
@@ -108,14 +106,13 @@ const styles = StyleSheet.create({
       color: "#9FA5AD",
       marginHorizontal: 30,
       flex: 1,
-      textAlign: 'left'
    ***REMOVED***,
    languageLogo: {
       resizeMode: "stretch",
       width: 96 * scaleMultiplier,
       height: 32 * scaleMultiplier,
       alignSelf: "flex-end",
-      marginRight: 10
+      marginHorizontal: 10
    ***REMOVED***,
    addGroupContainer: {
       height: 80 * scaleMultiplier,

@@ -46,14 +46,14 @@ function WahaDrawer(props) {
             />
          </View>
          <View style={styles.smallDrawerItemsContainer***REMOVED***>
-            <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => { ***REMOVED******REMOVED***>
-               {/* <Text style={styles.smallDrawerItemText***REMOVED***>Coaching Tools (todo)</Text> */***REMOVED***
+            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => { ***REMOVED******REMOVED***>
+               {/* <Text style={[styles.smallDrawerItemText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Coaching Tools (todo)</Text> */***REMOVED***
             </TouchableOpacity>
             <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
-               <Text style={styles.smallDrawerItemText***REMOVED***>Privacy Policy</Text>
+               <Text style={[styles.smallDrawerItemText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Privacy Policy</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
-               <Text style={styles.smallDrawerItemText***REMOVED***>View Credits</Text>
+               <Text style={[styles.smallDrawerItemText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>View Credits</Text>
             </TouchableOpacity>
          </View>
       </SafeAreaView >
