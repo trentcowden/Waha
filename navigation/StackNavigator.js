@@ -24,7 +24,8 @@ function StackNavigator(props) {
                headerStyle: {
                   height: 90 * scaleMultiplier,
                ***REMOVED***,
-               gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal'
+               gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
+               gestureResponseDistance: {horizontal: 300 * scaleMultiplier, vertical: 135***REMOVED***
             ***REMOVED******REMOVED***>
 
             {/* Study Set Screen */***REMOVED***

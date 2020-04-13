@@ -83,11 +83,12 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    smallDrawerItemsContainer: {
       justifyContent: "flex-end",
-      flex: 1
+      flex: 1,
+      marginBottom: 20
    ***REMOVED***,
    smallDrawerItemContainer: {
       margin: 5,
-      padding: 5
+      padding: 5,
    ***REMOVED***,
    smallDrawerItemText: {
       fontFamily: 'medium',

@@ -53,6 +53,7 @@ function MainNavigator(props) {
             drawerStyle={{
                width: '80%',
              ***REMOVED******REMOVED***
+            edgeWidth={300 * scaleMultiplier***REMOVED***
          >
             <Drawer.Screen options={({ route ***REMOVED***) => ({ gestureEnabled: getGestureEnabled(route)***REMOVED***)***REMOVED*** name="StackNavigator" component={StackNavigator***REMOVED*** />
          </Drawer.Navigator>
