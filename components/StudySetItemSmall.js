@@ -25,12 +25,17 @@ function StudySetItemSmall(props) {
 
    const [numCompleted, setNumCompleted] = useState(0)
    const [fullyCompleted, setFullyCompleted] = useState(false)
-
-   var numLessons = 13
-
+   const [numLessons, setNumLessons] = useState(0)
+   
    useEffect(() => {
+     
+      for (const studySet of props.database.studySets) {
+         if (studySet.id === props.id) {
+            setNumLessons(studySet.lessons.length)
+         ***REMOVED***
+      ***REMOVED***
       var localNumCompleted = 0
-      for (lesson in props.progress) {
+      for (const lesson of props.progress) {
          if (lesson.startsWith(props.id)) {
             localNumCompleted += 1
          ***REMOVED***
@@ -52,7 +57,7 @@ function StudySetItemSmall(props) {
          <View style={{ flexDirection: "row" ***REMOVED******REMOVED***>
             <View style={styles.progressImage***REMOVED***>
                <AnimatedCircularProgress
-                  size={65 * scaleMultiplier***REMOVED***
+                  size={70 * scaleMultiplier***REMOVED***
                   width={5 * scaleMultiplier***REMOVED***
                   fill={(numCompleted / numLessons) * 100***REMOVED***
                   tintColor={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED***
@@ -79,7 +84,8 @@ const styles = StyleSheet.create({
       justifyContent: "center"
    ***REMOVED***,
    progressImage: {
-      margin: 5
+      margin: 5,
+      //backgroundColor: 'green'
    ***REMOVED***,
    titleContainer: {
       flex: 1,
@@ -108,9 +114,10 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      progress: state.appProgress,
+      progress: activeGroup.progress,
       colors: state.database[activeGroup.language].colors,
-      isRTL: state.database[activeGroup.language].isRTL
+      isRTL: state.database[activeGroup.language].isRTL,
+      database: state.database[activeGroup.language]
    ***REMOVED***
 ***REMOVED***;
 
