@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert ***R
 import * as FileSystem from 'expo-file-system';
 import * as Progress from 'react-native-progress';
 import { connect ***REMOVED*** from 'react-redux'
-import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function LessonItem(props) {
@@ -35,9 +35,6 @@ function LessonItem(props) {
       props.setIDToDownload.call();
       props.setShowLessonOptionsModal.call();
    ***REMOVED***
-
-   //console.log(props.isDownloaded)
-
 
    ////////////////////////////////
    ////RENDER/STYLES/NAVOPTIONS////
@@ -88,9 +85,9 @@ function LessonItem(props) {
                ***REMOVED***
                onLongPress={showLessonOptionsModal***REMOVED***
             >
-               <TouchableOpacity style={styles.completeStatusContainer***REMOVED*** onPress={() => props.toggleComplete(props.activeGroupName, props.id)***REMOVED***>
+               <TouchableOpacity style={styles.completeStatusContainer***REMOVED*** onPress={() => {props.toggleComplete(props.activeGroupName, props.id); props.setBookmark(props.activeGroupName)***REMOVED******REMOVED***>
                   <Icon
-                     name={props.isComplete ? "check-unfilled" : props.isRTL ? 'triangle-left' : "triangle-right"***REMOVED***
+                     name={props.isComplete ? "check-unfilled" : props.currentLesson === props.id ? props.isRTL ? 'triangle-left' : "triangle-right" : null***REMOVED***
                      size={30 * scaleMultiplier***REMOVED***
                      color={props.isComplete ? "#828282" : props.colors.primaryColor***REMOVED***
                   />
@@ -129,6 +126,7 @@ const styles = StyleSheet.create({
    completeStatusContainer: {
       justifyContent: "center",
       marginHorizontal: 10,
+      width: 35 * scaleMultiplier
    ***REMOVED***,
    titleContainer: {
       flexDirection: "column",
@@ -168,7 +166,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
    return {
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***
+      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***,
+      setBookmark: groupName => {dispatch(setBookmark(groupName))***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

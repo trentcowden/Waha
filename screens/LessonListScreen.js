@@ -4,7 +4,7 @@ import { View, FlatList, StyleSheet, Alert, Image ***REMOVED*** from 'react-nati
 import LessonItem from '../components/LessonItem';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import StudySetItem from '../components/StudySetItem';
+import SetItem from '../components/SetItem';
 import FlatListSeparator from '../components/FlatListSeparator'
 import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
@@ -14,10 +14,11 @@ import BackButton from '../components/BackButton'
 
 //redux imports
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
-import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
+
 
    //////////////////////////////////////////
    ////STATE, CONSTRUCTOR, AND NAVIGATION////
@@ -34,9 +35,11 @@ function LessonListScreen(props) {
    const [showSaveLessonModal, setShowSaveLessonModal] = useState(false);
    const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false);
    const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false);
+   const [currentLesson, setCurrentLesson] = useState('')
 
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
+      setCurrentLesson(getCurrentLesson())
       const unsubscribe = NetInfo.addEventListener(state => {
          setIsConnected(state.isConnected)
       ***REMOVED***);
@@ -48,7 +51,7 @@ function LessonListScreen(props) {
    function getNavOptions() {
 
       return {
-         headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={headerImages[props.activeGroupLanguage]***REMOVED*** />,
+         headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={headerImages[props.activeGroup.language]***REMOVED*** />,
          headerRight: props.route.params.isRTL ? () =>
             <BackButton
                isRTL={props.route.params.isRTL***REMOVED***
@@ -62,28 +65,63 @@ function LessonListScreen(props) {
                   isRTL={props.route.params.isRTL***REMOVED***
                   onPress={() => props.navigation.goBack()***REMOVED***
                />,
-         //gestureDirection: props.route.params.isRTL ? 'horizontal-inverted' : 'horizontal'
       ***REMOVED***
    ***REMOVED***
-   //function to navigate to the play screen
-   //props.navigation.navigate takes us to the play screen
-   //params is the information we want to pass to play screen
-   function navigateToPlay(item) {
-      props.navigation.navigate('Play', {
-         id: item.id,
-         title: item.title,
-         subtitle: item.subtitle,
-         source: item.source,
-         scripture: item.scripture,
-         iconName: props.route.params.iconName,
-         isRTL: props.route.params.isRTL
-      ***REMOVED***)
-   ***REMOVED***
-
 
    ///////////////////////
    ////OTHER FUNCTIONS////
    ///////////////////////
+
+   function getCurrentLesson() {
+      // var thisGroupDatabase = props.database[props.activeGroupLanguage]
+      // var bookmarkInt = 0;
+
+      // //if a group has no progress, return the first lesson in the first study set
+      // if (props.activeGroupProgress.length === 0) {
+      //    return thisGroupDatabase.studySets[0].lessons[0].id
+      // ***REMOVED***
+      // props.activeGroupProgress.map(lessonID => {
+      //    if (parseInt(lessonID.slice(-4)) > bookmarkInt)
+      //       bookmarkInt = parseInt(lessonID.slice(-4))
+      //    return null;
+      // ***REMOVED***)
+
+      // //string of the id of the last completed lesson 
+      // var bookmarkString = bookmarkInt.toString();
+      // var extraZero = ''
+      // if (bookmarkString.length < 4)
+      //    extraZero = '0'
+      // bookmarkString = extraZero + bookmarkString
+
+      // var lessonListOfBookmarkStudySet = thisGroupDatabase.studySets.filter(
+      //    studySet => (studySet.id).slice(2, 4) === bookmarkString.slice(0, 2)
+      // )[0].lessons
+
+      // //edge case: the last completed lesson is the last in a study set
+      // if (parseInt(bookmarkString.slice(-2)) === lessonListOfBookmarkStudySet.length) {
+      //    //edge case: the last completed lesson is the last available lesson in any study set
+      //    if (parseInt(bookmarkString.slice(0, 2)) === thisGroupDatabase.studySets.length) {
+      //       return ('Contact us for more study sets!')
+      //    ***REMOVED*** else {
+      //       bookmarkString = (extraZero + (parseInt(bookmarkString.slice(0, 2)) + 1)).toString().concat(bookmarkString.slice(-2))
+      //       lessonListOfBookmarkStudySet = thisGroupDatabase.studySets.filter(
+      //          studySet => (studySet.id).slice(2, 4) === bookmarkString.slice(0, 2)
+      //       )[0].lessons
+      //       bookmarkLesson = lessonListOfBookmarkStudySet.filter(
+      //          lesson => lesson.id === (lesson.id).slice(0, 2).concat(bookmarkString.slice(0, 2), '01')
+      //       )
+      //    ***REMOVED***
+
+      //    //normal case
+      // ***REMOVED*** else {
+      //    //get the lesson AFTER the last completed lesson 
+      //    bookmarkLesson = lessonListOfBookmarkStudySet.filter(
+      //       lesson => lesson.id === (lesson.id).slice(0, 2).concat(extraZero, (parseInt(bookmarkString) + 1).toString())
+      //    )
+      // ***REMOVED***
+      // return bookmarkLesson[0].id
+      return 'en001'
+   ***REMOVED***
 
 
    //PURPOSE: delete a lesson .mp3 of id set by an individual flatlist item
@@ -96,7 +134,7 @@ function LessonListScreen(props) {
    //PURPOSE: download a lesson .mp3 of id set by an individual flatlist item
    function downloadLesson() {
       //get our source from our array of lessons in this study set
-      const currentLesson = props.currentDatabase.studySets.filter(studyset => studyset.id === props.route.params.studySetID)[0].lessons.filter(lesson => lesson.id === idToDownload)
+      const currentLesson = props.database.lessons.filter(lesson => lesson.id === idToDownload)
       const source = currentLesson[0].source
       props.downloadLesson(idToDownload, source);
       hideModals();
@@ -112,9 +150,9 @@ function LessonListScreen(props) {
    //PURPOSE: change the complete status via redux dispatch
    function toggleComplete(whatToMark) {
       if (props.currentProgress.includes(idToDownload) && whatToMark === 'incomplete') {
-         props.toggleComplete(props.activeGroupName, idToDownload);
+         props.toggleComplete(props.activeGroup.name, idToDownload);
       ***REMOVED*** else if (!props.currentProgress.includes(idToDownload) && whatToMark === 'complete') {
-         props.toggleComplete(props.activeGroupName, idToDownload);
+         props.toggleComplete(props.activeGroup.name, idToDownload);
       ***REMOVED***
       hideModals();
    ***REMOVED***
@@ -123,7 +161,7 @@ function LessonListScreen(props) {
    function shareLesson(chapter) {
       switch (chapter) {
          case 'fellowship':
-            Sharing.shareAsync(FileSystem.documentDirectory + props.currentLanguage + 'chapter1.mp3')
+            Sharing.shareAsync(FileSystem.documentDirectory + props.activeLanguage + 'chapter1.mp3')
             break;
          case 'passage':
             FileSystem.getInfoAsync(FileSystem.documentDirectory + idToDownload + '.mp3')
@@ -140,7 +178,7 @@ function LessonListScreen(props) {
 
             break;
          case 'application':
-            Sharing.shareAsync(FileSystem.documentDirectory + props.currentLanguage + 'chapter3.mp3')
+            Sharing.shareAsync(FileSystem.documentDirectory + props.activeLanguage + 'chapter3.mp3')
             break;
       ***REMOVED***
    ***REMOVED***
@@ -153,7 +191,7 @@ function LessonListScreen(props) {
          var formattedID = ("0" + i).slice(-2);
          idToMark = languageAndStudySet + formattedID
          if (!props.currentProgress.includes(idToMark)) {
-            props.toggleComplete(props.activeGroupName, idToMark)
+            props.toggleComplete(props.activeGroup.name, idToMark)
          ***REMOVED***
       ***REMOVED***
       hideModals();
@@ -166,21 +204,31 @@ function LessonListScreen(props) {
 
 
    //PURPOSE: function to render each individual lesson item in the flatlist
-   function renderLessonItem(LessonList) {
+   function renderLessonItem(lessonList) {
       return (
          <LessonItem
-            id={LessonList.item.id***REMOVED***
-            title={LessonList.item.title***REMOVED***
-            subtitle={LessonList.item.subtitle***REMOVED***
-            onLessonSelect={() => navigateToPlay(LessonList.item)***REMOVED***
-            isComplete={props.currentProgress.includes(LessonList.item.id)***REMOVED***
-            downloadProgress={props.downloads[LessonList.item.id]***REMOVED***
+            id={lessonList.item.id***REMOVED***
+            title={lessonList.item.title***REMOVED***
+            subtitle={lessonList.item.subtitle***REMOVED***
+            onLessonSelect={() => props.navigation.navigate('Play', {
+               id: lessonList.item.id,
+               title: lessonList.item.title,
+               subtitle: lessonList.item.subtitle,
+               source: lessonList.item.source,
+               scriptureHeader: lessonList.item.scriptureHeader,
+               scriptureText: lessonList.item.scriptureText,
+               isRTL: props.route.params.isRTL
+            ***REMOVED***)***REMOVED***
+            isComplete={props.currentProgress.includes(lessonList.item.id)***REMOVED***
+            downloadProgress={props.downloads[lessonList.item.id]***REMOVED***
             setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
             setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
-            setIDToDownload={() => setIDToDownload(LessonList.item.id)***REMOVED***
+            setIDToDownload={() => setIDToDownload(lessonList.item.id)***REMOVED***
             setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
             setRefresh={() => setRefresh()***REMOVED***
             isConnected={isConnected***REMOVED***
+            currentLesson={currentLesson***REMOVED***
+            getCurrentLesson={getCurrentLesson***REMOVED***
          />
       )
    ***REMOVED***
@@ -190,36 +238,35 @@ function LessonListScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.studySetItemContainer***REMOVED***>
-            <StudySetItem
+            <SetItem
                title={props.route.params.title***REMOVED***
                subtitle={props.route.params.subtitle***REMOVED***
                id={props.route.params.studySetID***REMOVED***
-               iconName={props.route.params.iconName***REMOVED***
                isSmall={true***REMOVED***
+               color={props.route.params.color***REMOVED***
             />
          </View>
-         <FlatListSeparator />
          <FlatList
-            data={props.currentDatabase.studySets.filter(studyset => studyset.id === props.route.params.studySetID)[0].lessons***REMOVED***
+            data={props.database.lessons.filter(lesson => props.route.params.setID === lesson.setid)***REMOVED***
             renderItem={renderLessonItem***REMOVED***
             extraData={refresh***REMOVED***
          />
          <WahaModal isVisible={showSaveLessonModal***REMOVED***>
-            <ModalButton title="Download lesson" onPress={downloadLesson***REMOVED*** />
-            <ModalButton title="Cancel" onPress={hideModals***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
+            <ModalButton title={props.database.translations.modals.downloadLessonOptions.downloadLesson***REMOVED*** onPress={downloadLesson***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.downloadLessonOptions.cancel***REMOVED*** onPress={hideModals***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
          </WahaModal>
          <WahaModal isVisible={showDeleteLessonModal***REMOVED***>
-            <ModalButton title="Delete lesson" onPress={deleteLesson***REMOVED*** />
-            <ModalButton title="Cancel" onPress={hideModals***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
+            <ModalButton title={props.database.translations.modals.deleteLessonOptions.deleteLesson***REMOVED*** onPress={deleteLesson***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.deleteLessonOptions.cancel***REMOVED*** onPress={hideModals***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
          </WahaModal>
          <WahaModal isVisible={showLessonOptionsModal***REMOVED***>
-            <ModalButton title="Mark lesson as complete" onPress={() => toggleComplete('complete')***REMOVED*** />
-            <ModalButton title="Mark lesson as incomplete" onPress={() => toggleComplete('incomplete')***REMOVED*** />
-            <ModalButton title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
-            <ModalButton title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
-            <ModalButton title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
-            <ModalButton title="Mark to this point at complete" onPress={() => markUpToThisPointAsComplete(idToDownload)***REMOVED*** />
-            <ModalButton title="Close" onPress={hideModals***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.markLessonComplete***REMOVED*** onPress={() => toggleComplete('complete')***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.markLessonIncomplete***REMOVED*** onPress={() => toggleComplete('incomplete')***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.shareChapter1***REMOVED*** onPress={() => shareLesson('fellowship')***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.shareChapter2***REMOVED*** onPress={() => shareLesson('passage')***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.shareChapter3***REMOVED*** onPress={() => shareLesson('application')***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.markUpToPointAsComplete***REMOVED*** onPress={() => markUpToThisPointAsComplete(idToDownload)***REMOVED*** />
+            <ModalButton title={props.database.translations.modals.lessonOptions.close***REMOVED*** onPress={hideModals***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
          </WahaModal>
       </View>
    )
@@ -251,22 +298,22 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
+   //console.log(state.database[activeGroup.language].lessons)
    return {
       downloads: state.downloads,
       currentProgress: activeGroup.progress,
-      currentDatabase: state.database[activeGroup.language],
-      currentLanguage: activeGroup.language,
-      colors: state.database[activeGroup.language].colors,
+      database: state.database[activeGroup.language],
+      activeLanguage: activeGroup.language,
       isRTL: state.database[activeGroup.language].isRTL,
-      activeGroupName: activeGroup.name,
-      activeGroupLanguage: activeGroup.language
+      activeGroup: activeGroup,
    ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
    return {
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***
+      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***,
+      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

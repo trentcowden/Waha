@@ -1,20 +1,15 @@
-//basic imports
 import React, { useEffect ***REMOVED*** from 'react';
 import { View, FlatList, StyleSheet, Image ***REMOVED*** from 'react-native';
 import * as FileSystem from 'expo-file-system';
-
-//other component imports
-import StudySetItem from '../components/StudySetItem';
+import SetItem from '../components/SetItem';
 import AvatarImage from '../components/AvatarImage'
-
-//redux
 import { connect ***REMOVED*** from 'react-redux'
 import { headerImages ***REMOVED*** from '../constants'
 
-function StudySetScreen(props) {
+function SetScreen(props) {
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
-   ***REMOVED***, [props])
+   ***REMOVED***, [props.isRTL])
 
    function getNavOptions() {
       return {
@@ -40,28 +35,6 @@ function StudySetScreen(props) {
       ***REMOVED***
    ***REMOVED***
 
-   FileSystem.getFreeDiskStorageAsync().then(freeDiskStorage => {
-      //console.log(freeDiskStorage)
-   ***REMOVED***);
-
-   FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
-      //console.log(contents)
-   ***REMOVED***);
-
-   //function to navigate to the lesson list screen
-   //props.navigation.navigate takes us to lessonlist screen
-   //params is the information we want to pass to lessonlist screen
-   function navigateToLessonList(item) {
-      props.navigation.navigate('LessonList', {
-         title: item.title,
-         studySetID: item.id,
-         subtitle: item.subtitle,
-         iconName: item.iconName,
-         isRTL: props.isRTL
-      ***REMOVED***
-      )
-   ***REMOVED***
-
 
    ////////////////////////////////
    ////RENDER/STYLES/NAVOPTIONS////
@@ -70,14 +43,22 @@ function StudySetScreen(props) {
 
    //function to render the studyset items
    //includes onSelect which navigates to the appropriate lesson list screen
-   function renderStudySetItem(studySetList) {
+   function renderStudySetItem(setList) {
       return (
-         <StudySetItem
-            title={studySetList.item.title***REMOVED***
-            subtitle={studySetList.item.subtitle***REMOVED***
-            onStudySetSelect={() => navigateToLessonList(studySetList.item)***REMOVED***
-            id={studySetList.item.id***REMOVED***
-            iconName={studySetList.item.iconName***REMOVED***
+         <SetItem
+            id={setList.item.id***REMOVED***
+            title={setList.item.title***REMOVED***
+            subtitle={setList.item.subtitle***REMOVED***
+            color={setList.item.color***REMOVED***
+            onSetSelect={
+               () => props.navigation.navigate('LessonList', {
+                  setID: setList.item.id,
+                  title: setList.item.title,
+                  subtitle: setList.item.subtitle,
+                  color: setList.item.color,
+                  isRTL: props.isRTL
+               ***REMOVED***)
+            ***REMOVED***
             isSmall={false***REMOVED***
          />
       )
@@ -86,7 +67,7 @@ function StudySetScreen(props) {
    return (
       <View style={styles.screen***REMOVED***>
          <FlatList
-            data={props.studySets***REMOVED***
+            data={props.activeDatabase.sets***REMOVED***
             renderItem={renderStudySetItem***REMOVED***
          />
       </View>
@@ -97,19 +78,6 @@ const styles = StyleSheet.create({
    screen: {
       flex: 1,
       backgroundColor: "#EAEEF0"
-   ***REMOVED***,
-   text: {
-      textAlign: "center",
-      margin: 40
-   ***REMOVED***,
-   headerButtonsContainer: {
-      flexDirection: "row",
-      width: 80
-   ***REMOVED***,
-   headerButton: {
-      alignItems: "center",
-      justifyContent: "center",
-      flex: 1
    ***REMOVED***,
    headerImage: {
       resizeMode: "center",
@@ -124,21 +92,13 @@ const styles = StyleSheet.create({
 /////////////
 
 function mapStateToProps(state) {
-   //console.log(state.groups)
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      database: state.database[activeGroup.language],
-      colors: state.database[activeGroup.language].colors,
+      activeDatabase: state.database[activeGroup.language],
       isRTL: state.database[activeGroup.language].isRTL,
-      studySets: state.database[activeGroup.language].studySets,
       activeGroupImageSource: activeGroup.imageSource,
       activeGroupLanguage: activeGroup.language
    ***REMOVED***
 ***REMOVED***;
 
-function mapDispatchToProps(dispatch) {
-   return {
-   ***REMOVED***
-***REMOVED***;
-
-export default connect(mapStateToProps, mapDispatchToProps)(StudySetScreen);
+export default connect(mapStateToProps)(SetScreen);

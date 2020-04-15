@@ -2,46 +2,31 @@
 import React, { useEffect, useState ***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
-import { MaterialCommunityIcons, Entypo ***REMOVED*** from '@expo/vector-icons';
+import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import Icon from '../assets/fonts/icons'
 
-function StudySetItem(props) {
-
-   function chooseAccentColor() {
-
-      value = parseInt(props.id.substr(2, 4)) % 4
-
-      if (value === 1) {
-         return props.colors.primaryColor
-      ***REMOVED*** else if (value === 2) {
-         return props.colors.accentColor1
-      ***REMOVED*** else if (value === 3) {
-         return props.colors.accentColor3
-      ***REMOVED*** else {
-         return props.colors.accentColor4
-      ***REMOVED***
-   ***REMOVED***
+function SetItem(props) {
 
    const [numCompleted, setNumCompleted] = useState(0)
-   const [fullyCompleted, setFullyCompleted] = useState(false)
    const [numLessons, setNumLessons] = useState(1)
+   const [fullyCompleted, setFullyCompleted] = useState(false)
 
    useEffect(() => {
 
-      for (const studySet of props.database.studySets) {
-         if (studySet.id === props.id) {
-            setNumLessons(studySet.lessons.length)
+      for (const set of props.database.sets) {
+         if (set.id === props.id) {
+            setNumLessons(set.length)
          ***REMOVED***
       ***REMOVED***
-      var localNumCompleted = 0
-      for (const lesson of props.progress) {
-         if (lesson.startsWith(props.id)) {
-            localNumCompleted += 1
-         ***REMOVED***
-      ***REMOVED***
-      setNumCompleted(localNumCompleted)
+      // var localNumCompleted = 0
+      // for (const lesson of props.progress) {
+      //    if (lesson.startsWith(props.id)) {
+      //       localNumCompleted += 1
+      //    ***REMOVED***
+      // ***REMOVED***
+      // setNumCompleted(localNumCompleted)
    ***REMOVED***, [props.progress])
 
    useEffect(() => {
@@ -68,7 +53,7 @@ function StudySetItem(props) {
 
 
    return (
-      <TouchableOpacity style={[styles.studySetItem, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED*** onPress={props.onStudySetSelect***REMOVED***>
+      <TouchableOpacity style={[styles.studySetItem, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED*** onPress={props.onSetSelect***REMOVED***>
          <View style={styles.progressContainer***REMOVED***>
             <AnimatedCircularProgress
                size={props.isSmall ? 70 * scaleMultiplier : 85 * scaleMultiplier***REMOVED***
@@ -79,7 +64,7 @@ function StudySetItem(props) {
                backgroundColor="#FFFFFF"
             >
                {(fill) => (
-                  <View style={{ backgroundColor: chooseAccentColor(), width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
+                  <View style={{ backgroundColor: props.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
                      <MaterialCommunityIcons name={props.iconName***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
                   </View>)***REMOVED***
             </AnimatedCircularProgress>
@@ -138,12 +123,6 @@ const styles = StyleSheet.create({
       marginLeft: 10,
       marginRight: 5
    ***REMOVED***,
-   title: {
-
-   ***REMOVED***,
-   subtitle: {
- 
-   ***REMOVED***,
    iconContainer: {
       justifyContent: "center",
       marginRight: 15
@@ -155,10 +134,9 @@ function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
       progress: activeGroup.progress,
-      colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
       database: state.database[activeGroup.language]
    ***REMOVED***
 ***REMOVED***;
 
-export default connect(mapStateToProps)(StudySetItem);
+export default connect(mapStateToProps)(SetItem);

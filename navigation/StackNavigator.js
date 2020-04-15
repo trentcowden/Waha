@@ -3,7 +3,7 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 
 import LessonListScreen from '../screens/LessonListScreen';
 import PlayScreen from '../screens/PlayScreen'
-import StudySetScreen from '../screens/StudySetScreen';
+import SetScreen from '../screens/SetScreen';
 import GroupsScreen from '../screens/GroupsScreen';
 import AddNewGroupScreen from '../screens/AddNewGroupScreen';
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen';
@@ -31,8 +31,8 @@ function StackNavigator(props) {
 
             {/* Study Set Screen */***REMOVED***
             <Stack.Screen
-               name="StudySet"
-               component={StudySetScreen***REMOVED***
+               name="Set"
+               component={SetScreen***REMOVED***
                options={{
                   headerStyle: {
                      backgroundColor: "#EAEEF0",
