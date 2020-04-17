@@ -38,11 +38,11 @@ export function deleteGroup(groupName) {
    ***REMOVED***
 ***REMOVED***
 
-export function toggleComplete(groupName, lessonID) {
+export function toggleComplete(groupName, lessonIndex) {
     return {
         type: TOGGLE_COMPLETE,
         groupName,
-        lessonID
+        lessonIndex
     ***REMOVED***
 ***REMOVED***
 

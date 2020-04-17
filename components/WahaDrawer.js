@@ -1,38 +1,42 @@
 import SafeAreaView from 'react-native-safe-area-view';
 import React from 'react';
-import { View, Text, StyleSheet, Button ***REMOVED*** from 'react-native';
+import { View, Text, StyleSheet ***REMOVED*** from 'react-native';
 import { connect ***REMOVED*** from 'react-redux'
 import DrawerItem from '../components/DrawerItem'
-import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler';
+import SmallDrawerItem from '../components/SmallDrawerItem'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as WebBrowser from 'expo-web-browser';
 import AvatarImage from '../components/AvatarImage'
 
 function WahaDrawer(props) {
+
+   //// FUNCTIONS
+
+   // opens a local browser 
    async function openBrowser(url) {
       await WebBrowser.openBrowserAsync(url);
    ***REMOVED***
 
+   //// RENDER
+
    return (
-      <SafeAreaView
-         style={styles.container***REMOVED***
-         forceInset={{ top: 'always', horizontal: 'never' ***REMOVED******REMOVED***
-      >
+      <SafeAreaView style={styles.container***REMOVED*** forceInset={{ top: 'always', horizontal: 'never' ***REMOVED******REMOVED***>
          <View style={[styles.drawerHeaderContainer, { backgroundColor: props.colors.primaryColor ***REMOVED***]***REMOVED***>
             <View style={styles.groupIconContainer***REMOVED***>
-               <AvatarImage source={props.activeGroupImageSource***REMOVED*** size={120***REMOVED***/>
+               <AvatarImage source={props.activeGroup.imageSource***REMOVED*** size={120***REMOVED*** />
             </View>
-            <Text style={styles.groupName***REMOVED***>{props.activeGroupName***REMOVED***</Text>
+            <Text style={styles.groupName***REMOVED***>{props.activeGroup.name***REMOVED***</Text>
          </View>
          <View style={styles.bigDrawerItemsContainer***REMOVED***>
             <DrawerItem
                name="group"
                text="Groups & Languages"
-               onPress={() => props.navigation.navigate('Groups', { isRTL: props.isFetching ? null : props.isRTL ***REMOVED***)***REMOVED***
+               onPress={() => props.navigation.navigate('Groups')***REMOVED***
             />
             {/* <DrawerItem
-               name="md-glasses"
-               text="Incognito Mode (todo)"
+               name="security"
+               text="Security Mode"
+               onPress={() => {***REMOVED******REMOVED***
             /> */***REMOVED***
             <DrawerItem
                name="email"
@@ -46,19 +50,24 @@ function WahaDrawer(props) {
             />
          </View>
          <View style={styles.smallDrawerItemsContainer***REMOVED***>
-            <TouchableOpacity style={styles.smallDrawerItemContainer***REMOVED*** onPress={() => { ***REMOVED******REMOVED***>
-               {/* <Text style={[styles.smallDrawerItemText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Coaching Tools (todo)</Text> */***REMOVED***
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***>
-               <Text style={[styles.smallDrawerItemText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>Privacy Policy</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.smallDrawerItemContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***>
-               <Text style={[styles.smallDrawerItemText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>View Credits</Text>
-            </TouchableOpacity>
+            <SmallDrawerItem
+               onPress={() => { ***REMOVED******REMOVED***
+               label={props.translations.navigation.drawer.coaching***REMOVED***
+            />
+            <SmallDrawerItem
+               onPress={() => openBrowser('https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif')***REMOVED***
+               label={props.translations.navigation.drawer.privacy***REMOVED***
+            />
+            <SmallDrawerItem
+               onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***
+               label={props.translations.navigation.drawer.credits***REMOVED***
+            />
          </View>
       </SafeAreaView >
    )
 ***REMOVED***
+
+//// REDUX
 
 const styles = StyleSheet.create({
    container: {
@@ -86,37 +95,18 @@ const styles = StyleSheet.create({
       flex: 1,
       marginBottom: 20
    ***REMOVED***,
-   smallDrawerItemContainer: {
-      margin: 5,
-      padding: 5,
-   ***REMOVED***,
-   smallDrawerItemText: {
-      fontFamily: 'medium',
-      fontSize: 18 * scaleMultiplier,
-      color: '#82868D',
-      textAlign: 'left'
-   ***REMOVED***
 ***REMOVED***);
 
-/////////////
-////REDUX////
-/////////////
+//// REDUX
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      database: state.database,
       colors: state.database[activeGroup.language].colors,
-      appProgress: state.appProgress,
       isRTL: state.database[activeGroup.language].isRTL,
-      activeGroupName: activeGroup.name,
-      activeGroupImageSource: activeGroup.imageSource,
+      activeGroup: activeGroup,
+      translations: state.database[activeGroup.language].translations
    ***REMOVED***
 ***REMOVED***;
 
-function mapDispatchToProps(dispatch) {
-   return {
-   ***REMOVED***
-***REMOVED***;
-
-export default connect(mapStateToProps, mapDispatchToProps)(WahaDrawer);
+export default connect(mapStateToProps)(WahaDrawer);

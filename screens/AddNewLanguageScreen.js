@@ -1,46 +1,32 @@
-//imports
-import React, { useState, useEffect ***REMOVED*** from 'react';
+import React, { useEffect ***REMOVED*** from 'react';
 import { View, StyleSheet, FlatList, Text, TouchableOpacity, Alert, Image ***REMOVED*** from 'react-native';
-
 import BackButton from '../components/BackButton'
 import { scaleMultiplier, headerImages ***REMOVED*** from '../constants'
-
-//redux imports
 import { connect ***REMOVED*** from 'react-redux'
-import { createGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 
 function AddNewLanguageScreen(props) {
 
+   //// CONSTRUCTOR
 
-   //////////////////////////////////////////
-   ////STATE, CONSTRUCTOR, AND NAVIGATION////
-   //////////////////////////////////////////
-
-
-   //set language based on user's language vs user's location?
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
    ***REMOVED***, [])
 
+   //// NAV OPTIONS
+
    function getNavOptions() {
       return {
-         headerRight: props.isRTL ? () =>
-            <BackButton
-               isRTL={props.isRTL***REMOVED***
-               onPress={() => props.navigation.goBack()***REMOVED***
-            /> :
+         headerRight: props.isRTL ?
+            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** /> :
             () => <View></View>,
-         headerLeft: props.isRTL ? () =>
-            <View></View> :
-            () =>
-               <BackButton
-                  isRTL={props.isRTL***REMOVED***
-                  onPress={() => props.navigation.goBack()***REMOVED***
-               />,
+         headerLeft: props.isRTL ?
+            () => <View></View> :
+            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />,
       ***REMOVED***
    ***REMOVED***
 
+   // manually updated list of all available languages to cross check with downloaded languages
    var languageInstanceList = [
       {
          id: 'en',
@@ -52,6 +38,7 @@ function AddNewLanguageScreen(props) {
       ***REMOVED***,
    ]
 
+   // set list of installed languages
    var installedLanguageInstances = []
    for (key in props.database) {
       if (key.length === 2) {
@@ -59,42 +46,30 @@ function AddNewLanguageScreen(props) {
       ***REMOVED***
    ***REMOVED***
 
-   ///////////////////////
-   ////OTHER FUNCTIONS////
-   ///////////////////////
-
-   function addNewLanguage(language) {
-      props.addLanguage(language)
-   ***REMOVED***
-
-   ////////////////////////////////
-   ////RENDER/STYLES/NAVOPTIONS////
-   ////////////////////////////////
+   //// RENDER
 
    function renderLanguageInstanceItem(languageInstanceList) {
       return (
          <TouchableOpacity
-            style={[styles.languageInstanceItem, {direction: props.isRTL ? 'rtl' : 'ltr'***REMOVED***]***REMOVED***
-            onPress={() => Alert.alert
-               ("Are you sure you'd like to add a new language instance?",
-                  "You will not be able to use the app until the language instance is added",
-                  [{
-                     text: 'Cancel',
-                     onPress: () => { ***REMOVED***
-                  ***REMOVED***,
-                  {
-                     text: 'OK',
-                     onPress: () => addNewLanguage(languageInstanceList.item.id)
-                  ***REMOVED***
-                  ])***REMOVED***>
+            style={[styles.languageInstanceItem, { direction: props.isRTL ? 'rtl' : 'ltr' ***REMOVED***]***REMOVED***
+            onPress={() => Alert.alert(
+               props.translations.alerts.addNewLanguage.header,
+               props.translations.alerts.addNewLanguage.body,
+               [{
+                  text: props.translations.alerts.options.cancel,
+                  onPress: () => {***REMOVED***
+               ***REMOVED***, {
+                  text: props.translations.alerts.options.ok,
+                  onPress: () => props.addLanguage(languageInstanceList.item.id)
+               ***REMOVED***]
+            )***REMOVED***
+         >
             <Text style={styles.languageInstanceText***REMOVED***>{languageInstanceList.item.displayName***REMOVED***</Text>
             <Image style={styles.languageLogo***REMOVED*** source={headerImages[languageInstanceList.item.id]***REMOVED*** />
          </TouchableOpacity>
       )
    ***REMOVED***
 
-   //create modal in here, pass state to show it to lesson item so lesson item
-   //can change it and show the modal on this screen
    return (
       <View style={styles.screen***REMOVED***>
          <FlatList
@@ -105,11 +80,12 @@ function AddNewLanguageScreen(props) {
    )
 ***REMOVED***
 
+//// STYLES
+
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
       backgroundColor: "#F7F7F7"
-      //justifyContent: "flex-start"
    ***REMOVED***,
    languageInstanceItem: {
       flexDirection: "row",
@@ -134,18 +110,13 @@ const styles = StyleSheet.create({
    ***REMOVED***
 ***REMOVED***)
 
-
-/////////////
-////REDUX////
-/////////////
-
+//// REDUX
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
       isRTL: state.database[activeGroup.language].isRTL,
       database: state.database,
-      activeGroupLanguage: activeGroup.language
    ***REMOVED***
 ***REMOVED***;
 

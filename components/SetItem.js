@@ -1,4 +1,3 @@
-//basic imports
 import React, { useEffect, useState ***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
@@ -9,26 +8,30 @@ import Icon from '../assets/fonts/icons'
 
 function SetItem(props) {
 
+   //// STATE
+
+   // keeps track of the number of completed lessons in this set
    const [numCompleted, setNumCompleted] = useState(0)
+
+   // keeps track of the number of total lessons in a set
    const [numLessons, setNumLessons] = useState(1)
+
+   // keeps track of whether the set is fully completed or not
    const [fullyCompleted, setFullyCompleted] = useState(false)
 
-   useEffect(() => {
+   //// CONSTRUCTOR
 
+   useEffect(() => {
       for (const set of props.database.sets) {
          if (set.id === props.id) {
             setNumLessons(set.length)
          ***REMOVED***
       ***REMOVED***
-      // var localNumCompleted = 0
-      // for (const lesson of props.progress) {
-      //    if (lesson.startsWith(props.id)) {
-      //       localNumCompleted += 1
-      //    ***REMOVED***
-      // ***REMOVED***
-      // setNumCompleted(localNumCompleted)
    ***REMOVED***, [props.progress])
 
+   //// FUNCTIONS
+
+   // changes a set as completed 
    useEffect(() => {
       if (numCompleted === numLessons) {
          setFullyCompleted(true)
@@ -37,11 +40,16 @@ function SetItem(props) {
       ***REMOVED***
    ***REMOVED***, [numCompleted])
 
+   //// RENDER
+
+   // render the percentage text conditionally as we don't need it for the small set items
+   // note: small item appears on lesson list screen
    var percentageText = props.isSmall ? null :
       <View style={styles.percentageTextContainer***REMOVED***>
          <Text style={styles.percentageText***REMOVED***>{Math.round((numCompleted / numLessons) * 100)***REMOVED***%</Text>
       </View>
 
+   // render the triangle icon conditionally as we don't need it for small set items
    var triangleIcon = props.isSmall ? null :
       <View style={styles.iconContainer***REMOVED***>
          <Icon
@@ -50,7 +58,6 @@ function SetItem(props) {
             color="#828282"
          />
       </View>
-
 
    return (
       <TouchableOpacity style={[styles.studySetItem, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED*** onPress={props.onSetSelect***REMOVED***>
@@ -72,7 +79,7 @@ function SetItem(props) {
          </View>
          <View style={styles.titleContainer***REMOVED***>
             <Text style={{
-               color: fullyCompleted ? "#9FA5AD" : "black", 
+               color: fullyCompleted ? "#9FA5AD" : "black",
                textAlign: props.isRTL ? 'right' : 'left',
                fontSize: props.isSmall ? 14 * scaleMultiplier : 12 * scaleMultiplier,
                textAlignVertical: "center",
@@ -92,6 +99,8 @@ function SetItem(props) {
       </TouchableOpacity>
    )
 ***REMOVED***
+
+//// STYLES
 
 const styles = StyleSheet.create({
    studySetItem: {
@@ -129,6 +138,7 @@ const styles = StyleSheet.create({
    ***REMOVED***
 ***REMOVED***)
 
+//// REDUX
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]

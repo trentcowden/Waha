@@ -26,7 +26,7 @@ function StackNavigator(props) {
                ***REMOVED***,
                gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
                gestureResponseDistance: {horizontal: 300 * scaleMultiplier, vertical: 135***REMOVED***,
-               headerTitleAlign: 'center'
+               headerTitleAlign: 'center',
             ***REMOVED******REMOVED***>
 
             {/* Study Set Screen */***REMOVED***
@@ -38,7 +38,6 @@ function StackNavigator(props) {
                      backgroundColor: "#EAEEF0",
                   ***REMOVED***,
                   headerTitleAlign: "center",
-                  gestureEnabled: 'true'
                ***REMOVED******REMOVED***
             />
 

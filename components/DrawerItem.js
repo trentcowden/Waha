@@ -1,16 +1,11 @@
-//imports
-import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator ***REMOVED*** from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import * as Progress from 'react-native-progress';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
 function DrawerItem(props) {
 
-   ////////////////////////////////
-   ////RENDER/STYLES/NAVOPTIONS////
-   ////////////////////////////////
+   //// RENDER
 
    return (
       <TouchableOpacity style={[styles.settingsItem, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED*** onPress={props.onPress***REMOVED***>
@@ -25,6 +20,8 @@ function DrawerItem(props) {
       </TouchableOpacity>
    )
 ***REMOVED***
+
+//// STYLES
 
 const styles = StyleSheet.create({
    settingsItem: {
@@ -57,11 +54,4 @@ function mapStateToProps(state) {
    ***REMOVED***
 ***REMOVED***;
 
-function mapDispatchToProps(dispatch) {
-   return {
-      downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      toggleComplete: lessonID => { dispatch(toggleComplete(lessonID)) ***REMOVED***
-   ***REMOVED***
-***REMOVED***
-
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerItem);
+export default connect(mapStateToProps)(DrawerItem);

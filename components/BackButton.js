@@ -1,8 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { scaleMultiplier ***REMOVED*** from '../constants';
+import { connect ***REMOVED*** from 'react-redux'
 
 function BackButton(props) {
+
+   //// RENDER
+
    return (
          <TouchableOpacity
             style={[styles.backButtonContainer, {justifyContent: props.isRTL ? 'flex-end' : 'flex-start'***REMOVED***]***REMOVED***
@@ -17,6 +21,8 @@ function BackButton(props) {
    )
 ***REMOVED***
 
+//// STYLES
+
 const styles = StyleSheet.create({
    backButtonContainer: {
       flexDirection: "row",
@@ -24,4 +30,13 @@ const styles = StyleSheet.create({
    ***REMOVED***
 ***REMOVED***)
 
-export default BackButton
+//// REDUX
+
+function mapStateToProps(state) {
+   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
+   return {
+      isRTL: state.database[activeGroup.language].isRTL,
+   ***REMOVED***
+***REMOVED***;
+
+export default connect(mapStateToProps)(BackButton);

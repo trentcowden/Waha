@@ -1,31 +1,22 @@
-//imports
-import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
+import React, { useState, useEffect ***REMOVED*** from 'react';
 import { View, StyleSheet, Text, Picker, TouchableOpacity ***REMOVED*** from 'react-native';
-import * as FileSystem from 'expo-file-system';
 import { Ionicons ***REMOVED*** from '@expo/vector-icons';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import { Audio ***REMOVED*** from 'expo-av';
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
-//redux imports
-import { connect ***REMOVED*** from 'react-redux'
-
 function LanguageSelectScreen(props) {
 
+   //// STATE
 
-   //////////////////////////////////////////
-   ////STATE, CONSTRUCTOR, AND NAVIGATION////
-   //////////////////////////////////////////
-
-
-   //state for our selected language; set default to english
+   // keeps track of language selected in picker (TODO: change default to user's default language)
    const [selectedLanguage, setSelectedLanguage] = useState('en')
 
-   //sound for the text to speech
+   // sound for the text to speech
    const soundObject = new Audio.Sound();
 
-   //onboarding translations for language select screen
+   // translations for language select
    i18n.translations = {
       en: {
          welcome: 'Hello and welcome!',
@@ -34,21 +25,16 @@ function LanguageSelectScreen(props) {
       ***REMOVED***,
    ***REMOVED***;
 
-   //set language based on user's language vs user's location?
+   //// CONSTRUCTOR
+
    useEffect(() => {
       i18n.locale = Localization.locale;
       i18n.fallbacks = true;
    ***REMOVED***, [])
 
-   //function to navigate to the play screen
-   //props.navigation.navigate takes us to the play screen
-   //params is the information we want to pass to play screen
-   function navigateToOnboarding() {
-      // console.log(`type of language parameter passed: ${typeof selectedLanguage***REMOVED***`)
-      // console.log(`language parameter passed: ${selectedLanguage***REMOVED***`)
-      props.navigation.navigate('OnboardingSlides', {selectedLanguage: selectedLanguage***REMOVED***)
-   ***REMOVED***
+   //// FUNCTIONS
 
+   // plays text-to-speech audio file of language
    async function playAudio() {
       soundObject.unloadAsync();
       switch (i18n.locale) {
@@ -60,32 +46,16 @@ function LanguageSelectScreen(props) {
                ***REMOVED***)
             break;
       ***REMOVED***
-      //await soundObject.playAsync();
    ***REMOVED***
 
-
-
-
+   // updates language on picker change
    function onPickerChange(language) {
-      //console.log(language)
       setSelectedLanguage(language)
       i18n.locale = language
    ***REMOVED***
 
-   //console.log(i18n.locale)
+   //// RENDER
 
-   ///////////////////////
-   ////OTHER FUNCTIONS////
-   ///////////////////////
-
-
-   ////////////////////////////////
-   ////RENDER/STYLES/NAVOPTIONS////
-   ////////////////////////////////
-
-
-   //create modal in here, pass state to show it to lesson item so lesson item
-   //can change it and show the modal on this screen
    return (
       <View style={styles.screen***REMOVED***>
          <View>
@@ -110,22 +80,17 @@ function LanguageSelectScreen(props) {
                   backgroundColor="rgba(0,0,0,0)"
                   color="black"
                   onPress={playAudio***REMOVED***
-               // style={{width: 20***REMOVED******REMOVED***
                />
             </View>
          </View>
-         <TouchableOpacity onPress={navigateToOnboarding***REMOVED*** style={styles.button***REMOVED***>
+         <TouchableOpacity onPress={props.navigation.navigate('OnboardingSlides', {selectedLanguage: selectedLanguage***REMOVED***)***REMOVED*** style={styles.button***REMOVED***>
             <Text style={styles.buttonTitle***REMOVED***>{i18n.t('letsBegin')***REMOVED*** </Text>
          </TouchableOpacity>
       </View>
    )
 ***REMOVED***
 
-LanguageSelectScreen.navigationOptions = navigationData => {
-   return {
-      headerShown: false
-   ***REMOVED***;
-***REMOVED***;
+//// STYLES
 
 const styles = StyleSheet.create({
    screen: {
@@ -161,25 +126,4 @@ const styles = StyleSheet.create({
    ***REMOVED***
 ***REMOVED***)
 
-
-/////////////
-////REDUX////
-/////////////
-
-
-function mapStateToProps(state) {
-   return {
-      downloads: state.downloads,
-      appProgress: state.appProgress,
-      database: state.database
-   ***REMOVED***
-***REMOVED***;
-
-function mapDispatchToProps(dispatch) {
-   return {
-      addLanguage: language => dispatch(addLanguage(language)),
-      changeLanguage: language => dispatch(changeLanguage(language)),
-   ***REMOVED***
-***REMOVED***
-
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSelectScreen);
+export default LanguageSelectScreen

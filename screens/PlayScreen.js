@@ -1,15 +1,10 @@
-//basic imports
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
 import { View, StyleSheet, Text, Alert, ActivityIndicator, ScrollView, Dimensions ***REMOVED*** from 'react-native';
 import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { scaleMultiplier ***REMOVED*** from '../constants'
-
-//sound stuff
 import { Audio ***REMOVED*** from 'expo-av';
-
-//components
 import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
 import Scrubber from '../components/Scrubber'
@@ -17,64 +12,52 @@ import PlayPauseSkip from '../components/PlayPauseSkip';
 import ChapterSelect from '../components/ChapterSelect'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import BackButton from '../components/BackButton'
-
-//redux
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
+
 console.disableYellowBox = true;
 
 function PlayScreen(props) {
 
+   //// STATE
 
-   /////////////
-   ////STATE////
-   /////////////
-
-
-   //sound object for storing/controlling audio file
+   // stores loaded audio file
    const [soundObject, setSoundObject] = useState(new Audio.Sound());
 
-   //the length of the current audio file (loaded by sound object)
+   // stores the length of the current audio file in milliseconds (loaded by sound object)
    const [audioFileLength, setAudioFileLength] = useState(null);
 
-   //boolean to determine if the audio file has finished loading 
+   // keeps track of if the audio file is loaded
    const [isLoaded, setIsLoaded] = useState(false);
 
-   //boolean to determine if the audio file is currently playing or paused
+   // keeps track of whether the audio file is playing or paused
    const [isPlaying, setIsPlaying] = useState(false);
 
-   //the current position of the seeker
+   // keeps track of the current position of the seeker 
    const [seekPosition, setSeekPosition] = useState(0);
 
-   //boolean to determine if the seeker should update every second
-   //NOTE: only time it shouldn't is during seeking, skipping, or loading a new chapter
+   // keeps track of if the seeker should update every second
+   // note: only time it shouldn't is during seeking, skipping, or loading a new chapter
    const shouldTickUpdate = useRef(false);
 
-   //string of the currently active chapter
+   // keeps track of currently playing chapter
    const [activeChapter, setActiveChapter] = useState('fellowship')
 
-   //sources for all 3 audio files
-   const [chapter1Source, setChapter1Source] = useState(FileSystem.documentDirectory + props.currentLanguage + 'chapter1.mp3');
+   // sources for all 3 audio files
+   const [chapter1Source, setChapter1Source] = useState(FileSystem.documentDirectory + props.activeGroup.language + 'chapter1.mp3');
    const [chapter2Source, setChapter2Source] = useState(FileSystem.documentDirectory + props.route.params.id + '.mp3');
-   const [chapter3Source, setChapter3Source] = useState(FileSystem.documentDirectory + props.currentLanguage + 'chapter3.mp3');
+   const [chapter3Source, setChapter3Source] = useState(FileSystem.documentDirectory + props.activeGroup.language + 'chapter3.mp3');
 
    //share modal
    const [showShareLessonModal, setShowShareLessonModal] = useState(false);
 
-   //ALBUM ART SLIDER STUFF
-   //const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+   //// CONSTRUCTOR
 
-
-
-   ///////////////////
-   ////CONSTRUCTOR////
-   ///////////////////
-
-
-   //PURPOSE: constructor on first open
    useEffect(() => {
+      //set nav options
       props.navigation.setOptions(getNavOptions())
+
       //load up chapter 1 initially
       try {
          loadAudioFile(chapter1Source);
@@ -82,13 +65,8 @@ function PlayScreen(props) {
          console.log(error)
       ***REMOVED***
 
-      //check if file is downloaded, then load it
+      //check if chapter 2 is downloaded, then load it
       checkIsDownloaded(); // -> loadAudioFile()
-
-      //determine complete status of loaded lesson
-
-      //send completion info over to navigation (appProgress is from redux)
-      // props.navigation.setParams({ isRTL: props.isRTL ***REMOVED***)
 
       //set up our timer tick for updating the seeker every second
       const interval = setInterval(updateSeekerTick, 1000);
@@ -103,315 +81,281 @@ function PlayScreen(props) {
       ***REMOVED***
    ***REMOVED***, []);
 
+   //// NAV OPTIONS
+
    function getNavOptions() {
       return {
          headerTitle: props.route.params.subtitle,
-         headerRight: props.route.params.isRTL ? () =>
-            <BackButton
-               isRTL={props.route.params.isRTL***REMOVED***
-               onPress={() => props.navigation.goBack()***REMOVED***
-            /> :
+         headerRight: props.isRTL ?
+            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** /> :
             () => <PlayScreenHeaderButtons
                shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
                completeOnPress={changeCompleteStatus***REMOVED***
-               completeCondition={props.currentProgress.includes(props.route.params.id)***REMOVED***
+               completeCondition={props.activeGroup.progress.includes(props.route.params.index)***REMOVED***
             />,
-         headerLeft: props.route.params.isRTL ?
+         headerLeft: props.isRTL ?
             () => <PlayScreenHeaderButtons
                shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
                completeOnPress={changeCompleteStatus***REMOVED***
-               completeCondition={props.currentProgress.includes(props.route.params.id)***REMOVED***
+               completeCondition={props.activeGroup.progress.includes(props.route.params.index)***REMOVED***
             /> :
-            () => <BackButton
-               isRTL={props.route.params.isRTL***REMOVED***
-               onPress={() => props.navigation.goBack()***REMOVED***
-            />,
-            //gestureDirection: props.route.params.isRTL ? 'horizontal-inverted' : 'horizontal'
+            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />,
       ***REMOVED***
    ***REMOVED***
 
-      ///////////////////////////////
-      ////AUDIO CONTROL FUNCTIONS////
-      ///////////////////////////////
+   //// AUDIO CONTROL FUNCTIONS
 
-
-      //PURPOSE: update something on every api call to audio object and every second
-      soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
-         if (playbackStatus.isLoaded) {
-            setIsLoaded(true)
-         ***REMOVED***
-
-         //depending on what chapter we're on, either jump to the next chapter once we finish or 
-         //toggle the whole lesson as complete
-         if (playbackStatus.didJustFinish) {
-            if (activeChapter === 'fellowship') {
-               changeChapter('passage')
-            ***REMOVED*** else if (activeChapter === 'passage') {
-               changeChapter('application')
-            ***REMOVED*** else if (activeChapter === 'application') {
-               var id = props.route.params.id;
-               var isComplete = (props.currentProgress.includes(id))
-               if (!isComplete)
-                  changeCompleteStatus();
-            ***REMOVED***
-         ***REMOVED***
-      ***REMOVED***)
-
-      //PURPOSE: check if the lesson is downloaded or not
-      async function checkIsDownloaded() {
-         FileSystem.getInfoAsync(FileSystem.documentDirectory + props.route.params.id + '.mp3')
-            .then(({ exists ***REMOVED***) => {
-               if (!exists && !(props.route.params.id in props.downloads)) {
-                  props.downloadLesson(props.route.params.id, props.route.params.source);
-               ***REMOVED***
-            ***REMOVED***)
+   // updates something on every api call to audio object and every second
+   soundObject.setOnPlaybackStatusUpdate(playbackStatus => {
+      if (playbackStatus.isLoaded) {
+         setIsLoaded(true)
       ***REMOVED***
 
-      //PURPOSE: load the audio file and set isLoaded and 
-      //PARAMETERS: source to load file from
-      async function loadAudioFile(source) {
-         //console.log(source);
+      // depending on what chapter we're on, either jump to the next 
+      // chapter once we finish or toggle the whole lesson as complete
+      if (playbackStatus.didJustFinish) {
+         if (activeChapter === 'fellowship') {
+            changeChapter('passage')
+         ***REMOVED*** else if (activeChapter === 'passage') {
+            changeChapter('application')
+         ***REMOVED*** else if (activeChapter === 'application') {
+            var id = props.route.params.id;
+            var isComplete = (props.activeGroup.progress.includes(id))
+            if (!isComplete)
+               changeCompleteStatus();
+         ***REMOVED***
+      ***REMOVED***
+   ***REMOVED***)
+
+   // checks if the lesson is downloaded or not
+   async function checkIsDownloaded() {
+      FileSystem.getInfoAsync(FileSystem.documentDirectory + props.route.params.id + '.mp3')
+         .then(({ exists ***REMOVED***) => {
+            if (!exists && !(props.route.params.id in props.downloads)) {
+               props.downloadLesson(props.route.params.id, props.route.params.source);
+            ***REMOVED***
+         ***REMOVED***)
+   ***REMOVED***
+
+   // loads an audio file, sets the length, and starts playing it 
+   async function loadAudioFile(source) {
+      //console.log(source);
+      try {
+         await soundObject
+            .loadAsync({ uri: source ***REMOVED***, { progressUpdateIntervalMillis: 1000 ***REMOVED***)
+            .then(playbackStatus => {
+               setAudioFileLength(playbackStatus.durationMillis);
+               soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
+               shouldTickUpdate.current = true;
+               setIsPlaying(true)
+            ***REMOVED***)
+      ***REMOVED*** catch (error) {
+         console.log(error)
+      ***REMOVED***
+   ***REMOVED***
+
+   // gets called every second by our timer and updates the seeker position based on the progress through the audio file
+   async function updateSeekerTick() {
+      //console.log(shouldTickUpdate.current)
+      if (shouldTickUpdate.current) {
          try {
             await soundObject
-               .loadAsync({ uri: source ***REMOVED***, { progressUpdateIntervalMillis: 1000 ***REMOVED***)
+               .getStatusAsync()
                .then(playbackStatus => {
-                  setAudioFileLength(playbackStatus.durationMillis);
-                  soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
-                  shouldTickUpdate.current = true;
-                  setIsPlaying(true)
+                  setSeekPosition(playbackStatus.positionMillis);
                ***REMOVED***)
+            //.catch(err => console.log(err))
          ***REMOVED*** catch (error) {
             console.log(error)
          ***REMOVED***
       ***REMOVED***
+   ***REMOVED***
 
-      //PURPOSE: gets called every second by our interval, and updates the seeker position
-      //based on the progress through the audio file
-      async function updateSeekerTick() {
-         //console.log(shouldTickUpdate.current)
-         if (shouldTickUpdate.current) {
-            try {
-               await soundObject
-                  .getStatusAsync()
-                  .then(playbackStatus => {
-                     setSeekPosition(playbackStatus.positionMillis);
-                  ***REMOVED***)
-               //.catch(err => console.log(err))
-            ***REMOVED*** catch (error) {
-               console.log(error)
-            ***REMOVED***
-         ***REMOVED***
-      ***REMOVED***
-
-      //PURPOSE: when user taps the play button, if the audio is playing, 
-      //pause it; if it's paused, start playing it
-      function playHandler() {
-         if (isLoaded) {
-            updateSeekerTick();
-            isPlaying ?
-               soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: false ***REMOVED***) :
-               soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
-            setIsPlaying(currentStatus => !currentStatus);
-         ***REMOVED***
-      ***REMOVED***
-
-      //PURPOSE: start playing from the position they release the thumb at
-      //PARAMETERS: the current seeker value
-      //NOTE: .catchs are empty because of a weird ios-only warning appearing
-      //that doesn't seem to affect any functionality. it's being ignored
-      function onSeekRelease(value) {
-         if (isPlaying) {
-            soundObject.setStatusAsync({
-               shouldPlay: false,
-               positionMillis: value,
-               seekMillisToleranceBefore: 10000,
-               seekMillisToleranceAfter: 10000
-            ***REMOVED***).catch(err => { ***REMOVED***)
-            soundObject.setStatusAsync({
-               shouldPlay: true,
-               positionMillis: value,
-               seekMillisToleranceBefore: 10000,
-               seekMillisToleranceAfter: 10000
-            ***REMOVED***).catch(err => { ***REMOVED***)
-         ***REMOVED*** else {
-            soundObject.setStatusAsync({
-               shouldPlay: false,
-               positionMillis: value,
-               seekMillisToleranceBefore: 10000,
-               seekMillisToleranceAfter: 10000
-            ***REMOVED***).catch(err => { ***REMOVED***)
-         ***REMOVED***
-         shouldTickUpdate.current = true;
-         setSeekPosition(value);
-      ***REMOVED***
-
-      //PURPOSE: prevent the seeker from updating every second whenever
-      //the user is dragging the thumb
-      function onSeekDrag(value) {
-         shouldTickUpdate.current = false;
-      ***REMOVED***
-
-      //PURPOSE: skips an amount of milliseconds through the audio track
-      function skip(amount) {
+   // plays the audio if it's currently paused and pauses the audio if it's currently playing
+   function playHandler() {
+      if (isLoaded) {
+         updateSeekerTick();
          isPlaying ?
-            soundObject.setStatusAsync({ shouldPlay: true, positionMillis: (seekPosition + amount) ***REMOVED***) :
-            soundObject.setStatusAsync({ shouldPlay: false, positionMillis: (seekPosition + amount) ***REMOVED***);
-         setSeekPosition(seekPosition => seekPosition + amount);
+            soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: false ***REMOVED***) :
+            soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000, shouldPlay: true ***REMOVED***);
+         setIsPlaying(currentStatus => !currentStatus);
       ***REMOVED***
+   ***REMOVED***
 
-
-      ///////////////////////
-      ////OTHER FUNCTIONS////
-      ///////////////////////
-
-      //PURPOSE: change the active chapter
-      function changeChapter(chapter) {
-         //stop updating ticker
-         shouldTickUpdate.current = false;
-
-         //set seek position back to 0
-         setSeekPosition(0)
-
-         //unload whatever old sound object was loaded
-         soundObject.unloadAsync();
-
-         //set the button to show the new active chapter
-         setActiveChapter(chapter)
-
-         //load the new audio file
-         if (chapter === 'fellowship') {
-            loadAudioFile(chapter1Source)
-         ***REMOVED*** else if (chapter === 'passage') {
-            loadAudioFile(chapter2Source)
-         ***REMOVED*** else if (chapter === 'application') {
-            loadAudioFile(chapter3Source)
-         ***REMOVED***
-      ***REMOVED***
-
-      //PURPOSE: switch the complete status of a lesson to the opposite of its current status
-      function changeCompleteStatus() {
-         var id = props.route.params.id;
-         var isComplete = (props.currentProgress.includes(id))
-         //redux action: change the complete status
-         props.toggleComplete(props.activeGroupName, id)
-
-         if (isComplete) {
-            Alert.alert('Lesson marked as incomplete!',
-               'Don\' forget to select when your next lesson is!',
-               [{
-                  text: 'OK',
-                  onPress: () => props.navigation.goBack()
-               ***REMOVED***])
-         ***REMOVED*** else {
-            Alert.alert(props.translations['completeMessageTitle'],
-               props.translations['completeMessageBody'],
-               [{
-                  text: 'OK',
-                  onPress: () => props.navigation.goBack()
-               ***REMOVED***])
-         ***REMOVED***
-      ***REMOVED***
-
-      //PURPOSE: open the share sheet to share a chapter
-      function shareLesson(chapter) {
-         switch (chapter) {
-            case 'fellowship':
-               Sharing.shareAsync(chapter1Source).catch(error => console.log(error))
-               break;
-            case 'passage':
-               Sharing.shareAsync(chapter2Source)
-               break;
-            case 'application':
-               Sharing.shareAsync(chapter3Source)
-               break;
-         ***REMOVED***
-      ***REMOVED***
-
-      ////////////////////////////////
-      ////RENDER/STYLES/NAVOPTIONS////
-      ////////////////////////////////
-
-      //PLAY/PAUSE/SKIP CONTAINER
-      //conditionally rendered because we don't want to show controls when the audio is loading
-      var audioControlContainer;
-      if (!isLoaded) {
-         //special case when audio is still loading
-         audioControlContainer =
-            <View style={styles.audioControlContainer***REMOVED***>
-               <ActivityIndicator size="large" color="black" />
-            </View>
+   // starts playing loaded audio from the position the user releases the thumb at
+   // note: catchs are empty because of a weird ios-only warning appearing
+   // that doesn't seem to affect any functionality--it's being ignored
+   function onSeekRelease(value) {
+      if (isPlaying) {
+         soundObject.setStatusAsync({
+            shouldPlay: false,
+            positionMillis: value,
+            seekMillisToleranceBefore: 10000,
+            seekMillisToleranceAfter: 10000
+         ***REMOVED***).catch(err => { ***REMOVED***)
+         soundObject.setStatusAsync({
+            shouldPlay: true,
+            positionMillis: value,
+            seekMillisToleranceBefore: 10000,
+            seekMillisToleranceAfter: 10000
+         ***REMOVED***).catch(err => { ***REMOVED***)
       ***REMOVED*** else {
-         //general case which shows scrubber/play controls
-         audioControlContainer =
-            <View style={styles.audioControlContainer***REMOVED***>
-               <ChapterSelect
-                  activeChapter={activeChapter***REMOVED***
-                  lessonID={props.route.params.id***REMOVED***
-                  onPress={chapter => changeChapter(chapter)***REMOVED***
-               />
-               <Scrubber
-                  value={seekPosition***REMOVED***
-                  onSlidingComplete={onSeekRelease***REMOVED***
-                  onValueChange={onSeekDrag***REMOVED***
-                  maximumValue={audioFileLength***REMOVED***
-                  seekPosition={seekPosition***REMOVED***
-               />
-               <PlayPauseSkip
-                  isPlaying={isPlaying***REMOVED***
-                  onPlayPress={playHandler***REMOVED***
-                  onSkipPress={value => { skip(value) ***REMOVED******REMOVED***
-               />
-            </View>
+         soundObject.setStatusAsync({
+            shouldPlay: false,
+            positionMillis: value,
+            seekMillisToleranceBefore: 10000,
+            seekMillisToleranceAfter: 10000
+         ***REMOVED***).catch(err => { ***REMOVED***)
       ***REMOVED***
+      shouldTickUpdate.current = true;
+      setSeekPosition(value);
+   ***REMOVED***
 
-      return (
-         <View style={styles.screen***REMOVED***>
-            <View style={styles.topHalfContainer***REMOVED***>
-               <View style={styles.titlesContainer***REMOVED***>
-                  <Text style={styles.title***REMOVED***>{props.route.params.title***REMOVED***</Text>
-                  {/* <Text style={styles.subtitle***REMOVED***>{props.navigation.getParam("scripture")***REMOVED***</Text> */***REMOVED***
-               </View>
-               <View style={styles.albumArtListContainer***REMOVED***>
-                  <ScrollView
-                     horizontal={true***REMOVED***
-                     pagingEnabled={true***REMOVED***
-                     snapToAlignment={"start"***REMOVED***
-                     snapToInterval={Dimensions.get('window').width - 70***REMOVED***
-                     decelerationRate={"fast"***REMOVED***
-                     initialScrollIndex={1***REMOVED***
-                     contentOffset={{ x: Dimensions.get('window').width - 70, y: 0 ***REMOVED******REMOVED***
-                  >
-                     <View style={{ ...styles.albumArtContainer, ...{ marginLeft: 30 ***REMOVED*** ***REMOVED******REMOVED***>
-                        <ScrollView>
-                           <Text style={{ flexWrap: "wrap", fontFamily: 'regular', textAlign: "center" ***REMOVED******REMOVED***>{props.route.params.scriptureHeader***REMOVED***</Text>
-                           <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>{props.route.params.scriptureText***REMOVED***</Text>
-                        </ScrollView>
-                     </View>
-                     <View style={{ ...styles.albumArtContainer, ...{ justifyContent: "center", alignItems: "center" ***REMOVED*** ***REMOVED******REMOVED***>
-                        <MaterialCommunityIcons name={props.route.params.iconName***REMOVED*** size={200***REMOVED*** />
-                     </View>
-                     <View style={{ ...styles.albumArtContainer, ...{ marginRight: 30 ***REMOVED*** ***REMOVED******REMOVED***>
-                        <ScrollView>
-                           <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>questions</Text>
-                        </ScrollView>
-                     </View>
-                  </ScrollView>
-               </View>
+   // sets shouldTickUpdate to flase to prevent the seeker from updating while dragging
+   function onSeekDrag(value) {
+      shouldTickUpdate.current = false;
+   ***REMOVED***
+
+   // skips an amount of milliseconds through the audio track
+   function skip(amount) {
+      isPlaying ?
+         soundObject.setStatusAsync({ shouldPlay: true, positionMillis: (seekPosition + amount) ***REMOVED***) :
+         soundObject.setStatusAsync({ shouldPlay: false, positionMillis: (seekPosition + amount) ***REMOVED***);
+      setSeekPosition(seekPosition => seekPosition + amount);
+   ***REMOVED***
+
+   //// OTHER FUNCTIONS
+
+   // changes the active chapter
+   function changeChapter(chapter) {
+      shouldTickUpdate.current = false;
+      setSeekPosition(0)
+      soundObject.unloadAsync();
+      setActiveChapter(chapter)
+
+      if (chapter === 'fellowship') {
+         loadAudioFile(chapter1Source)
+      ***REMOVED*** else if (chapter === 'passage') {
+         loadAudioFile(chapter2Source)
+      ***REMOVED*** else if (chapter === 'application') {
+         loadAudioFile(chapter3Source)
+      ***REMOVED***
+   ***REMOVED***
+
+   // switches the complete status of a lesson to the opposite of its current status
+   // and alerts the user of the change
+   function changeCompleteStatus() {
+      var isComplete = (props.activeGroup.progress.includes(props.route.params.index))
+      props.toggleComplete(props.activeGroup.name, props.route.params.index)
+
+      if (isComplete) {
+         Alert.alert(props.translations.alerts.markedAsComplete.header,
+            props.translations.alerts.markedAsComplete.body,
+            [{
+               text: props.translations.alerts.ok,
+               onPress: () => props.navigation.goBack()
+            ***REMOVED***])
+      ***REMOVED*** else {
+         Alert.alert(props.translations.alerts.markedAsIncomplete.header,
+            props.translations.alerts.markedAsIncomplete.body,
+            [{
+               text: props.translations.alerts.ok,
+               onPress: () => props.navigation.goBack()
+            ***REMOVED***])
+      ***REMOVED***
+   ***REMOVED***
+
+   // opens the share sheet to share a chapter
+   function shareLesson(chapter) {
+      switch (chapter) {
+         case 'fellowship':
+            Sharing.shareAsync(chapter1Source).catch(error => console.log(error))
+            break;
+         case 'passage':
+            Sharing.shareAsync(chapter2Source)
+            break;
+         case 'application':
+            Sharing.shareAsync(chapter3Source)
+            break;
+      ***REMOVED***
+   ***REMOVED***
+
+   //// RENDER
+
+   // renders the play/pause/skip container conditionally because we don't want to show controls when the audio is loading
+   // if we're loading, render a loading circle; otherwise load the audio controls
+   var audioControlContainer = isLoaded ?
+      <View style={styles.audioControlContainer***REMOVED***>
+         <ChapterSelect
+            activeChapter={activeChapter***REMOVED***
+            lessonID={props.route.params.id***REMOVED***
+            onPress={chapter => changeChapter(chapter)***REMOVED***
+         />
+         <Scrubber
+            value={seekPosition***REMOVED***
+            onSlidingComplete={onSeekRelease***REMOVED***
+            onValueChange={onSeekDrag***REMOVED***
+            maximumValue={audioFileLength***REMOVED***
+            seekPosition={seekPosition***REMOVED***
+         />
+         <PlayPauseSkip
+            isPlaying={isPlaying***REMOVED***
+            onPlayPress={playHandler***REMOVED***
+            onSkipPress={value => { skip(value) ***REMOVED******REMOVED***
+         />
+      </View> :
+      <View style={styles.audioControlContainer***REMOVED***>
+         <ActivityIndicator size="large" color="black" />
+      </View>
+
+   return (
+      <View style={styles.screen***REMOVED***>
+         <View style={styles.topHalfContainer***REMOVED***>
+            <View style={styles.titlesContainer***REMOVED***>
+               <Text style={styles.title***REMOVED***>{props.route.params.title***REMOVED***</Text>
             </View>
-
-            {audioControlContainer***REMOVED***
-
-            {/* MODALS */***REMOVED***
-            <WahaModal isVisible={showShareLessonModal***REMOVED***>
-               <ModalButton title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
-               <ModalButton title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
-               <ModalButton title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
-               <ModalButton title="Close" onPress={() => setShowShareLessonModal(false)***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
-            </WahaModal>
+            <View style={styles.albumArtListContainer***REMOVED***>
+               <ScrollView
+                  horizontal={true***REMOVED***
+                  pagingEnabled={true***REMOVED***
+                  snapToAlignment={"start"***REMOVED***
+                  snapToInterval={Dimensions.get('window').width - 70***REMOVED***
+                  decelerationRate={"fast"***REMOVED***
+                  initialScrollIndex={1***REMOVED***
+                  contentOffset={{ x: Dimensions.get('window').width - 70, y: 0 ***REMOVED******REMOVED***
+               >
+                  <View style={{ ...styles.albumArtContainer, ...{ marginLeft: 30 ***REMOVED*** ***REMOVED******REMOVED***>
+                     <ScrollView>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular', textAlign: "center" ***REMOVED******REMOVED***>{props.route.params.scriptureHeader***REMOVED***</Text>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>{props.route.params.scriptureText***REMOVED***</Text>
+                     </ScrollView>
+                  </View>
+                  <View style={{ ...styles.albumArtContainer, ...{ justifyContent: "center", alignItems: "center" ***REMOVED*** ***REMOVED******REMOVED***>
+                     <MaterialCommunityIcons name={props.route.params.iconName***REMOVED*** size={200***REMOVED*** />
+                  </View>
+                  <View style={{ ...styles.albumArtContainer, ...{ marginRight: 30 ***REMOVED*** ***REMOVED******REMOVED***>
+                     <ScrollView>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>questions</Text>
+                     </ScrollView>
+                  </View>
+               </ScrollView>
+            </View>
          </View>
+         {audioControlContainer***REMOVED***
 
-      )
+         {/* MODALS */***REMOVED***
+         <WahaModal isVisible={showShareLessonModal***REMOVED***>
+            <ModalButton title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
+            <ModalButton title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
+            <ModalButton title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
+            <ModalButton title="Close" onPress={() => setShowShareLessonModal(false)***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
+         </WahaModal>
+      </View>
+
+   )
 ***REMOVED***;
+
+//// STYLES
 
 const styles = StyleSheet.create({
    screen: {
@@ -463,29 +407,23 @@ const styles = StyleSheet.create({
    ***REMOVED***,
 ***REMOVED***)
 
-
-/////////////
-////REDUX////
-/////////////
-
+//// REDUX
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      currentProgress: activeGroup.progress,
       database: state.database,
-      currentLanguage: activeGroup.language,
+      activeGroup: activeGroup,
       translations: state.database[activeGroup.language].translations,
       downloads: state.downloads,
       colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
-      activeGroupName: activeGroup.name
    ***REMOVED***
 ***REMOVED***;
 
 function mapDispatchToProps(dispatch) {
    return {
-      toggleComplete: (groupName, lessonID) => { dispatch(toggleComplete(groupName, lessonID)) ***REMOVED***,
+      toggleComplete: (groupName, lessonIndex) => { dispatch(toggleComplete(groupName, lessonIndex)) ***REMOVED***,
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
    ***REMOVED***
 ***REMOVED***

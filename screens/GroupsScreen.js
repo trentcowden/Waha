@@ -1,57 +1,42 @@
-//imports
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, Text, ScrollView ***REMOVED*** from 'react-native';
-
+import { View, StyleSheet, TouchableOpacity, FlatList, Text ***REMOVED*** from 'react-native';
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-
-//redux imports
 import { connect ***REMOVED*** from 'react-redux'
-import { addLanguage, changeLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import LanguageInstanceHeader from '../components/LanguageInstanceHeader';
 
 function GroupsScreen(props) {
 
-
-   //////////////////////////////////////////
-   ////STATE, CONSTRUCTOR, AND NAVIGATION////
-   //////////////////////////////////////////
+   //// STATE
 
    const [isEditing, setIsEditing] = useState(false)
 
-   //set language based on user's language vs user's location?
+   //// CONSTRUCTOR
+
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
    ***REMOVED***, [isEditing, props])
 
+   //// NAV OPTIONS
+
    function getNavOptions() {
       return {
          headerRight: props.isRTL ? 
-            () =>
-               <BackButton
-                  isRTL={props.isRTL***REMOVED***
-                  onPress={() => props.navigation.goBack()***REMOVED***
-               /> :
+            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED***/> :
             () => 
                <TouchableOpacity style={styles.editButtonContainer***REMOVED*** onPress={() => setIsEditing(old => !old)***REMOVED***>
-                  <Text style={styles.editButtonText***REMOVED***>{isEditing ? 'Done' : 'Edit'***REMOVED***</Text>
+                  <Text style={styles.editButtonText***REMOVED***>{isEditing ? props.translations.labels.done : props.translations.labels.edit***REMOVED***</Text>
                </TouchableOpacity>,
          headerLeft: props.isRTL ? 
             () =>
                <TouchableOpacity style={styles.editButtonContainer***REMOVED*** onPress={() => setIsEditing(old => !old)***REMOVED***>
-                  <Text style={styles.editButtonText***REMOVED***>{isEditing ? 'Done' : 'Edit'***REMOVED***</Text>
+                  <Text style={styles.editButtonText***REMOVED***>{isEditing ? props.translations.labels.done : props.translations.labels.edit***REMOVED***</Text>
                </TouchableOpacity> :
-            () =>
-               <BackButton
-                  isRTL={props.isRTL***REMOVED***
-                  onPress={() => props.navigation.goBack()***REMOVED***
-               />,
+            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED***/>,
       ***REMOVED***
    ***REMOVED***
 
-   ///////////////////////
-   ////OTHER FUNCTIONS////
-   ///////////////////////
+   //// FUNCTIONS
 
    function getInstalledLanguageInstances() {
       var installedLanguageInstances = []
@@ -66,11 +51,7 @@ function GroupsScreen(props) {
       return installedLanguageInstances
    ***REMOVED***
 
-
-
-   ////////////////////////////////
-   ////RENDER/STYLES/NAVOPTIONS////
-   ////////////////////////////////
+   //// RENDER
 
    function renderLanguageInstanceItem(languageInstances) {
       return (
@@ -84,8 +65,6 @@ function GroupsScreen(props) {
       )
    ***REMOVED***
 
-   //create modal in here, pass state to show it to lesson item so lesson item
-   //can change it and show the modal on this screen
    return (
       <View style={styles.screen***REMOVED***>
          <View style={styles.languageList***REMOVED***>
@@ -95,21 +74,21 @@ function GroupsScreen(props) {
                keyExtractor={item => item.languageID***REMOVED***
                ListFooterComponent={
                   <TouchableOpacity style={[styles.addNewLanguageContainer, {direction: props.isRTL ? "rtl" : "ltr"***REMOVED***]***REMOVED*** onPress={() => props.navigation.navigate('AddNewLanguage', { installedLanguageInstances: getInstalledLanguageInstances() ***REMOVED***)***REMOVED***>
-                     <Text style={[styles.addNewLanguageText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>+ New language</Text>
+                     <Text style={[styles.addNewLanguageText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>{props.translations.labels.newLanguage***REMOVED***</Text>
                   </TouchableOpacity>
                ***REMOVED***
             />
          </View>
-
       </View>
    )
 ***REMOVED***
+
+//// STYLES
 
 const styles = StyleSheet.create({
    screen: {
       flex: 1,
       backgroundColor: "#EFF2F4",
-      //justifyContent: "flex-start"
    ***REMOVED***,
    languageList: {
       flex: 1
@@ -139,28 +118,15 @@ const styles = StyleSheet.create({
    ***REMOVED***
 ***REMOVED***)
 
-
-/////////////
-////REDUX////
-/////////////
-
+//// REDUX
 
 function mapStateToProps(state) {
-   //console.log(state.groups)
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
-      downloads: state.downloads,
-      appProgress: state.appProgress,
       database: state.database,
-      colors: state.database[activeGroup.language].colors,
       isRTL: state.database[activeGroup.language].isRTL,
+      translations: state.database[activeGroup.language].translations
    ***REMOVED***
 ***REMOVED***;
 
-function mapDispatchToProps(dispatch) {
-   return {
-      addLanguage: language => dispatch(addLanguage(language)),
-   ***REMOVED***
-***REMOVED***
-
-export default connect(mapStateToProps, mapDispatchToProps)(GroupsScreen);
+export default connect(mapStateToProps)(GroupsScreen);
