@@ -19,7 +19,7 @@ function ChapterSelect(props) {
    ***REMOVED***
 
    // render chapter 2 button conditionally based off whether it's downloaded or not
-   var chapter2Button = props.lessonID in props.dowloads ?
+   var chapter2Button = props.lessonID in props.downloads ?
       <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: "#82868D" ***REMOVED******REMOVED***>
          <AnimatedCircularProgress
             size={20***REMOVED***

@@ -345,10 +345,10 @@ function PlayScreen(props) {
 
          {/* MODALS */***REMOVED***
          <WahaModal isVisible={showShareLessonModal***REMOVED***>
-            <ModalButton title="Share Chapter 1: Fellowship" onPress={() => shareLesson('fellowship')***REMOVED*** />
-            <ModalButton title="Share Chapter 2: Passage" onPress={() => shareLesson('passage')***REMOVED*** />
-            <ModalButton title="Share Chapter 3: Application" onPress={() => shareLesson('application')***REMOVED*** />
-            <ModalButton title="Close" onPress={() => setShowShareLessonModal(false)***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
+            <ModalButton title={props.translations.modals.lessonOptions.shareChapter1***REMOVED*** onPress={() => shareLesson('fellowship')***REMOVED*** />
+            <ModalButton title={props.translations.modals.lessonOptions.shareChapter2***REMOVED*** onPress={() => shareLesson('passage')***REMOVED*** />
+            <ModalButton title={props.translations.modals.lessonOptions.shareChapter3***REMOVED*** onPress={() => shareLesson('application')***REMOVED*** />
+            <ModalButton title={props.translations.modals.lessonOptions.close***REMOVED*** onPress={() => setShowShareLessonModal(false)***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
          </WahaModal>
       </View>
 
