@@ -12,7 +12,7 @@ import PlayPauseSkip from '../components/PlayPauseSkip';
 import ChapterSelect from '../components/ChapterSelect'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import BackButton from '../components/BackButton'
-import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
 
@@ -66,7 +66,7 @@ function PlayScreen(props) {
       ***REMOVED***
 
       //check if chapter 2 is downloaded, then load it
-      checkIsDownloaded(); // -> loadAudioFile()
+      checkIsDownloaded();
 
       //set up our timer tick for updating the seeker every second
       const interval = setInterval(updateSeekerTick, 1000);
@@ -117,10 +117,14 @@ function PlayScreen(props) {
          if (activeChapter === 'fellowship') {
             changeChapter('passage')
          ***REMOVED*** else if (activeChapter === 'passage') {
-            changeChapter('application')
+            FileSystem.getInfoAsync(FileSystem.documentDirectory + props.route.params.id + '.mp3')
+               .then(({ exists ***REMOVED***) => {
+                  // only switch to chapter 2 if it's downloaded
+                  if (exists && !(props.route.params.id in props.downloads))
+                     changeChapter('application')
+               ***REMOVED***)
          ***REMOVED*** else if (activeChapter === 'application') {
-            var id = props.route.params.id;
-            var isComplete = (props.activeGroup.progress.includes(id))
+            var isComplete = (props.activeGroup.progress.includes(props.route.params.id))
             if (!isComplete)
                changeCompleteStatus();
          ***REMOVED***
@@ -247,17 +251,18 @@ function PlayScreen(props) {
    function changeCompleteStatus() {
       var isComplete = (props.activeGroup.progress.includes(props.route.params.index))
       props.toggleComplete(props.activeGroup.name, props.route.params.index)
+      props.setBookmark(props.activeGroup.name)
 
       if (isComplete) {
-         Alert.alert(props.translations.alerts.markedAsComplete.header,
-            props.translations.alerts.markedAsComplete.body,
+         Alert.alert(props.translations.alerts.markedAsIncomplete.header,
+            props.translations.alerts.markedAsIncomplete.body,
             [{
                text: props.translations.alerts.ok,
                onPress: () => props.navigation.goBack()
             ***REMOVED***])
       ***REMOVED*** else {
-         Alert.alert(props.translations.alerts.markedAsIncomplete.header,
-            props.translations.alerts.markedAsIncomplete.body,
+         Alert.alert(props.translations.alerts.markedAsComplete.header,
+            props.translations.alerts.markedAsComplete.body,
             [{
                text: props.translations.alerts.ok,
                onPress: () => props.navigation.goBack()
@@ -344,11 +349,14 @@ function PlayScreen(props) {
          {audioControlContainer***REMOVED***
 
          {/* MODALS */***REMOVED***
-         <WahaModal isVisible={showShareLessonModal***REMOVED***>
+         <WahaModal 
+            isVisible={showShareLessonModal***REMOVED***
+            hideModal={() => setShowShareLessonModal(false)***REMOVED***
+            closeText={props.translations.modals.lessonOptions.close***REMOVED***
+         >
             <ModalButton title={props.translations.modals.lessonOptions.shareChapter1***REMOVED*** onPress={() => shareLesson('fellowship')***REMOVED*** />
             <ModalButton title={props.translations.modals.lessonOptions.shareChapter2***REMOVED*** onPress={() => shareLesson('passage')***REMOVED*** />
-            <ModalButton title={props.translations.modals.lessonOptions.shareChapter3***REMOVED*** onPress={() => shareLesson('application')***REMOVED*** />
-            <ModalButton title={props.translations.modals.lessonOptions.close***REMOVED*** onPress={() => setShowShareLessonModal(false)***REMOVED*** style={{ color: "red" ***REMOVED******REMOVED*** />
+            <ModalButton isLast={true***REMOVED*** title={props.translations.modals.lessonOptions.shareChapter3***REMOVED*** onPress={() => shareLesson('application')***REMOVED*** />
          </WahaModal>
       </View>
 
@@ -425,6 +433,7 @@ function mapDispatchToProps(dispatch) {
    return {
       toggleComplete: (groupName, lessonIndex) => { dispatch(toggleComplete(groupName, lessonIndex)) ***REMOVED***,
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
+      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

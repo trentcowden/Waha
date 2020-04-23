@@ -160,10 +160,13 @@ function EditGroupScreen(props) {
                <Text style={styles.saveButtonText***REMOVED***>{props.translations.labels.save***REMOVED***</Text>
             </TouchableOpacity>
          </View>
-         <WahaModal isVisible={showImagePickerModal***REMOVED***>
+         <WahaModal 
+            isVisible={showImagePickerModal***REMOVED***
+            hideModal={() => setShowImagePickerModal(false)***REMOVED***
+            closeText={props.translations.modals.cameraOptions.cancel***REMOVED***
+         >
             <ModalButton title={props.translations.modals.cameraOptions.takePhoto***REMOVED*** onPress={openCameraHandler***REMOVED*** />
-            <ModalButton title={props.translations.modals.cameraOptions.chooseFromLibrary***REMOVED*** onPress={openImageLibraryHandler***REMOVED*** />
-            <ModalButton title={props.translations.modals.cameraOptions.cancel***REMOVED*** onPress={() => setShowImagePickerModal(false)***REMOVED*** />
+            <ModalButton isLast={true***REMOVED*** title={props.translations.modals.cameraOptions.chooseFromLibrary***REMOVED*** onPress={openImageLibraryHandler***REMOVED*** />
          </WahaModal>
       </View>
    )

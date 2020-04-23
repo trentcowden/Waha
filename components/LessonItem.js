@@ -1,11 +1,11 @@
 //imports
-import React, { useState ***REMOVED*** from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert ***REMOVED*** from 'react-native';
+import React, { useState, useEffect ***REMOVED*** from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert ***REMOVED*** from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import * as Progress from 'react-native-progress';
 import { connect ***REMOVED*** from 'react-redux'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 
 function LessonItem(props) {
 
@@ -21,6 +21,11 @@ function LessonItem(props) {
          exists ? setIsDownloaded(true) : setIsDownloaded(false)
          props.setRefresh(old => !old)
       ***REMOVED***)
+
+   // refresh lesson items when a download finishes
+   useEffect(() => {
+      props.setRefresh()
+   ***REMOVED***, [props.downloadProgress])
 
    // calls the various modal functions on lessonlistscreen
    function showSaveModal() {
@@ -40,7 +45,16 @@ function LessonItem(props) {
 
    // renders cloud icon conditionally as statuses can be downloaded, undownloaded, downloading, and no internet
    var downloadStatus = props.downloadProgress ?
-      <View style={styles.downloadButtonContainer***REMOVED***><ActivityIndicator size="small" color="black" /></View> :
+      <View style={styles.downloadButtonContainer***REMOVED***>
+         <AnimatedCircularProgress
+            size={25 * scaleMultiplier***REMOVED***
+            width={6 * scaleMultiplier***REMOVED***
+            fill={props.downloadProgress * 100***REMOVED***
+            tintColor={"#828282"***REMOVED***
+            rotation={0***REMOVED***
+            backgroundColor="#FFFFFF"
+         />
+      </View> :
       <TouchableOpacity
          onPress={
             isDownloaded ? showDeleteModal :
@@ -59,50 +73,39 @@ function LessonItem(props) {
          />
       </TouchableOpacity>
 
-   // renders component for progress bar if the lesson is downloading
-   var progressBar = props.downloadProgress ?
-      <Progress.Bar progress={props.downloadProgress***REMOVED*** width={400***REMOVED*** color="black" borderColor="black" /> :
-      null
-
    return (
-      <View style={styles.lessonItem***REMOVED***>
-         <View style={[styles.mainDisplay, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED***>
-            <TouchableOpacity
-               style={[styles.progressAndTitle, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED***
-               onPress={
-                  (!props.isConnected && !isDownloaded) ?
-                     () => Alert.alert(
-                        props.translations.alerts.playUndownloadedNoInternet.header,
-                        props.translations.alerts.playUndownloadedNoInternet.body,
-                        [{ text: props.translations.alerts.options.ok, onPress: () => { ***REMOVED*** ***REMOVED***]) :
-                     props.onLessonSelect
-               ***REMOVED***
-               onLongPress={showLessonOptionsModal***REMOVED***
+      <View style={[styles.lessonItem, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED***>
+         <TouchableOpacity
+            style={[styles.progressAndTitle, { flexDirection: props.isRTL ? "row-reverse" : "row" ***REMOVED***]***REMOVED***
+            onPress={
+               (!props.isConnected && !isDownloaded) ?
+                  () => Alert.alert(
+                     props.translations.alerts.playUndownloadedNoInternet.header,
+                     props.translations.alerts.playUndownloadedNoInternet.body,
+                     [{ text: props.translations.alerts.options.ok, onPress: () => { ***REMOVED*** ***REMOVED***]) :
+                  props.onLessonSelect
+            ***REMOVED***
+            onLongPress={showLessonOptionsModal***REMOVED***
+         >
+            <View
+               style={styles.completeStatusContainer***REMOVED***
+               onPress={() => {
+                 
+               ***REMOVED******REMOVED***
             >
-               <TouchableOpacity
-                  style={styles.completeStatusContainer***REMOVED***
-                  onPress={() => {
-                     props.toggleComplete(props.activeGroup.name, props.lesson.index)
-                     props.setBookmark(props.activeGroup.name)
-                  ***REMOVED******REMOVED***
-               >
-                  <Icon
-                     name={props.isComplete ? "check-unfilled" : props.activeGroup.bookmark === props.lesson.index ? props.isRTL ? 'triangle-left' : "triangle-right" : null***REMOVED***
-                     size={30 * scaleMultiplier***REMOVED***
-                     color={props.isComplete ? "#828282" : props.colors.primaryColor***REMOVED***
-                  />
-               </TouchableOpacity>
-               <View style={styles.titleContainer***REMOVED***>
-                  <Text style={{ ...styles.title, ...{ color: props.isComplete ? "#9FA5AD" : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.lesson.title***REMOVED***</Text>
-                  <Text style={{ ...styles.subtitle, ...{ color: props.isComplete ? "#9FA5AD" : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.lesson.subtitle***REMOVED***</Text>
-               </View>
+               <Icon
+                  name={props.isComplete ? "check-unfilled" : props.activeGroup.bookmark === props.lesson.index ? props.isRTL ? 'triangle-left' : "triangle-right" : null***REMOVED***
+                  size={30 * scaleMultiplier***REMOVED***
+                  color={props.isComplete ? "#828282" : props.colors.primaryColor***REMOVED***
+               />
+            </View>
+            <View style={styles.titleContainer***REMOVED***>
+               <Text style={{ ...styles.title, ...{ color: props.isComplete ? "#9FA5AD" : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.lesson.title***REMOVED***</Text>
+               <Text style={{ ...styles.subtitle, ...{ color: props.isComplete ? "#9FA5AD" : "black", textAlign: props.isRTL ? 'right' : 'left' ***REMOVED*** ***REMOVED******REMOVED***>{props.lesson.subtitle***REMOVED***</Text>
+            </View>
 
-            </TouchableOpacity>
-            {downloadStatus***REMOVED***
-         </View>
-         <View style={styles.progressBar***REMOVED***>
-            {progressBar***REMOVED***
-         </View>
+         </TouchableOpacity>
+         {downloadStatus***REMOVED***
       </View>
    )
 ***REMOVED***
@@ -113,11 +116,9 @@ const styles = StyleSheet.create({
    lessonItem: {
       height: 72 * scaleMultiplier,
       justifyContent: "center",
-      flexDirection: "column",
-      alignContent: "center",
-   ***REMOVED***,
-   mainDisplay: {
       flexDirection: "row",
+      alignContent: "center",
+      backgroundColor: "#F7F9FA"
    ***REMOVED***,
    progressAndTitle: {
       justifyContent: "flex-start",
@@ -148,9 +149,6 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       marginHorizontal: 15
    ***REMOVED***,
-   progressBar: {
-      width: "100%"
-   ***REMOVED***
 ***REMOVED***)
 
 //// REDUX

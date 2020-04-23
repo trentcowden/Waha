@@ -1,23 +1,44 @@
 import React from 'react';
-import { View, Modal ***REMOVED*** from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
+import Modal from 'react-native-modal'
+import { scaleMultiplier ***REMOVED*** from '../constants';
 
 function WahaModal(props) {
 
    //// RENDER
-    return (
-        <Modal
-            visible={props.isVisible***REMOVED***
-            animationType="slide"
-            presentationStyle="overFullScreen"
-            transparent={true***REMOVED***
-        >
-            <View style={{flex: 1, flexDirection: "column", justifyContent: "flex-end"***REMOVED******REMOVED***>
-                <View style={{backgroundColor: "white", paddingBottom: 20, paddingTop: 5***REMOVED******REMOVED***>
-                    {props.children***REMOVED***
-                </View>
+   return (
+      <Modal
+         isVisible={props.isVisible***REMOVED***
+         hasBackdrop={true***REMOVED***
+         onBackdropPress={props.hideModal***REMOVED***
+         backdropOpacity={0.3***REMOVED***
+         style={{ justifyContent: "flex-end" ***REMOVED******REMOVED***
+      >
+         <View>
+            <View style={styles.buttonsContainer***REMOVED***>
+            {props.children***REMOVED***
             </View>
-        </Modal>
-    )
+            <TouchableOpacity onPress={props.hideModal***REMOVED*** style={styles.closeButtonContainer***REMOVED***>
+               <Text style={{textAlign: 'center', fontFamily: 'medium', fontSize: 21 * scaleMultiplier, color: "#FF0800"***REMOVED******REMOVED***>{props.closeText***REMOVED***</Text>
+            </TouchableOpacity>
+         </View>
+      </Modal>
+   )
 ***REMOVED***
+
+const styles = StyleSheet.create({
+   buttonsContainer: {
+      backgroundColor: "#FFFFFF",
+      borderRadius: 10
+   ***REMOVED***,
+   closeButtonContainer: {
+      width: "100%",
+      height: 70 * scaleMultiplier,
+      justifyContent: "center",
+      backgroundColor: "#FFFFFF",
+      borderRadius: 10,
+      marginVertical: 5
+   ***REMOVED***,
+***REMOVED***)
 
 export default WahaModal
