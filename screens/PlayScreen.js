@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
-import { View, StyleSheet, Text, Alert, ActivityIndicator, ScrollView, Dimensions ***REMOVED*** from 'react-native';
+import { View, StyleSheet, Text, Alert, ActivityIndicator, FlatList, Dimensions, ScrollView ***REMOVED*** from 'react-native';
 import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier, setImages ***REMOVED*** from '../constants'
 import { Audio ***REMOVED*** from 'expo-av';
 import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
@@ -15,7 +15,6 @@ import BackButton from '../components/BackButton'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
-
 console.disableYellowBox = true;
 
 function PlayScreen(props) {
@@ -51,6 +50,27 @@ function PlayScreen(props) {
 
    //share modal
    const [showShareLessonModal, setShowShareLessonModal] = useState(false);
+
+   // data for album art flatlist
+   const albumArtData = [
+      {
+         key: '0',
+         type: 'text',
+         header: props.translations.questionsHeader,
+         body: props.translations.questionsBody
+      ***REMOVED***,
+      {
+         key: '1',
+         type: 'image',
+         iconName: setImages[props.activeDatabase.sets.filter(set => set.id === props.route.params.setid)[0].index]
+      ***REMOVED***,
+      {
+         key: '2',
+         type: 'text',
+         header: props.route.params.scriptureHeader,
+         body: props.route.params.scriptureText
+      ***REMOVED***,
+   ]
 
    //// CONSTRUCTOR
 
@@ -287,6 +307,34 @@ function PlayScreen(props) {
 
    //// RENDER
 
+   function renderAlbumArtItem({ item ***REMOVED***) {
+      if (item.type === 'text') {
+         var scrollBarLeft = item.key === '0' ? null : <View style={styles.scrollBar***REMOVED*** />
+         var scrollBarRight = item.key === '0' ? <View style={styles.scrollBar***REMOVED*** /> : null
+         return (
+            <View style={[styles.albumArtContainer, { marginLeft: item.key === '0' ? 30 : 10, marginRight: item.key === '2' ? 30 : 10 ***REMOVED***]***REMOVED***>
+               {scrollBarLeft***REMOVED***
+               <ScrollView style={[styles.textContainer, { marginLeft: item.key === '2' ? 5 : 0, marginRight: item.key === '0' ? 5 : 0 ***REMOVED***]***REMOVED***>
+                  <Text style={styles.albumTextHeader***REMOVED***>{item.header***REMOVED***</Text>
+                  <Text style={styles.albumTextBody***REMOVED***>{item.body***REMOVED***</Text>
+               </ScrollView>
+               {scrollBarRight***REMOVED***
+            </View>
+         )
+      ***REMOVED***
+      else {
+         return (
+            <View style={[styles.albumArtContainer, { justifyContent: 'center', alignItems: 'center' ***REMOVED***]***REMOVED***>
+               <MaterialCommunityIcons
+                  name={item.iconName***REMOVED***
+                  size={300 * scaleMultiplier***REMOVED***
+                  color={props.activeDatabase.sets.filter(set => set.id === props.route.params.setid)[0].color***REMOVED***
+               />
+            </View>
+         )
+      ***REMOVED***
+   ***REMOVED***
+
    // renders the play/pause/skip container conditionally because we don't want to show controls when the audio is loading
    // if we're loading, render a loading circle; otherwise load the audio controls
    var audioControlContainer = isLoaded ?
@@ -320,36 +368,53 @@ function PlayScreen(props) {
                <Text style={styles.title***REMOVED***>{props.route.params.title***REMOVED***</Text>
             </View>
             <View style={styles.albumArtListContainer***REMOVED***>
-               <ScrollView
+               <FlatList
+                  data={albumArtData***REMOVED***
+                  renderItem={renderAlbumArtItem***REMOVED***
                   horizontal={true***REMOVED***
                   pagingEnabled={true***REMOVED***
                   snapToAlignment={"start"***REMOVED***
                   snapToInterval={Dimensions.get('window').width - 70***REMOVED***
                   decelerationRate={"fast"***REMOVED***
+                  showsHorizontalScrollIndicator={false***REMOVED***
+                  getItemLayout={(data, index) => (
+                     { length: Dimensions.get('window').width - 70, offset: Dimensions.get('window').width - 70 * index, index ***REMOVED***
+                  )***REMOVED***
                   initialScrollIndex={1***REMOVED***
-                  contentOffset={{ x: Dimensions.get('window').width - 70, y: 0 ***REMOVED******REMOVED***
+               />
+               {/* <ScrollView
+                  // contentContainerStyle={{paddingRight: Dimensions.get('window').width - 70***REMOVED******REMOVED***
+                  horizontal={true***REMOVED***
+                  pagingEnabled={true***REMOVED***
+                  snapToAlignment={"start"***REMOVED***
+                  snapToInterval={Dimensions.get('window').width - 70***REMOVED***
+                  decelerationRate={"fast"***REMOVED***
+                  //contentOffset={{ x: Dimensions.get('window').width - 70, y: 0 ***REMOVED******REMOVED***
+                  showsHorizontalScrollIndicator={false***REMOVED***
                >
                   <View style={{ ...styles.albumArtContainer, ...{ marginLeft: 30 ***REMOVED*** ***REMOVED******REMOVED***>
                      <ScrollView>
-                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular', textAlign: "center" ***REMOVED******REMOVED***>{props.route.params.scriptureHeader***REMOVED***</Text>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'bold', textAlign: "center", margin: 5***REMOVED******REMOVED***>{props.route.params.scriptureHeader***REMOVED***</Text>
                         <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>{props.route.params.scriptureText***REMOVED***</Text>
                      </ScrollView>
+                     <View style={styles.scrollBar***REMOVED*** />
                   </View>
                   <View style={{ ...styles.albumArtContainer, ...{ justifyContent: "center", alignItems: "center" ***REMOVED*** ***REMOVED******REMOVED***>
                      <MaterialCommunityIcons name={props.route.params.iconName***REMOVED*** size={200***REMOVED*** />
                   </View>
                   <View style={{ ...styles.albumArtContainer, ...{ marginRight: 30 ***REMOVED*** ***REMOVED******REMOVED***>
+                     <View style={styles.scrollBar***REMOVED*** />
                      <ScrollView>
-                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>questions</Text>
+                        <Text style={{ flexWrap: "wrap", fontFamily: 'bold', textAlign: "center", margin: 5 ***REMOVED******REMOVED***>Questions</Text>
                      </ScrollView>
                   </View>
-               </ScrollView>
+               </ScrollView> */***REMOVED***
             </View>
          </View>
          {audioControlContainer***REMOVED***
 
          {/* MODALS */***REMOVED***
-         <WahaModal 
+         <WahaModal
             isVisible={showShareLessonModal***REMOVED***
             hideModal={() => setShowShareLessonModal(false)***REMOVED***
             closeText={props.translations.modals.lessonOptions.close***REMOVED***
@@ -404,7 +469,29 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       marginHorizontal: 10,
       paddingHorizontal: 10,
-      backgroundColor: "#DEE3E9"
+      backgroundColor: "#DEE3E9",
+      flexDirection: "row"
+   ***REMOVED***,
+   textContainer: {
+      flexDirection: "column",
+      flex: 1,
+   ***REMOVED***,
+   albumTextHeader: {
+      flexWrap: "wrap",
+      fontFamily: 'bold',
+      textAlign: "center",
+      margin: 5
+   ***REMOVED***,
+   albumTextBody: {
+      flexWrap: "wrap",
+      fontFamily: 'regular'
+   ***REMOVED***,
+   scrollBar: {
+      width: 4,
+      height: 150 * scaleMultiplier,
+      backgroundColor: "#9FA5AD",
+      borderRadius: 10,
+      alignSelf: "center",
    ***REMOVED***,
    audioControlContainer: {
       justifyContent: "space-evenly",
@@ -422,6 +509,7 @@ function mapStateToProps(state) {
    return {
       database: state.database,
       activeGroup: activeGroup,
+      activeDatabase: state.database[activeGroup.language],
       translations: state.database[activeGroup.language].translations,
       downloads: state.downloads,
       colors: state.database[activeGroup.language].colors,
