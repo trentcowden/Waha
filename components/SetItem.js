@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-nati
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier, setImages ***REMOVED*** from '../constants'
 import Icon from '../assets/fonts/icons'
 
 function SetItem(props) {
@@ -72,7 +72,7 @@ function SetItem(props) {
             >
                {(fill) => (
                   <View style={{ backgroundColor: props.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
-                     <MaterialCommunityIcons name={props.iconName***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
+                     <MaterialCommunityIcons name={setImages[props.index]***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
                   </View>)***REMOVED***
             </AnimatedCircularProgress>
             {percentageText***REMOVED***

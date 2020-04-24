@@ -45,6 +45,7 @@ function SetScreen(props) {
       return (
          <SetItem
             id={setList.item.id***REMOVED***
+            index={setList.item.index***REMOVED***
             title={setList.item.title***REMOVED***
             subtitle={setList.item.subtitle***REMOVED***
             color={setList.item.color***REMOVED***
