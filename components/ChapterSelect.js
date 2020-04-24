@@ -20,14 +20,15 @@ function ChapterSelect(props) {
 
    // render chapter 2 button conditionally based off whether it's downloaded or not
    var chapter2Button = props.lessonID in props.downloads ?
-      <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: "#82868D" ***REMOVED******REMOVED***>
+      <View style={{ ...styles.chapterSelect, flexDirection: "row", borderColor: "#82868D", backgroundColor: "#EFF2F4" ***REMOVED******REMOVED***>
          <AnimatedCircularProgress
             size={20***REMOVED***
             width={4***REMOVED***
             fill={(props.downloads[props.lessonID] * 100)***REMOVED***
-            tintColor="#82868D"
+            tintColor={props.colors.primaryColor***REMOVED***
             rotation={0***REMOVED***
-            backgroundColor="white"
+            backgroundColor="#FFFFFF"
+            style={{margin: 5***REMOVED******REMOVED***
          />
          <Text style={{ ...styles.chapterSelectText, ...{ color: "#82868D" ***REMOVED*** ***REMOVED******REMOVED***>Passage</Text>
       </View> :
