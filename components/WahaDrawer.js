@@ -63,6 +63,7 @@ function WahaDrawer(props) {
                   onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***
                   label={props.translations.navigation.drawer.credits***REMOVED***
                />
+               <Text style={styles.versionText***REMOVED***>v0.2.1</Text>
             </View>
          </View>
       </SafeAreaView >
@@ -100,6 +101,14 @@ const styles = StyleSheet.create({
       flex: 1,
       marginBottom: 20
    ***REMOVED***,
+   versionText: {
+      fontFamily: 'regular', 
+      fontSize: 10, 
+      marginHorizontal: 13, 
+      color: "#9FA5AD", 
+      justifyContent: "center", 
+      alignItems: "center"
+   ***REMOVED***
 ***REMOVED***);
 
 //// REDUX
