@@ -6,6 +6,8 @@ import { connect ***REMOVED*** from 'react-redux'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
+import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+
 
 function LessonItem(props) {
 
@@ -15,16 +17,18 @@ function LessonItem(props) {
 
    //// FUNCTIONS
 
-   // checks if the lesson is downloaded and set isDownloaded accordingly
-   FileSystem.getInfoAsync(FileSystem.documentDirectory + props.lesson.id + '.mp3')
-      .then(({ exists ***REMOVED***) => {
-         exists ? setIsDownloaded(true) : setIsDownloaded(false)
-         props.setRefresh(old => !old)
-      ***REMOVED***)
+
 
    // refresh lesson items when a download finishes
    useEffect(() => {
-      props.setRefresh()
+      if (props.downloadProgress == 1)
+         props.removeDownload(props.lesson.id)
+      // checks if the lesson is downloaded and set isDownloaded accordingly
+      FileSystem.getInfoAsync(FileSystem.documentDirectory + props.lesson.id + '.mp3')
+         .then(({ exists ***REMOVED***) => {
+            exists ? setIsDownloaded(true) : setIsDownloaded(false)
+            props.setRefresh(old => !old)
+         ***REMOVED***)
    ***REMOVED***, [props.downloadProgress])
 
    // calls the various modal functions on lessonlistscreen
@@ -90,7 +94,7 @@ function LessonItem(props) {
             <View
                style={styles.completeStatusContainer***REMOVED***
                onPress={() => {
-                 
+
                ***REMOVED******REMOVED***
             >
                <Icon
@@ -167,7 +171,8 @@ function mapDispatchToProps(dispatch) {
    return {
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
       toggleComplete: (groupName, lessonIndex) => { dispatch(toggleComplete(groupName, lessonIndex)) ***REMOVED***,
-      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***
+      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***,
+      removeDownload: lessonID => { dispatch(removeDownload(lessonID)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

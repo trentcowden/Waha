@@ -14,7 +14,7 @@ import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import BackButton from '../components/BackButton'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
-import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
+import { downloadLesson, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 console.disableYellowBox = true;
 
 function PlayScreen(props) {
@@ -160,6 +160,11 @@ function PlayScreen(props) {
             ***REMOVED***
          ***REMOVED***)
    ***REMOVED***
+
+   useEffect(() => {
+      if (props.downloads[props.route.params.id] == 1)
+         props.removeDownload(props.route.params.id)
+   ***REMOVED***, [props.downloads[props.route.params.id]])
 
    // loads an audio file, sets the length, and starts playing it 
    async function loadAudioFile(source) {
@@ -382,33 +387,6 @@ function PlayScreen(props) {
                   )***REMOVED***
                   initialScrollIndex={1***REMOVED***
                />
-               {/* <ScrollView
-                  // contentContainerStyle={{paddingRight: Dimensions.get('window').width - 70***REMOVED******REMOVED***
-                  horizontal={true***REMOVED***
-                  pagingEnabled={true***REMOVED***
-                  snapToAlignment={"start"***REMOVED***
-                  snapToInterval={Dimensions.get('window').width - 70***REMOVED***
-                  decelerationRate={"fast"***REMOVED***
-                  //contentOffset={{ x: Dimensions.get('window').width - 70, y: 0 ***REMOVED******REMOVED***
-                  showsHorizontalScrollIndicator={false***REMOVED***
-               >
-                  <View style={{ ...styles.albumArtContainer, ...{ marginLeft: 30 ***REMOVED*** ***REMOVED******REMOVED***>
-                     <ScrollView>
-                        <Text style={{ flexWrap: "wrap", fontFamily: 'bold', textAlign: "center", margin: 5***REMOVED******REMOVED***>{props.route.params.scriptureHeader***REMOVED***</Text>
-                        <Text style={{ flexWrap: "wrap", fontFamily: 'regular' ***REMOVED******REMOVED***>{props.route.params.scriptureText***REMOVED***</Text>
-                     </ScrollView>
-                     <View style={styles.scrollBar***REMOVED*** />
-                  </View>
-                  <View style={{ ...styles.albumArtContainer, ...{ justifyContent: "center", alignItems: "center" ***REMOVED*** ***REMOVED******REMOVED***>
-                     <MaterialCommunityIcons name={props.route.params.iconName***REMOVED*** size={200***REMOVED*** />
-                  </View>
-                  <View style={{ ...styles.albumArtContainer, ...{ marginRight: 30 ***REMOVED*** ***REMOVED******REMOVED***>
-                     <View style={styles.scrollBar***REMOVED*** />
-                     <ScrollView>
-                        <Text style={{ flexWrap: "wrap", fontFamily: 'bold', textAlign: "center", margin: 5 ***REMOVED******REMOVED***>Questions</Text>
-                     </ScrollView>
-                  </View>
-               </ScrollView> */***REMOVED***
             </View>
          </View>
          {audioControlContainer***REMOVED***
@@ -521,7 +499,8 @@ function mapDispatchToProps(dispatch) {
    return {
       toggleComplete: (groupName, lessonIndex) => { dispatch(toggleComplete(groupName, lessonIndex)) ***REMOVED***,
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***
+      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***,
+      removeDownload: lessonID => {dispatch(removeDownload(lessonID))***REMOVED***
    ***REMOVED***
 ***REMOVED***
 

@@ -110,7 +110,7 @@ function StorageScreen(props) {
 
    function renderLanguageInstance(languageInstanceList) {
       return (
-         <TouchableOpacity style={styles.storageContainerFlatList***REMOVED*** onPress={
+         <TouchableOpacity style={[styles.storageContainerFlatList, {flexDirection: props.isRTL ? "row-reverse" : "row"***REMOVED***]***REMOVED*** onPress={
             () => Alert.alert(
                props.translations.alerts.deleteDownloadedLessonsPerLanguage.header,
                props.translations.alerts.deleteDownloadedLessonsPerLanguage.body,
@@ -124,8 +124,10 @@ function StorageScreen(props) {
             )
          ***REMOVED***>
             <Text style={styles.mbText***REMOVED***>{languageInstanceList.item.languageName***REMOVED***</Text>
-            <Image style={styles.languageLogo***REMOVED*** source={headerImages[languageInstanceList.item.languageID]***REMOVED*** />
-            <Text style={styles.mbText***REMOVED***>{storageObject[languageInstanceList.item.languageID]***REMOVED***{props.translations.labels.mb***REMOVED***</Text>
+            <View style={{ flex: 1, flexDirection: "row", justifyContent: props.isRTL ? "flex-start" : "flex-end" ***REMOVED******REMOVED***>
+               <Image style={styles.languageLogo***REMOVED*** source={{ uri: FileSystem.documentDirectory + languageInstanceList.item.languageID + 'header.png' ***REMOVED******REMOVED*** />
+               <Text style={styles.mbText***REMOVED***>{storageObject[languageInstanceList.item.languageID]***REMOVED***{props.translations.labels.mb***REMOVED***</Text>
+            </View>
          </TouchableOpacity>
       )
    ***REMOVED***
@@ -141,19 +143,19 @@ function StorageScreen(props) {
                ListHeaderComponent={
                   <View style={styles.storageHeader***REMOVED***>
                      <View style={styles.headerItems***REMOVED***>
-                        <View style={styles.headerItemContainer***REMOVED***>
+                        <View style={[styles.headerItemContainer, {flexDirection: props.isRTL ? "row-reverse" : "row"***REMOVED***]***REMOVED***>
                            <Text style={styles.storageUsedText***REMOVED***>{props.translations.labels.storageUsed***REMOVED***</Text>
                            <Text style={styles.mbText***REMOVED***>{totalStorage***REMOVED*** {props.translations.labels.mb***REMOVED***</Text>
                         </View>
                         <TouchableOpacity
-                           style={[styles.headerItemContainer, { borderTopWidth: 0 ***REMOVED***]***REMOVED***
+                           style={[styles.headerItemContainer, { flexDirection: props.isRTL ? "row-reverse" : "row", borderTopWidth: 0 ***REMOVED***]***REMOVED***
                            onPress={
                               () => Alert.alert(
                                  props.translations.alerts.deleteAllDownloadedLessons.header,
                                  props.translations.alerts.deleteAllDownloadedLessons.body,
                                  [{
                                     text: props.translations.alerts.options.cancel,
-                                    onPress: () => {***REMOVED***
+                                    onPress: () => { ***REMOVED***
                                  ***REMOVED***, {
                                     text: props.translations.alerts.options.ok,
                                     onPress: () => deleteDownloadedLessons()
@@ -163,7 +165,7 @@ function StorageScreen(props) {
                            <Text style={styles.deleteText***REMOVED***>{props.translations.labels.deleteAllDownloadedLessons***REMOVED***</Text>
                         </TouchableOpacity>
                      </View>
-                     <Text style={styles.downloadedLessonsText***REMOVED***>{props.translations.labels.downloadedLessons***REMOVED***</Text>
+                     <Text style={[styles.downloadedLessonsText, {textAlign: props.isRTL ? "right" : "left"***REMOVED***]***REMOVED***>{props.translations.labels.downloadedLessons***REMOVED***</Text>
                      <View style={{ height: 2, flex: 1, backgroundColor: "#9FA5AD" ***REMOVED******REMOVED*** />
                   </View>
                ***REMOVED***
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: 5,
+      paddingHorizontal: 10,
    ***REMOVED***,
    downloadedLessonsText: {
       color: '#9FA5AD',
@@ -210,7 +212,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: 5,
+      paddingHorizontal: 10,
    ***REMOVED***,
    storageUsedText: {
       fontFamily: 'medium',
@@ -220,7 +222,8 @@ const styles = StyleSheet.create({
    mbText: {
       fontFamily: 'regular',
       fontSize: 18,
-      color: '#82868D'
+      color: '#82868D',
+      alignSelf: "center"
    ***REMOVED***,
    deleteText: {
       fontFamily: 'regular',
@@ -231,7 +234,7 @@ const styles = StyleSheet.create({
       resizeMode: "stretch",
       width: 96 * scaleMultiplier,
       height: 32 * scaleMultiplier,
-      marginRight: 10
+      marginRight: 20,
    ***REMOVED***
 ***REMOVED***)
 

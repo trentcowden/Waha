@@ -4,7 +4,6 @@ import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { connect ***REMOVED*** from 'react-redux'
 import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import * as FileSystem from 'expo-file-system';
 
 function AddNewLanguageScreen(props) {
 
@@ -52,13 +51,13 @@ function AddNewLanguageScreen(props) {
    function renderLanguageInstanceItem(languageInstanceList) {
       return (
          <TouchableOpacity
-            style={[styles.languageInstanceItem, { direction: props.isRTL ? 'rtl' : 'ltr' ***REMOVED***]***REMOVED***
+            style={[styles.languageInstanceItem, { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***]***REMOVED***
             onPress={() => Alert.alert(
                props.translations.alerts.addNewLanguage.header,
                props.translations.alerts.addNewLanguage.body,
                [{
                   text: props.translations.alerts.options.cancel,
-                  onPress: () => {***REMOVED***
+                  onPress: () => { ***REMOVED***
                ***REMOVED***, {
                   text: props.translations.alerts.options.ok,
                   onPress: () => props.addLanguage(languageInstanceList.item.id)
@@ -66,17 +65,21 @@ function AddNewLanguageScreen(props) {
             )***REMOVED***
          >
             <Text style={styles.languageInstanceText***REMOVED***>{languageInstanceList.item.displayName***REMOVED***</Text>
-            <Image style={styles.languageLogo***REMOVED*** source={{ uri: FileSystem.documentDirectory + languageInstanceList.item.id + 'header.png'***REMOVED******REMOVED*** />
+            {/* <Image style={styles.languageLogo***REMOVED*** source={{ uri: FileSystem.documentDirectory + languageInstanceList.item.id + 'header.png' ***REMOVED******REMOVED*** /> */***REMOVED***
          </TouchableOpacity>
       )
    ***REMOVED***
 
+   var languageListComponent = (languageInstanceList.filter(item => !installedLanguageInstances.includes(item.id)).length != 0) ?
+      <FlatList
+         data={languageInstanceList.filter(item => !installedLanguageInstances.includes(item.id))***REMOVED***
+         renderItem={renderLanguageInstanceItem***REMOVED***
+      /> :
+      <Text style={styles.noMoreLanguagesText***REMOVED***>{props.translations.labels.noMoreLanguages***REMOVED***</Text>
+      
    return (
       <View style={styles.screen***REMOVED***>
-         <FlatList
-            data={languageInstanceList.filter(item => !installedLanguageInstances.includes(item.id))***REMOVED***
-            renderItem={renderLanguageInstanceItem***REMOVED***
-         />
+         {languageListComponent***REMOVED***
       </View>
    )
 ***REMOVED***
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    languageInstanceText: {
       color: '#82868D',
-      paddingLeft: 10,
+      paddingHorizontal: 10,
       fontSize: 18,
       fontFamily: 'regular'
    ***REMOVED***,
@@ -107,7 +110,15 @@ const styles = StyleSheet.create({
       resizeMode: "stretch",
       width: 96 * scaleMultiplier,
       height: 32 * scaleMultiplier,
-      marginRight: 10
+      marginHorizontal: 10
+   ***REMOVED***,
+   noMoreLanguagesText: {
+      color: '#82868D',
+      paddingLeft: 10,
+      fontSize: 18,
+      fontFamily: 'regular',
+      textAlign: 'center',
+      marginTop: 20
    ***REMOVED***
 ***REMOVED***)
 
