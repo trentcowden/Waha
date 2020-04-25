@@ -1,6 +1,6 @@
 import { STORE_DATA, FETCH_ERROR, SET_IS_FETCHING, SET_FIRST_OPEN, SET_IS_READY_TO_START, DELETE_LANGUAGE ***REMOVED*** from '../actions/databaseActions'
 
-export function database(state = { isFetching: true, isFirstOpen: true, readyToStart: false ***REMOVED***, action) {
+export function database(state = { isFetching: true, isFirstOpen: true, readyToStart: false, scripts: {***REMOVED*** ***REMOVED***, action) {
    switch (action.type) {
       case STORE_DATA:
          return { ...state, [action.language]: action.data ***REMOVED***
