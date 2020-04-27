@@ -153,18 +153,10 @@ function PlayScreen(props) {
 
    // checks if the lesson is downloaded or not
    async function checkIsDownloaded() {
-      FileSystem.getInfoAsync(FileSystem.documentDirectory + props.route.params.id + '.mp3')
-         .then(({ exists ***REMOVED***) => {
-            if (!exists && !(props.route.params.id in props.downloads)) {
-               props.downloadLesson(props.route.params.id, props.route.params.source);
-            ***REMOVED***
-         ***REMOVED***)
+      if(!props.downloads[props.route.params.id]) {
+         props.downloadLesson(props.route.params.id, props.route.params.source);
+      ***REMOVED***
    ***REMOVED***
-
-   useEffect(() => {
-      if (props.downloads[props.route.params.id] == 1)
-         props.removeDownload(props.route.params.id)
-   ***REMOVED***, [props.downloads[props.route.params.id]])
 
    // loads an audio file, sets the length, and starts playing it 
    async function loadAudioFile(source) {

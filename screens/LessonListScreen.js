@@ -9,11 +9,13 @@ import ModalButton from '../components/ModalButton'
 import NetInfo from '@react-native-community/netinfo';
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import BackButton from '../components/BackButton'
-import { downloadLesson ***REMOVED*** from '../redux/actions/downloadActions'
+import { downloadLesson, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
+
+   FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => { console.log(contents) ***REMOVED***)
 
    //// STATE
 
@@ -31,7 +33,7 @@ function LessonListScreen(props) {
    const [showSaveLessonModal, setShowSaveLessonModal] = useState(false);
    const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false);
    const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false);
-   
+
 
 
    //// CONSTRUCTOR
@@ -72,8 +74,8 @@ function LessonListScreen(props) {
    // deletes a lesson's chapter 2 mp3 via modal press
    function deleteLessonFromModal() {
       FileSystem.deleteAsync(FileSystem.documentDirectory + activeLessonInModal.id + '.mp3')
+      props.removeDownload(activeLessonInModal.id)
       hideModals();
-      setRefresh(old => !old)
    ***REMOVED***
 
    // changes the complete status of a lesson via modal press
@@ -150,12 +152,11 @@ function LessonListScreen(props) {
             ***REMOVED***)***REMOVED***
             isComplete={props.activeGroup.progress.includes(lessonList.item.index)***REMOVED***
             isConnected={isConnected***REMOVED***
-            downloadProgress={props.downloads[lessonList.item.id]***REMOVED***
             setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
             setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
             setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
             setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
-            setRefresh={() => setRefresh()***REMOVED***
+            setRefresh={() => setRefresh(old => !old)***REMOVED***
          />
       )
    ***REMOVED***
@@ -174,26 +175,27 @@ function LessonListScreen(props) {
          </View>
          <FlatList
             data={props.activeDatabase.lessons.filter(lesson => props.route.params.setID === lesson.setid)***REMOVED***
+            extraData={props.downloads***REMOVED***
             renderItem={renderLessonItem***REMOVED***
             keyExtractor={item => item.id***REMOVED***
          />
          {/* MODALS */***REMOVED***
-         <WahaModal 
-            isVisible={showSaveLessonModal***REMOVED*** 
+         <WahaModal
+            isVisible={showSaveLessonModal***REMOVED***
             hideModal={hideModals***REMOVED***
             closeText={props.activeDatabase.translations.modals.downloadLessonOptions.cancel***REMOVED***
-         > 
-            <ModalButton isLast={true***REMOVED***title={props.activeDatabase.translations.modals.downloadLessonOptions.downloadLesson***REMOVED*** onPress={downloadLessonFromModal***REMOVED*** />
+         >
+            <ModalButton isLast={true***REMOVED*** title={props.activeDatabase.translations.modals.downloadLessonOptions.downloadLesson***REMOVED*** onPress={downloadLessonFromModal***REMOVED*** />
          </WahaModal>
-         <WahaModal 
-            isVisible={showDeleteLessonModal***REMOVED*** 
+         <WahaModal
+            isVisible={showDeleteLessonModal***REMOVED***
             hideModal={hideModals***REMOVED***
             closeText={props.activeDatabase.translations.modals.deleteLessonOptions.cancel***REMOVED***
          >
             <ModalButton isLast={true***REMOVED*** title={props.activeDatabase.translations.modals.deleteLessonOptions.deleteLesson***REMOVED*** onPress={deleteLessonFromModal***REMOVED*** />
          </WahaModal>
-         <WahaModal 
-            isVisible={showLessonOptionsModal***REMOVED*** 
+         <WahaModal
+            isVisible={showLessonOptionsModal***REMOVED***
             hideModal={hideModals***REMOVED***
             closeText={props.activeDatabase.translations.modals.lessonOptions.close***REMOVED***
          >
@@ -237,6 +239,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
+   console.log(state.downloads)
    return {
       downloads: state.downloads,
       activeDatabase: state.database[activeGroup.language],
@@ -250,6 +253,7 @@ function mapDispatchToProps(dispatch) {
       downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
       toggleComplete: (groupName, lessonIndex) => { dispatch(toggleComplete(groupName, lessonIndex)) ***REMOVED***,
       setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***,
+      removeDownload: lessonID => { dispatch(removeDownload(lessonID)) ***REMOVED***
    ***REMOVED***
 ***REMOVED***
 
