@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontSize: 24 * scaleMultiplier,
       flexWrap: "wrap",
-      fontFamily: "bold"
+      fontFamily: "medium"
    ***REMOVED***,
    bodyContainer: {
       width: "100%",

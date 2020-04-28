@@ -121,7 +121,7 @@ function StackNavigator(props) {
                   ***REMOVED***,
                   headerTitleStyle: {
                      color: "#000000",
-                     fontFamily: 'bold'
+                     fontFamily: 'medium'
                   ***REMOVED***,
                ***REMOVED******REMOVED***
             />
@@ -135,7 +135,7 @@ function StackNavigator(props) {
                   ***REMOVED***,
                   headerTitleStyle: {
                      color: "#000000",
-                     fontFamily: 'bold'
+                     fontFamily: 'medium'
                   ***REMOVED***,
                ***REMOVED******REMOVED***
             />

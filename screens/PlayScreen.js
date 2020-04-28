@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    albumTextHeader: {
       flexWrap: "wrap",
-      fontFamily: 'bold',
+      fontFamily: 'medium',
       textAlign: "center",
       margin: 5
    ***REMOVED***,

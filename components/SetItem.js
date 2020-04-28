@@ -22,12 +22,18 @@ function SetItem(props) {
    //// CONSTRUCTOR
 
    useEffect(() => {
-      for (const set of props.database.sets) {
+      for (const set of props.activeDatabase.sets) {
          if (set.id === props.id) {
             setNumLessons(set.length)
          ***REMOVED***
       ***REMOVED***
-   ***REMOVED***, [props.progress])
+      setNumCompleted(0);
+      for (const lessonIndex of props.activeProgress) {
+         if (props.activeDatabase.lessons.filter(lesson => lesson.index === lessonIndex)[0].setid === props.id) {
+            setNumCompleted(numCompleted => numCompleted + 1)
+         ***REMOVED***
+      ***REMOVED***
+   ***REMOVED***, [props.activeProgress])
 
    //// FUNCTIONS
 
@@ -50,7 +56,14 @@ function SetItem(props) {
       </View>
 
    // render the triangle icon conditionally as we don't need it for small set items
-   var triangleIcon = props.isSmall ? null :
+   var triangleIcon = props.isSmall ? null : fullyCompleted ?
+      <View style={styles.iconContainer***REMOVED***>
+         <Icon
+            name='check'
+            size={37 * scaleMultiplier***REMOVED***
+            color="#828282"
+         />
+      </View> :
       <View style={styles.iconContainer***REMOVED***>
          <Icon
             name={props.isRTL ? 'triangle-left' : 'triangle-right'***REMOVED***
@@ -71,7 +84,7 @@ function SetItem(props) {
                backgroundColor="#FFFFFF"
             >
                {(fill) => (
-                  <View style={{ backgroundColor: props.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
+                  <View style={{ backgroundColor: fullyCompleted ? null : props.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
                      <MaterialCommunityIcons name={setImages[props.index]***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
                   </View>)***REMOVED***
             </AnimatedCircularProgress>
@@ -84,7 +97,7 @@ function SetItem(props) {
                fontSize: props.isSmall ? 14 * scaleMultiplier : 12 * scaleMultiplier,
                textAlignVertical: "center",
                flexWrap: "wrap",
-               fontFamily: 'light',
+               fontFamily: 'regular',
             ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
             <Text style={{
                color: fullyCompleted ? "#9FA5AD" : "black",
@@ -92,7 +105,7 @@ function SetItem(props) {
                fontSize: props.isSmall ? 24 * scaleMultiplier : 18 * scaleMultiplier,
                textAlignVertical: "center",
                flexWrap: "wrap",
-               fontFamily: props.isSmall ? 'black' : 'bold',
+               fontFamily: 'black',
             ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
          </View>
          {triangleIcon***REMOVED***
@@ -121,7 +134,7 @@ const styles = StyleSheet.create({
       marginTop: 5
    ***REMOVED***,
    percentageText: {
-      fontFamily: 'light',
+      fontFamily: 'regular',
       color: "#9FA5AD",
       fontSize: 10
    ***REMOVED***,
@@ -142,11 +155,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
-   console.log(activeGroup.progress)
    return {
-      progress: activeGroup.progress,
+      activeProgress: activeGroup.progress,
       isRTL: state.database[activeGroup.language].isRTL,
-      database: state.database[activeGroup.language]
+      activeDatabase: state.database[activeGroup.language]
    ***REMOVED***
 ***REMOVED***;
 
