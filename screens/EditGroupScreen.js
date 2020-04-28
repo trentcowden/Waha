@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
       padding: 3,
    ***REMOVED***,
    groupNameLabel: {
-      fontFamily: "regular",
+      fontFamily: "light",
       fontSize: 14 * scaleMultiplier,
       color: '#9FA5AD'
    ***REMOVED***,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: 2,
       height: 40 * scaleMultiplier,
       fontSize: 18 * scaleMultiplier,
-      fontFamily: 'regular'
+      fontFamily: 'light'
    ***REMOVED***,
    resetProgressButtonContainer: {
       width: "100%",
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    resetProgressButtonText: {
       color: '#FF0800',
-      fontFamily: 'regular',
+      fontFamily: 'light',
       fontSize: 18 * scaleMultiplier,
    ***REMOVED***,
    deleteGroupButtonContainer: {
@@ -230,11 +230,11 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    deleteGroupButtonText: {
       color: '#FFFFFF',
-      fontFamily: 'regular',
+      fontFamily: 'light',
       fontSize: 18 * scaleMultiplier
    ***REMOVED***,
    cantDeleteText: {
-      fontFamily: 'regular',
+      fontFamily: 'light',
       fontSize: 14 * scaleMultiplier,
       color: '#9FA5AD'
    ***REMOVED***,
