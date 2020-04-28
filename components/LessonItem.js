@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
    ***REMOVED***,
    subtitle: {
       fontSize: 14 * scaleMultiplier,
-      fontFamily: 'light',
+      fontFamily: 'regular',
    ***REMOVED***,
    downloadButtonContainer: {
       justifyContent: "center",

@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
       marginBottom: 20
    ***REMOVED***,
    versionText: {
-      fontFamily: 'light', 
+      fontFamily: 'regular', 
       fontSize: 10, 
       marginHorizontal: 13, 
       color: "#9FA5AD", 
