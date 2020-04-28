@@ -143,6 +143,8 @@ function StackNavigator(props) {
       )
 ***REMOVED***
 
+//// REDUX
+
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
    return {
@@ -151,9 +153,4 @@ function mapStateToProps(state) {
    ***REMOVED***
 ***REMOVED***;
 
-function mapDispatchToProps(dispatch) {
-   return {
-   ***REMOVED***
-***REMOVED***;
-
-export default connect(mapStateToProps, mapDispatchToProps)(StackNavigator);
+export default connect(mapStateToProps)(StackNavigator);
