@@ -59,7 +59,7 @@ function SetItem(props) {
    var triangleIcon = props.isSmall ? null : fullyCompleted ?
       <View style={styles.iconContainer***REMOVED***>
          <Icon
-            name='check'
+            name='check-unfilled'
             size={37 * scaleMultiplier***REMOVED***
             color="#828282"
          />

@@ -4,10 +4,14 @@ import * as FileSystem from 'expo-file-system';
 import SetItem from '../components/SetItem';
 import AvatarImage from '../components/AvatarImage'
 import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../constants';
 
 function SetScreen(props) {
 
-   //FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => { console.log(contents) ***REMOVED***)
+   //// STUFF FOR TESTING
+   
+   // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => { console.log(contents) ***REMOVED***)
+   // console.log(scaleMultiplier)
 
    //// CONSTRUCTOR
 
