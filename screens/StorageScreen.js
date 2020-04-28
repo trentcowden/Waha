@@ -5,6 +5,7 @@ import BackButton from '../components/BackButton'
 import { scaleMultiplier, headerImages ***REMOVED*** from '../constants'
 import * as FileSystem from 'expo-file-system';
 import FlatListSeparator from '../components/FlatListSeparator'
+import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
 function StorageScreen(props) {
 
@@ -82,9 +83,11 @@ function StorageScreen(props) {
                var hasMatch = regex.exec(item);
                if (hasMatch) {
                   if (!language) {
-                     FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+                     FileSystem.deleteAsync(FileSystem.documentDirectory + item);
+                     props.removeDownload(item.slice(0,5));
                   ***REMOVED*** else if (item.slice(0, 2) === language) {
-                     FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+                     FileSystem.deleteAsync(FileSystem.documentDirectory + item);
+                     props.removeDownload(item.slice(0,5));
                   ***REMOVED***
                ***REMOVED***
             ***REMOVED***
@@ -249,4 +252,10 @@ function mapStateToProps(state) {
    ***REMOVED***
 ***REMOVED***;
 
-export default connect(mapStateToProps)(StorageScreen);
+function mapDispatchToProps(dispatch) {
+   return {
+      removeDownload: lessonID => { dispatch(removeDownload(lessonID)) ***REMOVED***
+   ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps, mapDispatchToProps)(StorageScreen);

@@ -63,7 +63,7 @@ function WahaDrawer(props) {
                   onPress={() => openBrowser('https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif')***REMOVED***
                   label={props.translations.navigation.drawer.credits***REMOVED***
                />
-               <Text style={styles.versionText***REMOVED***>v0.2.2</Text>
+               <Text style={styles.versionText***REMOVED***>v0.2.3</Text>
             </View>
          </View>
       </SafeAreaView >

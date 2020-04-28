@@ -50,7 +50,7 @@ function LessonItem(props) {
          <AnimatedCircularProgress
             size={25 * scaleMultiplier***REMOVED***
             width={6 * scaleMultiplier***REMOVED***
-            fill={props.downloadProgress * 100***REMOVED***
+            fill={ props.downloads[props.lesson.id] * 100***REMOVED***
             tintColor={"#828282"***REMOVED***
             rotation={0***REMOVED***
             backgroundColor="#FFFFFF"
