@@ -1,6 +1,6 @@
-import { STORE_DATA, FETCH_ERROR, SET_IS_FETCHING, SET_FIRST_OPEN, SET_IS_READY_TO_START, DELETE_LANGUAGE ***REMOVED*** from '../actions/databaseActions'
+import { STORE_DATA, FETCH_ERROR, SET_IS_FETCHING, SET_FIRST_OPEN, SET_IS_READY_TO_START, DELETE_LANGUAGE, SET_CURRENT_FETCH_PROGRESS ***REMOVED*** from '../actions/databaseActions'
 
-export function database(state = { isFetching: true, isFirstOpen: true, readyToStart: false ***REMOVED***, action) {
+export function database(state = { isFetching: true, isFirstOpen: true, readyToStart: false, currentFetchProgress: 0 ***REMOVED***, action) {
    switch (action.type) {
       case STORE_DATA:
          return { ...state, [action.language]: action.data ***REMOVED***
@@ -13,6 +13,8 @@ export function database(state = { isFetching: true, isFirstOpen: true, readyToS
       case SET_IS_READY_TO_START:
          // used to determine if we've gone through onboarding and are finished fetching
          return { ...state, isReadyToStart: action.isReadyToStart ***REMOVED***
+      case SET_CURRENT_FETCH_PROGRESS:
+         return { ...state, currentFetchProgress: action.progress***REMOVED***
       case DELETE_LANGUAGE:
          const languageToDelete = action.language
          const { [languageToDelete]: value, ...newObject ***REMOVED*** = state;

@@ -8,6 +8,7 @@ export const SET_IS_READY_TO_START = 'SET_IS_READY_TO_START'
 export const DELETE_LANGUAGE = 'DELETE_LANGUAGE'
 export const ADD_SCRIPT = 'ADD_SCRIPT'
 export const REMOVE_SCRIPT = 'REMOVE_SCRIPT'
+export const SET_CURRENT_FETCH_PROGRESS = 'SET_CURRENT_FETCH_PROGRESS'
 
 import firebase from 'firebase';
 import '@firebase/firestore'
@@ -63,6 +64,13 @@ export function setIsReadyToStart(isReadyToStart) {
    ***REMOVED***
 ***REMOVED***
 
+export function setCurrentFetchProgress(progress) {
+   return {
+      type: SET_CURRENT_FETCH_PROGRESS,
+      progress
+   ***REMOVED***
+***REMOVED***
+
 export function fetchError() {
    return {
       type: FETCH_ERROR
@@ -80,8 +88,8 @@ export function fetchError() {
 // 7. fonts
 
 export function addLanguage(language) {
-   return (dispatch) => {     
-       
+   return (dispatch) => {
+
       // set the i18n language for loading screen translations
       i18n.locale = language;
 
@@ -95,12 +103,48 @@ export function addLanguage(language) {
          if (doc.exists) {
             dispatch(storeData(doc.data(), language));
 
+            var totalProgressObject = {***REMOVED***
+            var isFirstCallBackObject = {***REMOVED***
+            var totalToDownload = 0
+            var counter = 0
+            // callback function
+            function callback({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
+               var allGood = true;
+               // every first callback, update the total bytes to download across all downloads
+               if (!isFirstCallBackObject[totalBytesExpectedToWrite]) {
+                  isFirstCallBackObject[totalBytesExpectedToWrite] = true
+                  totalToDownload += totalBytesExpectedToWrite
+                  for (value in isFirstCallBackObject) {
+                     if (!isFirstCallBackObject[value])
+                        allGood = false
+                  ***REMOVED***
+               ***REMOVED***
+
+               if (allGood) {
+                  // update fetch progress every 100 callbacks (for performance) or if we're just about done
+                  if (counter % 100 == 0 || (totalBytesWritten / totalBytesExpectedToWrite > 0.99)) {
+                     // update progress specific to this download
+                     totalProgressObject[totalBytesExpectedToWrite] = totalBytesWritten
+
+                     // re add up the total progress each time
+                     var totalProgress = 0;
+                     for (download in totalProgressObject) {
+                        totalProgress += totalProgressObject[download]
+                     ***REMOVED***
+                     if (totalToDownload != 0)
+                        dispatch(setCurrentFetchProgress(totalProgress / totalToDownload))
+                  ***REMOVED***
+                  counter += 1
+               ***REMOVED***
+            ***REMOVED***
+
             // downloads a file from url into local storage
             function downloadSomething(source, fileName) {
                var downloadResumable = FileSystem.createDownloadResumable(
                   doc.data()[source],
                   FileSystem.documentDirectory + language + fileName,
                   {***REMOVED***,
+                  callback
                )
                return downloadResumable.downloadAsync().then(() => 'done')
             ***REMOVED***
@@ -122,6 +166,7 @@ export function addLanguage(language) {
                dispatch(createGroup(groupNames[language], language, ''))
                dispatch(changeActiveGroup(groupNames[language]))
                dispatch(setIsFetching(false));
+               dispatch(setCurrentFetchProgress(0))
             ***REMOVED***)
          ***REMOVED*** else {
             console.log("error: doc doesn't exist")
