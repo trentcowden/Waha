@@ -15,13 +15,7 @@ import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
 
-   // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => { console.log(contents) ***REMOVED***)
-
    //// STATE
-
-   // switches back and forth whenever we want to re-render
-   // the screen (attached to the extraData prop on the flatlist)
-   const [refresh, setRefresh] = useState(false);
 
    // keeps track of whether the user has internet connection
    const [isConnected, setIsConnected] = useState(false);
@@ -33,8 +27,6 @@ function LessonListScreen(props) {
    const [showSaveLessonModal, setShowSaveLessonModal] = useState(false);
    const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false);
    const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false);
-
-
 
    //// CONSTRUCTOR
 
@@ -94,7 +86,7 @@ function LessonListScreen(props) {
    // marks every lesson in current set as complete up until the selected lesson via modal press
    function markUpToThisPointAsCompleteFromModal() {
       for (var i = 1; i <= activeLessonInModal.index; i++) {
-         if (!props.activeGroup.progress.includes(i) && props.activeDatabase.lessons[i - 1].setid === props.route.params.setID) {
+         if (!props.activeGroup.progress.includes(i) && props.activeDatabase.lessons[i - 1].setid === props.route.params.thisSet.id) {
             props.toggleComplete(props.activeGroup.name, i)
          ***REMOVED***
       ***REMOVED***
@@ -139,25 +131,16 @@ function LessonListScreen(props) {
    function renderLessonItem(lessonList) {
       return (
          <LessonItem
-            lesson={lessonList.item***REMOVED***
+            thisLesson={lessonList.item***REMOVED***
             onLessonSelect={() => props.navigation.navigate('Play', {
-               id: lessonList.item.id,
-               setid: lessonList.item.setid,
-               index: lessonList.item.index,
-               title: lessonList.item.title,
-               subtitle: lessonList.item.subtitle,
-               source: lessonList.item.source,
-               scriptureHeader: lessonList.item.scriptureHeader,
-               scriptureText: lessonList.item.scriptureText,
-               chapter1and3Type: lessonList.item.chapter1and3Type
+               thisLesson: lessonList.item
             ***REMOVED***)***REMOVED***
             isComplete={props.activeGroup.progress.includes(lessonList.item.index)***REMOVED***
             isConnected={isConnected***REMOVED***
+            setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
             setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
             setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
-            setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
             setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
-            setRefresh={() => setRefresh(old => !old)***REMOVED***
          />
       )
    ***REMOVED***
@@ -166,20 +149,16 @@ function LessonListScreen(props) {
       <View style={styles.screen***REMOVED***>
          <View style={styles.studySetItemContainer***REMOVED***>
             <SetItem
-               index={props.route.params.index***REMOVED***
-               title={props.route.params.title***REMOVED***
-               subtitle={props.route.params.subtitle***REMOVED***
-               id={props.route.params.setID***REMOVED***
+               thisSet={props.route.params.thisSet***REMOVED***
                isSmall={true***REMOVED***
-               color={props.route.params.color***REMOVED***
             />
          </View>
          <FlatList
-            data={props.activeDatabase.lessons.filter(lesson => props.route.params.setID === lesson.setid)***REMOVED***
-            extraData={props.downloads***REMOVED***
+            data={props.activeDatabase.lessons.filter(lesson => props.route.params.thisSet.id === lesson.setid)***REMOVED***
             renderItem={renderLessonItem***REMOVED***
             keyExtractor={item => item.id***REMOVED***
          />
+
          {/* MODALS */***REMOVED***
          <WahaModal
             isVisible={showSaveLessonModal***REMOVED***
@@ -232,7 +211,6 @@ const styles = StyleSheet.create({
    hiddenItemContainer: {
       justifyContent: "space-between",
       flexDirection: "row",
-
    ***REMOVED***
 ***REMOVED***)
 

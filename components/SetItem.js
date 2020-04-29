@@ -23,13 +23,13 @@ function SetItem(props) {
 
    useEffect(() => {
       for (const set of props.activeDatabase.sets) {
-         if (set.id === props.id) {
+         if (set.id === props.thisSet.id) {
             setNumLessons(set.length)
          ***REMOVED***
       ***REMOVED***
       setNumCompleted(0);
       for (const lessonIndex of props.activeProgress) {
-         if (props.activeDatabase.lessons.filter(lesson => lesson.index === lessonIndex)[0].setid === props.id) {
+         if (props.activeDatabase.lessons.filter(lesson => lesson.index === lessonIndex)[0].setid === props.thisSet.id) {
             setNumCompleted(numCompleted => numCompleted + 1)
          ***REMOVED***
       ***REMOVED***
@@ -84,8 +84,8 @@ function SetItem(props) {
                backgroundColor="#FFFFFF"
             >
                {(fill) => (
-                  <View style={{ backgroundColor: fullyCompleted ? null : props.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
-                     <MaterialCommunityIcons name={setImages[props.index]***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
+                  <View style={{ backgroundColor: fullyCompleted ? null : props.thisSet.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
+                     <MaterialCommunityIcons name={setImages[props.thisSet.index]***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
                   </View>)***REMOVED***
             </AnimatedCircularProgress>
             {percentageText***REMOVED***
@@ -98,7 +98,7 @@ function SetItem(props) {
                textAlignVertical: "center",
                flexWrap: "wrap",
                fontFamily: 'regular',
-            ***REMOVED******REMOVED***>{props.subtitle***REMOVED***</Text>
+            ***REMOVED******REMOVED***>{props.thisSet.subtitle***REMOVED***</Text>
             <Text style={{
                color: fullyCompleted ? "#9FA5AD" : "black",
                textAlign: props.isRTL ? 'right' : 'left',
@@ -106,7 +106,7 @@ function SetItem(props) {
                textAlignVertical: "center",
                flexWrap: "wrap",
                fontFamily: 'black',
-            ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
+            ***REMOVED******REMOVED***>{props.thisSet.title***REMOVED***</Text>
          </View>
          {triangleIcon***REMOVED***
       </TouchableOpacity>
