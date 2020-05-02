@@ -4,12 +4,13 @@ import { downloads ***REMOVED*** from '../reducers/downloads'
 import { database ***REMOVED*** from '../reducers/database'
 import { groups ***REMOVED*** from '../reducers/groups'
 import { activeGroup ***REMOVED*** from '../reducers/activeGroup'
-
+import { network ***REMOVED*** from '../reducers/network'
 import { combineReducers ***REMOVED*** from 'redux'
 
 export default rootReducer = combineReducers({
     downloads,
     database,
     groups,
-    activeGroup
+    activeGroup,
+    network
 ***REMOVED***)

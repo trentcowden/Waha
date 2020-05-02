@@ -15,10 +15,14 @@ import { connect ***REMOVED*** from 'react-redux'
 
 function LessonListScreen(props) {
 
+
+
    //// STATE
 
    // keeps track of whether the user has internet connection
-   const [isConnected, setIsConnected] = useState(false);
+
+   // keeps track of which lessons are downloaded 
+   const [downloadsInFileSystem, setDownloadsInFileSystem] = useState([])
 
    // keeps track of the lesson to download/delete/toggle complete when modals are up
    const [activeLessonInModal, setActiveLessonInModal] = useState({***REMOVED***);
@@ -32,13 +36,25 @@ function LessonListScreen(props) {
 
    useEffect(() => {
       props.navigation.setOptions(getNavOptions())
-      const unsubscribe = NetInfo.addEventListener(state => {
-         setIsConnected(state.isConnected)
-      ***REMOVED***);
-      return function cleanup() {
-         unsubscribe();
-      ***REMOVED***
    ***REMOVED***, [])
+
+   // checks which lessons are downloaded and stores in state
+   useEffect(() => {
+      var whichLessonsDownloaded = {***REMOVED***
+      FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
+      .then(contents => { 
+         props.activeDatabase.lessons.forEach(lesson => {
+            if (contents.includes(lesson.id + '.mp3'))
+               whichLessonsDownloaded[lesson.id] = true
+            else
+               whichLessonsDownloaded[lesson.id] = false
+         ***REMOVED***)
+         return whichLessonsDownloaded
+      ***REMOVED***)
+      .then(whichLessonsDownloaded => {
+         setDownloadsInFileSystem(whichLessonsDownloaded)
+      ***REMOVED***)
+   ***REMOVED***, [props.downloads])
 
    //// NAV OPTIONS
 
@@ -60,7 +76,6 @@ function LessonListScreen(props) {
    function downloadLessonFromModal() {
       props.downloadLesson(activeLessonInModal.id, activeLessonInModal.source);
       hideModals();
-      setRefresh(old => !old)
    ***REMOVED***
 
    // deletes a lesson's chapter 2 mp3 via modal press
@@ -133,10 +148,11 @@ function LessonListScreen(props) {
          <LessonItem
             thisLesson={lessonList.item***REMOVED***
             onLessonSelect={() => props.navigation.navigate('Play', {
-               thisLesson: lessonList.item
+               thisLesson: lessonList.item,
+               isDownloaded: downloadsInFileSystem[lessonList.item.id]
             ***REMOVED***)***REMOVED***
+            isDownloaded={downloadsInFileSystem[lessonList.item.id]***REMOVED***
             isComplete={props.activeGroup.progress.includes(lessonList.item.index)***REMOVED***
-            isConnected={isConnected***REMOVED***
             setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
             setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
             setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
@@ -218,6 +234,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
    var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
+   console.log(state.downloads)
    return {
       downloads: state.downloads,
       activeDatabase: state.database[activeGroup.language],
