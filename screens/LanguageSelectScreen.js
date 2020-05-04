@@ -5,6 +5,8 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import { Audio ***REMOVED*** from 'expo-av';
 import { scaleMultiplier, languageT2S ***REMOVED*** from '../constants'
+import NetInfo from '@react-native-community/netinfo';
+
 
 function LanguageSelectScreen(props) {
 
@@ -12,6 +14,9 @@ function LanguageSelectScreen(props) {
 
    // keeps track of language selected in picker (TODO: change default to user's default language)
    const [selectedLanguage, setSelectedLanguage] = useState(i18n.locale)
+
+   // keeps track of whether the uesr has an internet connection
+   const [isConnected, setIsConnected] = useState(true)
 
    // sound for the text to speech
    const soundObject = new Audio.Sound();
@@ -21,12 +26,14 @@ function LanguageSelectScreen(props) {
       en: {
          welcome: 'Hello and welcome!',
          selectLanguage: 'Please select your language.',
-         letsBegin: 'Let\'s begin!'
+         letsBegin: 'Let\'s begin!',
+         noInternet: 'Error: an internet connection is required to set up the app'
       ***REMOVED***,
       te: {
          welcome: 'morbi tristique senectus et!',
          selectLanguage: 'eget nulla facilisi etiam.',
-         letsBegin: 'nibh ipsum!'
+         letsBegin: 'nibh ipsum!',
+         noInternet: 'morbi tristique senectus et eget nulla facilisi etiam'
       ***REMOVED***
    ***REMOVED***;
 
@@ -35,6 +42,14 @@ function LanguageSelectScreen(props) {
    useEffect(() => {
       i18n.locale = Localization.locale;
       i18n.fallbacks = true;
+
+      const unsubscribe = NetInfo.addEventListener(state => {
+         setIsConnected(state.isConnected)
+      ***REMOVED***);
+
+      return function cleanup() {
+         unsubscribe();
+      ***REMOVED***
    ***REMOVED***, [])
 
    //// FUNCTIONS
@@ -42,7 +57,7 @@ function LanguageSelectScreen(props) {
    // plays text-to-speech audio file of language
    async function playAudio() {
       soundObject.unloadAsync();
-      await soundObject.loadAsync(languageT2S[i18n.locale]).then(() => {soundObject.playAsync()***REMOVED***)
+      await soundObject.loadAsync(languageT2S[i18n.locale]).then(() => { soundObject.playAsync() ***REMOVED***)
    ***REMOVED***
 
    // updates language on picker change
@@ -52,6 +67,22 @@ function LanguageSelectScreen(props) {
    ***REMOVED***
 
    //// RENDER
+
+   // render start button conditionally as the user can't start if they don't have internet
+   var startButton = isConnected ?
+      <TouchableOpacity onPress={() => props.navigation.navigate('OnboardingSlides', { selectedLanguage: selectedLanguage ***REMOVED***)***REMOVED*** style={styles.button***REMOVED***>
+         <Text style={styles.buttonTitle***REMOVED***>{i18n.t('letsBegin')***REMOVED*** </Text>
+      </TouchableOpacity> :
+      <View style={[styles.button, { backgroundColor: "#828282" ***REMOVED***]***REMOVED***>
+         <Text style={styles.buttonTitle***REMOVED***>{i18n.t('letsBegin')***REMOVED*** </Text>
+      </View>
+
+   var errorMessage = isConnected ?
+      <View style={styles.errorMessageContainer***REMOVED***></View> :
+      <View style={styles.errorMessageContainer***REMOVED***>
+         <Text style={styles.errorMessage***REMOVED***>{i18n.t('noInternet')***REMOVED***</Text>
+      </View>
+
 
    return (
       <View style={styles.screen***REMOVED***>
@@ -80,9 +111,8 @@ function LanguageSelectScreen(props) {
                />
             </View>
          </View>
-         <TouchableOpacity onPress={() => props.navigation.navigate('OnboardingSlides', {selectedLanguage: selectedLanguage***REMOVED***)***REMOVED*** style={styles.button***REMOVED***>
-            <Text style={styles.buttonTitle***REMOVED***>{i18n.t('letsBegin')***REMOVED*** </Text>
-         </TouchableOpacity>
+         {startButton***REMOVED***
+         {errorMessage***REMOVED***
       </View>
    )
 ***REMOVED***
@@ -120,6 +150,17 @@ const styles = StyleSheet.create({
       fontSize: 24 * scaleMultiplier,
       fontFamily: 'medium',
       color: "#FFFFFF"
+   ***REMOVED***,
+   errorMessageContainer: {
+      height: "10%",
+      width: "100%"
+   ***REMOVED***,
+   errorMessage: {
+      textAlign: "center",
+      fontSize: 16 * scaleMultiplier,
+      fontFamily: 'regular',
+      color: "#828282",
+      marginTop: 10
    ***REMOVED***
 ***REMOVED***)
 

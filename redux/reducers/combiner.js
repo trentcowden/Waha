@@ -1,7 +1,7 @@
 //simple file to combine all reducers to be used in redux/store.js
 
 import { downloads ***REMOVED*** from '../reducers/downloads'
-import { database ***REMOVED*** from '../reducers/database'
+import { database, fetchingStatus ***REMOVED*** from '../reducers/database'
 import { groups ***REMOVED*** from '../reducers/groups'
 import { activeGroup ***REMOVED*** from '../reducers/activeGroup'
 import { network ***REMOVED*** from '../reducers/network'
@@ -12,5 +12,6 @@ export default rootReducer = combineReducers({
     database,
     groups,
     activeGroup,
-    network
+    network,
+    fetchingStatus
 ***REMOVED***)
