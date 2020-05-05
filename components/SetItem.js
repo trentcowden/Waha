@@ -1,7 +1,6 @@
 import React, { useEffect, useState ***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
-import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier, setImages ***REMOVED*** from '../constants'
 import Icon from '../assets/fonts/icons'
@@ -59,7 +58,7 @@ function SetItem(props) {
    var triangleIcon = props.isSmall ? null : fullyCompleted ?
       <View style={styles.iconContainer***REMOVED***>
          <Icon
-            name='check-unfilled'
+            name='check-outline'
             size={37 * scaleMultiplier***REMOVED***
             color="#828282"
          />
@@ -79,13 +78,13 @@ function SetItem(props) {
                size={props.isSmall ? 70 * scaleMultiplier : 85 * scaleMultiplier***REMOVED***
                width={props.isSmall ? 5 * scaleMultiplier : 8 * scaleMultiplier***REMOVED***
                fill={(numCompleted / numLessons) * 100***REMOVED***
-               tintColor={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED***
+               tintColor={fullyCompleted ? "#828282" : props.colors.primaryColor***REMOVED***
                rotation={0***REMOVED***
                backgroundColor="#FFFFFF"
             >
                {(fill) => (
-                  <View style={{ backgroundColor: fullyCompleted ? null : props.thisSet.color, width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
-                     <MaterialCommunityIcons name={setImages[props.thisSet.index]***REMOVED*** size={props.isSmall ? 40 * scaleMultiplier : 50 * scaleMultiplier***REMOVED*** color={fullyCompleted ? "#828282" : "#1D1E20"***REMOVED*** />
+                  <View style={{ width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
+                     <Icon name={setImages[props.thisSet.index]***REMOVED*** size={props.isSmall ? 60 * scaleMultiplier : 70 * scaleMultiplier***REMOVED*** />
                   </View>)***REMOVED***
             </AnimatedCircularProgress>
             {percentageText***REMOVED***
@@ -158,7 +157,8 @@ function mapStateToProps(state) {
    return {
       activeProgress: activeGroup.progress,
       isRTL: state.database[activeGroup.language].isRTL,
-      activeDatabase: state.database[activeGroup.language]
+      activeDatabase: state.database[activeGroup.language],
+      colors: state.database[activeGroup.language].colors
    ***REMOVED***
 ***REMOVED***;
 

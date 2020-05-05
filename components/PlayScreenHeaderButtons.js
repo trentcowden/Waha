@@ -23,7 +23,7 @@ function PlayScreenHeaderButtons(props) {
             onPress={props.completeOnPress***REMOVED***
          >
             <Icon
-               name={props.completeCondition ? "check-filled" : "check-unfilled"***REMOVED***
+               name={props.completeCondition ? "check-filled" : "check-outline"***REMOVED***
                size={35 * scaleMultiplier***REMOVED***
                color='#828282'
             />

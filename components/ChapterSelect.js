@@ -13,7 +13,7 @@ function ChapterSelect(props) {
    if (props.activeChapter === 'fellowship') {
       chapter2IconName = '2-filled'
    ***REMOVED*** else if (props.activeChapter === 'passage') {
-      chapter2IconName = '2-unfilled'
+      chapter2IconName = '2-outline'
    ***REMOVED*** else {
       chapter2IconName = 'check-filled'
    ***REMOVED***
@@ -61,7 +61,7 @@ function ChapterSelect(props) {
             onPress={() => props.onPress('fellowship')***REMOVED***
          >
             <Icon
-               name={(props.activeChapter === 'fellowship') ? "1-unfilled" : "check-filled"***REMOVED***
+               name={(props.activeChapter === 'fellowship') ? "1-outline" : "check-filled"***REMOVED***
                size={25***REMOVED***
                color={(props.activeChapter === 'fellowship') ? "white" : props.colors.primaryColor***REMOVED***
             />
@@ -78,7 +78,7 @@ function ChapterSelect(props) {
             onPress={() => props.onPress('application')***REMOVED***
          >
             <Icon
-               name={props.activeChapter === 'application' ? "3-unfilled" : '3-filled'***REMOVED***
+               name={props.activeChapter === 'application' ? "3-outline" : '3-filled'***REMOVED***
                size={25***REMOVED***
                color={(props.activeChapter === 'application') ? "white" : props.colors.primaryColor***REMOVED***
             />

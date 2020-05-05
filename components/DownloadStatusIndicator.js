@@ -20,7 +20,7 @@ function DownloadStatusIndicator(props) {
       // if downloaded
       <TouchableOpacity onPress={props.showDeleteModal***REMOVED*** style={styles.downloadButtonContainer***REMOVED***>
          <Icon
-            name="cloud-check"
+            name="cloud-check-outline"
             color="#9FA5AD"
             size={25 * scaleMultiplier***REMOVED***
          />
@@ -41,7 +41,7 @@ function DownloadStatusIndicator(props) {
       // if not downloaded, not downloading, and connected
       <TouchableOpacity onPress={props.showSaveModal***REMOVED*** style={styles.downloadButtonContainer***REMOVED***>
          <Icon
-            name="cloud-download"
+            name="cloud-download-outline"
             color={props.isDownloaded ? "#9FA5AD" : "#3A3C3F"***REMOVED***
             size={25 * scaleMultiplier***REMOVED***
          />
@@ -50,7 +50,7 @@ function DownloadStatusIndicator(props) {
       // not downloaded and not connected
       <View style={styles.downloadButtonContainer***REMOVED***>
          <Icon
-            name="cloud-slash"
+            name="cloud-slash-outline"
             color="#3A3C3F"
             size={25 * scaleMultiplier***REMOVED***
          />

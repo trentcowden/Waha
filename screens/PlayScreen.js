@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef ***REMOVED*** from 'react';
 import { View, StyleSheet, Text, Alert, ActivityIndicator, FlatList, Dimensions, ScrollView ***REMOVED*** from 'react-native';
-import { MaterialCommunityIcons ***REMOVED*** from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { scaleMultiplier, setImages ***REMOVED*** from '../constants'
@@ -324,7 +323,7 @@ function PlayScreen(props) {
          var scrollBarLeft = item.key === '0' ? null : <View style={styles.scrollBar***REMOVED*** />
          var scrollBarRight = item.key === '0' ? <View style={styles.scrollBar***REMOVED*** /> : null
          return (
-            <View style={[styles.albumArtContainer, { marginLeft: item.key === '0' ? 30 : 10, marginRight: item.key === '2' ? 30 : 10 ***REMOVED***]***REMOVED***>
+            <View style={[styles.albumArtContainer, { marginLeft: item.key === '0' ? 30 : 10, marginRight: item.key === '2' ? 30 : 10, paddingHorizontal: item.key === '1' ? 0 : 10 ***REMOVED***]***REMOVED***>
                {scrollBarLeft***REMOVED***
                <ScrollView style={[styles.textContainer, { marginLeft: item.key === '2' ? 5 : 0, marginRight: item.key === '0' ? 5 : 0 ***REMOVED***]***REMOVED***>
                   <Text style={styles.albumTextHeader***REMOVED***>{item.header***REMOVED***</Text>
@@ -337,9 +336,9 @@ function PlayScreen(props) {
       else {
          return (
             <View style={[styles.albumArtContainer, { justifyContent: 'center', alignItems: 'center' ***REMOVED***]***REMOVED***>
-               <MaterialCommunityIcons
+               <Icon
                   name={item.iconName***REMOVED***
-                  size={300 * scaleMultiplier***REMOVED***
+                  size={340 * scaleMultiplier***REMOVED***
                   color={props.activeDatabase.sets.filter(set => set.id === props.route.params.thisLesson.setid)[0].color***REMOVED***
                />
             </View>
@@ -453,7 +452,6 @@ const styles = StyleSheet.create({
       height: (Dimensions.get('window').width - 80),
       borderRadius: 10,
       marginHorizontal: 10,
-      paddingHorizontal: 10,
       backgroundColor: "#DEE3E9",
       flexDirection: "row"
    ***REMOVED***,
