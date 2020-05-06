@@ -9,12 +9,14 @@ function WahaNavigator(props) {
       return <DrawerNavigator/>
    // ***REMOVED*** else if ((props.haveFinishedOnboarding && props.isFetching && !props.haveFinishedInitialFetch) || (props.haveFinishedOnboarding && props.fetchError)) {
    //    return <LoadingScreen/>
-   ***REMOVED*** else if (!props.haveFinishedInitialFetch) {
+   ***REMOVED*** else if (!props.haveFinishedInitialFetch || (props.haveFinishedInitialFetch && !props.haveFinishedOnboarding)) {
       return <OnboardingNavigator/>
    ***REMOVED*** else {
       return <LoadingScreen/>
    ***REMOVED***
 ***REMOVED***
+
+
 
 function mapStateToProps(state) {
    return {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, Text ***REMOVED*** from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, Text, Alert ***REMOVED*** from 'react-native';
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { connect ***REMOVED*** from 'react-redux'
@@ -75,7 +75,19 @@ function GroupsScreen(props) {
                renderItem={renderLanguageInstanceItem***REMOVED***
                keyExtractor={item => item.languageID***REMOVED***
                ListFooterComponent={
-                  <TouchableOpacity style={styles.addNewLanguageContainer***REMOVED*** onPress={() => props.navigation.navigate('AddNewLanguage', { installedLanguageInstances: getInstalledLanguageInstances() ***REMOVED***)***REMOVED***>
+                  <TouchableOpacity 
+                     style={styles.addNewLanguageContainer***REMOVED*** 
+                     onPress={props.isConnected ? 
+                        () => props.navigation.navigate('AddNewLanguage', { installedLanguageInstances: getInstalledLanguageInstances()***REMOVED***) :
+                        () => Alert.alert(
+                           props.translations.alerts.addLanguageNoInternet.header,
+                           props.translations.alerts.addLanguageNoInternet.body,
+                           [{
+                              text: props.translations.alerts.options.ok,
+                              onPress: () => { ***REMOVED***
+                           ***REMOVED***]
+                        )***REMOVED***
+                  >
                      <Text style={[styles.addNewLanguageText, {textAlign: props.isRTL ? 'right' : 'left'***REMOVED***]***REMOVED***>{props.translations.labels.newLanguage***REMOVED***</Text>
                   </TouchableOpacity>
                ***REMOVED***
@@ -126,7 +138,8 @@ function mapStateToProps(state) {
    return {
       database: state.database,
       isRTL: state.database[activeGroup.language].isRTL,
-      translations: state.database[activeGroup.language].translations
+      translations: state.database[activeGroup.language].translations,
+      isConnected: state.network.isConnected
    ***REMOVED***
 ***REMOVED***;
 
