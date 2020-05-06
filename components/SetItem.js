@@ -2,8 +2,9 @@ import React, { useEffect, useState ***REMOVED*** from 'react';
 import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native';
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress';
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier, setImages ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import Icon from '../assets/fonts/icons'
+import SVG from '../assets/svg.js'
 
 function SetItem(props) {
 
@@ -59,7 +60,7 @@ function SetItem(props) {
       <View style={styles.iconContainer***REMOVED***>
          <Icon
             name='check-outline'
-            size={37 * scaleMultiplier***REMOVED***
+            size={30 * scaleMultiplier***REMOVED***
             color="#828282"
          />
       </View> :
@@ -78,20 +79,25 @@ function SetItem(props) {
                size={props.isSmall ? 70 * scaleMultiplier : 85 * scaleMultiplier***REMOVED***
                width={props.isSmall ? 5 * scaleMultiplier : 8 * scaleMultiplier***REMOVED***
                fill={(numCompleted / numLessons) * 100***REMOVED***
-               tintColor={fullyCompleted ? "#828282" : props.colors.primaryColor***REMOVED***
+               tintColor={fullyCompleted ? props.colors.primaryColor + '50' : props.colors.primaryColor***REMOVED***
                rotation={0***REMOVED***
                backgroundColor="#FFFFFF"
             >
-               {(fill) => (
+               {() => (
                   <View style={{ width: "100%", height: "100%", justifyContent: "center", alignItems: "center" ***REMOVED******REMOVED***>
-                     <Icon name={setImages[props.thisSet.index]***REMOVED*** size={props.isSmall ? 60 * scaleMultiplier : 70 * scaleMultiplier***REMOVED*** />
+                     <SVG 
+                        name={'set' + props.thisSet.index***REMOVED***  
+                        width={props.isSmall ? 60 * scaleMultiplier : 70 * scaleMultiplier***REMOVED*** 
+                        height={props.isSmall ? 60 * scaleMultiplier : 70 * scaleMultiplier***REMOVED*** 
+                        fill={fullyCompleted ? '#9FA5AD' : '#1D1E20'***REMOVED***
+                     />
                   </View>)***REMOVED***
             </AnimatedCircularProgress>
             {percentageText***REMOVED***
          </View>
          <View style={styles.titleContainer***REMOVED***>
             <Text style={{
-               color: fullyCompleted ? "#9FA5AD" : "black",
+               color: fullyCompleted ? "#9FA5AD" : "#1D1E20",
                textAlign: props.isRTL ? 'right' : 'left',
                fontSize: props.isSmall ? 14 * scaleMultiplier : 12 * scaleMultiplier,
                textAlignVertical: "center",
@@ -99,7 +105,7 @@ function SetItem(props) {
                fontFamily: 'regular',
             ***REMOVED******REMOVED***>{props.thisSet.subtitle***REMOVED***</Text>
             <Text style={{
-               color: fullyCompleted ? "#9FA5AD" : "black",
+               color: fullyCompleted ? "#9FA5AD" : "#3A3C3F",
                textAlign: props.isRTL ? 'right' : 'left',
                fontSize: props.isSmall ? 24 * scaleMultiplier : 18 * scaleMultiplier,
                textAlignVertical: "center",
