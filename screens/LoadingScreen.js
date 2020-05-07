@@ -1,98 +1,104 @@
-import React from 'react';
-import { View, StyleSheet, Text, Dimensions ***REMOVED*** from 'react-native';
-import i18n from 'i18n-js';
+import React from 'react'
+import { View, StyleSheet, Text, Dimensions ***REMOVED*** from 'react-native'
+import i18n from 'i18n-js'
 import { connect ***REMOVED*** from 'react-redux'
-import * as Progress from 'react-native-progress';
-import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler';
-import { scaleMultiplier ***REMOVED*** from '../constants';
-import { setFetchError, addLanguage ***REMOVED*** from '../redux/actions/databaseActions';
+import * as Progress from 'react-native-progress'
+import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { setFetchError, addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 
-function LoadingScreen(props) {
-   i18n.translations = {
-      en: {
-         loadingMessage: "Hang on, we're setting things up...",
-         errorMessage: "Sorry, there was a problem during fetching. Please check your connection and try again.",
-         retry: "Retry"
-      ***REMOVED***,
-      te: {
-         loadingMessage: "aliquet eget sit amet tellus cras...",
-         errorMessage: "aliquet eget sit amet tellus cra aliquet eget sit amet tellus cra aliquet eget sit amet tellus cra",
-         retry: "tellus"
-      ***REMOVED***,
-   ***REMOVED***;
+function LoadingScreen (props) {
+  i18n.translations = {
+    en: {
+      loadingMessage: "Hang on, we're setting things up...",
+      errorMessage:
+        'Sorry, there was a problem during fetching. Please check your connection and try again.',
+      retry: 'Retry'
+    ***REMOVED***,
+    te: {
+      loadingMessage: 'aliquet eget sit amet tellus cras...',
+      errorMessage:
+        'aliquet eget sit amet tellus cra aliquet eget sit amet tellus cra aliquet eget sit amet tellus cra',
+      retry: 'tellus'
+    ***REMOVED***
+  ***REMOVED***
 
-   function retry() {
-      props.setFetchError(false, null)
-      props.addLanguage(props.errorLanguage)
-   ***REMOVED***
+  function retry () {
+    props.setFetchError(false, null)
+    props.addLanguage(props.errorLanguage)
+  ***REMOVED***
 
-   return props.fetchError ?
-      <View style={styles.screen***REMOVED***>
-         <Text style={styles.loadingMessageText***REMOVED***>{i18n.t('errorMessage')***REMOVED***</Text>
-         <TouchableOpacity onPress={retry***REMOVED*** style={styles.button***REMOVED***>
-            <Text style={styles.buttonTitle***REMOVED***>{i18n.t('retry')***REMOVED***</Text>
-         </TouchableOpacity>
-      </View> :
-      <View style={styles.screen***REMOVED***>
-         <Text style={styles.loadingMessageText***REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
-         <View style={styles.progressBarContainer***REMOVED***>
-            <Progress.Bar
-               progress={props.progress***REMOVED***
-               width={Dimensions.get('window').width - 50***REMOVED***
-               color={"black"***REMOVED***
-            />
-         </View>
+  return props.fetchError ? (
+    <View style={styles.screen***REMOVED***>
+      <Text style={styles.loadingMessageText***REMOVED***>{i18n.t('errorMessage')***REMOVED***</Text>
+      <TouchableOpacity onPress={retry***REMOVED*** style={styles.button***REMOVED***>
+        <Text style={styles.buttonTitle***REMOVED***>{i18n.t('retry')***REMOVED***</Text>
+      </TouchableOpacity>
+    </View>
+  ) : (
+    <View style={styles.screen***REMOVED***>
+      <Text style={styles.loadingMessageText***REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
+      <View style={styles.progressBarContainer***REMOVED***>
+        <Progress.Bar
+          progress={props.progress***REMOVED***
+          width={Dimensions.get('window').width - 50***REMOVED***
+          color={'black'***REMOVED***
+        />
       </View>
+    </View>
+  )
 ***REMOVED***
 
 //// STYLES
 
 const styles = StyleSheet.create({
-   screen: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: 'center'
-   ***REMOVED***,
-   loadingMessageText: {
-      textAlign: "center",
-      fontSize: 30,
-      padding: 10,
-      fontFamily: "medium"
-   ***REMOVED***,
-   progressBarContainer: {
-      width: "100%",
-      justifyContent: 'center',
-      alignItems: 'center'
-   ***REMOVED***,
-   button: {
-      width: 200,
-      height: 50,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#1D1E20",
-      borderRadius: 5
-   ***REMOVED***,
-   buttonTitle: {
-      textAlign: "center",
-      fontSize: 24 * scaleMultiplier,
-      fontFamily: 'medium',
-      color: "#FFFFFF"
-   ***REMOVED***,
+  screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  ***REMOVED***,
+  loadingMessageText: {
+    textAlign: 'center',
+    fontSize: 30,
+    padding: 10
+  ***REMOVED***,
+  progressBarContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  ***REMOVED***,
+  button: {
+    width: 200,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1D1E20',
+    borderRadius: 5
+  ***REMOVED***,
+  buttonTitle: {
+    textAlign: 'center',
+    fontSize: 24 * scaleMultiplier,
+    color: '#FFFFFF'
+  ***REMOVED***
 ***REMOVED***)
 
-function mapStateToProps(state) {
-   return {
-      progress: state.database.currentFetchProgress,
-      fetchError: state.fetchingStatus.fetchError,
-      errorLanguage: state.fetchingStatus.errorLanguage,
-   ***REMOVED***
-***REMOVED***;
-
-function mapDispatchToProps(dispatch) {
-   return {
-      addLanguage: language => { dispatch(addLanguage(language)) ***REMOVED***,
-      setFetchError: (status, language) => {dispatch(setFetchError(status, language))***REMOVED***
-   ***REMOVED***
+function mapStateToProps (state) {
+  return {
+    progress: state.database.currentFetchProgress,
+    fetchError: state.fetchingStatus.fetchError,
+    errorLanguage: state.fetchingStatus.errorLanguage
+  ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);
+function mapDispatchToProps (dispatch) {
+  return {
+    addLanguage: language => {
+      dispatch(addLanguage(language))
+    ***REMOVED***,
+    setFetchError: (status, language) => {
+      dispatch(setFetchError(status, language))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen)

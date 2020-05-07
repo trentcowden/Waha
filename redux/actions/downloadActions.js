@@ -1,90 +1,97 @@
 export const ADD_UPDATE_DOWNLOAD = 'ADD_UPDATE_DOWNLOAD'
 export const REMOVE_DOWNLOAD = 'REMOVE_DOWNLOAD'
 
-import * as FileSystem from 'expo-file-system';
-import NetInfo from '@react-native-community/netinfo';
+import * as FileSystem from 'expo-file-system'
+import NetInfo from '@react-native-community/netinfo'
 import { AsyncStorage ***REMOVED*** from 'react-native'
 
-export function addUpdateDownload(progress, lessonID) {
-   return {
-      type: ADD_UPDATE_DOWNLOAD,
-      progress,
-      lessonID
-   ***REMOVED***
+export function addUpdateDownload (progress, lessonID) {
+  return {
+    type: ADD_UPDATE_DOWNLOAD,
+    progress,
+    lessonID
+  ***REMOVED***
 ***REMOVED***
 
-export function removeDownload(lessonID) {
-   return {
-      type: REMOVE_DOWNLOAD,
-      lessonID
-   ***REMOVED***
+export function removeDownload (lessonID) {
+  return {
+    type: REMOVE_DOWNLOAD,
+    lessonID
+  ***REMOVED***
 ***REMOVED***
 
 // thunk function for async downloading
-export function downloadLesson(lessonID, source) {
-   var counter = 0;
+export function downloadLesson (lessonID, source) {
+  var counter = 0
 
-   return dispatch => {
-
-      // callback function
-      function callback({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
-         progress = totalBytesWritten / totalBytesExpectedToWrite
-         if (progress == 1) {
-            dispatch(addUpdateDownload(progress, lessonID))
-         ***REMOVED***
-         else if (counter % 10 == 0) {
-            dispatch(addUpdateDownload(progress, lessonID))
-         ***REMOVED***
-         counter += 1;
+  return dispatch => {
+    // callback function
+    function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
+      progress = totalBytesWritten / totalBytesExpectedToWrite
+      if (progress == 1) {
+        dispatch(addUpdateDownload(progress, lessonID))
+      ***REMOVED*** else if (counter % 10 == 0) {
+        dispatch(addUpdateDownload(progress, lessonID))
       ***REMOVED***
+      counter += 1
+    ***REMOVED***
 
-      // create our download object
-      const downloadResumable = FileSystem.createDownloadResumable(
-         source,
-         FileSystem.documentDirectory + lessonID + '.mp3',
-         {***REMOVED***,
-         callback
-      )
+    // create our download object
+    const downloadResumable = FileSystem.createDownloadResumable(
+      source,
+      FileSystem.documentDirectory + lessonID + '.mp3',
+      {***REMOVED***,
+      callback
+    )
 
-      // add our download to state with progress 0
+    // add our download to state with progress 0
+    dispatch(addUpdateDownload(0, lessonID))
+
+    // attempt to download file
+    downloadResumable.downloadAsync().catch(() => {
+      // if we get an error, set our progress back to 0
       dispatch(addUpdateDownload(0, lessonID))
 
-      // attempt to download file
-      downloadResumable.downloadAsync().catch(() => {
-         // if we get an error, set our progress back to 0
-         dispatch(addUpdateDownload(0, lessonID))
-
-         // then, store the download resumable object so we can start it later
-         AsyncStorage.setItem(lessonID, JSON.stringify(downloadResumable.savable()));
-      ***REMOVED***)
-   ***REMOVED***
+      // then, store the download resumable object so we can start it later
+      AsyncStorage.setItem(
+        lessonID,
+        JSON.stringify(downloadResumable.savable())
+      )
+    ***REMOVED***)
+  ***REMOVED***
 ***REMOVED***
 
-export function resumeDownload(lessonID, downloadSnapshotJSON) {
-   var counter = 0;
-   return async dispatch => {
-      // callback function
-      function callback({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
-         progress = totalBytesWritten / totalBytesExpectedToWrite
-         if (progress == 1) {
-            dispatch(addUpdateDownload(progress, lessonID))
-            AsyncStorage.removeItem(lessonID)
-         ***REMOVED***
-         else if (counter % 10 == 0) {
-            dispatch(addUpdateDownload(progress, lessonID))
-         ***REMOVED***
-         counter += 1;
+export function resumeDownload (lessonID, downloadSnapshotJSON) {
+  var counter = 0
+  return async dispatch => {
+    // callback function
+    function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
+      progress = totalBytesWritten / totalBytesExpectedToWrite
+      if (progress == 1) {
+        dispatch(addUpdateDownload(progress, lessonID))
+        AsyncStorage.removeItem(lessonID)
+      ***REMOVED*** else if (counter % 10 == 0) {
+        dispatch(addUpdateDownload(progress, lessonID))
       ***REMOVED***
+      counter += 1
+    ***REMOVED***
 
-      const downloadSnapshot = JSON.parse(downloadSnapshotJSON);
-      const downloadResumable = new FileSystem.DownloadResumable(
-         downloadSnapshot.url,
-         downloadSnapshot.fileUri,
-         downloadSnapshot.options,
-         callback,
-         downloadSnapshot.resumeData
-      );
+    const downloadSnapshot = JSON.parse(downloadSnapshotJSON)
+    const downloadResumable = new FileSystem.DownloadResumable(
+      downloadSnapshot.url,
+      downloadSnapshot.fileUri,
+      downloadSnapshot.options,
+      callback,
+      downloadSnapshot.resumeData
+    )
 
-      downloadResumable.resumeAsync().catch(() => AsyncStorage.setItem(lessonID, JSON.stringify(downloadResumable.savable())));
-   ***REMOVED***
+    downloadResumable
+      .resumeAsync()
+      .catch(() =>
+        AsyncStorage.setItem(
+          lessonID,
+          JSON.stringify(downloadResumable.savable())
+        )
+      )
+  ***REMOVED***
 ***REMOVED***

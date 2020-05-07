@@ -1,254 +1,361 @@
-import React, { useState, useEffect ***REMOVED*** from 'react';
-import { View, FlatList, StyleSheet, Alert, Image, Button, Text ***REMOVED*** from 'react-native';
-import LessonItem from '../components/LessonItem';
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import SetItem from '../components/SetItem';
+import React, { useState, useEffect ***REMOVED*** from 'react'
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Alert,
+  Image,
+  Button,
+  Text
+***REMOVED*** from 'react-native'
+import LessonItem from '../components/LessonItem'
+import * as FileSystem from 'expo-file-system'
+import * as Sharing from 'expo-sharing'
+import SetItem from '../components/SetItem'
 import WahaModal from '../components/WahaModal'
 import ModalButton from '../components/ModalButton'
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo from '@react-native-community/netinfo'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import BackButton from '../components/BackButton'
-import { downloadLesson, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import {
+  downloadLesson,
+  removeDownload
+***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 
-function LessonListScreen(props) {
+function LessonListScreen (props) {
+  //// STATE
 
+  // keeps track of whether the user has internet connection
 
+  // keeps track of which lessons are downloaded
+  const [downloadsInFileSystem, setDownloadsInFileSystem] = useState([])
 
-   //// STATE
+  // keeps track of the lesson to download/delete/toggle complete when modals are up
+  const [activeLessonInModal, setActiveLessonInModal] = useState({***REMOVED***)
 
-   // keeps track of whether the user has internet connection
+  // modal states
+  const [showSaveLessonModal, setShowSaveLessonModal] = useState(false)
+  const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false)
+  const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false)
 
-   // keeps track of which lessons are downloaded 
-   const [downloadsInFileSystem, setDownloadsInFileSystem] = useState([])
+  //// CONSTRUCTOR
 
-   // keeps track of the lesson to download/delete/toggle complete when modals are up
-   const [activeLessonInModal, setActiveLessonInModal] = useState({***REMOVED***);
+  useEffect(() => {
+    props.navigation.setOptions(getNavOptions())
+  ***REMOVED***, [])
 
-   // modal states
-   const [showSaveLessonModal, setShowSaveLessonModal] = useState(false);
-   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false);
-   const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false);
-
-   //// CONSTRUCTOR
-
-   useEffect(() => {
-      props.navigation.setOptions(getNavOptions())
-   ***REMOVED***, [])
-
-   // checks which lessons are downloaded and stores in state
-   useEffect(() => {
-      var whichLessonsDownloaded = {***REMOVED***
-      FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then(contents => { 
-         props.activeDatabase.lessons.forEach(lesson => {
-            if (contents.includes(lesson.id + '.mp3'))
-               whichLessonsDownloaded[lesson.id] = true
-            else
-               whichLessonsDownloaded[lesson.id] = false
-         ***REMOVED***)
-         return whichLessonsDownloaded
+  // checks which lessons are downloaded and stores in state
+  useEffect(() => {
+    var whichLessonsDownloaded = {***REMOVED***
+    FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
+      .then(contents => {
+        props.activeDatabase.lessons.forEach(lesson => {
+          if (contents.includes(lesson.id + '.mp3'))
+            whichLessonsDownloaded[lesson.id] = true
+          else whichLessonsDownloaded[lesson.id] = false
+        ***REMOVED***)
+        return whichLessonsDownloaded
       ***REMOVED***)
       .then(whichLessonsDownloaded => {
-         setDownloadsInFileSystem(whichLessonsDownloaded)
+        setDownloadsInFileSystem(whichLessonsDownloaded)
       ***REMOVED***)
-   ***REMOVED***, [props.downloads])
+  ***REMOVED***, [props.downloads])
 
-   //// NAV OPTIONS
+  //// NAV OPTIONS
 
-   function getNavOptions() {
-      return {
-         headerTitle: () => <Image style={styles.headerImage***REMOVED*** source={{ uri: FileSystem.documentDirectory + props.activeGroup.language + 'header.png' ***REMOVED******REMOVED*** />,
-         headerRight: props.isRTL ?
-            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** /> :
-            () => <View></View>,
-         headerLeft: props.isRTL ?
-            () => <View></View> :
-            () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
-      ***REMOVED***
-   ***REMOVED***
+  function getNavOptions () {
+    return {
+      headerTitle: () => (
+        <Image
+          style={styles.headerImage***REMOVED***
+          source={{
+            uri:
+              FileSystem.documentDirectory +
+              props.activeGroup.language +
+              'header.png'
+          ***REMOVED******REMOVED***
+        />
+      ),
+      headerRight: props.isRTL
+        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+        : () => <View></View>,
+      headerLeft: props.isRTL
+        ? () => <View></View>
+        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+    ***REMOVED***
+  ***REMOVED***
 
-   //// FUNCTIONS
+  //// FUNCTIONS
 
-   // downloads a lesson's chapter 2 mp3 via modal press
-   function downloadLessonFromModal() {
-      props.downloadLesson(activeLessonInModal.id, activeLessonInModal.source);
-      hideModals();
-   ***REMOVED***
+  // downloads a lesson's chapter 2 mp3 via modal press
+  function downloadLessonFromModal () {
+    props.downloadLesson(activeLessonInModal.id, activeLessonInModal.source)
+    hideModals()
+  ***REMOVED***
 
-   // deletes a lesson's chapter 2 mp3 via modal press
-   function deleteLessonFromModal() {
-      FileSystem.deleteAsync(FileSystem.documentDirectory + activeLessonInModal.id + '.mp3')
-      props.removeDownload(activeLessonInModal.id)
-      hideModals();
-   ***REMOVED***
+  // deletes a lesson's chapter 2 mp3 via modal press
+  function deleteLessonFromModal () {
+    FileSystem.deleteAsync(
+      FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
+    )
+    props.removeDownload(activeLessonInModal.id)
+    hideModals()
+  ***REMOVED***
 
-   // changes the complete status of a lesson via modal press
-   // note: don't change it if they're marking it as what it's already marked as
-   function toggleCompleteFromModal(statusToMark) {
-      if (props.activeGroup.progress.includes(activeLessonInModal.index) && statusToMark === 'incomplete') {
-         props.toggleComplete(props.activeGroup.name, activeLessonInModal.index);
-         props.setBookmark(props.activeGroup.name)
-      ***REMOVED*** else if (!props.activeGroup.progress.includes(activeLessonInModal.index) && statusToMark === 'complete') {
-         props.toggleComplete(props.activeGroup.name, activeLessonInModal.index);
-         props.setBookmark(props.activeGroup.name)
-      ***REMOVED***
-      hideModals();
-   ***REMOVED***
-
-   // marks every lesson in current set as complete up until the selected lesson via modal press
-   function markUpToThisPointAsCompleteFromModal() {
-      for (var i = 1; i <= activeLessonInModal.index; i++) {
-         if (!props.activeGroup.progress.includes(i) && props.activeDatabase.lessons[i - 1].setid === props.route.params.thisSet.id) {
-            props.toggleComplete(props.activeGroup.name, i)
-         ***REMOVED***
-      ***REMOVED***
-      hideModals();
+  // changes the complete status of a lesson via modal press
+  // note: don't change it if they're marking it as what it's already marked as
+  function toggleCompleteFromModal (statusToMark) {
+    if (
+      props.activeGroup.progress.includes(activeLessonInModal.index) &&
+      statusToMark === 'incomplete'
+    ) {
+      props.toggleComplete(props.activeGroup.name, activeLessonInModal.index)
       props.setBookmark(props.activeGroup.name)
-   ***REMOVED***
+    ***REMOVED*** else if (
+      !props.activeGroup.progress.includes(activeLessonInModal.index) &&
+      statusToMark === 'complete'
+    ) {
+      props.toggleComplete(props.activeGroup.name, activeLessonInModal.index)
+      props.setBookmark(props.activeGroup.name)
+    ***REMOVED***
+    hideModals()
+  ***REMOVED***
 
-   // hides all the modals 
-   function hideModals() {
-      setShowSaveLessonModal(false);
-      setShowDeleteLessonModal(false);
-      setShowLessonOptionsModal(false);
-   ***REMOVED***
-
-
-   // opens the share sheet to share a chapter of a lesson
-   function shareLesson(chapter) {
-      switch (chapter) {
-         case 'fellowship':
-            Sharing.shareAsync(FileSystem.documentDirectory + props.activeGroup.language + 'chapter1.mp3')
-            break;
-         case 'passage':
-            FileSystem.getInfoAsync(FileSystem.documentDirectory + activeLessonInModal.id + '.mp3')
-               .then(({ exists ***REMOVED***) => {
-                  exists ?
-                     Sharing.shareAsync(FileSystem.documentDirectory + activeLessonInModal.id + '.mp3') :
-                     Alert.alert(
-                        props.translations.alerts.shareUndownloaded.header,
-                        props.translations.alerts.shareUndownloaded.body,
-                        [{ text: props.translations.alerts.options.ok, onPress: () => { ***REMOVED*** ***REMOVED***]
-                     )
-               ***REMOVED***)
-            break;
-         case 'application':
-            Sharing.shareAsync(FileSystem.documentDirectory + props.activeGroup.language + 'chapter3.mp3')
-            break;
+  // marks every lesson in current set as complete up until the selected lesson via modal press
+  function markUpToThisPointAsCompleteFromModal () {
+    for (var i = 1; i <= activeLessonInModal.index; i++) {
+      if (
+        !props.activeGroup.progress.includes(i) &&
+        props.activeDatabase.lessons[i - 1].setid ===
+          props.route.params.thisSet.id
+      ) {
+        props.toggleComplete(props.activeGroup.name, i)
       ***REMOVED***
-   ***REMOVED***
+    ***REMOVED***
+    hideModals()
+    props.setBookmark(props.activeGroup.name)
+  ***REMOVED***
 
-   //// RENDER
+  // hides all the modals
+  function hideModals () {
+    setShowSaveLessonModal(false)
+    setShowDeleteLessonModal(false)
+    setShowLessonOptionsModal(false)
+  ***REMOVED***
 
-   function renderLessonItem(lessonList) {
-      return (
-         <LessonItem
-            thisLesson={lessonList.item***REMOVED***
-            onLessonSelect={() => props.navigation.navigate('Play', {
-               thisLesson: lessonList.item,
-               isDownloaded: downloadsInFileSystem[lessonList.item.id]
-            ***REMOVED***)***REMOVED***
-            isDownloaded={downloadsInFileSystem[lessonList.item.id]***REMOVED***
-            isComplete={props.activeGroup.progress.includes(lessonList.item.index)***REMOVED***
-            setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
-            setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
-            setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
-            setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
-         />
-      )
-   ***REMOVED***
+  // opens the share sheet to share a chapter of a lesson
+  function shareLesson (chapter) {
+    switch (chapter) {
+      case 'fellowship':
+        Sharing.shareAsync(
+          FileSystem.documentDirectory +
+            props.activeGroup.language +
+            'chapter1.mp3'
+        )
+        break
+      case 'passage':
+        FileSystem.getInfoAsync(
+          FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
+        ).then(({ exists ***REMOVED***) => {
+          exists
+            ? Sharing.shareAsync(
+                FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
+              )
+            : Alert.alert(
+                props.translations.alerts.shareUndownloaded.header,
+                props.translations.alerts.shareUndownloaded.body,
+                [
+                  {
+                    text: props.translations.alerts.options.ok,
+                    onPress: () => {***REMOVED***
+                  ***REMOVED***
+                ]
+              )
+        ***REMOVED***)
+        break
+      case 'application':
+        Sharing.shareAsync(
+          FileSystem.documentDirectory +
+            props.activeGroup.language +
+            'chapter3.mp3'
+        )
+        break
+    ***REMOVED***
+  ***REMOVED***
 
-   return (
-      <View style={styles.screen***REMOVED***>
-         <View style={styles.studySetItemContainer***REMOVED***>
-            <SetItem
-               thisSet={props.route.params.thisSet***REMOVED***
-               isSmall={true***REMOVED***
-            />
-         </View>
-         <FlatList
-            data={props.activeDatabase.lessons.filter(lesson => props.route.params.thisSet.id === lesson.setid)***REMOVED***
-            renderItem={renderLessonItem***REMOVED***
-            keyExtractor={item => item.id***REMOVED***
-         />
+  //// RENDER
 
-         {/* MODALS */***REMOVED***
-         <WahaModal
-            isVisible={showSaveLessonModal***REMOVED***
-            hideModal={hideModals***REMOVED***
-            closeText={props.activeDatabase.translations.modals.downloadLessonOptions.cancel***REMOVED***
-         >
-            <ModalButton isLast={true***REMOVED*** title={props.activeDatabase.translations.modals.downloadLessonOptions.downloadLesson***REMOVED*** onPress={downloadLessonFromModal***REMOVED*** />
-         </WahaModal>
-         <WahaModal
-            isVisible={showDeleteLessonModal***REMOVED***
-            hideModal={hideModals***REMOVED***
-            closeText={props.activeDatabase.translations.modals.deleteLessonOptions.cancel***REMOVED***
-         >
-            <ModalButton isLast={true***REMOVED*** title={props.activeDatabase.translations.modals.deleteLessonOptions.deleteLesson***REMOVED*** onPress={deleteLessonFromModal***REMOVED*** />
-         </WahaModal>
-         <WahaModal
-            isVisible={showLessonOptionsModal***REMOVED***
-            hideModal={hideModals***REMOVED***
-            closeText={props.activeDatabase.translations.modals.lessonOptions.close***REMOVED***
-         >
-            <ModalButton title={props.activeDatabase.translations.modals.lessonOptions.markLessonComplete***REMOVED*** onPress={() => toggleCompleteFromModal('complete')***REMOVED*** />
-            <ModalButton title={props.activeDatabase.translations.modals.lessonOptions.markLessonIncomplete***REMOVED*** onPress={() => toggleCompleteFromModal('incomplete')***REMOVED*** />
-            <ModalButton title={props.activeDatabase.translations.modals.lessonOptions.shareChapter1***REMOVED*** onPress={() => shareLesson('fellowship')***REMOVED*** />
-            <ModalButton title={props.activeDatabase.translations.modals.lessonOptions.shareChapter2***REMOVED*** onPress={() => shareLesson('passage')***REMOVED*** />
-            <ModalButton title={props.activeDatabase.translations.modals.lessonOptions.shareChapter3***REMOVED*** onPress={() => shareLesson('application')***REMOVED*** />
-            <ModalButton isLast={true***REMOVED*** title={props.activeDatabase.translations.modals.lessonOptions.markUpToPointAsComplete***REMOVED*** onPress={markUpToThisPointAsCompleteFromModal***REMOVED*** />
-         </WahaModal>
+  function renderLessonItem (lessonList) {
+    return (
+      <LessonItem
+        thisLesson={lessonList.item***REMOVED***
+        onLessonSelect={() =>
+          props.navigation.navigate('Play', {
+            thisLesson: lessonList.item,
+            isDownloaded: downloadsInFileSystem[lessonList.item.id]
+          ***REMOVED***)
+        ***REMOVED***
+        isDownloaded={downloadsInFileSystem[lessonList.item.id]***REMOVED***
+        isComplete={props.activeGroup.progress.includes(lessonList.item.index)***REMOVED***
+        setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
+        setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
+        setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
+        setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
+      />
+    )
+  ***REMOVED***
+
+  return (
+    <View style={styles.screen***REMOVED***>
+      <View style={styles.studySetItemContainer***REMOVED***>
+        <SetItem thisSet={props.route.params.thisSet***REMOVED*** isSmall={true***REMOVED*** />
       </View>
-   )
+      <FlatList
+        data={props.activeDatabase.lessons.filter(
+          lesson => props.route.params.thisSet.id === lesson.setid
+        )***REMOVED***
+        renderItem={renderLessonItem***REMOVED***
+        keyExtractor={item => item.id***REMOVED***
+      />
+
+      {/* MODALS */***REMOVED***
+      <WahaModal
+        isVisible={showSaveLessonModal***REMOVED***
+        hideModal={hideModals***REMOVED***
+        closeText={
+          props.activeDatabase.translations.modals.downloadLessonOptions.cancel
+        ***REMOVED***
+      >
+        <ModalButton
+          isLast={true***REMOVED***
+          title={
+            props.activeDatabase.translations.modals.downloadLessonOptions
+              .downloadLesson
+          ***REMOVED***
+          onPress={downloadLessonFromModal***REMOVED***
+        />
+      </WahaModal>
+      <WahaModal
+        isVisible={showDeleteLessonModal***REMOVED***
+        hideModal={hideModals***REMOVED***
+        closeText={
+          props.activeDatabase.translations.modals.deleteLessonOptions.cancel
+        ***REMOVED***
+      >
+        <ModalButton
+          isLast={true***REMOVED***
+          title={
+            props.activeDatabase.translations.modals.deleteLessonOptions
+              .deleteLesson
+          ***REMOVED***
+          onPress={deleteLessonFromModal***REMOVED***
+        />
+      </WahaModal>
+      <WahaModal
+        isVisible={showLessonOptionsModal***REMOVED***
+        hideModal={hideModals***REMOVED***
+        closeText={props.activeDatabase.translations.modals.lessonOptions.close***REMOVED***
+      >
+        <ModalButton
+          title={
+            props.activeDatabase.translations.modals.lessonOptions
+              .markLessonComplete
+          ***REMOVED***
+          onPress={() => toggleCompleteFromModal('complete')***REMOVED***
+        />
+        <ModalButton
+          title={
+            props.activeDatabase.translations.modals.lessonOptions
+              .markLessonIncomplete
+          ***REMOVED***
+          onPress={() => toggleCompleteFromModal('incomplete')***REMOVED***
+        />
+        <ModalButton
+          title={
+            props.activeDatabase.translations.modals.lessonOptions.shareChapter1
+          ***REMOVED***
+          onPress={() => shareLesson('fellowship')***REMOVED***
+        />
+        <ModalButton
+          title={
+            props.activeDatabase.translations.modals.lessonOptions.shareChapter2
+          ***REMOVED***
+          onPress={() => shareLesson('passage')***REMOVED***
+        />
+        <ModalButton
+          title={
+            props.activeDatabase.translations.modals.lessonOptions.shareChapter3
+          ***REMOVED***
+          onPress={() => shareLesson('application')***REMOVED***
+        />
+        <ModalButton
+          isLast={true***REMOVED***
+          title={
+            props.activeDatabase.translations.modals.lessonOptions
+              .markUpToPointAsComplete
+          ***REMOVED***
+          onPress={markUpToThisPointAsCompleteFromModal***REMOVED***
+        />
+      </WahaModal>
+    </View>
+  )
 ***REMOVED***
 
 //// STYLES
 
 const styles = StyleSheet.create({
-   screen: {
-      flex: 1,
-      flexDirection: "column",
-      backgroundColor: "#F7F9FA"
-   ***REMOVED***,
-   studySetItemContainer: {
-      width: "100%",
-      height: 90 * scaleMultiplier
-   ***REMOVED***,
-   headerImage: {
-      resizeMode: "contain",
-      width: 120,
-      height: 40,
-      alignSelf: "center",
-   ***REMOVED***,
-   hiddenItemContainer: {
-      justifyContent: "space-between",
-      flexDirection: "row",
-   ***REMOVED***
+  screen: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#F7F9FA'
+  ***REMOVED***,
+  studySetItemContainer: {
+    width: '100%',
+    height: 90 * scaleMultiplier
+  ***REMOVED***,
+  headerImage: {
+    resizeMode: 'contain',
+    width: 120,
+    height: 40,
+    alignSelf: 'center'
+  ***REMOVED***,
+  hiddenItemContainer: {
+    justifyContent: 'space-between',
+    flexDirection: 'row'
+  ***REMOVED***
 ***REMOVED***)
 
 //// REDUX
 
-function mapStateToProps(state) {
-   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)[0]
-   return {
-      downloads: state.downloads,
-      activeDatabase: state.database[activeGroup.language],
-      isRTL: state.database[activeGroup.language].isRTL,
-      activeGroup: activeGroup,
-   ***REMOVED***
-***REMOVED***;
-
-function mapDispatchToProps(dispatch) {
-   return {
-      downloadLesson: (lessonID, source) => { dispatch(downloadLesson(lessonID, source)) ***REMOVED***,
-      toggleComplete: (groupName, lessonIndex) => { dispatch(toggleComplete(groupName, lessonIndex)) ***REMOVED***,
-      setBookmark: groupName => { dispatch(setBookmark(groupName)) ***REMOVED***,
-      removeDownload: lessonID => { dispatch(removeDownload(lessonID)) ***REMOVED***
-   ***REMOVED***
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    downloads: state.downloads,
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup
+  ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(LessonListScreen);
+function mapDispatchToProps (dispatch) {
+  return {
+    downloadLesson: (lessonID, source) => {
+      dispatch(downloadLesson(lessonID, source))
+    ***REMOVED***,
+    toggleComplete: (groupName, lessonIndex) => {
+      dispatch(toggleComplete(groupName, lessonIndex))
+    ***REMOVED***,
+    setBookmark: groupName => {
+      dispatch(setBookmark(groupName))
+    ***REMOVED***,
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps, mapDispatchToProps)(LessonListScreen)

@@ -1,40 +1,50 @@
 //basic imports
-import React from 'react';
-import { View, Text, StyleSheet***REMOVED*** from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet ***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import { connect ***REMOVED*** from 'react-redux'
 
-function TimeDisplay(props) {
+function TimeDisplay (props) {
+  //function to convert a time in milliseconds to a
+  //nicely formatted string (for the scrubber)
+  function msToTime (duration) {
+    if (duration > 0 && duration <= props.max) {
+      var seconds = Math.floor((duration / 1000) % 60)
+      var minutes = Math.floor((duration / (1000 * 60)) % 60)
 
-    //function to convert a time in milliseconds to a 
-    //nicely formatted string (for the scrubber)
-    function msToTime(duration) {
-        if (duration > 0 && duration <= props.max) {
-        var seconds = Math.floor((duration / 1000) % 60);
-        var minutes = Math.floor((duration / (1000 * 60)) % 60);
+      minutes = minutes < 10 ? '0' + minutes : minutes
+      seconds = seconds < 10 ? '0' + seconds : seconds
 
-        minutes = (minutes < 10) ? "0" + minutes : minutes;
-        seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-        return minutes + ":" + seconds;
-        ***REMOVED*** else if (duration > props.max) {
-            return msToTime(props.max);
-        ***REMOVED*** else {
-            return "00:00";
-        ***REMOVED***
+      return minutes + ':' + seconds
+    ***REMOVED*** else if (duration > props.max) {
+      return msToTime(props.max)
+    ***REMOVED*** else {
+      return '00:00'
     ***REMOVED***
+  ***REMOVED***
 
-    return (
-        <View styles={props.style***REMOVED***>
-            <Text style={styles.timeText***REMOVED***>{msToTime(props.time)***REMOVED***</Text>
-        </View>
-    )
+  return (
+    <View styles={props.style***REMOVED***>
+      <Text style={[styles.timeText, { fontFamily: props.font + '-regular' ***REMOVED***]***REMOVED***>
+        {msToTime(props.time)***REMOVED***
+      </Text>
+    </View>
+  )
 ***REMOVED***
 
 const styles = StyleSheet.create({
-   timeText: {
-      fontFamily: 'regular',
-      fontSize: 12 * scaleMultiplier
-   ***REMOVED***
+  timeText: {
+    fontSize: 12 * scaleMultiplier
+  ***REMOVED***
 ***REMOVED***)
 
-export default TimeDisplay;
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: state.database[activeGroup.language].font
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps)(TimeDisplay)

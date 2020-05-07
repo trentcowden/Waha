@@ -1,35 +1,54 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, Text ***REMOVED*** from 'react-native';
+import React from 'react'
+import { TouchableOpacity, StyleSheet, Text ***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import { connect ***REMOVED*** from 'react-redux'
 
-function ModalButton(props) {
+function ModalButton (props) {
+  //// RETURN
 
-   //// RETURN
-
-   return (
-      <TouchableOpacity
-         style={[styles.modalButtonStyle, {borderBottomWidth: props.isLast ? 0 : 1***REMOVED***]***REMOVED***
-         onPress={props.onPress***REMOVED***
+  return (
+    <TouchableOpacity
+      style={[
+        styles.modalButtonStyle,
+        { borderBottomWidth: props.isLast ? 0 : 1 ***REMOVED***
+      ]***REMOVED***
+      onPress={props.onPress***REMOVED***
+    >
+      <Text
+        style={[
+          styles.text,
+          props.style,
+          { fontFamily: props.font + '-regular' ***REMOVED***
+        ]***REMOVED***
       >
-         <Text style={{ ...styles.text, ...props.style ***REMOVED******REMOVED***>{props.title***REMOVED***</Text>
-      </TouchableOpacity>
-   )
+        {props.title***REMOVED***
+      </Text>
+    </TouchableOpacity>
+  )
 ***REMOVED***
 
 //// STYLES
 
 const styles = StyleSheet.create({
-   modalButtonStyle: {
-      width: "100%",
-      height: 70 * scaleMultiplier,
-      justifyContent: "center",
-      borderBottomColor: "#dedede"
-   ***REMOVED***,
-   text: {
-      textAlign: "center",
-      fontFamily: 'regular',
-      fontSize: 19.5 * scaleMultiplier
-   ***REMOVED***
+  modalButtonStyle: {
+    width: '100%',
+    height: 70 * scaleMultiplier,
+    justifyContent: 'center',
+    borderBottomColor: '#dedede'
+  ***REMOVED***,
+  text: {
+    textAlign: 'center',
+    fontSize: 19.5 * scaleMultiplier
+  ***REMOVED***
 ***REMOVED***)
 
-export default ModalButton
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: state.database[activeGroup.language].font
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps)(ModalButton)
