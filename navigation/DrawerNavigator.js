@@ -8,7 +8,11 @@ import StackNavigator from './StackNavigator'
 import { NavigationContainer ***REMOVED*** from '@react-navigation/native'
 import { createDrawerNavigator ***REMOVED*** from '@react-navigation/drawer'
 import { connect ***REMOVED*** from 'react-redux'
-import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import {
+  resumeDownload,
+  removeDownload
+***REMOVED*** from '../redux/actions/downloadActions'
+import * as FileSystem from 'expo-file-system'
 import { db, storeData ***REMOVED*** from '../redux/actions/databaseActions'
 
 const Drawer = createDrawerNavigator()
@@ -55,11 +59,24 @@ function DrawerNavigator (props) {
   //// FUNCTIONS
   async function checkPausedDownloads () {
     props.activeDatabase.lessons.forEach(async lesson => {
-      await AsyncStorage.getItem(lesson.id).then(async value => {
-        if (value) {
-          props.resumeDownload(lesson.id, value)
-        ***REMOVED***
-      ***REMOVED***)
+      await AsyncStorage.getItem(lesson.id)
+        .then(async value => {
+          if (value) {
+            // error checking for if the async storage object was not deleted before
+            // if we have a resumable download stored but the lesson is already downloaded,
+            // we don't want to resume it
+            FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+              contents => {
+                if (!contents.includes(lesson.id + '.mp3')) {
+                  props.resumeDownload(lesson.id, value)
+                ***REMOVED*** else {
+                  AsyncStorage.removeItem(lesson.id)
+                ***REMOVED***
+              ***REMOVED***
+            )
+          ***REMOVED***
+        ***REMOVED***)
+        .catch(err => props.removeDownload(lesson.id))
     ***REMOVED***)
   ***REMOVED***
 
@@ -105,6 +122,9 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     resumeDownload: (lessonID, downloadSnapshotJSON) => {
       dispatch(resumeDownload(lessonID, downloadSnapshotJSON))
+    ***REMOVED***,
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
     ***REMOVED***,
     storeData: (data, language) => {
       dispatch(storeData(data, language))
