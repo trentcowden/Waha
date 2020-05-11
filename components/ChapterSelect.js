@@ -34,7 +34,7 @@ function ChapterSelect (props) {
           size={20***REMOVED***
           width={4***REMOVED***
           fill={props.downloads[props.lessonID] * 100***REMOVED***
-          tintColor={props.colors.primary***REMOVED***
+          tintColor={props.primaryColor***REMOVED***
           rotation={0***REMOVED***
           backgroundColor='#FFFFFF'
           style={{ margin: 5 ***REMOVED******REMOVED***
@@ -56,11 +56,9 @@ function ChapterSelect (props) {
         style={[
           styles.chapterSelect,
           {
-            borderColor: props.colors.primary,
+            borderColor: props.primaryColor,
             backgroundColor:
-              props.activeChapter === 'passage'
-                ? props.colors.primary
-                : '#EFF2F4'
+              props.activeChapter === 'passage' ? props.primaryColor : '#EFF2F4'
           ***REMOVED***
         ]***REMOVED***
         onPress={() => props.onPress('passage')***REMOVED***
@@ -69,7 +67,7 @@ function ChapterSelect (props) {
           name={chapter2IconName***REMOVED***
           size={25***REMOVED***
           color={
-            props.activeChapter === 'passage' ? 'white' : props.colors.primary
+            props.activeChapter === 'passage' ? 'white' : props.primaryColor
           ***REMOVED***
         />
         <Text
@@ -79,7 +77,7 @@ function ChapterSelect (props) {
               color:
                 props.activeChapter === 'passage'
                   ? 'white'
-                  : props.colors.primary,
+                  : props.primaryColor,
               fontFamily: props.font + '-black'
             ***REMOVED***
           ]***REMOVED***
@@ -95,10 +93,10 @@ function ChapterSelect (props) {
         style={[
           styles.chapterSelect,
           {
-            borderColor: props.colors.primary,
+            borderColor: props.primaryColor,
             backgroundColor:
               props.activeChapter === 'fellowship'
-                ? props.colors.primary
+                ? props.primaryColor
                 : '#EFF2F4'
           ***REMOVED***
         ]***REMOVED***
@@ -110,9 +108,7 @@ function ChapterSelect (props) {
           ***REMOVED***
           size={25***REMOVED***
           color={
-            props.activeChapter === 'fellowship'
-              ? 'white'
-              : props.colors.primary
+            props.activeChapter === 'fellowship' ? 'white' : props.primaryColor
           ***REMOVED***
         />
         <Text
@@ -122,7 +118,7 @@ function ChapterSelect (props) {
               color:
                 props.activeChapter === 'fellowship'
                   ? 'white'
-                  : props.colors.primary,
+                  : props.primaryColor,
               fontFamily: props.font + '-black'
             ***REMOVED***
           ]***REMOVED***
@@ -135,10 +131,10 @@ function ChapterSelect (props) {
         style={[
           styles.chapterSelect,
           {
-            borderColor: props.colors.primary,
+            borderColor: props.primaryColor,
             backgroundColor:
               props.activeChapter === 'application'
-                ? props.colors.primary
+                ? props.primaryColor
                 : '#EFF2F4'
           ***REMOVED***
         ]***REMOVED***
@@ -150,9 +146,7 @@ function ChapterSelect (props) {
           ***REMOVED***
           size={25***REMOVED***
           color={
-            props.activeChapter === 'application'
-              ? 'white'
-              : props.colors.primary
+            props.activeChapter === 'application' ? 'white' : props.primaryColor
           ***REMOVED***
         />
         <Text
@@ -162,7 +156,7 @@ function ChapterSelect (props) {
               color:
                 props.activeChapter === 'application'
                   ? 'white'
-                  : props.colors.primary,
+                  : props.primaryColor,
               fontFamily: props.font + '-black'
             ***REMOVED***
           ]***REMOVED***
@@ -201,7 +195,7 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    colors: state.database[activeGroup.language].colors,
+    primaryColor: state.database[activeGroup.language].primaryColor,
     downloads: state.downloads,
     translations: state.database[activeGroup.language].translations,
     font: state.database[activeGroup.language].font

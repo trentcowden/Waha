@@ -21,7 +21,7 @@ function WahaDrawer (props) {
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: props.colors.primary ***REMOVED***]***REMOVED***
+      style={[styles.container, { backgroundColor: props.primaryColor ***REMOVED***]***REMOVED***
       forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' ***REMOVED******REMOVED***
     >
       <View style={styles.drawerHeaderContainer***REMOVED***>
@@ -100,7 +100,7 @@ function WahaDrawer (props) {
               { fontFamily: props.font + '-regular' ***REMOVED***
             ]***REMOVED***
           >
-            v0.2.7
+            v0.2.8
           </Text>
         </View>
       </View>
@@ -157,7 +157,7 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    colors: state.database[activeGroup.language].colors,
+    primaryColor: state.database[activeGroup.language].primaryColor,
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,

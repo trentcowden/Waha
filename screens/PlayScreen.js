@@ -456,32 +456,24 @@ function PlayScreen (props) {
           ]***REMOVED***
         >
           {scrollBarLeft***REMOVED***
-          <ScrollView
+          <FlatList
             style={[
               styles.textContainer,
               {
-                marginLeft: item.key === '2' ? 5 : 0,
-                marginRight: item.key === '0' ? 5 : 0
+                marginLeft: item.key === '2' ? 10 : 0,
+                marginRight: item.key === '0' ? 10 : 0,
+                marginVertical: 10
               ***REMOVED***
             ]***REMOVED***
-          >
-            <Text
-              style={[
-                styles.albumTextHeader,
-                { fontFamily: props.font + '-medium' ***REMOVED***
-              ]***REMOVED***
-            >
-              {item.header***REMOVED***
-            </Text>
-            <Text
-              style={[
-                styles.albumTextBody,
-                { fontFamily: props.font + '-regular' ***REMOVED***
-              ]***REMOVED***
-            >
-              {item.body***REMOVED***
-            </Text>
-          </ScrollView>
+            data={
+              item.key === '0'
+                ? props.activeDatabase.lessonQuestions
+                : props.route.params.thisLesson.scripture
+            ***REMOVED***
+            renderItem={renderTextContent***REMOVED***
+            keyExtractor={item => item.header***REMOVED***
+            showsVerticalScrollIndicator={false***REMOVED***
+          />
           {scrollBarRight***REMOVED***
         </View>
       )
@@ -502,6 +494,23 @@ function PlayScreen (props) {
         </View>
       )
     ***REMOVED***
+  ***REMOVED***
+
+  function renderTextContent (textList) {
+    return (
+      <View>
+        <Text
+          style={[styles.albumArtText, { fontFamily: props.font + '-medium' ***REMOVED***]***REMOVED***
+        >
+          {textList.item.header***REMOVED***
+        </Text>
+        <Text
+          style={[styles.albumArtText, { fontFamily: props.font + '-regular' ***REMOVED***]***REMOVED***
+        >
+          {textList.item.text + '\n'***REMOVED***
+        </Text>
+      </View>
+    )
   ***REMOVED***
 
   // renders the play/pause/skip container conditionally because we don't want to show controls when the audio is loading
@@ -629,13 +638,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1
   ***REMOVED***,
-  albumTextHeader: {
-    flexWrap: 'wrap',
-    textAlign: 'center',
-    margin: 5
-  ***REMOVED***,
-  albumTextBody: {
-    flexWrap: 'wrap'
+  albumArtText: {
+    fontSize: 18 * scaleMultiplier,
+    textAlign: 'justify'
   ***REMOVED***,
   scrollBar: {
     width: 4,
@@ -665,7 +670,7 @@ function mapStateToProps (state) {
     activeDatabase: state.database[activeGroup.language],
     translations: state.database[activeGroup.language].translations,
     downloads: state.downloads,
-    colors: state.database[activeGroup.language].colors,
+    primaryColor: state.database[activeGroup.language].primaryColor,
     isRTL: state.database[activeGroup.language].isRTL,
     font: state.database[activeGroup.language].font
   ***REMOVED***
