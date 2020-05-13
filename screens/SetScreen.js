@@ -10,7 +10,9 @@ import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 function SetScreen (props) {
   //// STUFF FOR TESTING
 
-  // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => { console.log(contents) ***REMOVED***)
+  FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
+    console.log(contents)
+  ***REMOVED***)
   // console.log(scaleMultiplier)
 
   //// CONSTRUCTOR
@@ -30,7 +32,7 @@ function SetScreen (props) {
             uri:
               FileSystem.documentDirectory +
               props.activeGroup.language +
-              'header.png'
+              '-header.png'
           ***REMOVED******REMOVED***
         />
       ),
