@@ -7,19 +7,57 @@ import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
-function CoreStorySetsScreen (props) {
+function SetScreen (props) {
   //// STUFF FOR TESTING
 
-  // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
-  //   console.log(contents)
-  // ***REMOVED***)
+  FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
+    console.log(contents)
+  ***REMOVED***)
   // console.log(scaleMultiplier)
 
   //// CONSTRUCTOR
 
-  useEffect(() => {***REMOVED***, [])
+  useEffect(() => {
+    props.navigation.setOptions(getNavOptions())
+  ***REMOVED***, [props.isRTL, props.activeGroup])
 
   //// NAV OPTIONS
+
+  function getNavOptions () {
+    return {
+      headerTitle: () => (
+        <Image
+          style={styles.headerImage***REMOVED***
+          source={{
+            uri:
+              FileSystem.documentDirectory +
+              props.activeGroup.language +
+              '-header.png'
+          ***REMOVED******REMOVED***
+        />
+      ),
+      headerLeft: props.isRTL
+        ? () => <View></View>
+        : () => (
+            <AvatarImage
+              source={props.activeGroup.imageSource***REMOVED***
+              size={40***REMOVED***
+              onPress={() => props.navigation.toggleDrawer()***REMOVED***
+              isActive={true***REMOVED***
+            />
+          ),
+      headerRight: props.isRTL
+        ? () => (
+            <AvatarImage
+              source={props.activeGroup.imageSource***REMOVED***
+              size={40***REMOVED***
+              onPress={() => props.navigation.toggleDrawer()***REMOVED***
+              isActive={true***REMOVED***
+            />
+          )
+        : () => <View></View>
+    ***REMOVED***
+  ***REMOVED***
 
   //// RENDER
 
@@ -82,4 +120,4 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoreStorySetsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SetScreen)

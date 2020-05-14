@@ -107,7 +107,8 @@ function SetItem (props) {
               ***REMOVED******REMOVED***
             >
               <SVG
-                name={'set' + props.thisSet.index***REMOVED***
+                // name={'set' + props.thisSet.index***REMOVED***
+                name={''***REMOVED***
                 width={
                   props.isSmall ? 60 * scaleMultiplier : 70 * scaleMultiplier
                 ***REMOVED***

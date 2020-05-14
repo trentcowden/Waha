@@ -1,17 +1,20 @@
 import React from 'react'
+import { View, Image, StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import * as FileSystem from 'expo-file-system'
 
 import LessonListScreen from '../screens/LessonListScreen'
 import PlayScreen from '../screens/PlayScreen'
-import SetScreen from '../screens/SetScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import AddNewGroupScreen from '../screens/AddNewGroupScreen'
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen'
 import EditGroupScreen from '../screens/EditGroupScreen'
 import StorageScreen from '../screens/StorageScreen'
+import VisibleSetsTabNavigator from '../navigation/VisibleSetsTabNavigator'
+import AddNewSetTabNavigator from '../navigation/AddNewSetTabNavigator'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import { connect ***REMOVED*** from 'react-redux'
-
+import AvatarImage from '../components/AvatarImage'
 const Stack = createStackNavigator()
 
 function StackNavigator (props) {
@@ -33,11 +36,70 @@ function StackNavigator (props) {
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
-        name='Set'
-        component={SetScreen***REMOVED***
+        name='Sets'
+        component={VisibleSetsTabNavigator***REMOVED***
         options={{
+          headerTitle: () => (
+            <Image
+              style={styles.headerImage***REMOVED***
+              source={{
+                uri:
+                  FileSystem.documentDirectory +
+                  props.activeGroup.language +
+                  '-header.png'
+              ***REMOVED******REMOVED***
+            />
+          ),
+          headerLeft: props.isRTL
+            ? () => (
+                <TouchableOpacity
+                  onPress={() => props.navigation.navigate('AddNewSet')***REMOVED***
+                >
+                  <Icon
+                    name='playlist-add'
+                    size={40 * scaleMultiplier***REMOVED***
+                    color='#82868D'
+                  />
+                </TouchableOpacity>
+              )
+            : () => (
+                <AvatarImage
+                  source={props.activeGroup.imageSource***REMOVED***
+                  size={40***REMOVED***
+                  onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                  isActive={true***REMOVED***
+                />
+              ),
+          headerRight: props.isRTL
+            ? () => (
+                <AvatarImage
+                  source={props.activeGroup.imageSource***REMOVED***
+                  size={40***REMOVED***
+                  onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                  isActive={true***REMOVED***
+                />
+              )
+            : () => (
+                <TouchableOpacity
+                  onPress={() => props.navigation.navigate('AddNewSet')***REMOVED***
+                >
+                  <Icon
+                    name='playlist-add'
+                    size={40 * scaleMultiplier***REMOVED***
+                    color='#82868D'
+                  />
+                </TouchableOpacity>
+              )
+        ***REMOVED******REMOVED***
+      />
+
+      <Stack.Screen
+        name='AddNewSet'
+        component={AddNewSetTabNavigator***REMOVED***
+        options={{
+          //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
           headerStyle: {
-            backgroundColor: '#EAEEF0'
+            backgroundColor: '#F7F9FA'
           ***REMOVED***,
           headerTitleAlign: 'center'
         ***REMOVED******REMOVED***
@@ -146,6 +208,15 @@ function StackNavigator (props) {
   )
 ***REMOVED***
 
+const styles = StyleSheet.create({
+  headerImage: {
+    resizeMode: 'contain',
+    width: 120,
+    height: 40,
+    alignSelf: 'center'
+  ***REMOVED***
+***REMOVED***)
+
 //// REDUX
 
 function mapStateToProps (state) {
@@ -155,7 +226,8 @@ function mapStateToProps (state) {
   return {
     isRTL: state.database[activeGroup.language].isRTL,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

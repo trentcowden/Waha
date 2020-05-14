@@ -1,5 +1,12 @@
 import React, { useEffect ***REMOVED*** from 'react'
-import { View, FlatList, StyleSheet, Image, AsyncStorage ***REMOVED*** from 'react-native'
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Image,
+  AsyncStorage,
+  Text
+***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import SetItem from '../components/SetItem'
 import AvatarImage from '../components/AvatarImage'
@@ -10,54 +17,18 @@ import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 function SetScreen (props) {
   //// STUFF FOR TESTING
 
-  FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
-    console.log(contents)
-  ***REMOVED***)
+  // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
+  //   console.log(contents)
+  // ***REMOVED***)
   // console.log(scaleMultiplier)
 
   //// CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
-  ***REMOVED***, [props.isRTL, props.activeGroup])
+    console.log(props.route.name)
+  ***REMOVED***, [])
 
   //// NAV OPTIONS
-
-  function getNavOptions () {
-    return {
-      headerTitle: () => (
-        <Image
-          style={styles.headerImage***REMOVED***
-          source={{
-            uri:
-              FileSystem.documentDirectory +
-              props.activeGroup.language +
-              '-header.png'
-          ***REMOVED******REMOVED***
-        />
-      ),
-      headerLeft: props.isRTL
-        ? () => <View></View>
-        : () => (
-            <AvatarImage
-              source={props.activeGroup.imageSource***REMOVED***
-              size={40***REMOVED***
-              onPress={() => props.navigation.toggleDrawer()***REMOVED***
-              isActive={true***REMOVED***
-            />
-          ),
-      headerRight: props.isRTL
-        ? () => (
-            <AvatarImage
-              source={props.activeGroup.imageSource***REMOVED***
-              size={40***REMOVED***
-              onPress={() => props.navigation.toggleDrawer()***REMOVED***
-              isActive={true***REMOVED***
-            />
-          )
-        : () => <View></View>
-    ***REMOVED***
-  ***REMOVED***
 
   //// RENDER
 
@@ -78,8 +49,11 @@ function SetScreen (props) {
   return (
     <View style={styles.screen***REMOVED***>
       <FlatList
-        data={props.activeDatabase.sets***REMOVED***
+        data={props.activeDatabase.sets.filter(
+          set => set.category === props.route.name
+        )***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
+        ListEmptyComponent={<Text>NO SETS HERE BUDDY</Text>***REMOVED***
       />
     </View>
   )

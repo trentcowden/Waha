@@ -1,68 +1,24 @@
 import React from 'react'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-
-import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
+import SetScreen from '../screens/SetScreen'
 import { connect ***REMOVED*** from 'react-redux'
+import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/material-top-tabs'
 
 const Tab = createMaterialTopTabNavigator()
 
-function TabNavigator (props) {
+function VisibleSetsTabNavigator (props) {
   return (
     //global navigation options
     <Tab.Navigator
       initialRouteName='Core'
-      screenOptions={{
-        headerStyle: {
-          height: 90 * scaleMultiplier
-        ***REMOVED***,
-        gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
-        gestureResponseDistance: {
-          horizontal: 50 * scaleMultiplier,
-          vertical: 135
-        ***REMOVED***,
-        headerTitleAlign: 'center'
-      ***REMOVED******REMOVED***
+      swipeEnabled={false***REMOVED***
+      screenOptions={{***REMOVED******REMOVED***
     >
-      {/* Study Set Screen */***REMOVED***
-      <Tab.Screen
-        name='Core'
-        component={SetScreen***REMOVED***
-        options={{
-          headerStyle: {
-            backgroundColor: '#EAEEF0'
-          ***REMOVED***,
-          headerTitleAlign: 'center'
-        ***REMOVED******REMOVED***
-      />
+      <Tab.Screen name='core' component={SetScreen***REMOVED*** />
 
-      {/* Lesson List Screen */***REMOVED***
-      <Tab.Screen
-        name='Topical'
-        component={LessonListScreen***REMOVED***
-        options={{
-          //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
-          headerStyle: {
-            backgroundColor: '#F7F9FA'
-          ***REMOVED***,
-          headerTitleAlign: 'center'
-        ***REMOVED******REMOVED***
-      />
+      <Tab.Screen name='topical' component={SetScreen***REMOVED*** options={{***REMOVED******REMOVED*** />
 
-      {/* Play Screen */***REMOVED***
-      <Tab.Screen
-        name='Toolkit'
-        component={PlayScreen***REMOVED***
-        options={{
-          headerStyle: {
-            backgroundColor: '#FFFFFF'
-          ***REMOVED***,
-          headerTitleStyle: {
-            color: '#82868D',
-            fontFamily: props.font + '-medium'
-          ***REMOVED***,
-          gestureEnabled: false
-        ***REMOVED******REMOVED***
-      />
+      <Tab.Screen name='toolkit' component={SetScreen***REMOVED*** options={{***REMOVED******REMOVED*** />
     </Tab.Navigator>
   )
 ***REMOVED***
@@ -80,4 +36,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(TabNavigator)
+export default connect(mapStateToProps)(VisibleSetsTabNavigator)
