@@ -10,11 +10,11 @@ import AddNewGroupScreen from '../screens/AddNewGroupScreen'
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen'
 import EditGroupScreen from '../screens/EditGroupScreen'
 import StorageScreen from '../screens/StorageScreen'
-import VisibleSetsTabNavigator from '../navigation/VisibleSetsTabNavigator'
-import AddNewSetTabNavigator from '../navigation/AddNewSetTabNavigator'
+import SetTabNavigator from './SetTabNavigator'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import { connect ***REMOVED*** from 'react-redux'
 import AvatarImage from '../components/AvatarImage'
+
 const Stack = createStackNavigator()
 
 function StackNavigator (props) {
@@ -33,11 +33,12 @@ function StackNavigator (props) {
         ***REMOVED***,
         headerTitleAlign: 'center'
       ***REMOVED******REMOVED***
+      mode='modal'
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
         name='Sets'
-        component={VisibleSetsTabNavigator***REMOVED***
+        component={SetTabNavigator***REMOVED***
         options={{
           headerTitle: () => (
             <Image
@@ -51,17 +52,7 @@ function StackNavigator (props) {
             />
           ),
           headerLeft: props.isRTL
-            ? () => (
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('AddNewSet')***REMOVED***
-                >
-                  <Icon
-                    name='playlist-add'
-                    size={40 * scaleMultiplier***REMOVED***
-                    color='#82868D'
-                  />
-                </TouchableOpacity>
-              )
+            ? () => <View></View>
             : () => (
                 <AvatarImage
                   source={props.activeGroup.imageSource***REMOVED***
@@ -79,29 +70,7 @@ function StackNavigator (props) {
                   isActive={true***REMOVED***
                 />
               )
-            : () => (
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('AddNewSet')***REMOVED***
-                >
-                  <Icon
-                    name='playlist-add'
-                    size={40 * scaleMultiplier***REMOVED***
-                    color='#82868D'
-                  />
-                </TouchableOpacity>
-              )
-        ***REMOVED******REMOVED***
-      />
-
-      <Stack.Screen
-        name='AddNewSet'
-        component={AddNewSetTabNavigator***REMOVED***
-        options={{
-          //gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
-          headerStyle: {
-            backgroundColor: '#F7F9FA'
-          ***REMOVED***,
-          headerTitleAlign: 'center'
+            : () => <View></View>
         ***REMOVED******REMOVED***
       />
 
