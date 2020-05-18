@@ -10,11 +10,11 @@ import {
 ***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import SetItem from '../components/SetItem'
-import AddNewSetModal from '../components/AddNewSetModal'
 import AvatarImage from '../components/AvatarImage'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import { getStateFromPath ***REMOVED*** from '@react-navigation/native'
 
 function SetScreen (props) {
   //// STUFF FOR TESTING
@@ -27,7 +27,6 @@ function SetScreen (props) {
   //// STATE
 
   // shows the add new set modal
-  const [showAddNewSetModal, setShowAddNewSetModal] = useState(false)
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
   //// CONSTRUCTOR
 
@@ -62,9 +61,9 @@ function SetScreen (props) {
   return (
     <View style={styles.screen***REMOVED***>
       <FlatList
-        data={props.activeDatabase.sets.filter(
-          set => set.category === props.route.name
-        )***REMOVED***
+        data={props.activeDatabase.sets
+          .filter(set => set.category === props.route.name)
+          .filter(set => props.activeGroup.addedSets.includes(set.id))***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
         ListFooterComponent={
           <TouchableOpacity
@@ -72,7 +71,14 @@ function SetScreen (props) {
               styles.addNewSetContainer,
               { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
             ]***REMOVED***
-            onPress={() => setShowAddNewSetModal(true)***REMOVED***
+            onPress={() =>
+              props.navigation.navigate('AddSetNavigator', {
+                screen: 'AddSet',
+                params: {
+                  category: props.route.name === 'core' ? 'core' : 'folder'
+                ***REMOVED***
+              ***REMOVED***)
+            ***REMOVED***
           >
             <Icon
               name='plus-filled'
@@ -90,12 +96,6 @@ function SetScreen (props) {
             </Text>
           </TouchableOpacity>
         ***REMOVED***
-      />
-      <AddNewSetModal
-        isVisible={showAddNewSetModal***REMOVED***
-        hideModal={() => setShowAddNewSetModal(false)***REMOVED***
-        category={props.route.name***REMOVED***
-        goNested={() => props.navigation.navigate('Sets')***REMOVED***
       />
     </View>
   )
@@ -141,7 +141,8 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 function mapDispatchToProps (dispatch) {

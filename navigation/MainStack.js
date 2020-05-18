@@ -10,18 +10,19 @@ import AddNewGroupScreen from '../screens/AddNewGroupScreen'
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen'
 import EditGroupScreen from '../screens/EditGroupScreen'
 import StorageScreen from '../screens/StorageScreen'
-import SetTabNavigator from './SetTabNavigator'
+import SetTabNavigator from './SetTabs'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import { connect ***REMOVED*** from 'react-redux'
 import AvatarImage from '../components/AvatarImage'
+import SetsRoot from './SetsRoot'
 
 const Stack = createStackNavigator()
 
-function StackNavigator (props) {
+function MainStack (props) {
   return (
     //global navigation options
     <Stack.Navigator
-      initialRouteName='StudySet'
+      initialRouteName='SetsRoot'
       screenOptions={{
         headerStyle: {
           height: 90 * scaleMultiplier
@@ -33,45 +34,13 @@ function StackNavigator (props) {
         ***REMOVED***,
         headerTitleAlign: 'center'
       ***REMOVED******REMOVED***
-      mode='modal'
+      mode='card'
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
-        name='Sets'
-        component={SetTabNavigator***REMOVED***
-        options={{
-          headerTitle: () => (
-            <Image
-              style={styles.headerImage***REMOVED***
-              source={{
-                uri:
-                  FileSystem.documentDirectory +
-                  props.activeGroup.language +
-                  '-header.png'
-              ***REMOVED******REMOVED***
-            />
-          ),
-          headerLeft: props.isRTL
-            ? () => <View></View>
-            : () => (
-                <AvatarImage
-                  source={props.activeGroup.imageSource***REMOVED***
-                  size={40***REMOVED***
-                  onPress={() => props.navigation.toggleDrawer()***REMOVED***
-                  isActive={true***REMOVED***
-                />
-              ),
-          headerRight: props.isRTL
-            ? () => (
-                <AvatarImage
-                  source={props.activeGroup.imageSource***REMOVED***
-                  size={40***REMOVED***
-                  onPress={() => props.navigation.toggleDrawer()***REMOVED***
-                  isActive={true***REMOVED***
-                />
-              )
-            : () => <View></View>
-        ***REMOVED******REMOVED***
+        name='SetsRoot'
+        component={SetsRoot***REMOVED***
+        options={{ headerShown: false ***REMOVED******REMOVED***
       />
 
       {/* Lesson List Screen */***REMOVED***
@@ -200,4 +169,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(StackNavigator)
+export default connect(mapStateToProps)(MainStack)

@@ -6,13 +6,12 @@ import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/mat
 
 const Tab = createMaterialTopTabNavigator()
 
-function SetTabNavigator (props) {
+function SetTabs (props) {
   return (
     //global navigation options
     <Tab.Navigator
       initialRouteName='Core'
       swipeEnabled={false***REMOVED***
-      screenOptions={{***REMOVED******REMOVED***
       tabBarOptions={{
         labelStyle: {
           fontSize: 14 * scaleMultiplier,
@@ -27,7 +26,7 @@ function SetTabNavigator (props) {
       ***REMOVED******REMOVED***
     >
       <Tab.Screen
-        name='core'
+        name='Core'
         component={SetScreen***REMOVED***
         options={{
           title: 'Core Story Sets'
@@ -35,14 +34,14 @@ function SetTabNavigator (props) {
       />
 
       <Tab.Screen
-        name='topical'
+        name='Topical'
         component={SetScreen***REMOVED***
         options={{
           title: 'Topical Sets'
         ***REMOVED******REMOVED***
       />
 
-      <Tab.Screen name='toolkit' component={SetScreen***REMOVED*** options={{***REMOVED******REMOVED*** />
+      <Tab.Screen name='Toolkit' component={SetScreen***REMOVED*** options={{***REMOVED******REMOVED*** />
     </Tab.Navigator>
   )
 ***REMOVED***
@@ -61,4 +60,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(SetTabNavigator)
+export default connect(mapStateToProps)(SetTabs)
