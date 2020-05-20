@@ -141,12 +141,20 @@ function SetItem (props) {
         break
       case 'hidden':
         setIcon(
-          <View style={[styles.iconContainer, { backgroundColor: '#1D1E20' ***REMOVED***]***REMOVED***>
+          <View
+            style={[
+              styles.iconContainer,
+              {
+                backgroundColor: '#1D1E20',
+                borderRadius: (101 * scaleMultiplier) / 2
+              ***REMOVED***
+            ]***REMOVED***
+          >
             <SVG
               // name={'set' + props.thisSet.index***REMOVED***
               name={''***REMOVED***
-              width={101 * scaleMultiplier***REMOVED***
-              height={101 * scaleMultiplier***REMOVED***
+              width={80 * scaleMultiplier***REMOVED***
+              height={80 * scaleMultiplier***REMOVED***
               fill='#FFFFFF'
             />
           </View>
@@ -163,14 +171,32 @@ function SetItem (props) {
         break
       case 'folder':
         setIcon(
-          <View style={[styles.iconContainer, { backgroundColor: '#1D1E20' ***REMOVED***]***REMOVED***>
-            <SVG
-              // name={'set' + props.thisSet.index***REMOVED***
-              name={''***REMOVED***
-              width={101 * scaleMultiplier***REMOVED***
-              height={101 * scaleMultiplier***REMOVED***
-              fill='#FFFFFF'
-            />
+          <View
+            style={{
+              backgroundColor: '#1D1E20',
+              width: 101 * scaleMultiplier,
+              height: 101 * scaleMultiplier
+            ***REMOVED******REMOVED***
+          >
+            <View
+              style={[
+                styles.iconContainer,
+                {
+                  //backgroundColor: '#1D1E20'
+                  overflow: 'hidden',
+                  borderRadius: (101 * scaleMultiplier) / 2,
+                  margin: 0
+                ***REMOVED***
+              ]***REMOVED***
+            >
+              <SVG
+                // name={'set' + props.thisSet.index***REMOVED***
+                name={''***REMOVED***
+                width={80 * scaleMultiplier***REMOVED***
+                height={80 * scaleMultiplier***REMOVED***
+                fill='#FFFFFF'
+              />
+            </View>
           </View>
         )
         setAction(
@@ -269,19 +295,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     height: 101 * scaleMultiplier,
-    marginHorizontal: 5,
-    marginTop: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginVertical: 2
   ***REMOVED***,
   iconContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
-    margin: 5
+    alignItems: 'center',
+    // padding: 5,
+    width: 101 * scaleMultiplier,
+    height: 101 * scaleMultiplier
   ***REMOVED***,
   percentageTextContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 5
+    justifyContent: 'center'
   ***REMOVED***,
   percentageText: {
     color: '#9FA5AD',

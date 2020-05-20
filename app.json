@@ -20,6 +20,10 @@
     "ios": {
       "supportsTablet": true
     ***REMOVED***,
+    "android": {
+      "package": "com.kingdomstrategies.waha",
+      "versionCode": 1
+    ***REMOVED***,
     "githubUrl": "https://github.com/trentcowden/Waha",
     "icon": "./assets/wahaIcon.png"
   ***REMOVED***

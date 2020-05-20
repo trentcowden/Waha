@@ -62,7 +62,7 @@ function SetsRoot (props) {
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='AddSet'
+        name='AddSetStack'
         component={AddSetStack***REMOVED***
         options={{
           headerShown: false

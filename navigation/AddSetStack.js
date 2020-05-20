@@ -24,42 +24,14 @@ function AddSetStack (props) {
         name='AddSet'
         component={AddSetScreen***REMOVED***
         options={{
-          title: '',
-          headerLeft: props.isRTL
-            ? () => <View></View>
-            : () => (
-                <TouchableOpacity onPress={() => props.navigation.goBack()***REMOVED***>
-                  <Icon name='cancel' size={50***REMOVED*** color='#3A3C3F' />
-                </TouchableOpacity>
-              ),
-          headerRight: props.isRTL
-            ? () => (
-                <TouchableOpacity onPress={() => props.navigation.goBack()***REMOVED***>
-                  <Icon name='cancel' size={50***REMOVED*** color='#3A3C3F' />
-                </TouchableOpacity>
-              )
-            : () => <View></View>
+          title: ''
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
         name='AddSetFolder'
         component={AddSetScreen***REMOVED***
         options={{
-          title: '',
-          headerLeft: props.isRTL
-            ? () => <View></View>
-            : () => (
-                <TouchableOpacity onPress={() => props.navigation.goBack()***REMOVED***>
-                  <Icon name='arrow-left' size={50***REMOVED*** color='#3A3C3F' />
-                </TouchableOpacity>
-              ),
-          headerRight: props.isRTL
-            ? () => (
-                <TouchableOpacity onPress={() => props.navigation.pop()***REMOVED***>
-                  <Icon name='arrow-right' size={50***REMOVED*** color='#3A3C3F' />
-                </TouchableOpacity>
-              )
-            : () => <View></View>
+          title: ''
         ***REMOVED******REMOVED***
       />
     </Stack.Navigator>
