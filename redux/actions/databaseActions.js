@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import '@firebase/firestore'
 import * as FileSystem from 'expo-file-system'
-import { initializeGroup, changeActiveGroup ***REMOVED*** from '../actions/groupsActions'
+import { createGroup, changeActiveGroup ***REMOVED*** from '../actions/groupsActions'
 import i18n from 'i18n-js'
 import { getStateFromPath ***REMOVED*** from '@react-navigation/native'
 
@@ -181,7 +181,7 @@ export function addLanguage (language) {
           // new group, and finally set isfetching to false so we can go into the app
           downloadEverything()
             .then(() => {
-              dispatch(initializeGroup(groupNames[language], language, ''))
+              dispatch(createGroup(groupNames[language], language, ''))
               dispatch(changeActiveGroup(groupNames[language]))
               dispatch(setIsFetching(false))
               dispatch(setFinishedInitialFetch(true))
