@@ -1,0 +1,116 @@
+import React from 'react'
+import { View, Text, TouchableOpacity, StyleSheet, Switch ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import {
+  deleteGroup,
+  changeActiveGroup,
+  setShowToolkit
+***REMOVED*** from '../redux/actions/groupsActions'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import AvatarImage from '../components/AvatarImage'
+
+function GroupListItemToolkit (props) {
+  // FUNCTIONS
+
+  return (
+    <View
+      style={[
+        styles.groupListItemContainer,
+        {
+          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+        ***REMOVED***
+      ]***REMOVED***
+    >
+      <AvatarImage
+        size={50 * scaleMultiplier***REMOVED***
+        onPress={() => {***REMOVED******REMOVED***
+        source={props.group.imageSource***REMOVED***
+        isActive={props.activeGroup === props.group.name***REMOVED***
+      />
+      <View style={styles.groupNameContainer***REMOVED***>
+        <Text
+          style={[
+            styles.groupNameText,
+            {
+              textAlign: props.isRTL ? 'right' : 'left',
+              fontFamily: props.font + '-medium'
+            ***REMOVED***
+          ]***REMOVED***
+        >
+          {props.group.name***REMOVED***
+        </Text>
+      </View>
+      <View style={{ marginHorizontal: 10 ***REMOVED******REMOVED***>
+        <Switch
+          trackColor={{ false: '#DEE3E9', true: '#60C239' ***REMOVED******REMOVED***
+          thumbColor='#FFFFFF'
+          ios_backgroundColor='#DEE3E9'
+          onValueChange={() =>
+            props.setShowToolkit(props.group.name, !props.group.showToolkit)
+          ***REMOVED***
+          value={props.group.showToolkit***REMOVED***
+          disabled={props.toolkitEnabled ? false : true***REMOVED***
+        />
+      </View>
+    </View>
+  )
+***REMOVED***
+
+// STYLES
+
+const styles = StyleSheet.create({
+  groupListItemContainer: {
+    height: 80 * scaleMultiplier,
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    margin: 2
+  ***REMOVED***,
+  groupNameContainer: {
+    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
+    flexWrap: 'nowrap'
+  ***REMOVED***,
+  groupNameText: {
+    color: '#9FA5AD',
+    fontSize: 18 * scaleMultiplier,
+    textAlign: 'left'
+  ***REMOVED***
+***REMOVED***)
+
+// REDUX
+
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    database: state.database,
+    isRTL: state.database[activeGroup.language].isRTL,
+    groups: state.groups,
+    activeGroup: state.activeGroup,
+    font: state.database[activeGroup.language].font,
+    toolkitEnabled: state.toolkitEnabled
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    deleteGroup: name => {
+      dispatch(deleteGroup(name))
+    ***REMOVED***,
+    changeActiveGroup: name => {
+      dispatch(changeActiveGroup(name))
+    ***REMOVED***,
+    setShowToolkit: (groupName, toSet) => {
+      dispatch(setShowToolkit(groupName, toSet))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GroupListItemToolkit)

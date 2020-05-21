@@ -5,7 +5,8 @@ import {
   RESET_PROGRESS,
   EDIT_GROUP,
   SET_BOOKMARK,
-  ADD_SET
+  ADD_SET,
+  SET_SHOW_TOOLKIT
 ***REMOVED*** from '../actions/groupsActions'
 
 export function groups (state = [], action) {
@@ -89,7 +90,13 @@ export function groups (state = [], action) {
         ***REMOVED***
         return group
       ***REMOVED***)
-
+    case SET_SHOW_TOOLKIT:
+      return state.map(group => {
+        if (group.name === action.groupName) {
+          return { ...group, showToolkit: action.toSet ***REMOVED***
+        ***REMOVED***
+        return group
+      ***REMOVED***)
     default:
       return state
   ***REMOVED***
