@@ -85,9 +85,15 @@ function SetItem (props) {
           ) : (
             <View style={styles.actionContainer***REMOVED***>
               <Icon
-                name={props.isRTL ? 'triangle-left' : 'triangle-right'***REMOVED***
+                name={
+                  props.thisSet.id === props.activeGroup.setBookmark
+                    ? props.isRTL
+                      ? 'triangle-left'
+                      : 'triangle-right'
+                    : null
+                ***REMOVED***
                 size={37 * scaleMultiplier***REMOVED***
-                color='#828282'
+                color={props.primaryColor***REMOVED***
               />
             </View>
           )
@@ -219,27 +225,26 @@ function SetItem (props) {
   //// FUNCTIONS
 
   function setProgress () {
-    for (const set of props.activeDatabase.sets) {
-      if (set.id === props.thisSet.id) {
-        setNumLessons(set.length)
-      ***REMOVED***
-    ***REMOVED***
-
-    setNumCompleted(0)
-    for (const lessonIndex of props.activeProgress) {
-      if (
-        props.activeDatabase.lessons.filter(
-          lesson => lesson.index === lessonIndex
-        )[0].setid === props.thisSet.id
-      ) {
-        setNumCompleted(numCompleted => numCompleted + 1)
-      ***REMOVED***
-    ***REMOVED***
-    if (numCompleted === numLessons) {
-      setFullyCompleted(true)
-    ***REMOVED*** else {
-      setFullyCompleted(false)
-    ***REMOVED***
+    // for (const set of props.activeDatabase.sets) {
+    //   if (set.id === props.thisSet.id) {
+    //     setNumLessons(set.length)
+    //   ***REMOVED***
+    // ***REMOVED***
+    // setNumCompleted(0)
+    // for (const lessonIndex of props.activeProgress) {
+    //   if (
+    //     props.activeDatabase.lessons.filter(
+    //       lesson => lesson.index === lessonIndex
+    //     )[0].setid === props.thisSet.id
+    //   ) {
+    //     setNumCompleted(numCompleted => numCompleted + 1)
+    //   ***REMOVED***
+    // ***REMOVED***
+    // if (numCompleted === numLessons) {
+    //   setFullyCompleted(true)
+    // ***REMOVED*** else {
+    //   setFullyCompleted(false)
+    // ***REMOVED***
   ***REMOVED***
 
   //// RENDER
@@ -334,11 +339,12 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    activeProgress: activeGroup.progress,
+    //activeProgress: activeGroup.progress,
     isRTL: state.database[activeGroup.language].isRTL,
     activeDatabase: state.database[activeGroup.language],
     primaryColor: state.database[activeGroup.language].primaryColor,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

@@ -29,6 +29,8 @@ import { connect ***REMOVED*** from 'react-redux'
 function LessonListScreen (props) {
   //// STATE
 
+  // console.log(props.activeGroup.addedSets)
+
   // keeps track of whether the user has internet connection
 
   // keeps track of which lessons are downloaded
@@ -41,6 +43,16 @@ function LessonListScreen (props) {
   const [showSaveLessonModal, setShowSaveLessonModal] = useState(false)
   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false)
   const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false)
+
+  var thisSetProgress = props.activeGroup.addedSets.filter(
+    set => set.id === props.route.params.thisSet.id
+  )[0].progress
+
+  var thisSetBookmark = props.activeGroup.addedSets.filter(
+    set => set.id === props.route.params.thisSet.id
+  )[0].bookmark
+
+  console.log(thisSetBookmark)
 
   //// CONSTRUCTOR
 
@@ -110,17 +122,25 @@ function LessonListScreen (props) {
   // note: don't change it if they're marking it as what it's already marked as
   function toggleCompleteFromModal (statusToMark) {
     if (
-      props.activeGroup.progress.includes(activeLessonInModal.index) &&
+      thisSetProgress.includes(activeLessonInModal.index) &&
       statusToMark === 'incomplete'
     ) {
-      props.toggleComplete(props.activeGroup.name, activeLessonInModal.index)
-      props.setBookmark(props.activeGroup.name)
+      props.toggleComplete(
+        props.activeGroup.name,
+        props.route.params.thisSet,
+        activeLessonInModal.index
+      )
+      // props.setBookmark(props.activeGroup.name)
     ***REMOVED*** else if (
-      !props.activeGroup.progress.includes(activeLessonInModal.index) &&
+      !thisSetProgress.includes(activeLessonInModal.index) &&
       statusToMark === 'complete'
     ) {
-      props.toggleComplete(props.activeGroup.name, activeLessonInModal.index)
-      props.setBookmark(props.activeGroup.name)
+      props.toggleComplete(
+        props.activeGroup.name,
+        props.route.params.thisSet,
+        activeLessonInModal.index
+      )
+      // props.setBookmark(props.activeGroup.name)
     ***REMOVED***
     hideModals()
   ***REMOVED***
@@ -201,8 +221,9 @@ function LessonListScreen (props) {
             isDownloaded: downloadsInFileSystem[lessonList.item.id]
           ***REMOVED***)
         ***REMOVED***
+        isBookmark={lessonList.item.index === thisSetBookmark***REMOVED***
         isDownloaded={downloadsInFileSystem[lessonList.item.id]***REMOVED***
-        isComplete={props.activeGroup.progress.includes(lessonList.item.index)***REMOVED***
+        isComplete={thisSetProgress.includes(lessonList.item.index)***REMOVED***
         setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
         setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
         setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
@@ -343,6 +364,7 @@ function mapStateToProps (state) {
   var activeGroup = state.groups.filter(
     item => item.name === state.activeGroup
   )[0]
+
   return {
     downloads: state.downloads,
     activeDatabase: state.database[activeGroup.language],
@@ -357,8 +379,8 @@ function mapDispatchToProps (dispatch) {
     downloadLesson: (lessonID, source) => {
       dispatch(downloadLesson(lessonID, source))
     ***REMOVED***,
-    toggleComplete: (groupName, lessonIndex) => {
-      dispatch(toggleComplete(groupName, lessonIndex))
+    toggleComplete: (groupName, set, lessonIndex) => {
+      dispatch(toggleComplete(groupName, set, lessonIndex))
     ***REMOVED***,
     setBookmark: groupName => {
       dispatch(setBookmark(groupName))
