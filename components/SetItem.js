@@ -10,7 +10,7 @@ function SetItem (props) {
   //// STATE
 
   // keeps track of the number of completed lessons in this set
-  const [numCompleted, setNumCompleted] = useState(0)
+  const [progressPercentage, setProgressPercentage] = useState(0)
 
   // keeps track of the number of total lessons in a set
   const [numLessons, setNumLessons] = useState(1)
@@ -26,16 +26,15 @@ function SetItem (props) {
   //// CONSTRUCTOR
 
   useEffect(() => {
-    setProgress()
-
     switch (props.mode) {
       case 'shown':
+        setProgress()
         setIcon(
           <View style={styles.iconContainer***REMOVED***>
             <AnimatedCircularProgress
               size={85 * scaleMultiplier***REMOVED***
               width={8 * scaleMultiplier***REMOVED***
-              fill={(numCompleted / numLessons) * 100***REMOVED***
+              fill={progressPercentage * 100***REMOVED***
               tintColor={
                 fullyCompleted ? props.primaryColor + '50' : props.primaryColor
               ***REMOVED***
@@ -68,7 +67,7 @@ function SetItem (props) {
                   { fontFamily: props.font + '-regular' ***REMOVED***
                 ]***REMOVED***
               >
-                {Math.round((numCompleted / numLessons) * 100)***REMOVED***%
+                {Math.round(progressPercentage * 100)***REMOVED***%
               </Text>
             </View>
           </View>
@@ -100,12 +99,13 @@ function SetItem (props) {
         )
         break
       case 'small':
+        setProgress()
         setIcon(
           <View style={styles.iconContainer***REMOVED***>
             <AnimatedCircularProgress
               size={70 * scaleMultiplier***REMOVED***
               width={5 * scaleMultiplier***REMOVED***
-              fill={(numCompleted / numLessons) * 100***REMOVED***
+              fill={progressPercentage * 100***REMOVED***
               tintColor={
                 fullyCompleted ? props.primaryColor + '50' : props.primaryColor
               ***REMOVED***
@@ -138,7 +138,7 @@ function SetItem (props) {
                   { fontFamily: props.font + '-regular' ***REMOVED***
                 ]***REMOVED***
               >
-                {Math.round((numCompleted / numLessons) * 100)***REMOVED***%
+                {Math.round(progressPercentage * 100)***REMOVED***%
               </Text>
             </View>
           </View>
@@ -216,35 +216,23 @@ function SetItem (props) {
         )
         break
     ***REMOVED***
-  ***REMOVED***, [numCompleted, fullyCompleted, props.activeGroup.setBookmark])
-
-  useEffect(() => {
-    setProgress()
-  ***REMOVED***, [props.activeProgress])
+  ***REMOVED***, [
+    progressPercentage,
+    fullyCompleted,
+    props.activeGroup.setBookmark,
+    props.activeGroup.addedSets
+  ])
 
   //// FUNCTIONS
 
+  // sets the progress through this set
   function setProgress () {
-    // for (const set of props.activeDatabase.sets) {
-    //   if (set.id === props.thisSet.id) {
-    //     setNumLessons(set.length)
-    //   ***REMOVED***
-    // ***REMOVED***
-    // setNumCompleted(0)
-    // for (const lessonIndex of props.activeProgress) {
-    //   if (
-    //     props.activeDatabase.lessons.filter(
-    //       lesson => lesson.index === lessonIndex
-    //     )[0].setid === props.thisSet.id
-    //   ) {
-    //     setNumCompleted(numCompleted => numCompleted + 1)
-    //   ***REMOVED***
-    // ***REMOVED***
-    // if (numCompleted === numLessons) {
-    //   setFullyCompleted(true)
-    // ***REMOVED*** else {
-    //   setFullyCompleted(false)
-    // ***REMOVED***
+    setProgressPercentage(
+      props.activeGroup.addedSets.filter(set => set.id === props.thisSet.id)[0]
+        .progress.length / props.thisSet.length
+    )
+    if (progressPercentage === 1) setFullyCompleted(true)
+    else setFullyCompleted(false)
   ***REMOVED***
 
   //// RENDER

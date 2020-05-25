@@ -162,7 +162,7 @@ function PlayScreen (props) {
             <PlayScreenHeaderButtons
               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
               completeOnPress={changeCompleteStatus***REMOVED***
-              completeCondition={props.activeGroup.progress.includes(
+              completeCondition={props.route.params.thisSetProgress.includes(
                 props.route.params.thisLesson.index
               )***REMOVED***
             />
@@ -172,8 +172,8 @@ function PlayScreen (props) {
             <PlayScreenHeaderButtons
               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
               completeOnPress={changeCompleteStatus***REMOVED***
-              completeCondition={props.activeGroup.progress.includes(
-                props.route.params.thisLesson.iindex
+              completeCondition={props.route.params.thisSetProgress.includes(
+                props.route.params.thisLesson.index
               )***REMOVED***
             />
           )
@@ -342,16 +342,17 @@ function PlayScreen (props) {
   // switches the complete status of a lesson to the opposite of its current status
   // and alerts the user of the change
   function changeCompleteStatus () {
-    var isComplete = props.activeGroup.progress.includes(
-      props.route.params.thisLesson.index
-    )
     props.toggleComplete(
       props.activeGroup.name,
+      props.route.params.thisSet,
       props.route.params.thisLesson.index
     )
-    props.setBookmark(props.activeGroup.name)
 
-    if (isComplete) {
+    if (
+      props.route.params.thisSetProgress.includes(
+        props.route.params.thisLesson.index
+      )
+    ) {
       Alert.alert(
         props.translations.alerts.markedAsIncomplete.header,
         props.translations.alerts.markedAsIncomplete.body,
@@ -666,8 +667,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    toggleComplete: (groupName, lessonIndex) => {
-      dispatch(toggleComplete(groupName, lessonIndex))
+    toggleComplete: (groupName, set, lessonIndex) => {
+      dispatch(toggleComplete(groupName, set, lessonIndex))
     ***REMOVED***,
     downloadLesson: (lessonID, source) => {
       dispatch(downloadLesson(lessonID, source))
