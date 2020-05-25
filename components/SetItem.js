@@ -216,7 +216,7 @@ function SetItem (props) {
         )
         break
     ***REMOVED***
-  ***REMOVED***, [numCompleted, fullyCompleted])
+  ***REMOVED***, [numCompleted, fullyCompleted, props.activeGroup.setBookmark])
 
   useEffect(() => {
     setProgress()
