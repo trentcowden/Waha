@@ -110,20 +110,41 @@ function SetScreen (props) {
                 ***REMOVED***)
               ***REMOVED***
             >
-              <Icon
-                name='plus-filled'
-                size={50 * scaleMultiplier***REMOVED***
-                color='#9FA5AD'
-                style={styles.addNewSetIcon***REMOVED***
-              />
-              <Text
-                style={[
-                  styles.addNewSetText,
-                  { fontFamily: props.font + '-regular' ***REMOVED***
-                ]***REMOVED***
+              <View
+                style={{
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 80 * scaleMultiplier,
+                  height: 80 * scaleMultiplier
+                ***REMOVED******REMOVED***
               >
-                {addNewSetLabel***REMOVED***
-              </Text>
+                <Icon
+                  name='plus-filled'
+                  size={60 * scaleMultiplier***REMOVED***
+                  color='#9FA5AD'
+                  style={styles.addNewSetIcon***REMOVED***
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  marginRight: props.isRTL ? 20 : 0,
+                  marginLeft: props.isRTL ? 0 : 20
+                ***REMOVED******REMOVED***
+              >
+                <Text
+                  style={{
+                    fontFamily: props.font + '-regular',
+                    fontSize: 14 * scaleMultiplier,
+                    color: '#9FA5AD'
+                  ***REMOVED******REMOVED***
+                >
+                  {addNewSetLabel***REMOVED***
+                </Text>
+              </View>
             </TouchableOpacity>
           )
         ***REMOVED***
@@ -147,18 +168,13 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   addNewSetContainer: {
     width: '100%',
-    height: 80 * scaleMultiplier,
+    height: 100 * scaleMultiplier,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    padding: 20
   ***REMOVED***,
-  addNewSetIcon: {
-    marginHorizontal: 25
-  ***REMOVED***,
-  addNewSetText: {
-    fontSize: 14 * scaleMultiplier,
-    color: '#9FA5AD'
-  ***REMOVED***
+  addNewSetText: {***REMOVED***
 ***REMOVED***)
 
 //// REDUX

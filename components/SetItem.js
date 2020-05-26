@@ -32,8 +32,8 @@ function SetItem (props) {
         setIcon(
           <View style={styles.iconContainer***REMOVED***>
             <AnimatedCircularProgress
-              size={85 * scaleMultiplier***REMOVED***
-              width={8 * scaleMultiplier***REMOVED***
+              size={78 * scaleMultiplier***REMOVED***
+              width={7 * scaleMultiplier***REMOVED***
               fill={progressPercentage * 100***REMOVED***
               tintColor={
                 fullyCompleted ? props.primaryColor + '50' : props.primaryColor
@@ -44,8 +44,7 @@ function SetItem (props) {
               {() => (
                 <View
                   style={{
-                    width: '100%',
-                    height: '100%',
+                    flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center'
                   ***REMOVED******REMOVED***
@@ -60,16 +59,6 @@ function SetItem (props) {
                 </View>
               )***REMOVED***
             </AnimatedCircularProgress>
-            <View style={styles.percentageTextContainer***REMOVED***>
-              <Text
-                style={[
-                  styles.percentageText,
-                  { fontFamily: props.font + '-regular' ***REMOVED***
-                ]***REMOVED***
-              >
-                {Math.round(progressPercentage * 100)***REMOVED***%
-              </Text>
-            </View>
           </View>
         )
         setAction(
@@ -91,20 +80,20 @@ function SetItem (props) {
                       : 'triangle-right'
                     : null
                 ***REMOVED***
-                size={37 * scaleMultiplier***REMOVED***
+                size={30 * scaleMultiplier***REMOVED***
                 color={props.primaryColor***REMOVED***
               />
             </View>
           )
         )
         break
-      case 'small':
+      case 'lessonlist':
         setProgress()
         setIcon(
           <View style={styles.iconContainer***REMOVED***>
             <AnimatedCircularProgress
-              size={70 * scaleMultiplier***REMOVED***
-              width={5 * scaleMultiplier***REMOVED***
+              size={78 * scaleMultiplier***REMOVED***
+              width={7 * scaleMultiplier***REMOVED***
               fill={progressPercentage * 100***REMOVED***
               tintColor={
                 fullyCompleted ? props.primaryColor + '50' : props.primaryColor
@@ -115,8 +104,7 @@ function SetItem (props) {
               {() => (
                 <View
                   style={{
-                    width: '100%',
-                    height: '100%',
+                    flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center'
                   ***REMOVED******REMOVED***
@@ -124,26 +112,16 @@ function SetItem (props) {
                   <SVG
                     // name={'set' + props.thisSet.index***REMOVED***
                     name={''***REMOVED***
-                    width={60 * scaleMultiplier***REMOVED***
-                    height={60 * scaleMultiplier***REMOVED***
+                    width={70 * scaleMultiplier***REMOVED***
+                    height={70 * scaleMultiplier***REMOVED***
                     fill={fullyCompleted ? '#9FA5AD' : '#1D1E20'***REMOVED***
                   />
                 </View>
               )***REMOVED***
             </AnimatedCircularProgress>
-            <View style={styles.percentageTextContainer***REMOVED***>
-              <Text
-                style={[
-                  styles.percentageText,
-                  { fontFamily: props.font + '-regular' ***REMOVED***
-                ]***REMOVED***
-              >
-                {Math.round(progressPercentage * 100)***REMOVED***%
-              </Text>
-            </View>
           </View>
         )
-        setAction(null)
+        setAction(<View style={styles.actionContainer***REMOVED*** />)
         break
       case 'hidden':
         setIcon(
@@ -152,7 +130,10 @@ function SetItem (props) {
               styles.iconContainer,
               {
                 backgroundColor: '#1D1E20',
-                borderRadius: (101 * scaleMultiplier) / 2
+                borderRadius: (80 * scaleMultiplier) / 2,
+                overflow: 'hidden',
+                borderWidth: 7,
+                borderColor: '#1D1E20'
               ***REMOVED***
             ]***REMOVED***
           >
@@ -174,45 +155,55 @@ function SetItem (props) {
             />
           </View>
         )
+        setInfo(
+          <TouchableOpacity
+            style={[
+              styles.actionContainer,
+              {
+                marginRight: props.isRTL ? 0 : 10,
+                marginLeft: props.isRTL ? 10 : 0
+              ***REMOVED***
+            ]***REMOVED***
+            onPress={() => {***REMOVED******REMOVED***
+          >
+            <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color='#9FA5AD' />
+          </TouchableOpacity>
+        )
         break
       case 'folder':
         setIcon(
-          <View
-            style={{
-              backgroundColor: '#1D1E20',
-              width: 101 * scaleMultiplier,
-              height: 101 * scaleMultiplier
-            ***REMOVED******REMOVED***
-          >
-            <View
-              style={[
-                styles.iconContainer,
-                {
-                  //backgroundColor: '#1D1E20'
-                  overflow: 'hidden',
-                  borderRadius: (101 * scaleMultiplier) / 2,
-                  margin: 0
-                ***REMOVED***
-              ]***REMOVED***
-            >
-              <SVG
-                // name={'set' + props.thisSet.index***REMOVED***
-                name={''***REMOVED***
-                width={80 * scaleMultiplier***REMOVED***
-                height={80 * scaleMultiplier***REMOVED***
-                fill='#FFFFFF'
-              />
-            </View>
+          <View style={styles.iconContainer***REMOVED***>
+            <SVG
+              // name={'set' + props.thisSet.index***REMOVED***
+              name={''***REMOVED***
+              width={80 * scaleMultiplier***REMOVED***
+              height={80 * scaleMultiplier***REMOVED***
+              fill='#1D1E20'
+            />
           </View>
         )
         setAction(
           <View style={styles.actionContainer***REMOVED***>
             <Icon
               name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-              size={40 * scaleMultiplier***REMOVED***
+              size={30 * scaleMultiplier***REMOVED***
               color={props.primaryColor***REMOVED***
             />
           </View>
+        )
+        setInfo(
+          <TouchableOpacity
+            style={[
+              styles.actionContainer,
+              {
+                marginRight: props.isRTL ? 0 : 10,
+                marginLeft: props.isRTL ? 10 : 0
+              ***REMOVED***
+            ]***REMOVED***
+            onPress={() => {***REMOVED******REMOVED***
+          >
+            <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color='#9FA5AD' />
+          </TouchableOpacity>
         )
         break
     ***REMOVED***
@@ -246,14 +237,20 @@ function SetItem (props) {
       onPress={props.onSetSelect***REMOVED***
     >
       {icon***REMOVED***
-      <View style={styles.titleContainer***REMOVED***>
+      <View
+        style={[
+          styles.titleContainer,
+          {
+            marginRight: props.isRTL ? 20 : 0,
+            marginLeft: props.isRTL ? 0 : 20
+          ***REMOVED***
+        ]***REMOVED***
+      >
         <Text
           style={{
             color: fullyCompleted ? '#9FA5AD' : '#1D1E20',
             textAlign: props.isRTL ? 'right' : 'left',
-            fontSize: props.isSmall
-              ? 14 * scaleMultiplier
-              : 12 * scaleMultiplier,
+            fontSize: 12 * scaleMultiplier,
             textAlignVertical: 'center',
             flexWrap: 'wrap',
             fontFamily: props.font + '-regular'
@@ -263,11 +260,9 @@ function SetItem (props) {
         </Text>
         <Text
           style={{
-            color: fullyCompleted ? '#9FA5AD' : '#3A3C3F',
+            color: fullyCompleted ? '#9FA5AD' : '#1D1E20',
             textAlign: props.isRTL ? 'right' : 'left',
-            fontSize: props.isSmall
-              ? 24 * scaleMultiplier
-              : 18 * scaleMultiplier,
+            fontSize: 18 * scaleMultiplier,
             textAlignVertical: 'center',
             flexWrap: 'wrap',
             fontFamily: props.font + '-black'
@@ -276,6 +271,7 @@ function SetItem (props) {
           {props.thisSet.title***REMOVED***
         </Text>
       </View>
+      {info***REMOVED***
       {action***REMOVED***
     </TouchableOpacity>
   )
@@ -287,36 +283,28 @@ const styles = StyleSheet.create({
   studySetItem: {
     flexDirection: 'row',
     flex: 1,
-    height: 101 * scaleMultiplier,
+    height: 100 * scaleMultiplier,
     justifyContent: 'center',
-    marginVertical: 2
+    alignItems: 'center',
+    paddingHorizontal: 20
   ***REMOVED***,
   iconContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     // padding: 5,
-    width: 101 * scaleMultiplier,
-    height: 101 * scaleMultiplier
-  ***REMOVED***,
-  percentageTextContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  ***REMOVED***,
-  percentageText: {
-    color: '#9FA5AD',
-    fontSize: 10
+    width: 80 * scaleMultiplier,
+    height: 80 * scaleMultiplier
   ***REMOVED***,
   titleContainer: {
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'column',
-    marginLeft: 10,
-    marginRight: 5
+    flexDirection: 'column'
   ***REMOVED***,
   actionContainer: {
     justifyContent: 'center',
-    marginRight: 15
+    width: 30 * scaleMultiplier,
+    height: 30 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 
