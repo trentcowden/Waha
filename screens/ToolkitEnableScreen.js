@@ -19,10 +19,14 @@ import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { getStateFromPath ***REMOVED*** from '@react-navigation/native'
 import BackButton from '../components/BackButton'
 import LanguageInstanceHeaderToolkit from '../components/LanguageInstanceHeaderToolkit'
-import OptionsModal from '../components/OptionsModal'
+import MessageModal from '../components/MessageModal'
+import { setShowToolkit ***REMOVED*** from '../redux/actions/groupsActions'
 
 function ToolkitEnableScreen (props) {
   //// STATE
+  const [showHowToolkitWorksModal, setShowHowToolkitWorksModal] = useState(
+    false
+  )
 
   //// CONSTRUCTOR
 
@@ -63,7 +67,7 @@ function ToolkitEnableScreen (props) {
         styles.unlockButton,
         { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
-      onPress={() => {***REMOVED******REMOVED***
+      onPress={() => setShowHowToolkitWorksModal(true)***REMOVED***
     >
       <Text
         style={{
@@ -160,6 +164,14 @@ function ToolkitEnableScreen (props) {
           keyExtractor={item => item.languageID***REMOVED***
         />
       </View>
+      <MessageModal
+        isVisible={showHowToolkitWorksModal***REMOVED***
+        hideModal={() => setShowHowToolkitWorksModal(false)***REMOVED***
+        title='Enable toolkit content'
+        body='In order to add these new story sets to your currently active group, toggle the switch!'
+      >
+        <Text>test</Text>
+      </MessageModal>
     </View>
   )
 ***REMOVED***
