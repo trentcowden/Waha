@@ -4,7 +4,7 @@ import Modal from 'react-native-modal'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { connect ***REMOVED*** from 'react-redux'
 
-function WahaModal (props) {
+function OptionsModal (props) {
   //// RENDER
   return (
     <Modal
@@ -62,4 +62,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(WahaModal)
+export default connect(mapStateToProps)(OptionsModal)

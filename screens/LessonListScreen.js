@@ -14,7 +14,7 @@ import LessonItem from '../components/LessonItem'
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 import SetItem from '../components/SetItem'
-import WahaModal from '../components/WahaModal'
+import OptionsModal from '../components/OptionsModal'
 import ModalButton from '../components/ModalButton'
 import NetInfo from '@react-native-community/netinfo'
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -249,7 +249,7 @@ function LessonListScreen (props) {
       />
 
       {/* MODALS */***REMOVED***
-      <WahaModal
+      <OptionsModal
         isVisible={showSaveLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
         closeText={
@@ -264,8 +264,8 @@ function LessonListScreen (props) {
           ***REMOVED***
           onPress={downloadLessonFromModal***REMOVED***
         />
-      </WahaModal>
-      <WahaModal
+      </OptionsModal>
+      <OptionsModal
         isVisible={showDeleteLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
         closeText={
@@ -280,8 +280,8 @@ function LessonListScreen (props) {
           ***REMOVED***
           onPress={deleteLessonFromModal***REMOVED***
         />
-      </WahaModal>
-      <WahaModal
+      </OptionsModal>
+      <OptionsModal
         isVisible={showLessonOptionsModal***REMOVED***
         hideModal={hideModals***REMOVED***
         closeText={props.activeDatabase.translations.modals.lessonOptions.close***REMOVED***
@@ -328,7 +328,7 @@ function LessonListScreen (props) {
           ***REMOVED***
           onPress={markUpToThisPointAsCompleteFromModal***REMOVED***
         />
-      </WahaModal>
+      </OptionsModal>
     </View>
   )
 ***REMOVED***

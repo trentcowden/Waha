@@ -23,16 +23,22 @@ function GroupListItem (props) {
     // )[0]
     // return bookmarkLesson.subtitle + ' ' + bookmarkLesson.title
 
-    var bookmarkSet = props.activeDatabase.sets.filter(
-      set => set.id === props.activeGroup.setBookmark
+    var thisGroup = props.groups.filter(
+      group => group.name === props.groupName
     )[0]
-    var bookmarkSetBookmarkLesson = props.activeGroup.addedSets.filter(
+    var bookmarkSet = props.activeDatabase.sets.filter(
+      set => set.id === thisGroup.setBookmark
+    )[0]
+    var bookmarkSetBookmarkLesson = thisGroup.addedSets.filter(
       addedSet => addedSet.id === bookmarkSet.id
     )[0].bookmark
     var bookmarkLesson = props.activeDatabase.lessons
-      .filter(lesson => lesson.setid === props.activeGroup.setBookmark)
+      .filter(lesson => lesson.setid === thisGroup.setBookmark)
       .filter(lesson => lesson.index === bookmarkSetBookmarkLesson)[0]
-    return bookmarkLesson.subtitle + ' ' + bookmarkLesson.title
+    return {
+      lesson: bookmarkLesson.subtitle + ' ' + bookmarkLesson.title,
+      set: bookmarkSet.subtitle
+    ***REMOVED***
   ***REMOVED***
 
   // RENDER
@@ -40,7 +46,7 @@ function GroupListItem (props) {
   // render the delete button conditionally as we can only delete in edit mode and
   // can't delete the active group
   var deleteButton
-  if (props.isEditing && props.activeGroup != props.groupName) {
+  if (props.isEditing && props.activeGroup.name != props.groupName) {
     deleteButton = (
       <TouchableOpacity
         style={[
@@ -55,7 +61,7 @@ function GroupListItem (props) {
         <Icon name='minus-filled' size={24 * scaleMultiplier***REMOVED*** color='#FF0800' />
       </TouchableOpacity>
     )
-  ***REMOVED*** else if (props.isEditing && props.activeGroup === props.groupName) {
+  ***REMOVED*** else if (props.isEditing && props.activeGroup.name === props.groupName) {
     deleteButton = (
       <View
         style={[
@@ -84,7 +90,7 @@ function GroupListItem (props) {
         />
       </View>
     )
-  ***REMOVED*** else if (props.activeGroup === props.groupName) {
+  ***REMOVED*** else if (props.activeGroup.name === props.groupName) {
     rightButton = (
       <View style={styles.iconContainer***REMOVED***>
         <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color='#2D9CDB' />
@@ -121,7 +127,7 @@ function GroupListItem (props) {
           size={50 * scaleMultiplier***REMOVED***
           onPress={() => {***REMOVED******REMOVED***
           source={props.avatarSource***REMOVED***
-          isActive={props.activeGroup === props.groupName***REMOVED***
+          isActive={props.activeGroup.name === props.groupName***REMOVED***
         />
         <View style={styles.groupNameContainer***REMOVED***>
           <Text
@@ -144,7 +150,18 @@ function GroupListItem (props) {
               ***REMOVED***
             ]***REMOVED***
           >
-            {getBookmarkText()***REMOVED***
+            {getBookmarkText().set***REMOVED***
+          </Text>
+          <Text
+            style={[
+              styles.checkpointText,
+              {
+                textAlign: props.isRTL ? 'right' : 'left',
+                fontFamily: props.font + '-regular'
+              ***REMOVED***
+            ]***REMOVED***
+          >
+            {getBookmarkText().lesson***REMOVED***
           </Text>
         </View>
         {rightButton***REMOVED***

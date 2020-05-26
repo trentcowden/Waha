@@ -14,7 +14,7 @@ import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 import { scaleMultiplier, setImages ***REMOVED*** from '../constants'
 import { Audio ***REMOVED*** from 'expo-av'
-import WahaModal from '../components/WahaModal'
+import OptionsModal from '../components/OptionsModal'
 import ModalButton from '../components/ModalButton'
 import Scrubber from '../components/Scrubber'
 import PlayPauseSkip from '../components/PlayPauseSkip'
@@ -562,7 +562,7 @@ function PlayScreen (props) {
       {audioControlContainer***REMOVED***
 
       {/* MODALS */***REMOVED***
-      <WahaModal
+      <OptionsModal
         isVisible={showShareLessonModal***REMOVED***
         hideModal={() => setShowShareLessonModal(false)***REMOVED***
         closeText={props.translations.modals.lessonOptions.close***REMOVED***
@@ -580,7 +580,7 @@ function PlayScreen (props) {
           title={props.translations.modals.lessonOptions.sharePassageAudio***REMOVED***
           onPress={() => share('audio')***REMOVED***
         />
-      </WahaModal>
+      </OptionsModal>
     </View>
   )
 ***REMOVED***

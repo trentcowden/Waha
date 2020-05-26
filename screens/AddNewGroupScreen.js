@@ -12,7 +12,7 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as ImagePicker from 'expo-image-picker'
 import { connect ***REMOVED*** from 'react-redux'
 import { createGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import WahaModal from '../components/WahaModal'
+import OptionsModal from '../components/OptionsModal'
 import ModalButton from '../components/ModalButton'
 import AvatarImage from '../components/AvatarImage'
 
@@ -197,7 +197,7 @@ function AddNewGroupScreen (props) {
           </Text>
         </TouchableOpacity>
       </View>
-      <WahaModal
+      <OptionsModal
         isVisible={showImagePickerModal***REMOVED***
         hideModal={() => setShowImagePickerModal(false)***REMOVED***
         closeText={props.translations.modals.cameraOptions.cancel***REMOVED***
@@ -211,7 +211,7 @@ function AddNewGroupScreen (props) {
           title={props.translations.modals.cameraOptions.chooseFromLibrary***REMOVED***
           onPress={openImageLibraryHandler***REMOVED***
         />
-      </WahaModal>
+      </OptionsModal>
     </View>
   )
 ***REMOVED***
