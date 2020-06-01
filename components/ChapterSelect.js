@@ -10,11 +10,11 @@ function ChapterSelect (props) {
   // render chapter 2 icon conditionally based off if it's not active, active, or completed
   var chapter2IconName
   if (props.activeChapter === 'fellowship') {
-    chapter2IconName = '2-filled'
+    chapter2IconName = 'number-2-fill'
   ***REMOVED*** else if (props.activeChapter === 'passage') {
-    chapter2IconName = '2-outline'
+    chapter2IconName = 'number-2-outline'
   ***REMOVED*** else {
-    chapter2IconName = 'check-filled'
+    chapter2IconName = 'check-fill'
   ***REMOVED***
 
   // render chapter 2 button conditionally based off whether it's downloaded or not
@@ -104,7 +104,9 @@ function ChapterSelect (props) {
       >
         <Icon
           name={
-            props.activeChapter === 'fellowship' ? '1-outline' : 'check-filled'
+            props.activeChapter === 'fellowship'
+              ? 'number-1-outline'
+              : 'check-fill'
           ***REMOVED***
           size={25***REMOVED***
           color={
@@ -131,18 +133,20 @@ function ChapterSelect (props) {
         style={[
           styles.chapterSelect,
           {
-            borderColor: props.primaryColor,
-            backgroundColor:
-              props.activeChapter === 'application'
-                ? props.primaryColor
-                : '#EFF2F4'
+            borderColor: props.primaryColor
+            // backgroundColor:
+            //   props.activeChapter === 'application'
+            //     ? props.primaryColor
+            //     : '#EFF2F4'
           ***REMOVED***
         ]***REMOVED***
         onPress={() => props.onPress('application')***REMOVED***
       >
         <Icon
           name={
-            props.activeChapter === 'application' ? '3-outline' : '3-filled'
+            props.activeChapter === 'application'
+              ? 'number-3-outline'
+              : 'number-3-fill'
           ***REMOVED***
           size={25***REMOVED***
           color={

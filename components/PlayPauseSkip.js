@@ -19,7 +19,7 @@ function PlayPauseSkip (props) {
         onPress={props.onPlayPress***REMOVED***
       >
         <Icon
-          name={props.isPlaying ? 'pause-filled' : 'play-filled'***REMOVED***
+          name={props.isPlaying ? 'pause' : 'play'***REMOVED***
           size={100 * scaleMultiplier***REMOVED***
           color={props.primaryColor***REMOVED***
         />
