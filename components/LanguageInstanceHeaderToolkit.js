@@ -66,17 +66,28 @@ function LanguageInstanceHeaderToolkit (props) {
           { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
         ]***REMOVED***
       >
-        <Text
-          style={[
-            styles.languageHeaderText,
-            {
+        <View>
+          <Text
+            style={{
               textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.languageName + ' ' + props.translations.labels.toolkitStatus***REMOVED***
-        </Text>
+              fontFamily: props.font + '-medium',
+              fontSize: 18 * scaleMultiplier,
+              color: '#9FA5AD'
+            ***REMOVED******REMOVED***
+          >
+            {props.languageName + ' ' + props.translations.labels.groups***REMOVED***
+          </Text>
+          <Text
+            style={{
+              textAlign: props.isRTL ? 'right' : 'left',
+              fontFamily: props.font + '-regular',
+              fontSize: 18 * scaleMultiplier,
+              color: '#9FA5AD'
+            ***REMOVED******REMOVED***
+          >
+            {props.translations.labels.mtStatus***REMOVED***
+          </Text>
+        </View>
         <Image
           style={styles.languageLogo***REMOVED***
           source={{
@@ -101,24 +112,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: 30
-  ***REMOVED***,
-  trashButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  ***REMOVED***,
-  languageHeaderText: {
-    fontSize: 18 * scaleMultiplier,
-    color: '#9FA5AD',
-    marginHorizontal: 30,
-    flex: 1
+    height: 45 * scaleMultiplier,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between'
   ***REMOVED***,
   languageLogo: {
     resizeMode: 'stretch',
     width: 96 * scaleMultiplier,
     height: 32 * scaleMultiplier,
-    alignSelf: 'flex-end',
-    marginHorizontal: 10
+    alignSelf: 'flex-end'
   ***REMOVED***,
   addGroupContainer: {
     height: 80 * scaleMultiplier,

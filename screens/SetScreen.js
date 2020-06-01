@@ -10,7 +10,6 @@ import {
 ***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import SetItem from '../components/SetItem'
-import AvatarImage from '../components/AvatarImage'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
@@ -139,7 +138,8 @@ function SetScreen (props) {
                   style={{
                     fontFamily: props.font + '-regular',
                     fontSize: 14 * scaleMultiplier,
-                    color: '#9FA5AD'
+                    color: '#9FA5AD',
+                    textAlign: props.isRTL ? 'right' : 'left'
                   ***REMOVED******REMOVED***
                 >
                   {addNewSetLabel***REMOVED***
@@ -168,13 +168,12 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   addNewSetContainer: {
     width: '100%',
-    height: 100 * scaleMultiplier,
+    height: 80 * scaleMultiplier,
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',
     padding: 20
-  ***REMOVED***,
-  addNewSetText: {***REMOVED***
+  ***REMOVED***
 ***REMOVED***)
 
 //// REDUX

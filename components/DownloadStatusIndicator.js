@@ -24,7 +24,7 @@ function DownloadStatusIndicator (props) {
       <Icon
         name='cloud-check-outline'
         color='#9FA5AD'
-        size={25 * scaleMultiplier***REMOVED***
+        size={22 * scaleMultiplier***REMOVED***
       />
     </TouchableOpacity>
   ) : props.isConnected ? (
@@ -49,7 +49,7 @@ function DownloadStatusIndicator (props) {
         <Icon
           name='cloud-download-outline'
           color={props.isDownloaded ? '#9FA5AD' : '#3A3C3F'***REMOVED***
-          size={25 * scaleMultiplier***REMOVED***
+          size={22 * scaleMultiplier***REMOVED***
         />
       </TouchableOpacity>
     )
@@ -59,7 +59,7 @@ function DownloadStatusIndicator (props) {
       <Icon
         name='cloud-slash-outline'
         color='#3A3C3F'
-        size={25 * scaleMultiplier***REMOVED***
+        size={22 * scaleMultiplier***REMOVED***
       />
     </View>
   )
@@ -70,7 +70,7 @@ function DownloadStatusIndicator (props) {
 const styles = StyleSheet.create({
   downloadButtonContainer: {
     justifyContent: 'center',
-    marginHorizontal: 15
+    paddingHorizontal: 20
   ***REMOVED***
 ***REMOVED***)
 

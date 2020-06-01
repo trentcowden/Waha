@@ -42,21 +42,25 @@ function SetsRoot (props) {
           headerLeft: props.isRTL
             ? () => <View></View>
             : () => (
-                <AvatarImage
-                  source={props.activeGroup.imageSource***REMOVED***
-                  size={40***REMOVED***
-                  onPress={() => props.navigation.toggleDrawer()***REMOVED***
-                  isActive={true***REMOVED***
-                />
+                <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  <AvatarImage
+                    source={props.activeGroup.imageSource***REMOVED***
+                    size={40***REMOVED***
+                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    isActive={true***REMOVED***
+                  />
+                </View>
               ),
           headerRight: props.isRTL
             ? () => (
-                <AvatarImage
-                  source={props.activeGroup.imageSource***REMOVED***
-                  size={40***REMOVED***
-                  onPress={() => props.navigation.toggleDrawer()***REMOVED***
-                  isActive={true***REMOVED***
-                />
+                <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  <AvatarImage
+                    source={props.activeGroup.imageSource***REMOVED***
+                    size={40***REMOVED***
+                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    isActive={true***REMOVED***
+                  />
+                </View>
               )
             : () => <View></View>
         ***REMOVED******REMOVED***

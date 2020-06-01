@@ -11,8 +11,40 @@ function SetTabs (props) {
     <Tab.Screen name='Toolkit' component={SetScreen***REMOVED*** options={{***REMOVED******REMOVED*** />
   ) : null
 
-  return (
-    //global navigation options
+  var tabs = props.isRTL ? (
+    <Tab.Navigator
+      initialRouteName='Core'
+      swipeEnabled={false***REMOVED***
+      tabBarOptions={{
+        labelStyle: {
+          fontSize: 14 * scaleMultiplier,
+          fontFamily: props.font + '-medium',
+          textTransform: 'none'
+        ***REMOVED***,
+        activeTintColor: props.primaryColor,
+        inactiveTintColor: '#9FA5AD',
+        indicatorStyle: {
+          backgroundColor: props.primaryColor
+        ***REMOVED***
+      ***REMOVED******REMOVED***
+    >
+      {toolkit***REMOVED***
+      <Tab.Screen
+        name='Topical'
+        component={SetScreen***REMOVED***
+        options={{
+          title: 'Topical Sets'
+        ***REMOVED******REMOVED***
+      />
+      <Tab.Screen
+        name='Core'
+        component={SetScreen***REMOVED***
+        options={{
+          title: 'Core Story Sets'
+        ***REMOVED******REMOVED***
+      />
+    </Tab.Navigator>
+  ) : (
     <Tab.Navigator
       initialRouteName='Core'
       swipeEnabled={false***REMOVED***
@@ -46,6 +78,11 @@ function SetTabs (props) {
       />
       {toolkit***REMOVED***
     </Tab.Navigator>
+  )
+
+  return (
+    //global navigation options
+    tabs
   )
 ***REMOVED***
 

@@ -47,7 +47,9 @@ function LessonItem (props) {
     <View
       style={[
         styles.lessonItem,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        {
+          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+        ***REMOVED***
       ]***REMOVED***
     >
       <TouchableOpacity
@@ -83,31 +85,36 @@ function LessonItem (props) {
                   : 'triangle-right'
                 : null
             ***REMOVED***
-            size={30 * scaleMultiplier***REMOVED***
+            size={24 * scaleMultiplier***REMOVED***
             color={props.isComplete ? '#828282' : props.primaryColor***REMOVED***
           />
         </View>
-        <View style={styles.titleContainer***REMOVED***>
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            flex: 1,
+            marginLeft: props.isRTL ? 0 : 20,
+            marginRight: props.isRTL ? 20 : 0
+          ***REMOVED******REMOVED***
+        >
           <Text
             style={{
-              ...styles.title,
-              ...{
-                color: props.isComplete ? '#9FA5AD' : 'black',
-                textAlign: props.isRTL ? 'right' : 'left',
-                fontFamily: props.font + '-medium'
-              ***REMOVED***
+              fontSize: 18 * scaleMultiplier,
+              textAlignVertical: 'center',
+              color: props.isComplete ? '#9FA5AD' : 'black',
+              textAlign: props.isRTL ? 'right' : 'left',
+              fontFamily: props.font + '-medium'
             ***REMOVED******REMOVED***
           >
             {props.thisLesson.title***REMOVED***
           </Text>
           <Text
             style={{
-              ...styles.subtitle,
-              ...{
-                color: props.isComplete ? '#9FA5AD' : 'black',
-                textAlign: props.isRTL ? 'right' : 'left',
-                fontFamily: props.font + '-regular'
-              ***REMOVED***
+              fontSize: 14 * scaleMultiplier,
+              color: '#9FA5AD',
+              textAlign: props.isRTL ? 'right' : 'left',
+              fontFamily: props.font + '-regular'
             ***REMOVED******REMOVED***
           >
             {props.thisLesson.subtitle***REMOVED***
@@ -129,11 +136,11 @@ function LessonItem (props) {
 
 const styles = StyleSheet.create({
   lessonItem: {
-    height: 72 * scaleMultiplier,
-    justifyContent: 'center',
+    height: 64 * scaleMultiplier,
     flexDirection: 'row',
-    alignContent: 'center',
-    backgroundColor: '#F7F9FA'
+    backgroundColor: '#F7F9FA',
+    flex: 1,
+    paddingLeft: 20
   ***REMOVED***,
   progressAndTitle: {
     justifyContent: 'flex-start',
@@ -143,20 +150,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   completeStatusContainer: {
     justifyContent: 'center',
-    marginHorizontal: 10,
-    width: 35 * scaleMultiplier
-  ***REMOVED***,
-  titleContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    flex: 1
-  ***REMOVED***,
-  title: {
-    fontSize: 18 * scaleMultiplier,
-    textAlignVertical: 'center'
-  ***REMOVED***,
-  subtitle: {
-    fontSize: 14 * scaleMultiplier
+    width: 24 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 

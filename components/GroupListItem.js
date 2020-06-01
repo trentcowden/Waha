@@ -49,13 +49,7 @@ function GroupListItem (props) {
   if (props.isEditing && props.activeGroup.name != props.groupName) {
     deleteButton = (
       <TouchableOpacity
-        style={[
-          styles.minusButtonContainer,
-          {
-            marginLeft: props.isRTL ? -5 : 10,
-            marginRight: props.isRTL ? 10 : -5
-          ***REMOVED***
-        ]***REMOVED***
+        style={styles.minusButtonContainer***REMOVED***
         onPress={() => props.deleteGroup(props.groupName)***REMOVED***
       >
         <Icon name='minus-filled' size={24 * scaleMultiplier***REMOVED*** color='#FF0800' />
@@ -63,15 +57,7 @@ function GroupListItem (props) {
     )
   ***REMOVED*** else if (props.isEditing && props.activeGroup.name === props.groupName) {
     deleteButton = (
-      <View
-        style={[
-          styles.minusButtonContainer,
-          {
-            marginLeft: props.isRTL ? -5 : 10,
-            marginRight: props.isRTL ? 10 : -5
-          ***REMOVED***
-        ]***REMOVED***
-      >
+      <View style={styles.minusButtonContainer***REMOVED***>
         <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color='#2D9CDB' />
       </View>
     )
@@ -97,7 +83,9 @@ function GroupListItem (props) {
       </View>
     )
   ***REMOVED*** else {
-    rightButton = null
+    rightButton = (
+      <View style={[styles.iconContainer, { width: 24 * scaleMultiplier ***REMOVED***]***REMOVED*** />
+    )
   ***REMOVED***
 
   return (
@@ -113,7 +101,11 @@ function GroupListItem (props) {
       <TouchableOpacity
         style={[
           styles.touchableContainer,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+          {
+            flexDirection: props.isRTL ? 'row-reverse' : 'row',
+            paddingLeft: props.isEditing ? 0 : 20,
+            paddingRight: 20
+          ***REMOVED***
         ]***REMOVED***
         onPress={
           props.isEditing
@@ -125,11 +117,18 @@ function GroupListItem (props) {
       >
         <AvatarImage
           size={50 * scaleMultiplier***REMOVED***
-          onPress={() => {***REMOVED******REMOVED***
           source={props.avatarSource***REMOVED***
           isActive={props.activeGroup.name === props.groupName***REMOVED***
         />
-        <View style={styles.groupNameContainer***REMOVED***>
+        <View
+          style={[
+            styles.groupNameContainer,
+            {
+              marginLeft: props.isRTL ? 0 : 20,
+              marginRight: props.isRTL ? 20 : 0
+            ***REMOVED***
+          ]***REMOVED***
+        >
           <Text
             style={[
               styles.groupNameText,
@@ -179,7 +178,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    margin: 2
+    borderWidth: 1,
+    borderColor: '#EFF2F4'
   ***REMOVED***,
   touchableContainer: {
     flex: 1,
@@ -191,14 +191,13 @@ const styles = StyleSheet.create({
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 15,
     height: '100%'
   ***REMOVED***,
   minusButtonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    width: 30
+    paddingHorizontal: 20
   ***REMOVED***,
   groupNameContainer: {
     flex: 1,

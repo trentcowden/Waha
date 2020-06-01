@@ -22,12 +22,13 @@ function GroupListItemToolkit (props) {
         ***REMOVED***
       ]***REMOVED***
     >
-      <AvatarImage
-        size={50 * scaleMultiplier***REMOVED***
-        onPress={() => {***REMOVED******REMOVED***
-        source={props.group.imageSource***REMOVED***
-        isActive={props.activeGroup === props.group.name***REMOVED***
-      />
+      <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
+        <AvatarImage
+          size={50 * scaleMultiplier***REMOVED***
+          source={props.group.imageSource***REMOVED***
+          isActive={props.activeGroup === props.group.name***REMOVED***
+        />
+      </View>
       <View style={styles.groupNameContainer***REMOVED***>
         <Text
           style={[
@@ -41,7 +42,7 @@ function GroupListItemToolkit (props) {
           {props.group.name***REMOVED***
         </Text>
       </View>
-      <View style={{ marginHorizontal: 10 ***REMOVED******REMOVED***>
+      <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
         <Switch
           trackColor={{ false: '#DEE3E9', true: '#60C239' ***REMOVED******REMOVED***
           thumbColor='#FFFFFF'
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    margin: 2
+    borderWidth: 1,
+    borderColor: '#EFF2F4'
   ***REMOVED***,
   groupNameContainer: {
     flex: 1,

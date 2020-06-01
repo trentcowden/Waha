@@ -12,7 +12,6 @@ import {
 ***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import SetItem from '../components/SetItem'
-import AvatarImage from '../components/AvatarImage'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
@@ -22,11 +21,9 @@ import LanguageInstanceHeaderToolkit from '../components/LanguageInstanceHeaderT
 import MessageModal from '../components/MessageModal'
 import { setShowToolkit ***REMOVED*** from '../redux/actions/groupsActions'
 
-function ToolkitEnableScreen (props) {
+function MTEnableScreen (props) {
   //// STATE
-  const [showHowToolkitWorksModal, setShowHowToolkitWorksModal] = useState(
-    false
-  )
+  const [showHowMTsWorkModal, setShowHotMTsWorkModal] = useState(false)
 
   //// CONSTRUCTOR
 
@@ -61,13 +58,13 @@ function ToolkitEnableScreen (props) {
 
   //// RENDER
 
-  var howToolkitWords = props.toolkitEnabled ? (
+  var howMTsWork = props.toolkitEnabled ? (
     <TouchableOpacity
       style={[
         styles.unlockButton,
         { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
-      onPress={() => setShowHowToolkitWorksModal(true)***REMOVED***
+      onPress={() => setShowHotMTsWorkModal(true)***REMOVED***
     >
       <Text
         style={{
@@ -75,7 +72,7 @@ function ToolkitEnableScreen (props) {
           fontSize: 18 * scaleMultiplier
         ***REMOVED******REMOVED***
       >
-        {props.translations.labels.howToolkitWorks***REMOVED***
+        {props.translations.labels.howMTsWork***REMOVED***
       </Text>
       <Icon
         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
@@ -123,7 +120,7 @@ function ToolkitEnableScreen (props) {
             props.toolkitEnabled
               ? () =>
                   Alert.alert(
-                    props.translations.labels.toolkitUnlockCode,
+                    props.translations.labels.mtUnlockCode,
                     '281820',
                     [
                       {
@@ -147,7 +144,7 @@ function ToolkitEnableScreen (props) {
           >
             {props.toolkitEnabled
               ? props.translations.labels.viewCode
-              : props.translations.labels.unlockToolkit***REMOVED***
+              : props.translations.labels.unlockMT***REMOVED***
           </Text>
           <Icon
             name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
@@ -155,7 +152,7 @@ function ToolkitEnableScreen (props) {
             size={50 * scaleMultiplier***REMOVED***
           />
         </TouchableOpacity>
-        {howToolkitWords***REMOVED***
+        {howMTsWork***REMOVED***
       </View>
       <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>
         <FlatList
@@ -165,8 +162,8 @@ function ToolkitEnableScreen (props) {
         />
       </View>
       <MessageModal
-        isVisible={showHowToolkitWorksModal***REMOVED***
-        hideModal={() => setShowHowToolkitWorksModal(false)***REMOVED***
+        isVisible={showHowMTsWorkModal***REMOVED***
+        hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
         title='Enable toolkit content'
         body='In order to add these new story sets to your currently active group, toggle the switch!'
         imageSource={require('../assets/splash.png')***REMOVED***
@@ -192,7 +189,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     //marginVertical: 40 * scaleMultiplier,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     justifyContent: 'space-between'
   ***REMOVED***
 ***REMOVED***)
@@ -218,4 +215,4 @@ function mapDispatchToProps (dispatch) {
   return {***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolkitEnableScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(MTEnableScreen)

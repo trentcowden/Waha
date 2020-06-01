@@ -75,16 +75,16 @@ function LanguageInstanceHeader (props) {
   ***REMOVED***
 
   // render trash button conditionally because it's only shown when editting mode is active
-  var trashButton =
-    props.isEditing && !(props.activeGroup.language === props.languageID) ? (
+  var trashButton
+  if (props.isEditing && !(props.activeGroup.language === props.languageID)) {
+    trashButton = (
       <TouchableOpacity
-        style={[
-          styles.trashButtonContainer,
-          {
-            marginRight: props.isRTL ? 15 : -15,
-            marginLeft: props.isRTL ? -15 : 15
-          ***REMOVED***
-        ]***REMOVED***
+        style={{
+          marginHorizontal: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 24 * scaleMultiplier
+        ***REMOVED******REMOVED***
         onPress={() =>
           Alert.alert(
             props.translations.alerts.deleteLanguage.header,
@@ -104,13 +104,24 @@ function LanguageInstanceHeader (props) {
       >
         <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color='#FF0800' />
       </TouchableOpacity>
-    ) : null
+    )
+  ***REMOVED*** else if (
+    props.isEditing &&
+    props.activeGroup.language === props.languageID
+  ) {
+    trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
+  ***REMOVED*** else {
+    trashButton = null
+  ***REMOVED***
+
   return (
     <View style={styles.languageHeaderListContainer***REMOVED***>
       <View
         style={[
           styles.languageHeaderContainer,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+          {
+            flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          ***REMOVED***
         ]***REMOVED***
       >
         {trashButton***REMOVED***
@@ -119,7 +130,8 @@ function LanguageInstanceHeader (props) {
             styles.languageHeaderText,
             {
               textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular'
+              fontFamily: props.font + '-regular',
+              paddingLeft: props.isEditing ? 0 : 20
             ***REMOVED***
           ]***REMOVED***
         >
@@ -144,12 +156,17 @@ function LanguageInstanceHeader (props) {
         ]***REMOVED***
         onPress={props.goToAddNewGroupScreen***REMOVED***
       >
-        <Icon
-          name='group-add'
-          size={35 * scaleMultiplier***REMOVED***
-          color='#DEE3E9'
-          style={{ marginHorizontal: 15 ***REMOVED******REMOVED***
-        />
+        <View
+          style={{
+            width: 50 * scaleMultiplier,
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 20
+          ***REMOVED******REMOVED***
+        >
+          <Icon name='group-add' size={40 * scaleMultiplier***REMOVED*** color='#DEE3E9' />
+        </View>
         <Text
           style={[
             styles.addGroupText,
@@ -180,14 +197,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 30
   ***REMOVED***,
-  trashButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  ***REMOVED***,
   languageHeaderText: {
     fontSize: 18 * scaleMultiplier,
     color: '#9FA5AD',
-    marginHorizontal: 30,
     flex: 1
   ***REMOVED***,
   languageLogo: {
@@ -203,7 +215,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    margin: 3
+    borderWidth: 1,
+    borderColor: '#EFF2F4'
   ***REMOVED***,
   addGroupText: {
     color: '#2D9CDB',

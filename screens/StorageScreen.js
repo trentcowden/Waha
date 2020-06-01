@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   storageList: {
     flex: 1,
-    marginHorizontal: 15
+    marginHorizontal: 20
   ***REMOVED***,
   headerItems: {
     marginBottom: 40
