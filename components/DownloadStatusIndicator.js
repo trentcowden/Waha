@@ -7,54 +7,58 @@ import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-prog
 function DownloadStatusIndicator (props) {
   //// RENDER
 
-  // Downloaded?
-  // true: cloud-check
-  // false: Connected?
-  // 	true: Downloading?
-  // 		true: progress-bar
-  // 		false: cloud-down
-  // 	false: slash
+  // Has audio source?
+  //  true: Downloaded?
+  //    true: cloud-check
+  //    false: Connected?
+  // 	    true: Downloading?
+  // 	    	true: progress-bar
+  // 		    false: cloud-down
+  // 	    false: slash
+  //  false: null
 
-  return props.isDownloaded ? (
-    // if downloaded
-    <TouchableOpacity
-      onPress={props.showDeleteModal***REMOVED***
-      style={styles.downloadButtonContainer***REMOVED***
-    >
-      <Icon name='cloud-check' color='#9FA5AD' size={22 * scaleMultiplier***REMOVED*** />
-    </TouchableOpacity>
-  ) : props.isConnected ? (
-    props.lessonID in props.downloads ? (
-      // if connected and currently downloading
-      <View style={styles.downloadButtonContainer***REMOVED***>
-        <AnimatedCircularProgress
-          size={22 * scaleMultiplier***REMOVED***
-          width={5 * scaleMultiplier***REMOVED***
-          fill={props.downloads[props.lessonID] * 100***REMOVED***
-          tintColor={'#828282'***REMOVED***
-          rotation={0***REMOVED***
-          backgroundColor='#FFFFFF'
-        />
-      </View>
-    ) : (
-      // if not downloaded, not downloading, and connected
+  return props.hasAudioSource ? (
+    props.isDownloaded ? (
+      // if downloaded
       <TouchableOpacity
-        onPress={props.showSaveModal***REMOVED***
+        onPress={props.showDeleteModal***REMOVED***
         style={styles.downloadButtonContainer***REMOVED***
       >
-        <Icon
-          name='cloud-download'
-          color={props.isDownloaded ? '#9FA5AD' : '#3A3C3F'***REMOVED***
-          size={22 * scaleMultiplier***REMOVED***
-        />
+        <Icon name='cloud-check' color='#9FA5AD' size={22 * scaleMultiplier***REMOVED*** />
       </TouchableOpacity>
+    ) : props.isConnected ? (
+      props.lessonID in props.downloads ? (
+        // if connected and currently downloading
+        <View style={styles.downloadButtonContainer***REMOVED***>
+          <AnimatedCircularProgress
+            size={22 * scaleMultiplier***REMOVED***
+            width={5 * scaleMultiplier***REMOVED***
+            fill={props.downloads[props.lessonID] * 100***REMOVED***
+            tintColor={'#828282'***REMOVED***
+            rotation={0***REMOVED***
+            backgroundColor='#FFFFFF'
+          />
+        </View>
+      ) : (
+        // if not downloaded, not downloading, and connected
+        <TouchableOpacity
+          onPress={props.showSaveModal***REMOVED***
+          style={styles.downloadButtonContainer***REMOVED***
+        >
+          <Icon
+            name='cloud-download'
+            color={props.isDownloaded ? '#9FA5AD' : '#3A3C3F'***REMOVED***
+            size={22 * scaleMultiplier***REMOVED***
+          />
+        </TouchableOpacity>
+      )
+    ) : (
+      // not downloaded and not connected
+      <View style={styles.downloadButtonContainer***REMOVED***>
+        <Icon name='cloud-slash' color='#3A3C3F' size={22 * scaleMultiplier***REMOVED*** />
+      </View>
     )
-  ) : (
-    // not downloaded and not connected
-    <View style={styles.downloadButtonContainer***REMOVED***>
-      <Icon name='cloud-slash' color='#3A3C3F' size={22 * scaleMultiplier***REMOVED*** />
-    </View>
-  )
+  ) : null
 ***REMOVED***
 
 //// STYLES

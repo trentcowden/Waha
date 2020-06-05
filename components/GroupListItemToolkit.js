@@ -22,7 +22,12 @@ function GroupListItemToolkit (props) {
         ***REMOVED***
       ]***REMOVED***
     >
-      <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
+      <View
+        style={{
+          marginHorizontal: 20,
+          tintColor: props.toolkitEnabled ? null : '#DEE3E9'
+        ***REMOVED******REMOVED***
+      >
         <AvatarImage
           size={50 * scaleMultiplier***REMOVED***
           source={props.group.imageSource***REMOVED***

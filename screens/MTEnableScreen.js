@@ -87,6 +87,7 @@ function MTEnableScreen (props) {
       <LanguageInstanceHeaderToolkit
         languageName={languageInstances.item.languageName***REMOVED***
         languageID={languageInstances.item.languageID***REMOVED***
+        toolkitEnabled={props.toolkitEnabled***REMOVED***
       />
     )
   ***REMOVED***
@@ -164,7 +165,7 @@ function MTEnableScreen (props) {
       <MessageModal
         isVisible={showHowMTsWorkModal***REMOVED***
         hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
-        title='Enable toolkit content'
+        title='Mobilization tools content is enabled'
         body='In order to add these new story sets to your currently active group, toggle the switch!'
         imageSource={require('../assets/splash.png')***REMOVED***
       />

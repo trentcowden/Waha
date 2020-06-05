@@ -62,7 +62,7 @@ function LessonItem (props) {
             ? () =>
                 Alert.alert(
                   props.translations.alerts.playUndownloadedNoInternet.header,
-                  props.translations.alerts.playUndownloadedNoInternet.body,
+                  props.translations.alerts.playUndownloadedNoInternet.text,
                   [
                     {
                       text: props.translations.alerts.options.ok,
@@ -127,6 +127,7 @@ function LessonItem (props) {
         showDeleteModal={showDeleteModal***REMOVED***
         showSaveModal={showSaveModal***REMOVED***
         lessonID={props.thisLesson.id***REMOVED***
+        hasAudioSource={props.thisLesson.audioSource ? true : false***REMOVED***
       />
     </View>
   )

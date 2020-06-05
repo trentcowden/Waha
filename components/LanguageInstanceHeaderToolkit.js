@@ -89,7 +89,12 @@ function LanguageInstanceHeaderToolkit (props) {
           </Text>
         </View>
         <Image
-          style={styles.languageLogo***REMOVED***
+          style={[
+            styles.languageLogo,
+            {
+              tintColor: props.toolkitEnabled ? null : '#DEE3E9'
+            ***REMOVED***
+          ]***REMOVED***
           source={{
             uri: FileSystem.documentDirectory + props.languageID + '-header.png'
           ***REMOVED******REMOVED***
