@@ -72,7 +72,6 @@ function LessonItem (props) {
                 )
             : props.onLessonSelect
         ***REMOVED***
-        onLongPress={showLessonOptionsModal***REMOVED***
       >
         <View style={styles.completeStatusContainer***REMOVED***>
           <Icon

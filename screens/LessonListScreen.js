@@ -8,7 +8,8 @@ import {
   Button,
   Text,
   Share,
-  Platform
+  Platform,
+  Dimensions
 ***REMOVED*** from 'react-native'
 import LessonItem from '../components/LessonItem'
 import * as FileSystem from 'expo-file-system'
@@ -25,7 +26,8 @@ import {
 ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
-
+import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
+import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 function LessonListScreen (props) {
   //// STATE
 
@@ -43,6 +45,7 @@ function LessonListScreen (props) {
   const [showSaveLessonModal, setShowSaveLessonModal] = useState(false)
   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false)
   const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false)
+  const [showShareModal, setShowShareModal] = useState(false)
 
   var thisSetProgress = props.activeGroup.addedSets.filter(
     set => set.id === props.route.params.thisSet.id
@@ -229,7 +232,7 @@ function LessonListScreen (props) {
         setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
         setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
         setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
-        setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
+        // setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
       />
     )
   ***REMOVED***
@@ -239,12 +242,39 @@ function LessonListScreen (props) {
       <View style={styles.studySetItemContainer***REMOVED***>
         <SetItem thisSet={props.route.params.thisSet***REMOVED*** mode='lessonlist' />
       </View>
-      <FlatList
+      <SwipeListView
         data={props.activeDatabase.lessons.filter(
           lesson => props.route.params.thisSet.id === lesson.setid
         )***REMOVED***
         renderItem={renderLessonItem***REMOVED***
-        keyExtractor={item => item.id***REMOVED***
+        keyExtractor={item => item.index.toString()***REMOVED***
+        renderHiddenItem={(data, rowMap) => (
+          <LessonSwipeBackdrop
+            isComplete={thisSetProgress.includes(data.item.index)***REMOVED***
+            toggleComplete={() =>
+              props.toggleComplete(
+                props.activeGroup.name,
+                props.route.params.thisSet,
+                data.item.index
+              )
+            ***REMOVED***
+          />
+        )***REMOVED***
+        leftOpenValue={50***REMOVED***
+        rightOpenValue={-50***REMOVED***
+        leftActivationValue={Dimensions.get('screen').width / 2 - 10***REMOVED***
+        rightActivationValue={-Dimensions.get('screen').width / 2 + 10***REMOVED***
+        stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
+        stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
+        onLeftActionStatusChange={data => {
+          if (data.isActivated)
+            props.toggleComplete(
+              props.activeGroup.name,
+              props.route.params.thisSet,
+              parseInt(data.key)
+            )
+        ***REMOVED******REMOVED***
+        onRightActionStatusChange={data => setShowLessonOptionsModal(true)***REMOVED***
       />
 
       {/* MODALS */***REMOVED***
@@ -285,7 +315,7 @@ function LessonListScreen (props) {
         hideModal={hideModals***REMOVED***
         closeText={props.activeDatabase.translations.modals.lessonOptions.close***REMOVED***
       >
-        <ModalButton
+        {/* <ModalButton
           title={
             props.activeDatabase.translations.modals.lessonOptions
               .markLessonComplete
@@ -298,7 +328,7 @@ function LessonListScreen (props) {
               .markLessonIncomplete
           ***REMOVED***
           onPress={() => toggleCompleteFromModal('incomplete')***REMOVED***
-        />
+        /> */***REMOVED***
         <ModalButton
           title={
             props.activeDatabase.translations.modals.lessonOptions.shareApp
@@ -319,14 +349,14 @@ function LessonListScreen (props) {
           ***REMOVED***
           onPress={() => share('audio')***REMOVED***
         />
-        <ModalButton
+        {/* <ModalButton
           isLast={true***REMOVED***
           title={
             props.activeDatabase.translations.modals.lessonOptions
               .markUpToPointAsComplete
           ***REMOVED***
           onPress={markUpToThisPointAsCompleteFromModal***REMOVED***
-        />
+        /> */***REMOVED***
       </OptionsModal>
     </View>
   )
