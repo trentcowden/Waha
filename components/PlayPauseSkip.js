@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
+// play, pause, and skip controls for play screen
 function PlayPauseSkip (props) {
   //// RENDER
 

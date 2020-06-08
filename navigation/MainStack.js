@@ -10,7 +10,7 @@ import AddNewGroupScreen from '../screens/AddNewGroupScreen'
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen'
 import EditGroupScreen from '../screens/EditGroupScreen'
 import StorageScreen from '../screens/StorageScreen'
-import MTEnableScreen from '../screens/MTEnableScreen'
+import MTScreen from '../screens/MTScreen'
 import PasscodeScreen from '../screens/PasscodeScreen'
 import SetTabNavigator from './SetTabs'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
@@ -53,8 +53,6 @@ function MainStack (props) {
           headerTitleAlign: 'center'
         ***REMOVED******REMOVED***
       />
-
-      {/* Play Screen */***REMOVED***
       <Stack.Screen
         name='Play'
         component={PlayScreen***REMOVED***
@@ -141,10 +139,10 @@ function MainStack (props) {
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='MTEnable'
-        component={MTEnableScreen***REMOVED***
+        name='MT'
+        component={MTScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.mtEnableScreen,
+          headerTitle: props.translations.navigation.headers.mtScreen,
           headerStyle: {
             backgroundColor: '#F7F9FA'
           ***REMOVED***,
@@ -158,7 +156,7 @@ function MainStack (props) {
         name='Passcode'
         component={PasscodeScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.mtEnableScreen,
+          headerTitle: props.translations.navigation.headers.mtScreen,
           headerStyle: {
             backgroundColor: '#F7F9FA'
           ***REMOVED***,

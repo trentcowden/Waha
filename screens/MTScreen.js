@@ -17,11 +17,11 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { getStateFromPath ***REMOVED*** from '@react-navigation/native'
 import BackButton from '../components/BackButton'
-import LanguageInstanceHeaderToolkit from '../components/LanguageInstanceHeaderToolkit'
+import GroupListHeaderMT from '../components/GroupListHeaderMT'
 import MessageModal from '../components/MessageModal'
 import { setShowToolkit ***REMOVED*** from '../redux/actions/groupsActions'
 
-function MTEnableScreen (props) {
+function MTScreen (props) {
   //// STATE
   const [showHowMTsWorkModal, setShowHotMTsWorkModal] = useState(false)
 
@@ -84,7 +84,7 @@ function MTEnableScreen (props) {
 
   function renderLanguageHeader (languageInstances) {
     return (
-      <LanguageInstanceHeaderToolkit
+      <GroupListHeaderMT
         languageName={languageInstances.item.languageName***REMOVED***
         languageID={languageInstances.item.languageID***REMOVED***
         toolkitEnabled={props.toolkitEnabled***REMOVED***
@@ -212,8 +212,5 @@ function mapStateToProps (state) {
     toolkitEnabled: state.toolkitEnabled
   ***REMOVED***
 ***REMOVED***
-function mapDispatchToProps (dispatch) {
-  return {***REMOVED***
-***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(MTEnableScreen)
+export default connect(mapStateToProps)(MTScreen)

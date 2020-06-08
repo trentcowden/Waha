@@ -17,9 +17,10 @@ function ChapterSelect (props) {
     chapter2IconName = 'check-fill'
   ***REMOVED***
 
-  // render chapter 2 button conditionally based off whether it's downloaded or not
+  // render chapter 2 button
   var chapter2Button =
     props.downloads[props.lessonID] && props.downloads[props.lessonID] < 1 ? (
+      // if the lesson is downloading, show the progress in the chapter button
       <View
         style={[
           styles.chapterSelect,
@@ -52,6 +53,7 @@ function ChapterSelect (props) {
         </Text>
       </View>
     ) : (
+      // otherwise, show the button as normal
       <TouchableOpacity
         style={[
           styles.chapterSelect,
@@ -96,6 +98,7 @@ function ChapterSelect (props) {
 
   return (
     <View style={styles.chapterSelectContainer***REMOVED***>
+      {/* chapter 1 button */***REMOVED***
       <TouchableOpacity
         style={[
           styles.chapterSelect,
@@ -135,18 +138,13 @@ function ChapterSelect (props) {
           {props.translations.labels.fellowship***REMOVED***
         </Text>
       </TouchableOpacity>
+
+      {/* chapter 2 button (defined earlier) */***REMOVED***
       {chapter2Button***REMOVED***
+
+      {/* chapter 3 button */***REMOVED***
       <TouchableOpacity
-        style={[
-          styles.chapterSelect,
-          {
-            borderColor: props.primaryColor
-            // backgroundColor:
-            //   props.activeChapter === 'application'
-            //     ? props.primaryColor
-            //     : '#EFF2F4'
-          ***REMOVED***
-        ]***REMOVED***
+        style={[styles.chapterSelect, { borderColor: props.primaryColor ***REMOVED***]***REMOVED***
         onPress={() => props.onPress('application')***REMOVED***
       >
         <Icon

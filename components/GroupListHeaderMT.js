@@ -9,20 +9,18 @@ import {
   Image
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import GroupListItemToolkit from '../components/GroupListItemToolkit'
+import GroupItemMT from './GroupItemMT'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import { deleteLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import * as FileSystem from 'expo-file-system'
-import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
-function LanguageInstanceHeaderToolkit (props) {
+function GroupListHeaderMT (props) {
   //// FUNCTIONS
 
   useEffect(() => {***REMOVED***, [])
 
   //// RENDER
 
+  // if our active language has a toolkit, show the list of groups
   var list = props.activeDatabase.hasToolkit ? (
     <FlatList
       data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
@@ -30,6 +28,7 @@ function LanguageInstanceHeaderToolkit (props) {
       keyExtractor={item => item.name***REMOVED***
     />
   ) : (
+    // otherwise, show a message that says MTs are not available for that language
     <View
       style={{
         height: 80 * scaleMultiplier,
@@ -54,8 +53,9 @@ function LanguageInstanceHeaderToolkit (props) {
     </View>
   )
 
+  // renders a group item
   function renderGroupItem (groups) {
-    return <GroupListItemToolkit group={groups.item***REMOVED*** />
+    return <GroupItemMT group={groups.item***REMOVED*** />
   ***REMOVED***
 
   return (
@@ -100,6 +100,8 @@ function LanguageInstanceHeaderToolkit (props) {
           ***REMOVED******REMOVED***
         />
       </View>
+
+      {/* list of groups OR no MTs message */***REMOVED***
       {list***REMOVED***
     </View>
   )
@@ -126,19 +128,6 @@ const styles = StyleSheet.create({
     width: 96 * scaleMultiplier,
     height: 32 * scaleMultiplier,
     alignSelf: 'flex-end'
-  ***REMOVED***,
-  addGroupContainer: {
-    height: 80 * scaleMultiplier,
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    margin: 3
-  ***REMOVED***,
-  addGroupText: {
-    color: '#2D9CDB',
-    fontSize: 18 * scaleMultiplier,
-    textAlign: 'left'
   ***REMOVED***
 ***REMOVED***)
 
@@ -158,21 +147,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    ***REMOVED***,
-    deleteLanguage: language => {
-      dispatch(deleteLanguage(language))
-    ***REMOVED***,
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LanguageInstanceHeaderToolkit)
+export default connect(mapStateToProps)(GroupListHeaderMT)

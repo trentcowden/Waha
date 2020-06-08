@@ -10,16 +10,15 @@ import {
 ***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import { connect ***REMOVED*** from 'react-redux'
-import { setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import {
-  removeDownload,
-  resumeDownload
-***REMOVED*** from '../redux/actions/downloadActions'
+import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import DownloadStatusIndicator from '../components/DownloadStatusIndicator'
 
 function LessonItem (props) {
+  //// CONSTRUCTOR
+
   useEffect(() => {
+    // if we've completed the download for this lesson, remove the download from redux
     if (props.downloads[props.thisLesson.id] == 1) {
       props.removeDownload(props.thisLesson.id)
     ***REMOVED***
@@ -36,10 +35,6 @@ function LessonItem (props) {
     props.setActiveLessonInModal.call()
     props.setShowDeleteLessonModal.call()
   ***REMOVED***
-  function showLessonOptionsModal () {
-    props.setActiveLessonInModal.call()
-    props.setShowLessonOptionsModal.call()
-  ***REMOVED***
 
   //// RENDER
 
@@ -52,6 +47,7 @@ function LessonItem (props) {
         ***REMOVED***
       ]***REMOVED***
     >
+      {/* main touchable area */***REMOVED***
       <TouchableOpacity
         style={[
           styles.progressAndTitle,
@@ -73,6 +69,7 @@ function LessonItem (props) {
             : props.onLessonSelect
         ***REMOVED***
       >
+        {/* complete status indicator */***REMOVED***
         <View style={styles.completeStatusContainer***REMOVED***>
           <Icon
             name={
@@ -88,6 +85,8 @@ function LessonItem (props) {
             color={props.isComplete ? '#828282' : props.primaryColor***REMOVED***
           />
         </View>
+
+        {/* title and subtitle */***REMOVED***
         <View
           style={{
             flexDirection: 'column',
@@ -162,7 +161,6 @@ function mapStateToProps (state) {
   )[0]
   return {
     primaryColor: state.database[activeGroup.language].primaryColor,
-    //progress: state.appProgress,
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     downloads: state.downloads,
@@ -174,17 +172,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    downloadLesson: (lessonID, source) => {
-      dispatch(downloadLesson(lessonID, source))
-    ***REMOVED***,
-    setBookmark: groupName => {
-      dispatch(setBookmark(groupName))
-    ***REMOVED***,
     removeDownload: lessonID => {
       dispatch(removeDownload(lessonID))
-    ***REMOVED***,
-    resumeDownload: (lessonID, downloadSnapshotJSON) => {
-      dispatch(resumeDownload(lessonID, downloadSnapshotJSON))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

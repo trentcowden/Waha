@@ -7,6 +7,7 @@ import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-prog
 function DownloadStatusIndicator (props) {
   //// RENDER
 
+  // WHAT TO RENDER
   // Has audio source?
   //  true: Downloaded?
   //    true: cloud-check
@@ -18,8 +19,9 @@ function DownloadStatusIndicator (props) {
   //  false: null
 
   return props.hasAudioSource ? (
+    // if has audio source
     props.isDownloaded ? (
-      // if downloaded
+      // if downloaded, show check
       <TouchableOpacity
         onPress={props.showDeleteModal***REMOVED***
         style={styles.downloadButtonContainer***REMOVED***
@@ -28,7 +30,7 @@ function DownloadStatusIndicator (props) {
       </TouchableOpacity>
     ) : props.isConnected ? (
       props.lessonID in props.downloads ? (
-        // if connected and currently downloading
+        // if connected and currently downloading, show progress
         <View style={styles.downloadButtonContainer***REMOVED***>
           <AnimatedCircularProgress
             size={22 * scaleMultiplier***REMOVED***
@@ -40,7 +42,7 @@ function DownloadStatusIndicator (props) {
           />
         </View>
       ) : (
-        // if not downloaded, not downloading, and connected
+        // if not downloaded, not downloading, and connected, show download icon
         <TouchableOpacity
           onPress={props.showSaveModal***REMOVED***
           style={styles.downloadButtonContainer***REMOVED***
@@ -53,12 +55,13 @@ function DownloadStatusIndicator (props) {
         </TouchableOpacity>
       )
     ) : (
-      // not downloaded and not connected
+      // if not downloaded and not connected, show slash
       <View style={styles.downloadButtonContainer***REMOVED***>
         <Icon name='cloud-slash' color='#3A3C3F' size={22 * scaleMultiplier***REMOVED*** />
       </View>
     )
-  ) : null
+  ) : // if no audio source, show nothing
+  null
 ***REMOVED***
 
 //// STYLES
@@ -69,6 +72,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   ***REMOVED***
 ***REMOVED***)
+
+//// REDUX
 
 function mapStateToProps (state) {
   return {

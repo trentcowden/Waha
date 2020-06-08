@@ -1,13 +1,12 @@
 import SafeAreaView from 'react-native-safe-area-view'
 import React from 'react'
-import { View, Text, StyleSheet ***REMOVED*** from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import DrawerItem from '../components/DrawerItem'
 import SmallDrawerItem from '../components/SmallDrawerItem'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as WebBrowser from 'expo-web-browser'
 import AvatarImage from '../components/AvatarImage'
-import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 
 function WahaDrawer (props) {
   //// FUNCTIONS
@@ -57,7 +56,7 @@ function WahaDrawer (props) {
           <DrawerItem
             iconName='record'
             text={props.translations.navigation.drawer.mt***REMOVED***
-            onPress={() => props.navigation.navigate('MTEnable')***REMOVED***
+            onPress={() => props.navigation.navigate('MT')***REMOVED***
           />
           <DrawerItem
             iconName='storage'
@@ -96,7 +95,7 @@ function WahaDrawer (props) {
               { fontFamily: props.font + '-regular' ***REMOVED***
             ]***REMOVED***
           >
-            v0.2.8
+            v0.4
           </Text>
         </View>
       </View>
@@ -116,9 +115,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     padding: 15
-  ***REMOVED***,
-  bigDrawerItemsContainer: {
-    backgroundColor: '#FFFFFF'
   ***REMOVED***,
   groupIconContainer: {
     alignItems: 'center',

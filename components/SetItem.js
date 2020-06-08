@@ -27,6 +27,13 @@ function SetItem (props) {
   //// CONSTRUCTOR
 
   useEffect(() => {
+    // big switch statement that renders the 3 dynamic components (the big icon,
+    // the info button, and the action button) of a set item based on props.mode
+    // 1. SHOWN is for sets that have been added to the set screen
+    // 2. LESSONLIST is for the set component on the lesson list screen
+    // 3. HIDDEN is for sets that have not been added and live on the add set screen
+    // 4. FOLDER is for set folders in the add set screen
+
     switch (props.mode) {
       case 'shown':
         setProgress()
@@ -157,6 +164,7 @@ function SetItem (props) {
           </View>
         )
         setInfo()
+        // INFO BUTTON (keep for later)
         // <TouchableOpacity
         //   style={[
         //     styles.actionContainer,
@@ -192,6 +200,7 @@ function SetItem (props) {
           </View>
         )
         setInfo()
+        // INFO BUTTON (keep for later)
         // <TouchableOpacity
         //   style={[
         //     styles.actionContainer,
@@ -218,29 +227,17 @@ function SetItem (props) {
 
   // sets the progress through this set
   function setProgress () {
+    // set the percentage through a set
     setProgressPercentage(
       props.activeGroup.addedSets.filter(set => set.id === props.thisSet.id)[0]
         .progress.length / props.thisSet.length
     )
+    // if it's fully completed, set fully completed to true, which renders
+    // the shown and lessonlist variants as grayed out
     if (progressPercentage === 1) setFullyCompleted(true)
     else setFullyCompleted(false)
 
-    // console.log(progressPercentage)
-    // console.log('is the next set already added?')
-    // console.log(
-    //   !props.activeGroup.addedSets.some(
-    //     addedSet => addedSet.index === props.thisSet.index + 1
-    //   )
-    // )
-    // console.log('is the set core?')
-    // console.log(props.thisSet.category === 'core')
-    // console.log('is the next set present in the set array?')
-    // console.log(
-    //   props.activeDatabase.sets
-    //     .filter(set => set.category === 'core')
-    //     .some(set => set.index === props.thisSet.index + 1)
-    // )
-
+    // get the set AFTER the one that you're setting progress for
     var nextSet = props.activeDatabase.sets.filter(
       dbSet =>
         dbSet.category === 'core' && dbSet.index === props.thisSet.index + 1
@@ -284,7 +281,10 @@ function SetItem (props) {
       ]***REMOVED***
       onPress={props.onSetSelect***REMOVED***
     >
+      {/* large icon rendered earlier */***REMOVED***
       {icon***REMOVED***
+
+      {/* title and subtitle */***REMOVED***
       <View
         style={[
           styles.titleContainer,
@@ -319,7 +319,11 @@ function SetItem (props) {
           {props.thisSet.title***REMOVED***
         </Text>
       </View>
+
+      {/* info button rendered earlier */***REMOVED***
       {info***REMOVED***
+
+      {/* action button rendered earlier */***REMOVED***
       {action***REMOVED***
     </TouchableOpacity>
   )
@@ -340,7 +344,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    // padding: 5,
     width: 80 * scaleMultiplier,
     height: 80 * scaleMultiplier
   ***REMOVED***,
@@ -363,7 +366,6 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    //activeProgress: activeGroup.progress,
     isRTL: state.database[activeGroup.language].isRTL,
     activeDatabase: state.database[activeGroup.language],
     primaryColor: state.database[activeGroup.language].primaryColor,

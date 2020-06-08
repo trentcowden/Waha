@@ -10,7 +10,7 @@ import {
 import BackButton from '../components/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { connect ***REMOVED*** from 'react-redux'
-import LanguageInstanceHeader from '../components/LanguageInstanceHeader'
+import GroupListHeader from '../components/GroupListHeader'
 
 function GroupsScreen (props) {
   //// STATE
@@ -91,7 +91,7 @@ function GroupsScreen (props) {
 
   function renderLanguageInstanceItem (languageInstances) {
     return (
-      <LanguageInstanceHeader
+      <GroupListHeader
         languageName={languageInstances.item.languageName***REMOVED***
         languageID={languageInstances.item.languageID***REMOVED***
         goToAddNewGroupScreen={() =>

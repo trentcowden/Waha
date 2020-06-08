@@ -52,14 +52,14 @@ function SetTabs (props) {
         name='Topical'
         component={SetScreen***REMOVED***
         options={{
-          title: 'Topical Sets'
+          title: 'Topical Stories'
         ***REMOVED******REMOVED***
       />
       <Tab.Screen
         name='Core'
         component={SetScreen***REMOVED***
         options={{
-          title: 'Core Story Sets'
+          title: 'Core Stories'
         ***REMOVED******REMOVED***
       />
     </Tab.Navigator>
@@ -84,7 +84,7 @@ function SetTabs (props) {
         name='Core'
         component={SetScreen***REMOVED***
         options={{
-          title: 'Core Story Sets'
+          title: 'Core Stories'
         ***REMOVED******REMOVED***
       />
 
@@ -92,17 +92,14 @@ function SetTabs (props) {
         name='Topical'
         component={SetScreen***REMOVED***
         options={{
-          title: 'Topical Sets'
+          title: 'Topical Stories'
         ***REMOVED******REMOVED***
       />
       {toolkit***REMOVED***
     </Tab.Navigator>
   )
 
-  return (
-    //global navigation options
-    tabs
-  )
+  return tabs
 ***REMOVED***
 
 //// REDUX
