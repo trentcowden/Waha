@@ -45,7 +45,11 @@ function AddSetScreen (props) {
                 ***REMOVED******REMOVED***
                 onPress={() => props.navigation.goBack()***REMOVED***
               >
-                <Icon name='x' size={45 * scaleMultiplier***REMOVED*** color='#3A3C3F' />
+                <Icon
+                  name='cancel'
+                  size={45 * scaleMultiplier***REMOVED***
+                  color='#3A3C3F'
+                />
               </TouchableOpacity>
             ),
       headerRight:
@@ -56,7 +60,11 @@ function AddSetScreen (props) {
           : props.isRTL
           ? () => (
               <TouchableOpacity onPress={() => props.navigation.goBack()***REMOVED***>
-                <Icon name='x' size={45 * scaleMultiplier***REMOVED*** color='#3A3C3F' />
+                <Icon
+                  name='cancel'
+                  size={45 * scaleMultiplier***REMOVED***
+                  color='#3A3C3F'
+                />
               </TouchableOpacity>
             )
           : () => <View></View>

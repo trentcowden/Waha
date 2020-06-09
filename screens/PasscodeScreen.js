@@ -98,8 +98,8 @@ function PasscodeScreen (props) {
           setUnlockSuccessModal(false)
           props.navigation.goBack()
         ***REMOVED******REMOVED***
-        title='Success!'
-        body='Mobilization tools have been unlocked. In order to add these new story sets to your currently active group, toggle the switch!'
+        title={props.translations.modals.enableMTContent.header***REMOVED***
+        body={props.translations.modals.enableMTContent.text***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
       <MessageModal
@@ -107,8 +107,8 @@ function PasscodeScreen (props) {
         hideModal={() => {
           setUnlockFailiureModal(false)
         ***REMOVED******REMOVED***
-        title='Incorrect passcode entered'
-        body='Please try entering the passcode again.'
+        title={props.translations.modals.passcodeError.header***REMOVED***
+        body={props.translations.modals.passcodeError.text***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
     </View>

@@ -82,6 +82,14 @@ function MTScreen (props) {
     </TouchableOpacity>
   ) : null
 
+  var groupList = props.toolkitEnabled ? (
+    <FlatList
+      data={getInstalledLanguageInstances()***REMOVED***
+      renderItem={renderLanguageHeader***REMOVED***
+      keyExtractor={item => item.languageID***REMOVED***
+    />
+  ) : null
+
   function renderLanguageHeader (languageInstances) {
     return (
       <GroupListHeaderMT
@@ -155,18 +163,12 @@ function MTScreen (props) {
         </TouchableOpacity>
         {howMTsWork***REMOVED***
       </View>
-      <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>
-        <FlatList
-          data={getInstalledLanguageInstances()***REMOVED***
-          renderItem={renderLanguageHeader***REMOVED***
-          keyExtractor={item => item.languageID***REMOVED***
-        />
-      </View>
+      <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>{groupList***REMOVED***</View>
       <MessageModal
         isVisible={showHowMTsWorkModal***REMOVED***
         hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
-        title='Mobilization tools content is enabled'
-        body='In order to add these new story sets to your currently active group, toggle the switch!'
+        title={props.translations.modals.mtUnlock.header***REMOVED***
+        body={props.translations.modals.mtUnlock.text***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
     </View>

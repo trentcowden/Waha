@@ -10,11 +10,11 @@ function ChapterSelect (props) {
   // render chapter 2 icon conditionally based off if it's not active, active, or completed
   var chapter2IconName
   if (props.activeChapter === 'fellowship') {
-    chapter2IconName = 'number-2-fill'
+    chapter2IconName = 'number-2-filled'
   ***REMOVED*** else if (props.activeChapter === 'passage') {
     chapter2IconName = 'number-2-outline'
   ***REMOVED*** else {
-    chapter2IconName = 'check-fill'
+    chapter2IconName = 'check-filled'
   ***REMOVED***
 
   // render chapter 2 button
@@ -34,7 +34,7 @@ function ChapterSelect (props) {
         <AnimatedCircularProgress
           size={20***REMOVED***
           width={4***REMOVED***
-          fill={props.downloads[props.lessonID] * 100***REMOVED***
+          filled={props.downloads[props.lessonID] * 100***REMOVED***
           tintColor={props.primaryColor***REMOVED***
           rotation={0***REMOVED***
           backgroundColor='#FFFFFF'
@@ -116,7 +116,7 @@ function ChapterSelect (props) {
           name={
             props.activeChapter === 'fellowship'
               ? 'number-1-outline'
-              : 'check-fill'
+              : 'check-filled'
           ***REMOVED***
           size={25***REMOVED***
           color={
@@ -144,14 +144,23 @@ function ChapterSelect (props) {
 
       {/* chapter 3 button */***REMOVED***
       <TouchableOpacity
-        style={[styles.chapterSelect, { borderColor: props.primaryColor ***REMOVED***]***REMOVED***
+        style={[
+          styles.chapterSelect,
+          {
+            borderColor: props.primaryColor,
+            backgroundColor:
+              props.activeChapter === 'application'
+                ? props.primaryColor
+                : '#EFF2F4'
+          ***REMOVED***
+        ]***REMOVED***
         onPress={() => props.onPress('application')***REMOVED***
       >
         <Icon
           name={
             props.activeChapter === 'application'
               ? 'number-3-outline'
-              : 'number-3-fill'
+              : 'number-3-filled'
           ***REMOVED***
           size={25***REMOVED***
           color={
