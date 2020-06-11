@@ -12,7 +12,7 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as ImagePicker from 'expo-image-picker'
 import { connect ***REMOVED*** from 'react-redux'
 import { createGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import WahaModal from '../components/WahaModal'
+import OptionsModal from '../components/OptionsModal'
 import ModalButton from '../components/ModalButton'
 import AvatarImage from '../components/AvatarImage'
 
@@ -64,7 +64,7 @@ function AddNewGroupScreen (props) {
     if (isDuplicate) {
       Alert.alert(
         props.translations.alerts.sameGroupName.header,
-        props.translations.alerts.sameGroupName.body,
+        props.translations.alerts.sameGroupName.text,
         [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
       )
       return
@@ -73,7 +73,7 @@ function AddNewGroupScreen (props) {
     if (groupName === '') {
       Alert.alert(
         props.translations.alerts.blankGroupName.header,
-        props.translations.alerts.blankGroupName.body,
+        props.translations.alerts.blankGroupName.text,
         [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
       )
       return
@@ -197,7 +197,7 @@ function AddNewGroupScreen (props) {
           </Text>
         </TouchableOpacity>
       </View>
-      <WahaModal
+      <OptionsModal
         isVisible={showImagePickerModal***REMOVED***
         hideModal={() => setShowImagePickerModal(false)***REMOVED***
         closeText={props.translations.modals.cameraOptions.cancel***REMOVED***
@@ -211,7 +211,7 @@ function AddNewGroupScreen (props) {
           title={props.translations.modals.cameraOptions.chooseFromLibrary***REMOVED***
           onPress={openImageLibraryHandler***REMOVED***
         />
-      </WahaModal>
+      </OptionsModal>
     </View>
   )
 ***REMOVED***
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   ***REMOVED***,
   inputContainer: {
-    marginHorizontal: 25,
+    marginHorizontal: 20,
     padding: 3
   ***REMOVED***,
   groupNameLabel: {
@@ -254,11 +254,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#60C239',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 ***REMOVED***,
-    shadowOpacity: 0.8,
-    shadowRadius: 2
+    alignSelf: 'flex-end',
+    margin: 20
   ***REMOVED***,
   saveButtonText: {
     fontSize: 18 * scaleMultiplier,

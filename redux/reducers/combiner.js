@@ -5,6 +5,7 @@ import { database, fetchingStatus ***REMOVED*** from '../reducers/database'
 import { groups ***REMOVED*** from '../reducers/groups'
 import { activeGroup ***REMOVED*** from '../reducers/activeGroup'
 import { network ***REMOVED*** from '../reducers/network'
+import { toolkitEnabled ***REMOVED*** from '../reducers/toolkitEnabled'
 import { combineReducers ***REMOVED*** from 'redux'
 
 export default rootReducer = combineReducers({
@@ -13,5 +14,6 @@ export default rootReducer = combineReducers({
   groups,
   activeGroup,
   network,
-  fetchingStatus
+  fetchingStatus,
+  toolkitEnabled
 ***REMOVED***)

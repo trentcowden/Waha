@@ -4,7 +4,7 @@ import { AsyncStorage ***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import WahaDrawer from '../components/WahaDrawer'
 import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
-import StackNavigator from './StackNavigator'
+import MainStack from './MainStack'
 import { NavigationContainer ***REMOVED*** from '@react-navigation/native'
 import { createDrawerNavigator ***REMOVED*** from '@react-navigation/drawer'
 import { connect ***REMOVED*** from 'react-redux'
@@ -25,12 +25,12 @@ function getGestureEnabled (route) {
       route.state.routes[route.state.index].name
     : // If state doesn't exist, we need to default to `screen` param if available, or the initial screen
       // In our case, it's "Feed" as that's the first screen inside the navigator
-      route.params?.screen || 'Set'
-  if (routeName === 'Set') return true
+      route.params?.screen || 'SetsRoot'
+  if (routeName === 'SetsRoot') return true
   else return false
 ***REMOVED***
 
-function DrawerNavigator (props) {
+function MainDrawer (props) {
   useEffect(() => {
     // add listener for connection status and update it accordingly
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -96,8 +96,8 @@ function DrawerNavigator (props) {
           options={({ route ***REMOVED***) => ({
             gestureEnabled: getGestureEnabled(route)
           ***REMOVED***)***REMOVED***
-          name='StackNavigator'
-          component={StackNavigator***REMOVED***
+          name='MainStack'
+          component={MainStack***REMOVED***
         />
       </Drawer.Navigator>
     </NavigationContainer>
@@ -132,4 +132,4 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerNavigator)
+export default connect(mapStateToProps, mapDispatchToProps)(MainDrawer)

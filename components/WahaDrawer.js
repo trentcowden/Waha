@@ -1,13 +1,12 @@
 import SafeAreaView from 'react-native-safe-area-view'
 import React from 'react'
-import { View, Text, StyleSheet ***REMOVED*** from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import DrawerItem from '../components/DrawerItem'
 import SmallDrawerItem from '../components/SmallDrawerItem'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as WebBrowser from 'expo-web-browser'
 import AvatarImage from '../components/AvatarImage'
-import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 
 function WahaDrawer (props) {
   //// FUNCTIONS
@@ -55,13 +54,9 @@ function WahaDrawer (props) {
                onPress={() => {***REMOVED******REMOVED***
             /> */***REMOVED***
           <DrawerItem
-            iconName='email'
-            text={props.translations.navigation.drawer.feedback***REMOVED***
-            onPress={() =>
-              openBrowser(
-                'https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif'
-              )
-            ***REMOVED***
+            iconName='boat'
+            text={props.translations.navigation.drawer.mt***REMOVED***
+            onPress={() => props.navigation.navigate('MT')***REMOVED***
           />
           <DrawerItem
             iconName='storage'
@@ -76,7 +71,7 @@ function WahaDrawer (props) {
         <View style={styles.smallDrawerItemsContainer***REMOVED***>
           <SmallDrawerItem
             onPress={() => {***REMOVED******REMOVED***
-            label={props.translations.navigation.drawer.coaching***REMOVED***
+            label={props.translations.navigation.drawer.feedback***REMOVED***
           />
           <SmallDrawerItem
             onPress={() =>
@@ -100,7 +95,7 @@ function WahaDrawer (props) {
               { fontFamily: props.font + '-regular' ***REMOVED***
             ]***REMOVED***
           >
-            v0.2.8
+            v0.4
           </Text>
         </View>
       </View>
@@ -120,9 +115,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     padding: 15
-  ***REMOVED***,
-  bigDrawerItemsContainer: {
-    backgroundColor: '#FFFFFF'
   ***REMOVED***,
   groupIconContainer: {
     alignItems: 'center',

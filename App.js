@@ -1,6 +1,6 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import * as Font from 'expo-font'
-import WahaNavigator from './navigation/WahaNavigator'
+import Root from './navigation/Root'
 import LoadingView from './components/LoadingView'
 import { Provider ***REMOVED*** from 'react-redux'
 import { persistor, store ***REMOVED*** from './redux/store'
@@ -61,7 +61,7 @@ export default function App () {
     return (
       <Provider store={store***REMOVED***>
         <PersistGate loading={<LoadingView />***REMOVED*** persistor={persistor***REMOVED***>
-          <WahaNavigator />
+          <Root />
         </PersistGate>
       </Provider>
     )

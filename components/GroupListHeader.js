@@ -9,27 +9,28 @@ import {
   Image
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import GroupListItem from '../components/GroupListItem'
+import GroupItem from './GroupItem'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { deleteLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import * as FileSystem from 'expo-file-system'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
-function LanguageInstanceHeader (props) {
+function GroupListHeader (props) {
   //// FUNCTIONS
 
   useEffect(() => {
     // check if there was a failed language add, i.e. if the app crashed/user quit during a fetch
+    // and clear out the already downloaded content if there was
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
       contents => {
-        console.log(contents)
         if (
-          !contents.includes(props.languageID + 'chapter1.mp3') ||
-          !contents.includes(props.languageID + 'chapter3.mp3') ||
-          !contents.includes(props.languageID + 'lesson1chapter1.mp3') ||
-          !contents.includes(props.languageID + 'lesson1chapter3.mp3') ||
-          !contents.includes(props.languageID + 'header.png')
+          !contents.includes(props.languageID + '-c-t-chapter1.mp3') ||
+          !contents.includes(props.languageID + '-c-t-chapter3.mp3') ||
+          !contents.includes(props.languageID + '-mt-chapter1.mp3') ||
+          !contents.includes(props.languageID + '-mt-chapter3.mp3') ||
+          !contents.includes(props.languageID + '-dummy-chapter2.mp3') ||
+          !contents.includes(props.languageID + '-header.png')
         ) {
           deleteLanguageInstance()
         ***REMOVED***
@@ -66,7 +67,7 @@ function LanguageInstanceHeader (props) {
 
   function renderGroupItem (groups) {
     return (
-      <GroupListItem
+      <GroupItem
         groupName={groups.item.name***REMOVED***
         isEditing={props.isEditing***REMOVED***
         goToEditGroupScreen={props.goToEditGroupScreen***REMOVED***
@@ -75,21 +76,22 @@ function LanguageInstanceHeader (props) {
     )
   ***REMOVED***
 
-  // render trash button conditionally because it's only shown when editting mode is active
-  var trashButton =
-    props.isEditing && !(props.activeGroup.language === props.languageID) ? (
+  // render trash button conditionally because it's only shown when editing mode is active
+  var trashButton
+  // if we're editing and not in the active group, we can delete, so show trash can
+  if (props.isEditing && !(props.activeGroup.language === props.languageID)) {
+    trashButton = (
       <TouchableOpacity
-        style={[
-          styles.trashButtonContainer,
-          {
-            marginRight: props.isRTL ? 15 : -15,
-            marginLeft: props.isRTL ? -15 : 15
-          ***REMOVED***
-        ]***REMOVED***
+        style={{
+          marginHorizontal: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 24 * scaleMultiplier
+        ***REMOVED******REMOVED***
         onPress={() =>
           Alert.alert(
             props.translations.alerts.deleteLanguage.header,
-            props.translations.alerts.deleteLanguage.body,
+            props.translations.alerts.deleteLanguage.text,
             [
               {
                 text: props.translations.alerts.options.cancel,
@@ -105,13 +107,26 @@ function LanguageInstanceHeader (props) {
       >
         <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color='#FF0800' />
       </TouchableOpacity>
-    ) : null
+    )
+    // if we're editing and active, show an empty view
+  ***REMOVED*** else if (
+    props.isEditing &&
+    props.activeGroup.language === props.languageID
+  ) {
+    trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
+    // otherwise, make it nothin
+  ***REMOVED*** else {
+    trashButton = null
+  ***REMOVED***
+
   return (
     <View style={styles.languageHeaderListContainer***REMOVED***>
       <View
         style={[
           styles.languageHeaderContainer,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+          {
+            flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          ***REMOVED***
         ]***REMOVED***
       >
         {trashButton***REMOVED***
@@ -120,7 +135,9 @@ function LanguageInstanceHeader (props) {
             styles.languageHeaderText,
             {
               textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular'
+              fontFamily: props.font + '-regular',
+              marginLeft: props.isRTL ? 0 : props.isEditing ? 0 : 20,
+              marginRight: props.isRTL ? (props.isEditing ? 0 : 20) : 0
             ***REMOVED***
           ]***REMOVED***
         >
@@ -129,15 +146,19 @@ function LanguageInstanceHeader (props) {
         <Image
           style={styles.languageLogo***REMOVED***
           source={{
-            uri: FileSystem.documentDirectory + props.languageID + 'header.png'
+            uri: FileSystem.documentDirectory + props.languageID + '-header.png'
           ***REMOVED******REMOVED***
         />
       </View>
+
+      {/* list of groups */***REMOVED***
       <FlatList
         data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
         renderItem={renderGroupItem***REMOVED***
         keyExtractor={item => item.name***REMOVED***
       />
+
+      {/* add new group button */***REMOVED***
       <TouchableOpacity
         style={[
           styles.addGroupContainer,
@@ -145,12 +166,17 @@ function LanguageInstanceHeader (props) {
         ]***REMOVED***
         onPress={props.goToAddNewGroupScreen***REMOVED***
       >
-        <Icon
-          name='group-add'
-          size={35 * scaleMultiplier***REMOVED***
-          color='#DEE3E9'
-          style={{ marginHorizontal: 15 ***REMOVED******REMOVED***
-        />
+        <View
+          style={{
+            width: 50 * scaleMultiplier,
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 20
+          ***REMOVED******REMOVED***
+        >
+          <Icon name='group-add' size={40 * scaleMultiplier***REMOVED*** color='#DEE3E9' />
+        </View>
         <Text
           style={[
             styles.addGroupText,
@@ -181,14 +207,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 30
   ***REMOVED***,
-  trashButtonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  ***REMOVED***,
   languageHeaderText: {
     fontSize: 18 * scaleMultiplier,
     color: '#9FA5AD',
-    marginHorizontal: 30,
     flex: 1
   ***REMOVED***,
   languageLogo: {
@@ -204,7 +225,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    margin: 3
+    borderWidth: 1,
+    borderColor: '#EFF2F4'
   ***REMOVED***,
   addGroupText: {
     color: '#2D9CDB',
@@ -242,7 +264,4 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LanguageInstanceHeader)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupListHeader)

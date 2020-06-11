@@ -1,28 +1,30 @@
 import React from 'react'
+import { View, Image, StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import * as FileSystem from 'expo-file-system'
 
 import LessonListScreen from '../screens/LessonListScreen'
 import PlayScreen from '../screens/PlayScreen'
-import SetScreen from '../screens/SetScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import AddNewGroupScreen from '../screens/AddNewGroupScreen'
 import AddNewLanguageScreen from '../screens/AddNewLanguageScreen'
 import EditGroupScreen from '../screens/EditGroupScreen'
 import StorageScreen from '../screens/StorageScreen'
+import MTScreen from '../screens/MTScreen'
+import PasscodeScreen from '../screens/PasscodeScreen'
+import SetTabNavigator from './SetTabs'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import { connect ***REMOVED*** from 'react-redux'
+import SetsRoot from './SetsRoot'
 
 const Stack = createStackNavigator()
 
-function StackNavigator (props) {
+function MainStack (props) {
   return (
     //global navigation options
     <Stack.Navigator
-      initialRouteName='StudySet'
+      initialRouteName='SetsRoot'
       screenOptions={{
-        headerStyle: {
-          height: 90 * scaleMultiplier
-        ***REMOVED***,
         gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
         gestureResponseDistance: {
           horizontal: 50 * scaleMultiplier,
@@ -30,17 +32,13 @@ function StackNavigator (props) {
         ***REMOVED***,
         headerTitleAlign: 'center'
       ***REMOVED******REMOVED***
+      mode='card'
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
-        name='Set'
-        component={SetScreen***REMOVED***
-        options={{
-          headerStyle: {
-            backgroundColor: '#EAEEF0'
-          ***REMOVED***,
-          headerTitleAlign: 'center'
-        ***REMOVED******REMOVED***
+        name='SetsRoot'
+        component={SetsRoot***REMOVED***
+        options={{ headerShown: false ***REMOVED******REMOVED***
       />
 
       {/* Lesson List Screen */***REMOVED***
@@ -55,8 +53,6 @@ function StackNavigator (props) {
           headerTitleAlign: 'center'
         ***REMOVED******REMOVED***
       />
-
-      {/* Play Screen */***REMOVED***
       <Stack.Screen
         name='Play'
         component={PlayScreen***REMOVED***
@@ -142,9 +138,46 @@ function StackNavigator (props) {
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
+      <Stack.Screen
+        name='MT'
+        component={MTScreen***REMOVED***
+        options={{
+          headerTitle: props.translations.navigation.headers.mtScreen,
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='Passcode'
+        component={PasscodeScreen***REMOVED***
+        options={{
+          headerTitle: props.translations.navigation.headers.mtScreen,
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
     </Stack.Navigator>
   )
 ***REMOVED***
+
+const styles = StyleSheet.create({
+  headerImage: {
+    resizeMode: 'contain',
+    width: 120,
+    height: 40,
+    alignSelf: 'center'
+  ***REMOVED***
+***REMOVED***)
 
 //// REDUX
 
@@ -155,8 +188,9 @@ function mapStateToProps (state) {
   return {
     isRTL: state.database[activeGroup.language].isRTL,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(StackNavigator)
+export default connect(mapStateToProps)(MainStack)

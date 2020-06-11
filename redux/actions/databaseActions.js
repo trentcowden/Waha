@@ -155,8 +155,8 @@ export function addLanguage (language) {
           // downloads a file from url into local storage
           function downloadSomething (source, fileName) {
             var downloadResumable = FileSystem.createDownloadResumable(
-              doc.data()[source],
-              FileSystem.documentDirectory + language + fileName,
+              doc.data().sources[source],
+              FileSystem.documentDirectory + language + '-' + fileName,
               {***REMOVED***,
               callback
             )
@@ -168,11 +168,12 @@ export function addLanguage (language) {
           // downloads everything we need
           function downloadEverything () {
             return Promise.all([
-              downloadSomething('headerImageSource', 'header.png'),
-              downloadSomething('chapter1source', 'chapter1.mp3'),
-              downloadSomething('chapter3source', 'chapter3.mp3'),
-              downloadSomething('lesson1chapter1source', 'lesson1chapter1.mp3'),
-              downloadSomething('lesson1chapter3source', 'lesson1chapter3.mp3')
+              downloadSomething('header', 'header.png'),
+              downloadSomething('c-t-chapter1', 'c-t-chapter1.mp3'),
+              downloadSomething('c-t-chapter3', 'c-t-chapter3.mp3'),
+              downloadSomething('mt-chapter1', 'mt-chapter1.mp3'),
+              downloadSomething('mt-chapter3', 'mt-chapter3.mp3'),
+              downloadSomething('dummy-chapter2', 'dummy-chapter2.mp3')
             ])
           ***REMOVED***
 
@@ -187,13 +188,18 @@ export function addLanguage (language) {
               dispatch(setCurrentFetchProgress(0))
             ***REMOVED***)
             .catch(() => {
+              console.log('1')
               dispatch(setFetchError(true, language))
             ***REMOVED***)
         ***REMOVED*** else {
+          console.log('2')
           dispatch(setFetchError(true, language))
         ***REMOVED***
       ***REMOVED***)
-      .catch(() => dispatch(setFetchError(true, language)))
+      .catch(() => {
+        dispatch(setFetchError(true, language))
+        console.log('3')
+      ***REMOVED***)
   ***REMOVED***
 ***REMOVED***
 
