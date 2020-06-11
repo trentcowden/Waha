@@ -42,7 +42,7 @@ function LessonListScreen (props) {
   const [activeLessonInModal, setActiveLessonInModal] = useState({***REMOVED***)
 
   // modal states
-  const [showSaveLessonModal, setShowSaveLessonModal] = useState(false)
+  const [showDownloadLessonModal, setShowDownloadLessonModal] = useState(false)
   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false)
   const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
@@ -165,9 +165,9 @@ function LessonListScreen (props) {
 
   // hides all the modals
   function hideModals () {
-    setShowSaveLessonModal(false)
+    setShowDownloadLessonModal(false)
     setShowDeleteLessonModal(false)
-    setShowLessonOptionsModal(false)
+    setShowShareModal(false)
   ***REMOVED***
 
   // opens the share sheet to share a chapter of a lesson
@@ -230,9 +230,8 @@ function LessonListScreen (props) {
         isDownloaded={downloadsInFileSystem[lessonList.item.id]***REMOVED***
         isComplete={thisSetProgress.includes(lessonList.item.index)***REMOVED***
         setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
-        setShowSaveLessonModal={() => setShowSaveLessonModal(true)***REMOVED***
+        setShowDownloadLessonModal={() => setShowDownloadLessonModal(true)***REMOVED***
         setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
-        // setShowLessonOptionsModal={() => setShowLessonOptionsModal(true)***REMOVED***
       />
     )
   ***REMOVED***
@@ -258,6 +257,7 @@ function LessonListScreen (props) {
                 data.item.index
               )
             ***REMOVED***
+            showShareModal={() => setShowShareModal(true)***REMOVED***
           />
         )***REMOVED***
         leftOpenValue={50***REMOVED***
@@ -266,20 +266,35 @@ function LessonListScreen (props) {
         rightActivationValue={-Dimensions.get('screen').width / 2 + 10***REMOVED***
         stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
         stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
-        onLeftActionStatusChange={data => {
-          if (data.isActivated)
-            props.toggleComplete(
-              props.activeGroup.name,
-              props.route.params.thisSet,
-              parseInt(data.key)
-            )
-        ***REMOVED******REMOVED***
-        onRightActionStatusChange={data => setShowLessonOptionsModal(true)***REMOVED***
+        onLeftActionStatusChange={
+          props.isRTL
+            ? data => setShowShareModal(true)
+            : data => {
+                if (data.isActivated)
+                  props.toggleComplete(
+                    props.activeGroup.name,
+                    props.route.params.thisSet,
+                    parseInt(data.key)
+                  )
+              ***REMOVED***
+        ***REMOVED***
+        onRightActionStatusChange={
+          props.isRTL
+            ? data => {
+                if (data.isActivated)
+                  props.toggleComplete(
+                    props.activeGroup.name,
+                    props.route.params.thisSet,
+                    parseInt(data.key)
+                  )
+              ***REMOVED***
+            : data => setShowShareModal(true)
+        ***REMOVED***
       />
 
       {/* MODALS */***REMOVED***
       <OptionsModal
-        isVisible={showSaveLessonModal***REMOVED***
+        isVisible={showDownloadLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
         closeText={
           props.activeDatabase.translations.modals.downloadLessonOptions.cancel
@@ -311,52 +326,28 @@ function LessonListScreen (props) {
         />
       </OptionsModal>
       <OptionsModal
-        isVisible={showLessonOptionsModal***REMOVED***
+        isVisible={showShareModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={props.activeDatabase.translations.modals.lessonOptions.close***REMOVED***
+        closeText={props.activeDatabase.translations.modals.shareOptions.close***REMOVED***
       >
-        {/* <ModalButton
-          title={
-            props.activeDatabase.translations.modals.lessonOptions
-              .markLessonComplete
-          ***REMOVED***
-          onPress={() => toggleCompleteFromModal('complete')***REMOVED***
-        />
         <ModalButton
-          title={
-            props.activeDatabase.translations.modals.lessonOptions
-              .markLessonIncomplete
-          ***REMOVED***
-          onPress={() => toggleCompleteFromModal('incomplete')***REMOVED***
-        /> */***REMOVED***
-        <ModalButton
-          title={
-            props.activeDatabase.translations.modals.lessonOptions.shareApp
-          ***REMOVED***
+          title={props.activeDatabase.translations.modals.shareOptions.shareApp***REMOVED***
           onPress={() => share('app')***REMOVED***
         />
         <ModalButton
           title={
-            props.activeDatabase.translations.modals.lessonOptions
+            props.activeDatabase.translations.modals.shareOptions
               .sharePassageText
           ***REMOVED***
           onPress={() => share('text')***REMOVED***
         />
         <ModalButton
           title={
-            props.activeDatabase.translations.modals.lessonOptions
+            props.activeDatabase.translations.modals.shareOptions
               .sharePassageAudio
           ***REMOVED***
           onPress={() => share('audio')***REMOVED***
         />
-        {/* <ModalButton
-          isLast={true***REMOVED***
-          title={
-            props.activeDatabase.translations.modals.lessonOptions
-              .markUpToPointAsComplete
-          ***REMOVED***
-          onPress={markUpToThisPointAsCompleteFromModal***REMOVED***
-        /> */***REMOVED***
       </OptionsModal>
     </View>
   )

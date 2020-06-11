@@ -34,7 +34,7 @@ function ChapterSelect (props) {
         <AnimatedCircularProgress
           size={20***REMOVED***
           width={4***REMOVED***
-          filled={props.downloads[props.lessonID] * 100***REMOVED***
+          fill={props.downloads[props.lessonID] * 100***REMOVED***
           tintColor={props.primaryColor***REMOVED***
           rotation={0***REMOVED***
           backgroundColor='#FFFFFF'

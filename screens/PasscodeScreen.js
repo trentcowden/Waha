@@ -6,7 +6,8 @@ import {
   Image,
   AsyncStorage,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 ***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import SetItem from '../components/SetItem'
@@ -23,7 +24,6 @@ function PasscodeScreen (props) {
   const [pinRef, setPinRef] = useState()
   const [passcodeStatusText, setPasscodeStatusText] = useState('')
   const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
-  const [unlockFailiureModal, setUnlockFailiureModal] = useState(false)
 
   //// CONSTRUCTOR
 
@@ -51,7 +51,16 @@ function PasscodeScreen (props) {
       props.setToolkitEnabled(true)
     ***REMOVED*** else {
       pinRef.shake().then(() => setPasscode(''))
-      setUnlockFailiureModal(true)
+      Alert.alert(
+        props.translations.alerts.passcodeError.header,
+        props.translations.alerts.passcodeError.text,
+        [
+          {
+            text: props.translations.alerts.options.ok,
+            onPress: () => {***REMOVED***
+          ***REMOVED***
+        ]
+      )
       // setTimeout(() => setPasscodeStatusText(''), 3000)
     ***REMOVED***
   ***REMOVED***
@@ -100,15 +109,6 @@ function PasscodeScreen (props) {
         ***REMOVED******REMOVED***
         title={props.translations.modals.mtUnlock.header***REMOVED***
         body={props.translations.modals.mtUnlock.text***REMOVED***
-        imageSource={require('../assets/splash.png')***REMOVED***
-      />
-      <MessageModal
-        isVisible={unlockFailiureModal***REMOVED***
-        hideModal={() => {
-          setUnlockFailiureModal(false)
-        ***REMOVED******REMOVED***
-        title={props.translations.modals.passcodeError.header***REMOVED***
-        body={props.translations.modals.passcodeError.text***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
     </View>

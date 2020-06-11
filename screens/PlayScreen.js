@@ -511,12 +511,24 @@ function PlayScreen (props) {
     return (
       <View>
         <Text
-          style={[styles.albumArtText, { fontFamily: props.font + '-medium' ***REMOVED***]***REMOVED***
+          style={[
+            styles.albumArtText,
+            {
+              fontFamily: props.font + '-medium',
+              textAlign: props.isRTL ? 'right' : 'left'
+            ***REMOVED***
+          ]***REMOVED***
         >
           {textList.item.header***REMOVED***
         </Text>
         <Text
-          style={[styles.albumArtText, { fontFamily: props.font + '-regular' ***REMOVED***]***REMOVED***
+          style={[
+            styles.albumArtText,
+            {
+              fontFamily: props.font + '-regular',
+              textAlign: props.isRTL ? 'right' : 'left'
+            ***REMOVED***
+          ]***REMOVED***
         >
           {textList.item.text + '\n'***REMOVED***
         </Text>
@@ -599,19 +611,19 @@ function PlayScreen (props) {
       <OptionsModal
         isVisible={showShareLessonModal***REMOVED***
         hideModal={() => setShowShareLessonModal(false)***REMOVED***
-        closeText={props.translations.modals.lessonOptions.close***REMOVED***
+        closeText={props.translations.modals.shareOptions.close***REMOVED***
       >
         <ModalButton
-          title={props.translations.modals.lessonOptions.shareApp***REMOVED***
+          title={props.translations.modals.shareOptions.shareApp***REMOVED***
           onPress={() => share('app')***REMOVED***
         />
         <ModalButton
-          title={props.translations.modals.lessonOptions.sharePassageText***REMOVED***
+          title={props.translations.modals.shareOptions.sharePassageText***REMOVED***
           onPress={() => share('text')***REMOVED***
         />
         <ModalButton
           isLast={true***REMOVED***
-          title={props.translations.modals.lessonOptions.sharePassageAudio***REMOVED***
+          title={props.translations.modals.shareOptions.sharePassageAudio***REMOVED***
           onPress={() => share('audio')***REMOVED***
         />
       </OptionsModal>
@@ -662,8 +674,7 @@ const styles = StyleSheet.create({
     flex: 1
   ***REMOVED***,
   albumArtText: {
-    fontSize: 18 * scaleMultiplier,
-    textAlign: 'justify'
+    fontSize: 18 * scaleMultiplier
   ***REMOVED***,
   scrollBar: {
     width: 4,

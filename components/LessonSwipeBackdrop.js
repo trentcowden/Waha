@@ -20,7 +20,7 @@ function LessonSwipeBackdrop (props) {
       onPress={props.toggleComplete***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
-        <Icon name='x-filled' size={20***REMOVED*** color='#FFFFFF' />
+        <Icon name='cancel-filled' size={20***REMOVED*** color='#FFFFFF' />
       </View>
     </TouchableOpacity>
   ) : (
@@ -44,7 +44,7 @@ function LessonSwipeBackdrop (props) {
     <View
       style={[
         styles.lessonSwipeBackdropContainer,
-        { flexDirection: props.isRLT ? 'row-reverse' : 'row' ***REMOVED***
+        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
     >
       {completeButton***REMOVED***
@@ -56,6 +56,7 @@ function LessonSwipeBackdrop (props) {
             alignItems: props.isRLT ? 'flex-start' : 'flex-end'
           ***REMOVED***
         ]***REMOVED***
+        onPress={props.showShareModal***REMOVED***
       >
         <View style={styles.iconContainer***REMOVED***>
           <Icon

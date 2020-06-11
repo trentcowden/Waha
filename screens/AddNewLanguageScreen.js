@@ -38,11 +38,11 @@ function AddNewLanguageScreen (props) {
     {
       id: 'en',
       displayName: 'English'
-    ***REMOVED***,
-    {
-      id: 'te',
-      displayName: 'Test Language'
     ***REMOVED***
+    // {
+    //   id: 'te',
+    //   displayName: 'Test Language'
+    // ***REMOVED***
   ]
 
   // set list of installed languages
