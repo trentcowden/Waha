@@ -98,8 +98,8 @@ function PasscodeScreen (props) {
           setUnlockSuccessModal(false)
           props.navigation.goBack()
         ***REMOVED******REMOVED***
-        title={props.translations.modals.enableMTContent.header***REMOVED***
-        body={props.translations.modals.enableMTContent.text***REMOVED***
+        title={props.translations.modals.mtUnlock.header***REMOVED***
+        body={props.translations.modals.mtUnlock.text***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
       <MessageModal

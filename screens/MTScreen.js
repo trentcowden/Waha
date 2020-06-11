@@ -167,8 +167,8 @@ function MTScreen (props) {
       <MessageModal
         isVisible={showHowMTsWorkModal***REMOVED***
         hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
-        title={props.translations.modals.mtUnlock.header***REMOVED***
-        body={props.translations.modals.mtUnlock.text***REMOVED***
+        title={props.translations.modals.enableMTContent.header***REMOVED***
+        body={props.translations.modals.enableMTContent.text***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
     </View>
