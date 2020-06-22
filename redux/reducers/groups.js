@@ -4,7 +4,6 @@ import {
   UPDATE_PROGRESS,
   RESET_PROGRESS,
   EDIT_GROUP,
-  SET_BOOKMARK,
   ADD_SET,
   SET_SHOW_TOOLKIT
 ***REMOVED*** from '../actions/groupsActions'
@@ -175,27 +174,16 @@ export function groups (state = [], action) {
         ***REMOVED***
         return group
       ***REMOVED***)
-
-    case SET_BOOKMARK:
-      var thisGroup = state.filter(group => group.name === action.groupName)[0]
-      var bookmarkIndex = 0
-
-      // increase bookmark index until we get to a lesson that isn't completed
-      do {
-        bookmarkIndex += 1
-      ***REMOVED*** while (thisGroup.progress.includes(bookmarkIndex))
-
-      return state.map(group => {
-        if (group.name === action.groupName) {
-          return { ...group, bookmark: bookmarkIndex ***REMOVED***
-        ***REMOVED***
-        return group
-      ***REMOVED***)
-
     case RESET_PROGRESS:
       return state.map(group => {
         if (group.name === action.groupName) {
-          return { ...group, progress: [] ***REMOVED***
+          return {
+            ...group,
+            setBookmark: group.language + '01',
+            addedSets: group.addedSets.map(set => {
+              return { ...set, progress: [], bookmark: 1 ***REMOVED***
+            ***REMOVED***)
+          ***REMOVED***
         ***REMOVED***
         return group
       ***REMOVED***)

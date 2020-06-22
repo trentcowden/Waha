@@ -9,7 +9,8 @@ import {
   Text,
   Share,
   Platform,
-  Dimensions
+  Dimensions,
+  SafeAreaView
 ***REMOVED*** from 'react-native'
 import LessonItem from '../components/LessonItem'
 import * as FileSystem from 'expo-file-system'
@@ -246,6 +247,7 @@ function LessonListScreen (props) {
           lesson => props.route.params.thisSet.id === lesson.setid
         )***REMOVED***
         renderItem={renderLessonItem***REMOVED***
+        ListFooterComponent={() => <View style={{ height: 30 ***REMOVED******REMOVED*** />***REMOVED***
         keyExtractor={item => item.index.toString()***REMOVED***
         renderHiddenItem={(data, rowMap) => (
           <LessonSwipeBackdrop

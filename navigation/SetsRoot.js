@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, StyleSheet ***REMOVED*** from 'react-native'
+import { View, Image, StyleSheet, Dimensions ***REMOVED*** from 'react-native'
 import SetTabs from './SetTabs'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import { connect ***REMOVED*** from 'react-redux'
@@ -17,9 +17,10 @@ function SetsRoot (props) {
       initialRouteName='SetTabs'
       screenOptions={{
         headerStyle: {
-          height: 80 * scaleMultiplier
+          height: Dimensions.get('screen').height / 9
         ***REMOVED***,
-        headerTitleAlign: 'center'
+        headerTitleAlign: 'center',
+        headerMode: 'float'
       ***REMOVED******REMOVED***
       mode='modal'
     >

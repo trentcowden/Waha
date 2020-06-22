@@ -26,13 +26,13 @@ function LanguageSelectScreen (props) {
       selectLanguage: 'Please select your language.',
       letsBegin: "Let's begin!",
       noInternet: 'Error: an internet connection is required to set up the app'
-    ***REMOVED***,
-    te: {
-      welcome: 'morbi tristique senectus et!',
-      selectLanguage: 'eget nulla facilisi etiam.',
-      letsBegin: 'nibh ipsum!',
-      noInternet: 'morbi tristique senectus et eget nulla facilisi etiam'
     ***REMOVED***
+    // te: {
+    //   welcome: 'morbi tristique senectus et!',
+    //   selectLanguage: 'eget nulla facilisi etiam.',
+    //   letsBegin: 'nibh ipsum!',
+    //   noInternet: 'morbi tristique senectus et eget nulla facilisi etiam'
+    // ***REMOVED***
   ***REMOVED***
 
   //// CONSTRUCTOR
@@ -116,7 +116,7 @@ function LanguageSelectScreen (props) {
             mode='dropdown'
           >
             <Picker.Item label='🇺🇸English' value='en' />
-            <Picker.Item label='⭐️Test Language' value='te' />
+            {/* <Picker.Item label='⭐️Test Language' value='te' /> */***REMOVED***
           </Picker>
         </View>
         <View style={{***REMOVED******REMOVED***>
