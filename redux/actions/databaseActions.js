@@ -188,17 +188,14 @@ export function addLanguage (language) {
               dispatch(setCurrentFetchProgress(0))
             ***REMOVED***)
             .catch(() => {
-              console.log('1')
               dispatch(setFetchError(true, language))
             ***REMOVED***)
         ***REMOVED*** else {
-          console.log('2')
           dispatch(setFetchError(true, language))
         ***REMOVED***
       ***REMOVED***)
       .catch(() => {
         dispatch(setFetchError(true, language))
-        console.log('3')
       ***REMOVED***)
   ***REMOVED***
 ***REMOVED***
