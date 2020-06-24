@@ -8,17 +8,57 @@ function ChapterSelect (props) {
   // RENDER
 
   // render chapter 2 icon conditionally based off if it's not active, active, or completed
-  var chapter2IconName
+  var storyIcon
   if (props.activeChapter === 'fellowship') {
-    chapter2IconName = 'number-2-filled'
-  ***REMOVED*** else if (props.activeChapter === 'passage') {
-    chapter2IconName = 'number-2-outline'
+    storyIcon = 'number-2-filled'
+  ***REMOVED*** else if (props.activeChapter === 'story') {
+    storyIcon = 'number-2-outline'
   ***REMOVED*** else {
-    chapter2IconName = 'check-filled'
+    storyIcon = 'check-filled'
   ***REMOVED***
 
+  var trainingButton = props.hasVideoSource ? (
+    <TouchableOpacity
+      style={[
+        styles.chapterSelect,
+        {
+          borderColor: props.primaryColor,
+          backgroundColor:
+            props.activeChapter === 'training' ? props.primaryColor : '#EFF2F4'
+        ***REMOVED***
+      ]***REMOVED***
+      onPress={() => props.onPress('training')***REMOVED***
+    >
+      <Icon
+        name={
+          props.activeChapter === 'application'
+            ? 'check-filled'
+            : props.activeChapter === 'training'
+            ? 'number-3-outline'
+            : 'number-3-filled'
+        ***REMOVED***
+        size={25 * scaleMultiplier***REMOVED***
+        color={
+          props.activeChapter === 'training' ? 'white' : props.primaryColor
+        ***REMOVED***
+      />
+      <Text
+        style={[
+          styles.chapterSelectText,
+          {
+            color:
+              props.activeChapter === 'training' ? 'white' : props.primaryColor,
+            fontFamily: props.font + '-black'
+          ***REMOVED***
+        ]***REMOVED***
+      >
+        {props.translations.labels.training***REMOVED***
+      </Text>
+    </TouchableOpacity>
+  ) : null
+
   // render chapter 2 button
-  var chapter2Button =
+  var storyButton =
     props.downloads[props.lessonID] && props.downloads[props.lessonID] < 1 ? (
       // if the lesson is downloading, show the progress in the chapter button
       <View
@@ -32,7 +72,7 @@ function ChapterSelect (props) {
         ]***REMOVED***
       >
         <AnimatedCircularProgress
-          size={20***REMOVED***
+          size={20 * scaleMultiplier***REMOVED***
           width={4***REMOVED***
           fill={props.downloads[props.lessonID] * 100***REMOVED***
           tintColor={props.primaryColor***REMOVED***
@@ -49,7 +89,7 @@ function ChapterSelect (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.passage***REMOVED***
+          {props.translations.labels.story***REMOVED***
         </Text>
       </View>
     ) : (
@@ -60,38 +100,34 @@ function ChapterSelect (props) {
           {
             borderColor: props.primaryColor,
             backgroundColor:
-              props.activeChapter === 'passage' ? props.primaryColor : '#EFF2F4'
+              props.activeChapter === 'story' ? props.primaryColor : '#EFF2F4'
           ***REMOVED***
         ]***REMOVED***
         onPress={
           props.hasAudioSource
-            ? () => props.onPress('passage')
+            ? () => props.onPress('story')
             : () => {
-                props.onPress('passage')
+                props.onPress('story')
                 props.goToScripture()
               ***REMOVED***
         ***REMOVED***
       >
         <Icon
-          name={chapter2IconName***REMOVED***
-          size={25***REMOVED***
-          color={
-            props.activeChapter === 'passage' ? 'white' : props.primaryColor
-          ***REMOVED***
+          name={storyIcon***REMOVED***
+          size={25 * scaleMultiplier***REMOVED***
+          color={props.activeChapter === 'story' ? 'white' : props.primaryColor***REMOVED***
         />
         <Text
           style={[
             styles.chapterSelectText,
             {
               color:
-                props.activeChapter === 'passage'
-                  ? 'white'
-                  : props.primaryColor,
+                props.activeChapter === 'story' ? 'white' : props.primaryColor,
               fontFamily: props.font + '-black'
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.passage***REMOVED***
+          {props.translations.labels.story***REMOVED***
         </Text>
       </TouchableOpacity>
     )
@@ -118,7 +154,7 @@ function ChapterSelect (props) {
               ? 'number-1-outline'
               : 'check-filled'
           ***REMOVED***
-          size={25***REMOVED***
+          size={25 * scaleMultiplier***REMOVED***
           color={
             props.activeChapter === 'fellowship' ? 'white' : props.primaryColor
           ***REMOVED***
@@ -140,7 +176,9 @@ function ChapterSelect (props) {
       </TouchableOpacity>
 
       {/* chapter 2 button (defined earlier) */***REMOVED***
-      {chapter2Button***REMOVED***
+      {storyButton***REMOVED***
+
+      {trainingButton***REMOVED***
 
       {/* chapter 3 button */***REMOVED***
       <TouchableOpacity
@@ -158,11 +196,15 @@ function ChapterSelect (props) {
       >
         <Icon
           name={
-            props.activeChapter === 'application'
+            props.hasVideoSource
+              ? props.activeChapter === 'application'
+                ? 'number-4-outline'
+                : 'number-4-filled'
+              : props.activeChapter === 'application'
               ? 'number-3-outline'
               : 'number-3-filled'
           ***REMOVED***
-          size={25***REMOVED***
+          size={25 * scaleMultiplier***REMOVED***
           color={
             props.activeChapter === 'application' ? 'white' : props.primaryColor
           ***REMOVED***
@@ -195,14 +237,14 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   chapterSelect: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    height: 50 * scaleMultiplier,
+    height: 55 * scaleMultiplier,
     justifyContent: 'center',
     borderWidth: 2
   ***REMOVED***,
   chapterSelectText: {
-    fontSize: 16 * scaleMultiplier
+    fontSize: 14 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 
