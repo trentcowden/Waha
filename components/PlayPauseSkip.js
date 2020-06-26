@@ -1,5 +1,10 @@
 import React from 'react'
-import { View, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 
@@ -15,16 +20,29 @@ function PlayPauseSkip (props) {
       >
         <Icon name='skip-back' size={69 * scaleMultiplier***REMOVED*** />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.playPauseSkipButton***REMOVED***
-        onPress={props.onPlayPress***REMOVED***
-      >
-        <Icon
-          name={props.isPlaying ? 'pause' : 'play'***REMOVED***
-          size={100 * scaleMultiplier***REMOVED***
-          color={props.primaryColor***REMOVED***
-        />
-      </TouchableOpacity>
+      {props.isVideoBuffering ? (
+        <View
+          style={{
+            width: 101 * scaleMultiplier,
+            height: 101 * scaleMultiplier,
+            justifyContent: 'center',
+            alignItems: 'center'
+          ***REMOVED******REMOVED***
+        >
+          <ActivityIndicator size='large' />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.playPauseSkipButton***REMOVED***
+          onPress={props.onPlayPress***REMOVED***
+        >
+          <Icon
+            name={props.isPlaying ? 'pause' : 'play'***REMOVED***
+            size={100 * scaleMultiplier***REMOVED***
+            color={props.primaryColor***REMOVED***
+          />
+        </TouchableOpacity>
+      )***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
         onPress={() => props.onSkipPress(10000)***REMOVED***

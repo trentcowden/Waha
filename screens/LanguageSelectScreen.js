@@ -67,6 +67,15 @@ function LanguageSelectScreen (props) {
       setIsConnected(state.isConnected)
     ***REMOVED***)
 
+    fetch('http://ip-api.com/json/')
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson)
+      ***REMOVED***)
+      .catch(error => {
+        console.error(error)
+      ***REMOVED***)
+
     return function cleanup () {
       unsubscribe()
     ***REMOVED***
