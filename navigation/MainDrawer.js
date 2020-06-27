@@ -140,8 +140,25 @@ function MainDrawer (props) {
           ***REMOVED***
         ***REMOVED***)
         .catch(err => props.removeDownload(lesson.id))
+      await AsyncStorage.getItem(lesson.id + 'v')
+        .then(async value => {
+          if (value) {
+            // error checking for if the async storage object was not deleted before
+            // if we have a resumable download stored but the lesson is already downloaded,
+            // we don't want to resume it
+            FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+              contents => {
+                if (!contents.includes(lesson.id + 'v.mp3')) {
+                  props.resumeDownload(lesson.id + 'v', value)
+                ***REMOVED*** else {
+                  AsyncStorage.removeItem(lesson.id + 'v')
+                ***REMOVED***
+              ***REMOVED***
+            )
+          ***REMOVED***
+        ***REMOVED***)
+        .catch(err => props.removeDownload(lesson.id + 'v'))
     ***REMOVED***)
-    await AsyncStorage
   ***REMOVED***
 
   var direction = props.isRTL ? 'right' : 'left'

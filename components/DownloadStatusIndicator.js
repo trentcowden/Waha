@@ -8,18 +8,40 @@ function DownloadStatusIndicator (props) {
   //// RENDER
 
   // WHAT TO RENDER
-  // Has audio source?
-  //  true: Downloaded?
-  //    true: cloud-check
-  //    false: Connected?
-  // 	    true: Downloading?
-  // 	    	true: progress-bar
-  // 		    false: cloud-down
-  // 	    false: slash
-  //  false: null
+  // Has questionsType ?
+  //  true: Has audio source?
+  //    true: Downloaded?
+  //      true: cloud-check
+  //      false: Connected?
+  // 	      true: Downloading?
+  // 	    	  true: progress-bar
+  // 		      false: cloud-download
+  // 	      false: slash
+  //    false: null
+  //  false: cloud-down
+
+  function getDownloadPercentage () {
+    switch (props.lessonType) {
+      case 'qa':
+        return props.downloads[props.lessonID] * 100
+        break
+      case 'qav':
+        return (
+          ((props.downloads[props.lessonID] +
+            props.downloads[props.lessonID + 'v']) /
+            2) *
+          100
+        )
+        break
+      case 'qv':
+      case 'v':
+        return props.downloads[props.lessonID + 'v'] * 100
+        break
+    ***REMOVED***
+  ***REMOVED***
 
   // TODO: show download options/progress for lessons with ONLY video
-  return props.hasAudioSource ? (
+  return props.lessonType !== 'q' ? (
     // if has audio source
     props.isDownloaded ? (
       // if downloaded, show check
@@ -30,22 +52,13 @@ function DownloadStatusIndicator (props) {
         <Icon name='cloud-check' color='#9FA5AD' size={22 * scaleMultiplier***REMOVED*** />
       </TouchableOpacity>
     ) : props.isConnected ? (
-      props.lessonID in props.downloads ? (
+      props.isDownloading ? (
         // if connected and currently downloading, show progress
         <View style={styles.downloadButtonContainer***REMOVED***>
           <AnimatedCircularProgress
             size={22 * scaleMultiplier***REMOVED***
             width={5 * scaleMultiplier***REMOVED***
-            fill={
-              props.hasQuestionsType
-                ? props.hasVideoSource && props.hasAudioSource
-                  ? ((props.downloads[props.lessonID] +
-                      props.downloads[props.lessonID + 'v']) /
-                      2) *
-                    100
-                  : props.downloads[props.lessonID] * 100
-                : props.downloads[props.lessonID + 'v'] * 100
-            ***REMOVED***
+            fill={getDownloadPercentage()***REMOVED***
             tintColor={'#828282'***REMOVED***
             rotation={0***REMOVED***
             backgroundColor='#FFFFFF'

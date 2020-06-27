@@ -19,8 +19,26 @@ function LessonItem (props) {
 
   useEffect(() => {
     // if we've completed the download for this lesson, remove the download from redux
-    if (props.downloads[props.thisLesson.id] == 1) {
-      props.removeDownload(props.thisLesson.id)
+
+    switch (props.lessonType) {
+      case 'qa':
+        if (props.downloads[props.thisLesson.id] === 1)
+          props.removeDownload(props.thisLesson.id)
+        break
+      case 'qav':
+        if (
+          props.downloads[props.thisLesson.id] === 1 &&
+          props.downloads[props.thisLesson.id + 'v'] === 1
+        ) {
+          props.removeDownload(props.thisLesson.id)
+          props.removeDownload(props.thisLesson.id + 'v')
+        ***REMOVED***
+        break
+      case 'qv':
+      case 'v':
+        if (props.downloads[props.thisLesson.id + 'v'] === 1)
+          props.removeDownload(props.thisLesson.id + 'v')
+        break
     ***REMOVED***
   ***REMOVED***, [props.downloads])
 
@@ -129,13 +147,12 @@ function LessonItem (props) {
       </TouchableOpacity>
       <DownloadStatusIndicator
         isDownloaded={props.isDownloaded***REMOVED***
+        isDownloading={props.isDownloading***REMOVED***
         isConnected={props.isConnected***REMOVED***
         showDeleteModal={showDeleteModal***REMOVED***
         showSaveModal={showSaveModal***REMOVED***
         lessonID={props.thisLesson.id***REMOVED***
-        hasAudioSource={props.thisLesson.audioSource ? true : false***REMOVED***
-        hasVideoSource={props.thisLesson.videoSource ? true : false***REMOVED***
-        hasQuestionsType={props.thisLesson.questionsType ? true : false***REMOVED***
+        lessonType={props.lessonType***REMOVED***
       />
     </View>
   )
