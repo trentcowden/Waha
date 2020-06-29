@@ -144,14 +144,7 @@ function ChapterSelect (props) {
               props.activeChapter === 'story' ? props.primaryColor : '#EFF2F4'
           ***REMOVED***
         ]***REMOVED***
-        onPress={
-          props.lessonType !== 'q' && props.lessonType !== 'qv'
-            ? () => props.onPress('story')
-            : () => {
-                props.onPress('story')
-                props.goToScripture()
-              ***REMOVED***
-        ***REMOVED***
+        onPress={() => props.onPress('story')***REMOVED***
       >
         <Icon
           name={storyIcon***REMOVED***
@@ -237,7 +230,7 @@ function ChapterSelect (props) {
       >
         <Icon
           name={
-            props.lessonType === 'qav'
+            props.lessonType === 'qav' || props.lessonType === 'qv'
               ? props.activeChapter === 'application'
                 ? 'number-4-outline'
                 : 'number-4-filled'

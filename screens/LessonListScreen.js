@@ -59,10 +59,6 @@ function LessonListScreen (props) {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  useEffect(() => {
-    console.log(activeLessonInModal)
-  ***REMOVED***, [activeLessonInModal])
-
   // checks which lessons and lesson videos are downloaded and stores in state
   useEffect(() => {
     var whichLessonsDownloaded = {***REMOVED***
@@ -374,22 +370,39 @@ function LessonListScreen (props) {
         renderHiddenItem={(data, rowMap) => (
           <LessonSwipeBackdrop
             isComplete={thisSetProgress.includes(data.item.index)***REMOVED***
-            toggleComplete={() =>
+            toggleComplete={() => {
               props.toggleComplete(
                 props.activeGroup.name,
                 props.route.params.thisSet,
                 data.item.index
               )
-            ***REMOVED***
-            showShareModal={() => setShowShareModal(true)***REMOVED***
+              rowMap[data.item.index].closeRow()
+            ***REMOVED******REMOVED***
+            showShareModal={() => {
+              setShowShareModal(true)
+              rowMap[data.item.index].closeRow()
+            ***REMOVED******REMOVED***
           />
         )***REMOVED***
         leftOpenValue={50***REMOVED***
         rightOpenValue={-50***REMOVED***
-        leftActivationValue={Dimensions.get('screen').width / 2 - 10***REMOVED***
-        rightActivationValue={-Dimensions.get('screen').width / 2 + 10***REMOVED***
+        leftActivationValue={
+          Platform.OS === 'ios' ? Dimensions.get('screen').width / 2 - 10 : 1000
+        ***REMOVED***
+        rightActivationValue={
+          Platform.OS === 'ios'
+            ? -Dimensions.get('screen').width / 2 + 10
+            : -1000
+        ***REMOVED***
+        // leftActivationValue={Dimensions.get('screen').width / 2 - 10***REMOVED***
+        // rightActivationValue={-Dimensions.get('screen').width / 2 + 10***REMOVED***
         stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
         stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
+        // onLeftActionStatusChange={() =>
+        //   setTimeout(() => {
+        //     console.log('test'), 1000
+        //   ***REMOVED***)
+        // ***REMOVED***
         onLeftActionStatusChange={
           props.isRTL
             ? data => {
@@ -419,7 +432,6 @@ function LessonListScreen (props) {
               ***REMOVED***
         ***REMOVED***
         swipeGestureBegan={data => {
-          console.log(data)
           setActiveLessonInModal(
             props.activeDatabase.lessons.filter(
               lesson =>

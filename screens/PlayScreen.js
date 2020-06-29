@@ -298,8 +298,9 @@ function PlayScreen (props) {
     // chapter once we finish or toggle the whole lesson as complete
     if (playbackStatus.didJustFinish) {
       if (activeChapter === 'fellowship') {
-        if (!props.downloads[props.route.params.thisLesson.id])
+        if (!props.downloads[props.route.params.thisLesson.id]) {
           changeChapter('story')
+        ***REMOVED***
       ***REMOVED*** else if (activeChapter === 'story') {
         switch (props.route.params.lessonType) {
           case 'qa':
@@ -313,6 +314,13 @@ function PlayScreen (props) {
             ***REMOVED***
             break
         ***REMOVED***
+      ***REMOVED*** else if (
+        activeChapter === 'application' &&
+        !props.route.params.thisSetProgress.includes(
+          props.route.params.thisLesson.index
+        )
+      ) {
+        changeCompleteStatus()
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***)
@@ -543,6 +551,13 @@ function PlayScreen (props) {
       ***REMOVED*** else if (chapter === 'story') {
         setSeekPosition(0)
         loadAudioFile(storySource)
+        if (albumArtRef)
+          albumArtRef.scrollToIndex({
+            animated: true,
+            viewPosition: 0.5,
+            viewOffset: -Dimensions.get('screen').width,
+            index: 0
+          ***REMOVED***)
       ***REMOVED*** else if (chapter === 'application') {
         setSeekPosition(0)
         loadAudioFile(applicationSource)
@@ -641,7 +656,7 @@ function PlayScreen (props) {
         break
       case 'video':
         Share.share({
-          message: activeLessonInModal.videoSource
+          message: props.route.params.thisLesson.videoSource
         ***REMOVED***)
         break
     ***REMOVED***
@@ -859,15 +874,6 @@ function PlayScreen (props) {
           activeChapter={activeChapter***REMOVED***
           lessonID={props.route.params.thisLesson.id***REMOVED***
           onPress={chapter => changeChapter(chapter)***REMOVED***
-          goToScripture={() => {
-            if (albumArtRef)
-              albumArtRef.scrollToIndex({
-                animated: true,
-                viewPosition: 0.5,
-                viewOffset: -Dimensions.get('screen').width,
-                index: 0
-              ***REMOVED***)
-          ***REMOVED******REMOVED***
           lessonType={props.route.params.lessonType***REMOVED***
         />
       ) : null***REMOVED***
