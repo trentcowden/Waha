@@ -26,13 +26,14 @@ import {
   removeDownload,
   downloadVideo
 ***REMOVED*** from '../redux/actions/downloadActions'
-import { toggleComplete, setBookmark ***REMOVED*** from '../redux/actions/groupsActions'
+import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { connect ***REMOVED*** from 'react-redux'
 import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 function LessonListScreen (props) {
   //// STATE
 
+  // read downloaded files for testing purposes
   // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
   //   console.log(contents)
   // ***REMOVED***)
@@ -52,6 +53,30 @@ function LessonListScreen (props) {
   // progress and bookmark for the set we're looking at
   const [thisSetProgress, setThisSetProgress] = useState([])
   const [thisSetBookmark, setThisSetBookmark] = useState(1)
+
+  //// NAV OPTIONS
+
+  function getNavOptions () {
+    return {
+      headerTitle: () => (
+        <Image
+          style={styles.headerImage***REMOVED***
+          source={{
+            uri:
+              FileSystem.documentDirectory +
+              props.activeGroup.language +
+              '-header.png'
+          ***REMOVED******REMOVED***
+        />
+      ),
+      headerRight: props.isRTL
+        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+        : () => <View></View>,
+      headerLeft: props.isRTL
+        ? () => <View></View>
+        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+    ***REMOVED***
+  ***REMOVED***
 
   //// CONSTRUCTOR
 
@@ -92,32 +117,10 @@ function LessonListScreen (props) {
     )
   ***REMOVED***, [props.activeGroup.addedSets, props.activeGroup.setBookmark])
 
-  //// NAV OPTIONS
-
-  function getNavOptions () {
-    return {
-      headerTitle: () => (
-        <Image
-          style={styles.headerImage***REMOVED***
-          source={{
-            uri:
-              FileSystem.documentDirectory +
-              props.activeGroup.language +
-              '-header.png'
-          ***REMOVED******REMOVED***
-        />
-      ),
-      headerRight: props.isRTL
-        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
-        : () => <View></View>,
-      headerLeft: props.isRTL
-        ? () => <View></View>
-        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
-    ***REMOVED***
-  ***REMOVED***
-
   //// FUNCTIONS
 
+  // gets the type of a lesson in string form
+  // note: not stored in db for ssot purposes
   function getLessonType (lesson) {
     // q = has questions, a = has audio, v = has video
     // options not allowed: av, a
@@ -132,6 +135,11 @@ function LessonListScreen (props) {
       : 'v'
   ***REMOVED***
 
+  // NOTE: for next 4 functions, what is returned depends on the type of the
+  //  lesson. qa checks only audio file, qav checks both audio and video files,
+  //  and qv and v check only video files.
+
+  // determines if a lesson is downloaded based on its type
   function getIsLessonDownloaded (lesson) {
     switch (getLessonType(lesson)) {
       case 'qa':
@@ -154,6 +162,7 @@ function LessonListScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
+  // determines if a lesson is downloading based on its type
   function getIsLessonDownloading (lesson) {
     switch (getLessonType(lesson)) {
       case 'qa':
@@ -173,7 +182,7 @@ function LessonListScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  // downloads a lesson's chapter 2 mp3 via modal press
+  // downloads a lesson's chapter 2 mp3 via modal press based on its type
   function downloadLessonFromModal () {
     switch (getLessonType(activeLessonInModal)) {
       case 'qa':
@@ -203,7 +212,7 @@ function LessonListScreen (props) {
     hideModals()
   ***REMOVED***
 
-  // deletes a lesson's chapter 2 mp3 via modal press
+  // deletes a lesson's chapter 2 mp3 via modal press based on its type
   function deleteLessonFromModal () {
     switch (getLessonType(activeLessonInModal)) {
       case 'qa':
@@ -232,46 +241,20 @@ function LessonListScreen (props) {
     hideModals()
   ***REMOVED***
 
-  // changes the complete status of a lesson via modal press
-  // note: don't change it if they're marking it as what it's already marked as
-  function toggleCompleteFromModal (statusToMark) {
-    if (
-      thisSetProgress.includes(activeLessonInModal.index) &&
-      statusToMark === 'incomplete'
-    ) {
-      props.toggleComplete(
-        props.activeGroup.name,
-        props.route.params.thisSet,
-        activeLessonInModal.index
-      )
-      // props.setBookmark(props.activeGroup.name)
-    ***REMOVED*** else if (
-      !thisSetProgress.includes(activeLessonInModal.index) &&
-      statusToMark === 'complete'
-    ) {
-      props.toggleComplete(
-        props.activeGroup.name,
-        props.route.params.thisSet,
-        activeLessonInModal.index
-      )
-      // props.setBookmark(props.activeGroup.name)
-    ***REMOVED***
-    hideModals()
-  ***REMOVED***
-
-  // marks every lesson in current set as complete up until the selected lesson via modal press
-  function markUpToThisPointAsCompleteFromModal () {
-    for (var i = 1; i <= activeLessonInModal.index; i++) {
-      if (!thisSetProgress.includes(i)) {
-        props.toggleComplete(
-          props.activeGroup.name,
-          props.route.params.thisSet,
-          i
-        )
-      ***REMOVED***
-    ***REMOVED***
-    hideModals()
-  ***REMOVED***
+  // NOT USED: marks every lesson in current set as complete up until the
+  //  selected lesson via modal press
+  // function markUpToThisPointAsCompleteFromModal () {
+  //   for (var i = 1; i <= activeLessonInModal.index; i++) {
+  //     if (!thisSetProgress.includes(i)) {
+  //       props.toggleComplete(
+  //         props.activeGroup.name,
+  //         props.route.params.thisSet,
+  //         i
+  //       )
+  //     ***REMOVED***
+  //   ***REMOVED***
+  //   hideModals()
+  // ***REMOVED***
 
   // hides all the modals
   function hideModals () {
@@ -280,9 +263,10 @@ function LessonListScreen (props) {
     setShowShareModal(false)
   ***REMOVED***
 
-  // opens the share sheet to share a chapter of a lesson
+  // opens the share sheet to share something
   function share (type) {
     switch (type) {
+      // share the link to Waha itself
       case 'app':
         Share.share({
           message:
@@ -291,6 +275,7 @@ function LessonListScreen (props) {
               : 'www.playstorelink.com'
         ***REMOVED***)
         break
+      // share the passage text for this lesson
       case 'text':
         Share.share({
           message:
@@ -299,6 +284,7 @@ function LessonListScreen (props) {
             activeLessonInModal.scriptureText
         ***REMOVED***)
         break
+      // share the audio file for this lesson
       case 'audio':
         FileSystem.getInfoAsync(
           FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
@@ -319,6 +305,7 @@ function LessonListScreen (props) {
               )
         ***REMOVED***)
         break
+      // share the video link for this lesson
       case 'video':
         Share.share({
           message: activeLessonInModal.videoSource
@@ -386,6 +373,8 @@ function LessonListScreen (props) {
         )***REMOVED***
         leftOpenValue={50***REMOVED***
         rightOpenValue={-50***REMOVED***
+        // these are different on platform because the activation is causing a
+        //  crash on android phones
         leftActivationValue={
           Platform.OS === 'ios' ? Dimensions.get('screen').width / 2 - 10 : 1000
         ***REMOVED***
@@ -398,11 +387,6 @@ function LessonListScreen (props) {
         // rightActivationValue={-Dimensions.get('screen').width / 2 + 10***REMOVED***
         stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
         stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
-        // onLeftActionStatusChange={() =>
-        //   setTimeout(() => {
-        //     console.log('test'), 1000
-        //   ***REMOVED***)
-        // ***REMOVED***
         onLeftActionStatusChange={
           props.isRTL
             ? data => {
@@ -536,10 +520,6 @@ const styles = StyleSheet.create({
     width: 120,
     height: 40,
     alignSelf: 'center'
-  ***REMOVED***,
-  hiddenItemContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row'
   ***REMOVED***
 ***REMOVED***)
 
@@ -568,9 +548,6 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     toggleComplete: (groupName, set, lessonIndex) => {
       dispatch(toggleComplete(groupName, set, lessonIndex))
-    ***REMOVED***,
-    setBookmark: groupName => {
-      dispatch(setBookmark(groupName))
     ***REMOVED***,
     removeDownload: lessonID => {
       dispatch(removeDownload(lessonID))
