@@ -130,6 +130,7 @@ function LessonItem (props) {
               textAlign: props.isRTL ? 'right' : 'left',
               fontFamily: props.font + '-medium'
             ***REMOVED******REMOVED***
+            numberOfLines={2***REMOVED***
           >
             {props.thisLesson.title***REMOVED***
           </Text>
@@ -140,6 +141,7 @@ function LessonItem (props) {
               textAlign: props.isRTL ? 'right' : 'left',
               fontFamily: props.font + '-regular'
             ***REMOVED******REMOVED***
+            numberOfLines={1***REMOVED***
           >
             {props.thisLesson.subtitle***REMOVED***
           </Text>

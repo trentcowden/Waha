@@ -140,6 +140,7 @@ function GroupItem (props) {
                 fontFamily: props.font + '-black'
               ***REMOVED***
             ]***REMOVED***
+            numberOfLines={1***REMOVED***
           >
             {props.groupName***REMOVED***
           </Text>
@@ -151,6 +152,7 @@ function GroupItem (props) {
                 fontFamily: props.font + '-regular'
               ***REMOVED***
             ]***REMOVED***
+            numberOfLines={1***REMOVED***
           >
             {getBookmarkText().set***REMOVED***
           </Text>
@@ -162,6 +164,7 @@ function GroupItem (props) {
                 fontFamily: props.font + '-regular'
               ***REMOVED***
             ]***REMOVED***
+            numberOfLines={1***REMOVED***
           >
             {getBookmarkText().lesson***REMOVED***
           </Text>

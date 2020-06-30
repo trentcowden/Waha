@@ -109,7 +109,7 @@ function PasscodeScreen (props) {
         ***REMOVED******REMOVED***
         title={props.translations.modals.mtUnlock.header***REMOVED***
         body={props.translations.modals.mtUnlock.text***REMOVED***
-        imageSource={require('../assets/splash.png')***REMOVED***
+        imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
       />
     </View>
   )

@@ -5,15 +5,17 @@ import {
   Text,
   Picker,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  SectionList
 ***REMOVED*** from 'react-native'
 import { Ionicons ***REMOVED*** from '@expo/vector-icons'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
-import { scaleMultiplier, languageT2S ***REMOVED*** from '../constants'
+import { scaleMultiplier, languageT2S, languages ***REMOVED*** from '../constants'
 import NetInfo from '@react-native-community/netinfo'
 import ModalSelector from 'react-native-modal-selector'
 import LanguageSelectItem from '../components/LanguageSelectItem'
+import { FlatList ***REMOVED*** from 'react-native-gesture-handler'
 
 function LanguageSelectScreen (props) {
   //// STATE
@@ -70,10 +72,10 @@ function LanguageSelectScreen (props) {
     fetch('http://ip-api.com/json/')
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson)
+        // console.log(responseJson)
       ***REMOVED***)
       .catch(error => {
-        console.error(error)
+        // console.error(error)
       ***REMOVED***)
 
     return function cleanup () {
@@ -119,6 +121,19 @@ function LanguageSelectScreen (props) {
     </View>
   )
 
+  function renderLanguage (item) {
+    console.log(item)
+    return (
+      <View>
+        <Text>{item.item***REMOVED***</Text>
+      </View>
+    )
+  ***REMOVED***
+
+  function renderLanguageHeader (item) {
+    return <View></View>
+  ***REMOVED***
+
   return (
     <View style={styles.screen***REMOVED***>
       <View>
@@ -131,49 +146,54 @@ function LanguageSelectScreen (props) {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: 20
+          padding: 20,
+          flex: 1
         ***REMOVED******REMOVED***
       >
-        <View style={{ flex: 1 ***REMOVED******REMOVED***>
-          <ModalSelector
-            data={data***REMOVED***
-            animationType='fade'
-            // initValue={
-            //   data.filter(item => item.key === selectedLanguage)[0].value
-            // ***REMOVED***
-            // selectedKey={selectedLanguage***REMOVED***
-            onChange={option => {
-              onPickerChange(option.key)
+        {/* <SectionList
+          sections={languages***REMOVED***
+          keyExtractor={item => item.title***REMOVED***
+          renderItem={renderLanguage***REMOVED***
+          renderSectionHeader={({ section: { title ***REMOVED*** ***REMOVED***) => <Text>{title***REMOVED***</Text>***REMOVED***
+        /> */***REMOVED***
+        <ModalSelector
+          data={data***REMOVED***
+          animationType='fade'
+          // initValue={
+          //   data.filter(item => item.key === selectedLanguage)[0].value
+          // ***REMOVED***
+          // selectedKey={selectedLanguage***REMOVED***
+          onChange={option => {
+            onPickerChange(option.key)
+          ***REMOVED******REMOVED***
+          cancelText={i18n.t('cancel')***REMOVED***
+          cancelStyle={{
+            height: 70 * scaleMultiplier,
+            justifyContent: 'center'
+          ***REMOVED******REMOVED***
+          backdropPressToClose={true***REMOVED***
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: '#ccc',
+              borderRadius: 5,
+              backgroundColor: '#FFFFFF',
+              height: 80 * scaleMultiplier,
+              justifyContent: 'center',
+              paddingHorizontal: 20
             ***REMOVED******REMOVED***
-            cancelText={i18n.t('cancel')***REMOVED***
-            cancelStyle={{
-              height: 70 * scaleMultiplier,
-              justifyContent: 'center'
-            ***REMOVED******REMOVED***
-            backdropPressToClose={true***REMOVED***
           >
-            <View
+            <Text
               style={{
-                borderWidth: 1,
-                borderColor: '#ccc',
-                borderRadius: 5,
-                backgroundColor: '#FFFFFF',
-                height: 80 * scaleMultiplier,
-                justifyContent: 'center',
-                paddingHorizontal: 20
+                textAlign: 'center',
+                fontSize: 24 * scaleMultiplier
               ***REMOVED******REMOVED***
             >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 24 * scaleMultiplier
-                ***REMOVED******REMOVED***
-              >
-                {data.filter(item => item.key === selectedLanguage)[0].label***REMOVED***
-              </Text>
-            </View>
-          </ModalSelector>
-        </View>
+              {data.filter(item => item.key === selectedLanguage)[0].label***REMOVED***
+            </Text>
+          </View>
+        </ModalSelector>
       </View>
       {startButton***REMOVED***
       {errorMessage***REMOVED***
@@ -186,9 +206,10 @@ function LanguageSelectScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F7F7F7'
+    backgroundColor: '#F7F7F7',
+    paddingTop: 50 * scaleMultiplier
   ***REMOVED***,
   title: {
     textAlign: 'center',

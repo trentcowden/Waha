@@ -169,7 +169,7 @@ function MTScreen (props) {
         hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
         title={props.translations.modals.enableMTContent.header***REMOVED***
         body={props.translations.modals.enableMTContent.text***REMOVED***
-        imageSource={require('../assets/splash.png')***REMOVED***
+        imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
       />
     </View>
   )

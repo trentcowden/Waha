@@ -27,19 +27,23 @@ function WahaDrawer (props) {
         <View style={styles.groupIconContainer***REMOVED***>
           <AvatarImage source={props.activeGroup.imageSource***REMOVED*** size={120***REMOVED*** />
         </View>
-        <Text style={[styles.groupName, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***>
+        <Text
+          style={[styles.groupName, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***
+          numberOfLines={2***REMOVED***
+        >
           {props.activeGroup.name***REMOVED***
         </Text>
-        <TouchableOpacity
-          style={styles.pencilIconContainer***REMOVED***
-          onPress={() =>
-            props.navigation.navigate('EditGroup', {
-              groupName: props.activeGroup.name
-            ***REMOVED***)
-          ***REMOVED***
-        >
-          <Icon name='pencil' size={25 * scaleMultiplier***REMOVED*** color='#FFFFFF' />
-        </TouchableOpacity>
+        <View style={styles.pencilIconContainer***REMOVED***>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate('EditGroup', {
+                groupName: props.activeGroup.name
+              ***REMOVED***)
+            ***REMOVED***
+          >
+            <Icon name='pencil' size={25 * scaleMultiplier***REMOVED*** color='#FFFFFF' />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={{ backgroundColor: '#FFFFFF', flex: 1 ***REMOVED******REMOVED***>
         <View>
@@ -99,7 +103,7 @@ function WahaDrawer (props) {
               { fontFamily: props.font + '-regular' ***REMOVED***
             ]***REMOVED***
           >
-            v0.4.2
+            v0.4.4
           </Text>
         </View>
       </View>
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     height: 233 * scaleMultiplier,
     justifyContent: 'center',
     alignContent: 'center',
-    padding: 15
+    paddingHorizontal: 35
   ***REMOVED***,
   groupIconContainer: {
     alignItems: 'center',
@@ -130,7 +134,12 @@ const styles = StyleSheet.create({
     fontSize: 25 * scaleMultiplier
   ***REMOVED***,
   pencilIconContainer: {
-    alignSelf: 'flex-end'
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    padding: 10,
+    height: '100%'
   ***REMOVED***,
   smallDrawerItemsContainer: {
     justifyContent: 'flex-end',
