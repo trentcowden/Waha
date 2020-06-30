@@ -24,7 +24,6 @@ function SetItem (props) {
 
   // dynamic set components
   const [icon, setIcon] = useState()
-  const [info, setInfo] = useState()
   const [action, setAction] = useState()
 
   //// CONSTRUCTOR
@@ -132,7 +131,7 @@ function SetItem (props) {
         )
         setAction(<View style={styles.actionContainer***REMOVED*** />)
         break
-      case 'hidden':
+      case 'addset':
         setIcon(
           <View
             style={[
@@ -157,62 +156,72 @@ function SetItem (props) {
         setAction(
           <View style={styles.actionContainer***REMOVED***>
             <Icon
-              name='playlist-add'
-              size={30 * scaleMultiplier***REMOVED***
-              color={props.primaryColor***REMOVED***
-            />
-          </View>
-        )
-        setInfo()
-        // INFO BUTTON (keep for later)
-        // <TouchableOpacity
-        //   style={[
-        //     styles.actionContainer,
-        //     {
-        //       marginRight: props.isRTL ? 0 : 10,
-        //       marginLeft: props.isRTL ? 10 : 0
-        //     ***REMOVED***
-        //   ]***REMOVED***
-        //   onPress={() => {***REMOVED******REMOVED***
-        // >
-        //   <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color='#9FA5AD' />
-        // </TouchableOpacity>
-        break
-      case 'folder':
-        setIcon(
-          <View style={styles.iconContainer***REMOVED***>
-            <SVG
-              name={props.thisSet.icon***REMOVED***
-              width={80 * scaleMultiplier***REMOVED***
-              height={80 * scaleMultiplier***REMOVED***
-              fill='#1D1E20'
-            />
-          </View>
-        )
-        setAction(
-          <View style={styles.actionContainer***REMOVED***>
-            <Icon
               name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
               size={30 * scaleMultiplier***REMOVED***
               color={props.primaryColor***REMOVED***
             />
           </View>
         )
-        setInfo()
-        // INFO BUTTON (keep for later)
-        // <TouchableOpacity
-        //   style={[
-        //     styles.actionContainer,
-        //     {
-        //       marginRight: props.isRTL ? 0 : 10,
-        //       marginLeft: props.isRTL ? 10 : 0
-        //     ***REMOVED***
-        //   ]***REMOVED***
-        //   onPress={() => {***REMOVED******REMOVED***
-        // >
-        //   <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color='#9FA5AD' />
-        // </TouchableOpacity>
         break
+      case 'setinfo':
+        setIcon(
+          <View
+            style={[
+              styles.iconContainer,
+              {
+                backgroundColor: '#FFFFFF',
+                borderRadius: 14,
+                overflow: 'hidden',
+                borderWidth: 7,
+                borderColor: '#3A3C3F'
+              ***REMOVED***
+            ]***REMOVED***
+          >
+            <SVG
+              name={props.thisSet.icon***REMOVED***
+              width={80 * scaleMultiplier***REMOVED***
+              height={80 * scaleMultiplier***REMOVED***
+              fill='#3A3C3F'
+            />
+          </View>
+        )
+        setAction(null)
+        break
+      // case 'folder':
+      //   setIcon(
+      //     <View style={styles.iconContainer***REMOVED***>
+      //       <SVG
+      //         name={props.thisSet.icon***REMOVED***
+      //         width={80 * scaleMultiplier***REMOVED***
+      //         height={80 * scaleMultiplier***REMOVED***
+      //         fill='#1D1E20'
+      //       />
+      //     </View>
+      //   )
+      //   setAction(
+      //     <View style={styles.actionContainer***REMOVED***>
+      //       <Icon
+      //         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+      //         size={30 * scaleMultiplier***REMOVED***
+      //         color={props.primaryColor***REMOVED***
+      //       />
+      //     </View>
+      //   )
+      //   setInfo()
+      //   // INFO BUTTON (keep for later)
+      //   // <TouchableOpacity
+      //   //   style={[
+      //   //     styles.actionContainer,
+      //   //     {
+      //   //       marginRight: props.isRTL ? 0 : 10,
+      //   //       marginLeft: props.isRTL ? 10 : 0
+      //   //     ***REMOVED***
+      //   //   ]***REMOVED***
+      //   //   onPress={() => {***REMOVED******REMOVED***
+      //   // >
+      //   //   <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color='#9FA5AD' />
+      //   // </TouchableOpacity>
+      //   break
     ***REMOVED***
   ***REMOVED***, [
     progressPercentage,
@@ -326,9 +335,6 @@ function SetItem (props) {
           {props.thisSet.title***REMOVED***
         </Text>
       </View>
-
-      {/* info button rendered earlier */***REMOVED***
-      {info***REMOVED***
 
       {/* action button rendered earlier */***REMOVED***
       {action***REMOVED***
