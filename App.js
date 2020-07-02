@@ -5,6 +5,7 @@ import LoadingView from './components/LoadingView'
 import { Provider ***REMOVED*** from 'react-redux'
 import { persistor, store ***REMOVED*** from './redux/store'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 // only here because of wack errors, DON'T DELETE
 import { encode, decode ***REMOVED*** from 'base-64'
@@ -27,7 +28,10 @@ export default function App () {
     loadFonts()
   ***REMOVED***, [])
 
-  /// / FUNCTIONS
+  //// FUNCTIONS
+
+  // lock orientation to portrait or upside down
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
 
   // loads up all the fonts
   async function loadFonts () {
