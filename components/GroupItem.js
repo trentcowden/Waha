@@ -119,7 +119,7 @@ function GroupItem (props) {
       >
         <AvatarImage
           size={50 * scaleMultiplier***REMOVED***
-          source={props.avatarSource***REMOVED***
+          emoji={props.emoji***REMOVED***
           isActive={props.activeGroup.name === props.groupName***REMOVED***
         />
         {/* text portion includes group name and bookmark text */***REMOVED***

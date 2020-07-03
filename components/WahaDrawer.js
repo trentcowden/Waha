@@ -25,7 +25,7 @@ function WahaDrawer (props) {
     >
       <View style={styles.drawerHeaderContainer***REMOVED***>
         <View style={styles.groupIconContainer***REMOVED***>
-          <AvatarImage source={props.activeGroup.imageSource***REMOVED*** size={120***REMOVED*** />
+          <AvatarImage emoji={props.activeGroup.emoji***REMOVED*** size={120***REMOVED*** />
         </View>
         <Text
           style={[styles.groupName, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***

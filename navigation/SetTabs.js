@@ -37,7 +37,7 @@ function SetTabs (props) {
   var tabs = props.isRTL ? (
     <Tab.Navigator
       initialRouteName={initialRouteName***REMOVED***
-      swipeEnabled={false***REMOVED***
+      swipeEnabled={true***REMOVED***
       tabBarOptions={{
         labelStyle: {
           fontSize: 14 * scaleMultiplier,
@@ -70,7 +70,7 @@ function SetTabs (props) {
   ) : (
     <Tab.Navigator
       initialRouteName={initialRouteName***REMOVED***
-      swipeEnabled={false***REMOVED***
+      swipeEnabled={true***REMOVED***
       tabBarOptions={{
         labelStyle: {
           fontSize: 14 * scaleMultiplier,

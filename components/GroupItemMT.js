@@ -31,7 +31,7 @@ function GroupItemMT (props) {
       >
         <AvatarImage
           size={50 * scaleMultiplier***REMOVED***
-          source={props.group.imageSource***REMOVED***
+          emoji={props.group.emoji***REMOVED***
           isActive={props.activeGroup === props.group.name***REMOVED***
         />
       </View>

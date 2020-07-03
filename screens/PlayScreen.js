@@ -11,6 +11,7 @@ import {
   Share,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  TouchableHighlight,
   Animated
 ***REMOVED*** from 'react-native'
 import * as FileSystem from 'expo-file-system'
@@ -34,7 +35,7 @@ import {
 import SVG from '../assets/svg'
 import useInterval from '@use-it/interval'
 import { DeviceMotion ***REMOVED*** from 'expo-sensors'
-import { TouchableHighlight ***REMOVED*** from 'react-native-gesture-handler'
+import { useKeepAwake ***REMOVED*** from 'expo-keep-awake'
 
 console.disableYellowBox = true
 
@@ -89,10 +90,58 @@ function PlayScreen (props) {
   const [trainingSource, setTrainingSource] = useState()
   const [applicationSource, setApplicationSource] = useState()
 
-  //// OTHER STATE
+  //// ALBUM ART STATE
 
   // ref for the middle album art scroller
   const [albumArtRef, setAlbumArtRef] = useState()
+  const [isMiddle, setIsMiddle] = useState(true)
+  const [middleScrollBarOpacity, setMiddleScrollBarOpacity] = useState(
+    new Animated.Value(0)
+  )
+  const [sideScrollBarOpacity, setSideScrollBarOpacity] = useState(
+    new Animated.Value(0.8)
+  )
+
+  const onViewRef = useRef(info => {
+    if (info.viewableItems.some(item => item.index === 0)) setIsMiddle(true)
+    else setIsMiddle(false)
+  ***REMOVED***)
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+
+  // keeps the screen always awake on this screen
+  useKeepAwake()
+
+  useEffect(() => {
+    if (isMiddle)
+      Animated.sequence([
+        Animated.timing(middleScrollBarOpacity, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true
+        ***REMOVED***),
+        Animated.timing(sideScrollBarOpacity, {
+          toValue: 0.8,
+          duration: 100,
+          useNativeDriver: true
+        ***REMOVED***)
+      ]).start()
+    else {
+      Animated.sequence([
+        Animated.timing(sideScrollBarOpacity, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true
+        ***REMOVED***),
+        Animated.timing(middleScrollBarOpacity, {
+          toValue: 0.8,
+          duration: 100,
+          useNativeDriver: true
+        ***REMOVED***)
+      ]).start()
+    ***REMOVED***
+  ***REMOVED***, [isMiddle])
+
+  //// OTHER STATE
 
   // share modal
   const [showShareLessonModal, setShowShareLessonModal] = useState(false)
@@ -182,6 +231,11 @@ function PlayScreen (props) {
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***, [fellowshipSource])
+
+  useEffect(() => {
+    if (props.route.params.lessonType === 'v')
+      if (props.isConnected) if (!isLoaded) loadVideoFile(trainingSource)
+  ***REMOVED***, [props.isConnected])
 
   // interval for updating seeker
   useInterval(updateSeekerTick, 1000)
@@ -390,7 +444,18 @@ function PlayScreen (props) {
     // chapter once we finish or toggle the whole lesson as complete
     if (playbackStatus.didJustFinish) {
       if (activeChapter === 'fellowship') {
-        if (!props.downloads[props.route.params.thisLesson.id]) {
+        if (!props.route.params.thisLesson.audioSource) {
+          changeChapter('story')
+          swipeToScripture()
+        ***REMOVED*** else if (
+          props.downloads[props.route.params.thisLesson.id] ||
+          ((props.route.params.lessonType === 'qa' ||
+            props.route.params.lessonType === 'qav') &&
+            !props.isConnected &&
+            !props.route.params.isDownloaded)
+        ) {
+          swipeToScripture()
+        ***REMOVED*** else {
           changeChapter('story')
         ***REMOVED***
       ***REMOVED*** else if (activeChapter === 'story') {
@@ -573,15 +638,11 @@ function PlayScreen (props) {
       ***REMOVED*** else if (chapter === 'story') {
         setSeekPosition(0)
         loadAudioFile(storySource)
-        if (!props.route.params.thisLesson.audioSource) {
-          if (albumArtRef)
-            albumArtRef.scrollToIndex({
-              animated: true,
-              viewPosition: 0.5,
-              viewOffset: -Dimensions.get('screen').width,
-              index: 0
-            ***REMOVED***)
-        ***REMOVED***
+        // auto scroll to scripture if
+        //  1. there's no audio source
+        //  2. we're currently downloading the lesson
+        //  3. there's an audio source, it's not downloading, and there's no internet
+        if (!props.route.params.thisLesson.audioSource) swipeToScripture()
       ***REMOVED*** else if (chapter === 'application') {
         setSeekPosition(0)
         loadAudioFile(applicationSource)
@@ -591,6 +652,16 @@ function PlayScreen (props) {
       ***REMOVED***
       setActiveChapter(chapter)
     ***REMOVED***
+  ***REMOVED***
+
+  function swipeToScripture () {
+    if (albumArtRef)
+      albumArtRef.scrollToIndex({
+        animated: true,
+        viewPosition: 0.5,
+        viewOffset: -Dimensions.get('screen').width,
+        index: 0
+      ***REMOVED***)
   ***REMOVED***
 
   //// OTHER FUNCTIONS
@@ -704,11 +775,52 @@ function PlayScreen (props) {
 
   // renders the album art section in the middle of the screen
   function renderAlbumArtItem ({ item ***REMOVED***) {
+    var scrollBarLeft = (
+      <View
+        style={{
+          height: '100%',
+          width: 20,
+          position: 'absolute',
+          alignSelf: 'flex-start',
+          justifyContent: 'center',
+          alignItems: 'center'
+        ***REMOVED******REMOVED***
+      >
+        <Animated.View
+          style={[
+            styles.scrollBar,
+            {
+              opacity:
+                item.key === '1' ? middleScrollBarOpacity : sideScrollBarOpacity
+            ***REMOVED***
+          ]***REMOVED***
+        />
+      </View>
+    )
+    var scrollBarRight = (
+      <View
+        style={{
+          height: '100%',
+          width: 20,
+          position: 'absolute',
+          alignSelf: 'flex-end',
+          justifyContent: 'center',
+          alignItems: 'center'
+        ***REMOVED******REMOVED***
+      >
+        <Animated.View
+          style={[
+            styles.scrollBar,
+            {
+              opacity:
+                item.key === '1' ? middleScrollBarOpacity : sideScrollBarOpacity
+            ***REMOVED***
+          ]***REMOVED***
+        />
+      </View>
+    )
+
     if (item.type === 'text') {
-      var scrollBarLeft =
-        item.key === '0' ? null : <View style={styles.scrollBar***REMOVED*** />
-      var scrollBarRight =
-        item.key === '0' ? <View style={styles.scrollBar***REMOVED*** /> : null
       return (
         <View
           style={[
@@ -748,9 +860,13 @@ function PlayScreen (props) {
         <View
           style={[
             styles.albumArtContainer,
-            { justifyContent: 'center', alignItems: 'center' ***REMOVED***
+            {
+              justifyContent: 'center',
+              alignItems: 'center'
+            ***REMOVED***
           ]***REMOVED***
         >
+          {scrollBarLeft***REMOVED***
           <View style={{ zIndex: 1, width: '100%', height: '100%' ***REMOVED******REMOVED***>
             <TouchableHighlight
               style={{ width: '100%', height: '100%' ***REMOVED******REMOVED***
@@ -782,11 +898,12 @@ function PlayScreen (props) {
             ***REMOVED******REMOVED***
           >
             <Icon
-              name={isPlaying ? 'pause' : 'play'***REMOVED***
+              name={isPlaying ? 'play' : 'pause'***REMOVED***
               size={100 * scaleMultiplier***REMOVED***
               color='#ffffff'
             />
           </Animated.View>
+          {scrollBarRight***REMOVED***
         </View>
       )
     ***REMOVED***
@@ -838,8 +955,8 @@ function PlayScreen (props) {
             height: Dimensions.get('window').width - 80,
             width: '100%',
             flexDirection: 'row',
-            justifyContent: 'center',
-            backgroundColor: 'black'
+            justifyContent: 'center'
+            // backgroundColor: 'black'
           ***REMOVED******REMOVED***
         >
           <Video
@@ -938,6 +1055,8 @@ function PlayScreen (props) {
               index
             ***REMOVED***)***REMOVED***
             initialScrollIndex={1***REMOVED***
+            viewabilityConfig={viewConfigRef.current***REMOVED***
+            onViewableItemsChanged={onViewRef.current***REMOVED***
           />
         </View>
       </View>
@@ -959,6 +1078,7 @@ function PlayScreen (props) {
           lessonID={props.route.params.thisLesson.id***REMOVED***
           onPress={chapter => changeChapter(chapter)***REMOVED***
           lessonType={props.route.params.lessonType***REMOVED***
+          isDownloaded={props.route.params.isDownloaded***REMOVED***
         />
       ) : null***REMOVED***
       <Scrubber
@@ -1076,12 +1196,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     backgroundColor: '#DEE3E9',
-    flexDirection: 'row',
     overflow: 'hidden'
   ***REMOVED***,
   scrollBar: {
     width: 4,
-    height: 150 * scaleMultiplier,
+    height: 75 * scaleMultiplier,
     backgroundColor: '#9FA5AD',
     borderRadius: 10,
     alignSelf: 'center'
@@ -1109,7 +1228,8 @@ function mapStateToProps (state) {
     downloads: state.downloads,
     primaryColor: state.database[activeGroup.language].primaryColor,
     isRTL: state.database[activeGroup.language].isRTL,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    isConnected: state.network.isConnected
   ***REMOVED***
 ***REMOVED***
 

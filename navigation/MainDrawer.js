@@ -171,7 +171,7 @@ function MainDrawer (props) {
         drawerStyle={{
           width: '80%'
         ***REMOVED******REMOVED***
-        edgeWidth={300 * scaleMultiplier***REMOVED***
+        edgeWidth={75 * scaleMultiplier***REMOVED***
       >
         <Drawer.Screen
           options={({ route ***REMOVED***) => ({
