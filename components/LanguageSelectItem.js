@@ -2,49 +2,68 @@ import React, { useEffect ***REMOVED*** from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image ***REMOVED*** from 'react-native'
 import { scaleMultiplier, languageT2S ***REMOVED*** from '../constants'
 import * as FileSystem from 'expo-file-system'
-import { Audio ***REMOVED*** from 'expo-av'
 
 function LanguageSelectItem (props) {
   // FUNCTIONS
 
-  const soundObject = new Audio.Sound()
-
-  async function playAudio () {
-    soundObject.unloadAsync()
-    await soundObject.loadAsync(languageT2S[props.id]).then(() => {
-      soundObject.playAsync()
-    ***REMOVED***)
-  ***REMOVED***
+  iconComponent = props.isSelected ? (
+    <View>
+      <Icon name='check' size={30***REMOVED*** color='#60C239' />
+    </View>
+  ) : (
+    <TouchableOpacity onPress={props.playAudio***REMOVED***>
+      <Icon name='volume' size={30***REMOVED*** color='black' />
+    </TouchableOpacity>
+  )
 
   return (
     <View
-      style={[
-        props.style,
-        {
-          height: 50 * scaleMultiplier,
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        ***REMOVED***
-      ]***REMOVED***
+      style={{
+        height: 70 * scaleMultiplier,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        margin: 1,
+        backgroundColor: props.isSelected ? '#BFE5AF' : '#FFFFFF'
+      ***REMOVED******REMOVED***
     >
-      <Text
+      <TouchableOpacity
         style={{
-          fontSize: 24 * scaleMultiplier
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexDirection: 'row'
         ***REMOVED******REMOVED***
+        onPress={props.onPress***REMOVED***
       >
-        {props.label***REMOVED***
-      </Text>
-      <Image
-        style={styles.headerImage***REMOVED***
-        source={{
-          uri: FileSystem.documentDirectory + props.id + '-header.png'
-        ***REMOVED******REMOVED***
-      />
-      <TouchableOpacity onPress={playAudio***REMOVED***>
-        <Icon name='volume' size={30***REMOVED*** color='black' />
+        <View style={{ alignItems: 'center' ***REMOVED******REMOVED***>
+          <Text
+            style={{
+              fontSize: 18 * scaleMultiplier,
+              fontWeight: 'bold'
+            ***REMOVED******REMOVED***
+          >
+            {props.nativeName***REMOVED***
+          </Text>
+          <Text
+            style={{
+              fontSize: 14 * scaleMultiplier
+            ***REMOVED******REMOVED***
+          >
+            {props.localeName***REMOVED***
+          </Text>
+        </View>
+        <Image
+          style={styles.headerImage***REMOVED***
+          source={{
+            uri: FileSystem.documentDirectory + props.id + '-header.png'
+          ***REMOVED******REMOVED***
+        />
+        <Text>LOGO</Text>
       </TouchableOpacity>
+      {iconComponent***REMOVED***
     </View>
   )
 ***REMOVED***

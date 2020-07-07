@@ -6,17 +6,53 @@ export const scaleMultiplier = Dimensions.get('window').width / 430
 
 export const languageT2S = {
   en: require('./assets/languageT2S/en.mp3'),
-  te: require('./assets/languageT2S/te.mp3')
+  da: require('./assets/languageT2S/te.mp3'),
+  english: require('./assets/languageT2S/en.mp3')
 ***REMOVED***
 
 export const languages = [
   {
     title: 'English',
+    i18nName: 'english',
     data: [
-      { name: 'English (Global)', wahaID: 'en', languageCode: 'en' ***REMOVED***,
-      { name: 'English (UK)', wahaID: 'uk', languageCode: 'en' ***REMOVED***,
-      { name: 'English (Australia)', wahaID: 'as', languageCode: 'en' ***REMOVED***
+      {
+        nativeName: 'English (Global)',
+        wahaID: 'en',
+        i18nName: 'englishGlobal'
+      ***REMOVED***,
+      { nativeName: 'English (UK)', wahaID: 'uk', i18nName: 'englishUK' ***REMOVED***,
+      {
+        nativeName: 'English (Australia)',
+        wahaID: 'as',
+        i18nName: 'englishAustralia'
+      ***REMOVED***
     ]
   ***REMOVED***,
-  { title: 'اَلْعَرَبِيَّةُ', data: ['ليبي', 'الدارجة', 'خليجي'] ***REMOVED***
+  {
+    title: 'اَلْعَرَبِيَّةُ',
+    i18nName: 'arabic',
+    data: [
+      {
+        nativeName: 'اللهجة المغربية',
+        wahaID: 'da',
+        i18nName: 'darija'
+      ***REMOVED***,
+      {
+        nativeName: 'ليبي‎',
+        wahaID: 'la',
+        i18nName: 'laarbia'
+      ***REMOVED***
+    ]
+  ***REMOVED***,
+  {
+    title: 'Français',
+    i18nName: 'french',
+    data: [
+      {
+        nativeName: 'Français',
+        wahaID: 'fr',
+        i18nName: 'french'
+      ***REMOVED***
+    ]
+  ***REMOVED***
 ]
