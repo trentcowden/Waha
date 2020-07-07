@@ -48,12 +48,16 @@ function AvatarImage (props) {
     ) : (
       <Text
         style={{
-          fontSize: (props.size / 1.5) * scaleMultiplier,
-          textAlign: 'center',
-          paddingLeft:
-            props.size > 100
-              ? (props.size * scaleMultiplier) / 20
-              : (props.size * scaleMultiplier) / 10
+          // fontSize: (props.size / 1.5) * scaleMultiplier,
+          fontSize: (props.size / 1.4) * scaleMultiplier,
+          // position: 'absolute',
+          // flex: 1,
+          lineHeight: props.size * scaleMultiplier,
+          transform: [{ scale: 0.85 ***REMOVED***]
+          // paddingLeft:
+          //   props.size > 100
+          //     ? (props.size * scaleMultiplier) / 20
+          //     : (props.size * scaleMultiplier) / 10,
         ***REMOVED******REMOVED***
       >
         {props.emoji***REMOVED***
@@ -77,12 +81,13 @@ function AvatarImage (props) {
     >
       <View
         style={{
-          ...styles.avatarContainer,
-          ...{
-            width: props.size * scaleMultiplier,
-            height: props.size * scaleMultiplier,
-            borderRadius: (props.size * scaleMultiplier) / 2
-          ***REMOVED***
+          width: props.size * scaleMultiplier,
+          height: props.size * scaleMultiplier,
+          borderRadius: (props.size * scaleMultiplier) / 2,
+          backgroundColor: '#DEE3E9',
+          alignItems: 'center',
+          justifyContent: 'center'
+          // paddingTop: 5
         ***REMOVED******REMOVED***
       >
         {emoji***REMOVED***
@@ -112,12 +117,12 @@ function AvatarImage (props) {
     >
       <View
         style={{
-          ...styles.avatarContainer,
-          ...{
-            width: props.size * scaleMultiplier,
-            height: props.size * scaleMultiplier,
-            borderRadius: (props.size * scaleMultiplier) / 2
-          ***REMOVED***
+          width: props.size * scaleMultiplier,
+          height: props.size * scaleMultiplier,
+          borderRadius: (props.size * scaleMultiplier) / 2,
+          backgroundColor: '#DEE3E9',
+          justifyContent: 'center',
+          alignItems: 'center'
         ***REMOVED******REMOVED***
       >
         {emoji***REMOVED***
@@ -133,15 +138,5 @@ function AvatarImage (props) {
     </View>
   )
 ***REMOVED***
-
-//// STYLES
-
-const styles = StyleSheet.create({
-  avatarContainer: {
-    backgroundColor: '#DEE3E9',
-    justifyContent: 'center',
-    alignItems: 'center'
-  ***REMOVED***
-***REMOVED***)
 
 export default AvatarImage

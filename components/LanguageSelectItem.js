@@ -25,24 +25,32 @@ function LanguageSelectItem (props) {
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 20,
-        margin: 1,
+        borderWidth: 1,
+        borderColor: '#EFF2F4',
         backgroundColor: props.isSelected ? '#BFE5AF' : '#FFFFFF'
       ***REMOVED******REMOVED***
     >
       <TouchableOpacity
         style={{
           flex: 1,
+          height: '100%',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'space-around',
           flexDirection: 'row'
         ***REMOVED******REMOVED***
         onPress={props.onPress***REMOVED***
       >
-        <View style={{ alignItems: 'center' ***REMOVED******REMOVED***>
+        <View
+          style={{
+            justifyContent: 'center',
+            flex: 1
+          ***REMOVED******REMOVED***
+        >
           <Text
             style={{
               fontSize: 18 * scaleMultiplier,
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              textAlign: 'left'
             ***REMOVED******REMOVED***
           >
             {props.nativeName***REMOVED***
@@ -58,10 +66,9 @@ function LanguageSelectItem (props) {
         <Image
           style={styles.headerImage***REMOVED***
           source={{
-            uri: FileSystem.documentDirectory + props.id + '-header.png'
+            uri: props.logoSource
           ***REMOVED******REMOVED***
         />
-        <Text>LOGO</Text>
       </TouchableOpacity>
       {iconComponent***REMOVED***
     </View>
@@ -73,9 +80,10 @@ function LanguageSelectItem (props) {
 const styles = StyleSheet.create({
   headerImage: {
     resizeMode: 'contain',
-    width: 120,
-    height: 40,
-    alignSelf: 'center'
+    width: 120 * scaleMultiplier,
+    height: 40 * scaleMultiplier,
+    alignSelf: 'center',
+    marginHorizontal: 20
   ***REMOVED***
 ***REMOVED***)
 

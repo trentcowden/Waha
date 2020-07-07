@@ -19,6 +19,11 @@ import LanguageSelectItem from '../components/LanguageSelectItem'
 import { FlatList ***REMOVED*** from 'react-native-gesture-handler'
 import { Audio ***REMOVED*** from 'expo-av'
 
+// translations import
+import en from '../translations/en.json'
+import fr from '../translations/fr.json'
+import ar from '../translations/ar.json'
+
 function LanguageSelectScreen (props) {
   //// STATE
 
@@ -28,65 +33,16 @@ function LanguageSelectScreen (props) {
   // keeps track of whether the uesr has an internet connection
   const [isConnected, setIsConnected] = useState(true)
 
+  i18n.locale = Localization.locale
+  i18n.fallbacks = true
+
   // sound for the text to speech
 
   // translations for language select
   i18n.translations = {
-    en: {
-      welcome: 'Hello and welcome!',
-      selectLanguage: 'Please select your language.',
-      letsBegin: "Let's begin!",
-      noInternet: 'Error: an internet connection is required to set up the app',
-      cancel: 'Cancel',
-      // waha language headers
-      english: 'English',
-      french: 'French',
-      arabic: 'Arabic',
-      // waha languages
-      englishGlobal: 'English (Global)',
-      englishUK: 'English (UK)',
-      englishAustralia: 'English (Australia)',
-      french: 'French',
-      darija: 'Darija',
-      laarbia: 'Laarbia'
-    ***REMOVED***,
-    fr: {
-      welcome: 'Bonjour et bienvenue!',
-      selectLanguage: 'Veuillez sélectionner votre langue.',
-      letsBegin: 'Commençons!',
-      noInternet:
-        "Erreur: une connexion Internet est requise pour configurer l'application",
-      cancel: 'Annuler',
-      // waha language headers
-      english: 'Anglais',
-      french: 'Français',
-      arabic: 'Arabe',
-      // waha languages
-      englishGlobal: 'Anglais (Mondial)',
-      englishUK: 'Anglais (Royaume-Uni)',
-      englishAustralia: 'Anglais (Australie)',
-      french: 'Français',
-      darija: 'Accent Marocain',
-      laarbia: 'Libyen'
-    ***REMOVED***,
-    ar: {
-      welcome: 'أهلا ومرحبا!',
-      selectLanguage: 'الرجاء اختيار لغتك.',
-      letsBegin: 'هيا نبدأ!',
-      noInternet: 'خطأ: مطلوب اتصال بالإنترنت لإعداد التطبيق',
-      cancel: 'إلغاء',
-      // waha language headers
-      english: 'الإنجليزية',
-      french: 'فرنسي',
-      arabic: 'العربية',
-      // waha languages
-      englishGlobal: 'الإنجليزية (عالميًا)',
-      englishUK: 'الإنجليزية (المملكة المتحدة)',
-      englishAustralia: 'الإنجليزية (أستراليا)',
-      french: 'فرنسي',
-      darija: 'اللهجة المغربية',
-      laarbia: 'ليبي‎'
-    ***REMOVED***
+    en,
+    fr,
+    ar
   ***REMOVED***
 
   const soundObject = new Audio.Sound()
@@ -101,9 +57,6 @@ function LanguageSelectScreen (props) {
   //// CONSTRUCTOR
 
   useEffect(() => {
-    i18n.locale = Localization.locale
-    i18n.fallbacks = true
-
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected)
     ***REMOVED***)
@@ -151,11 +104,7 @@ function LanguageSelectScreen (props) {
     </View>
   )
 
-  var errorMessage = isConnected ? (
-    <View
-      style={{ height: 50 * scaleMultiplier, paddingHorizontal: 10 ***REMOVED******REMOVED***
-    ></View>
-  ) : (
+  var errorMessage = isConnected ? null : (
     <View style={{ height: 50 * scaleMultiplier, paddingHorizontal: 10 ***REMOVED******REMOVED***>
       <Text style={styles.errorMessage***REMOVED***>{i18n.t('noInternet')***REMOVED***</Text>
     </View>
@@ -166,6 +115,7 @@ function LanguageSelectScreen (props) {
       <LanguageSelectItem
         nativeName={item.section.data[item.index].nativeName***REMOVED***
         localeName={i18n.t(item.section.data[item.index].i18nName)***REMOVED***
+        logoSource={item.section.data[item.index].logoSource***REMOVED***
         onPress={() =>
           setSelectedLanguage(item.section.data[item.index].wahaID)
         ***REMOVED***
@@ -188,103 +138,53 @@ function LanguageSelectScreen (props) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 20,
-          backgroundColor: '#EAEEF0',
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10
+          backgroundColor: '#F7F9FA'
         ***REMOVED******REMOVED***
       >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            marginRight: 20
-          ***REMOVED******REMOVED***
-        >
-          <Text>{section.title***REMOVED***</Text>
-          <Text>{i18n.t(section.i18nName)***REMOVED***</Text>
-        </View>
-        <TouchableOpacity onPress={() => playAudio(section.i18nName)***REMOVED***>
-          <Icon name='volume' size={30***REMOVED*** color='black' />
-        </TouchableOpacity>
+        <Text>{i18n.t(section.i18nName)***REMOVED***</Text>
       </View>
     )
   ***REMOVED***
 
   return (
     <View style={styles.screen***REMOVED***>
-      <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>
+      <View style={{ marginVertical: 40 * scaleMultiplier ***REMOVED******REMOVED***>
         <Text style={styles.title***REMOVED***> {i18n.t('welcome')***REMOVED***</Text>
         <Text style={styles.subtitle***REMOVED***> {i18n.t('selectLanguage')***REMOVED***</Text>
       </View>
       <View
         style={{
           width: '100%',
-          height: '100%',
-          backgroundColor: '#EAEEF0',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
           flex: 1
         ***REMOVED******REMOVED***
       >
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flex: 1
-          ***REMOVED******REMOVED***
-        >
-          <SectionList
-            sections={languages***REMOVED***
-            keyExtractor={item => item.wahaID***REMOVED***
-            renderItem={renderLanguage***REMOVED***
-            renderSectionHeader={({ section ***REMOVED***) => renderLanguageHeader(section)***REMOVED***
-            renderSectionFooter={() => (
-              <View style={{ height: 20 * scaleMultiplier, width: '100%' ***REMOVED******REMOVED*** />
-            )***REMOVED***
-          />
-          {/* <ModalSelector
-          data={data***REMOVED***
-          animationType='fade'
-          // initValue={
-          //   data.filter(item => item.key === selectedLanguage)[0].value
-          // ***REMOVED***
-          // selectedKey={selectedLanguage***REMOVED***
-          onChange={option => {
-            onPickerChange(option.key)
-          ***REMOVED******REMOVED***
-          cancelText={i18n.t('cancel')***REMOVED***
-          cancelStyle={{
-            height: 70 * scaleMultiplier,
-            justifyContent: 'center'
-          ***REMOVED******REMOVED***
-          backdropPressToClose={true***REMOVED***
-        >
-          <View
-            style={{
-              borderWidth: 1,
-              borderColor: '#ccc',
-              borderRadius: 5,
-              backgroundColor: '#FFFFFF',
-              height: 80 * scaleMultiplier,
-              justifyContent: 'center',
-              paddingHorizontal: 20
-            ***REMOVED******REMOVED***
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24 * scaleMultiplier
-              ***REMOVED******REMOVED***
-            >
-              {data.filter(item => item.key === selectedLanguage)[0].label***REMOVED***
-            </Text>
-          </View>
-        </ModalSelector> */***REMOVED***
-        </View>
+        <SectionList
+          // sort sections to put brands associated with phone language at the
+          //  top
+          sections={languages.sort((a, b) => {
+            if (i18n.locale.includes(a.languageCode)) return -1
+            else if (i18n.locale.includes(b.languageCode)) return 1
+            else return 0
+          ***REMOVED***)***REMOVED***
+          keyExtractor={item => item.wahaID***REMOVED***
+          renderItem={renderLanguage***REMOVED***
+          renderSectionHeader={({ section ***REMOVED***) => renderLanguageHeader(section)***REMOVED***
+          renderSectionFooter={() => (
+            <View style={{ height: 20 * scaleMultiplier, width: '100%' ***REMOVED******REMOVED*** />
+          )***REMOVED***
+        />
+      </View>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: 130 * scaleMultiplier
+        ***REMOVED******REMOVED***
+      >
         {startButton***REMOVED***
         {errorMessage***REMOVED***
       </View>
@@ -299,8 +199,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F7F7F7',
-    paddingTop: 20 * scaleMultiplier
+    backgroundColor: '#F7F9FA',
+    paddingTop: 40 * scaleMultiplier
   ***REMOVED***,
   title: {
     textAlign: 'center',
@@ -318,8 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1D1E20',
-    borderRadius: 5,
-    marginVertical: 10
+    borderRadius: 10
   ***REMOVED***,
   buttonTitle: {
     textAlign: 'center',
