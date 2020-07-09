@@ -7,11 +7,14 @@ function LanguageSelectItem (props) {
   // FUNCTIONS
 
   iconComponent = props.isSelected ? (
-    <View>
+    <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
       <Icon name='check' size={30***REMOVED*** color='#60C239' />
     </View>
   ) : (
-    <TouchableOpacity onPress={props.playAudio***REMOVED***>
+    <TouchableOpacity
+      onPress={props.playAudio***REMOVED***
+      style={{ marginHorizontal: 20 ***REMOVED******REMOVED***
+    >
       <Icon name='volume' size={30***REMOVED*** color='black' />
     </TouchableOpacity>
   )
@@ -24,12 +27,12 @@ function LanguageSelectItem (props) {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 20,
         borderWidth: 1,
         borderColor: '#EFF2F4',
         backgroundColor: props.isSelected ? '#BFE5AF' : '#FFFFFF'
       ***REMOVED******REMOVED***
     >
+      {iconComponent***REMOVED***
       <TouchableOpacity
         style={{
           flex: 1,
@@ -70,7 +73,6 @@ function LanguageSelectItem (props) {
           ***REMOVED******REMOVED***
         />
       </TouchableOpacity>
-      {iconComponent***REMOVED***
     </View>
   )
 ***REMOVED***

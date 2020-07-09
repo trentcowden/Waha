@@ -95,7 +95,7 @@ function GroupsScreen (props) {
         languageName={languageInstances.item.languageName***REMOVED***
         languageID={languageInstances.item.languageID***REMOVED***
         goToAddNewGroupScreen={() =>
-          props.navigation.navigate('AddNewGroup', {
+          props.navigation.navigate('AddGroup', {
             languageID: languageInstances.item.languageID
           ***REMOVED***)
         ***REMOVED***

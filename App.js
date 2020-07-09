@@ -6,7 +6,6 @@ import { Provider ***REMOVED*** from 'react-redux'
 import { persistor, store ***REMOVED*** from './redux/store'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
 import * as ScreenOrientation from 'expo-screen-orientation'
-import * as Analytics from 'expo-firebase-analytics'
 
 // only here because of wack errors, DON'T DELETE
 import { encode, decode ***REMOVED*** from 'base-64'
