@@ -73,7 +73,9 @@ function PasscodeScreen (props) {
         style={{
           fontFamily: props.font + '-regular',
           fontSize: 18,
-          marginVertical: 30 * scaleMultiplier
+          marginVertical: 30 * scaleMultiplier,
+          textAlign: 'center',
+          paddingHorizontal: 20
         ***REMOVED******REMOVED***
       >
         {props.translations.labels.enterPasscode***REMOVED***

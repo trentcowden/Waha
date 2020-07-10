@@ -19,7 +19,7 @@ function MessageModal (props) {
         <Image
           source={props.imageSource***REMOVED***
           style={{
-            height: 200,
+            height: 200 * scaleMultiplier,
             margin: 20,
             padding: 20,
             resizeMode: 'contain'
@@ -47,7 +47,10 @@ function MessageModal (props) {
           {props.body***REMOVED***
         </Text>
         <TouchableOpacity
-          style={{ marginBottom: 40, marginTop: 80 * scaleMultiplier ***REMOVED******REMOVED***
+          style={{
+            marginBottom: 40 * scaleMultiplier,
+            marginTop: 80 * scaleMultiplier
+          ***REMOVED******REMOVED***
           onPress={props.hideModal***REMOVED***
         >
           <Text

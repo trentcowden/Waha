@@ -103,7 +103,7 @@ function WahaDrawer (props) {
               { fontFamily: props.font + '-regular' ***REMOVED***
             ]***REMOVED***
           >
-            v0.4.6.1
+            v0.4.7
           </Text>
         </View>
       </View>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   drawerHeaderContainer: {
     width: '100%',
-    height: 233 * scaleMultiplier,
+    height: 225 * scaleMultiplier,
     justifyContent: 'center',
     alignContent: 'center',
     paddingHorizontal: 35
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   ***REMOVED***,
   versionText: {
-    fontSize: 10,
+    fontSize: 10 * scaleMultiplier,
     marginHorizontal: 13,
     color: '#9FA5AD',
     justifyContent: 'center',
