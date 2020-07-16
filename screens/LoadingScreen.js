@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, Dimensions ***REMOVED*** from 'react-native'
+import { View, StyleSheet, Text, Dimensions, Image ***REMOVED*** from 'react-native'
 import i18n from 'i18n-js'
 import { connect ***REMOVED*** from 'react-redux'
 import * as Progress from 'react-native-progress'
@@ -32,6 +32,14 @@ function LoadingScreen (props) {
     </View>
   ) : (
     <View style={styles.screen***REMOVED***>
+      <Image
+        style={{
+          resizeMode: 'center',
+          width: 300 * scaleMultiplier,
+          height: 100 * scaleMultiplier
+        ***REMOVED******REMOVED***
+        source={require('../assets/logo.png')***REMOVED***
+      />
       <Text style={styles.loadingMessageText***REMOVED***>{i18n.t('loadingMessage')***REMOVED***</Text>
       <View style={styles.progressBarContainer***REMOVED***>
         <Progress.Bar
