@@ -1,6 +1,6 @@
 import React, { useState, useEffect ***REMOVED*** from 'react'
 import NetInfo from '@react-native-community/netinfo'
-import { AsyncStorage ***REMOVED*** from 'react-native'
+import { AsyncStorage, Alert ***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import WahaDrawer from '../components/WahaDrawer'
 import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
@@ -12,6 +12,7 @@ import {
   resumeDownload,
   removeDownload
 ***REMOVED*** from '../redux/actions/downloadActions'
+import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import * as FileSystem from 'expo-file-system'
 import { db, storeData ***REMOVED*** from '../redux/actions/databaseActions'
 
@@ -31,18 +32,6 @@ function getGestureEnabled (route) {
 ***REMOVED***
 
 function MainDrawer (props) {
-  function downloadSomething (source, fileName) {
-    var downloadResumable = FileSystem.createDownloadResumable(
-      doc.data().sources[source],
-      FileSystem.documentDirectory + activeGroup.language + '-' + fileName,
-      {***REMOVED***,
-      callback
-    )
-    return downloadResumable.downloadAsync().catch(error => {
-      throw error
-    ***REMOVED***)
-  ***REMOVED***
-
   useEffect(() => {
     // add listener for connection status and update it accordingly
     const netInfoUnsubscribe = NetInfo.addEventListener(state => {
@@ -53,13 +42,30 @@ function MainDrawer (props) {
     db.collection('languages')
       .doc(props.activeGroup.language)
       .onSnapshot(function (doc) {
+        function downloadSomething (source, fileName) {
+          var downloadResumable = FileSystem.createDownloadResumable(
+            doc.data().sources[source],
+            FileSystem.documentDirectory +
+              props.activeGroup.language +
+              '-' +
+              fileName,
+            {***REMOVED***
+          )
+          downloadResumable.downloadAsync().catch(error => {
+            throw error
+          ***REMOVED***)
+        ***REMOVED***
         // if a new c-t chapter 1 is available
         if (
           doc.data().sources['c-t-fellowship'] !==
           props.activeDatabase.sources['c-t-fellowship']
         ) {
-          // ALERT
-          // downloadSomething('c-t-chapter1', 'c-t-chapter1.mp3')
+          Alert.alert(
+            props.translations.alerts.newChapterDownloading.header,
+            props.translations.alerts.newChapterDownloading.text,
+            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+          )
+          downloadSomething('c-t-chapter1', 'c-t-chapter1.mp3')
         ***REMOVED***
 
         // if a new c-t chapter 3 is available
@@ -68,7 +74,12 @@ function MainDrawer (props) {
           props.activeDatabase.sources['c-t-application']
         ) {
           // ALERT
-          // downloadSomething('c-t-chapter3', 'c-t-chapter3.mp3')
+          Alert.alert(
+            props.translations.alerts.newChapterDownloading.header,
+            props.translations.alerts.newChapterDownloading.text,
+            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+          )
+          downloadSomething('c-t-chapter3', 'c-t-chapter3.mp3')
         ***REMOVED***
 
         // if a new mt chapter 1 is available
@@ -76,8 +87,12 @@ function MainDrawer (props) {
           doc.data().sources['mt-fellowship'] !==
           props.activeDatabase.sources['mt-fellowship']
         ) {
-          // ALERT
-          // downloadSomething('mt-chapter1', 'mt-chapter1.mp3')
+          Alert.alert(
+            props.translations.alerts.newChapterDownloading.header,
+            props.translations.alerts.newChapterDownloading.text,
+            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+          )
+          downloadSomething('mt-chapter1', 'mt-chapter1.mp3')
         ***REMOVED***
 
         // if a new mt chapter 3 is available
@@ -85,9 +100,16 @@ function MainDrawer (props) {
           doc.data().sources['mt-application'] !==
           props.activeDatabase.sources['mt-application']
         ) {
-          // ALERT
-          // downloadSomething('mt-chapter3', 'mt-chapter3.mp3')
+          Alert.alert(
+            props.translations.alerts.newChapterDownloading.header,
+            props.translations.alerts.newChapterDownloading.text,
+            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+          )
+          downloadSomething('mt-chapter3', 'mt-chapter3.mp3')
         ***REMOVED***
+
+        // store data
+        props.storeData(doc.data(), props.activeGroup.language)
 
         // if
         // 1. all core story sets are completed
@@ -103,14 +125,24 @@ function MainDrawer (props) {
 
         // 1. add it automatically to added sets for htis group
         // 2. make it dispaly the 'new' icon somehow
-
-        props.storeData(doc.data(), props.activeGroup.language)
       ***REMOVED***)
 
     return function cleanup () {
       netInfoUnsubscribe()
     ***REMOVED***
   ***REMOVED***, [])
+
+  useEffect(() => {
+    // add any new mt sets to active group
+    props.activeDatabase.sets
+      .filter(set => set.category === 'mt')
+      .forEach(set => {
+        if (
+          !props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+        )
+          props.addSet(props.activeGroup.name, set.id)
+      ***REMOVED***)
+  ***REMOVED***, [props.activeDatabase, props.activeGroup])
 
   // if we connect to internet, check to see if we have any paused downloads
   useEffect(() => {
@@ -192,8 +224,10 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeDatabase: state.database[activeGroup.language],
     isConnected: state.network.isConnected,
+    translations: state.database[activeGroup.language].translations,
     activeGroup: activeGroup,
-    toolkitEnabled: state.toolkitEnabled
+    toolkitEnabled: state.toolkitEnabled,
+    groups: state.groups
   ***REMOVED***
 ***REMOVED***
 
@@ -210,6 +244,9 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     storeData: (data, language) => {
       dispatch(storeData(data, language))
+    ***REMOVED***,
+    addSet: (groupName, setID) => {
+      dispatch(addSet(groupName, setID))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***
