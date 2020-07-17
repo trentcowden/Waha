@@ -343,6 +343,8 @@ function SetItem (props) {
         hideModal={() => setShowUnlockModal(false)***REMOVED***
         title={props.translations.modals.storySetUnlock.header***REMOVED***
         body={props.translations.modals.storySetUnlock.text***REMOVED***
+        confirmText={props.translations.modals.storySetUnlock.confirm***REMOVED***
+        confirmOnPress={() => setShowUnlockModal(false)***REMOVED***
         imageSource={require('../assets/splash.png')***REMOVED***
       />
     </TouchableOpacity>

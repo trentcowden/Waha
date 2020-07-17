@@ -1,5 +1,11 @@
-import React from 'react'
-import { View, Image, StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
+import React, { useEffect ***REMOVED*** from 'react'
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  AppState
+***REMOVED*** from 'react-native'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as FileSystem from 'expo-file-system'
 import i18n from 'i18n-js'
@@ -14,6 +20,8 @@ import LanguageSelectScreen from '../screens/LanguageSelectScreen'
 import StorageScreen from '../screens/StorageScreen'
 import MTScreen from '../screens/MTScreen'
 import PasscodeScreen from '../screens/PasscodeScreen'
+import SecurityScreen from '../screens/SecurityScreen'
+import GameScreen from '../screens/GameScreen'
 import SetTabNavigator from './SetTabs'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import { connect ***REMOVED*** from 'react-redux'
@@ -28,10 +36,27 @@ i18n.translations = {
 const Stack = createStackNavigator()
 
 function MainStack (props) {
+  function handleAppStateChange (change) {
+    if (change === 'inactive' || change === 'background') {
+      if (props.securityEnabled) props.navigation.navigate('Game')
+    ***REMOVED***
+  ***REMOVED***
+
+  useEffect(() => {
+    const appStateUnsubscribe = AppState.addEventListener(
+      'change',
+      handleAppStateChange
+    )
+
+    return function cleanup () {
+      AppState.removeEventListener('change', handleAppStateChange)
+    ***REMOVED***
+  ***REMOVED***, [props.securityEnabled])
+
   return (
     //global navigation options
     <Stack.Navigator
-      initialRouteName='SetsRoot'
+      initialRouteName={props.securityEnabled ? 'Game' : 'SetsRoot'***REMOVED***
       screenOptions={{
         gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
         gestureResponseDistance: {
@@ -178,6 +203,25 @@ function MainStack (props) {
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
+      <Stack.Screen
+        name='Security'
+        component={SecurityScreen***REMOVED***
+        options={{
+          headerTitle: props.translations.navigation.headers.SecurityScreen,
+          headerStyle: {
+            backgroundColor: '#F7F7F7'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='Game'
+        component={GameScreen***REMOVED***
+        options={{ headerShown: false ***REMOVED******REMOVED***
+      />
     </Stack.Navigator>
   )
 ***REMOVED***
@@ -201,7 +245,8 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     translations: state.database[activeGroup.language].translations,
     font: state.database[activeGroup.language].font,
-    activeGroup: activeGroup
+    activeGroup: activeGroup,
+    securityEnabled: state.securityEnabled
   ***REMOVED***
 ***REMOVED***
 

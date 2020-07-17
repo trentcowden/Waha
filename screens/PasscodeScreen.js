@@ -111,6 +111,8 @@ function PasscodeScreen (props) {
         ***REMOVED******REMOVED***
         title={props.translations.modals.mtUnlock.header***REMOVED***
         body={props.translations.modals.mtUnlock.text***REMOVED***
+        confirmText={props.translations.modals.mtUnlock.confirm***REMOVED***
+        confirmOnPress={() => setUnlockSuccessModal(false)***REMOVED***
         imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
       />
     </View>

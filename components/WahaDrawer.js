@@ -52,11 +52,11 @@ function WahaDrawer (props) {
             text={props.translations.navigation.drawer.groups***REMOVED***
             onPress={() => props.navigation.navigate('Groups')***REMOVED***
           />
-          {/* <DrawerItem
-               name="security"
-               text="Security Mode"
-               onPress={() => {***REMOVED******REMOVED***
-            /> */***REMOVED***
+          <DrawerItem
+            iconName='security'
+            text='Security Mode'
+            onPress={() => props.navigation.navigate('Security')***REMOVED***
+          />
           <DrawerItem
             iconName='boat'
             text={props.translations.navigation.drawer.mt***REMOVED***
