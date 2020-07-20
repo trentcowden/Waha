@@ -20,7 +20,10 @@ import { getStateFromPath ***REMOVED*** from '@react-navigation/native'
 import BackButton from '../components/BackButton'
 import GroupListHeaderMT from '../components/GroupListHeaderMT'
 import MessageModal from '../components/MessageModal'
-import { setSecurityEnabled ***REMOVED*** from '../redux/actions/securityEnabledActions'
+import {
+  setSecurityEnabled,
+  setActivateOnSwitch
+***REMOVED*** from '../redux/actions/securityActions'
 
 function SecurityScreen (props) {
   //// STATE
@@ -67,34 +70,114 @@ function SecurityScreen (props) {
       <View
         style={{
           width: '100%',
-          alignItems: 'center',
-          marginVertical: 50
+          alignItems: 'center'
         ***REMOVED******REMOVED***
       >
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 14 * scaleMultiplier,
+            fontFamily: props.font + '-regular',
+            paddingHorizontal: 20,
+            marginVertical: 10,
+            color: '#1D1E20'
+          ***REMOVED******REMOVED***
+        >
+          {props.translations.modals.securityWarning.text***REMOVED***
+        </Text>
         <View
           style={[
             styles.unlockButton,
             { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
           ]***REMOVED***
         >
-          <Text
+          <View style={{ justifyContent: 'center', flex: 1 ***REMOVED******REMOVED***>
+            <Text
+              style={{
+                fontFamily: props.font + '-medium',
+                fontSize: 18 * scaleMultiplier,
+                color: '#1D1E20'
+              ***REMOVED******REMOVED***
+            >
+              {props.translations.labels.securityMode***REMOVED***
+            </Text>
+            <Text
+              style={{
+                fontFamily: props.font + '-regular',
+                fontSize: 14 * scaleMultiplier,
+                color: '#82868D'
+              ***REMOVED******REMOVED***
+              numberOfLines={2***REMOVED***
+            >
+              {props.translations.labels.securityModeBlurb***REMOVED***
+            </Text>
+          </View>
+          <View
             style={{
-              fontFamily: props.font + '-medium',
-              fontSize: 18 * scaleMultiplier
+              flexDirection: 'row',
+              alignItems: 'center'
             ***REMOVED******REMOVED***
           >
-            {props.translations.labels.securityMode***REMOVED***
-          </Text>
+            <Icon
+              name='error-filled'
+              size={40 * scaleMultiplier***REMOVED***
+              color='#FF0800'
+              style={{ marginHorizontal: 20 ***REMOVED******REMOVED***
+            />
+            <Switch
+              trackColor={{ false: '#DEE3E9', true: '#60C239' ***REMOVED******REMOVED***
+              thumbColor='#FFFFFF'
+              ios_backgroundColor='#DEE3E9'
+              onValueChange={() => {
+                // toggle security mode on or off for the active group
+                if (props.security.securityEnabled) {
+                  props.setSecurityEnabled(false)
+                  props.setActivateOnSwitch(false)
+                ***REMOVED*** else setShowSecurityWarningModal(true)
+              ***REMOVED******REMOVED***
+              value={props.security.securityEnabled***REMOVED***
+            />
+          </View>
+        </View>
+        <View
+          style={[
+            styles.unlockButton,
+            { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+          ]***REMOVED***
+        >
+          <View style={{ justifyContent: 'center', flex: 1 ***REMOVED******REMOVED***>
+            <Text
+              style={{
+                fontFamily: props.font + '-medium',
+                fontSize: 18 * scaleMultiplier,
+                color: '#1D1E20'
+              ***REMOVED******REMOVED***
+            >
+              {props.translations.labels.activateOnSwitch***REMOVED***
+            </Text>
+            <Text
+              style={{
+                fontFamily: props.font + '-regular',
+                fontSize: 14 * scaleMultiplier,
+                color: '#82868D'
+              ***REMOVED******REMOVED***
+              numberOfLines={2***REMOVED***
+            >
+              {props.translations.labels.activateOnSwitchBlurb***REMOVED***
+            </Text>
+          </View>
           <Switch
             trackColor={{ false: '#DEE3E9', true: '#60C239' ***REMOVED******REMOVED***
             thumbColor='#FFFFFF'
             ios_backgroundColor='#DEE3E9'
             onValueChange={() => {
               // toggle security mode on or off for the active group
-              if (props.securityEnabled) props.setSecurityEnabled(false)
-              else setShowSecurityWarningModal(true)
+              if (props.security.activateOnSwitch)
+                props.setActivateOnSwitch(false)
+              else props.setActivateOnSwitch(true)
             ***REMOVED******REMOVED***
-            value={props.securityEnabled***REMOVED***
+            value={props.security.activateOnSwitch***REMOVED***
+            disabled={props.security.securityEnabled ? false : true***REMOVED***
           />
         </View>
       </View>
@@ -126,7 +209,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   unlockButton: {
     width: '100%',
-    height: 80 * scaleMultiplier,
+    height: 100 * scaleMultiplier,
     backgroundColor: '#FFFFFF',
     borderWidth: 2,
     borderColor: '#EFF2F4',
@@ -153,13 +236,14 @@ function mapStateToProps (state) {
     font: state.database[activeGroup.language].font,
     activeGroup: activeGroup,
     toolkitEnabled: state.toolkitEnabled,
-    securityEnabled: state.securityEnabled
+    security: state.security
   ***REMOVED***
 ***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
-    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet))
+    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
+    setActivateOnSwitch: toSet => dispatch(setActivateOnSwitch(toSet))
   ***REMOVED***
 ***REMOVED***
 
