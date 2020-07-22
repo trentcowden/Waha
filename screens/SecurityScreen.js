@@ -192,7 +192,7 @@ function SecurityScreen (props) {
           props.translations.security.popups
             .activate_security_mode_confirmation_message
         ***REMOVED***
-        confirmText={props.translations.general.confirm***REMOVED***
+        confirmText={props.translations.general.i_understand***REMOVED***
         confirmOnPress={() => {
           props.setSecurityEnabled(true)
           setShowSecurityWarningModal(false)
