@@ -61,9 +61,9 @@ function MainDrawer (props) {
           props.activeDatabase.sources['c-t-fellowship']
         ) {
           Alert.alert(
-            props.translations.alerts.newChapterDownloading.header,
-            props.translations.alerts.newChapterDownloading.text,
-            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            props.translations.general.popups.new_chapter_downloading_title,
+            props.translations.general.popups.new_chapter_downloading_message,
+            [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           downloadSomething('c-t-chapter1', 'c-t-chapter1.mp3')
         ***REMOVED***
@@ -75,9 +75,9 @@ function MainDrawer (props) {
         ) {
           // ALERT
           Alert.alert(
-            props.translations.alerts.newChapterDownloading.header,
-            props.translations.alerts.newChapterDownloading.text,
-            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            props.translations.general.popups.new_chapter_downloading_title,
+            props.translations.general.popups.new_chapter_downloading_message,
+            [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           downloadSomething('c-t-chapter3', 'c-t-chapter3.mp3')
         ***REMOVED***
@@ -88,9 +88,9 @@ function MainDrawer (props) {
           props.activeDatabase.sources['mt-fellowship']
         ) {
           Alert.alert(
-            props.translations.alerts.newChapterDownloading.header,
-            props.translations.alerts.newChapterDownloading.text,
-            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            props.translations.general.popups.new_chapter_downloading_title,
+            props.translations.general.popups.new_chapter_downloading_message,
+            [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           downloadSomething('mt-chapter1', 'mt-chapter1.mp3')
         ***REMOVED***
@@ -101,9 +101,9 @@ function MainDrawer (props) {
           props.activeDatabase.sources['mt-application']
         ) {
           Alert.alert(
-            props.translations.alerts.newChapterDownloading.header,
-            props.translations.alerts.newChapterDownloading.text,
-            [{ text: props.translations.alerts.options.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            props.translations.general.popups.new_chapter_downloading_title,
+            props.translations.general.popups.new_chapter_downloading_message,
+            [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           downloadSomething('mt-chapter3', 'mt-chapter3.mp3')
         ***REMOVED***

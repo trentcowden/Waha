@@ -52,11 +52,11 @@ function PasscodeScreen (props) {
     ***REMOVED*** else {
       pinRef.shake().then(() => setPasscode(''))
       Alert.alert(
-        props.translations.alerts.passcodeError.header,
-        props.translations.alerts.passcodeError.text,
+        props.translations.passcode.popups.unlock_unsucessful_message,
+        props.translations.passcode.popups.unlock_unsucessful_title,
         [
           {
-            text: props.translations.alerts.options.ok,
+            text: props.translations.general.ok,
             onPress: () => {***REMOVED***
           ***REMOVED***
         ]
@@ -78,7 +78,7 @@ function PasscodeScreen (props) {
           paddingHorizontal: 20
         ***REMOVED******REMOVED***
       >
-        {props.translations.labels.enterPasscode***REMOVED***
+        {props.translations.passcode.enter_passcode_text***REMOVED***
       </Text>
       <SmoothPinCodeInput
         ref={ref => setPinRef(ref)***REMOVED***
@@ -109,9 +109,9 @@ function PasscodeScreen (props) {
           setUnlockSuccessModal(false)
           props.navigation.goBack()
         ***REMOVED******REMOVED***
-        title={props.translations.modals.mtUnlock.header***REMOVED***
-        body={props.translations.modals.mtUnlock.text***REMOVED***
-        confirmText={props.translations.modals.mtUnlock.confirm***REMOVED***
+        title={props.translations.passcode.popups.unlock_successful_title***REMOVED***
+        body={props.translations.passcode.popups.unlock_successful_message***REMOVED***
+        confirmText={props.translations.general.got_it***REMOVED***
         confirmOnPress={() => setUnlockSuccessModal(false)***REMOVED***
         imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
       />

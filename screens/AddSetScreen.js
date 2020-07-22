@@ -32,8 +32,8 @@ function AddSetScreen (props) {
     return {
       title:
         props.route.params.category === 'core'
-          ? props.translations.labels.addNewCoreStorySet
-          : props.translations.labels.addNewTopicalSet,
+          ? props.translations.add_set.header_foundational
+          : props.translations.add_set.header_topical,
       headerLeft: props.isRTL
         ? () => <View></View>
         : () => (
@@ -127,14 +127,14 @@ function AddSetScreen (props) {
                 textAlign: 'center'
               ***REMOVED******REMOVED***
             >
-              {props.translations.labels.noMoreSets***REMOVED***
+              {props.translations.add_set.no_more_sets_text***REMOVED***
             </Text>
           </View>
         ***REMOVED***
       />
       <SnackBar
         visible={showSnackbar***REMOVED***
-        textMessage={props.translations.labels.setAdded***REMOVED***
+        textMessage={props.translations.add_set.set_added_message***REMOVED***
         messageStyle={{
           color: '#FFFFFF',
           fontSize: 24 * scaleMultiplier,

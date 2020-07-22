@@ -90,15 +90,15 @@ function GroupListHeader (props) {
         ***REMOVED******REMOVED***
         onPress={() =>
           Alert.alert(
-            props.translations.alerts.deleteLanguage.header,
-            props.translations.alerts.deleteLanguage.text,
+            props.translations.groups.popups.delete_language_title,
+            props.translations.groups.popups.delete_language_message,
             [
               {
-                text: props.translations.alerts.options.cancel,
+                text: props.translations.general.cancel,
                 onPress: () => {***REMOVED***
               ***REMOVED***,
               {
-                text: props.translations.alerts.options.ok,
+                text: props.translations.general.ok,
                 onPress: deleteLanguageInstance
               ***REMOVED***
             ]
@@ -186,7 +186,7 @@ function GroupListHeader (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.newGroup***REMOVED***
+          {props.translations.groups.new_group_button_label***REMOVED***
         </Text>
       </TouchableOpacity>
     </View>

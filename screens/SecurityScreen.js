@@ -83,7 +83,7 @@ function SecurityScreen (props) {
             color: '#1D1E20'
           ***REMOVED******REMOVED***
         >
-          {props.translations.modals.securityWarning.text***REMOVED***
+          {props.translations.security.security_mode_description_text***REMOVED***
         </Text>
         <View
           style={[
@@ -99,7 +99,7 @@ function SecurityScreen (props) {
                 color: '#1D1E20'
               ***REMOVED******REMOVED***
             >
-              {props.translations.labels.securityMode***REMOVED***
+              {props.translations.security.security_mode_picker_label***REMOVED***
             </Text>
             <Text
               style={{
@@ -109,7 +109,7 @@ function SecurityScreen (props) {
               ***REMOVED******REMOVED***
               numberOfLines={2***REMOVED***
             >
-              {props.translations.labels.securityModeBlurb***REMOVED***
+              {props.translations.security.security_mode_picker_blurb***REMOVED***
             </Text>
           </View>
           <View
@@ -153,7 +153,7 @@ function SecurityScreen (props) {
                 color: '#1D1E20'
               ***REMOVED******REMOVED***
             >
-              {props.translations.labels.activateOnSwitch***REMOVED***
+              {props.translations.security.activate_on_switch_picker_label***REMOVED***
             </Text>
             <Text
               style={{
@@ -163,7 +163,7 @@ function SecurityScreen (props) {
               ***REMOVED******REMOVED***
               numberOfLines={2***REMOVED***
             >
-              {props.translations.labels.activateOnSwitchBlurb***REMOVED***
+              {props.translations.security.activate_on_switch_picker_blurb***REMOVED***
             </Text>
           </View>
           <Switch
@@ -184,14 +184,20 @@ function SecurityScreen (props) {
       <MessageModal
         isVisible={showSecurityWarningModal***REMOVED***
         hideModal={() => setShowSecurityWarningModal(false)***REMOVED***
-        title={props.translations.modals.securityWarning.header***REMOVED***
-        body={props.translations.modals.securityWarning.text***REMOVED***
-        confirmText={props.translations.modals.securityWarning.confirm***REMOVED***
+        title={
+          props.translations.security.popups
+            .activate_security_mode_confirmation_title
+        ***REMOVED***
+        body={
+          props.translations.security.popups
+            .activate_security_mode_confirmation_message
+        ***REMOVED***
+        confirmText={props.translations.general.confirm***REMOVED***
         confirmOnPress={() => {
           props.setSecurityEnabled(true)
           setShowSecurityWarningModal(false)
         ***REMOVED******REMOVED***
-        cancelText={props.translations.modals.securityWarning.cancel***REMOVED***
+        cancelText={props.translations.general.cancel***REMOVED***
         cancelOnPress={() => setShowSecurityWarningModal(false)***REMOVED***
         imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
       />

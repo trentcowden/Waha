@@ -49,7 +49,7 @@ function WahaDrawer (props) {
         <View>
           <DrawerItem
             iconName='group'
-            text={props.translations.navigation.drawer.groups***REMOVED***
+            text={props.translations.groups.header***REMOVED***
             onPress={() => props.navigation.navigate('Groups')***REMOVED***
           />
           <DrawerItem
@@ -59,12 +59,12 @@ function WahaDrawer (props) {
           />
           <DrawerItem
             iconName='boat'
-            text={props.translations.navigation.drawer.mt***REMOVED***
+            text={props.translations.mobilization_tools.header***REMOVED***
             onPress={() => props.navigation.navigate('MT')***REMOVED***
           />
           <DrawerItem
             iconName='storage'
-            text={props.translations.navigation.drawer.storage***REMOVED***
+            text={props.translations.storage.header***REMOVED***
             onPress={() =>
               props.navigation.navigate('Storage', {
                 isRTL: props.isFetching ? null : props.isRTL
@@ -75,11 +75,9 @@ function WahaDrawer (props) {
         <View style={styles.smallDrawerItemsContainer***REMOVED***>
           <SmallDrawerItem
             onPress={() =>
-              openBrowser(
-                'https://docs.google.com/forms/d/e/1FAIpQLSeUvdc3Ehib_kIOMqkyBgECyqL7Jaj_ztFercRSfMnCXQ6UwA/viewform?usp=sf_link'
-              )
+              openBrowser('https://airtable.com/shrGQY4b3FSPprzmt')
             ***REMOVED***
-            label={props.translations.navigation.drawer.feedback***REMOVED***
+            label={props.translations.general.feedback***REMOVED***
           />
           <SmallDrawerItem
             onPress={() =>
@@ -87,7 +85,7 @@ function WahaDrawer (props) {
                 'https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif'
               )
             ***REMOVED***
-            label={props.translations.navigation.drawer.privacy***REMOVED***
+            label={props.translations.general.privacy***REMOVED***
           />
           <SmallDrawerItem
             onPress={() =>
@@ -95,7 +93,7 @@ function WahaDrawer (props) {
                 'https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif'
               )
             ***REMOVED***
-            label={props.translations.navigation.drawer.credits***REMOVED***
+            label={props.translations.general.credits***REMOVED***
           />
           <Text
             style={[

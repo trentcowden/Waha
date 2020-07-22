@@ -72,7 +72,10 @@ function MTScreen (props) {
           fontSize: 18 * scaleMultiplier
         ***REMOVED******REMOVED***
       >
-        {props.translations.labels.howMTsWork***REMOVED***
+        {
+          props.translations.mobilization_tools
+            .how_mobilization_tools_work_label
+        ***REMOVED***
       </Text>
       <Icon
         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
@@ -129,15 +132,15 @@ function MTScreen (props) {
             props.toolkitEnabled
               ? () =>
                   Alert.alert(
-                    props.translations.labels.mtUnlockCode,
+                    props.translations.mobilization_tools.mt_code_title,
                     '281820',
                     [
                       {
-                        text: props.translations.alerts.options.clipboard,
+                        text: props.translations.general.clipboard,
                         onPress: () => Clipboard.setString('281820')
                       ***REMOVED***,
                       {
-                        text: props.translations.alerts.options.close,
+                        text: props.translations.general.close,
                         onPress: () => {***REMOVED***
                       ***REMOVED***
                     ]
@@ -152,8 +155,8 @@ function MTScreen (props) {
             ***REMOVED******REMOVED***
           >
             {props.toolkitEnabled
-              ? props.translations.labels.viewCode
-              : props.translations.labels.unlockMT***REMOVED***
+              ? props.translations.mobilization_tools.view_code_button_label
+              : props.translations.mobilization_tools.unlock_mt_button_label***REMOVED***
           </Text>
           <Icon
             name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
@@ -167,9 +170,13 @@ function MTScreen (props) {
       <MessageModal
         isVisible={showHowMTsWorkModal***REMOVED***
         hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
-        title={props.translations.modals.enableMTContent.header***REMOVED***
-        body={props.translations.modals.enableMTContent.text***REMOVED***
-        confirmText={props.translations.modals.enableMTContent.confirm***REMOVED***
+        title={
+          props.translations.mobilization_tools.how_to_enable_mt_content_title
+        ***REMOVED***
+        body={
+          props.translations.mobilization_tools.how_to_enable_mt_content_message
+        ***REMOVED***
+        confirmText={props.translations.general.got_it***REMOVED***
         confirmOnPress={() => setShowHotMTsWorkModal(false)***REMOVED***
         imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
       />

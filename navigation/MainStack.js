@@ -105,7 +105,7 @@ function MainStack (props) {
         name='Groups'
         component={GroupsScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.groupScreen,
+          headerTitle: props.translations.groups.header,
           headerStyle: {
             backgroundColor: '#EFF2F4'
           ***REMOVED***,
@@ -119,7 +119,7 @@ function MainStack (props) {
         name='AddGroup'
         component={AddEditGroupScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.addNewGroupScreen,
+          headerTitle: props.translations.add_edit_group.header_add,
           headerStyle: {
             backgroundColor: '#FFFFFF'
           ***REMOVED***,
@@ -152,7 +152,7 @@ function MainStack (props) {
         name='EditGroup'
         component={AddEditGroupScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.editGroupScreen,
+          headerTitle: props.translations.add_edit_group.header_edit,
           headerStyle: {
             backgroundColor: '#F7F7F7'
           ***REMOVED***,
@@ -166,7 +166,7 @@ function MainStack (props) {
         name='Storage'
         component={StorageScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.storageScreen,
+          headerTitle: props.translations.storage.header,
           headerStyle: {
             backgroundColor: '#FFFFFF'
           ***REMOVED***,
@@ -180,7 +180,7 @@ function MainStack (props) {
         name='MT'
         component={MTScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.mtScreen,
+          headerTitle: props.translations.mobilization_tools.header,
           headerStyle: {
             backgroundColor: '#F7F9FA'
           ***REMOVED***,
@@ -194,7 +194,7 @@ function MainStack (props) {
         name='Passcode'
         component={PasscodeScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.mtScreen,
+          headerTitle: props.translations.mobilization_tools.header,
           headerStyle: {
             backgroundColor: '#F7F9FA'
           ***REMOVED***,
@@ -208,7 +208,7 @@ function MainStack (props) {
         name='Security'
         component={SecurityScreen***REMOVED***
         options={{
-          headerTitle: props.translations.navigation.headers.SecurityScreen,
+          headerTitle: props.translations.security.header,
           headerStyle: {
             backgroundColor: '#F7F7F7'
           ***REMOVED***,

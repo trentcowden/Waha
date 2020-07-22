@@ -48,7 +48,7 @@ function ChapterSelect (props) {
               ***REMOVED***
             ]***REMOVED***
           >
-            {props.translations.labels.training***REMOVED***
+            {props.translations.play.training***REMOVED***
           </Text>
         </View>
       )
@@ -85,7 +85,7 @@ function ChapterSelect (props) {
               ***REMOVED***
             ]***REMOVED***
           >
-            {props.translations.labels.training***REMOVED***
+            {props.translations.play.training***REMOVED***
           </Text>
         </View>
       )
@@ -129,7 +129,7 @@ function ChapterSelect (props) {
               ***REMOVED***
             ]***REMOVED***
           >
-            {props.translations.labels.training***REMOVED***
+            {props.translations.play.training***REMOVED***
           </Text>
         </TouchableOpacity>
       )
@@ -166,7 +166,7 @@ function ChapterSelect (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.story***REMOVED***
+          {props.translations.play.story***REMOVED***
         </Text>
       </View>
     )
@@ -203,7 +203,7 @@ function ChapterSelect (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.story***REMOVED***
+          {props.translations.play.story***REMOVED***
         </Text>
       </View>
     )
@@ -235,7 +235,7 @@ function ChapterSelect (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.story***REMOVED***
+          {props.translations.play.story***REMOVED***
         </Text>
       </TouchableOpacity>
     )
@@ -279,7 +279,7 @@ function ChapterSelect (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.fellowship***REMOVED***
+          {props.translations.play.fellowship***REMOVED***
         </Text>
       </TouchableOpacity>
 
@@ -329,7 +329,7 @@ function ChapterSelect (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.labels.application***REMOVED***
+          {props.translations.play.application***REMOVED***
         </Text>
       </TouchableOpacity>
     </View>

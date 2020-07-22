@@ -274,10 +274,10 @@ function LessonListScreen (props) {
               ? Platform.OS === 'ios'
                 ? 'www.appstorelink.com' +
                   ' ' +
-                  props.translations.labels.shareCode
+                  props.translations.general.share_toolkit_unlock_code
                 : 'www.playstorelink.com' +
                   ' ' +
-                  props.translations.labels.shareCode
+                  props.translations.general.share_toolkit_unlock_code
               : Platform.OS === 'ios'
               ? 'www.appstorelink.com'
               : 'www.playstorelink.com'
@@ -285,11 +285,14 @@ function LessonListScreen (props) {
         break
       // share the passage text for this lesson
       case 'text':
+        var scriptureString = ''
+        activeLessonInModal.scripture.forEach((scripturePiece, index) => {
+          scriptureString += scripturePiece.header + '\n' + scripturePiece.text
+          if (index !== activeLessonInModal.scripture.length - 1)
+            scriptureString += '\n'
+        ***REMOVED***)
         Share.share({
-          message:
-            activeLessonInModal.scriptureHeader +
-            ': ' +
-            activeLessonInModal.scriptureText
+          message: scriptureString
         ***REMOVED***)
         break
       // share the audio file for this lesson
@@ -302,11 +305,13 @@ function LessonListScreen (props) {
                 FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
               )
             : Alert.alert(
-                props.translations.alerts.shareUndownloaded.header,
-                props.translations.alerts.shareUndownloaded.text,
+                props.translations.general.popups.lessons
+                  .share_undownloaded_lesson_title,
+                props.translations.general.popups.lessons
+                  .share_undownloaded_lesson_message,
                 [
                   {
-                    text: props.translations.alerts.options.ok,
+                    text: props.translations.general.ok,
                     onPress: () => {***REMOVED***
                   ***REMOVED***
                 ]
@@ -438,50 +443,37 @@ function LessonListScreen (props) {
       <OptionsModal
         isVisible={showDownloadLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={
-          props.activeDatabase.translations.modals.downloadLessonOptions.cancel
-        ***REMOVED***
+        closeText={props.translations.general.cancel***REMOVED***
       >
         <ModalButton
           isLast={true***REMOVED***
-          title={
-            props.activeDatabase.translations.modals.downloadLessonOptions
-              .downloadLesson
-          ***REMOVED***
+          title={props.translations.lessons.popups.download_lesson_button_label***REMOVED***
           onPress={downloadLessonFromModal***REMOVED***
         />
       </OptionsModal>
       <OptionsModal
         isVisible={showDeleteLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={
-          props.activeDatabase.translations.modals.deleteLessonOptions.cancel
-        ***REMOVED***
+        closeText={props.translations.general.cancel***REMOVED***
       >
         <ModalButton
           isLast={true***REMOVED***
-          title={
-            props.activeDatabase.translations.modals.deleteLessonOptions
-              .deleteLesson
-          ***REMOVED***
+          title={props.translations.lessons.popups.delete_lesson_button_label***REMOVED***
           onPress={deleteLessonFromModal***REMOVED***
         />
       </OptionsModal>
       <OptionsModal
         isVisible={showShareModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={props.activeDatabase.translations.modals.shareOptions.close***REMOVED***
+        closeText={props.translations.general.close***REMOVED***
       >
         <ModalButton
-          title={props.activeDatabase.translations.modals.shareOptions.shareApp***REMOVED***
+          title={props.translations.general.share_app***REMOVED***
           onPress={() => share('app')***REMOVED***
         />
         {getLessonType(activeLessonInModal) !== 'v' ? (
           <ModalButton
-            title={
-              props.activeDatabase.translations.modals.shareOptions
-                .sharePassageText
-            ***REMOVED***
+            title={props.translations.general.share_passage_text***REMOVED***
             onPress={() => share('text')***REMOVED***
           />
         ) : null***REMOVED***
@@ -489,20 +481,14 @@ function LessonListScreen (props) {
           getLessonType(activeLessonInModal) === 'qav') &&
         !props.downloads[activeLessonInModal.id] ? (
           <ModalButton
-            title={
-              props.activeDatabase.translations.modals.shareOptions
-                .sharePassageAudio
-            ***REMOVED***
+            title={props.translations.general.share_passage_audio***REMOVED***
             onPress={() => share('audio')***REMOVED***
           />
         ) : null***REMOVED***
         {getLessonType(activeLessonInModal) !== 'qa' &&
         getLessonType(activeLessonInModal) !== 'q' ? (
           <ModalButton
-            title={
-              props.activeDatabase.translations.modals.shareOptions
-                .shareVideoLink
-            ***REMOVED***
+            title={props.translations.general.share_video_link***REMOVED***
             onPress={() => share('video')***REMOVED***
           />
         ) : null***REMOVED***
@@ -539,8 +525,8 @@ function mapStateToProps (state) {
   )[0]
   return {
     downloads: state.downloads,
-    activeDatabase: state.database[activeGroup.language],
     isRTL: state.database[activeGroup.language].isRTL,
+    activeDatabase: state.database[activeGroup.language],
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations
   ***REMOVED***

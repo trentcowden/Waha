@@ -43,8 +43,8 @@ function GroupsScreen (props) {
                 ]***REMOVED***
               >
                 {isEditing
-                  ? props.translations.labels.done
-                  : props.translations.labels.edit***REMOVED***
+                  ? props.translations.groups.done_button_label
+                  : props.translations.groups.edit_button_label***REMOVED***
               </Text>
             </TouchableOpacity>
           ),
@@ -63,8 +63,8 @@ function GroupsScreen (props) {
                 ]***REMOVED***
               >
                 {isEditing
-                  ? props.translations.labels.done
-                  : props.translations.labels.edit***REMOVED***
+                  ? props.translations.groups.done_button_label
+                  : props.translations.groups.edit_button_label***REMOVED***
               </Text>
             </TouchableOpacity>
           )
@@ -117,23 +117,10 @@ function GroupsScreen (props) {
           ListFooterComponent={
             <TouchableOpacity
               style={styles.addNewLanguageContainer***REMOVED***
-              onPress={
-                props.isConnected
-                  ? () =>
-                      props.navigation.navigate('AddLanguage', {
-                        installedLanguageInstances: getInstalledLanguageInstances()
-                      ***REMOVED***)
-                  : () =>
-                      Alert.alert(
-                        props.translations.alerts.addLanguageNoInternet.header,
-                        props.translations.alerts.addLanguageNoInternet.text,
-                        [
-                          {
-                            text: props.translations.alerts.options.ok,
-                            onPress: () => {***REMOVED***
-                          ***REMOVED***
-                        ]
-                      )
+              onPress={() =>
+                props.navigation.navigate('AddLanguage', {
+                  installedLanguageInstances: getInstalledLanguageInstances()
+                ***REMOVED***)
               ***REMOVED***
             >
               <Text
@@ -145,7 +132,7 @@ function GroupsScreen (props) {
                   ***REMOVED***
                 ]***REMOVED***
               >
-                {props.translations.labels.newLanguage***REMOVED***
+                {props.translations.groups.new_language_button_label***REMOVED***
               </Text>
             </TouchableOpacity>
           ***REMOVED***

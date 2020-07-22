@@ -43,8 +43,8 @@ function SetInfoScreen (props) {
     return {
       title:
         props.route.params.category === 'core'
-          ? props.translations.labels.addNewCoreStorySet
-          : props.translations.labels.addNewTopicalSet,
+          ? props.translations.add_set.header_foundational
+          : props.translations.add_set.header_topical,
       headerRight: props.isRTL
         ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
         : () => <View></View>,
@@ -90,7 +90,7 @@ function SetInfoScreen (props) {
             marginHorizontal: 10
           ***REMOVED******REMOVED***
         >
-          {props.translations.labels.addNewStorySet***REMOVED***
+          {props.translations.add_set.add_new_story_set_button_label***REMOVED***
         </Text>
         <Icon
           style={{ marginHorizontal: 10 ***REMOVED******REMOVED***

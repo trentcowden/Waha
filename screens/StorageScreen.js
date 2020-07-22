@@ -136,15 +136,17 @@ function StorageScreen (props) {
         ]***REMOVED***
         onPress={() =>
           Alert.alert(
-            props.translations.alerts.deleteDownloadedLessonsPerLanguage.header,
-            props.translations.alerts.deleteDownloadedLessonsPerLanguage.text,
+            props.translations.storage.popups
+              .delete_all_downloaded_lessons_for_a_language_title,
+            props.translations.storage.popups
+              .delete_all_downloaded_lessons_for_a_language_message,
             [
               {
-                text: props.translations.alerts.options.cancel,
+                text: props.translations.general.cancel,
                 onPress: () => {***REMOVED***
               ***REMOVED***,
               {
-                text: props.translations.alerts.options.ok,
+                text: props.translations.general.ok,
                 onPress: () =>
                   deleteDownloadedLessons(languageInstanceList.item.languageID)
               ***REMOVED***
@@ -175,7 +177,7 @@ function StorageScreen (props) {
             style={[styles.mbText, { fontFamily: props.font + '-regular' ***REMOVED***]***REMOVED***
           >
             {storageObject[languageInstanceList.item.languageID]***REMOVED***
-            {props.translations.labels.mb***REMOVED***
+            {props.translations.storage.megabyte_label***REMOVED***
           </Text>
         </View>
       </TouchableOpacity>
@@ -207,7 +209,7 @@ function StorageScreen (props) {
                       ***REMOVED***
                     ]***REMOVED***
                   >
-                    {props.translations.labels.storageUsed***REMOVED***
+                    {props.translations.storage.storage_used_label***REMOVED***
                   </Text>
                   <Text
                     style={[
@@ -215,7 +217,7 @@ function StorageScreen (props) {
                       { fontFamily: props.font + '-regular' ***REMOVED***
                     ]***REMOVED***
                   >
-                    {totalStorage***REMOVED*** {props.translations.labels.mb***REMOVED***
+                    {totalStorage***REMOVED*** {props.translations.storage.megabyte_label***REMOVED***
                   </Text>
                 </View>
                 <TouchableOpacity
@@ -228,16 +230,17 @@ function StorageScreen (props) {
                   ]***REMOVED***
                   onPress={() =>
                     Alert.alert(
-                      props.translations.alerts.deleteAllDownloadedLessons
-                        .header,
-                      props.translations.alerts.deleteAllDownloadedLessons.text,
+                      props.translations.storage.popups
+                        .delete_all_downloaded_lessons_title,
+                      props.translations.storage.popups
+                        .delete_all_downloaded_lessons_message,
                       [
                         {
-                          text: props.translations.alerts.options.cancel,
+                          text: props.translations.general.cancel,
                           onPress: () => {***REMOVED***
                         ***REMOVED***,
                         {
-                          text: props.translations.alerts.options.ok,
+                          text: props.translations.general.ok,
                           onPress: () => deleteDownloadedLessons()
                         ***REMOVED***
                       ]
@@ -250,7 +253,10 @@ function StorageScreen (props) {
                       { fontFamily: props.font + '-regular' ***REMOVED***
                     ]***REMOVED***
                   >
-                    {props.translations.labels.deleteAllDownloadedLessons***REMOVED***
+                    {
+                      props.translations.storage
+                        .delete_all_downloaded_lessons_button_label
+                    ***REMOVED***
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -263,7 +269,7 @@ function StorageScreen (props) {
                   ***REMOVED***
                 ]***REMOVED***
               >
-                {props.translations.labels.downloadedLessons***REMOVED***
+                {props.translations.storage.downloaded_lessons_list_label***REMOVED***
               </Text>
               <View
                 style={{ height: 2, flex: 1, backgroundColor: '#9FA5AD' ***REMOVED******REMOVED***

@@ -11,7 +11,9 @@ function SetTabs (props) {
     <Tab.Screen
       name='Mobilization Tools'
       component={SetScreen***REMOVED***
-      options={{ title: props.translations.navigation.tabs.mobilization ***REMOVED******REMOVED***
+      options={{
+        title: props.translations.sets.mobilization_tools_sets_tab_label
+      ***REMOVED******REMOVED***
     />
   ) : null
 
@@ -56,14 +58,14 @@ function SetTabs (props) {
         name='Topical'
         component={SetScreen***REMOVED***
         options={{
-          title: props.translations.navigation.tabs.topics
+          title: props.translations.sets.topical_sets_tab_label
         ***REMOVED******REMOVED***
       />
       <Tab.Screen
         name='Core'
         component={SetScreen***REMOVED***
         options={{
-          title: props.translations.navigation.tabs.foundations
+          title: props.translations.sets.foundational_story_sets_tab_label
         ***REMOVED******REMOVED***
       />
     </Tab.Navigator>
@@ -88,7 +90,7 @@ function SetTabs (props) {
         name='Core'
         component={SetScreen***REMOVED***
         options={{
-          title: props.translations.navigation.tabs.foundations
+          title: props.translations.sets.foundational_story_sets_tab_label
         ***REMOVED******REMOVED***
       />
 
@@ -96,7 +98,7 @@ function SetTabs (props) {
         name='Topical'
         component={SetScreen***REMOVED***
         options={{
-          title: props.translations.navigation.tabs.topics
+          title: props.translations.sets.topical_sets_tab_label
         ***REMOVED******REMOVED***
       />
       {toolkit***REMOVED***

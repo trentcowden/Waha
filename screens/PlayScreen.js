@@ -681,22 +681,22 @@ function PlayScreen (props) {
       )
     ) {
       Alert.alert(
-        props.translations.alerts.markedAsIncomplete.header,
-        props.translations.alerts.markedAsIncomplete.text,
+        props.translations.play.popups.marked_as_incomplete_title,
+        props.translations.play.popups.marked_as_incomplete_message,
         [
           {
-            text: props.translations.alerts.ok,
+            text: props.translations.general.ok,
             onPress: () => props.navigation.goBack()
           ***REMOVED***
         ]
       )
     ***REMOVED*** else {
       Alert.alert(
-        props.translations.alerts.markedAsComplete.header,
-        props.translations.alerts.markedAsComplete.text,
+        props.translations.play.popups.marked_as_complete_title,
+        props.translations.play.popups.marked_as_complete_message,
         [
           {
-            text: props.translations.alerts.ok,
+            text: props.translations.general.ok,
             onPress: () => props.navigation.goBack()
           ***REMOVED***
         ]
@@ -736,11 +736,13 @@ function PlayScreen (props) {
                   '.mp3'
               )
             : Alert.alert(
-                props.translations.alerts.shareUndownloaded.header,
-                props.translations.alerts.shareUndownloaded.text,
+                props.translations.general.popups
+                  .share_undownloaded_lesson_title,
+                props.translations.general.popups
+                  .share_undownloaded_lesson_message,
                 [
                   {
-                    text: props.translations.alerts.options.ok,
+                    text: props.translations.general.ok,
                     onPress: () => {***REMOVED***
                   ***REMOVED***
                 ]
@@ -1122,18 +1124,15 @@ function PlayScreen (props) {
       <OptionsModal
         isVisible={showShareLessonModal***REMOVED***
         hideModal={() => setShowShareLessonModal(false)***REMOVED***
-        closeText={props.translations.modals.shareOptions.close***REMOVED***
+        closeText={props.translations.general.close***REMOVED***
       >
         <ModalButton
-          title={props.activeDatabase.translations.modals.shareOptions.shareApp***REMOVED***
+          title={props.translations.general.share_app***REMOVED***
           onPress={() => share('app')***REMOVED***
         />
         {props.route.params.lessonType !== 'v' ? (
           <ModalButton
-            title={
-              props.activeDatabase.translations.modals.shareOptions
-                .sharePassageText
-            ***REMOVED***
+            title={props.translations.general.share_passage_text***REMOVED***
             onPress={() => share('text')***REMOVED***
           />
         ) : null***REMOVED***
@@ -1141,20 +1140,14 @@ function PlayScreen (props) {
           props.route.params.lessonType === 'qav') &&
         !props.downloads[props.route.params.thisLesson.id] ? (
           <ModalButton
-            title={
-              props.activeDatabase.translations.modals.shareOptions
-                .sharePassageAudio
-            ***REMOVED***
+            title={props.translations.general.share_passage_audio***REMOVED***
             onPress={() => share('audio')***REMOVED***
           />
         ) : null***REMOVED***
         {props.route.params.lessonType !== 'qa' &&
         props.route.params.lessonType !== 'q' ? (
           <ModalButton
-            title={
-              props.activeDatabase.translations.modals.shareOptions
-                .shareVideoLink
-            ***REMOVED***
+            title={props.translations.general.share_video_link***REMOVED***
             onPress={() => share('video')***REMOVED***
           />
         ) : null***REMOVED***
