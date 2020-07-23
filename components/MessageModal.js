@@ -27,6 +27,20 @@ function MessageModal (props) {
     </TouchableOpacity>
   ) : null
 
+  var topComponent = props.topComponent ? (
+    props.topComponent
+  ) : (
+    <Image
+      source={props.imageSource***REMOVED***
+      style={{
+        height: 200 * scaleMultiplier,
+        margin: 20,
+        // padding: 20,
+        resizeMode: 'contain'
+      ***REMOVED******REMOVED***
+    />
+  )
+
   //// RENDER
   return (
     <Modal
@@ -37,15 +51,7 @@ function MessageModal (props) {
       style={{ justifyContent: 'flex-end', flex: 1, margin: 0 ***REMOVED******REMOVED***
     >
       <View style={styles.buttonsContainer***REMOVED***>
-        <Image
-          source={props.imageSource***REMOVED***
-          style={{
-            height: 200 * scaleMultiplier,
-            margin: 20,
-            // padding: 20,
-            resizeMode: 'contain'
-          ***REMOVED******REMOVED***
-        />
+        {topComponent***REMOVED***
         <Text
           style={{
             fontFamily: props.font + '-black',

@@ -13,6 +13,7 @@ import {
   SafeAreaView
 ***REMOVED*** from 'react-native'
 import Piano from '../components/Piano'
+import { connect ***REMOVED*** from 'react-redux'
 
 function GameScreen (props) {
   //// STATE
@@ -23,7 +24,11 @@ function GameScreen (props) {
 
   useEffect(() => {
     console.log(pattern)
-    if (pattern.includes('01020304')) props.navigation.replace('SetsRoot')
+    if (pattern.includes(props.security.code))
+      props.navigation.reset({
+        index: 0,
+        routes: [{ name: 'SetsRoot' ***REMOVED***]
+      ***REMOVED***)
   ***REMOVED***, [pattern])
 
   //// RENDER
@@ -56,4 +61,10 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-export default GameScreen
+function mapStateToProps (state) {
+  return {
+    security: state.security
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps)(GameScreen)

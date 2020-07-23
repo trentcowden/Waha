@@ -21,6 +21,8 @@ import StorageScreen from '../screens/StorageScreen'
 import MTScreen from '../screens/MTScreen'
 import PasscodeScreen from '../screens/PasscodeScreen'
 import SecurityScreen from '../screens/SecurityScreen'
+import SecurityOnboardingScreen from '../screens/SecurityOnboardingScreen'
+import KeyOrderSetScreen from '../screens/KeyOrderSetScreen'
 import GameScreen from '../screens/GameScreen'
 import SetTabNavigator from './SetTabs'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
@@ -210,7 +212,7 @@ function MainStack (props) {
         options={{
           headerTitle: props.translations.security.header,
           headerStyle: {
-            backgroundColor: '#F7F7F7'
+            backgroundColor: '#F7F9FA'
           ***REMOVED***,
           headerTitleStyle: {
             color: '#000000',
@@ -218,6 +220,86 @@ function MainStack (props) {
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
+      <Stack.Screen
+        name='SecurityOnboarding'
+        component={SecurityOnboardingScreen***REMOVED***
+        options={{
+          headerTitle: props.translations.security.header,
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='KeyOrderSet_Initial'
+        component={KeyOrderSetScreen***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='KeyOrderSet_Confirm'
+        component={KeyOrderSetScreen***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='KeyOrderChange_Old'
+        component={KeyOrderSetScreen***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='KeyOrderChange_Initial'
+        component={KeyOrderSetScreen***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='KeyOrderChange_Confirm'
+        component={KeyOrderSetScreen***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: '#F7F9FA'
+          ***REMOVED***,
+          headerTitleStyle: {
+            color: '#000000',
+            fontFamily: props.font + '-medium'
+          ***REMOVED***
+        ***REMOVED******REMOVED***
+      />
+
       <Stack.Screen
         name='Game'
         component={GameScreen***REMOVED***

@@ -7,7 +7,7 @@ import {
   Dimensions
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier, keyColors ***REMOVED*** from '../constants'
 import KeyLabel from '../components/KeyLabel'
 function Piano (props) {
   // RENDER
@@ -32,32 +32,32 @@ function Piano (props) {
           style={styles.blackKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '02')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#3cb44b'***REMOVED*** number='2' />
+          <KeyLabel backgroundColor={keyColors['2']***REMOVED*** number='2' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.blackKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '04')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#911eb4'***REMOVED*** number='4' />
+          <KeyLabel backgroundColor={keyColors['4']***REMOVED*** number='4' />
         </TouchableOpacity>
         <View style={{ flex: 1 ***REMOVED******REMOVED*** />
         <TouchableOpacity
           style={styles.blackKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '07')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#e6194B'***REMOVED*** number='7' />
+          <KeyLabel backgroundColor={keyColors['7']***REMOVED*** number='7' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.blackKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '09')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#469990'***REMOVED*** number='9' />
+          <KeyLabel backgroundColor={keyColors['9']***REMOVED*** number='9' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.blackKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '11')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#dcbeff'***REMOVED*** number='11' />
+          <KeyLabel backgroundColor={keyColors['11']***REMOVED*** number='11' />
         </TouchableOpacity>
         <View style={{ flex: 0.5 ***REMOVED******REMOVED*** />
       </View>
@@ -71,43 +71,43 @@ function Piano (props) {
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '01')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#ffe119'***REMOVED*** number='1' />
+          <KeyLabel backgroundColor={keyColors['1']***REMOVED*** number='1' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '03')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#4363d8'***REMOVED*** number='3' />
+          <KeyLabel backgroundColor={keyColors['3']***REMOVED*** number='3' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '05')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#aaffc3'***REMOVED*** number='5' />
+          <KeyLabel backgroundColor={keyColors['5']***REMOVED*** number='5' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '06')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#f032e6'***REMOVED*** number='6' />
+          <KeyLabel backgroundColor={keyColors['6']***REMOVED*** number='6' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '08')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#42d4f4'***REMOVED*** number='8' />
+          <KeyLabel backgroundColor={keyColors['8']***REMOVED*** number='8' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '10')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#bfef45'***REMOVED*** number='10' />
+          <KeyLabel backgroundColor={keyColors['10']***REMOVED*** number='10' />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.whiteKey***REMOVED***
           onPress={() => props.setPattern(pattern => pattern + '12')***REMOVED***
         >
-          <KeyLabel backgroundColor={'#9A6324'***REMOVED*** number='12' />
+          <KeyLabel backgroundColor={keyColors['12']***REMOVED*** number='12' />
         </TouchableOpacity>
       </View>
     </View>
