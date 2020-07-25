@@ -1,32 +1,24 @@
-import React, { useState, useEffect ***REMOVED*** from 'react'
-import {
-  View,
-  StyleSheet,
-  Text,
-  Picker,
-  TouchableOpacity,
-  TextInput,
-  SectionList,
-  Dimensions
-***REMOVED*** from 'react-native'
-import { Ionicons ***REMOVED*** from '@expo/vector-icons'
+import NetInfo from '@react-native-community/netinfo'
+import { Audio ***REMOVED*** from 'expo-av'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
-import { scaleMultiplier, languageT2S, languages ***REMOVED*** from '../constants'
-import NetInfo from '@react-native-community/netinfo'
-import ModalSelector from 'react-native-modal-selector'
-import LanguageSelectItem from '../components/LanguageSelectItem'
-import { FlatList ***REMOVED*** from 'react-native-gesture-handler'
-import { Audio ***REMOVED*** from 'expo-av'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import {
+  Dimensions,
+  SectionList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import LanguageSelectItem from '../components/LanguageSelectItem'
+import { colors, languages, languageT2S, scaleMultiplier ***REMOVED*** from '../constants'
 import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import BackButton from '../components/BackButton'
-
+import ar from '../translations/ar.json'
 // translations import
 import en from '../translations/en.json'
 import fr from '../translations/fr.json'
-import ar from '../translations/ar.json'
-
 function LanguageSelectScreen (props) {
   //// STATE
 
@@ -110,7 +102,7 @@ function LanguageSelectScreen (props) {
               ***REMOVED***)
           : () => props.addLanguage(selectedLanguage)
       ***REMOVED***
-      style={[styles.button, { backgroundColor: '#60C239' ***REMOVED***]***REMOVED***
+      style={[styles.button, { backgroundColor: colors.apple ***REMOVED***]***REMOVED***
     >
       <Text style={styles.buttonTitle***REMOVED***>
         {props.route.name === 'LanguageSelect'
@@ -119,7 +111,7 @@ function LanguageSelectScreen (props) {
       </Text>
     </TouchableOpacity>
   ) : (
-    <View style={[styles.button, { backgroundColor: '#828282' ***REMOVED***]***REMOVED***>
+    <View style={[styles.button, { backgroundColor: colors.oslo ***REMOVED***]***REMOVED***>
       <Text style={styles.buttonTitle***REMOVED***>{i18n.t('letsBegin')***REMOVED*** </Text>
     </View>
   )
@@ -166,10 +158,10 @@ function LanguageSelectScreen (props) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 20,
-          backgroundColor: '#F7F9FA'
+          backgroundColor: colors.aquaHaze
         ***REMOVED******REMOVED***
       >
-        <Text>{i18n.t(section.i18nName)***REMOVED***</Text>
+        <Text style={{ color: colors.shark ***REMOVED******REMOVED***>{i18n.t(section.i18nName)***REMOVED***</Text>
       </View>
     )
   ***REMOVED***
@@ -261,16 +253,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F7F9FA',
+    backgroundColor: colors.aquaHaze,
     paddingTop: 40 * scaleMultiplier
   ***REMOVED***,
   title: {
+    color: colors.shark,
     textAlign: 'center',
     fontSize: 36 * scaleMultiplier,
     fontWeight: 'bold',
     margin: 5
   ***REMOVED***,
   subtitle: {
+    color: colors.shark,
     textAlign: 'center',
     fontSize: 24 * scaleMultiplier
   ***REMOVED***,
@@ -279,18 +273,18 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 40,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1D1E20',
+    backgroundColor: colors.shark,
     borderRadius: 10
   ***REMOVED***,
   buttonTitle: {
     textAlign: 'center',
     fontSize: 24 * scaleMultiplier,
-    color: '#FFFFFF'
+    color: colors.white
   ***REMOVED***,
   errorMessage: {
     textAlign: 'center',
     fontSize: 16 * scaleMultiplier,
-    color: '#828282'
+    color: colors.oslo
   ***REMOVED***
 ***REMOVED***)
 

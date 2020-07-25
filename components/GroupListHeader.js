@@ -1,21 +1,20 @@
+import * as FileSystem from 'expo-file-system'
 import React, { useEffect ***REMOVED*** from 'react'
 import {
-  View,
-  TouchableOpacity,
+  Alert,
+  FlatList,
+  Image,
   StyleSheet,
   Text,
-  FlatList,
-  Alert,
-  Image
+  TouchableOpacity,
+  View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import GroupItem from './GroupItem'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { deleteLanguage ***REMOVED*** from '../redux/actions/databaseActions'
-import * as FileSystem from 'expo-file-system'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
-
+import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import GroupItem from './GroupItem'
 function GroupListHeader (props) {
   //// FUNCTIONS
 
@@ -105,7 +104,7 @@ function GroupListHeader (props) {
           )
         ***REMOVED***
       >
-        <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color='#FF0800' />
+        <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color={colors.red***REMOVED*** />
       </TouchableOpacity>
     )
     // if we're editing and active, show an empty view
@@ -175,7 +174,11 @@ function GroupListHeader (props) {
             marginHorizontal: 20
           ***REMOVED******REMOVED***
         >
-          <Icon name='group-add' size={40 * scaleMultiplier***REMOVED*** color='#DEE3E9' />
+          <Icon
+            name='group-add'
+            size={40 * scaleMultiplier***REMOVED***
+            color={colors.chateau***REMOVED***
+          />
         </View>
         <Text
           style={[
@@ -209,7 +212,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   languageHeaderText: {
     fontSize: 18 * scaleMultiplier,
-    color: '#9FA5AD',
+    color: colors.chateau,
     flex: 1
   ***REMOVED***,
   languageLogo: {
@@ -224,12 +227,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: '#EFF2F4'
+    borderColor: colors.athens
   ***REMOVED***,
   addGroupText: {
-    color: '#2D9CDB',
+    color: colors.blue,
     fontSize: 18 * scaleMultiplier,
     textAlign: 'left'
   ***REMOVED***

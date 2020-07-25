@@ -1,23 +1,18 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
-  View,
-  FlatList,
+  Alert,
+  SafeAreaView,
   StyleSheet,
-  Image,
-  AsyncStorage,
   Text,
   TouchableOpacity,
-  Clipboard,
-  Alert,
-  Switch,
-  SafeAreaView
+  View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import KeyLabel from '../components/KeyLabel'
 import Piano from '../components/Piano'
-import { scaleMultiplier, keyColors ***REMOVED*** from '../constants'
-import { setSecurityEnabled, setCode ***REMOVED*** from '../redux/actions/securityActions'
+import { colors, keyColors, scaleMultiplier ***REMOVED*** from '../constants'
+import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
 function KeyOrderSetScreen (props) {
   //// STATE
 
@@ -213,6 +208,7 @@ function KeyOrderSetScreen (props) {
         <View style={{ width: '100%' ***REMOVED******REMOVED***>
           <Text
             style={{
+              color: colors.shark,
               fontFamily: props.font + '-medium',
               fontSize: 24 * scaleMultiplier,
               textAlign: 'center'
@@ -239,13 +235,14 @@ function KeyOrderSetScreen (props) {
             marginHorizontal: 100,
             borderRadius: 10,
             borderWidth: 1,
-            borderColor: '#000000',
+            borderColor: colors.shark,
             padding: 20
           ***REMOVED******REMOVED***
           onPress={() => setKeyOrder('')***REMOVED***
         >
           <Text
             style={{
+              color: colors.shark,
               textAlign: 'center',
               fontFamily: props.font + '-regular'
             ***REMOVED******REMOVED***
@@ -264,7 +261,7 @@ function KeyOrderSetScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#F7F9FA',
+    backgroundColor: colors.aquaHaze,
     alignItems: 'center',
     justifyContent: 'space-around'
   ***REMOVED***,
@@ -272,7 +269,7 @@ const styles = StyleSheet.create({
     width: 80 * scaleMultiplier,
     height: 80 * scaleMultiplier,
     borderRadius: 40 * scaleMultiplier,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     margin: 5,
     justifyContent: 'center',
     alignItems: 'center',

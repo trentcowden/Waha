@@ -1,20 +1,17 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
-  View,
+  FlatList,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  FlatList
+  View,
+  YellowBox
 ***REMOVED*** from 'react-native'
-import Modal from 'react-native-modal'
-import SetItem from '../components/SetItem'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { connect ***REMOVED*** from 'react-redux'
-import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
-import BackButton from '../components/BackButton'
 import SnackBar from 'react-native-snackbar-component'
-import { YellowBox ***REMOVED*** from 'react-native'
-
+import { connect ***REMOVED*** from 'react-redux'
+import SetItem from '../components/SetItem'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state'
 ])
@@ -38,13 +35,21 @@ function AddSetScreen (props) {
         ? () => <View></View>
         : () => (
             <TouchableOpacity onPress={() => props.navigation.goBack()***REMOVED***>
-              <Icon name='cancel' size={45 * scaleMultiplier***REMOVED*** color='#3A3C3F' />
+              <Icon
+                name='cancel'
+                size={45 * scaleMultiplier***REMOVED***
+                color={colors.tuna***REMOVED***
+              />
             </TouchableOpacity>
           ),
       headerRight: props.isRTL
         ? () => (
             <TouchableOpacity onPress={() => props.navigation.goBack()***REMOVED***>
-              <Icon name='cancel' size={45 * scaleMultiplier***REMOVED*** color='#3A3C3F' />
+              <Icon
+                name='cancel'
+                size={45 * scaleMultiplier***REMOVED***
+                color={colors.tuna***REMOVED***
+              />
             </TouchableOpacity>
           )
         : () => <View></View>
@@ -113,7 +118,11 @@ function AddSetScreen (props) {
         ***REMOVED***
         ItemSeparatorComponent={() => (
           <View
-            style={{ backgroundColor: '#DEE3E9', height: 1, width: '100%' ***REMOVED******REMOVED***
+            style={{
+              backgroundColor: colors.chateau,
+              height: 1,
+              width: '100%'
+            ***REMOVED******REMOVED***
           />
         )***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
@@ -122,7 +131,7 @@ function AddSetScreen (props) {
             <Text
               style={{
                 fontFamily: props.font + '-regular',
-                color: '#9FA5AD',
+                color: colors.chateau,
                 fontSize: 14 * scaleMultiplier,
                 textAlign: 'center'
               ***REMOVED******REMOVED***
@@ -136,12 +145,12 @@ function AddSetScreen (props) {
         visible={showSnackbar***REMOVED***
         textMessage={props.translations.add_set.set_added_message***REMOVED***
         messageStyle={{
-          color: '#FFFFFF',
+          color: colors.white,
           fontSize: 24 * scaleMultiplier,
           fontFamily: props.font + '-black',
           textAlign: 'center'
         ***REMOVED******REMOVED***
-        backgroundColor='#60C239'
+        backgroundColor={colors.apple***REMOVED***
       />
     </View>
   )
@@ -149,7 +158,7 @@ function AddSetScreen (props) {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     flex: 1
   ***REMOVED***
 ***REMOVED***)

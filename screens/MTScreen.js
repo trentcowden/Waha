@@ -1,26 +1,18 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
-  View,
+  Alert,
+  Clipboard,
   FlatList,
   StyleSheet,
-  Image,
-  AsyncStorage,
   Text,
   TouchableOpacity,
-  Clipboard,
-  Alert
+  View
 ***REMOVED*** from 'react-native'
-import * as FileSystem from 'expo-file-system'
-import SetItem from '../components/SetItem'
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
-import { getStateFromPath ***REMOVED*** from '@react-navigation/native'
 import BackButton from '../components/BackButton'
 import GroupListHeaderMT from '../components/GroupListHeaderMT'
 import MessageModal from '../components/MessageModal'
-import { setShowToolkit ***REMOVED*** from '../redux/actions/groupsActions'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function MTScreen (props) {
   //// STATE
   const [showHowMTsWorkModal, setShowHotMTsWorkModal] = useState(false)
@@ -68,6 +60,7 @@ function MTScreen (props) {
     >
       <Text
         style={{
+          color: colors.shark,
           fontFamily: props.font + '-medium',
           fontSize: 18 * scaleMultiplier
         ***REMOVED******REMOVED***
@@ -79,7 +72,7 @@ function MTScreen (props) {
       </Text>
       <Icon
         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-        color='#3A3C3F'
+        color={colors.tuna***REMOVED***
         size={50 * scaleMultiplier***REMOVED***
       />
     </TouchableOpacity>
@@ -107,6 +100,7 @@ function MTScreen (props) {
     <View style={styles.screen***REMOVED***>
       <Text
         style={{
+          color: colors.shark,
           fontFamily: props.font + '-regular',
           fontSize: 14 * scaleMultiplier,
           marginTop: 10
@@ -150,6 +144,7 @@ function MTScreen (props) {
         >
           <Text
             style={{
+              color: colors.shark,
               fontFamily: props.font + '-medium',
               fontSize: 18 * scaleMultiplier
             ***REMOVED******REMOVED***
@@ -160,7 +155,7 @@ function MTScreen (props) {
           </Text>
           <Icon
             name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-            color='#3A3C3F'
+            color={colors.tuna***REMOVED***
             size={50 * scaleMultiplier***REMOVED***
           />
         </TouchableOpacity>
@@ -189,15 +184,15 @@ function MTScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#F7F9FA',
+    backgroundColor: colors.aquaHaze,
     alignItems: 'center'
   ***REMOVED***,
   unlockButton: {
     width: '100%',
     height: 80 * scaleMultiplier,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderWidth: 2,
-    borderColor: '#EFF2F4',
+    borderColor: colors.athens,
     flexDirection: 'row',
     alignItems: 'center',
     //marginVertical: 40 * scaleMultiplier,

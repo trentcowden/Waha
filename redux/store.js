@@ -1,8 +1,8 @@
-import { createStore, applyMiddleware ***REMOVED*** from 'redux'
+import { AsyncStorage ***REMOVED*** from 'react-native'
+import { applyMiddleware, createStore ***REMOVED*** from 'redux'
+import { persistReducer, persistStore ***REMOVED*** from 'redux-persist'
 import thunkMiddleware from 'redux-thunk'
 import rootReducer from './reducers/combiner'
-import { persistStore, persistReducer ***REMOVED*** from 'redux-persist'
-import { AsyncStorage ***REMOVED*** from 'react-native'
 
 const persistConfig = {
   key: 'root',

@@ -1,19 +1,10 @@
 //imports
-import React, { useState, useEffect ***REMOVED*** from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  AsyncStorage
-***REMOVED*** from 'react-native'
-import * as FileSystem from 'expo-file-system'
+import React, { useEffect ***REMOVED*** from 'react'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import DownloadStatusIndicator from '../components/DownloadStatusIndicator'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 function LessonItem (props) {
   //// CONSTRUCTOR
 
@@ -86,7 +77,7 @@ function LessonItem (props) {
                 : null
             ***REMOVED***
             size={24 * scaleMultiplier***REMOVED***
-            color={props.isComplete ? '#828282' : props.primaryColor***REMOVED***
+            color={props.isComplete ? colors.oslo : props.primaryColor***REMOVED***
           />
         </View>
 
@@ -112,7 +103,7 @@ function LessonItem (props) {
             style={{
               fontSize: 18 * scaleMultiplier,
               textAlignVertical: 'center',
-              color: props.isComplete ? '#9FA5AD' : 'black',
+              color: props.isComplete ? colors.chateau : colors.shark,
               textAlign: props.isRTL ? 'right' : 'left',
               fontFamily: props.font + '-medium'
             ***REMOVED******REMOVED***
@@ -123,7 +114,7 @@ function LessonItem (props) {
           <Text
             style={{
               fontSize: 14 * scaleMultiplier,
-              color: '#9FA5AD',
+              color: colors.chateau,
               textAlign: props.isRTL ? 'right' : 'left',
               fontFamily: props.font + '-regular'
             ***REMOVED******REMOVED***
@@ -153,7 +144,7 @@ const styles = StyleSheet.create({
   lessonItem: {
     height: 64 * scaleMultiplier,
     flexDirection: 'row',
-    backgroundColor: '#F7F9FA',
+    backgroundColor: colors.aquaHaze,
     flex: 1,
     paddingLeft: 20
   ***REMOVED***,

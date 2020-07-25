@@ -1,24 +1,25 @@
 import React from 'react'
-import { View, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
-
+import { connect ***REMOVED*** from 'react-redux'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+// renders the icon on the right side of lesson item that shows the download
+//  status
 function DownloadStatusIndicator (props) {
   //// RENDER
 
-  // WHAT TO RENDER
-  // Has questionsType ?
-  //  true: Has audio source?
-  //    true: Downloaded?
-  //      true: cloud-check
-  //      false: Connected?
-  // 	      true: Downloading?
-  // 	    	  true: progress-bar
-  // 		      false: cloud-download
-  // 	      false: slash
-  //    false: null
-  //  false: cloud-down
+  // HERE'S WHAT IS GOING ON
+  // Has questionsType (i.e. isn't only video) ?
+  //  true: Has audio source ?
+  //    true: Downloaded ?
+  //      true: cloud-check (downloaded)
+  //      false: Connected ?
+  // 	      true: Downloading ?
+  // 	    	  true: progress-bar (downloading)
+  // 		      false: cloud-down (able to download)
+  // 	      false: slash (unable to download)
+  //    false: null (nothing)
+  //  false: cloud-down (able to download)
 
   function getDownloadPercentage () {
     switch (props.lessonType) {
@@ -40,16 +41,20 @@ function DownloadStatusIndicator (props) {
     ***REMOVED***
   ***REMOVED***
 
-  // TODO: show download options/progress for lessons with ONLY video
+  // if lesson isn't only video
   return props.lessonType !== 'q' ? (
-    // if has audio source
+    // if lesson has audio source
     props.isDownloaded ? (
-      // if downloaded, show check
+      // if lesson is downloaded, show check
       <TouchableOpacity
         onPress={props.showDeleteModal***REMOVED***
         style={styles.downloadButtonContainer***REMOVED***
       >
-        <Icon name='cloud-check' color='#9FA5AD' size={22 * scaleMultiplier***REMOVED*** />
+        <Icon
+          name='cloud-check'
+          color={colors.chateau***REMOVED***
+          size={22 * scaleMultiplier***REMOVED***
+        />
       </TouchableOpacity>
     ) : props.isConnected ? (
       props.isDownloading ? (
@@ -59,9 +64,9 @@ function DownloadStatusIndicator (props) {
             size={22 * scaleMultiplier***REMOVED***
             width={5 * scaleMultiplier***REMOVED***
             fill={getDownloadPercentage()***REMOVED***
-            tintColor={'#828282'***REMOVED***
+            tintColor={colors.oslo***REMOVED***
             rotation={0***REMOVED***
-            backgroundColor='#FFFFFF'
+            backgroundColor={colors.white***REMOVED***
           />
         </View>
       ) : (
@@ -72,7 +77,7 @@ function DownloadStatusIndicator (props) {
         >
           <Icon
             name='cloud-download'
-            color={props.isDownloaded ? '#9FA5AD' : '#3A3C3F'***REMOVED***
+            color={props.isDownloaded ? colors.chateau : colors.tuna***REMOVED***
             size={22 * scaleMultiplier***REMOVED***
           />
         </TouchableOpacity>
@@ -80,7 +85,11 @@ function DownloadStatusIndicator (props) {
     ) : (
       // if not downloaded and not connected, show slash
       <View style={styles.downloadButtonContainer***REMOVED***>
-        <Icon name='cloud-slash' color='#3A3C3F' size={22 * scaleMultiplier***REMOVED*** />
+        <Icon
+          name='cloud-slash'
+          color={colors.tuna***REMOVED***
+          size={22 * scaleMultiplier***REMOVED***
+        />
       </View>
     )
   ) : // if no audio source, show nothing

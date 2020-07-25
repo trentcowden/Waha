@@ -1,8 +1,8 @@
 import React from 'react'
-import { TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+// simple back button that is shown in almost every screen's header
 function BackButton (props) {
   //// RENDER
 
@@ -17,7 +17,7 @@ function BackButton (props) {
       <Icon
         name={props.isRTL ? 'arrow-right' : 'arrow-left'***REMOVED***
         size={45 * scaleMultiplier***REMOVED***
-        color='#828282'
+        color={colors.oslo***REMOVED***
       />
     </TouchableOpacity>
   )

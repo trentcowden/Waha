@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+// renders a simple touchable item within the main navigation drawer
 function DrawerItem (props) {
   // RENDER
 
@@ -18,13 +18,14 @@ function DrawerItem (props) {
         <Icon
           name={props.iconName***REMOVED***
           size={50 * scaleMultiplier***REMOVED***
-          color='#3A3C3F'
+          color={colors.tuna***REMOVED***
         />
       </View>
       <Text
         style={[
           styles.title,
           {
+            color: colors.shark,
             textAlign: props.isRTL ? 'right' : 'left',
             fontFamily: props.font + '-medium'
           ***REMOVED***
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     width: 50 * scaleMultiplier
   ***REMOVED***,
   title: {
-    color: '#3A3C3F',
+    color: colors.tuna,
     fontSize: 18 * scaleMultiplier,
     textAlignVertical: 'center',
     paddingHorizontal: 10,

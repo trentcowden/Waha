@@ -1,14 +1,7 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Platform
-***REMOVED*** from 'react-native'
+import { Platform, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // component rendered behind a lesson item that shows the swipe options
 function LessonSwipeBackdrop (props) {
   //// RENDER
@@ -16,11 +9,11 @@ function LessonSwipeBackdrop (props) {
   // render complete button conditionally since it could be complete or incomplete
   var completeButton = props.isComplete ? (
     <TouchableOpacity
-      style={[styles.buttonContainer, { backgroundColor: '#82868D' ***REMOVED***]***REMOVED***
+      style={[styles.buttonContainer, { backgroundColor: colors.chateau ***REMOVED***]***REMOVED***
       onPress={props.toggleComplete***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
-        <Icon name='cancel-filled' size={20***REMOVED*** color='#FFFFFF' />
+        <Icon name='cancel-filled' size={20***REMOVED*** color={colors.white***REMOVED*** />
       </View>
     </TouchableOpacity>
   ) : (
@@ -28,14 +21,14 @@ function LessonSwipeBackdrop (props) {
       style={[
         styles.buttonContainer,
         {
-          backgroundColor: '#60C239',
+          backgroundColor: colors.apple,
           alignItems: props.isRTL ? 'flex-end' : 'flex-start'
         ***REMOVED***
       ]***REMOVED***
       onPress={props.toggleComplete***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
-        <Icon name='check-filled' size={20***REMOVED*** color='#FFFFFF' />
+        <Icon name='check-filled' size={20***REMOVED*** color={colors.white***REMOVED*** />
       </View>
     </TouchableOpacity>
   )
@@ -52,7 +45,7 @@ function LessonSwipeBackdrop (props) {
         style={[
           styles.buttonContainer,
           {
-            backgroundColor: '#2D9CDB',
+            backgroundColor: colors.blue,
             alignItems: props.isRLT ? 'flex-start' : 'flex-end'
           ***REMOVED***
         ]***REMOVED***
@@ -62,7 +55,7 @@ function LessonSwipeBackdrop (props) {
           <Icon
             name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'***REMOVED***
             size={20***REMOVED***
-            color='#FFFFFF'
+            color={colors.white***REMOVED***
           />
         </View>
       </TouchableOpacity>

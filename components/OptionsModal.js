@@ -1,9 +1,8 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet ***REMOVED*** from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Modal from 'react-native-modal'
-import { scaleMultiplier ***REMOVED*** from '../constants'
 import { connect ***REMOVED*** from 'react-redux'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function OptionsModal (props) {
   //// RENDER
   return (
@@ -26,7 +25,7 @@ function OptionsModal (props) {
                 textAlign: 'center',
                 fontFamily: props.font + '-medium',
                 fontSize: 21 * scaleMultiplier,
-                color: '#FF0800'
+                color: colors.red
               ***REMOVED******REMOVED***
             >
               {props.closeText***REMOVED***
@@ -40,14 +39,14 @@ function OptionsModal (props) {
 
 const styles = StyleSheet.create({
   buttonsContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 10
   ***REMOVED***,
   closeButtonContainer: {
     width: '100%',
     height: 70 * scaleMultiplier,
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderRadius: 10,
     marginVertical: 5
   ***REMOVED***

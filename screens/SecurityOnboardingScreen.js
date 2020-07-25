@@ -1,20 +1,9 @@
-import React, { useState, useEffect, useRef ***REMOVED*** from 'react'
-import {
-  View,
-  StyleSheet,
-  Text,
-  Button,
-  Image,
-  FlatList,
-  Dimensions
-***REMOVED*** from 'react-native'
-import i18n from 'i18n-js'
-import { connect ***REMOVED*** from 'react-redux'
-import { createGroup, changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import BackButton from '../components/BackButton'
+import React, { useEffect ***REMOVED*** from 'react'
+import { Dimensions, Image, StyleSheet, View ***REMOVED*** from 'react-native'
 import Onboarding from 'react-native-onboarding-swiper'
-
+import { connect ***REMOVED*** from 'react-redux'
+import BackButton from '../components/BackButton'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function SecurityOnboardingScreen (props) {
   //// STATE
 
@@ -47,7 +36,7 @@ function SecurityOnboardingScreen (props) {
 
   const onboardingData = [
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -58,7 +47,7 @@ function SecurityOnboardingScreen (props) {
       subtitle: props.translations.security.popups.onboarding_1_message
     ***REMOVED***,
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -69,7 +58,7 @@ function SecurityOnboardingScreen (props) {
       subtitle: props.translations.security.popups.onboarding_2_message
     ***REMOVED***,
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -102,7 +91,7 @@ function SecurityOnboardingScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#F7F9FA',
+    backgroundColor: colors.aquaHaze,
     flexDirection: 'column',
     justifyContent: 'space-between'
   ***REMOVED***,

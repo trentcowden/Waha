@@ -1,16 +1,9 @@
-import React from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions
-***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier, keyColors ***REMOVED*** from '../constants'
-import KeyLabel from '../components/KeyLabel'
 import { Audio ***REMOVED*** from 'expo-av'
-
+import React from 'react'
+import { Dimensions, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import KeyLabel from '../components/KeyLabel'
+import { colors, keyColors ***REMOVED*** from '../constants'
 function Piano (props) {
   // RENDER
 
@@ -218,9 +211,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: 'black',
+    borderColor: colors.shark,
     borderWidth: 2,
-    zIndex: 0
+    zIndex: 0,
+    color: colors.white
   ***REMOVED***,
   blackKey: {
     flex: 1,
@@ -229,10 +223,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: 'black',
+    borderColor: colors.shark,
     borderWidth: 2,
     zIndex: 1,
-    backgroundColor: '#000000'
+    backgroundColor: colors.shark
   ***REMOVED***,
   circle: {
     width: Dimensions.get('window').width / 10,
@@ -240,7 +234,6 @@ const styles = StyleSheet.create({
     borderRadius: Dimensions.get('window').width / 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'green',
     alignSelf: 'flex-end',
     zIndex: 3,
     marginBottom: 10

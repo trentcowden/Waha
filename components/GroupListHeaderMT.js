@@ -1,18 +1,9 @@
-import React, { useEffect ***REMOVED*** from 'react'
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  FlatList,
-  Alert,
-  Image
-***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import GroupItemMT from './GroupItemMT'
-import { scaleMultiplier ***REMOVED*** from '../constants'
 import * as FileSystem from 'expo-file-system'
-
+import React, { useEffect ***REMOVED*** from 'react'
+import { FlatList, Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import GroupItemMT from './GroupItemMT'
 function GroupListHeaderMT (props) {
   //// FUNCTIONS
 
@@ -35,7 +26,7 @@ function GroupListHeaderMT (props) {
         justifyContent: 'flex-start',
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         margin: 2,
         justifyContent: 'center'
       ***REMOVED******REMOVED***
@@ -44,7 +35,7 @@ function GroupListHeaderMT (props) {
         style={{
           fontFamily: props.font + '-regular',
           fontSize: 14 * scaleMultiplier,
-          color: '#82868D',
+          color: colors.chateau,
           textAlign: 'center'
         ***REMOVED******REMOVED***
       >
@@ -75,7 +66,7 @@ function GroupListHeaderMT (props) {
               textAlign: props.isRTL ? 'right' : 'left',
               fontFamily: props.font + '-medium',
               fontSize: 18 * scaleMultiplier,
-              color: '#9FA5AD'
+              color: colors.chateau
             ***REMOVED******REMOVED***
           >
             {props.languageName +
@@ -87,7 +78,7 @@ function GroupListHeaderMT (props) {
               textAlign: props.isRTL ? 'right' : 'left',
               fontFamily: props.font + '-regular',
               fontSize: 18 * scaleMultiplier,
-              color: '#9FA5AD'
+              color: colors.chateau
             ***REMOVED******REMOVED***
           >
             {
@@ -97,12 +88,7 @@ function GroupListHeaderMT (props) {
           </Text>
         </View>
         <Image
-          style={[
-            styles.languageLogo,
-            {
-              tintColor: props.toolkitEnabled ? null : '#DEE3E9'
-            ***REMOVED***
-          ]***REMOVED***
+          style={styles.languageLogo***REMOVED***
           source={{
             uri: FileSystem.documentDirectory + props.languageID + '-header.png'
           ***REMOVED******REMOVED***

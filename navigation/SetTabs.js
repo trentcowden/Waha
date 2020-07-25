@@ -1,9 +1,8 @@
-import React from 'react'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import SetScreen from '../screens/SetScreen'
-import { connect ***REMOVED*** from 'react-redux'
 import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/material-top-tabs'
-
+import React from 'react'
+import { connect ***REMOVED*** from 'react-redux'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import SetScreen from '../screens/SetScreen'
 const Tab = createMaterialTopTabNavigator()
 
 function SetTabs (props) {
@@ -47,7 +46,7 @@ function SetTabs (props) {
           textTransform: 'none'
         ***REMOVED***,
         activeTintColor: props.primaryColor,
-        inactiveTintColor: '#9FA5AD',
+        inactiveTintColor: colors.chateau,
         indicatorStyle: {
           backgroundColor: props.primaryColor
         ***REMOVED***
@@ -80,7 +79,7 @@ function SetTabs (props) {
           textTransform: 'none'
         ***REMOVED***,
         activeTintColor: props.primaryColor,
-        inactiveTintColor: '#9FA5AD',
+        inactiveTintColor: colors.chateau,
         indicatorStyle: {
           backgroundColor: props.primaryColor
         ***REMOVED***

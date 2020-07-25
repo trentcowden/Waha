@@ -1,13 +1,12 @@
-import SafeAreaView from 'react-native-safe-area-view'
+import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity ***REMOVED*** from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import SafeAreaView from 'react-native-safe-area-view'
 import { connect ***REMOVED*** from 'react-redux'
+import AvatarImage from '../components/AvatarImage'
 import DrawerItem from '../components/DrawerItem'
 import SmallDrawerItem from '../components/SmallDrawerItem'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import * as WebBrowser from 'expo-web-browser'
-import AvatarImage from '../components/AvatarImage'
-
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function WahaDrawer (props) {
   //// FUNCTIONS
 
@@ -41,11 +40,15 @@ function WahaDrawer (props) {
               ***REMOVED***)
             ***REMOVED***
           >
-            <Icon name='pencil' size={25 * scaleMultiplier***REMOVED*** color='#FFFFFF' />
+            <Icon
+              name='pencil'
+              size={25 * scaleMultiplier***REMOVED***
+              color={colors.white***REMOVED***
+            />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ backgroundColor: '#FFFFFF', flex: 1 ***REMOVED******REMOVED***>
+      <View style={{ backgroundColor: colors.white, flex: 1 ***REMOVED******REMOVED***>
         <View>
           <DrawerItem
             iconName='group'
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     marginVertical: 10
   ***REMOVED***,
   groupName: {
-    color: 'white',
+    color: colors.white,
     textAlign: 'center',
     fontSize: 25 * scaleMultiplier
   ***REMOVED***,
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
   versionText: {
     fontSize: 10 * scaleMultiplier,
     marginHorizontal: 13,
-    color: '#9FA5AD',
+    color: colors.chateau,
     justifyContent: 'center',
     alignItems: 'center'
   ***REMOVED***

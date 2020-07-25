@@ -1,20 +1,18 @@
-import React, { useState, useEffect ***REMOVED*** from 'react'
+import * as FileSystem from 'expo-file-system'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
-  View,
+  Alert,
+  FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Alert,
-  FlatList,
-  Image
+  View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
-import { scaleMultiplier, headerImages ***REMOVED*** from '../constants'
-import * as FileSystem from 'expo-file-system'
-import FlatListSeparator from '../components/FlatListSeparator'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
-
 function StorageScreen (props) {
   //// STATE
 
@@ -191,7 +189,15 @@ function StorageScreen (props) {
           data={getInstalledLanguageInstances()***REMOVED***
           renderItem={renderLanguageInstance***REMOVED***
           keyExtractor={item => item.languageID***REMOVED***
-          ItemSeparatorComponent={FlatListSeparator***REMOVED***
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 1,
+                flex: 1,
+                backgroundColor: colors.chateau
+              ***REMOVED******REMOVED***
+            />
+          )***REMOVED***
           ListHeaderComponent={
             <View style={styles.storageHeader***REMOVED***>
               <View style={styles.headerItems***REMOVED***>
@@ -272,12 +278,14 @@ function StorageScreen (props) {
                 {props.translations.storage.downloaded_lessons_list_label***REMOVED***
               </Text>
               <View
-                style={{ height: 2, flex: 1, backgroundColor: '#9FA5AD' ***REMOVED******REMOVED***
+                style={{ height: 2, flex: 1, backgroundColor: colors.chateau ***REMOVED******REMOVED***
               />
             </View>
           ***REMOVED***
           ListFooterComponent={
-            <View style={{ height: 2, flex: 1, backgroundColor: '#9FA5AD' ***REMOVED******REMOVED*** />
+            <View
+              style={{ height: 2, flex: 1, backgroundColor: colors.chateau ***REMOVED******REMOVED***
+            />
           ***REMOVED***
         />
       </View>
@@ -290,7 +298,7 @@ function StorageScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: colors.white
   ***REMOVED***,
   storageList: {
     flex: 1,
@@ -302,21 +310,21 @@ const styles = StyleSheet.create({
   headerItemContainer: {
     height: 55 * scaleMultiplier,
     borderWidth: 2,
-    borderColor: '#9FA5AD',
+    borderColor: colors.chateau,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10
   ***REMOVED***,
   downloadedLessonsText: {
-    color: '#9FA5AD',
+    color: colors.chateau,
     fontSize: 18 * scaleMultiplier
   ***REMOVED***,
   storageContainerFlatList: {
     height: 55 * scaleMultiplier,
     borderLeftWidth: 2,
     borderRightWidth: 2,
-    borderColor: '#9FA5AD',
+    borderColor: colors.chateau,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -324,16 +332,16 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   storageUsedText: {
     fontSize: 18,
-    color: '#3A3C3F'
+    color: colors.tuna
   ***REMOVED***,
   mbText: {
     fontSize: 18,
-    color: '#82868D',
+    color: colors.chateau,
     alignSelf: 'center'
   ***REMOVED***,
   deleteText: {
     fontSize: 18,
-    color: '#E74D3D'
+    color: colors.red
   ***REMOVED***,
   languageLogo: {
     resizeMode: 'contain',

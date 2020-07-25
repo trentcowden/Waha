@@ -1,28 +1,19 @@
-import React, { useState, useEffect, useRef ***REMOVED*** from 'react'
-import {
-  View,
-  StyleSheet,
-  Text,
-  Button,
-  Image,
-  FlatList,
-  Dimensions
-***REMOVED*** from 'react-native'
 import i18n from 'i18n-js'
-import {
-  setFinishedOnboarding,
-  addLanguage,
-  changeLanguage
-***REMOVED*** from '../redux/actions/databaseActions'
+import React, { useEffect ***REMOVED*** from 'react'
+import { Dimensions, Image, StyleSheet, View ***REMOVED*** from 'react-native'
+import Onboarding from 'react-native-onboarding-swiper'
 import { connect ***REMOVED*** from 'react-redux'
-import { createGroup, changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  addLanguage,
+  changeLanguage,
+  setFinishedOnboarding
+***REMOVED*** from '../redux/actions/databaseActions'
+import { changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import ar from '../translations/ar.json'
 // translations import
 import en from '../translations/en.json'
 import fr from '../translations/fr.json'
-import ar from '../translations/ar.json'
-import Onboarding from 'react-native-onboarding-swiper'
-
 function OnboardingSlidesScreen (props) {
   //// STATE
 
@@ -52,7 +43,7 @@ function OnboardingSlidesScreen (props) {
 
   const onboardingData = [
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -63,7 +54,7 @@ function OnboardingSlidesScreen (props) {
       subtitle: i18n.t('body0')
     ***REMOVED***,
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -74,7 +65,7 @@ function OnboardingSlidesScreen (props) {
       subtitle: i18n.t('body1')
     ***REMOVED***,
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -85,7 +76,7 @@ function OnboardingSlidesScreen (props) {
       subtitle: i18n.t('body2')
     ***REMOVED***,
     {
-      backgroundColor: '#FFFFFF',
+      backgroundColor: colors.white,
       image: (
         <Image
           style={styles.image***REMOVED***
@@ -118,7 +109,7 @@ function OnboardingSlidesScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#F7F7F7',
+    backgroundColor: colors.aquaHaze,
     flexDirection: 'column',
     justifyContent: 'space-between'
   ***REMOVED***,
