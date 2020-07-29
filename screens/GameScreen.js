@@ -3,6 +3,7 @@ import React, { useEffect, useState ***REMOVED*** from 'react'
 import { Image, SafeAreaView, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/Piano'
+import { colors ***REMOVED*** from '../constants'
 
 function GameScreen (props) {
   //// STATE
