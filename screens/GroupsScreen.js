@@ -134,7 +134,6 @@ function GroupsScreen (props) {
           SectionSeparatorComponent={() => <Separator />***REMOVED***
           renderSectionFooter={({ section ***REMOVED***) => (
             <View>
-              {/* <Separator /> */***REMOVED***
               <TouchableOpacity
                 style={[
                   styles.addGroupContainer,
