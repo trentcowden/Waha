@@ -10,6 +10,7 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import KeyLabel from '../components/KeyLabel'
+import KeyLabels from '../components/KeyLabels'
 import Piano from '../components/Piano'
 import { colors, keyColors, scaleMultiplier ***REMOVED*** from '../constants'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
@@ -217,7 +218,7 @@ function KeyOrderSetScreen (props) {
             {instructionText***REMOVED***
           </Text>
         </View>
-        <View
+        {/* <View
           style={{
             width: '100%',
             flexDirection: 'row',
@@ -229,7 +230,8 @@ function KeyOrderSetScreen (props) {
           <View style={styles.keyPlaceholder***REMOVED***>{keyLabel2***REMOVED***</View>
           <View style={styles.keyPlaceholder***REMOVED***>{keyLabel3***REMOVED***</View>
           <View style={styles.keyPlaceholder***REMOVED***>{keyLabel4***REMOVED***</View>
-        </View>
+        </View> */***REMOVED***
+        <KeyLabels keyOrder={keyOrder***REMOVED*** />
         <TouchableOpacity
           style={{
             marginHorizontal: 100,

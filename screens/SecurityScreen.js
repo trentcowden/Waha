@@ -1,18 +1,15 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View
-***REMOVED*** from 'react-native'
+import { Image, ScrollView, StyleSheet, Switch, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
-import KeyLabel from '../components/KeyLabel'
+import Blurb from '../components/Blurb'
+import KeyLabels from '../components/KeyLabels'
 import MessageModal from '../components/MessageModal'
 import Piano from '../components/Piano'
-import { colors, keyColors, scaleMultiplier ***REMOVED*** from '../constants'
+import Separator from '../components/Separator'
+import WahaItem from '../components/WahaItem'
+import WahaItemDescription from '../components/WahaItemDescription'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   setActivateOnSwitch,
   setSecurityEnabled
@@ -42,100 +39,32 @@ function SecurityScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
+  // extra controls for if security mode is enabled
   var securityControls = props.security.code ? (
-    <View style={{ width: '100%', marginTop: 50 * scaleMultiplier ***REMOVED******REMOVED***>
-      {/* activate on switch button */***REMOVED***
-      <View
-        style={[
-          styles.unlockButton,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
-      >
-        <View style={{ justifyContent: 'center', flex: 1 ***REMOVED******REMOVED***>
-          <Text
-            style={{
-              color: colors.shark,
-              fontFamily: props.font + '-medium',
-              fontSize: 18 * scaleMultiplier
-            ***REMOVED******REMOVED***
-          >
-            {props.translations.security.activate_on_switch_picker_label***REMOVED***
-          </Text>
-          <Text
-            style={{
-              fontFamily: props.font + '-regular',
-              fontSize: 14 * scaleMultiplier,
-              color: colors.chateau
-            ***REMOVED******REMOVED***
-            numberOfLines={2***REMOVED***
-          >
-            {props.translations.security.activate_on_switch_picker_blurb***REMOVED***
-          </Text>
-        </View>
-        <Switch
-          trackColor={{ false: colors.chateau, true: colors.apple ***REMOVED******REMOVED***
-          thumbColor={colors.white***REMOVED***
-          ios_backgroundColor={colors.chateau***REMOVED***
-          onValueChange={() => {
-            // toggle security mode on or off
-            if (props.security.activateOnSwitch)
-              props.setActivateOnSwitch(false)
-            else props.setActivateOnSwitch(true)
-          ***REMOVED******REMOVED***
-          value={props.security.activateOnSwitch***REMOVED***
-          disabled={props.security.securityEnabled ? false : true***REMOVED***
-        />
-      </View>
-      {/* Change key order button */***REMOVED***
-      <TouchableOpacity
-        style={[
-          styles.unlockButton,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
+    <View style={{ width: '100%', marginTop: 20 * scaleMultiplier ***REMOVED******REMOVED***>
+      <Separator />
+      <WahaItem
+        title={props.translations.security.change_key_order_button_label***REMOVED***
         onPress={() => props.navigation.navigate('KeyOrderChange_Old')***REMOVED***
       >
-        <View style={{ justifyContent: 'center', flex: 1 ***REMOVED******REMOVED***>
-          <Text
-            style={{
-              fontFamily: props.font + '-medium',
-              fontSize: 18 * scaleMultiplier,
-              color: colors.shark
-            ***REMOVED******REMOVED***
-          >
-            {props.translations.security.change_key_order_button_label***REMOVED***
-          </Text>
-        </View>
         <Icon
           name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
           color={colors.tuna***REMOVED***
           size={50 * scaleMultiplier***REMOVED***
         />
-      </TouchableOpacity>
-      {/* View key order button */***REMOVED***
-      <TouchableOpacity
-        style={[
-          styles.unlockButton,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
+      </WahaItem>
+      <Separator />
+      <WahaItem
+        title={props.translations.security.view_key_order_button_label***REMOVED***
         onPress={() => setShowViewKeyOrderModal(true)***REMOVED***
       >
-        <View style={{ justifyContent: 'center', flex: 1 ***REMOVED******REMOVED***>
-          <Text
-            style={{
-              fontFamily: props.font + '-medium',
-              fontSize: 18 * scaleMultiplier,
-              color: colors.shark
-            ***REMOVED******REMOVED***
-          >
-            {props.translations.security.view_key_order_button_label***REMOVED***
-          </Text>
-        </View>
         <Icon
           name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
           color={colors.tuna***REMOVED***
           size={50 * scaleMultiplier***REMOVED***
         />
-      </TouchableOpacity>
+      </WahaItem>
+      <Separator />
     </View>
   ) : null
 
@@ -143,71 +72,30 @@ function SecurityScreen (props) {
 
   return (
     <ScrollView style={styles.screen***REMOVED***>
-      <View
-        style={{
-          backgroundColor: colors.white,
-          borderTopWidth: 2,
-          borderBottomWidth: 2,
-          borderColor: colors.athens,
-          height: 180 * scaleMultiplier,
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        ***REMOVED******REMOVED***
-      >
-        <Text>animation here</Text>
+      <Separator />
+      <View style={styles.topPortion***REMOVED***>
+        <Image
+          style={styles.topImage***REMOVED***
+          source={require('../assets/gifs/piano_unlock.gif')***REMOVED***
+        />
       </View>
+      <Separator />
       <View
         style={{
           width: '100%',
           alignItems: 'center'
         ***REMOVED******REMOVED***
       >
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 14 * scaleMultiplier,
-            fontFamily: props.font + '-regular',
-            paddingHorizontal: 20,
-            marginVertical: 10,
-            color: colors.shark
-          ***REMOVED******REMOVED***
+        <Blurb
+          text={props.translations.security.security_mode_description_text***REMOVED***
+        />
+        <Separator />
+        <WahaItem
+          title={props.translations.security.security_mode_picker_label***REMOVED***
         >
-          {props.translations.security.security_mode_description_text***REMOVED***
-        </Text>
-        <View
-          style={[
-            styles.unlockButton,
-            {
-              flexDirection: props.isRTL ? 'row-reverse' : 'row',
-              marginTop: 50 * scaleMultiplier
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          <View style={{ justifyContent: 'center', flex: 1 ***REMOVED******REMOVED***>
-            <Text
-              style={{
-                fontFamily: props.font + '-medium',
-                fontSize: 18 * scaleMultiplier,
-                color: colors.shark
-              ***REMOVED******REMOVED***
-            >
-              {props.translations.security.security_mode_picker_label***REMOVED***
-            </Text>
-            <Text
-              style={{
-                fontFamily: props.font + '-regular',
-                fontSize: 14 * scaleMultiplier,
-                color: colors.chateau
-              ***REMOVED******REMOVED***
-              numberOfLines={2***REMOVED***
-            >
-              {props.translations.security.security_mode_picker_blurb***REMOVED***
-            </Text>
-          </View>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: props.isRTL ? 'row-reverse' : 'row',
               alignItems: 'center'
             ***REMOVED******REMOVED***
           >
@@ -235,99 +123,24 @@ function SecurityScreen (props) {
               value={props.security.securityEnabled***REMOVED***
             />
           </View>
-        </View>
+        </WahaItem>
+        <Separator />
+        <WahaItemDescription
+          text={props.translations.security.security_mode_picker_blurb***REMOVED***
+        />
         {securityControls***REMOVED***
       </View>
-      {/* <MessageModal
-        isVisible={showSecurityWarningModal***REMOVED***
-        hideModal={() => setShowSecurityWarningModal(false)***REMOVED***
-        title={
-          props.translations.security.popups
-            .activate_security_mode_confirmation_title
-        ***REMOVED***
-        body={
-          props.translations.security.popups
-            .activate_security_mode_confirmation_message
-        ***REMOVED***
-        confirmText={props.translations.general.i_understand***REMOVED***
-        confirmOnPress={() => {
-          props.setSecurityEnabled(true)
-          setShowSecurityWarningModal(false)
-        ***REMOVED******REMOVED***
-        cancelText={props.translations.general.cancel***REMOVED***
-        cancelOnPress={() => setShowSecurityWarningModal(false)***REMOVED***
-        imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
-      /> */***REMOVED***
       <MessageModal
         isVisible={showViewKeyOrderModal***REMOVED***
         hideModal={() => setShowViewKeyOrderModal(false)***REMOVED***
         title={props.translations.security.your_key_order_label***REMOVED***
-        body={
-          props.translations.security.popups
-            .activate_security_mode_confirmation_message
-        ***REMOVED***
+        body={props.translations.security.security_mode_description_text***REMOVED***
         confirmText={props.translations.general.close***REMOVED***
         confirmOnPress={() => setShowViewKeyOrderModal(false)***REMOVED***
-        topComponent={
-          props.security.code ? (
-            <View style={{ justifyContent: 'center' ***REMOVED******REMOVED***>
-              <Piano setPattern={() => {***REMOVED******REMOVED*** />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  marginTop: 20
-                ***REMOVED******REMOVED***
-              >
-                <View style={styles.keyPlaceholder***REMOVED***>
-                  <KeyLabel
-                    backgroundColor={
-                      keyColors[
-                        props.security.code.substr(0, 2).replace(/^0+/, '')
-                      ]
-                    ***REMOVED***
-                    number={props.security.code.substr(0, 2).replace(/^0+/, '')***REMOVED***
-                    style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-                  />
-                </View>
-                <View style={styles.keyPlaceholder***REMOVED***>
-                  <KeyLabel
-                    backgroundColor={
-                      keyColors[
-                        props.security.code.substr(2, 2).replace(/^0+/, '')
-                      ]
-                    ***REMOVED***
-                    number={props.security.code.substr(2, 2).replace(/^0+/, '')***REMOVED***
-                    style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-                  />
-                </View>
-                <View style={styles.keyPlaceholder***REMOVED***>
-                  <KeyLabel
-                    backgroundColor={
-                      keyColors[
-                        props.security.code.substr(4, 2).replace(/^0+/, '')
-                      ]
-                    ***REMOVED***
-                    number={props.security.code.substr(4, 2).replace(/^0+/, '')***REMOVED***
-                    style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-                  />
-                </View>
-                <View style={styles.keyPlaceholder***REMOVED***>
-                  <KeyLabel
-                    backgroundColor={
-                      keyColors[
-                        props.security.code.substr(6, 2).replace(/^0+/, '')
-                      ]
-                    ***REMOVED***
-                    number={props.security.code.substr(6, 2).replace(/^0+/, '')***REMOVED***
-                    style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-                  />
-                </View>
-              </View>
-            </View>
-          ) : null
-        ***REMOVED***
-      />
+      >
+        <Piano setPattern={() => {***REMOVED******REMOVED*** />
+        <KeyLabels keyOrder={props.security.code***REMOVED*** />
+      </MessageModal>
     </ScrollView>
   )
 ***REMOVED***
@@ -338,28 +151,17 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.aquaHaze
-    // alignItems: 'center'
   ***REMOVED***,
-  unlockButton: {
-    width: '100%',
-    height: 100 * scaleMultiplier,
+  topPortion: {
     backgroundColor: colors.white,
-    borderWidth: 2,
-    borderColor: colors.athens,
-    flexDirection: 'row',
-    alignItems: 'center',
-    //marginVertical: 40 * scaleMultiplier,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between'
-  ***REMOVED***,
-  keyPlaceholder: {
-    width: 80 * scaleMultiplier,
-    height: 80 * scaleMultiplier,
-    borderRadius: 40 * scaleMultiplier,
-    backgroundColor: colors.chateau,
-    margin: 5,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
+  ***REMOVED***,
+  topImage: {
+    resizeMode: 'contain',
+    height: 175 * scaleMultiplier,
+    alignSelf: 'center'
   ***REMOVED***
 ***REMOVED***)
 
@@ -391,3 +193,47 @@ function mapDispatchToProps (dispatch) {
 ***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(SecurityScreen)
+
+{
+  /* <MessageModal
+        isVisible={showSecurityWarningModal***REMOVED***
+        hideModal={() => setShowSecurityWarningModal(false)***REMOVED***
+        title={
+          props.translations.security.popups
+            .activate_security_mode_confirmation_title
+        ***REMOVED***
+        body={
+          props.translations.security.popups
+            .activate_security_mode_confirmation_message
+        ***REMOVED***
+        confirmText={props.translations.general.i_understand***REMOVED***
+        confirmOnPress={() => {
+          props.setSecurityEnabled(true)
+          setShowSecurityWarningModal(false)
+        ***REMOVED******REMOVED***
+        cancelText={props.translations.general.cancel***REMOVED***
+        cancelOnPress={() => setShowSecurityWarningModal(false)***REMOVED***
+        imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
+      /> */
+***REMOVED***
+
+{
+  /* <WahaItem
+        title={props.translations.security.activate_on_switch_picker_label***REMOVED***
+      >
+        <Switch
+          trackColor={{ false: colors.chateau, true: colors.apple ***REMOVED******REMOVED***
+          thumbColor={colors.white***REMOVED***
+          ios_backgroundColor={colors.chateau***REMOVED***
+          onValueChange={() => {
+            // toggle security mode on or off
+            if (props.security.activateOnSwitch)
+              props.setActivateOnSwitch(false)
+            else props.setActivateOnSwitch(true)
+          ***REMOVED******REMOVED***
+          value={props.security.activateOnSwitch***REMOVED***
+          disabled={props.security.securityEnabled ? false : true***REMOVED***
+        />
+      </WahaItem>
+      <Separator /> */
+***REMOVED***

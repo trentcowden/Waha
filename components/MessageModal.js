@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
@@ -26,20 +26,6 @@ function MessageModal (props) {
     </TouchableOpacity>
   ) : null
 
-  var topComponent = props.topComponent ? (
-    props.topComponent
-  ) : (
-    <Image
-      source={props.imageSource***REMOVED***
-      style={{
-        height: 200 * scaleMultiplier,
-        margin: 20,
-        // padding: 20,
-        resizeMode: 'contain'
-      ***REMOVED******REMOVED***
-    />
-  )
-
   //// RENDER
   return (
     <Modal
@@ -49,15 +35,14 @@ function MessageModal (props) {
       backdropOpacity={0.3***REMOVED***
       style={{ justifyContent: 'flex-end', flex: 1, margin: 0 ***REMOVED******REMOVED***
     >
-      <View style={styles.buttonsContainer***REMOVED***>
-        {topComponent***REMOVED***
+      <View style={styles.contentContainer***REMOVED***>
+        {props.children***REMOVED***
         <Text
           style={{
             color: colors.shark,
             fontFamily: props.font + '-black',
             fontSize: 36 * scaleMultiplier,
-            marginVertical: 20,
-            marginHorizontal: 15,
+            marginVertical: 10,
             textAlign: 'center'
           ***REMOVED******REMOVED***
         >
@@ -68,8 +53,7 @@ function MessageModal (props) {
             color: colors.shark,
             fontFamily: props.font + '-medium',
             fontSize: 18 * scaleMultiplier,
-            marginHorizontal: 15,
-            marginBottom: 20,
+            marginVertical: 10,
             textAlign: 'center'
           ***REMOVED******REMOVED***
         >
@@ -77,9 +61,10 @@ function MessageModal (props) {
         </Text>
         <TouchableOpacity
           style={{
-            marginVertical: 15
-            // marginBottom: 40 * scaleMultiplier
-            // marginTop: 80 * scaleMultiplier
+            marginVertical: 10,
+            width: '100%',
+            height: 50 * scaleMultiplier,
+            justifyContent: 'center'
           ***REMOVED******REMOVED***
           onPress={props.confirmOnPress***REMOVED***
         >
@@ -87,7 +72,8 @@ function MessageModal (props) {
             style={{
               fontFamily: props.font + '-medium',
               fontSize: 24 * scaleMultiplier,
-              color: colors.apple
+              color: colors.apple,
+              textAlign: 'center'
             ***REMOVED******REMOVED***
           >
             {props.confirmText***REMOVED***
@@ -100,13 +86,13 @@ function MessageModal (props) {
 ***REMOVED***
 
 const styles = StyleSheet.create({
-  buttonsContainer: {
+  contentContainer: {
     backgroundColor: colors.white,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10
+    padding: 10
   ***REMOVED***
 ***REMOVED***)
 

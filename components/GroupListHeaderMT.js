@@ -1,9 +1,8 @@
 import * as FileSystem from 'expo-file-system'
 import React, { useEffect ***REMOVED*** from 'react'
-import { FlatList, Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import GroupItemMT from './GroupItemMT'
 function GroupListHeaderMT (props) {
   //// FUNCTIONS
 
@@ -12,91 +11,86 @@ function GroupListHeaderMT (props) {
   //// RENDER
 
   // if our active language has a toolkit, show the list of groups
-  var list = props.activeDatabase.hasToolkit ? (
-    <FlatList
-      data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
-      renderItem={renderGroupItem***REMOVED***
-      keyExtractor={item => item.name***REMOVED***
-    />
-  ) : (
-    // otherwise, show a message that says MTs are not available for that language
-    <View
-      style={{
-        height: 80 * scaleMultiplier,
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: colors.white,
-        margin: 2,
-        justifyContent: 'center'
-      ***REMOVED******REMOVED***
-    >
-      <Text
-        style={{
-          fontFamily: props.font + '-regular',
-          fontSize: 14 * scaleMultiplier,
-          color: colors.chateau,
-          textAlign: 'center'
-        ***REMOVED******REMOVED***
-      >
-        {
-          props.translations.mobilization_tools
-            .no_mobilization_tools_content_text
-        ***REMOVED***
-      </Text>
-    </View>
-  )
+  // var list = props.activeDatabase.hasToolkit ? (
+  //   <FlatList
+  //     data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
+  //     renderItem={renderGroupItem***REMOVED***
+  //     keyExtractor={item => item.name***REMOVED***
+  //   />
+  // ) : (
+  //   // otherwise, show a message that says MTs are not available for that language
+  //   <View
+  //     style={{
+  //       height: 80 * scaleMultiplier,
+  //       justifyContent: 'flex-start',
+  //       flexDirection: 'row',
+  //       alignItems: 'center',
+  //       backgroundColor: colors.white,
+  //       margin: 2,
+  //       justifyContent: 'center'
+  //     ***REMOVED******REMOVED***
+  //   >
+  //     <Text
+  //       style={{
+  //         fontFamily: props.font + '-regular',
+  //         fontSize: 14 * scaleMultiplier,
+  //         color: colors.chateau,
+  //         textAlign: 'center'
+  //       ***REMOVED******REMOVED***
+  //     >
+  //       {
+  //         props.translations.mobilization_tools
+  //           .no_mobilization_tools_content_text
+  //       ***REMOVED***
+  //     </Text>
+  //   </View>
+  // )
 
-  // renders a group item
-  function renderGroupItem (groups) {
-    return <GroupItemMT group={groups.item***REMOVED*** />
-  ***REMOVED***
+  // // renders a group item
+  // function renderGroupItem (groups) {
+  //   return <GroupItemMT group={groups.item***REMOVED*** />
+  // ***REMOVED***
 
   return (
-    <View style={styles.languageHeaderListContainer***REMOVED***>
-      <View
-        style={[
-          styles.languageHeaderContainer,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
-      >
-        <View>
-          <Text
-            style={{
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-medium',
-              fontSize: 18 * scaleMultiplier,
-              color: colors.chateau
-            ***REMOVED******REMOVED***
-          >
-            {props.languageName +
-              ' ' +
-              props.translations.mobilization_tools.groups_label***REMOVED***
-          </Text>
-          <Text
-            style={{
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular',
-              fontSize: 18 * scaleMultiplier,
-              color: colors.chateau
-            ***REMOVED******REMOVED***
-          >
-            {
-              props.translations.mobilization_tools
-                .mobilization_tools_status_label
-            ***REMOVED***
-          </Text>
-        </View>
-        <Image
-          style={styles.languageLogo***REMOVED***
-          source={{
-            uri: FileSystem.documentDirectory + props.languageID + '-header.png'
+    <View
+      style={[
+        styles.languageHeaderContainer,
+        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+      ]***REMOVED***
+    >
+      <View>
+        <Text
+          style={{
+            textAlign: props.isRTL ? 'right' : 'left',
+            fontFamily: props.font + '-medium',
+            fontSize: 18 * scaleMultiplier,
+            color: colors.chateau
           ***REMOVED******REMOVED***
-        />
+        >
+          {props.languageName +
+            ' ' +
+            props.translations.mobilization_tools.groups_label***REMOVED***
+        </Text>
+        <Text
+          style={{
+            textAlign: props.isRTL ? 'right' : 'left',
+            fontFamily: props.font + '-regular',
+            fontSize: 18 * scaleMultiplier,
+            color: colors.chateau
+          ***REMOVED******REMOVED***
+        >
+          {
+            props.translations.mobilization_tools
+              .mobilization_tools_status_label
+          ***REMOVED***
+        </Text>
       </View>
-
-      {/* list of groups OR no MTs message */***REMOVED***
-      {list***REMOVED***
+      <Image
+        style={styles.languageLogo***REMOVED***
+        source={{
+          uri: FileSystem.documentDirectory + props.languageID + '-header.png'
+        ***REMOVED******REMOVED***
+      />
     </View>
   )
 ***REMOVED***
@@ -104,18 +98,14 @@ function GroupListHeaderMT (props) {
 //// STYLES
 
 const styles = StyleSheet.create({
-  languageHeaderListContainer: {
-    width: '100%',
-    marginBottom: 15,
-    marginTop: 3
-  ***REMOVED***,
   languageHeaderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     height: 55 * scaleMultiplier,
     paddingHorizontal: 20,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: colors.aquaHaze
   ***REMOVED***,
   languageLogo: {
     resizeMode: 'contain',

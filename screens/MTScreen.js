@@ -2,20 +2,25 @@ import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Alert,
   Clipboard,
-  FlatList,
+  Image,
+  SectionList,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
+import Blurb from '../components/Blurb'
+import GroupItemMT from '../components/GroupItemMT'
 import GroupListHeaderMT from '../components/GroupListHeaderMT'
 import MessageModal from '../components/MessageModal'
+import Separator from '../components/Separator'
+import WahaItem from '../components/WahaItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+
 function MTScreen (props) {
   //// STATE
-  const [showHowMTsWorkModal, setShowHotMTsWorkModal] = useState(false)
+  const [showHowMTsWorkModal, setShowHowMTsWorkModal] = useState(false)
 
   //// CONSTRUCTOR
 
@@ -35,13 +40,20 @@ function MTScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  function getInstalledLanguageInstances () {
+  // get the list of installed languages and all the groups with that language
+  //  to populate section list
+  function getLanguageAndGroupData () {
     var installedLanguageInstances = []
     for (key in props.database) {
       if (key.length === 2) {
         var languageObject = {***REMOVED***
-        languageObject['languageName'] = props.database[key].displayName
+        languageObject['title'] = props.database[key].displayName
         languageObject['languageID'] = key
+
+        // get groups for that language
+        languageObject['data'] = props.groups.filter(
+          group => group.language === key
+        )
         installedLanguageInstances.push(languageObject)
       ***REMOVED***
     ***REMOVED***
@@ -50,131 +62,159 @@ function MTScreen (props) {
 
   //// RENDER
 
-  var howMTsWork = props.toolkitEnabled ? (
-    <TouchableOpacity
-      style={[
-        styles.unlockButton,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-      ]***REMOVED***
-      onPress={() => setShowHotMTsWorkModal(true)***REMOVED***
-    >
-      <Text
-        style={{
-          color: colors.shark,
-          fontFamily: props.font + '-medium',
-          fontSize: 18 * scaleMultiplier
-        ***REMOVED******REMOVED***
-      >
-        {
-          props.translations.mobilization_tools
-            .how_mobilization_tools_work_label
-        ***REMOVED***
-      </Text>
-      <Icon
-        name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-        color={colors.tuna***REMOVED***
-        size={50 * scaleMultiplier***REMOVED***
-      />
-    </TouchableOpacity>
-  ) : null
-
-  var groupList = props.toolkitEnabled ? (
-    <FlatList
-      data={getInstalledLanguageInstances()***REMOVED***
-      renderItem={renderLanguageHeader***REMOVED***
-      keyExtractor={item => item.languageID***REMOVED***
-    />
-  ) : null
-
-  function renderLanguageHeader (languageInstances) {
+  // section list render functions
+  function renderLanguageInstanceItem (section) {
     return (
       <GroupListHeaderMT
-        languageName={languageInstances.item.languageName***REMOVED***
-        languageID={languageInstances.item.languageID***REMOVED***
+        languageName={section.title***REMOVED***
+        languageID={section.languageID***REMOVED***
         toolkitEnabled={props.toolkitEnabled***REMOVED***
       />
     )
   ***REMOVED***
 
+  function renderGroupItem (group) {
+    return <GroupItemMT group={group***REMOVED*** />
+  ***REMOVED***
+
+  // list of all the groups with options to turn MTs on or off for each
+
   return (
     <View style={styles.screen***REMOVED***>
-      <Text
-        style={{
-          color: colors.shark,
-          fontFamily: props.font + '-regular',
-          fontSize: 14 * scaleMultiplier,
-          marginTop: 10
-        ***REMOVED******REMOVED***
+      <Blurb
+        text={
+          props.toolkitEnabled
+            ? 'Some vision for mobilization tools! This will probably be bigger when the vision is fully written.'
+            : 'Enabling Mobilization Tools adds additional content. The passcode is passed from user to user, so you’ll need to find a user with the passcode to unlock this content.'
+        ***REMOVED***
+      />
+      <Separator />
+      <WahaItem
+        title={
+          props.toolkitEnabled
+            ? props.translations.mobilization_tools.view_code_button_label
+            : props.translations.mobilization_tools.unlock_mt_button_label
+        ***REMOVED***
+        onPress={
+          props.toolkitEnabled
+            ? () =>
+                Alert.alert(
+                  props.translations.mobilization_tools.mt_code_title,
+                  '281820',
+                  [
+                    {
+                      text: props.translations.general.copy_to_clipboard,
+                      onPress: () => Clipboard.setString('281820')
+                    ***REMOVED***,
+                    {
+                      text: props.translations.general.close,
+                      onPress: () => {***REMOVED***
+                    ***REMOVED***
+                  ]
+                )
+            : () => props.navigation.navigate('Passcode')
+        ***REMOVED***
       >
-        {props.toolkitEnabled
-          ? 'toolkit is currently enabled'
-          : 'toolkit is currently disabled'***REMOVED***
-      </Text>
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          marginVertical: 50
-        ***REMOVED******REMOVED***
-      >
-        <TouchableOpacity
-          style={[
-            styles.unlockButton,
-            { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-          ]***REMOVED***
-          onPress={
-            props.toolkitEnabled
-              ? () =>
-                  Alert.alert(
-                    props.translations.mobilization_tools.mt_code_title,
-                    '281820',
-                    [
-                      {
-                        text: props.translations.general.clipboard,
-                        onPress: () => Clipboard.setString('281820')
-                      ***REMOVED***,
-                      {
-                        text: props.translations.general.close,
-                        onPress: () => {***REMOVED***
-                      ***REMOVED***
-                    ]
-                  )
-              : () => props.navigation.navigate('Passcode')
+        <Icon
+          name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+          color={colors.tuna***REMOVED***
+          size={50 * scaleMultiplier***REMOVED***
+        />
+      </WahaItem>
+      <Separator />
+
+      {/* how enabling MTs work button */***REMOVED***
+      {props.toolkitEnabled ? (
+        <WahaItem
+          title={
+            props.translations.mobilization_tools
+              .how_mobilization_tools_work_label
           ***REMOVED***
+          onPress={() => setShowHowMTsWorkModal(true)***REMOVED***
         >
-          <Text
-            style={{
-              color: colors.shark,
-              fontFamily: props.font + '-medium',
-              fontSize: 18 * scaleMultiplier
-            ***REMOVED******REMOVED***
-          >
-            {props.toolkitEnabled
-              ? props.translations.mobilization_tools.view_code_button_label
-              : props.translations.mobilization_tools.unlock_mt_button_label***REMOVED***
-          </Text>
           <Icon
             name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
             color={colors.tuna***REMOVED***
             size={50 * scaleMultiplier***REMOVED***
           />
-        </TouchableOpacity>
-        {howMTsWork***REMOVED***
+        </WahaItem>
+      ) : null***REMOVED***
+      {props.toolkitEnabled ? <Separator /> : null***REMOVED***
+      <View style={{ width: '100%', height: 20 ***REMOVED******REMOVED*** />
+
+      {/* list of groups with option to enable MTs for each group */***REMOVED***
+      <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>
+        {props.toolkitEnabled ? (
+          <SectionList
+            sections={getLanguageAndGroupData()***REMOVED***
+            renderItem={({ item, section ***REMOVED***) => {
+              return props.database[section.languageID].hasToolkit ? (
+                renderGroupItem(item)
+              ) : (
+                <View
+                  style={{
+                    height: 80 * scaleMultiplier,
+                    justifyContent: 'flex-start',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: colors.white,
+                    justifyContent: 'center'
+                  ***REMOVED******REMOVED***
+                >
+                  <Text
+                    style={{
+                      fontFamily: props.font + '-regular',
+                      fontSize: 14 * scaleMultiplier,
+                      color: colors.chateau,
+                      textAlign: 'center'
+                    ***REMOVED******REMOVED***
+                  >
+                    {
+                      props.translations.mobilization_tools
+                        .no_mobilization_tools_content_text
+                    ***REMOVED***
+                  </Text>
+                </View>
+              )
+            ***REMOVED******REMOVED***
+            renderSectionHeader={({ section ***REMOVED***) =>
+              renderLanguageInstanceItem(section)
+            ***REMOVED***
+            renderSectionFooter={() => (
+              <View style={{ height: 20, width: '100%' ***REMOVED******REMOVED*** />
+            )***REMOVED***
+            keyExtractor={item => item.name***REMOVED***
+            ItemSeparatorComponent={() => <Separator />***REMOVED***
+            SectionSeparatorComponent={() => <Separator />***REMOVED***
+          />
+        ) : null***REMOVED***
       </View>
-      <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>{groupList***REMOVED***</View>
+
+      {/* modals */***REMOVED***
       <MessageModal
         isVisible={showHowMTsWorkModal***REMOVED***
-        hideModal={() => setShowHotMTsWorkModal(false)***REMOVED***
+        hideModal={() => setShowHowMTsWorkModal(false)***REMOVED***
         title={
-          props.translations.mobilization_tools.how_to_enable_mt_content_title
+          props.translations.mobilization_tools.popups
+            .how_to_enable_mt_content_title
         ***REMOVED***
         body={
-          props.translations.mobilization_tools.how_to_enable_mt_content_message
+          props.translations.mobilization_tools.popups
+            .how_to_enable_mt_content_message
         ***REMOVED***
         confirmText={props.translations.general.got_it***REMOVED***
-        confirmOnPress={() => setShowHotMTsWorkModal(false)***REMOVED***
-        imageSource={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
-      />
+        confirmOnPress={() => setShowHowMTsWorkModal(false)***REMOVED***
+      >
+        <Image
+          source={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
+          style={{
+            height: 200 * scaleMultiplier,
+            margin: 20,
+            // padding: 20,
+            resizeMode: 'contain'
+          ***REMOVED******REMOVED***
+        />
+      </MessageModal>
     </View>
   )
 ***REMOVED***
@@ -195,7 +235,6 @@ const styles = StyleSheet.create({
     borderColor: colors.athens,
     flexDirection: 'row',
     alignItems: 'center',
-    //marginVertical: 40 * scaleMultiplier,
     paddingHorizontal: 20,
     justifyContent: 'space-between'
   ***REMOVED***
@@ -215,7 +254,8 @@ function mapStateToProps (state) {
     translations: state.database[activeGroup.language].translations,
     font: state.database[activeGroup.language].font,
     activeGroup: activeGroup,
-    toolkitEnabled: state.toolkitEnabled
+    toolkitEnabled: state.toolkitEnabled,
+    groups: state.groups
   ***REMOVED***
 ***REMOVED***
 

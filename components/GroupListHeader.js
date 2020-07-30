@@ -2,7 +2,6 @@ import * as FileSystem from 'expo-file-system'
 import React, { useEffect ***REMOVED*** from 'react'
 import {
   Alert,
-  FlatList,
   Image,
   StyleSheet,
   Text,
@@ -14,7 +13,6 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { deleteLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import GroupItem from './GroupItem'
 function GroupListHeader (props) {
   //// FUNCTIONS
 
@@ -62,19 +60,6 @@ function GroupListHeader (props) {
     props.deleteLanguage(props.languageID)
   ***REMOVED***
 
-  //// RENDER
-
-  function renderGroupItem (groups) {
-    return (
-      <GroupItem
-        groupName={groups.item.name***REMOVED***
-        isEditing={props.isEditing***REMOVED***
-        goToEditGroupScreen={props.goToEditGroupScreen***REMOVED***
-        emoji={groups.item.emoji***REMOVED***
-      />
-    )
-  ***REMOVED***
-
   // render trash button conditionally because it's only shown when editing mode is active
   var trashButton
   // if we're editing and not in the active group, we can delete, so show trash can
@@ -119,79 +104,34 @@ function GroupListHeader (props) {
   ***REMOVED***
 
   return (
-    <View style={styles.languageHeaderListContainer***REMOVED***>
-      <View
+    <View
+      style={[
+        styles.languageHeaderContainer,
+        {
+          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+        ***REMOVED***
+      ]***REMOVED***
+    >
+      {trashButton***REMOVED***
+      <Text
         style={[
-          styles.languageHeaderContainer,
+          styles.languageHeaderText,
           {
-            flexDirection: props.isRTL ? 'row-reverse' : 'row'
+            textAlign: props.isRTL ? 'right' : 'left',
+            fontFamily: props.font + '-regular',
+            marginLeft: props.isRTL ? 0 : props.isEditing ? 0 : 20,
+            marginRight: props.isRTL ? (props.isEditing ? 0 : 20) : 0
           ***REMOVED***
         ]***REMOVED***
       >
-        {trashButton***REMOVED***
-        <Text
-          style={[
-            styles.languageHeaderText,
-            {
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular',
-              marginLeft: props.isRTL ? 0 : props.isEditing ? 0 : 20,
-              marginRight: props.isRTL ? (props.isEditing ? 0 : 20) : 0
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.languageName***REMOVED***
-        </Text>
-        <Image
-          style={styles.languageLogo***REMOVED***
-          source={{
-            uri: FileSystem.documentDirectory + props.languageID + '-header.png'
-          ***REMOVED******REMOVED***
-        />
-      </View>
-
-      {/* list of groups */***REMOVED***
-      <FlatList
-        data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
-        renderItem={renderGroupItem***REMOVED***
-        keyExtractor={item => item.name***REMOVED***
+        {props.languageName***REMOVED***
+      </Text>
+      <Image
+        style={styles.languageLogo***REMOVED***
+        source={{
+          uri: FileSystem.documentDirectory + props.languageID + '-header.png'
+        ***REMOVED******REMOVED***
       />
-
-      {/* add new group button */***REMOVED***
-      <TouchableOpacity
-        style={[
-          styles.addGroupContainer,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
-        onPress={props.goToAddNewGroupScreen***REMOVED***
-      >
-        <View
-          style={{
-            width: 50 * scaleMultiplier,
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 20
-          ***REMOVED******REMOVED***
-        >
-          <Icon
-            name='group-add'
-            size={40 * scaleMultiplier***REMOVED***
-            color={colors.chateau***REMOVED***
-          />
-        </View>
-        <Text
-          style={[
-            styles.addGroupText,
-            {
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-medium'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.translations.groups.new_group_button_label***REMOVED***
-        </Text>
-      </TouchableOpacity>
     </View>
   )
 ***REMOVED***
@@ -199,16 +139,11 @@ function GroupListHeader (props) {
 //// STYLES
 
 const styles = StyleSheet.create({
-  languageHeaderListContainer: {
-    width: '100%',
-    marginBottom: 15,
-    marginTop: 3
-  ***REMOVED***,
   languageHeaderContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: 30
+    height: 40 * scaleMultiplier,
+    backgroundColor: colors.aquaHaze
   ***REMOVED***,
   languageHeaderText: {
     fontSize: 18 * scaleMultiplier,
@@ -219,22 +154,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 120 * scaleMultiplier,
     height: 40 * scaleMultiplier,
-    // alignSelf: 'flex-end',
     marginHorizontal: 20
-  ***REMOVED***,
-  addGroupContainer: {
-    height: 80 * scaleMultiplier,
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.athens
-  ***REMOVED***,
-  addGroupText: {
-    color: colors.blue,
-    fontSize: 18 * scaleMultiplier,
-    textAlign: 'left'
   ***REMOVED***
 ***REMOVED***)
 
