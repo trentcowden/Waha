@@ -13,7 +13,7 @@ function AvatarImage (props) {
     props.emoji === 'default' ? (
       <Icon
         name='group'
-        size={(props.size / 2) * scaleMultiplier***REMOVED***
+        size={(props.size / 1.7) * scaleMultiplier***REMOVED***
         color={colors.tuna***REMOVED***
       />
     ) : (
@@ -40,56 +40,40 @@ function AvatarImage (props) {
   //  open the drawer
   return props.onPress ? (
     <TouchableOpacity
-      style={{
-        borderColor: props.isActive ? colors.blue : null,
-        borderWidth: props.isActive ? 5 : null,
-        width: props.size * scaleMultiplier + 5,
-        height: props.size * scaleMultiplier + 5,
-        borderRadius: (props.size * scaleMultiplier) / 2 + 5,
-        alignItems: 'center',
-        justifyContent: 'center'
-      ***REMOVED******REMOVED***
-      onPress={props.onPress***REMOVED***
-    >
-      <View
-        style={{
-          width: props.size * scaleMultiplier,
-          height: props.size * scaleMultiplier,
-          borderRadius: (props.size * scaleMultiplier) / 2,
-          backgroundColor: colors.chateau,
+      style={[
+        props.style,
+        {
+          borderColor: props.isActive ? colors.blue : null,
+          borderWidth: props.isActive ? 2 : null,
+          width: props.size * scaleMultiplier + 5,
+          height: props.size * scaleMultiplier + 5,
+          borderRadius: (props.size * scaleMultiplier) / 2 + 5,
           alignItems: 'center',
           justifyContent: 'center'
-        ***REMOVED******REMOVED***
-      >
-        {emoji***REMOVED***
-      </View>
+        ***REMOVED***
+      ]***REMOVED***
+      onPress={props.onPress***REMOVED***
+    >
+      {emoji***REMOVED***
     </TouchableOpacity>
   ) : (
     <View
-      style={{
-        borderColor: props.isActive ? colors.blue : null,
-        borderWidth: props.isActive ? 5 : null,
-        width: props.size * scaleMultiplier + 5,
-        height: props.size * scaleMultiplier + 5,
-        borderRadius: (props.size * scaleMultiplier) / 2 + 5,
-        alignItems: 'center',
-        justifyContent: 'center'
-      ***REMOVED******REMOVED***
+      style={[
+        props.style,
+        {
+          borderColor: props.isActive ? colors.blue : null,
+          borderWidth: props.isActive ? 2 : null,
+          width: props.size * scaleMultiplier + 5,
+          height: props.size * scaleMultiplier + 5,
+          borderRadius: (props.size * scaleMultiplier) / 2 + 5,
+          alignItems: 'center',
+          justifyContent: 'center'
+        ***REMOVED***
+      ]***REMOVED***
       source={{ uri: props.source ***REMOVED******REMOVED***
       onPress={props.onPress***REMOVED***
     >
-      <View
-        style={{
-          width: props.size * scaleMultiplier,
-          height: props.size * scaleMultiplier,
-          borderRadius: (props.size * scaleMultiplier) / 2,
-          backgroundColor: colors.chateau,
-          justifyContent: 'center',
-          alignItems: 'center'
-        ***REMOVED******REMOVED***
-      >
-        {emoji***REMOVED***
-      </View>
+      {emoji***REMOVED***
     </View>
   )
 ***REMOVED***

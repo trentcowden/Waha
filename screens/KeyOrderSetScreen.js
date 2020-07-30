@@ -218,19 +218,6 @@ function KeyOrderSetScreen (props) {
             {instructionText***REMOVED***
           </Text>
         </View>
-        {/* <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            padding: 20
-          ***REMOVED******REMOVED***
-        >
-          <View style={styles.keyPlaceholder***REMOVED***>{keyLabel1***REMOVED***</View>
-          <View style={styles.keyPlaceholder***REMOVED***>{keyLabel2***REMOVED***</View>
-          <View style={styles.keyPlaceholder***REMOVED***>{keyLabel3***REMOVED***</View>
-          <View style={styles.keyPlaceholder***REMOVED***>{keyLabel4***REMOVED***</View>
-        </View> */***REMOVED***
         <KeyLabels keyOrder={keyOrder***REMOVED*** />
         <TouchableOpacity
           style={{
@@ -263,19 +250,9 @@ function KeyOrderSetScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.aquaHaze,
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'space-around'
-  ***REMOVED***,
-  keyPlaceholder: {
-    width: 80 * scaleMultiplier,
-    height: 80 * scaleMultiplier,
-    borderRadius: 40 * scaleMultiplier,
-    backgroundColor: colors.white,
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2
   ***REMOVED***
 ***REMOVED***)
 
@@ -286,7 +263,8 @@ function mapStateToProps (state) {
   return {
     translations: state.database[activeGroup.language].translations,
     font: state.database[activeGroup.language].font,
-    security: state.security
+    security: state.security,
+    isRTL: state.database[activeGroup.language].isRTL
   ***REMOVED***
 ***REMOVED***
 

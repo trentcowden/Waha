@@ -9,6 +9,7 @@ import {
 ***REMOVED*** from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import { connect ***REMOVED*** from 'react-redux'
+import Separator from '../components/Separator'
 import SetItem from '../components/SetItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
@@ -116,15 +117,9 @@ function AddSetScreen (props) {
           //           )
           //       )
         ***REMOVED***
-        ItemSeparatorComponent={() => (
-          <View
-            style={{
-              backgroundColor: colors.chateau,
-              height: 1,
-              width: '100%'
-            ***REMOVED******REMOVED***
-          />
-        )***REMOVED***
+        ItemSeparatorComponent={() => <Separator />***REMOVED***
+        ListFooterComponent={() => <Separator />***REMOVED***
+        ListHeaderComponent={() => <Separator />***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
         ListEmptyComponent={
           <View style={{ width: '100%', margin: 10 ***REMOVED******REMOVED***>

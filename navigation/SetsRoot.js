@@ -4,7 +4,7 @@ import React from 'react'
 import { Image, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import AvatarImage from '../components/AvatarImage'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import AddSetStack from './AddSetStack'
 import SetTabs from './SetTabs'
 const Stack = createStackNavigator()
@@ -28,6 +28,9 @@ function SetsRoot (props) {
         name='SetTabs'
         component={SetTabs***REMOVED***
         options={{
+          headerStyle: {
+            backgroundColor: colors.aquaHaze
+          ***REMOVED***,
           headerTitle: () => (
             <Image
               style={styles.headerImage***REMOVED***
@@ -44,6 +47,7 @@ function SetsRoot (props) {
             : () => (
                 <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
                   <AvatarImage
+                    style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
                     emoji={props.activeGroup.emoji***REMOVED***
                     size={40***REMOVED***
                     onPress={() => props.navigation.toggleDrawer()***REMOVED***
@@ -55,6 +59,7 @@ function SetsRoot (props) {
             ? () => (
                 <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
                   <AvatarImage
+                    style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
                     emoji={props.activeGroup.emoji***REMOVED***
                     size={40***REMOVED***
                     onPress={() => props.navigation.toggleDrawer()***REMOVED***

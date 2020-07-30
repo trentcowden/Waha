@@ -24,7 +24,11 @@ function WahaDrawer (props) {
     >
       <View style={styles.drawerHeaderContainer***REMOVED***>
         <View style={styles.groupIconContainer***REMOVED***>
-          <AvatarImage emoji={props.activeGroup.emoji***REMOVED*** size={120***REMOVED*** />
+          <AvatarImage
+            style={{ backgroundColor: colors.porcelain ***REMOVED******REMOVED***
+            emoji={props.activeGroup.emoji***REMOVED***
+            size={120***REMOVED***
+          />
         </View>
         <Text
           style={[styles.groupName, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***
@@ -74,14 +78,15 @@ function WahaDrawer (props) {
               ***REMOVED***)
             ***REMOVED***
           />
-        </View>
-        <View style={styles.smallDrawerItemsContainer***REMOVED***>
-          <SmallDrawerItem
+          <DrawerItem
+            iconName='bug'
+            text={props.translations.general.bug_report***REMOVED***
             onPress={() =>
               openBrowser('https://airtable.com/shrGQY4b3FSPprzmt')
             ***REMOVED***
-            label={props.translations.general.feedback***REMOVED***
           />
+        </View>
+        <View style={styles.smallDrawerItemsContainer***REMOVED***>
           <SmallDrawerItem
             onPress={() =>
               openBrowser(

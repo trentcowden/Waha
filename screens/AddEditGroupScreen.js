@@ -288,7 +288,12 @@ function AddEditGroupScreen (props) {
     <View style={styles.screen***REMOVED***>
       <View>
         <View style={styles.photoContainer***REMOVED***>
-          <AvatarImage emoji={emoji***REMOVED*** size={120***REMOVED*** isChangeable={true***REMOVED*** />
+          <AvatarImage
+            style={{ backgroundColor: colors.chateau ***REMOVED******REMOVED***
+            emoji={emoji***REMOVED***
+            size={120***REMOVED***
+            isChangeable={true***REMOVED***
+          />
         </View>
         <View
           style={{
