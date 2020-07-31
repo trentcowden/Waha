@@ -25,7 +25,7 @@ function WahaDrawer (props) {
       <View style={styles.drawerHeaderContainer***REMOVED***>
         <View style={styles.groupIconContainer***REMOVED***>
           <AvatarImage
-            style={{ backgroundColor: colors.porcelain ***REMOVED******REMOVED***
+            style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
             emoji={props.activeGroup.emoji***REMOVED***
             size={120***REMOVED***
           />

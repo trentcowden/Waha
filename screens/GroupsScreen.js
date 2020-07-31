@@ -122,84 +122,85 @@ function GroupsScreen (props) {
 
   return (
     <View style={styles.screen***REMOVED***>
-      <View style={styles.languageList***REMOVED***>
-        <SectionList
-          sections={getLanguageAndGroupData()***REMOVED***
-          renderItem={({ item ***REMOVED***) => renderGroupItem(item)***REMOVED***
-          renderSectionHeader={({ section ***REMOVED***) =>
-            renderLanguageInstanceItem(section)
-          ***REMOVED***
-          keyExtractor={item => item.name***REMOVED***
-          ItemSeparatorComponent={() => <Separator />***REMOVED***
-          SectionSeparatorComponent={() => <Separator />***REMOVED***
-          renderSectionFooter={({ section ***REMOVED***) => (
-            <View>
-              <TouchableOpacity
-                style={[
-                  styles.addGroupContainer,
-                  { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-                ]***REMOVED***
-                onPress={() =>
-                  props.navigation.navigate('AddGroup', {
-                    languageID: section.languageID
-                  ***REMOVED***)
-                ***REMOVED***
-              >
-                <View
-                  style={{
-                    width: 50 * scaleMultiplier,
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginHorizontal: 20
-                  ***REMOVED******REMOVED***
-                >
-                  <Icon
-                    name='group-add'
-                    size={40 * scaleMultiplier***REMOVED***
-                    color={colors.chateau***REMOVED***
-                  />
-                </View>
-                <Text
-                  style={[
-                    styles.addGroupText,
-                    {
-                      textAlign: props.isRTL ? 'right' : 'left',
-                      fontFamily: props.font + '-medium'
-                    ***REMOVED***
-                  ]***REMOVED***
-                >
-                  {props.translations.groups.new_group_button_label***REMOVED***
-                </Text>
-              </TouchableOpacity>
-              <Separator />
-              <View style={{ height: 20, width: '100%' ***REMOVED******REMOVED*** />
-            </View>
-          )***REMOVED***
-          ListFooterComponent={
+      <SectionList
+        sections={getLanguageAndGroupData()***REMOVED***
+        renderItem={({ item ***REMOVED***) => renderGroupItem(item)***REMOVED***
+        renderSectionHeader={({ section ***REMOVED***) =>
+          renderLanguageInstanceItem(section)
+        ***REMOVED***
+        keyExtractor={item => item.name***REMOVED***
+        ItemSeparatorComponent={() => <Separator />***REMOVED***
+        SectionSeparatorComponent={() => <Separator />***REMOVED***
+        renderSectionFooter={({ section ***REMOVED***) => (
+          <View>
             <TouchableOpacity
-              style={styles.addNewLanguageContainer***REMOVED***
+              style={[
+                styles.addGroupContainer,
+                { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+              ]***REMOVED***
               onPress={() =>
-                props.navigation.navigate('AddLanguage', {
-                  installedLanguageInstances: getLanguageAndGroupData()
+                props.navigation.navigate('AddGroup', {
+                  languageID: section.languageID
                 ***REMOVED***)
               ***REMOVED***
             >
+              <View
+                style={{
+                  width: 50 * scaleMultiplier,
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginHorizontal: 20
+                ***REMOVED******REMOVED***
+              >
+                <Icon
+                  name='group-add'
+                  size={40 * scaleMultiplier***REMOVED***
+                  color={colors.chateau***REMOVED***
+                />
+              </View>
               <Text
                 style={[
-                  styles.addNewLanguageText,
+                  styles.addGroupText,
                   {
                     textAlign: props.isRTL ? 'right' : 'left',
                     fontFamily: props.font + '-medium'
                   ***REMOVED***
                 ]***REMOVED***
               >
-                {props.translations.groups.new_language_button_label***REMOVED***
+                {props.translations.groups.new_group_button_label***REMOVED***
               </Text>
             </TouchableOpacity>
-          ***REMOVED***
-        />
-      </View>
+            <Separator />
+            <View style={{ height: 20, width: '100%' ***REMOVED******REMOVED*** />
+          </View>
+        )***REMOVED***
+        ListHeaderComponent={() => (
+          <View style={{ height: 10, width: '100%' ***REMOVED******REMOVED*** />
+        )***REMOVED***
+        ListFooterComponent={
+          <TouchableOpacity
+            style={styles.addNewLanguageContainer***REMOVED***
+            onPress={() =>
+              props.navigation.navigate('AddLanguage', {
+                installedLanguageInstances: getLanguageAndGroupData()
+              ***REMOVED***)
+            ***REMOVED***
+          >
+            <Text
+              style={[
+                styles.addNewLanguageText,
+                {
+                  textAlign: props.isRTL ? 'right' : 'left',
+                  fontFamily: props.font + '-medium'
+                ***REMOVED***
+              ]***REMOVED***
+            >
+              {props.translations.groups.new_language_button_label***REMOVED***
+            </Text>
+          </TouchableOpacity>
+        ***REMOVED***
+      />
     </View>
   )
 ***REMOVED***
@@ -210,9 +211,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.aquaHaze
-  ***REMOVED***,
-  languageList: {
-    flex: 1
   ***REMOVED***,
   addNewLanguageContainer: {
     height: 80 * scaleMultiplier,
@@ -239,8 +237,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white
-    // borderWidth: 1,
-    // borderColor: colors.athens
   ***REMOVED***,
   addGroupText: {
     color: colors.blue,

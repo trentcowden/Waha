@@ -1,11 +1,12 @@
 import React, { useEffect ***REMOVED*** from 'react'
 import { FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
-import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import SetItem from '../components/SetItem'
+import WahaButton from '../components/WahaButton'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
+
 function SetInfoScreen (props) {
   //// STATE
 
@@ -42,35 +43,25 @@ function SetInfoScreen (props) {
       <View style={styles.studySetItemContainer***REMOVED***>
         <SetItem thisSet={props.route.params.thisSet***REMOVED*** mode='setinfo' />
       </View>
-      <TouchableOpacity
+      <WahaButton
+        type='filled'
+        color={colors.apple***REMOVED***
         onPress={() => {
           props.addSet(props.activeGroup.name, props.route.params.thisSet.id)
           props.route.params.showSnackbar()
           props.navigation.goBack()
         ***REMOVED******REMOVED***
-        style={[
-          styles.addSetButton,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
-      >
-        <Text
-          style={{
-            color: colors.white,
-            textAlign: 'center',
-            fontSize: 18 * scaleMultiplier,
-            fontFamily: props.font + '-medium',
-            marginHorizontal: 10
-          ***REMOVED******REMOVED***
-        >
-          {props.translations.add_set.add_new_story_set_button_label***REMOVED***
-        </Text>
-        <Icon
-          style={{ marginHorizontal: 10 ***REMOVED******REMOVED***
-          color={colors.white***REMOVED***
-          size={36 * scaleMultiplier***REMOVED***
-          name='playlist-add'
-        />
-      </TouchableOpacity>
+        style={{ marginHorizontal: 20 ***REMOVED******REMOVED***
+        label={props.translations.add_set.add_new_story_set_button_label***REMOVED***
+        extraComponent={
+          <Icon
+            style={{ marginHorizontal: 10 ***REMOVED******REMOVED***
+            color={colors.white***REMOVED***
+            size={36 * scaleMultiplier***REMOVED***
+            name='playlist-add'
+          />
+        ***REMOVED***
+      />
       <FlatList
         data={props.activeDatabase.lessons.filter(
           lesson => props.route.params.thisSet.id === lesson.setid
@@ -122,21 +113,12 @@ function SetInfoScreen (props) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
+    paddingTop: 10
   ***REMOVED***,
   studySetItemContainer: {
     width: '100%',
-    height: 100 * scaleMultiplier
-  ***REMOVED***,
-  addSetButton: {
-    height: 68 * scaleMultiplier,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 12,
-    backgroundColor: colors.apple
+    height: 80 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 

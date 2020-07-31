@@ -123,7 +123,7 @@ function GroupItem (props) {
         ***REMOVED***
       >
         <AvatarImage
-          style={{ backgroundColor: colors.geyser ***REMOVED******REMOVED***
+          style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           size={50 * scaleMultiplier***REMOVED***
           emoji={props.emoji***REMOVED***
           isActive={props.activeGroup.name === props.groupName***REMOVED***

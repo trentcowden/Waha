@@ -3,27 +3,24 @@ import { Audio ***REMOVED*** from 'expo-av'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import {
-  Dimensions,
-  SectionList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-***REMOVED*** from 'react-native'
+import { Alert, SectionList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import LanguageSelectItem from '../components/LanguageSelectItem'
+import Separator from '../components/Separator'
+import WahaButton from '../components/WahaButton'
 import { colors, languages, languageT2S, scaleMultiplier ***REMOVED*** from '../constants'
 import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import ar from '../translations/ar.json'
 // translations import
 import en from '../translations/en.json'
 import fr from '../translations/fr.json'
+
 function LanguageSelectScreen (props) {
   //// STATE
 
   // keeps track of language selected in picker (TODO: change default to user's default language)
   const [selectedLanguage, setSelectedLanguage] = useState('')
+  const [isListEmpty, setIsListEmpty] = useState(false)
 
   // keeps track of whether the uesr has an internet connection
   const [isConnected, setIsConnected] = useState(true)
@@ -58,15 +55,6 @@ function LanguageSelectScreen (props) {
       setIsConnected(state.isConnected)
     ***REMOVED***)
 
-    fetch('http://ip-api.com/json/')
-      .then(response => response.json())
-      .then(responseJson => {
-        // console.log(responseJson)
-      ***REMOVED***)
-      .catch(error => {
-        // console.error(error)
-      ***REMOVED***)
-
     return function cleanup () {
       unsubscribe()
     ***REMOVED***
@@ -92,34 +80,46 @@ function LanguageSelectScreen (props) {
   //// RENDER
 
   // render start button conditionally as the user can't start if they don't have internet
-  var startButton = isConnected ? (
-    <TouchableOpacity
+  var startButton = isListEmpty ? (
+    <WahaButton
+      type='inactive'
+      color={colors.chateau***REMOVED***
+      style={{ marginHorizontal: 20, height: 68 * scaleMultiplier ***REMOVED******REMOVED***
+      label={i18n.t('noMoreLanguages')***REMOVED***
+    />
+  ) : isConnected ? (
+    <WahaButton
+      type='filled'
+      color={colors.apple***REMOVED***
       onPress={
-        props.route.name === 'LanguageSelect'
-          ? () =>
-              props.navigation.navigate('OnboardingSlides', {
-                selectedLanguage: selectedLanguage
-              ***REMOVED***)
-          : () => props.addLanguage(selectedLanguage)
+        selectedLanguage
+          ? props.route.name === 'LanguageSelect'
+            ? () =>
+                props.navigation.navigate('OnboardingSlides', {
+                  selectedLanguage: selectedLanguage
+                ***REMOVED***)
+            : () => props.addLanguage(selectedLanguage)
+          : () =>
+              Alert.alert(
+                i18n.t('pleaseSelectLanguageTitle'),
+                i18n.t('pleaseSelectLanguageMessage'),
+                [{ text: i18n.t('ok'), onPress: () => {***REMOVED*** ***REMOVED***]
+              )
       ***REMOVED***
-      style={[styles.button, { backgroundColor: colors.apple ***REMOVED***]***REMOVED***
-    >
-      <Text style={styles.buttonTitle***REMOVED***>
-        {props.route.name === 'LanguageSelect'
+      label={
+        props.route.name === 'LanguageSelect'
           ? i18n.t('letsBegin')
-          : i18n.t('addLanguage')***REMOVED***{' '***REMOVED***
-      </Text>
-    </TouchableOpacity>
+          : i18n.t('addLanguage') + ' '
+      ***REMOVED***
+      style={{ marginHorizontal: 20, height: 68 * scaleMultiplier ***REMOVED******REMOVED***
+    />
   ) : (
-    <View style={[styles.button, { backgroundColor: colors.oslo ***REMOVED***]***REMOVED***>
-      <Text style={styles.buttonTitle***REMOVED***>{i18n.t('letsBegin')***REMOVED*** </Text>
-    </View>
-  )
-
-  var errorMessage = isConnected ? null : (
-    <View style={{ height: 50 * scaleMultiplier, paddingHorizontal: 10 ***REMOVED******REMOVED***>
-      <Text style={styles.errorMessage***REMOVED***>{i18n.t('noInternet')***REMOVED***</Text>
-    </View>
+    <WahaButton
+      type='inactive'
+      color={colors.chateau***REMOVED***
+      style={{ marginHorizontal: 20, height: 68 * scaleMultiplier ***REMOVED******REMOVED***
+      label={i18n.t('noInternet')***REMOVED***
+    />
   )
 
   var headerText =
@@ -158,16 +158,31 @@ function LanguageSelectScreen (props) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 20,
-          backgroundColor: colors.aquaHaze
+          backgroundColor:
+            props.route.name === 'LanguageSelect'
+              ? colors.aquaHaze
+              : colors.white
         ***REMOVED******REMOVED***
       >
-        <Text style={{ color: colors.shark ***REMOVED******REMOVED***>{i18n.t(section.i18nName)***REMOVED***</Text>
+        <Text style={{ color: colors.chateau, fontSize: 18 * scaleMultiplier ***REMOVED******REMOVED***>
+          {i18n.t(section.i18nName)***REMOVED***
+        </Text>
       </View>
     )
   ***REMOVED***
 
   return (
-    <View style={styles.screen***REMOVED***>
+    <View
+      style={[
+        styles.screen,
+        {
+          backgroundColor:
+            props.route.name === 'LanguageSelect'
+              ? colors.aquaHaze
+              : colors.white
+        ***REMOVED***
+      ]***REMOVED***
+    >
       {headerText***REMOVED***
       <View
         style={{
@@ -223,6 +238,12 @@ function LanguageSelectScreen (props) {
                     else return false
                   ***REMOVED***)
           ***REMOVED***
+          ItemSeparatorComponent={() => <Separator />***REMOVED***
+          SectionSeparatorComponent={() => <Separator />***REMOVED***
+          ListEmptyComponent={() => {
+            setIsListEmpty(true)
+            return null
+          ***REMOVED******REMOVED***
           keyExtractor={item => item.wahaID***REMOVED***
           renderItem={renderLanguage***REMOVED***
           renderSectionHeader={({ section ***REMOVED***) => renderLanguageHeader(section)***REMOVED***
@@ -240,7 +261,6 @@ function LanguageSelectScreen (props) {
         ***REMOVED******REMOVED***
       >
         {startButton***REMOVED***
-        {errorMessage***REMOVED***
       </View>
     </View>
   )
@@ -253,7 +273,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: colors.aquaHaze,
     paddingTop: 40 * scaleMultiplier
   ***REMOVED***,
   title: {
@@ -267,14 +286,6 @@ const styles = StyleSheet.create({
     color: colors.shark,
     textAlign: 'center',
     fontSize: 24 * scaleMultiplier
-  ***REMOVED***,
-  button: {
-    height: 60 * scaleMultiplier,
-    width: Dimensions.get('window').width - 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.shark,
-    borderRadius: 10
   ***REMOVED***,
   buttonTitle: {
     textAlign: 'center',

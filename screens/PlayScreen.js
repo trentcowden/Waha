@@ -838,8 +838,7 @@ function PlayScreen (props) {
               flexDirection: 'column',
               flex: 1,
               marginLeft: item.key === '2' ? 10 : 0,
-              marginRight: item.key === '0' ? 10 : 0,
-              marginVertical: 10
+              marginRight: item.key === '0' ? 10 : 0
             ***REMOVED******REMOVED***
             data={
               item.key === '0'
@@ -851,6 +850,9 @@ function PlayScreen (props) {
             renderItem={renderTextContent***REMOVED***
             keyExtractor={item => item.header***REMOVED***
             showsVerticalScrollIndicator={false***REMOVED***
+            ListHeaderComponent={() => (
+              <View style={{ width: '100%', height: 10 ***REMOVED******REMOVED*** />
+            )***REMOVED***
           />
           {scrollBarRight***REMOVED***
         </View>
@@ -866,10 +868,14 @@ function PlayScreen (props) {
             ***REMOVED***
           ]***REMOVED***
         >
-          {scrollBarLeft***REMOVED***
           <View style={{ zIndex: 1, width: '100%', height: '100%' ***REMOVED******REMOVED***>
             <TouchableHighlight
-              style={{ width: '100%', height: '100%' ***REMOVED******REMOVED***
+              style={{
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center'
+              ***REMOVED******REMOVED***
               onPress={playHandler***REMOVED***
               underlayColor={colors.white + '00'***REMOVED***
               activeOpacity={1***REMOVED***
@@ -903,6 +909,7 @@ function PlayScreen (props) {
               color={colors.white***REMOVED***
             />
           </Animated.View>
+          {scrollBarLeft***REMOVED***
           {scrollBarRight***REMOVED***
         </View>
       )
@@ -1196,7 +1203,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.porcelain,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: colors.oslo
+    borderColor: colors.chateau
   ***REMOVED***,
   scrollBar: {
     width: 4,
