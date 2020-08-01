@@ -150,30 +150,34 @@ function GroupItem (props) {
           >
             {props.groupName***REMOVED***
           </Text>
-          <Text
-            style={[
-              styles.bookmarkText,
-              {
-                textAlign: props.isRTL ? 'right' : 'left',
-                fontFamily: props.font + '-regular'
-              ***REMOVED***
-            ]***REMOVED***
-            numberOfLines={1***REMOVED***
-          >
-            {getBookmarkText().set***REMOVED***
-          </Text>
-          <Text
-            style={[
-              styles.bookmarkText,
-              {
-                textAlign: props.isRTL ? 'right' : 'left',
-                fontFamily: props.font + '-regular'
-              ***REMOVED***
-            ]***REMOVED***
-            numberOfLines={1***REMOVED***
-          >
-            {getBookmarkText().lesson***REMOVED***
-          </Text>
+          {getBookmarkText() === '' ? null : (
+            <Text
+              style={[
+                styles.bookmarkText,
+                {
+                  textAlign: props.isRTL ? 'right' : 'left',
+                  fontFamily: props.font + '-regular'
+                ***REMOVED***
+              ]***REMOVED***
+              numberOfLines={1***REMOVED***
+            >
+              {getBookmarkText().set***REMOVED***
+            </Text>
+          )***REMOVED***
+          {getBookmarkText() === '' ? null : (
+            <Text
+              style={[
+                styles.bookmarkText,
+                {
+                  textAlign: props.isRTL ? 'right' : 'left',
+                  fontFamily: props.font + '-regular'
+                ***REMOVED***
+              ]***REMOVED***
+              numberOfLines={1***REMOVED***
+            >
+              {getBookmarkText().lesson***REMOVED***
+            </Text>
+          )***REMOVED***
         </View>
         {rightButton***REMOVED***
       </TouchableOpacity>

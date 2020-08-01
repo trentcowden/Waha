@@ -2,7 +2,6 @@ import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Alert,
   Clipboard,
-  Image,
   SectionList,
   StyleSheet,
   Text,
@@ -13,7 +12,7 @@ import BackButton from '../components/BackButton'
 import Blurb from '../components/Blurb'
 import GroupItemMT from '../components/GroupItemMT'
 import GroupListHeaderMT from '../components/GroupListHeaderMT'
-import MessageModal from '../components/MessageModal'
+import Hero from '../components/Hero'
 import Separator from '../components/Separator'
 import WahaItem from '../components/WahaItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
@@ -81,6 +80,9 @@ function MTScreen (props) {
 
   return (
     <View style={styles.screen***REMOVED***>
+      {props.toolkitEnabled ? (
+        <Hero source={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED*** />
+      ) : null***REMOVED***
       <Blurb
         text={
           props.toolkitEnabled
@@ -122,25 +124,7 @@ function MTScreen (props) {
         />
       </WahaItem>
       <Separator />
-
-      {/* how enabling MTs work button */***REMOVED***
-      {props.toolkitEnabled ? (
-        <WahaItem
-          title={
-            props.translations.mobilization_tools
-              .how_mobilization_tools_work_label
-          ***REMOVED***
-          onPress={() => setShowHowMTsWorkModal(true)***REMOVED***
-        >
-          <Icon
-            name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-            color={colors.tuna***REMOVED***
-            size={50 * scaleMultiplier***REMOVED***
-          />
-        </WahaItem>
-      ) : null***REMOVED***
-      {props.toolkitEnabled ? <Separator /> : null***REMOVED***
-      <View style={{ width: '100%', height: 20 ***REMOVED******REMOVED*** />
+      <View style={{ width: '100%', height: 20 * scaleMultiplier ***REMOVED******REMOVED*** />
 
       {/* list of groups with option to enable MTs for each group */***REMOVED***
       <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>
@@ -189,32 +173,6 @@ function MTScreen (props) {
           />
         ) : null***REMOVED***
       </View>
-
-      {/* modals */***REMOVED***
-      <MessageModal
-        isVisible={showHowMTsWorkModal***REMOVED***
-        hideModal={() => setShowHowMTsWorkModal(false)***REMOVED***
-        title={
-          props.translations.mobilization_tools.popups
-            .how_to_enable_mt_content_title
-        ***REMOVED***
-        body={
-          props.translations.mobilization_tools.popups
-            .how_to_enable_mt_content_message
-        ***REMOVED***
-        confirmText={props.translations.general.got_it***REMOVED***
-        confirmOnPress={() => setShowHowMTsWorkModal(false)***REMOVED***
-      >
-        <Image
-          source={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
-          style={{
-            height: 200 * scaleMultiplier,
-            margin: 20,
-            // padding: 20,
-            resizeMode: 'contain'
-          ***REMOVED******REMOVED***
-        />
-      </MessageModal>
     </View>
   )
 ***REMOVED***

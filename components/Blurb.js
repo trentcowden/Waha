@@ -5,7 +5,7 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function Blurb (props) {
   return (
-    <View style={{ width: '100%', padding: 20 ***REMOVED******REMOVED***>
+    <View style={{ width: '100%', padding: 20 * scaleMultiplier ***REMOVED******REMOVED***>
       <Text
         style={{
           textAlign: 'center',

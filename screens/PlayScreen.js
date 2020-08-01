@@ -28,6 +28,7 @@ import OptionsModal from '../components/OptionsModal'
 import PlayPauseSkip from '../components/PlayPauseSkip'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
+import Separator from '../components/Separator'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   downloadLesson,
@@ -35,6 +36,7 @@ import {
   removeDownload
 ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+
 console.disableYellowBox = true
 
 function PlayScreen (props) {
@@ -777,14 +779,12 @@ function PlayScreen (props) {
   function renderAlbumArtItem ({ item ***REMOVED***) {
     var scrollBarLeft = (
       <View
-        style={{
-          height: '100%',
-          width: 20,
-          position: 'absolute',
-          alignSelf: 'flex-start',
-          justifyContent: 'center',
-          alignItems: 'center'
-        ***REMOVED******REMOVED***
+        style={[
+          styles.scrollBarContainer,
+          {
+            alignSelf: 'flex-start'
+          ***REMOVED***
+        ]***REMOVED***
       >
         <Animated.View
           style={[
@@ -799,14 +799,12 @@ function PlayScreen (props) {
     )
     var scrollBarRight = (
       <View
-        style={{
-          height: '100%',
-          width: 20,
-          position: 'absolute',
-          alignSelf: 'flex-end',
-          justifyContent: 'center',
-          alignItems: 'center'
-        ***REMOVED******REMOVED***
+        style={[
+          styles.scrollBarContainer,
+          {
+            alignSelf: 'flex-end'
+          ***REMOVED***
+        ]***REMOVED***
       >
         <Animated.View
           style={[
@@ -822,25 +820,12 @@ function PlayScreen (props) {
 
     if (item.type === 'text') {
       return (
-        <View
-          style={[
-            styles.albumArtContainer,
-            {
-              marginLeft: item.key === '0' ? 30 : 10,
-              marginRight: item.key === '2' ? 30 : 10,
-              paddingHorizontal: item.key === '1' ? 0 : 10
-            ***REMOVED***
-          ]***REMOVED***
-        >
+        <View style={styles.albumArtContainer***REMOVED***>
           {scrollBarLeft***REMOVED***
+          {scrollBarRight***REMOVED***
           <FlatList
-            style={{
-              flexDirection: 'column',
-              flex: 1,
-              marginLeft: item.key === '2' ? 10 : 0,
-              marginRight: item.key === '0' ? 10 : 0
-            ***REMOVED******REMOVED***
             data={
+              // render questions on the first pane and scripture on the last
               item.key === '0'
                 ? props.activeDatabase.questions[
                     props.route.params.thisLesson.questionsType
@@ -850,25 +835,24 @@ function PlayScreen (props) {
             renderItem={renderTextContent***REMOVED***
             keyExtractor={item => item.header***REMOVED***
             showsVerticalScrollIndicator={false***REMOVED***
-            ListHeaderComponent={() => (
-              <View style={{ width: '100%', height: 10 ***REMOVED******REMOVED*** />
-            )***REMOVED***
+            ListHeaderComponent={() => <View style={{ height: 10 ***REMOVED******REMOVED*** />***REMOVED***
           />
-          {scrollBarRight***REMOVED***
         </View>
       )
     ***REMOVED*** else {
       return (
-        <View
-          style={[
-            styles.albumArtContainer,
-            {
+        <View style={styles.albumArtContainer***REMOVED***>
+          {scrollBarLeft***REMOVED***
+          {scrollBarRight***REMOVED***
+          <View
+            style={{
+              zIndex: 1,
+              width: '100%',
+              height: '100%',
               justifyContent: 'center',
               alignItems: 'center'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          <View style={{ zIndex: 1, width: '100%', height: '100%' ***REMOVED******REMOVED***>
+            ***REMOVED******REMOVED***
+          >
             <TouchableHighlight
               style={{
                 width: '100%',
@@ -909,8 +893,6 @@ function PlayScreen (props) {
               color={colors.white***REMOVED***
             />
           </Animated.View>
-          {scrollBarLeft***REMOVED***
-          {scrollBarRight***REMOVED***
         </View>
       )
     ***REMOVED***
@@ -919,7 +901,7 @@ function PlayScreen (props) {
   // renders the questions/scripture text content
   function renderTextContent (textList) {
     return (
-      <View>
+      <View style={{ paddingHorizontal: 20 ***REMOVED******REMOVED***>
         <Text
           style={{
             color: colors.shark,
@@ -1051,27 +1033,30 @@ function PlayScreen (props) {
           alignItems: 'center'
         ***REMOVED******REMOVED***
       >
-        <View style={{ width: '100%' ***REMOVED******REMOVED***>
-          <FlatList
-            data={albumArtData***REMOVED***
-            renderItem={renderAlbumArtItem***REMOVED***
-            ref={ref => setAlbumArtRef(ref)***REMOVED***
-            horizontal={true***REMOVED***
-            pagingEnabled={true***REMOVED***
-            snapToAlignment={'start'***REMOVED***
-            snapToInterval={Dimensions.get('window').width - 70***REMOVED***
-            decelerationRate={'fast'***REMOVED***
-            showsHorizontalScrollIndicator={false***REMOVED***
-            getItemLayout={(data, index) => ({
-              length: Dimensions.get('window').width - 70,
-              offset: Dimensions.get('window').width - 70 * index,
-              index
-            ***REMOVED***)***REMOVED***
-            initialScrollIndex={1***REMOVED***
-            viewabilityConfig={viewConfigRef.current***REMOVED***
-            onViewableItemsChanged={onViewRef.current***REMOVED***
-          />
-        </View>
+        <FlatList
+          data={albumArtData***REMOVED***
+          renderItem={renderAlbumArtItem***REMOVED***
+          ref={ref => setAlbumArtRef(ref)***REMOVED***
+          horizontal={true***REMOVED***
+          pagingEnabled={true***REMOVED***
+          snapToAlignment={'start'***REMOVED***
+          snapToInterval={Dimensions.get('window').width - 60***REMOVED***
+          decelerationRate={'fast'***REMOVED***
+          showsHorizontalScrollIndicator={false***REMOVED***
+          ItemSeparatorComponent={() => (
+            <View style={{ width: 20, height: '100%' ***REMOVED******REMOVED*** />
+          )***REMOVED***
+          ListHeaderComponent={() => <View style={{ width: 40 ***REMOVED******REMOVED*** />***REMOVED***
+          ListFooterComponent={() => <View style={{ width: 40 ***REMOVED******REMOVED*** />***REMOVED***
+          getItemLayout={(data, index) => ({
+            length: Dimensions.get('window').width - 60,
+            offset: Dimensions.get('window').width - 60 * index,
+            index
+          ***REMOVED***)***REMOVED***
+          initialScrollIndex={1***REMOVED***
+          viewabilityConfig={viewConfigRef.current***REMOVED***
+          onViewableItemsChanged={onViewRef.current***REMOVED***
+        />
       </View>
     )
 
@@ -1142,25 +1127,34 @@ function PlayScreen (props) {
           onPress={() => share('app')***REMOVED***
         />
         {props.route.params.lessonType !== 'v' ? (
-          <ModalButton
-            title={props.translations.general.share_passage_text***REMOVED***
-            onPress={() => share('text')***REMOVED***
-          />
+          <View>
+            <Separator />
+            <ModalButton
+              title={props.translations.general.share_passage_text***REMOVED***
+              onPress={() => share('text')***REMOVED***
+            />
+          </View>
         ) : null***REMOVED***
         {(props.route.params.lessonType === 'qa' ||
           props.route.params.lessonType === 'qav') &&
         !props.downloads[props.route.params.thisLesson.id] ? (
-          <ModalButton
-            title={props.translations.general.share_passage_audio***REMOVED***
-            onPress={() => share('audio')***REMOVED***
-          />
+          <View>
+            <Separator />
+            <ModalButton
+              title={props.translations.general.share_passage_audio***REMOVED***
+              onPress={() => share('audio')***REMOVED***
+            />
+          </View>
         ) : null***REMOVED***
         {props.route.params.lessonType !== 'qa' &&
         props.route.params.lessonType !== 'q' ? (
-          <ModalButton
-            title={props.translations.general.share_video_link***REMOVED***
-            onPress={() => share('video')***REMOVED***
-          />
+          <View>
+            <Separator />
+            <ModalButton
+              title={props.translations.general.share_video_link***REMOVED***
+              onPress={() => share('video')***REMOVED***
+            />
+          </View>
         ) : null***REMOVED***
       </OptionsModal>
     </View>
@@ -1199,18 +1193,27 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 80,
     height: Dimensions.get('window').width - 80,
     borderRadius: 10,
-    marginHorizontal: 10,
     backgroundColor: colors.porcelain,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: colors.chateau
+    borderColor: colors.chateau,
+    justifyContent: 'center',
+    alignItems: 'center'
+  ***REMOVED***,
+  scrollBarContainer: {
+    height: '100%',
+    width: 24,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 3,
+    marginLeft: -4
   ***REMOVED***,
   scrollBar: {
     width: 4,
     height: 75 * scaleMultiplier,
     backgroundColor: colors.chateau,
-    borderRadius: 10,
-    alignSelf: 'center'
+    borderRadius: 10
   ***REMOVED***,
   audioControlContainer: {
     justifyContent: 'space-evenly',

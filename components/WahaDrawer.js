@@ -53,7 +53,7 @@ function WahaDrawer (props) {
         </View>
       </View>
       <View style={{ backgroundColor: colors.white, flex: 1 ***REMOVED******REMOVED***>
-        <View>
+        <View style={{ flex: 1 ***REMOVED******REMOVED***>
           <DrawerItem
             iconName='group'
             text={props.translations.groups.header***REMOVED***
@@ -86,7 +86,14 @@ function WahaDrawer (props) {
             ***REMOVED***
           />
         </View>
-        <View style={styles.smallDrawerItemsContainer***REMOVED***>
+        <View
+          style={[
+            styles.smallDrawerItemsContainer,
+            {
+              flexDirection: props.isRLT ? 'row-reverse' : 'row'
+            ***REMOVED***
+          ]***REMOVED***
+        >
           <SmallDrawerItem
             onPress={() =>
               openBrowser(
@@ -103,14 +110,22 @@ function WahaDrawer (props) {
             ***REMOVED***
             label={props.translations.general.credits***REMOVED***
           />
-          <Text
-            style={[
-              styles.versionText,
-              { fontFamily: props.font + '-regular' ***REMOVED***
-            ]***REMOVED***
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingHorizontal: 20
+            ***REMOVED******REMOVED***
           >
-            v0.4.7
-          </Text>
+            <Text
+              style={[
+                styles.versionText,
+                { fontFamily: props.font + '-regular' ***REMOVED***
+              ]***REMOVED***
+            >
+              v0.4.7
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -148,13 +163,11 @@ const styles = StyleSheet.create({
     height: '100%'
   ***REMOVED***,
   smallDrawerItemsContainer: {
-    justifyContent: 'flex-end',
-    flex: 1,
-    marginBottom: 20
+    width: '100%',
+    justifyContent: 'space-between'
   ***REMOVED***,
   versionText: {
     fontSize: 10 * scaleMultiplier,
-    marginHorizontal: 13,
     color: colors.chateau,
     justifyContent: 'center',
     alignItems: 'center'

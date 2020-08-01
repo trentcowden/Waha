@@ -17,6 +17,7 @@ import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import ModalButton from '../components/ModalButton'
 import OptionsModal from '../components/OptionsModal'
+import Separator from '../components/Separator'
 import SetItem from '../components/SetItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import {
@@ -467,25 +468,34 @@ function LessonListScreen (props) {
           onPress={() => share('app')***REMOVED***
         />
         {getLessonType(activeLessonInModal) !== 'v' ? (
-          <ModalButton
-            title={props.translations.general.share_passage_text***REMOVED***
-            onPress={() => share('text')***REMOVED***
-          />
+          <View>
+            <Separator />
+            <ModalButton
+              title={props.translations.general.share_passage_text***REMOVED***
+              onPress={() => share('text')***REMOVED***
+            />
+          </View>
         ) : null***REMOVED***
         {(getLessonType(activeLessonInModal) === 'qa' ||
           getLessonType(activeLessonInModal) === 'qav') &&
         !props.downloads[activeLessonInModal.id] ? (
-          <ModalButton
-            title={props.translations.general.share_passage_audio***REMOVED***
-            onPress={() => share('audio')***REMOVED***
-          />
+          <View>
+            <Separator />
+            <ModalButton
+              title={props.translations.general.share_passage_audio***REMOVED***
+              onPress={() => share('audio')***REMOVED***
+            />
+          </View>
         ) : null***REMOVED***
         {getLessonType(activeLessonInModal) !== 'qa' &&
         getLessonType(activeLessonInModal) !== 'q' ? (
-          <ModalButton
-            title={props.translations.general.share_video_link***REMOVED***
-            onPress={() => share('video')***REMOVED***
-          />
+          <View>
+            <Separator />
+            <ModalButton
+              title={props.translations.general.share_video_link***REMOVED***
+              onPress={() => share('video')***REMOVED***
+            />
+          </View>
         ) : null***REMOVED***
       </OptionsModal>
     </View>

@@ -53,18 +53,20 @@ function MessageModal (props) {
             color: colors.shark,
             fontFamily: props.font + '-medium',
             fontSize: 18 * scaleMultiplier,
-            marginVertical: 10,
-            textAlign: 'center'
+            // marginVertical: 10,
+            textAlign: 'center',
+            paddingHorizontal: 20
           ***REMOVED******REMOVED***
         >
           {props.body***REMOVED***
         </Text>
         <TouchableOpacity
           style={{
-            marginVertical: 10,
+            // marginVertical: 10,
             width: '100%',
-            height: 50 * scaleMultiplier,
+            height: 80 * scaleMultiplier,
             justifyContent: 'center'
+            // backgroundColor: 'blue'
           ***REMOVED******REMOVED***
           onPress={props.confirmOnPress***REMOVED***
         >
@@ -91,8 +93,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10
+    alignItems: 'center'
   ***REMOVED***
 ***REMOVED***)
 

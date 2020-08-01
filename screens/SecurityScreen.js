@@ -1,8 +1,9 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Image, ScrollView, StyleSheet, Switch, View ***REMOVED*** from 'react-native'
+import { ScrollView, StyleSheet, Switch, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import Blurb from '../components/Blurb'
+import Hero from '../components/Hero'
 import KeyLabels from '../components/KeyLabels'
 import MessageModal from '../components/MessageModal'
 import Piano from '../components/Piano'
@@ -72,14 +73,7 @@ function SecurityScreen (props) {
 
   return (
     <ScrollView style={styles.screen***REMOVED***>
-      <Separator />
-      <View style={styles.topPortion***REMOVED***>
-        <Image
-          style={styles.topImage***REMOVED***
-          source={require('../assets/gifs/piano_unlock.gif')***REMOVED***
-        />
-      </View>
-      <Separator />
+      <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
       <View
         style={{
           width: '100%',
@@ -151,17 +145,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.aquaHaze
-  ***REMOVED***,
-  topPortion: {
-    backgroundColor: colors.white,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  ***REMOVED***,
-  topImage: {
-    resizeMode: 'contain',
-    height: 175 * scaleMultiplier,
-    alignSelf: 'center'
   ***REMOVED***
 ***REMOVED***)
 

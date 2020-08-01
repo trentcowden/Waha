@@ -7,13 +7,7 @@ function ModalButton (props) {
   //// RETURN
 
   return (
-    <TouchableOpacity
-      style={[
-        styles.modalButtonStyle,
-        { borderBottomWidth: props.isLast ? 0 : 1 ***REMOVED***
-      ]***REMOVED***
-      onPress={props.onPress***REMOVED***
-    >
+    <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={props.onPress***REMOVED***>
       <Text
         style={[
           styles.text,
