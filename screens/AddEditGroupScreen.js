@@ -202,13 +202,7 @@ function AddEditGroupScreen (props) {
           label={props.translations.add_edit_group.reset_progress_button_label***REMOVED***
           style={{ marginVertical: 10 ***REMOVED******REMOVED***
           textStyle={{
-            fontFamily: props.font + '-regular',
-            textAlign:
-              Dimensions.get('window').height < 700
-                ? 'center'
-                : props.isRTL
-                ? 'right'
-                : 'left'
+            fontFamily: props.font + '-regular'
           ***REMOVED******REMOVED***
         />
         <View style={{ width: 20, height: '100%' ***REMOVED******REMOVED*** />
@@ -225,13 +219,7 @@ function AddEditGroupScreen (props) {
             color={colors.chateau***REMOVED***
             style={{ marginVertical: 10 ***REMOVED******REMOVED***
             textStyle={{
-              fontFamily: props.font + '-regular',
-              textAlign:
-                Dimensions.get('window').height < 700
-                  ? 'center'
-                  : props.isRTL
-                  ? 'right'
-                  : 'left'
+              fontFamily: props.font + '-regular'
             ***REMOVED******REMOVED***
           />
         ) : (
@@ -250,13 +238,7 @@ function AddEditGroupScreen (props) {
             label={props.translations.add_edit_group.delete_group_button_label***REMOVED***
             style={{ marginVertical: 10 ***REMOVED******REMOVED***
             textStyle={{
-              fontFamily: props.font + '-regular',
-              textAlign:
-                Dimensions.get('window').height < 700
-                  ? 'center'
-                  : props.isRTL
-                  ? 'right'
-                  : 'left'
+              fontFamily: props.font + '-regular'
             ***REMOVED******REMOVED***
           />
         )***REMOVED***
