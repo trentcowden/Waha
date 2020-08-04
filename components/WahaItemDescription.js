@@ -17,7 +17,8 @@ function WahaItemDescription (props) {
         style={{
           fontFamily: props.font + '-regular',
           fontSize: 14 * scaleMultiplier,
-          color: colors.chateau
+          color: colors.chateau,
+          textAlign: props.isRTL ? 'right' : 'left'
         ***REMOVED******REMOVED***
       >
         {props.text***REMOVED***

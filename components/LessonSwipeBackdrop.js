@@ -9,7 +9,13 @@ function LessonSwipeBackdrop (props) {
   // render complete button conditionally since it could be complete or incomplete
   var completeButton = props.isComplete ? (
     <TouchableOpacity
-      style={[styles.buttonContainer, { backgroundColor: colors.chateau ***REMOVED***]***REMOVED***
+      style={[
+        styles.buttonContainer,
+        {
+          backgroundColor: colors.chateau,
+          alignItems: props.isRTL ? 'flex-end' : 'flex-start'
+        ***REMOVED***
+      ]***REMOVED***
       onPress={props.toggleComplete***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
@@ -46,7 +52,7 @@ function LessonSwipeBackdrop (props) {
           styles.buttonContainer,
           {
             backgroundColor: colors.blue,
-            alignItems: props.isRLT ? 'flex-start' : 'flex-end'
+            alignItems: props.isRTL ? 'flex-start' : 'flex-end'
           ***REMOVED***
         ]***REMOVED***
         onPress={props.showShareModal***REMOVED***

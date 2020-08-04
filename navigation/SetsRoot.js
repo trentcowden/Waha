@@ -61,7 +61,7 @@ function SetsRoot (props) {
                   <AvatarImage
                     style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
                     emoji={props.activeGroup.emoji***REMOVED***
-                    size={40***REMOVED***
+                    size={35***REMOVED***
                     onPress={() => props.navigation.toggleDrawer()***REMOVED***
                     isActive={true***REMOVED***
                   />
@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 175 * scaleMultiplier,
     flex: 1,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center'
   ***REMOVED***
 ***REMOVED***)
 

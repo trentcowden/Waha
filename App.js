@@ -1,14 +1,14 @@
-import React, { useEffect, useState ***REMOVED*** from 'react'
-import * as Font from 'expo-font'
-import Root from './navigation/Root'
-import LoadingView from './components/LoadingView'
-import { Provider ***REMOVED*** from 'react-redux'
-import { persistor, store ***REMOVED*** from './redux/store'
-import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
-import * as ScreenOrientation from 'expo-screen-orientation'
-
 // only here because of wack errors, DON'T DELETE
-import { encode, decode ***REMOVED*** from 'base-64'
+import { decode, encode ***REMOVED*** from 'base-64'
+import * as Font from 'expo-font'
+import * as ScreenOrientation from 'expo-screen-orientation'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import { Provider ***REMOVED*** from 'react-redux'
+import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
+import LoadingView from './components/LoadingView'
+import Root from './navigation/Root'
+import { persistor, store ***REMOVED*** from './redux/store'
+
 if (!global.btoa) {
   global.btoa = encode
 ***REMOVED***
@@ -46,6 +46,15 @@ export default function App () {
     ***REMOVED***)
     await Font.loadAsync({
       'roboto-regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf')
+    ***REMOVED***)
+    await Font.loadAsync({
+      'merriweather-black': require('./assets/fonts/Merriweather/Merriweather-Black.ttf')
+    ***REMOVED***)
+    await Font.loadAsync({
+      'merriweather-medium': require('./assets/fonts/Merriweather/Merriweather-Bold.ttf')
+    ***REMOVED***)
+    await Font.loadAsync({
+      'merriweather-regular': require('./assets/fonts/Merriweather/Merriweather-Regular.ttf')
     ***REMOVED***)
     setFontsLoaded(true)
   ***REMOVED***

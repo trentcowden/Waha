@@ -184,43 +184,8 @@ function SetItem (props) {
             />
           </View>
         )
-        setAction(null)
+        setAction(<View style={styles.actionContainer***REMOVED*** />)
         break
-      // case 'folder':
-      //   setIcon(
-      //     <View style={styles.iconContainer***REMOVED***>
-      //       <SVG
-      //         name={props.thisSet.icon***REMOVED***
-      //         width={80 * scaleMultiplier***REMOVED***
-      //         height={80 * scaleMultiplier***REMOVED***
-      //         fill='#1D1E20'
-      //       />
-      //     </View>
-      //   )
-      //   setAction(
-      //     <View style={styles.actionContainer***REMOVED***>
-      //       <Icon
-      //         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-      //         size={30 * scaleMultiplier***REMOVED***
-      //         color={props.primaryColor***REMOVED***
-      //       />
-      //     </View>
-      //   )
-      //   setInfo()
-      //   // INFO BUTTON (keep for later)
-      //   // <TouchableOpacity
-      //   //   style={[
-      //   //     styles.actionContainer,
-      //   //     {
-      //   //       marginRight: props.isRTL ? 0 : 10,
-      //   //       marginLeft: props.isRTL ? 10 : 0
-      //   //     ***REMOVED***
-      //   //   ]***REMOVED***
-      //   //   onPress={() => {***REMOVED******REMOVED***
-      //   // >
-      //   //   <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color={colors.chateau***REMOVED*** />
-      //   // </TouchableOpacity>
-      //   break
     ***REMOVED***
   ***REMOVED***, [
     progressPercentage,
@@ -364,6 +329,7 @@ function SetItem (props) {
 const styles = StyleSheet.create({
   studySetItem: {
     flexDirection: 'row',
+    width: '100%',
     flex: 1,
     // height: 100 * scaleMultiplier,
     aspectRatio: 4,
@@ -415,3 +381,39 @@ function mapDispatchToProps (dispatch) {
 ***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetItem)
+
+// case 'folder':
+//   setIcon(
+//     <View style={styles.iconContainer***REMOVED***>
+//       <SVG
+//         name={props.thisSet.icon***REMOVED***
+//         width={80 * scaleMultiplier***REMOVED***
+//         height={80 * scaleMultiplier***REMOVED***
+//         fill='#1D1E20'
+//       />
+//     </View>
+//   )
+//   setAction(
+//     <View style={styles.actionContainer***REMOVED***>
+//       <Icon
+//         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+//         size={30 * scaleMultiplier***REMOVED***
+//         color={props.primaryColor***REMOVED***
+//       />
+//     </View>
+//   )
+//   setInfo()
+//   // INFO BUTTON (keep for later)
+//   // <TouchableOpacity
+//   //   style={[
+//   //     styles.actionContainer,
+//   //     {
+//   //       marginRight: props.isRTL ? 0 : 10,
+//   //       marginLeft: props.isRTL ? 10 : 0
+//   //     ***REMOVED***
+//   //   ]***REMOVED***
+//   //   onPress={() => {***REMOVED******REMOVED***
+//   // >
+//   //   <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color={colors.chateau***REMOVED*** />
+//   // </TouchableOpacity>
+//   break
