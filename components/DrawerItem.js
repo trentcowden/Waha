@@ -17,7 +17,7 @@ function DrawerItem (props) {
       <View style={styles.iconContainer***REMOVED***>
         <Icon
           name={props.iconName***REMOVED***
-          size={50 * scaleMultiplier***REMOVED***
+          size={45 * scaleMultiplier***REMOVED***
           color={colors.tuna***REMOVED***
         />
       </View>
@@ -41,12 +41,12 @@ function DrawerItem (props) {
 
 const styles = StyleSheet.create({
   settingsItem: {
-    height: 57 * scaleMultiplier,
-    paddingLeft: 5,
+    // height: 50 * scaleMultiplier,
+    aspectRatio: 5.5,
+    paddingHorizontal: 10,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center',
-    margin: 5
+    alignItems: 'center'
   ***REMOVED***,
   iconContainer: {
     justifyContent: 'center',

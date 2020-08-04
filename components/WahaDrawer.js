@@ -1,6 +1,12 @@
 import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { connect ***REMOVED*** from 'react-redux'
 import AvatarImage from '../components/AvatarImage'
@@ -86,11 +92,16 @@ function WahaDrawer (props) {
             ***REMOVED***
           />
         </View>
-        <View
+        <SafeAreaView
           style={[
             styles.smallDrawerItemsContainer,
             {
-              flexDirection: props.isRLT ? 'row-reverse' : 'row'
+              flexDirection:
+                Dimensions.get('window').height < 550
+                  ? props.isRLT
+                    ? 'row-reverse'
+                    : 'row'
+                  : 'column'
             ***REMOVED***
           ]***REMOVED***
         >
@@ -113,8 +124,8 @@ function WahaDrawer (props) {
           <View
             style={{
               justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: 20
+              paddingHorizontal: 10,
+              marginVertical: 5
             ***REMOVED******REMOVED***
           >
             <Text
@@ -123,10 +134,10 @@ function WahaDrawer (props) {
                 { fontFamily: props.font + '-regular' ***REMOVED***
               ]***REMOVED***
             >
-              v0.5.0
+              v0.5.1
             </Text>
           </View>
-        </View>
+        </SafeAreaView>
       </View>
     </SafeAreaView>
   )
@@ -164,7 +175,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   smallDrawerItemsContainer: {
     width: '100%',
-    justifyContent: 'space-between'
+    justifyContent: 'center'
   ***REMOVED***,
   versionText: {
     fontSize: 10 * scaleMultiplier,

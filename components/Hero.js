@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   topImage: {
     resizeMode: 'contain',
-    height: 175 * scaleMultiplier,
+    height: 170 * scaleMultiplier,
     alignSelf: 'center'
   ***REMOVED***
 ***REMOVED***)
