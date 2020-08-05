@@ -19,7 +19,7 @@ import ModalButton from '../components/ModalButton'
 import OptionsModal from '../components/OptionsModal'
 import Separator from '../components/Separator'
 import SetItem from '../components/SetItem'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 import {
   downloadLesson,
   downloadVideo,
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   headerImage: {
     resizeMode: 'contain',
-    width: 175 * scaleMultiplier,
+    width: 200,
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center'

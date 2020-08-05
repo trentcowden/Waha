@@ -4,7 +4,7 @@ import React from 'react'
 import { Image, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import AvatarImage from '../components/AvatarImage'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 import AddSetStack from './AddSetStack'
 import SetTabs from './SetTabs'
 const Stack = createStackNavigator()
@@ -86,7 +86,7 @@ function SetsRoot (props) {
 const styles = StyleSheet.create({
   headerImage: {
     resizeMode: 'contain',
-    width: 175 * scaleMultiplier,
+    width: 200,
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center'

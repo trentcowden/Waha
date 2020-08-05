@@ -343,7 +343,7 @@ function AddEditGroupScreen (props) {
             )***REMOVED***
             keyExtractor={item => item***REMOVED***
             numColumns={Math.floor(
-              (Dimensions.get('window').width - 40) / (50 * scaleMultiplier)
+              (Dimensions.get('window').width - 50) / (50 * scaleMultiplier)
             )***REMOVED***
           />
         </View>

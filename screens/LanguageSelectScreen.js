@@ -84,7 +84,10 @@ function LanguageSelectScreen (props) {
     <WahaButton
       type='inactive'
       color={colors.chateau***REMOVED***
-      style={{ marginHorizontal: 20, height: 68 * scaleMultiplier ***REMOVED******REMOVED***
+      style={{
+        marginHorizontal: 20,
+        height: 68 * scaleMultiplier
+      ***REMOVED******REMOVED***
       label={i18n.t('noMoreLanguages')***REMOVED***
     />
   ) : isConnected ? (
@@ -111,13 +114,19 @@ function LanguageSelectScreen (props) {
           ? i18n.t('letsBegin')
           : i18n.t('addLanguage') + ' '
       ***REMOVED***
-      style={{ marginHorizontal: 20, height: 68 * scaleMultiplier ***REMOVED******REMOVED***
+      style={{
+        marginHorizontal: 20,
+        height: 68 * scaleMultiplier
+      ***REMOVED******REMOVED***
     />
   ) : (
     <WahaButton
       type='inactive'
       color={colors.chateau***REMOVED***
-      style={{ marginHorizontal: 20, height: 68 * scaleMultiplier ***REMOVED******REMOVED***
+      style={{
+        marginHorizontal: 20,
+        height: 68 * scaleMultiplier
+      ***REMOVED******REMOVED***
       label={i18n.t('noInternet')***REMOVED***
     />
   )
@@ -253,16 +262,7 @@ function LanguageSelectScreen (props) {
           )***REMOVED***
         />
       </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: 130 * scaleMultiplier
-        ***REMOVED******REMOVED***
-      >
-        {startButton***REMOVED***
-      </View>
+      {startButton***REMOVED***
     </View>
   )
 ***REMOVED***
