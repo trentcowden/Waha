@@ -92,40 +92,6 @@ function MTScreen (props) {
         ***REMOVED***
       />
       <Separator />
-      <WahaItem
-        title={
-          props.toolkitEnabled
-            ? props.translations.mobilization_tools.view_code_button_label
-            : props.translations.mobilization_tools.unlock_mt_button_label
-        ***REMOVED***
-        onPress={
-          props.toolkitEnabled
-            ? () =>
-                Alert.alert(
-                  props.translations.mobilization_tools.mt_code_title,
-                  '281820',
-                  [
-                    {
-                      text: props.translations.general.copy_to_clipboard,
-                      onPress: () => Clipboard.setString('281820')
-                    ***REMOVED***,
-                    {
-                      text: props.translations.general.close,
-                      onPress: () => {***REMOVED***
-                    ***REMOVED***
-                  ]
-                )
-            : () => props.navigation.navigate('Passcode')
-        ***REMOVED***
-      >
-        <Icon
-          name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-          color={colors.tuna***REMOVED***
-          size={50 * scaleMultiplier***REMOVED***
-        />
-      </WahaItem>
-      <Separator />
-      <View style={{ width: '100%', height: 20 * scaleMultiplier ***REMOVED******REMOVED*** />
 
       {/* list of groups with option to enable MTs for each group */***REMOVED***
       <View style={{ width: '100%', flex: 1 ***REMOVED******REMOVED***>
@@ -162,6 +128,47 @@ function MTScreen (props) {
                 </View>
               )
             ***REMOVED******REMOVED***
+            ListHeaderComponent={() => (
+              <View>
+                <WahaItem
+                  title={
+                    props.toolkitEnabled
+                      ? props.translations.mobilization_tools
+                          .view_code_button_label
+                      : props.translations.mobilization_tools
+                          .unlock_mt_button_label
+                  ***REMOVED***
+                  onPress={
+                    props.toolkitEnabled
+                      ? () =>
+                          Alert.alert(
+                            props.translations.mobilization_tools.mt_code_title,
+                            '281820',
+                            [
+                              {
+                                text:
+                                  props.translations.general.copy_to_clipboard,
+                                onPress: () => Clipboard.setString('281820')
+                              ***REMOVED***,
+                              {
+                                text: props.translations.general.close,
+                                onPress: () => {***REMOVED***
+                              ***REMOVED***
+                            ]
+                          )
+                      : () => props.navigation.navigate('Passcode')
+                  ***REMOVED***
+                >
+                  <Icon
+                    name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+                    color={colors.tuna***REMOVED***
+                    size={50 * scaleMultiplier***REMOVED***
+                  />
+                </WahaItem>
+                <Separator />
+                <View style={{ width: '100%', height: 20 * scaleMultiplier ***REMOVED******REMOVED*** />
+              </View>
+            )***REMOVED***
             renderSectionHeader={({ section ***REMOVED***) =>
               renderLanguageInstanceItem(section)
             ***REMOVED***

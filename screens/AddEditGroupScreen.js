@@ -157,29 +157,19 @@ function AddEditGroupScreen (props) {
 
   // renders the delete group button conditionally because the currently active group can't be deleted
 
-  var editControls =
+  var resetButton =
     props.route.name === 'EditGroup' ? (
       <View
         style={{
           paddingHorizontal: 20,
           paddingVertical: 10,
-          flex: 1,
-          flexDirection:
-            Dimensions.get('window').height < 700
-              ? props.isRTL
-                ? 'row-reverse'
-                : 'row'
-              : 'column'
+          flex: 1
         ***REMOVED******REMOVED***
       >
         <WahaButton
           type='outline'
           color={colors.red***REMOVED***
-          width={
-            Dimensions.get('window').height < 700
-              ? Dimensions.get('window').width / 2 - 30
-              : Dimensions.get('window').width - 40
-          ***REMOVED***
+          width={Dimensions.get('window').width - 40***REMOVED***
           onPress={() =>
             Alert.alert(
               props.translations.add_edit_group.popups.reset_progress_title,
@@ -205,43 +195,6 @@ function AddEditGroupScreen (props) {
             fontFamily: props.font + '-regular'
           ***REMOVED******REMOVED***
         />
-        <View style={{ width: 20, height: '100%' ***REMOVED******REMOVED*** />
-        {/* delete group button */***REMOVED***
-        {isActive ? (
-          <WahaButton
-            type='inactive'
-            width={
-              Dimensions.get('window').height < 700
-                ? Dimensions.get('window').width / 2 - 30
-                : Dimensions.get('window').width - 40
-            ***REMOVED***
-            label={props.translations.add_edit_group.cant_delete_group_text***REMOVED***
-            color={colors.chateau***REMOVED***
-            style={{ marginVertical: 10 ***REMOVED******REMOVED***
-            textStyle={{
-              fontFamily: props.font + '-regular'
-            ***REMOVED******REMOVED***
-          />
-        ) : (
-          <WahaButton
-            type='filled'
-            onPress={() => {
-              props.deleteGroup(props.route.params.groupName)
-              props.navigation.goBack()
-            ***REMOVED******REMOVED***
-            width={
-              Dimensions.get('window').height < 550
-                ? Dimensions.get('window').width / 2 - 30
-                : Dimensions.get('window').width - 40
-            ***REMOVED***
-            color={colors.red***REMOVED***
-            label={props.translations.add_edit_group.delete_group_button_label***REMOVED***
-            style={{ marginVertical: 10 ***REMOVED******REMOVED***
-            textStyle={{
-              fontFamily: props.font + '-regular'
-            ***REMOVED******REMOVED***
-          />
-        )***REMOVED***
       </View>
     ) : null
 
@@ -347,7 +300,7 @@ function AddEditGroupScreen (props) {
             )***REMOVED***
           />
         </View>
-        {editControls***REMOVED***
+        {resetButton***REMOVED***
       </View>
       {/* save button */***REMOVED***
       {props.route.name === 'AddGroup' ? (

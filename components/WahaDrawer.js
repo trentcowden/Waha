@@ -137,7 +137,7 @@ function WahaDrawer (props) {
                 ***REMOVED***
               ]***REMOVED***
             >
-              v0.5.0.2
+              v0.5.0.4
             </Text>
           </View>
         </SafeAreaView>
