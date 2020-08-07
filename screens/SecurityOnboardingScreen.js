@@ -40,7 +40,7 @@ function SecurityOnboardingScreen (props) {
       image: (
         <Image
           style={styles.image***REMOVED***
-          source={require('../assets/onboarding/onboarding1.png')***REMOVED***
+          source={require('../assets/onboarding/security_onboarding1.png')***REMOVED***
         />
       ),
       title: props.translations.security.popups.onboarding_1_title,
@@ -51,7 +51,7 @@ function SecurityOnboardingScreen (props) {
       image: (
         <Image
           style={styles.image***REMOVED***
-          source={require('../assets/onboarding/onboarding2.png')***REMOVED***
+          source={require('../assets/onboarding/security_onboarding2.png')***REMOVED***
         />
       ),
       title: props.translations.security.popups.onboarding_2_title,
@@ -62,7 +62,7 @@ function SecurityOnboardingScreen (props) {
       image: (
         <Image
           style={styles.image***REMOVED***
-          source={require('../assets/onboarding/onboarding3.png')***REMOVED***
+          source={require('../assets/onboarding/security_onboarding3.png')***REMOVED***
         />
       ),
       title: props.translations.security.popups.onboarding_3_title,

@@ -12,6 +12,7 @@ import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/Piano'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { setIsMuted ***REMOVED*** from '../redux/actions/securityActions'
 
 function GameScreen (props) {
   //// STATE
@@ -68,7 +69,7 @@ function GameScreen (props) {
         </Text>
       </View>
       <View>
-        <Piano setPattern={setPattern***REMOVED*** isMuted={isMuted***REMOVED*** />
+        <Piano setPattern={setPattern***REMOVED*** isMuted={props.security.isMuted***REMOVED*** />
         <View
           style={{
             width: Dimensions.get('window').width,
@@ -76,13 +77,17 @@ function GameScreen (props) {
           ***REMOVED******REMOVED***
         >
           <TouchableOpacity
-            onPress={() => setIsMuted(old => !old)***REMOVED***
+            onPress={
+              props.security.isMuted
+                ? () => props.setIsMuted(false)
+                : () => props.setIsMuted(true)
+            ***REMOVED***
             style={{
               margin: 20
             ***REMOVED******REMOVED***
           >
             <Icon
-              name={isMuted ? 'volume-off' : 'volume'***REMOVED***
+              name={props.security.isMuted ? 'volume-off' : 'volume'***REMOVED***
               size={50***REMOVED***
               color={colors.tuna***REMOVED***
             />
@@ -115,4 +120,12 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(GameScreen)
+function mapDispatchToProps (dispatch) {
+  return {
+    setIsMuted: toSet => {
+      dispatch(setIsMuted(toSet))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameScreen)
