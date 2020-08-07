@@ -1,10 +1,17 @@
 import { Audio ***REMOVED*** from 'expo-av'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Dimensions, Image, SafeAreaView, StyleSheet, View ***REMOVED*** from 'react-native'
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View
+***REMOVED*** from 'react-native'
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/Piano'
-import { colors ***REMOVED*** from '../constants'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function GameScreen (props) {
   //// STATE
@@ -37,30 +44,50 @@ function GameScreen (props) {
           height: '25%',
           width: '100%',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexDirection: 'row'
         ***REMOVED******REMOVED***
       >
-        <Image source={require('../assets/wahaIcon.png')***REMOVED*** />
-      </View>
-      <Piano setPattern={setPattern***REMOVED*** isMuted={isMuted***REMOVED*** />
-      <View
-        style={{
-          width: Dimensions.get('window').width,
-          alignItems: 'flex-end'
-        ***REMOVED******REMOVED***
-      >
-        <TouchableOpacity
-          onPress={() => setIsMuted(old => !old)***REMOVED***
+        <Image
+          source={require('../assets/wahaIcon.png')***REMOVED***
           style={{
-            margin: 20
+            resizeMode: 'contain',
+            width: 50,
+            height: 50,
+            borderRadius: 10
+          ***REMOVED******REMOVED***
+        />
+        <Text
+          style={{
+            fontFamily: props.font + '-medium',
+            paddingHorizontal: 10,
+            fontSize: 32 * scaleMultiplier
           ***REMOVED******REMOVED***
         >
-          <Icon
-            name={isMuted ? 'volume-off' : 'volume'***REMOVED***
-            size={50***REMOVED***
-            color={colors.tuna***REMOVED***
-          />
-        </TouchableOpacity>
+          {props.translations.security.game_screen_title***REMOVED***
+        </Text>
+      </View>
+      <View>
+        <Piano setPattern={setPattern***REMOVED*** isMuted={isMuted***REMOVED*** />
+        <View
+          style={{
+            width: Dimensions.get('window').width,
+            alignItems: 'flex-end'
+          ***REMOVED******REMOVED***
+        >
+          <TouchableOpacity
+            onPress={() => setIsMuted(old => !old)***REMOVED***
+            style={{
+              margin: 20
+            ***REMOVED******REMOVED***
+          >
+            <Icon
+              name={isMuted ? 'volume-off' : 'volume'***REMOVED***
+              size={50***REMOVED***
+              color={colors.tuna***REMOVED***
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -73,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.aquaHaze,
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'space-around'
   ***REMOVED***
 ***REMOVED***)
 
@@ -83,7 +110,8 @@ function mapStateToProps (state) {
   )[0]
   return {
     security: state.security,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    translations: state.database[activeGroup.language].translations
   ***REMOVED***
 ***REMOVED***
 
