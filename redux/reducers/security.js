@@ -7,7 +7,7 @@ import {
   SET_TIMER
 ***REMOVED*** from '../actions/securityActions'
 
-export function security (state = { timeoutDuration: null ***REMOVED***, action) {
+export function security (state = { timeoutDuration: 0 ***REMOVED***, action) {
   switch (action.type) {
     // note: only stores the active group's names
     case SET_SECURITY_ENABLED:

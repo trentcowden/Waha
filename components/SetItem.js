@@ -311,7 +311,7 @@ function SetItem (props) {
         confirmOnPress={() => setShowUnlockModal(false)***REMOVED***
       >
         <Image
-          source={require('../assets/splash.png')***REMOVED***
+          // source={require('../assets/splash.png')***REMOVED***
           style={{
             height: 200 * scaleMultiplier,
             margin: 20,
