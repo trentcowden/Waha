@@ -141,6 +141,12 @@ function PlayScreen (props) {
     ***REMOVED***
   ***REMOVED***, [isMiddle])
 
+  // pause lesson if we move to a different screen (i.e. when switching to
+  //  splash / game for security mode)
+  useEffect(() => {
+    if (isPlaying) playHandler()
+  ***REMOVED***, [props.navigation.isFocused()])
+
   //// OTHER STATE
 
   // share modal

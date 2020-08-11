@@ -12,7 +12,7 @@ import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/Piano'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import { setIsMuted ***REMOVED*** from '../redux/actions/securityActions'
+import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
 
 function GameScreen (props) {
   //// STATE
@@ -23,16 +23,20 @@ function GameScreen (props) {
   //// CONSTRUCTOR
 
   useEffect(() => {
-    console.log(pattern)
     if (pattern.includes(props.security.code)) {
       var note = new Audio.Sound()
       note
         .loadAsync(require('../assets/notes/Success.mp3'))
         .then(() => note.playAsync())
-      props.navigation.reset({
-        index: 0,
-        routes: [{ name: 'SetsRoot' ***REMOVED***]
-      ***REMOVED***)
+      props.setIsTimedOut(false)
+      if (props.navigation.canGoBack()) {
+        props.navigation.goBack()
+        props.navigation.goBack()
+      ***REMOVED*** else
+        props.navigation.reset({
+          index: 0,
+          routes: [{ name: 'SetsRoot' ***REMOVED***]
+        ***REMOVED***)
     ***REMOVED***
   ***REMOVED***, [pattern])
 
@@ -124,6 +128,9 @@ function mapDispatchToProps (dispatch) {
   return {
     setIsMuted: toSet => {
       dispatch(setIsMuted(toSet))
+    ***REMOVED***,
+    setIsTimedOut: toSet => {
+      dispatch(setIsTimedOut(toSet))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

@@ -7,11 +7,11 @@ function WahaItem (props) {
   return props.onPress ? (
     <TouchableOpacity
       style={[
-        props.style,
         styles.itemContainer,
         {
           flexDirection: props.isRTL ? 'row-reverse' : 'row'
-        ***REMOVED***
+        ***REMOVED***,
+        props.style
       ]***REMOVED***
       onPress={props.onPress***REMOVED***
     >
@@ -29,11 +29,11 @@ function WahaItem (props) {
   ) : (
     <View
       style={[
-        props.style,
         styles.itemContainer,
         {
           flexDirection: props.isRTL ? 'row-reverse' : 'row'
-        ***REMOVED***
+        ***REMOVED***,
+        props.style
       ]***REMOVED***
     >
       <Text

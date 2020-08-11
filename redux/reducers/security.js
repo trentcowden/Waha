@@ -1,11 +1,13 @@
 import {
-  SET_ACTIVATE_ON_SWITCH,
   SET_CODE,
   SET_IS_MUTED,
-  SET_SECURITY_ENABLED
+  SET_IS_TIMED_OUT,
+  SET_SECURITY_ENABLED,
+  SET_TIMEOUT_DURATION,
+  SET_TIMER
 ***REMOVED*** from '../actions/securityActions'
 
-export function security (state = {***REMOVED***, action) {
+export function security (state = { timeoutDuration: null ***REMOVED***, action) {
   switch (action.type) {
     // note: only stores the active group's names
     case SET_SECURITY_ENABLED:
@@ -13,11 +15,7 @@ export function security (state = {***REMOVED***, action) {
         ...state,
         securityEnabled: action.toSet
       ***REMOVED***
-    case SET_ACTIVATE_ON_SWITCH:
-      return {
-        ...state,
-        activateOnSwitch: action.toSet
-      ***REMOVED***
+
     case SET_CODE:
       return {
         ...state,
@@ -27,6 +25,21 @@ export function security (state = {***REMOVED***, action) {
       return {
         ...state,
         isMuted: action.toSet
+      ***REMOVED***
+    case SET_TIMEOUT_DURATION:
+      return {
+        ...state,
+        timeoutDuration: action.ms
+      ***REMOVED***
+    case SET_TIMER:
+      return {
+        ...state,
+        timer: action.ms
+      ***REMOVED***
+    case SET_IS_TIMED_OUT:
+      return {
+        ...state,
+        isTimedOut: action.toSet
       ***REMOVED***
     default:
       return state

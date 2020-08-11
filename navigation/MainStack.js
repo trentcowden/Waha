@@ -1,10 +1,11 @@
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import i18n from 'i18n-js'
-import React, { useEffect ***REMOVED*** from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import { AppState, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
 import AddEditGroupScreen from '../screens/AddEditGroupScreen'
 import GameScreen from '../screens/GameScreen'
 import GroupsScreen from '../screens/GroupsScreen'
@@ -16,11 +17,13 @@ import PasscodeScreen from '../screens/PasscodeScreen'
 import PlayScreen from '../screens/PlayScreen'
 import SecurityOnboardingScreen from '../screens/SecurityOnboardingScreen'
 import SecurityScreen from '../screens/SecurityScreen'
+import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import ar from '../translations/ar.json'
 import en from '../translations/en.json'
 import fr from '../translations/fr.json'
 import SetsRoot from './SetsRoot'
+
 i18n.translations = {
   en,
   fr,
@@ -29,12 +32,52 @@ i18n.translations = {
 const Stack = createStackNavigator()
 
 function MainStack (props) {
-  function handleAppStateChange (change) {
-    if (change === 'inactive' || change === 'background') {
-      if (props.security.securityEnabled && props.security.activateOnSwitch)
-        props.navigation.navigate('Game')
-    ***REMOVED***
+  async function getTime () {
+    return Date.now()
   ***REMOVED***
+
+  const [appState, setAppState] = useState('')
+
+  function handleAppStateChange (change) {
+    setAppState(change)
+  ***REMOVED***
+
+  useEffect(() => {
+    if (appState === 'inactive' || appState === 'background') {
+      // hide screen during multitasking / going home
+      props.navigation.navigate('Splash')
+
+      // store current time for timeout checking later
+      props.setTimer(Date.now())
+    ***REMOVED***
+    if (appState === 'active') {
+      if (
+        props.security.securityEnabled &&
+        props.security.timeoutDuration !== null
+      ) {
+        // if we've already timed out, go straight to game
+        if (props.security.isTimedOut) {
+          props.navigation.navigate('Game')
+        ***REMOVED*** else {
+          // check if we are now timed out
+          // if we are, set isTimedOut to true and navigate to game
+          if (
+            Date.now() - props.security.timer >
+            props.security.timeoutDuration
+          ) {
+            props.setIsTimedOut(true)
+            props.navigation.navigate('Game')
+            // otherwise, if we haven't timed out, just go back to normal screen
+          ***REMOVED*** else {
+            props.navigation.goBack()
+          ***REMOVED***
+        ***REMOVED***
+        // default: go back from splash to whatever screen we were on before
+      ***REMOVED*** else {
+        props.navigation.goBack()
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***, [appState])
 
   useEffect(() => {
     const appStateUnsubscribe = AppState.addEventListener(
@@ -46,6 +89,12 @@ function MainStack (props) {
       AppState.removeEventListener('change', handleAppStateChange)
     ***REMOVED***
   ***REMOVED***, [props.security.securityEnabled, props.security.activateOnSwitch])
+
+  const forFade = ({ current ***REMOVED***) => ({
+    cardStyle: {
+      opacity: current.progress
+    ***REMOVED***
+  ***REMOVED***)
 
   return (
     //global navigation options
@@ -290,11 +339,21 @@ function MainStack (props) {
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
-
       <Stack.Screen
         name='Game'
         component={GameScreen***REMOVED***
-        options={{ headerShown: false ***REMOVED******REMOVED***
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: forFade
+        ***REMOVED******REMOVED***
+      />
+      <Stack.Screen
+        name='Splash'
+        component={SplashScreen***REMOVED***
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: forFade
+        ***REMOVED******REMOVED***
       />
     </Stack.Navigator>
   )
@@ -315,6 +374,7 @@ function mapStateToProps (state) {
   var activeGroup = state.groups.filter(
     item => item.name === state.activeGroup
   )[0]
+  console.log(state.security)
   return {
     isRTL: state.database[activeGroup.language].isRTL,
     translations: state.database[activeGroup.language].translations,
@@ -324,4 +384,15 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(MainStack)
+function mapDispatchToProps (dispatch) {
+  return {
+    setTimer: ms => {
+      dispatch(setTimer(ms))
+    ***REMOVED***,
+    setIsTimedOut: toSet => {
+      dispatch(setIsTimedOut(toSet))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainStack)

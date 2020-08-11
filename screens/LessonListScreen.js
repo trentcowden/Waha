@@ -442,7 +442,6 @@ function LessonListScreen (props) {
         closeText={props.translations.general.cancel***REMOVED***
       >
         <ModalButton
-          isLast={true***REMOVED***
           title={props.translations.lessons.popups.download_lesson_button_label***REMOVED***
           onPress={downloadLessonFromModal***REMOVED***
         />
@@ -453,7 +452,6 @@ function LessonListScreen (props) {
         closeText={props.translations.general.cancel***REMOVED***
       >
         <ModalButton
-          isLast={true***REMOVED***
           title={props.translations.lessons.popups.delete_lesson_button_label***REMOVED***
           onPress={deleteLessonFromModal***REMOVED***
         />
