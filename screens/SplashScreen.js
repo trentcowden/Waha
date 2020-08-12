@@ -6,7 +6,7 @@ function SplashScreen (props) {
   return (
     <View style={styles.screen***REMOVED***>
       <Image
-        source={require('../assets/splash.jpg')***REMOVED***
+        source={require('../assets/splash.png')***REMOVED***
         style={{
           resizeMode: 'contain',
           width: Dimensions.get('window').width - 100 * scaleMultiplier
