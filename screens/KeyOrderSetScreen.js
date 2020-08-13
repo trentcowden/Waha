@@ -9,11 +9,10 @@ import {
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
-import KeyLabel from '../components/KeyLabel'
 import KeyLabels from '../components/KeyLabels'
 import Piano from '../components/Piano'
 import WahaButton from '../components/WahaButton'
-import { colors, keyColors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
 function KeyOrderSetScreen (props) {
   //// STATE
@@ -53,7 +52,7 @@ function KeyOrderSetScreen (props) {
   useEffect(() => {
     console.log(keyOrder)
 
-    if (keyOrder.length === 8) {
+    if (keyOrder.length === 12) {
       switch (props.route.name) {
         case 'KeyOrderSet_Initial':
           props.navigation.navigate('KeyOrderSet_Confirm', {
@@ -168,38 +167,6 @@ function KeyOrderSetScreen (props) {
           )
     ***REMOVED***
   ***REMOVED***
-
-  var keyLabel1 = keyOrder[1] ? (
-    <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(0, 2).replace(/^0+/, '')]***REMOVED***
-      number={keyOrder.substr(0, 2).replace(/^0+/, '')***REMOVED***
-      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-    />
-  ) : null
-
-  var keyLabel2 = keyOrder[3] ? (
-    <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(2, 2).replace(/^0+/, '')]***REMOVED***
-      number={keyOrder.substr(2, 2).replace(/^0+/, '')***REMOVED***
-      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-    />
-  ) : null
-
-  var keyLabel3 = keyOrder[5] ? (
-    <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(4, 2).replace(/^0+/, '')]***REMOVED***
-      number={keyOrder.substr(4, 2).replace(/^0+/, '')***REMOVED***
-      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-    />
-  ) : null
-
-  var keyLabel4 = keyOrder[7] ? (
-    <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(6, 2).replace(/^0+/, '')]***REMOVED***
-      number={keyOrder.substr(6, 2).replace(/^0+/, '')***REMOVED***
-      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
-    />
-  ) : null
 
   //// RENDER
 

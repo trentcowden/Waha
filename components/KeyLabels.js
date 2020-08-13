@@ -37,6 +37,24 @@ function KeyLabels (props) {
     />
   ) : null
 
+  var keyLabel5 = props.keyOrder[9] ? (
+    <KeyLabel
+      backgroundColor={keyColors[props.keyOrder.substr(8, 2).replace(/^0/, '')]***REMOVED***
+      number={props.keyOrder.substr(8, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
+    />
+  ) : null
+
+  var keyLabel6 = props.keyOrder[11] ? (
+    <KeyLabel
+      backgroundColor={
+        keyColors[props.keyOrder.substr(10, 2).replace(/^0/, '')]
+      ***REMOVED***
+      number={props.keyOrder.substr(10, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
+    />
+  ) : null
+
   return (
     <View
       style={{
@@ -50,6 +68,8 @@ function KeyLabels (props) {
       <View style={styles.keyPlaceholder***REMOVED***>{keyLabel2***REMOVED***</View>
       <View style={styles.keyPlaceholder***REMOVED***>{keyLabel3***REMOVED***</View>
       <View style={styles.keyPlaceholder***REMOVED***>{keyLabel4***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel5***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel6***REMOVED***</View>
     </View>
   )
 ***REMOVED***
@@ -58,9 +78,9 @@ function KeyLabels (props) {
 
 const styles = StyleSheet.create({
   keyPlaceholder: {
-    width: 80 * scaleMultiplier,
-    height: 80 * scaleMultiplier,
-    borderRadius: 40 * scaleMultiplier,
+    width: 50 * scaleMultiplier,
+    height: 50 * scaleMultiplier,
+    borderRadius: 25 * scaleMultiplier,
     backgroundColor: colors.white,
     margin: 5,
     justifyContent: 'center',
