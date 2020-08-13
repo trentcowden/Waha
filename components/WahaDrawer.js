@@ -106,11 +106,7 @@ function WahaDrawer (props) {
           ]***REMOVED***
         >
           <SmallDrawerItem
-            onPress={() =>
-              openBrowser(
-                'https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif'
-              )
-            ***REMOVED***
+            onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
             label={props.translations.general.privacy***REMOVED***
           />
           <SmallDrawerItem
@@ -137,7 +133,7 @@ function WahaDrawer (props) {
                 ***REMOVED***
               ]***REMOVED***
             >
-              v0.5.0.5
+              v0.5.0.6
             </Text>
           </View>
         </SafeAreaView>

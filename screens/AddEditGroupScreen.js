@@ -4,6 +4,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -30,6 +31,8 @@ import {
 
 function AddEditGroupScreen (props) {
   //// STATE
+
+  console.log(Dimensions.get('window').height)
 
   // keeps track of the group name text input value
   const [groupName, setGroupName] =
@@ -162,8 +165,7 @@ function AddEditGroupScreen (props) {
       <View
         style={{
           paddingHorizontal: 20,
-          paddingVertical: 10,
-          flex: 1
+          paddingVertical: 10
         ***REMOVED******REMOVED***
       >
         <WahaButton
@@ -199,8 +201,8 @@ function AddEditGroupScreen (props) {
     ) : null
 
   return (
-    <View style={styles.screen***REMOVED***>
-      <View>
+    <SafeAreaView style={styles.screen***REMOVED***>
+      <View style={{ flex: 1 ***REMOVED******REMOVED***>
         <View style={styles.photoContainer***REMOVED***>
           <AvatarImage
             style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
@@ -260,7 +262,11 @@ function AddEditGroupScreen (props) {
         <View
           style={{
             alignItems: 'center',
-            height: 150 * scaleMultiplier,
+            height:
+              Dimensions.get('window').height > 700
+                ? 250 * scaleMultiplier
+                : null,
+            flex: Dimensions.get('window').height > 700 ? null : 1,
             padding: 5,
             borderWidth: 2,
             borderRadius: 10,
@@ -316,7 +322,7 @@ function AddEditGroupScreen (props) {
           label={props.translations.add_edit_group.save_button_label***REMOVED***
         />
       ) : null***REMOVED***
-    </View>
+    </SafeAreaView>
   )
 ***REMOVED***
 
