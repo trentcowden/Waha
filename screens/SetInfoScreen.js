@@ -67,41 +67,63 @@ function SetInfoScreen (props) {
           lesson => props.route.params.thisSet.id === lesson.setid
         )***REMOVED***
         renderItem={({ item ***REMOVED***) => {
-          var scriptureList = item.scripture[0].header
-          item.scripture.forEach((chunk, index) => {
-            if (index !== 0) scriptureList += ', ' + chunk.header
-          ***REMOVED***)
+          if (item.scripture) {
+            var scriptureList = item.scripture[0].header
+            item.scripture.forEach((chunk, index) => {
+              if (index !== 0) scriptureList += ', ' + chunk.header
+            ***REMOVED***)
 
-          return (
-            <View
-              style={{
-                height: 64 * scaleMultiplier,
-                justifyContent: 'center',
-                paddingHorizontal: 40
-              ***REMOVED******REMOVED***
-            >
-              <Text
+            return (
+              <View
                 style={{
-                  color: colors.shark,
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontSize: 16 * scaleMultiplier,
-                  fontFamily: props.font + '-medium'
+                  height: 64 * scaleMultiplier,
+                  justifyContent: 'center',
+                  paddingHorizontal: 40
                 ***REMOVED******REMOVED***
               >
-                {item.title***REMOVED***
-              </Text>
-              <Text
+                <Text
+                  style={{
+                    color: colors.shark,
+                    textAlign: props.isRTL ? 'right' : 'left',
+                    fontSize: 16 * scaleMultiplier,
+                    fontFamily: props.font + '-medium'
+                  ***REMOVED******REMOVED***
+                >
+                  {item.title***REMOVED***
+                </Text>
+                <Text
+                  style={{
+                    color: colors.chateau,
+                    textAlign: props.isRTL ? 'right' : 'left',
+                    fontSize: 14 * scaleMultiplier,
+                    fontFamily: props.font + '-regular'
+                  ***REMOVED******REMOVED***
+                >
+                  {scriptureList***REMOVED***
+                </Text>
+              </View>
+            )
+          ***REMOVED*** else
+            return (
+              <View
                 style={{
-                  color: colors.chateau,
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontSize: 14 * scaleMultiplier,
-                  fontFamily: props.font + '-regular'
+                  height: 64 * scaleMultiplier,
+                  justifyContent: 'center',
+                  paddingHorizontal: 40
                 ***REMOVED******REMOVED***
               >
-                {scriptureList***REMOVED***
-              </Text>
-            </View>
-          )
+                <Text
+                  style={{
+                    color: colors.shark,
+                    textAlign: props.isRTL ? 'right' : 'left',
+                    fontSize: 16 * scaleMultiplier,
+                    fontFamily: props.font + '-medium'
+                  ***REMOVED******REMOVED***
+                >
+                  {item.title***REMOVED***
+                </Text>
+              </View>
+            )
         ***REMOVED******REMOVED***
       />
     </View>

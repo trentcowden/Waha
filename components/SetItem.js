@@ -59,7 +59,7 @@ function SetItem (props) {
                   ***REMOVED******REMOVED***
                 >
                   <SVG
-                    name={props.thisSet.icon***REMOVED***
+                    name={props.thisSet.iconName***REMOVED***
                     width={70 * scaleMultiplier***REMOVED***
                     height={70 * scaleMultiplier***REMOVED***
                     fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
@@ -118,7 +118,7 @@ function SetItem (props) {
                   ***REMOVED******REMOVED***
                 >
                   <SVG
-                    name={props.thisSet.icon***REMOVED***
+                    name={props.thisSet.iconName***REMOVED***
                     width={70 * scaleMultiplier***REMOVED***
                     height={70 * scaleMultiplier***REMOVED***
                     fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
@@ -145,7 +145,7 @@ function SetItem (props) {
             ]***REMOVED***
           >
             <SVG
-              name={props.thisSet.icon***REMOVED***
+              name={props.thisSet.iconName***REMOVED***
               width={80 * scaleMultiplier***REMOVED***
               height={80 * scaleMultiplier***REMOVED***
               fill={colors.tuna***REMOVED***
@@ -177,7 +177,7 @@ function SetItem (props) {
             ]***REMOVED***
           >
             <SVG
-              name={props.thisSet.icon***REMOVED***
+              name={props.thisSet.iconName***REMOVED***
               width={80 * scaleMultiplier***REMOVED***
               height={80 * scaleMultiplier***REMOVED***
               fill={colors.tuna***REMOVED***

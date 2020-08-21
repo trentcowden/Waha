@@ -37,6 +37,9 @@ function SetScreen (props) {
       setAddNewSetLabel(props.translations.sets.add_topical_set_button_label)
       setSetCategory('topical')
     ***REMOVED*** else {
+      setAddNewSetLabel(
+        props.translations.sets.add_mobilization_tool_button_label
+      )
       setSetCategory('mt')
     ***REMOVED***
   ***REMOVED***, [])
@@ -64,8 +67,16 @@ function SetScreen (props) {
     <View style={styles.screen***REMOVED***>
       <FlatList
         data={
-          props.route.name === 'Topical'
-            ? // if we're displaying topical sets, display them in the order added
+          // if we're adding core sets, display them in numerical order
+          props.route.name === 'Core'
+            ? props.activeDatabase.sets
+                .filter(set => set.category === setCategory)
+                .filter(set =>
+                  props.activeGroup.addedSets.some(
+                    addedSet => addedSet.id === set.id
+                  )
+                )
+            : // if we're displaying topical/mt sets, display them in the order added
               props.activeDatabase.sets
                 .filter(set => set.category === setCategory)
                 .filter(set =>
@@ -73,76 +84,78 @@ function SetScreen (props) {
                     addedSet => addedSet.id === set.id
                   )
                 )
-                .sort(
-                  (a, b) =>
-                    props.activeGroup.addedSets.indexOf(a.id) -
-                    props.activeGroup.addedSets.indexOf(b.id)
-                )
-            : // otherwise, display them in numerical order
-              props.activeDatabase.sets
-                .filter(set => set.category === setCategory)
-                .filter(set =>
-                  props.activeGroup.addedSets.some(
-                    addedSet => addedSet.id === set.id
+                .sort((a, b) => {
+                  return a.index - b.index
+                ***REMOVED***)
+                .sort((a, b) => {
+                  return (
+                    props.activeGroup.addedSets.indexOf(
+                      props.activeGroup.addedSets.filter(
+                        addedSet => addedSet.id === a.id
+                      )[0]
+                    ) -
+                    props.activeGroup.addedSets.indexOf(
+                      props.activeGroup.addedSets.filter(
+                        addedSet => addedSet.id === b.id
+                      )[0]
+                    )
                   )
-                )
+                ***REMOVED***)
         ***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
         extraData={props.activeGroup***REMOVED***
         ListFooterComponent={
-          setCategory === 'mt' ? null : (
-            <TouchableOpacity
-              style={[
-                styles.addNewSetContainer,
-                { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-              ]***REMOVED***
-              onPress={() =>
-                props.navigation.navigate('AddSetStack', {
-                  screen: 'AddSet',
-                  params: {
-                    category: setCategory === 'core' ? 'core' : 'topical'
-                  ***REMOVED***
-                ***REMOVED***)
-              ***REMOVED***
+          <TouchableOpacity
+            style={[
+              styles.addNewSetContainer,
+              { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+            ]***REMOVED***
+            onPress={() =>
+              props.navigation.navigate('AddSetStack', {
+                screen: 'AddSet',
+                params: {
+                  category: setCategory
+                ***REMOVED***
+              ***REMOVED***)
+            ***REMOVED***
+          >
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 80 * scaleMultiplier,
+                height: 80 * scaleMultiplier
+              ***REMOVED******REMOVED***
             >
-              <View
+              <Icon
+                name='plus'
+                size={60 * scaleMultiplier***REMOVED***
+                color={colors.chateau***REMOVED***
+                style={styles.addNewSetIcon***REMOVED***
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                flexDirection: 'column',
+                marginRight: props.isRTL ? 20 : 0,
+                marginLeft: props.isRTL ? 0 : 20
+              ***REMOVED******REMOVED***
+            >
+              <Text
                 style={{
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: 80 * scaleMultiplier,
-                  height: 80 * scaleMultiplier
+                  fontFamily: props.font + '-regular',
+                  fontSize: 14 * scaleMultiplier,
+                  color: colors.chateau,
+                  textAlign: props.isRTL ? 'right' : 'left'
                 ***REMOVED******REMOVED***
               >
-                <Icon
-                  name='plus'
-                  size={60 * scaleMultiplier***REMOVED***
-                  color={colors.chateau***REMOVED***
-                  style={styles.addNewSetIcon***REMOVED***
-                />
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  marginRight: props.isRTL ? 20 : 0,
-                  marginLeft: props.isRTL ? 0 : 20
-                ***REMOVED******REMOVED***
-              >
-                <Text
-                  style={{
-                    fontFamily: props.font + '-regular',
-                    fontSize: 14 * scaleMultiplier,
-                    color: colors.chateau,
-                    textAlign: props.isRTL ? 'right' : 'left'
-                  ***REMOVED******REMOVED***
-                >
-                  {addNewSetLabel***REMOVED***
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )
+                {addNewSetLabel***REMOVED***
+              </Text>
+            </View>
+          </TouchableOpacity>
         ***REMOVED***
       />
     </View>

@@ -8,11 +8,13 @@ import {
   YellowBox
 ***REMOVED*** from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
+import TagGroup from 'react-native-tag-group'
 import { connect ***REMOVED*** from 'react-redux'
 import Separator from '../components/Separator'
 import SetItem from '../components/SetItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
+
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state'
 ])
@@ -21,17 +23,47 @@ function AddSetScreen (props) {
   const [setItemMode, setSetItemMode] = useState('')
   const [onPress, setOnPress] = useState(() => {***REMOVED***)
   const [showSnackbar, setShowSnackbar] = useState(false)
+  const [headerTitle, setHeaderTitle] = useState('')
+  const [tags, setTags] = useState([])
+  const [activeTags, setActiveTags] = useState([])
+  // const [tagSelectRef, setTagSelectRef] = useState()
+
+  useEffect(() => {
+    switch (props.route.params.category) {
+      case 'core':
+        setHeaderTitle(props.translations.add_set.header_foundational)
+        break
+      case 'topical':
+        setHeaderTitle(props.translations.add_set.header_topical)
+        var tempTags = []
+        props.activeDatabase.sets
+          .filter(set => set.category === 'topical')
+          .forEach(topicalSet => {
+            topicalSet.tags.forEach(tag => {
+              if (!tempTags.some(tempTag => tempTag === tag)) {
+                tempTags = [...tempTags, tag]
+              ***REMOVED***
+            ***REMOVED***)
+          ***REMOVED***)
+        setTags(tempTags)
+        break
+      case 'mt':
+        setHeaderTitle(props.translations.add_set.header_mt)
+        break
+    ***REMOVED***
+  ***REMOVED***, [])
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
-  ***REMOVED***, [])
+  ***REMOVED***, [headerTitle])
+
+  useEffect(() => {
+    console.log(activeTags)
+  ***REMOVED***, [activeTags])
 
   function getNavOptions () {
     return {
-      title:
-        props.route.params.category === 'core'
-          ? props.translations.add_set.header_foundational
-          : props.translations.add_set.header_topical,
+      title: headerTitle,
       headerLeft: props.isRTL
         ? () => <View></View>
         : () => (
@@ -57,6 +89,34 @@ function AddSetScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
+  // var activeTags = []
+  // if (tagSelectRef.itemsSelected !== null) {
+  //   con  sole.log(tagSelectRef.itemsSelected)
+  // ***REMOVED***
+
+  var tagSelectComponent = (
+    <TagGroup
+      source={tags***REMOVED***
+      onSelectedTagChange={selected => setActiveTags(selected)***REMOVED***
+      style={{
+        paddingHorizontal: 10,
+        paddingTop: 10,
+        paddingBottom: 2
+      ***REMOVED******REMOVED***
+      tagStyle={{ borderRadius: 20, borderColor: colors.oslo ***REMOVED******REMOVED***
+      textStyle={{ color: colors.oslo, fontFamily: props.font + '-regular' ***REMOVED******REMOVED***
+      activeTagStyle={{
+        borderRadius: 20,
+        backgroundColor: colors.tuna,
+        borderColor: colors.tuna
+      ***REMOVED******REMOVED***
+      activeTextStyle={{
+        color: colors.white,
+        fontFamily: props.font + '-regular'
+      ***REMOVED******REMOVED***
+    />
+  )
+
   //// RENDER
   function renderStudySetItem (setList) {
     return (
@@ -80,16 +140,31 @@ function AddSetScreen (props) {
 
   return (
     <View style={styles.screen***REMOVED***>
+      {props.route.params.category === 'topical' ? tagSelectComponent : null***REMOVED***
       <FlatList
         data={
-          props.activeDatabase.sets
-            .filter(set => set.category === props.route.params.category)
-            .filter(
-              set =>
-                !props.activeGroup.addedSets.some(
-                  addedSet => addedSet.id === set.id
+          props.route.params.category === 'topical'
+            ? props.activeDatabase.sets
+                .filter(set => set.category === props.route.params.category)
+                .filter(
+                  topicalSet =>
+                    !props.activeGroup.addedSets.some(
+                      addedSet => addedSet.id === topicalSet.id
+                    )
                 )
-            )
+                .filter(topicalAddedSet => {
+                  return activeTags.length === 0
+                    ? true
+                    : topicalAddedSet.tags.some(tag => activeTags.includes(tag))
+                ***REMOVED***)
+            : props.activeDatabase.sets
+                .filter(set => set.category === props.route.params.category)
+                .filter(
+                  set =>
+                    !props.activeGroup.addedSets.some(
+                      addedSet => addedSet.id === set.id
+                    )
+                )
           // NOT USED: for folders
           // // if we're displaying topical sets:
           // // 1. filter by all sets that are topical,
