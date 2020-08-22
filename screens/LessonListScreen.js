@@ -13,6 +13,7 @@ import {
 import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
+import HomeworkModal from '../components/HomeworkModal'
 import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import ModalButton from '../components/ModalButton'
@@ -26,6 +27,7 @@ import {
   removeDownload
 ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+
 function LessonListScreen (props) {
   //// STATE
 
@@ -45,6 +47,7 @@ function LessonListScreen (props) {
   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false)
   const [showLessonOptionsModal, setShowLessonOptionsModal] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
+  const [showHomeworkModal, setShowHomeworkModal] = useState(false)
 
   // progress and bookmark for the set we're looking at
   const [thisSetProgress, setThisSetProgress] = useState([])
@@ -331,15 +334,22 @@ function LessonListScreen (props) {
     return (
       <LessonItem
         thisLesson={lessonList.item***REMOVED***
-        onLessonSelect={() =>
-          props.navigation.navigate('Play', {
-            thisLesson: lessonList.item,
-            thisSet: props.route.params.thisSet,
-            thisSetProgress: thisSetProgress,
-            isDownloaded: getIsLessonDownloaded(lessonList.item),
-            isDownloading: getIsLessonDownloading(lessonList.item),
-            lessonType: getLessonType(lessonList.item)
-          ***REMOVED***)
+        onLessonSelect={
+          // go to play screen unless we have a checklist lesson
+          getLessonType(lessonList.item) !== 'c'
+            ? () =>
+                props.navigation.navigate('Play', {
+                  thisLesson: lessonList.item,
+                  thisSet: props.route.params.thisSet,
+                  thisSetProgress: thisSetProgress,
+                  isDownloaded: getIsLessonDownloaded(lessonList.item),
+                  isDownloading: getIsLessonDownloading(lessonList.item),
+                  lessonType: getLessonType(lessonList.item)
+                ***REMOVED***)
+            : () => {
+                setActiveLessonInModal(lessonList.item)
+                setShowHomeworkModal(true)
+              ***REMOVED***
         ***REMOVED***
         isBookmark={lessonList.item.index === thisSetBookmark***REMOVED***
         isDownloaded={getIsLessonDownloaded(lessonList.item)***REMOVED***
@@ -365,6 +375,12 @@ function LessonListScreen (props) {
         renderItem={renderLessonItem***REMOVED***
         ListFooterComponent={() => <View style={{ height: 30 ***REMOVED******REMOVED*** />***REMOVED***
         keyExtractor={item => item.index.toString()***REMOVED***
+        disableLeftSwipe={
+          getLessonType(activeLessonInModal) === 'c' ? true : false
+        ***REMOVED***
+        disableRightSwipe={
+          getLessonType(activeLessonInModal) === 'c' ? true : false
+        ***REMOVED***
         renderHiddenItem={(data, rowMap) => (
           <LessonSwipeBackdrop
             isComplete={thisSetProgress.includes(data.item.index)***REMOVED***
@@ -498,6 +514,11 @@ function LessonListScreen (props) {
           </View>
         ) : null***REMOVED***
       </OptionsModal>
+      <HomeworkModal
+        isVisible={showHomeworkModal***REMOVED***
+        hideModal={() => setShowHomeworkModal(false)***REMOVED***
+        homework={activeLessonInModal.homework***REMOVED***
+      />
     </View>
   )
 ***REMOVED***
