@@ -3,7 +3,6 @@ import { Audio, Video ***REMOVED*** from 'expo-av'
 import * as FileSystem from 'expo-file-system'
 import { useKeepAwake ***REMOVED*** from 'expo-keep-awake'
 import { DeviceMotion ***REMOVED*** from 'expo-sensors'
-import * as Sharing from 'expo-sharing'
 import React, { useEffect, useRef, useState ***REMOVED*** from 'react'
 import {
   ActivityIndicator,
@@ -11,7 +10,6 @@ import {
   Animated,
   Dimensions,
   FlatList,
-  Share,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -24,12 +22,10 @@ import SVG from '../assets/svg'
 import BackButton from '../components/BackButton'
 import ChapterSelect from '../components/ChapterSelect'
 import HomeworkModal from '../components/HomeworkModal'
-import ModalButton from '../components/ModalButton'
-import OptionsModal from '../components/OptionsModal'
 import PlayPauseSkip from '../components/PlayPauseSkip'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
-import Separator from '../components/Separator'
+import ShareModal from '../components/ShareModal'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   downloadLesson,
@@ -736,59 +732,6 @@ function PlayScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  // opens the share sheet to share a chapter of a lesson
-  function share (type) {
-    switch (type) {
-      case 'app':
-        Share.share({
-          message:
-            Platform.OS === 'ios'
-              ? 'www.appstorelink.com'
-              : 'www.playstorelink.com'
-        ***REMOVED***)
-        break
-      case 'text':
-        Share.share({
-          message:
-            props.route.params.thisLesson.scriptureHeader +
-            ': ' +
-            props.route.params.thisLesson.scriptureText
-        ***REMOVED***)
-        break
-      case 'audio':
-        FileSystem.getInfoAsync(
-          FileSystem.documentDirectory +
-            props.route.params.thisLesson.id +
-            '.mp3'
-        ).then(({ exists ***REMOVED***) => {
-          exists
-            ? Sharing.shareAsync(
-                FileSystem.documentDirectory +
-                  props.route.params.thisLesson.id +
-                  '.mp3'
-              )
-            : Alert.alert(
-                props.translations.general.popups
-                  .share_undownloaded_lesson_title,
-                props.translations.general.popups
-                  .share_undownloaded_lesson_message,
-                [
-                  {
-                    text: props.translations.general.ok,
-                    onPress: () => {***REMOVED***
-                  ***REMOVED***
-                ]
-              )
-        ***REMOVED***)
-        break
-      case 'video':
-        Share.share({
-          message: props.route.params.thisLesson.videoSource
-        ***REMOVED***)
-        break
-    ***REMOVED***
-  ***REMOVED***
-
   function startPlayPauseAnimation () {
     setAnimationZIndex(2)
     Animated.sequence([
@@ -958,12 +901,55 @@ function PlayScreen (props) {
     )
   ***REMOVED***
 
+  var titleSection = (
+    <View style={styles.titlesContainer***REMOVED***>
+      <Text
+        numberOfLines={1***REMOVED***
+        style={[styles.title, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***
+      >
+        {props.route.params.thisLesson.title***REMOVED***
+      </Text>
+    </View>
+  )
+
   // render the middle section of the screen conditionally
   // if fellowship, story, or application are the active chapter, show album
   //  art
   // if training is the active chapter, show the video player
   var middleSection =
-    activeChapter === 'training' ? (
+    props.route.params.lessonType === 'a' ? (
+      <View
+        style={{
+          borderRadius: 10,
+          backgroundColor: colors.porcelain,
+          borderWidth: 4,
+          borderColor: colors.chateau,
+          marginHorizontal: 10,
+          marginTop: 10
+        ***REMOVED******REMOVED***
+      >
+        <FlatList
+          data={props.route.params.thisLesson.text.split('\n')***REMOVED***
+          renderItem={paragraphList => (
+            <Text
+              style={{
+                color: colors.shark,
+                fontSize: 16 * scaleMultiplier,
+                fontFamily: props.font + '-regular',
+                textAlign: props.isRTL ? 'right' : 'left',
+                marginHorizontal: 10
+              ***REMOVED******REMOVED***
+            >
+              {paragraphList.item***REMOVED***
+            </Text>
+          )***REMOVED***
+          keyExtractor={item => item***REMOVED***
+          ListHeaderComponent={
+            <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>{titleSection***REMOVED***</View>
+          ***REMOVED***
+        />
+      </View>
+    ) : activeChapter === 'training' ? (
       <TouchableWithoutFeedback
         onPress={() => {
           if (!showVideoControls) {
@@ -1139,59 +1125,20 @@ function PlayScreen (props) {
   return (
     <View style={styles.screen***REMOVED***>
       <View style={styles.topHalfContainer***REMOVED***>
-        <View style={styles.titlesContainer***REMOVED***>
-          <Text
-            numberOfLines={1***REMOVED***
-            style={[styles.title, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***
-          >
-            {props.route.params.thisLesson.title***REMOVED***
-          </Text>
-        </View>
+        {props.route.params.lessonType === 'a' ? null : titleSection***REMOVED***
         {middleSection***REMOVED***
       </View>
       {audioControlContainer***REMOVED***
 
       {/* MODALS */***REMOVED***
-      <OptionsModal
+      <ShareModal
         isVisible={showShareLessonModal***REMOVED***
         hideModal={() => setShowShareLessonModal(false)***REMOVED***
         closeText={props.translations.general.close***REMOVED***
-      >
-        <ModalButton
-          title={props.translations.general.share_app***REMOVED***
-          onPress={() => share('app')***REMOVED***
-        />
-        {props.route.params.lessonType !== 'v' ? (
-          <View>
-            <Separator />
-            <ModalButton
-              title={props.translations.general.share_passage_text***REMOVED***
-              onPress={() => share('text')***REMOVED***
-            />
-          </View>
-        ) : null***REMOVED***
-        {(props.route.params.lessonType === 'qa' ||
-          props.route.params.lessonType === 'qav') &&
-        !props.downloads[props.route.params.thisLesson.id] ? (
-          <View>
-            <Separator />
-            <ModalButton
-              title={props.translations.general.share_passage_audio***REMOVED***
-              onPress={() => share('audio')***REMOVED***
-            />
-          </View>
-        ) : null***REMOVED***
-        {props.route.params.lessonType !== 'qa' &&
-        props.route.params.lessonType !== 'q' ? (
-          <View>
-            <Separator />
-            <ModalButton
-              title={props.translations.general.share_video_link***REMOVED***
-              onPress={() => share('video')***REMOVED***
-            />
-          </View>
-        ) : null***REMOVED***
-      </OptionsModal>
+        lesson={props.route.params.thisLesson***REMOVED***
+        lessonType={props.route.params.lessonType***REMOVED***
+        set={props.route.params.thisSet***REMOVED***
+      />
       <HomeworkModal
         isVisible={showHomeworkModal***REMOVED***
         hideModal={() => setShowHomeworkModal(false)***REMOVED***

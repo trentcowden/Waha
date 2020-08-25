@@ -1,15 +1,6 @@
 import * as FileSystem from 'expo-file-system'
-import * as Sharing from 'expo-sharing'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import {
-  Alert,
-  Dimensions,
-  Image,
-  Platform,
-  Share,
-  StyleSheet,
-  View
-***REMOVED*** from 'react-native'
+import { Dimensions, Image, Platform, StyleSheet, View ***REMOVED*** from 'react-native'
 import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
@@ -18,8 +9,8 @@ import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import ModalButton from '../components/ModalButton'
 import OptionsModal from '../components/OptionsModal'
-import Separator from '../components/Separator'
 import SetItem from '../components/SetItem'
+import ShareModal from '../components/ShareModal'
 import { colors ***REMOVED*** from '../constants'
 import {
   downloadLesson,
@@ -265,68 +256,68 @@ function LessonListScreen (props) {
   ***REMOVED***
 
   // opens the share sheet to share something
-  function share (type) {
-    switch (type) {
-      // share the link to Waha itself
-      case 'app':
-        Share.share({
-          message:
-            props.route.params.thisSet.category === 'mt'
-              ? Platform.OS === 'ios'
-                ? 'www.appstorelink.com' +
-                  ' ' +
-                  props.translations.general.share_toolkit_unlock_code
-                : 'www.playstorelink.com' +
-                  ' ' +
-                  props.translations.general.share_toolkit_unlock_code
-              : Platform.OS === 'ios'
-              ? 'www.appstorelink.com'
-              : 'www.playstorelink.com'
-        ***REMOVED***)
-        break
-      // share the passage text for this lesson
-      case 'text':
-        var scriptureString = ''
-        activeLessonInModal.scripture.forEach((scripturePiece, index) => {
-          scriptureString += scripturePiece.header + '\n' + scripturePiece.text
-          if (index !== activeLessonInModal.scripture.length - 1)
-            scriptureString += '\n'
-        ***REMOVED***)
-        Share.share({
-          message: scriptureString
-        ***REMOVED***)
-        break
-      // share the audio file for this lesson
-      case 'audio':
-        FileSystem.getInfoAsync(
-          FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
-        ).then(({ exists ***REMOVED***) => {
-          exists
-            ? Sharing.shareAsync(
-                FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
-              )
-            : Alert.alert(
-                props.translations.general.popups.lessons
-                  .share_undownloaded_lesson_title,
-                props.translations.general.popups.lessons
-                  .share_undownloaded_lesson_message,
-                [
-                  {
-                    text: props.translations.general.ok,
-                    onPress: () => {***REMOVED***
-                  ***REMOVED***
-                ]
-              )
-        ***REMOVED***)
-        break
-      // share the video link for this lesson
-      case 'video':
-        Share.share({
-          message: activeLessonInModal.videoSource
-        ***REMOVED***)
-        break
-    ***REMOVED***
-  ***REMOVED***
+  // function share (type) {
+  //   switch (type) {
+  //     // share the link to Waha itself
+  //     case 'app':
+  //       Share.share({
+  //         message:
+  //           props.route.params.thisSet.category === 'mt'
+  //             ? Platform.OS === 'ios'
+  //               ? 'www.appstorelink.com' +
+  //                 ' ' +
+  //                 props.translations.general.share_toolkit_unlock_code
+  //               : 'www.playstorelink.com' +
+  //                 ' ' +
+  //                 props.translations.general.share_toolkit_unlock_code
+  //             : Platform.OS === 'ios'
+  //             ? 'www.appstorelink.com'
+  //             : 'www.playstorelink.com'
+  //       ***REMOVED***)
+  //       break
+  //     // share the passage text for this lesson
+  //     case 'text':
+  //       var scriptureString = ''
+  //       activeLessonInModal.scripture.forEach((scripturePiece, index) => {
+  //         scriptureString += scripturePiece.header + '\n' + scripturePiece.text
+  //         if (index !== activeLessonInModal.scripture.length - 1)
+  //           scriptureString += '\n'
+  //       ***REMOVED***)
+  //       Share.share({
+  //         message: scriptureString
+  //       ***REMOVED***)
+  //       break
+  //     // share the audio file for this lesson
+  //     case 'audio':
+  //       FileSystem.getInfoAsync(
+  //         FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
+  //       ).then(({ exists ***REMOVED***) => {
+  //         exists
+  //           ? Sharing.shareAsync(
+  //               FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
+  //             )
+  //           : Alert.alert(
+  //               props.translations.general.popups.lessons
+  //                 .share_undownloaded_lesson_title,
+  //               props.translations.general.popups.lessons
+  //                 .share_undownloaded_lesson_message,
+  //               [
+  //                 {
+  //                   text: props.translations.general.ok,
+  //                   onPress: () => {***REMOVED***
+  //                 ***REMOVED***
+  //               ]
+  //             )
+  //       ***REMOVED***)
+  //       break
+  //     // share the video link for this lesson
+  //     case 'video':
+  //       Share.share({
+  //         message: activeLessonInModal.videoSource
+  //       ***REMOVED***)
+  //       break
+  //   ***REMOVED***
+  // ***REMOVED***
 
   //// RENDER
 
@@ -474,46 +465,14 @@ function LessonListScreen (props) {
           onPress={deleteLessonFromModal***REMOVED***
         />
       </OptionsModal>
-      <OptionsModal
+      <ShareModal
         isVisible={showShareModal***REMOVED***
         hideModal={hideModals***REMOVED***
         closeText={props.translations.general.close***REMOVED***
-      >
-        <ModalButton
-          title={props.translations.general.share_app***REMOVED***
-          onPress={() => share('app')***REMOVED***
-        />
-        {getLessonType(activeLessonInModal) !== 'v' ? (
-          <View>
-            <Separator />
-            <ModalButton
-              title={props.translations.general.share_passage_text***REMOVED***
-              onPress={() => share('text')***REMOVED***
-            />
-          </View>
-        ) : null***REMOVED***
-        {(getLessonType(activeLessonInModal) === 'qa' ||
-          getLessonType(activeLessonInModal) === 'qav') &&
-        !props.downloads[activeLessonInModal.id] ? (
-          <View>
-            <Separator />
-            <ModalButton
-              title={props.translations.general.share_passage_audio***REMOVED***
-              onPress={() => share('audio')***REMOVED***
-            />
-          </View>
-        ) : null***REMOVED***
-        {getLessonType(activeLessonInModal) !== 'qa' &&
-        getLessonType(activeLessonInModal) !== 'q' ? (
-          <View>
-            <Separator />
-            <ModalButton
-              title={props.translations.general.share_video_link***REMOVED***
-              onPress={() => share('video')***REMOVED***
-            />
-          </View>
-        ) : null***REMOVED***
-      </OptionsModal>
+        lesson={activeLessonInModal***REMOVED***
+        lessonType={getLessonType(activeLessonInModal)***REMOVED***
+        set={props.route.params.thisSet***REMOVED***
+      />
       <HomeworkModal
         isVisible={showHomeworkModal***REMOVED***
         hideModal={() => setShowHomeworkModal(false)***REMOVED***
