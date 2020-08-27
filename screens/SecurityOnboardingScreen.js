@@ -1,9 +1,10 @@
 import React, { useEffect ***REMOVED*** from 'react'
-import { Dimensions, Image, StyleSheet, View ***REMOVED*** from 'react-native'
-import Onboarding from 'react-native-onboarding-swiper'
+import { StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import Onboarding from '../components/Onboarding'
+import { colors ***REMOVED*** from '../constants'
+
 function SecurityOnboardingScreen (props) {
   //// STATE
 
@@ -25,68 +26,28 @@ function SecurityOnboardingScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  // //// FUNCTIONS
-
-  // tells redux that we're ready to go to loading screen once onboarding is finished
-  function finishOnboarding () {
-    props.navigation.navigate('KeyOrderSet_Initial')
-  ***REMOVED***
-
   //// RENDER
-
-  const onboardingData = [
-    {
-      backgroundColor: colors.white,
-      image: (
-        <Image
-          style={styles.image***REMOVED***
-          source={require('../assets/onboarding/security_onboarding1.png')***REMOVED***
-        />
-      ),
-      title: props.translations.security.popups.onboarding_1_title,
-      subtitle: props.translations.security.popups.onboarding_1_message
-    ***REMOVED***,
-    {
-      backgroundColor: colors.white,
-      image: (
-        <Image
-          style={styles.image***REMOVED***
-          source={require('../assets/onboarding/security_onboarding2.png')***REMOVED***
-        />
-      ),
-      title: props.translations.security.popups.onboarding_2_title,
-      subtitle: props.translations.security.popups.onboarding_2_message
-    ***REMOVED***,
-    {
-      backgroundColor: colors.white,
-      image: (
-        <Image
-          style={styles.image***REMOVED***
-          source={require('../assets/onboarding/security_onboarding3.png')***REMOVED***
-        />
-      ),
-      title: props.translations.security.popups.onboarding_3_title,
-      subtitle: props.translations.security.popups.onboarding_3_message
-    ***REMOVED***
-  ]
 
   return (
     <View style={styles.screen***REMOVED***>
-      <View style={{ flex: 1, justifyContent: 'flex-end' ***REMOVED******REMOVED***>
-        <Onboarding
-          pages={onboardingData***REMOVED***
-          showSkip={false***REMOVED***
-          onDone={finishOnboarding***REMOVED***
-          nextLabel={props.translations.general.next***REMOVED***
-          containerStyles={{
-            marginTop: Dimensions.get('window').height > 600 ? 100 : 0,
-            justifyContent: 'flex-start'
-          ***REMOVED******REMOVED***
-          imageContainerStyles={{
-            paddingBottom: 0
-          ***REMOVED******REMOVED***
-        />
-      </View>
+      <Onboarding
+        sources={[
+          require('../assets/onboarding/security_onboarding1.png'),
+          require('../assets/onboarding/security_onboarding2.png'),
+          require('../assets/onboarding/security_onboarding3.png')
+        ]***REMOVED***
+        titles={[
+          props.translations.security.popups.onboarding_1_title,
+          props.translations.security.popups.onboarding_2_title,
+          props.translations.security.popups.onboarding_3_title
+        ]***REMOVED***
+        messages={[
+          props.translations.security.popups.onboarding_1_message,
+          props.translations.security.popups.onboarding_2_message,
+          props.translations.security.popups.onboarding_3_message
+        ]***REMOVED***
+        onFinish={() => props.navigation.navigate('KeyOrderSet_Initial')***REMOVED***
+      />
     </View>
   )
 ***REMOVED***
@@ -99,17 +60,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.aquaHaze,
     flexDirection: 'column',
     justifyContent: 'center'
-  ***REMOVED***,
-  image: {
-    resizeMode: 'center',
-    width:
-      Dimensions.get('window').width < 700
-        ? 241 * scaleMultiplier
-        : 321 * scaleMultiplier,
-    height:
-      Dimensions.get('window').width < 700
-        ? 204 * scaleMultiplier
-        : 272 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 
@@ -120,15 +70,9 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    translations: state.database[activeGroup.language].translations
+    translations: state.database[activeGroup.language].translations,
+    font: state.database[activeGroup.language].font
   ***REMOVED***
 ***REMOVED***
 
-function mapDispatchToProps (dispatch) {
-  return {***REMOVED***
-***REMOVED***
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SecurityOnboardingScreen)
+export default connect(mapStateToProps)(SecurityOnboardingScreen)
