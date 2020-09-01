@@ -107,7 +107,14 @@ function AddSetScreen (props) {
         paddingTop: 10,
         paddingBottom: 2
       ***REMOVED******REMOVED***
-      tagStyle={{ borderRadius: 20, borderColor: colors.oslo ***REMOVED******REMOVED***
+      tagStyle={{
+        borderRadius: 30,
+        borderColor: colors.oslo,
+        height: 40 * scaleMultiplier,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20 * scaleMultiplier
+      ***REMOVED******REMOVED***
       textStyle={{ color: colors.oslo, fontFamily: props.font + '-regular' ***REMOVED******REMOVED***
       activeTagStyle={{
         borderRadius: 20,

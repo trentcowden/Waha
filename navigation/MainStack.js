@@ -353,7 +353,8 @@ function MainStack (props) {
         options={{
           gestureEnabled: false,
           headerShown: false,
-          cardStyleInterpolator: forFade
+          // cardStyleInterpolator: forFade
+          animationEnabled: false
         ***REMOVED******REMOVED***
       />
     </Stack.Navigator>
