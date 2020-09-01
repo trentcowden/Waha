@@ -10,7 +10,6 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/SetItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import { resumeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
 function SetScreen (props) {
   //// STUFF FOR TESTING
@@ -202,12 +201,5 @@ function mapStateToProps (state) {
     activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
-function mapDispatchToProps (dispatch) {
-  return {
-    resumeDownload: (lessonID, downloadSnapshotJSON) => {
-      dispatch(resumeDownload(lessonID, downloadSnapshotJSON))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
-export default connect(mapStateToProps, mapDispatchToProps)(SetScreen)
+export default connect(mapStateToProps)(SetScreen)
