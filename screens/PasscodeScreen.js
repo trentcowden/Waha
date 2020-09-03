@@ -72,14 +72,13 @@ function PasscodeScreen (props) {
   return (
     <View style={styles.screen***REMOVED***>
       <Text
-        style={{
-          color: colors.shark,
-          fontFamily: props.font + '-regular',
-          fontSize: 18,
-          marginVertical: 30 * scaleMultiplier,
-          textAlign: 'center',
-          paddingHorizontal: 20
-        ***REMOVED******REMOVED***
+        style={[
+          Typography(props, 'h3', 'regular', 'center', colors.shark),
+          {
+            marginVertical: 30 * scaleMultiplier,
+            paddingHorizontal: 20
+          ***REMOVED***
+        ]***REMOVED***
       >
         {props.translations.passcode.enter_passcode_text***REMOVED***
       </Text>
@@ -102,14 +101,13 @@ function PasscodeScreen (props) {
         ***REMOVED***
       />
       <Text
-        style={{
-          fontFamily: props.font + '-regular',
-          fontSize: 18 * scaleMultiplier,
-          color: colors.red,
-          marginTop: 30 * scaleMultiplier,
-          paddingHorizontal: 20,
-          textAlign: 'center'
-        ***REMOVED******REMOVED***
+        style={[
+          Typography(props, 'h3', 'regular', 'center', colors.red),
+          {
+            marginTop: 30 * scaleMultiplier,
+            paddingHorizontal: 20
+          ***REMOVED***
+        ]***REMOVED***
       >
         {/* conditional text based on how many attempts user has left / if they're currently locked out */***REMOVED***
         {Date.now() - props.security.mtUnlockTimeout < 0

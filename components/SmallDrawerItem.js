@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 function SmallDrawerItem (props) {
   //// RENDER
 
@@ -13,15 +13,7 @@ function SmallDrawerItem (props) {
       ]***REMOVED***
       onPress={props.onPress***REMOVED***
     >
-      <Text
-        style={[
-          styles.smallDrawerItemText,
-          {
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontFamily: props.font + '-medium'
-          ***REMOVED***
-        ]***REMOVED***
-      >
+      <Text style={Typography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***>
         {props.label***REMOVED***
       </Text>
     </TouchableOpacity>
@@ -35,10 +27,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     // aspectRatio: 8,
     marginVertical: 5
-  ***REMOVED***,
-  smallDrawerItemText: {
-    fontSize: 18 * scaleMultiplier,
-    color: colors.chateau
   ***REMOVED***
 ***REMOVED***)
 

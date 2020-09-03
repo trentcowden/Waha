@@ -33,10 +33,48 @@ function SetInfoScreen (props) {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  // whenever progress or bookmarks update, update the progress and bookmarks for this set
-  useEffect(() => {***REMOVED***, [])
-
   //// FUNCTIONS
+
+  function renderLessonInfoItem (item) {
+    if (item.scripture) {
+      var scriptureList = item.scripture[0].header
+      item.scripture.forEach((chunk, index) => {
+        if (index !== 0) scriptureList += ', ' + chunk.header
+      ***REMOVED***)
+
+      return (
+        <View
+          style={{
+            marginVertical: 10 * scaleMultiplier,
+            justifyContent: 'center',
+            paddingHorizontal: 40
+          ***REMOVED******REMOVED***
+        >
+          <Text style={Typography(props, 'h4', 'medium', 'left', colors.shark)***REMOVED***>
+            {item.title***REMOVED***
+          </Text>
+          <Text
+            style={Typography(props, 'p', 'regular', 'left', colors.chateau)***REMOVED***
+          >
+            {scriptureList***REMOVED***
+          </Text>
+        </View>
+      )
+    ***REMOVED*** else
+      return (
+        <View
+          style={{
+            marginVertical: 10 * scaleMultiplier,
+            justifyContent: 'center',
+            paddingHorizontal: 40
+          ***REMOVED******REMOVED***
+        >
+          <Text style={Typography(props, 'h4', 'medium', 'left', colors.shark)***REMOVED***>
+            {item.title***REMOVED***
+          </Text>
+        </View>
+      )
+  ***REMOVED***
 
   return (
     <View style={styles.screen***REMOVED***>
@@ -66,65 +104,7 @@ function SetInfoScreen (props) {
         data={props.activeDatabase.lessons.filter(
           lesson => props.route.params.thisSet.id === lesson.setid
         )***REMOVED***
-        renderItem={({ item ***REMOVED***) => {
-          if (item.scripture) {
-            var scriptureList = item.scripture[0].header
-            item.scripture.forEach((chunk, index) => {
-              if (index !== 0) scriptureList += ', ' + chunk.header
-            ***REMOVED***)
-
-            return (
-              <View
-                style={{
-                  marginVertical: 10 * scaleMultiplier,
-                  justifyContent: 'center',
-                  paddingHorizontal: 40
-                ***REMOVED******REMOVED***
-              >
-                <Text
-                  style={{
-                    color: colors.shark,
-                    textAlign: props.isRTL ? 'right' : 'left',
-                    fontSize: 16 * scaleMultiplier,
-                    fontFamily: props.font + '-medium'
-                  ***REMOVED******REMOVED***
-                >
-                  {item.title***REMOVED***
-                </Text>
-                <Text
-                  style={{
-                    color: colors.chateau,
-                    textAlign: props.isRTL ? 'right' : 'left',
-                    fontSize: 14 * scaleMultiplier,
-                    fontFamily: props.font + '-regular'
-                  ***REMOVED******REMOVED***
-                >
-                  {scriptureList***REMOVED***
-                </Text>
-              </View>
-            )
-          ***REMOVED*** else
-            return (
-              <View
-                style={{
-                  marginVertical: 10 * scaleMultiplier,
-                  justifyContent: 'center',
-                  paddingHorizontal: 40
-                ***REMOVED******REMOVED***
-              >
-                <Text
-                  style={{
-                    color: colors.shark,
-                    textAlign: props.isRTL ? 'right' : 'left',
-                    fontSize: 16 * scaleMultiplier,
-                    fontFamily: props.font + '-medium'
-                  ***REMOVED******REMOVED***
-                >
-                  {item.title***REMOVED***
-                </Text>
-              </View>
-            )
-        ***REMOVED******REMOVED***
+        renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
       />
     </View>
   )
@@ -140,7 +120,6 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   studySetItemContainer: {
     width: '100%',
-    // height: 80 * scaleMultiplier,
     aspectRatio: 4
   ***REMOVED***
 ***REMOVED***)

@@ -14,14 +14,7 @@ function WahaItemDescription (props) {
         flexDirection: props.isRTL ? 'row-reverse' : 'row'
       ***REMOVED******REMOVED***
     >
-      <Text
-        style={{
-          fontFamily: props.font + '-regular',
-          fontSize: 14 * scaleMultiplier,
-          color: colors.oslo,
-          textAlign: props.isRTL ? 'right' : 'left'
-        ***REMOVED******REMOVED***
-      >
+      <Text style={Typography(props, 'p', 'regular', 'left', colors.oslo)***REMOVED***>
         {props.text***REMOVED***
       </Text>
     </View>

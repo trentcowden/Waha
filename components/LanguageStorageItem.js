@@ -16,12 +16,7 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={{
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontFamily: props.font + '-regular',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.chateau
-          ***REMOVED******REMOVED***
+          style={Typography(props, 'h3', 'regular', 'left', colors.chateau)***REMOVED***
         >
           {props.languageName +
             ' ' +
@@ -43,24 +38,17 @@ function LanguageStorageItem (props) {
           ***REMOVED***
         ]***REMOVED***
       >
-        <Text
-          style={{
-            fontFamily: props.font + '-medium',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.tuna
-          ***REMOVED******REMOVED***
-        >
+        <Text style={Typography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***>
           {props.megabytes + ' ' + props.translations.storage.megabyte_label***REMOVED***
         </Text>
         <Text
-          style={{
-            fontFamily: props.font + '-regular',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.tuna,
-            flex: 1,
-            paddingHorizontal: 20,
-            textAlign: props.isRTL ? 'right' : 'left'
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(props, 'h3', 'regular', 'left', colors.tuna),
+            {
+              flex: 1,
+              paddingHorizontal: 20
+            ***REMOVED***
+          ]***REMOVED***
         >
           {props.translations.storage.storage_used_label***REMOVED***
         </Text>

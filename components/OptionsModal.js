@@ -21,12 +21,7 @@ function OptionsModal (props) {
             style={styles.closeButtonContainer***REMOVED***
           >
             <Text
-              style={{
-                textAlign: 'center',
-                fontFamily: props.font + '-medium',
-                fontSize: 21 * scaleMultiplier,
-                color: colors.red
-              ***REMOVED******REMOVED***
+              style={Typography(props, 'h3', 'medium', 'center', colors.red)***REMOVED***
             >
               {props.closeText***REMOVED***
             </Text>

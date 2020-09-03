@@ -882,24 +882,10 @@ function PlayScreen (props) {
   function renderTextContent (textList) {
     return (
       <View style={{ paddingHorizontal: 20 ***REMOVED******REMOVED***>
-        <Text
-          style={{
-            color: colors.shark,
-            fontSize: 18 * scaleMultiplier,
-            fontFamily: props.font + '-medium',
-            textAlign: props.isRTL ? 'right' : 'left'
-          ***REMOVED******REMOVED***
-        >
+        <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
           {textList.item.header***REMOVED***
         </Text>
-        <Text
-          style={{
-            color: colors.shark,
-            fontSize: 18 * scaleMultiplier,
-            fontFamily: props.font + '-regular',
-            textAlign: props.isRTL ? 'right' : 'left'
-          ***REMOVED******REMOVED***
-        >
+        <Text style={Typography(props, 'h3', 'regular', 'left', colors.shark)***REMOVED***>
           {textList.item.text***REMOVED***
         </Text>
       </View>
@@ -909,8 +895,8 @@ function PlayScreen (props) {
   var titleSection = (
     <View style={styles.titlesContainer***REMOVED***>
       <Text
+        style={Typography(props, 'h2', 'black', 'center', colors.shark)***REMOVED***
         numberOfLines={1***REMOVED***
-        style={[styles.title, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***
       >
         {props.route.params.thisLesson.title***REMOVED***
       </Text>
@@ -937,13 +923,10 @@ function PlayScreen (props) {
           data={props.route.params.thisLesson.text.split('\n')***REMOVED***
           renderItem={paragraphList => (
             <Text
-              style={{
-                color: colors.shark,
-                fontSize: 16 * scaleMultiplier,
-                fontFamily: props.font + '-regular',
-                textAlign: props.isRTL ? 'right' : 'left',
-                marginHorizontal: 10
-              ***REMOVED******REMOVED***
+              style={[
+                Typography(props, 'h4', 'regular', 'left', colors.shark),
+                { marginHorizontal: 10 ***REMOVED***
+              ]***REMOVED***
             >
               {paragraphList.item***REMOVED***
             </Text>

@@ -37,7 +37,7 @@ function WahaDrawer (props) {
           />
         </View>
         <Text
-          style={[styles.groupName, { fontFamily: props.font + '-black' ***REMOVED***]***REMOVED***
+          style={Typography(props, 'h2', 'black', 'center', colors.white)***REMOVED***
           numberOfLines={2***REMOVED***
         >
           {props.activeGroup.name***REMOVED***
@@ -125,13 +125,7 @@ function WahaDrawer (props) {
             ***REMOVED******REMOVED***
           >
             <Text
-              style={[
-                styles.versionText,
-                {
-                  fontFamily: props.font + '-regular',
-                  textAlign: props.isRTL ? 'right' : 'left'
-                ***REMOVED***
-              ]***REMOVED***
+              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
             >
               v0.5.1.1
             </Text>
@@ -159,11 +153,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10
   ***REMOVED***,
-  groupName: {
-    color: colors.white,
-    textAlign: 'center',
-    fontSize: 25 * scaleMultiplier
-  ***REMOVED***,
   pencilIconContainer: {
     alignSelf: 'flex-end',
     position: 'absolute',
@@ -175,12 +164,6 @@ const styles = StyleSheet.create({
   smallDrawerItemsContainer: {
     width: '100%',
     justifyContent: 'center'
-  ***REMOVED***,
-  versionText: {
-    fontSize: 10 * scaleMultiplier,
-    color: colors.chateau,
-    justifyContent: 'center',
-    alignItems: 'center'
   ***REMOVED***
 ***REMOVED***)
 

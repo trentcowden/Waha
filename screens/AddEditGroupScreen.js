@@ -215,12 +215,7 @@ function AddEditGroupScreen (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={{
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular',
-              fontSize: 14 * scaleMultiplier,
-              color: colors.chateau
-            ***REMOVED******REMOVED***
+            style={Typography(props, 'p', 'regular', 'left', colors.chateau)***REMOVED***
           >
             {props.translations.add_edit_group.group_name_form_label***REMOVED***
           </Text>
@@ -245,15 +240,14 @@ function AddEditGroupScreen (props) {
           />
         </View>
         <Text
-          style={{
-            fontSize: 14 * scaleMultiplier,
-            color: colors.chateau,
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontFamily: props.font + '-regular',
-            marginHorizontal: 20,
-            marginTop: 20 * scaleMultiplier,
-            marginBottom: 5
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(props, 'p', 'regular', 'left', colors.chateau),
+            {
+              marginHorizontal: 20,
+              marginTop: 20 * scaleMultiplier,
+              marginBottom: 5
+            ***REMOVED***
+          ]***REMOVED***
         >
           {props.translations.add_edit_group.icon_form_label***REMOVED***
         </Text>

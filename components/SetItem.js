@@ -273,27 +273,37 @@ function SetItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={{
-            color: fullyCompleted ? colors.chateau : colors.shark,
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontSize: 12 * scaleMultiplier,
-            textAlignVertical: 'center',
-            flexWrap: 'wrap',
-            fontFamily: props.font + '-regular'
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(
+              props,
+              'd',
+              'regular',
+              'left',
+              fullyCompleted ? colors.chateau : colors.shark
+            ),
+            {
+              textAlignVertical: 'center',
+              flexWrap: 'wrap'
+            ***REMOVED***
+          ]***REMOVED***
           numberOfLines={1***REMOVED***
         >
           {props.thisSet.subtitle***REMOVED***
         </Text>
         <Text
-          style={{
-            color: fullyCompleted ? colors.chateau : colors.shark,
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontSize: 18 * scaleMultiplier,
-            textAlignVertical: 'center',
-            flexWrap: 'wrap',
-            fontFamily: props.font + '-black'
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(
+              props,
+              'h3',
+              'black',
+              'left',
+              fullyCompleted ? colors.chateau : colors.shark
+            ),
+            {
+              textAlignVertical: 'center',
+              flexWrap: 'wrap'
+            ***REMOVED***
+          ]***REMOVED***
           numberOfLines={2***REMOVED***
         >
           {props.thisSet.title***REMOVED***

@@ -36,12 +36,13 @@ function GroupsScreen (props) {
               onPress={() => setIsEditing(old => !old)***REMOVED***
             >
               <Text
-                style={[
-                  styles.editButtonText,
-                  {
-                    fontFamily: props.font + '-regular'
-                  ***REMOVED***
-                ]***REMOVED***
+                style={Typography(
+                  props,
+                  'h3',
+                  'regular',
+                  'center',
+                  colors.shark
+                )***REMOVED***
               >
                 {isEditing
                   ? props.translations.groups.done_button_label
@@ -56,12 +57,13 @@ function GroupsScreen (props) {
               onPress={() => setIsEditing(old => !old)***REMOVED***
             >
               <Text
-                style={[
-                  styles.editButtonText,
-                  {
-                    fontFamily: props.font + '-regular'
-                  ***REMOVED***
-                ]***REMOVED***
+                style={Typography(
+                  props,
+                  'h3',
+                  'regular',
+                  'center',
+                  colors.shark
+                )***REMOVED***
               >
                 {isEditing
                   ? props.translations.groups.done_button_label
@@ -160,13 +162,7 @@ function GroupsScreen (props) {
                 />
               </View>
               <Text
-                style={[
-                  styles.addGroupText,
-                  {
-                    textAlign: props.isRTL ? 'right' : 'left',
-                    fontFamily: props.font + '-medium'
-                  ***REMOVED***
-                ]***REMOVED***
+                style={Typography(props, 'h3', 'medium', 'left', colors.blue)***REMOVED***
               >
                 {props.translations.groups.new_group_button_label***REMOVED***
               </Text>
@@ -188,13 +184,7 @@ function GroupsScreen (props) {
             ***REMOVED***
           >
             <Text
-              style={[
-                styles.addNewLanguageText,
-                {
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontFamily: props.font + '-medium'
-                ***REMOVED***
-              ]***REMOVED***
+              style={Typography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***
             >
               {props.translations.groups.new_language_button_label***REMOVED***
             </Text>

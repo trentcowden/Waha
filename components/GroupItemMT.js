@@ -30,16 +30,7 @@ function GroupItemMT (props) {
         />
       </View>
       <View style={styles.groupNameContainer***REMOVED***>
-        <Text
-          style={[
-            styles.groupNameText,
-            {
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-medium',
-              color: props.toolkitEnabled ? colors.shark : colors.chateau
-            ***REMOVED***
-          ]***REMOVED***
-        >
+        <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
           {props.group.name***REMOVED***
         </Text>
       </View>

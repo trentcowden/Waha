@@ -130,8 +130,18 @@ function LanguageSelectScreen (props) {
   var headerText =
     props.route.name === 'LanguageSelect' ? (
       <View style={{ marginVertical: 40 * scaleMultiplier ***REMOVED******REMOVED***>
-        <Text style={styles.title***REMOVED***> {i18n.t('welcome')***REMOVED***</Text>
-        <Text style={styles.subtitle***REMOVED***> {i18n.t('selectLanguage')***REMOVED***</Text>
+        <Text
+          style={[
+            Typography(props, 'h1', '', 'center', colors.shark),
+            { fontWeight: 'bold', margin: 5 ***REMOVED***
+          ]***REMOVED***
+          style={styles.title***REMOVED***
+        >
+          {i18n.t('welcome')***REMOVED***
+        </Text>
+        <Text style={Typography(props, 'h2', '', 'center', colors.shark)***REMOVED***>
+          {i18n.t('selectLanguage')***REMOVED***
+        </Text>
       </View>
     ) : null
 
@@ -170,7 +180,7 @@ function LanguageSelectScreen (props) {
               : colors.white
         ***REMOVED******REMOVED***
       >
-        <Text style={{ color: colors.chateau, fontSize: 18 * scaleMultiplier ***REMOVED******REMOVED***>
+        <Text style={Typography(props, 'h3', '', 'left', colors.chateau)***REMOVED***>
           {i18n.t(section.i18nName)***REMOVED***
         </Text>
       </View>

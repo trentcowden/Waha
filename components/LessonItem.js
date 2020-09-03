@@ -5,6 +5,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import DownloadStatusIndicator from '../components/DownloadStatusIndicator'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import Typography from '../styles/typography'
 function LessonItem (props) {
   //// CONSTRUCTOR
 
@@ -52,9 +53,7 @@ function LessonItem (props) {
     <View
       style={[
         styles.lessonItem,
-        {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
-        ***REMOVED***
+        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
     >
       {/* main touchable area */***REMOVED***
@@ -101,24 +100,13 @@ function LessonItem (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={{
-              fontSize: 16 * scaleMultiplier,
-              textAlignVertical: 'center',
-              color: props.isComplete ? colors.chateau : colors.shark,
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-medium'
-            ***REMOVED******REMOVED***
+            style={Typography(props, 'h4', 'medium', 'left', colors.shark)***REMOVED***
             numberOfLines={2***REMOVED***
           >
             {props.thisLesson.title***REMOVED***
           </Text>
           <Text
-            style={{
-              fontSize: 12 * scaleMultiplier,
-              color: colors.chateau,
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular'
-            ***REMOVED******REMOVED***
+            style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
             numberOfLines={1***REMOVED***
           >
             {props.thisLesson.subtitle***REMOVED***

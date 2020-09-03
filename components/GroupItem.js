@@ -139,26 +139,14 @@ function GroupItem (props) {
           ]***REMOVED***
         >
           <Text
-            style={[
-              styles.groupNameText,
-              {
-                textAlign: props.isRTL ? 'right' : 'left',
-                fontFamily: props.font + '-black'
-              ***REMOVED***
-            ]***REMOVED***
+            style={Typography(props, 'h3', 'black', 'left', colors.shark)***REMOVED***
             numberOfLines={1***REMOVED***
           >
             {props.groupName***REMOVED***
           </Text>
           {getBookmarkText() === '' ? null : (
             <Text
-              style={[
-                styles.bookmarkText,
-                {
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontFamily: props.font + '-regular'
-                ***REMOVED***
-              ]***REMOVED***
+              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().set***REMOVED***
@@ -166,13 +154,7 @@ function GroupItem (props) {
           )***REMOVED***
           {getBookmarkText() === '' ? null : (
             <Text
-              style={[
-                styles.bookmarkText,
-                {
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontFamily: props.font + '-regular'
-                ***REMOVED***
-              ]***REMOVED***
+              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().lesson***REMOVED***

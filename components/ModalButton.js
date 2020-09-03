@@ -10,9 +10,8 @@ function ModalButton (props) {
     <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={props.onPress***REMOVED***>
       <Text
         style={[
-          styles.text,
           props.style,
-          { fontFamily: props.font + '-regular' ***REMOVED***
+          Typography(props, 'h3', 'regular', 'center', colors.shark)
         ]***REMOVED***
       >
         {props.title***REMOVED***
@@ -31,11 +30,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomColor: colors.athens,
     alignItems: 'center'
-  ***REMOVED***,
-  text: {
-    color: colors.shark,
-    textAlign: 'center',
-    fontSize: 19.5 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 

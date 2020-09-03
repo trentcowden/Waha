@@ -47,12 +47,10 @@ function LanguageSelectItem (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={{
-              color: colors.shark,
-              fontSize: 18 * scaleMultiplier,
-              fontWeight: 'bold',
-              textAlign: 'left'
-            ***REMOVED******REMOVED***
+            style={[
+              Typography(props, 'h3', '', 'left', colors.shark),
+              { fontWeight: 'bold' ***REMOVED***
+            ]***REMOVED***
           >
             {props.nativeName***REMOVED***
           </Text>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 
 function WahaItem (props) {
   return props.onPress ? (
@@ -15,13 +15,7 @@ function WahaItem (props) {
       ]***REMOVED***
       onPress={props.onPress***REMOVED***
     >
-      <Text
-        style={{
-          fontFamily: props.font + '-medium',
-          fontSize: 18 * scaleMultiplier,
-          color: colors.shark
-        ***REMOVED******REMOVED***
-      >
+      <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
         {props.title***REMOVED***
       </Text>
       {props.children***REMOVED***
@@ -36,13 +30,7 @@ function WahaItem (props) {
         props.style
       ]***REMOVED***
     >
-      <Text
-        style={{
-          fontFamily: props.font + '-medium',
-          fontSize: 18 * scaleMultiplier,
-          color: colors.shark
-        ***REMOVED******REMOVED***
-      >
+      <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
         {props.title***REMOVED***
       </Text>
       {props.children***REMOVED***

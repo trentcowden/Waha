@@ -14,13 +14,7 @@ function MessageModal (props) {
       ***REMOVED******REMOVED***
       onPress={props.cancelOnPress***REMOVED***
     >
-      <Text
-        style={{
-          fontFamily: props.font + '-medium',
-          fontSize: 24 * scaleMultiplier,
-          color: colors.red
-        ***REMOVED******REMOVED***
-      >
+      <Text style={Typography(props, 'h2', 'medium', 'left', colors.red)***REMOVED***>
         {props.cancelText***REMOVED***
       </Text>
     </TouchableOpacity>
@@ -38,25 +32,18 @@ function MessageModal (props) {
       <View style={styles.contentContainer***REMOVED***>
         {props.children***REMOVED***
         <Text
-          style={{
-            color: colors.shark,
-            fontFamily: props.font + '-black',
-            fontSize: 36 * scaleMultiplier,
-            marginVertical: 10,
-            textAlign: 'center'
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(props, 'h1', 'black', 'center', colors.shark),
+            { marginVertical: 10 ***REMOVED***
+          ]***REMOVED***
         >
           {props.title***REMOVED***
         </Text>
         <Text
-          style={{
-            color: colors.shark,
-            fontFamily: props.font + '-medium',
-            fontSize: 18 * scaleMultiplier,
-            // marginVertical: 10,
-            textAlign: 'center',
-            paddingHorizontal: 20
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(props, 'h3', 'medium', 'center', colors.shark),
+            { paddingHorizontal: 20 ***REMOVED***
+          ]***REMOVED***
         >
           {props.body***REMOVED***
         </Text>
@@ -71,12 +58,7 @@ function MessageModal (props) {
           onPress={props.confirmOnPress***REMOVED***
         >
           <Text
-            style={{
-              fontFamily: props.font + '-medium',
-              fontSize: 24 * scaleMultiplier,
-              color: colors.apple,
-              textAlign: 'center'
-            ***REMOVED******REMOVED***
+            style={Typography(props, 'h2', 'medium', 'center', colors.apple)***REMOVED***
           >
             {props.confirmText***REMOVED***
           </Text>

@@ -129,12 +129,13 @@ function MTScreen (props) {
                   ***REMOVED******REMOVED***
                 >
                   <Text
-                    style={{
-                      fontFamily: props.font + '-regular',
-                      fontSize: 14 * scaleMultiplier,
-                      color: colors.chateau,
-                      textAlign: 'center'
-                    ***REMOVED******REMOVED***
+                    style={Typography(
+                      props,
+                      'p',
+                      'regular',
+                      'center',
+                      colors.chateau
+                    )***REMOVED***
                   >
                     {
                       props.translations.mobilization_tools
