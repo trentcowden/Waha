@@ -4,7 +4,7 @@ import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function OptionsModal (props) {
-  //// RENDER
+  //+ RENDER
   return (
     <Modal
       isVisible={props.isVisible***REMOVED***

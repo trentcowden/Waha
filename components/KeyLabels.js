@@ -74,7 +74,7 @@ function KeyLabels (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   keyPlaceholder: {

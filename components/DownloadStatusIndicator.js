@@ -6,7 +6,7 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // renders the icon on the right side of lesson item that shows the download
 //  status
 function DownloadStatusIndicator (props) {
-  //// RENDER
+  //+ RENDER
 
   // HERE'S WHAT IS GOING ON
   // Has questionsType (i.e. isn't only video) ?
@@ -97,7 +97,7 @@ function DownloadStatusIndicator (props) {
   null
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   downloadButtonContainer: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   return {

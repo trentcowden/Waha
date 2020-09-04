@@ -8,9 +8,9 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 
 function SetInfoScreen (props) {
-  //// STATE
+  //+ STATE
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
 
   function getNavOptions () {
     return {
@@ -27,13 +27,13 @@ function SetInfoScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   function renderLessonInfoItem (item) {
     if (item.scripture) {
@@ -110,7 +110,7 @@ function SetInfoScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

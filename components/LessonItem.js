@@ -7,7 +7,7 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import Typography from '../styles/typography'
 function LessonItem (props) {
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     // if we've completed the download for this lesson, remove the audio/video
@@ -35,7 +35,7 @@ function LessonItem (props) {
     ***REMOVED***
   ***REMOVED***, [props.downloads])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   // calls the various modal functions on lessonlistscreen
   function showSaveModal () {
@@ -47,7 +47,7 @@ function LessonItem (props) {
     props.setShowDeleteLessonModal.call()
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <View
@@ -127,7 +127,7 @@ function LessonItem (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   lessonItem: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

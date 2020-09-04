@@ -12,7 +12,7 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function VideoPlayer (props) {
   const [showVideoControls, setShowVideoControls] = useState(false)
-  const [videoObject, setVideoObject] = useState()
+  const [video, setVideo] = useState()
 
   return (
     <TouchableWithoutFeedback
@@ -35,8 +35,8 @@ function VideoPlayer (props) {
       >
         <Video
           ref={ref => {
-            setVideoObject(ref)
-            props.setVideoObject(ref)
+            setVideo(ref)
+            props.setVideo(ref)
           ***REMOVED******REMOVED***
           rate={1.0***REMOVED***
           volume={1.0***REMOVED***
@@ -44,13 +44,13 @@ function VideoPlayer (props) {
           resizeMode='contain'
           shouldPlay
           usePoster
-          onLoad={() => props.setIsLoaded(true)***REMOVED***
+          onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
           style={{ flex: 1 ***REMOVED******REMOVED***
           onPlaybackStatusUpdate={status => {
             // match up so there's a single source of truth between
             // waha controls and native video controls
-            if (status.isPlaying) props.setIsPlaying(true)
-            else if (!status.isPlaying) props.setIsPlaying(false)
+            if (status.isPlaying) props.setIsMediaPlaying(true)
+            else if (!status.isPlaying) props.setIsMediaPlaying(false)
 
             // if we're buffering, turn play icon into activity indicator
             if (!status.isBuffering) props.setIsVideoBuffering(false)
@@ -60,14 +60,14 @@ function VideoPlayer (props) {
             if (status.didJustFinish && props.route.params.lessonType !== 'v')
               props.changeChapter('application')
           ***REMOVED******REMOVED***
-          onLoadStart={() => props.setIsLoaded(false)***REMOVED***
-          onLoad={() => props.setIsLoaded(true)***REMOVED***
+          onLoadStart={() => props.setIsMediaLoaded(false)***REMOVED***
+          onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
           onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
             console.log(fullscreenUpdate)
           ***REMOVED******REMOVED***
         />
         {/* display a video icon placeholder when we're loading */***REMOVED***
-        {props.isLoaded ? null : (
+        {props.isMediaLoaded ? null : (
           <View
             style={{
               alignSelf: 'center',
@@ -98,7 +98,7 @@ function VideoPlayer (props) {
             <TouchableOpacity
               style={{ alignSelf: 'flex-end' ***REMOVED******REMOVED***
               onPress={() => {
-                videoObject.presentFullscreenPlayer()
+                video.presentFullscreenPlayer()
               ***REMOVED******REMOVED***
             >
               <Icon

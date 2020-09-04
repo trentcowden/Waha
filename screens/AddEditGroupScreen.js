@@ -30,7 +30,7 @@ import {
 ***REMOVED*** from '../redux/actions/groupsActions'
 
 function AddEditGroupScreen (props) {
-  //// STATE
+  //+ STATE
 
   // keeps track of the group name text input value
   const [groupName, setGroupName] =
@@ -54,13 +54,13 @@ function AddEditGroupScreen (props) {
     props.activeGroup.name === props.route.params.groupName
   )
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [props.isRTL, groupName, emoji])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
 
   function getNavOptions () {
     return {
@@ -89,7 +89,7 @@ function AddEditGroupScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   function checkForDuplicate () {
     var isDuplicate = false
@@ -154,7 +154,7 @@ function AddEditGroupScreen (props) {
     props.navigation.goBack()
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   // renders the delete group button conditionally because the currently active group can't be deleted
 
@@ -318,7 +318,7 @@ function AddEditGroupScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

@@ -113,7 +113,7 @@ function SetTabs (props) {
   return tabs
 ***REMOVED***
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

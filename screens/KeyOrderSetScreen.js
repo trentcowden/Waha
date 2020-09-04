@@ -15,11 +15,11 @@ import WahaButton from '../components/WahaButton'
 import { colors ***REMOVED*** from '../constants'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
 function KeyOrderSetScreen (props) {
-  //// STATE
+  //+ STATE
 
   const [keyOrder, setKeyOrder] = useState('')
   const [instructionText, setInstructionText] = useState('')
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     switch (props.route.name) {
@@ -165,7 +165,7 @@ function KeyOrderSetScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <SafeAreaView style={styles.screen***REMOVED***>
@@ -192,7 +192,7 @@ function KeyOrderSetScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {

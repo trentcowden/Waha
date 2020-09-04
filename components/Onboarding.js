@@ -144,7 +144,7 @@ function Onboarding (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   image: {

@@ -14,7 +14,7 @@ import { deleteLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 function GroupListHeader (props) {
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   useEffect(() => {
     // check if there was a failed language add, i.e. if the app crashed/user quit during a fetch
@@ -129,7 +129,7 @@ function GroupListHeader (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   languageHeaderContainer: {

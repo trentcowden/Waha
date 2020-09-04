@@ -9,7 +9,7 @@ import { colors ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
 function StorageScreen (props) {
-  //// STATE
+  //+ STATE
 
   // keeps track of storage size of each language's downloaded chapter 2s
   const [storageObject, setStorageObject] = useState({***REMOVED***)
@@ -17,14 +17,14 @@ function StorageScreen (props) {
   // keeps track of total storage for all downloaded chapter 2s
   const [totalStorage, setTotalStorage] = useState(0)
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
     getAllStorageUsed()
   ***REMOVED***, [])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
 
   function getNavOptions () {
     return {
@@ -37,7 +37,7 @@ function StorageScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   // gets the storage size in megabytes for all the downloaded chapter 2s for a specific language
   async function getStorageUsedByLanguage (language) {
@@ -118,7 +118,7 @@ function StorageScreen (props) {
     return installedLanguageInstances
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   function renderLanguageStorageItem (languageList) {
     return (
@@ -198,7 +198,7 @@ function StorageScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-////REDUX
+//+REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

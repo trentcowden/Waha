@@ -8,7 +8,7 @@ import MessageModal from '../components/MessageModal'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 function SetItem (props) {
-  //// STATE
+  //+ STATE
 
   // keeps track of the number of completed lessons in this set
   const [progressPercentage, setProgressPercentage] = useState(0)
@@ -25,7 +25,7 @@ function SetItem (props) {
   const [icon, setIcon] = useState()
   const [action, setAction] = useState()
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     // big switch statement that renders the 2 dynamic components (the big icon,
@@ -195,7 +195,7 @@ function SetItem (props) {
     props.isRTL
   ])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   useEffect(() => {
     progressCases()
@@ -249,7 +249,7 @@ function SetItem (props) {
     setShowUnlockModal(true)
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <TouchableOpacity
@@ -334,7 +334,7 @@ function SetItem (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   studySetItem: {
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

@@ -14,7 +14,7 @@ import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import en from '../translations/en.json'
 
 function LanguageSelectScreen (props) {
-  //// STATE
+  //+ STATE
 
   // keeps track of language selected in picker (TODO: change default to user's default language)
   const [selectedLanguage, setSelectedLanguage] = useState('')
@@ -42,7 +42,7 @@ function LanguageSelectScreen (props) {
     ***REMOVED***)
   ***REMOVED***
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
@@ -64,7 +64,7 @@ function LanguageSelectScreen (props) {
       : null
   ***REMOVED***
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   // plays text-to-speech audio file of language
 
@@ -73,7 +73,7 @@ function LanguageSelectScreen (props) {
     setSelectedLanguage(language)
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   // render start button conditionally as the user can't start if they don't have internet
   var startButton = isListEmpty ? (
@@ -274,7 +274,7 @@ function LanguageSelectScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-////REDUX
+//+REDUX
 
 function mapStateToProps (state) {
   return {

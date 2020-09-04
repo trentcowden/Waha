@@ -4,7 +4,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // simple back button that is shown in almost every screen's header
 function BackButton (props) {
-  //// RENDER
+  //+ RENDER
 
   return (
     <TouchableOpacity
@@ -23,7 +23,7 @@ function BackButton (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   backButtonContainer: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

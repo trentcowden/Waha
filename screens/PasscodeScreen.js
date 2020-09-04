@@ -12,20 +12,20 @@ import {
 import { setToolkitEnabled ***REMOVED*** from '../redux/actions/toolkitEnabledActions'
 
 function PasscodeScreen (props) {
-  //// STATE
+  //+ STATE
   const [passcode, setPasscode] = useState('')
   const [pinRef, setPinRef] = useState()
   // const [passcodeStatusText, setPasscodeStatusText] = useState('')
   const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
   // const [numAttempts, setNumAttempts] = useState(0)
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
   function getNavOptions () {
     return {
       headerRight: props.isRTL
@@ -44,7 +44,7 @@ function PasscodeScreen (props) {
     ***REMOVED***
   ***REMOVED***, [props.mtUnlockAttempts])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   function checkPasscode (passcode) {
     if (passcode === '281820') {
@@ -67,7 +67,7 @@ function PasscodeScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <View style={styles.screen***REMOVED***>
@@ -150,7 +150,7 @@ function PasscodeScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

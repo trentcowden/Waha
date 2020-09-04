@@ -4,11 +4,11 @@ import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function GroupListHeaderMT (props) {
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   useEffect(() => {***REMOVED***, [])
 
-  //// RENDER
+  //+ RENDER
 
   // if our active language has a toolkit, show the list of groups
   // var list = props.activeDatabase.hasToolkit ? (
@@ -83,7 +83,7 @@ function GroupListHeaderMT (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   languageHeaderContainer: {

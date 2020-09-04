@@ -6,15 +6,15 @@ import Onboarding from '../components/Onboarding'
 import { colors ***REMOVED*** from '../constants'
 
 function SecurityOnboardingScreen (props) {
-  //// STATE
+  //+ STATE
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
   function getNavOptions () {
     return {
       headerRight: props.isRTL
@@ -26,7 +26,7 @@ function SecurityOnboardingScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <View style={styles.screen***REMOVED***>
@@ -55,7 +55,7 @@ function SecurityOnboardingScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-////REDUX
+//+REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

@@ -14,21 +14,21 @@ import { changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import en from '../translations/en.json'
 
 function OnboardingSlidesScreen (props) {
-  //// STATE
+  //+ STATE
 
   // translations for language select
   i18n.translations = {
     en
   ***REMOVED***
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     var language = props.route.params.selectedLanguage
     props.addLanguage(language)
   ***REMOVED***, [])
 
-  // //// FUNCTIONS
+  // //+ FUNCTIONS
 
   // tells redux that we're ready to go to loading screen once onboarding is finished
   function finishOnboarding () {
@@ -36,7 +36,7 @@ function OnboardingSlidesScreen (props) {
     props.navigation.navigate('Loading')
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <View style={styles.screen***REMOVED***>
@@ -65,7 +65,7 @@ function OnboardingSlidesScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-////REDUX
+//+REDUX
 
 function mapStateToProps (state) {
   return {

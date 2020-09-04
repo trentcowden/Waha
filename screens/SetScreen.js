@@ -12,20 +12,20 @@ import SetItem from '../components/SetItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function SetScreen (props) {
-  //// STUFF FOR TESTING
+  //+ STUFF FOR TESTING
 
   // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
   //   console.log(contents)
   // ***REMOVED***)
   // console.log(scaleMultiplier)
 
-  //// STATE
+  //+ STATE
 
   // shows the add new set modal
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
   const [setCategory, setSetCategory] = useState('')
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     // console.log(props.route.name)
@@ -45,7 +45,7 @@ function SetScreen (props) {
     ***REMOVED***
   ***REMOVED***, [])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
 
   // get the sets for whatever tab we're on
   function getSetData () {
@@ -81,7 +81,7 @@ function SetScreen (props) {
           ***REMOVED***)
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   function renderStudySetItem (setList) {
     return (
@@ -163,7 +163,7 @@ function SetScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

@@ -4,7 +4,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // button rendered on the options modal component
 function ModalButton (props) {
-  //// RETURN
+  //+ RETURN
 
   return (
     <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={props.onPress***REMOVED***>
@@ -21,7 +21,7 @@ function ModalButton (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   modalButtonStyle: {

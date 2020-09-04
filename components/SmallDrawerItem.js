@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors ***REMOVED*** from '../constants'
 function SmallDrawerItem (props) {
-  //// RENDER
+  //+ RENDER
 
   return (
     <TouchableOpacity
@@ -20,7 +20,7 @@ function SmallDrawerItem (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   smallDrawerItemContainer: {
