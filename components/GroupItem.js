@@ -202,16 +202,6 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     flexWrap: 'nowrap'
-  ***REMOVED***,
-  groupNameText: {
-    color: colors.shark,
-    fontSize: 18 * scaleMultiplier,
-    textAlign: 'left'
-  ***REMOVED***,
-  bookmarkText: {
-    fontSize: 12 * scaleMultiplier,
-    color: colors.chateau,
-    textAlign: 'left'
   ***REMOVED***
 ***REMOVED***)
 

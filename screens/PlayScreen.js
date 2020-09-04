@@ -1,5 +1,5 @@
 import useInterval from '@use-it/interval'
-import { Audio, Video ***REMOVED*** from 'expo-av'
+import { Audio ***REMOVED*** from 'expo-av'
 import * as FileSystem from 'expo-file-system'
 import { useKeepAwake ***REMOVED*** from 'expo-keep-awake'
 import { DeviceMotion ***REMOVED*** from 'expo-sensors'
@@ -9,24 +9,22 @@ import {
   Alert,
   Animated,
   Dimensions,
-  FlatList,
   StyleSheet,
   Text,
-  TouchableHighlight,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import SVG from '../assets/svg'
+import AlbumArtSwiper from '../components/AlbumArtSwiper'
 import BackButton from '../components/BackButton'
+import BookView from '../components/BookView'
 import ChapterSelect from '../components/ChapterSelect'
 import HomeworkModal from '../components/HomeworkModal'
 import PlayPauseSkip from '../components/PlayPauseSkip'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
 import ShareModal from '../components/ShareModal'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import VideoPlayer from '../components/VideoPlayer'
+import { colors ***REMOVED*** from '../constants'
 import {
   downloadLesson,
   downloadVideo,
@@ -37,7 +35,9 @@ import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 console.disableYellowBox = true
 
 function PlayScreen (props) {
-  //// STATE
+  /* 
+    STATE
+  */
 
   //// AUDIO SPECIFIC STATE
 
@@ -57,9 +57,6 @@ function PlayScreen (props) {
 
   // keeps track of if the video is buffering
   const [isVideoBuffering, setIsVideoBuffering] = useState(false)
-
-  // keeps track of whether the video controls overlay is visible
-  const [showVideoControls, setShowVideoControls] = useState(false)
 
   // keeps track of the current screen orientation for fullscreen videos
   const [screenOrientation, setScreenOrientation] = useState(0)
@@ -90,53 +87,10 @@ function PlayScreen (props) {
   //// ALBUM ART STATE
 
   // ref for the middle album art scroller
-  const [albumArtRef, setAlbumArtRef] = useState()
-  const [isMiddle, setIsMiddle] = useState(true)
-  const [middleScrollBarOpacity, setMiddleScrollBarOpacity] = useState(
-    new Animated.Value(0)
-  )
-  const [sideScrollBarOpacity, setSideScrollBarOpacity] = useState(
-    new Animated.Value(0.8)
-  )
-
-  const onViewRef = useRef(info => {
-    if (info.viewableItems.some(item => item.index === 0)) setIsMiddle(true)
-    else setIsMiddle(false)
-  ***REMOVED***)
-  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+  const [albumArtSwiperRef, setAlbumArtSwiperRef] = useState()
 
   // keeps the screen always awake on this screen
   useKeepAwake()
-
-  useEffect(() => {
-    if (isMiddle)
-      Animated.sequence([
-        Animated.timing(middleScrollBarOpacity, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: true
-        ***REMOVED***),
-        Animated.timing(sideScrollBarOpacity, {
-          toValue: 0.8,
-          duration: 100,
-          useNativeDriver: true
-        ***REMOVED***)
-      ]).start()
-    else {
-      Animated.sequence([
-        Animated.timing(sideScrollBarOpacity, {
-          toValue: 0,
-          duration: 100,
-          useNativeDriver: true
-        ***REMOVED***),
-        Animated.timing(middleScrollBarOpacity, {
-          toValue: 0.8,
-          duration: 100,
-          useNativeDriver: true
-        ***REMOVED***)
-      ]).start()
-    ***REMOVED***
-  ***REMOVED***, [isMiddle])
 
   // pause lesson if we move to a different screen (i.e. when switching to
   //  splash / game for security mode)
@@ -149,29 +103,9 @@ function PlayScreen (props) {
   // share modal
   const [showShareLessonModal, setShowShareLessonModal] = useState(false)
 
-  // homework modal
-  const [showHomeworkModal, setShowHomeworkModal] = useState(false)
-
   // animation state
   const [playOpacity, setPlayOpacity] = useState(new Animated.Value(0))
   const [animationZIndex, setAnimationZIndex] = useState(0)
-
-  // data for album art flatlist
-  const albumArtData = [
-    {
-      key: '0',
-      type: 'text'
-    ***REMOVED***,
-    {
-      key: '1',
-      type: 'image',
-      svgName: props.route.params.thisSet.iconName
-    ***REMOVED***,
-    {
-      key: '2',
-      type: 'text'
-    ***REMOVED***
-  ]
 
   //// NAV OPTIONS
   function getNavOptions () {
@@ -682,8 +616,8 @@ function PlayScreen (props) {
   ***REMOVED***
 
   function swipeToScripture () {
-    if (albumArtRef)
-      albumArtRef.scrollToIndex({
+    if (albumArtSwiperRef)
+      albumArtSwiperRef.scrollToIndex({
         animated: true,
         viewPosition: 0.5,
         viewOffset: -Dimensions.get('screen').width,
@@ -749,149 +683,6 @@ function PlayScreen (props) {
 
   //// RENDER
 
-  // renders the album art section in the middle of the screen
-  function renderAlbumArtItem ({ item ***REMOVED***) {
-    var scrollBarLeft = (
-      <View
-        style={[
-          styles.scrollBarContainer,
-          {
-            alignSelf: 'flex-start'
-          ***REMOVED***
-        ]***REMOVED***
-      >
-        <Animated.View
-          style={[
-            styles.scrollBar,
-            {
-              opacity:
-                item.key === '1' ? middleScrollBarOpacity : sideScrollBarOpacity
-            ***REMOVED***
-          ]***REMOVED***
-        />
-      </View>
-    )
-    var scrollBarRight = (
-      <View
-        style={[
-          styles.scrollBarContainer,
-          {
-            alignSelf: 'flex-end'
-          ***REMOVED***
-        ]***REMOVED***
-      >
-        <Animated.View
-          style={[
-            styles.scrollBar,
-            {
-              opacity:
-                item.key === '1' ? middleScrollBarOpacity : sideScrollBarOpacity
-            ***REMOVED***
-          ]***REMOVED***
-        />
-      </View>
-    )
-
-    if (item.type === 'text') {
-      return (
-        <View style={styles.albumArtContainer***REMOVED***>
-          {scrollBarLeft***REMOVED***
-          {scrollBarRight***REMOVED***
-          <FlatList
-            data={
-              props.route.params.thisLesson.fellowshipType
-                ? // render questions on the first pane and scripture on the last
-                  item.key === '0'
-                  ? props.activeDatabase.questions[
-                      props.route.params.thisLesson.fellowshipType
-                    ].concat(
-                      props.activeDatabase.questions[
-                        props.route.params.thisLesson.applicationType
-                      ]
-                    )
-                  : props.route.params.thisLesson.scripture
-                : []
-            ***REMOVED***
-            renderItem={renderTextContent***REMOVED***
-            keyExtractor={item => item.header***REMOVED***
-            showsVerticalScrollIndicator={false***REMOVED***
-            ListHeaderComponent={() => <View style={{ height: 10 ***REMOVED******REMOVED*** />***REMOVED***
-          />
-        </View>
-      )
-    ***REMOVED*** else {
-      return (
-        <View style={styles.albumArtContainer***REMOVED***>
-          {scrollBarLeft***REMOVED***
-          {scrollBarRight***REMOVED***
-          <View
-            style={{
-              zIndex: 1,
-              width: '100%',
-              height: '100%',
-              justifyContent: 'center',
-              alignItems: 'center'
-            ***REMOVED******REMOVED***
-          >
-            <TouchableHighlight
-              style={{
-                width: '100%',
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center'
-              ***REMOVED******REMOVED***
-              onPress={playHandler***REMOVED***
-              underlayColor={colors.white + '00'***REMOVED***
-              activeOpacity={1***REMOVED***
-            >
-              <SVG
-                name={item.svgName***REMOVED***
-                width={Dimensions.get('window').width - 80***REMOVED***
-                height={Dimensions.get('window').width - 80***REMOVED***
-                fill='#1D1E20'
-              />
-            </TouchableHighlight>
-          </View>
-          <Animated.View
-            style={{
-              position: 'absolute',
-              opacity: playOpacity,
-              transform: [
-                {
-                  scale: playOpacity.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [2, 1]
-                  ***REMOVED***)
-                ***REMOVED***
-              ],
-              zIndex: animationZIndex
-            ***REMOVED******REMOVED***
-          >
-            <Icon
-              name={isPlaying ? 'play' : 'pause'***REMOVED***
-              size={100 * scaleMultiplier***REMOVED***
-              color={colors.white***REMOVED***
-            />
-          </Animated.View>
-        </View>
-      )
-    ***REMOVED***
-  ***REMOVED***
-
-  // renders the questions/scripture text content
-  function renderTextContent (textList) {
-    return (
-      <View style={{ paddingHorizontal: 20 ***REMOVED******REMOVED***>
-        <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
-          {textList.item.header***REMOVED***
-        </Text>
-        <Text style={Typography(props, 'h3', 'regular', 'left', colors.shark)***REMOVED***>
-          {textList.item.text***REMOVED***
-        </Text>
-      </View>
-    )
-  ***REMOVED***
-
   var titleSection = (
     <View style={styles.titlesContainer***REMOVED***>
       <Text
@@ -903,220 +694,73 @@ function PlayScreen (props) {
     </View>
   )
 
-  // render the middle section of the screen conditionally
-  // 1. if we're in an audio book lesson, show the book text
-  // 2. if we're on a video chapter, show the video player
-  // 3. show the default option, which is the album art and questions/scripture
-  var middleSection =
-    props.route.params.lessonType === 'a' ? (
-      <View
-        style={{
-          borderRadius: 10,
-          backgroundColor: colors.porcelain,
-          borderWidth: 4,
-          borderColor: colors.chateau,
-          marginHorizontal: 10,
-          marginTop: 10
-        ***REMOVED******REMOVED***
-      >
-        <FlatList
-          data={props.route.params.thisLesson.text.split('\n')***REMOVED***
-          renderItem={paragraphList => (
-            <Text
-              style={[
-                Typography(props, 'h4', 'regular', 'left', colors.shark),
-                { marginHorizontal: 10 ***REMOVED***
-              ]***REMOVED***
-            >
-              {paragraphList.item***REMOVED***
-            </Text>
-          )***REMOVED***
-          keyExtractor={item => item***REMOVED***
-          ListHeaderComponent={
-            <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>{titleSection***REMOVED***</View>
-          ***REMOVED***
-        />
-      </View>
-    ) : activeChapter === 'training' ? (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          if (!showVideoControls) {
-            setShowVideoControls(true)
-            setTimeout(() => setShowVideoControls(false), 1000)
-          ***REMOVED***
-        ***REMOVED******REMOVED***
-        style={{ width: '100%' ***REMOVED******REMOVED***
-      >
-        <View
-          style={{
-            height: Dimensions.get('window').width - 80,
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center'
-            // backgroundColor: 'black'
-          ***REMOVED******REMOVED***
-        >
-          <Video
-            ref={ref => setVideoObject(ref)***REMOVED***
-            rate={1.0***REMOVED***
-            volume={1.0***REMOVED***
-            isMuted={false***REMOVED***
-            resizeMode='contain'
-            shouldPlay
-            usePoster
-            onLoad={() => setIsLoaded(true)***REMOVED***
-            style={{ flex: 1 ***REMOVED******REMOVED***
-            onPlaybackStatusUpdate={status => {
-              // match up so there's a single source of truth between
-              // waha controls and native video controls
-              if (status.isPlaying) setIsPlaying(true)
-              else if (!status.isPlaying) setIsPlaying(false)
-
-              // if we're buffering, turn play icon into activity indicator
-              if (!status.isBuffering) setIsVideoBuffering(false)
-              else if (status.isBuffering) setIsVideoBuffering(true)
-
-              // if video finishes, switch to last chapter
-              if (status.didJustFinish && props.route.params.lessonType !== 'v')
-                changeChapter('application')
-            ***REMOVED******REMOVED***
-            onLoadStart={() => setIsLoaded(false)***REMOVED***
-            onLoad={() => setIsLoaded(true)***REMOVED***
-            onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
-              console.log(fullscreenUpdate)
-            ***REMOVED******REMOVED***
-          />
-          {/* display a video icon placeholder when we're loading */***REMOVED***
-          {isLoaded ? null : (
-            <View
-              style={{
-                alignSelf: 'center',
-                width: '100%',
-                position: 'absolute',
-                alignItems: 'center'
-              ***REMOVED******REMOVED***
-            >
-              <Icon
-                name='video'
-                size={100 * scaleMultiplier***REMOVED***
-                color={colors.oslo***REMOVED***
-              />
-            </View>
-          )***REMOVED***
-          {/* video controls overlay */***REMOVED***
-          {showVideoControls ? (
-            <View
-              style={{
-                width: '100%',
-                height: 65 * scaleMultiplier,
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                backgroundColor: colors.shark + '50',
-                justifyContent: 'center'
-              ***REMOVED******REMOVED***
-            >
-              <TouchableOpacity
-                style={{ alignSelf: 'flex-end' ***REMOVED******REMOVED***
-                onPress={() => {
-                  videoObject.presentFullscreenPlayer()
-                ***REMOVED******REMOVED***
-              >
-                <Icon
-                  name='fullscreen-enter'
-                  size={50 * scaleMultiplier***REMOVED***
-                  color={colors.white***REMOVED***
-                />
-              </TouchableOpacity>
-            </View>
-          ) : null***REMOVED***
-        </View>
-      </TouchableWithoutFeedback>
-    ) : (
-      <View
-        style={{
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        ***REMOVED******REMOVED***
-      >
-        <FlatList
-          data={albumArtData***REMOVED***
-          renderItem={renderAlbumArtItem***REMOVED***
-          ref={ref => setAlbumArtRef(ref)***REMOVED***
-          horizontal={true***REMOVED***
-          pagingEnabled={true***REMOVED***
-          snapToAlignment={'start'***REMOVED***
-          snapToInterval={Dimensions.get('window').width - 60***REMOVED***
-          decelerationRate={'fast'***REMOVED***
-          showsHorizontalScrollIndicator={false***REMOVED***
-          ItemSeparatorComponent={() => (
-            <View style={{ width: 20, height: '100%' ***REMOVED******REMOVED*** />
-          )***REMOVED***
-          ListHeaderComponent={() => <View style={{ width: 40 ***REMOVED******REMOVED*** />***REMOVED***
-          ListFooterComponent={() => <View style={{ width: 40 ***REMOVED******REMOVED*** />***REMOVED***
-          getItemLayout={(data, index) => ({
-            length: Dimensions.get('window').width - 60,
-            offset: Dimensions.get('window').width - 60 * index,
-            index
-          ***REMOVED***)***REMOVED***
-          initialScrollIndex={1***REMOVED***
-          viewabilityConfig={viewConfigRef.current***REMOVED***
-          onViewableItemsChanged={onViewRef.current***REMOVED***
-        />
-      </View>
-    )
-
-  // entire playback control section
-  // isLoaded ?
-  //  true: show scrubber
-  //        show play/pause
-  //        isLessonType = video only ?
-  //          true: hide chapter select
-  //          false: show chapter select
-  //  false: show loading circle
-  var audioControlContainer = isLoaded ? (
-    <View style={styles.audioControlContainer***REMOVED***>
-      {props.route.params.lessonType !== 'v' &&
-      props.route.params.lessonType !== 'a' ? (
-        <ChapterSelect
-          activeChapter={activeChapter***REMOVED***
-          lessonID={props.route.params.thisLesson.id***REMOVED***
-          onPress={chapter => changeChapter(chapter)***REMOVED***
-          lessonType={props.route.params.lessonType***REMOVED***
-          isDownloaded={props.route.params.isDownloaded***REMOVED***
-        />
-      ) : null***REMOVED***
-      <Scrubber
-        value={seekPosition***REMOVED***
-        onSlidingComplete={onSeekRelease***REMOVED***
-        onValueChange={onSeekDrag***REMOVED***
-        maximumValue={audioFileLength***REMOVED***
-        seekPosition={seekPosition***REMOVED***
-      />
-      <PlayPauseSkip
-        isPlaying={isPlaying***REMOVED***
-        isVideoBuffering={isVideoBuffering***REMOVED***
-        onPlayPress={playHandler***REMOVED***
-        onSkipPress={value => {
-          skip(value)
-        ***REMOVED******REMOVED***
-        hasHomework={props.route.params.thisLesson.homework ? true : false***REMOVED***
-        showHomeworkModal={() => setShowHomeworkModal(true)***REMOVED***
-      />
-    </View>
-  ) : (
-    <View style={styles.audioControlContainer***REMOVED***>
-      <ActivityIndicator size='large' color={colors.shark***REMOVED*** />
-    </View>
-  )
-
   return (
     <View style={styles.screen***REMOVED***>
       <View style={styles.topHalfContainer***REMOVED***>
         {props.route.params.lessonType === 'a' ? null : titleSection***REMOVED***
-        {middleSection***REMOVED***
+
+        {/* MIDDLE SECTION */***REMOVED***
+        {props.route.params.lessonType === 'a' ? (
+          <BookView
+            thisLesson={props.route.params.thisLesson***REMOVED***
+            titleSection={titleSection***REMOVED***
+          />
+        ) : activeChapter === 'training' ? (
+          <VideoPlayer
+            setVideoObject={setVideoObject***REMOVED***
+            setIsLoaded={setIsLoaded***REMOVED***
+            setIsPlaying={setIsPlaying***REMOVED***
+            setIsVideoBuffering={setIsVideoBuffering***REMOVED***
+            changeChapter={changeChapter***REMOVED***
+            isLoaded={isLoaded***REMOVED***
+          />
+        ) : (
+          <AlbumArtSwiper
+            setAlbumArtSwiperRef={setAlbumArtSwiperRef***REMOVED***
+            iconName={props.route.params.thisSet.iconName***REMOVED***
+            thisLesson={props.route.params.thisLesson***REMOVED***
+            playHandler={playHandler***REMOVED***
+            playOpacity={playOpacity***REMOVED***
+            animationZIndex={animationZIndex***REMOVED***
+            isPlaying={isPlaying***REMOVED***
+          />
+        )***REMOVED***
       </View>
-      {audioControlContainer***REMOVED***
+
+      {/* AUDIO CONTROLS */***REMOVED***
+      {isLoaded ? (
+        <View style={styles.audioControlContainer***REMOVED***>
+          {props.route.params.lessonType !== 'v' &&
+          props.route.params.lessonType !== 'a' ? (
+            <ChapterSelect
+              activeChapter={activeChapter***REMOVED***
+              lessonID={props.route.params.thisLesson.id***REMOVED***
+              onPress={chapter => changeChapter(chapter)***REMOVED***
+              lessonType={props.route.params.lessonType***REMOVED***
+              isDownloaded={props.route.params.isDownloaded***REMOVED***
+            />
+          ) : null***REMOVED***
+          <Scrubber
+            value={seekPosition***REMOVED***
+            onSlidingComplete={onSeekRelease***REMOVED***
+            onValueChange={onSeekDrag***REMOVED***
+            maximumValue={audioFileLength***REMOVED***
+            seekPosition={seekPosition***REMOVED***
+          />
+          <PlayPauseSkip
+            isPlaying={isPlaying***REMOVED***
+            isVideoBuffering={isVideoBuffering***REMOVED***
+            onPlayPress={playHandler***REMOVED***
+            onSkipPress={value => {
+              skip(value)
+            ***REMOVED******REMOVED***
+          />
+        </View>
+      ) : (
+        <View style={styles.audioControlContainer***REMOVED***>
+          <ActivityIndicator size='large' color={colors.shark***REMOVED*** />
+        </View>
+      )***REMOVED***
 
       {/* MODALS */***REMOVED***
       <ShareModal
@@ -1158,12 +802,6 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
     paddingHorizontal: 20
   ***REMOVED***,
-  title: {
-    color: colors.shark,
-    textAlign: 'center',
-    fontSize: 24 * scaleMultiplier,
-    flexWrap: 'nowrap'
-  ***REMOVED***,
   albumArtContainer: {
     width: Dimensions.get('window').width - 80,
     height: Dimensions.get('window').width - 80,
@@ -1174,21 +812,6 @@ const styles = StyleSheet.create({
     borderColor: colors.chateau,
     justifyContent: 'center',
     alignItems: 'center'
-  ***REMOVED***,
-  scrollBarContainer: {
-    height: '100%',
-    width: 24,
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 3,
-    marginLeft: -4
-  ***REMOVED***,
-  scrollBar: {
-    width: 4,
-    height: 75 * scaleMultiplier,
-    backgroundColor: colors.chateau,
-    borderRadius: 10
   ***REMOVED***,
   audioControlContainer: {
     justifyContent: 'space-evenly',
