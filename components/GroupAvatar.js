@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Icon from '../assets/fonts/icons'
 import { colors, groupIconSources, scaleMultiplier ***REMOVED*** from '../constants'
 // component for a group's avatar
-function AvatarImage (props) {
+function GroupAvatar (props) {
   //+ RENDER
 
   // renders the emoji in a group icon
@@ -78,4 +78,4 @@ function AvatarImage (props) {
   )
 ***REMOVED***
 
-export default AvatarImage
+export default GroupAvatar

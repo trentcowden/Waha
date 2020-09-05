@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-nati
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { changeActiveGroup, deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import AvatarImage from './AvatarImage'
+import GroupAvatar from './GroupAvatar'
 // renders a list item for a single group
 function GroupItem (props) {
   // FUNCTIONS
@@ -122,7 +122,7 @@ function GroupItem (props) {
               ***REMOVED***
         ***REMOVED***
       >
-        <AvatarImage
+        <GroupAvatar
           style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           size={50 * scaleMultiplier***REMOVED***
           emoji={props.emoji***REMOVED***
