@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, View ***REMOVED*** from 'react-native'
+import { Dimensions, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import KeyLabel from '../components/KeyLabel'
-import { colors, keyColors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, keyColors ***REMOVED*** from '../constants'
 
 function KeyLabels (props) {
   var keyLabel1 = props.keyOrder[1] ? (
@@ -78,9 +78,9 @@ function KeyLabels (props) {
 
 const styles = StyleSheet.create({
   keyPlaceholder: {
-    width: 50 * scaleMultiplier,
-    height: 50 * scaleMultiplier,
-    borderRadius: 25 * scaleMultiplier,
+    width: Dimensions.get('window').width / 12 + 10,
+    height: Dimensions.get('window').width / 12 + 10,
+    borderRadius: Dimensions.get('window').width / 24 + 5,
     backgroundColor: colors.white,
     margin: 5,
     justifyContent: 'center',

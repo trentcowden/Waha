@@ -100,7 +100,13 @@ function LessonItem (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={Typography(props, 'h4', 'medium', 'left', colors.shark)***REMOVED***
+            style={Typography(
+              props,
+              'h4',
+              'medium',
+              'left',
+              props.isComplete ? colors.chateau : colors.shark
+            )***REMOVED***
             numberOfLines={2***REMOVED***
           >
             {props.thisLesson.title***REMOVED***
@@ -131,8 +137,8 @@ function LessonItem (props) {
 
 const styles = StyleSheet.create({
   lessonItem: {
-    // height: 68 * scaleMultiplier,
-    aspectRatio: 6.1,
+    height: 68 * scaleMultiplier,
+    // aspectRatio: 6.1,
     flexDirection: 'row',
     backgroundColor: colors.aquaHaze,
     flex: 1,

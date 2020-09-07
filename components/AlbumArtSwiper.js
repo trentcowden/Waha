@@ -14,13 +14,17 @@ import SwipeBar from '../components/SwipeBar'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function AlbumArtSwiper (props) {
+  // TODO: make album art swiper smaller if device width >= 600
   //+ STATE
 
   // keeps track of whether we're in the middle pane or not
   const [isMiddle, setIsMiddle] = useState(true)
 
+  const [layoutWidth, setLayoutWidth] = useState(60)
+  const [marginWidth, setMarginWidth] = useState(80)
+
   // refs for determining when we're in the middle
-  // todo: is extremely jank and inconsistent
+  // todo: is extremely jank and inconsistent but functional
   const onViewRef = useRef(info => {
     if (info.viewableItems.some(item => item.index === 0)) setIsMiddle(true)
     else setIsMiddle(false)
@@ -43,6 +47,13 @@ function AlbumArtSwiper (props) {
       type: 'text'
     ***REMOVED***
   ]
+
+  useEffect(() => {
+    if (Dimensions.get('window').width >= 600) {
+      setLayoutWidth(240)
+      setMarginWidth(200)
+    ***REMOVED***
+  ***REMOVED***, [])
 
   //+ ANIMATION STUFF
 
@@ -91,7 +102,15 @@ function AlbumArtSwiper (props) {
     // for text panes
     if (item.type === 'text') {
       return (
-        <View style={styles.albumArtContainer***REMOVED***>
+        <View
+          style={[
+            styles.albumArtContainer,
+            {
+              width: Dimensions.get('window').width - marginWidth,
+              height: Dimensions.get('window').width - marginWidth
+            ***REMOVED***
+          ]***REMOVED***
+        >
           <SwipeBar
             isMiddle={false***REMOVED***
             side='left'
@@ -126,7 +145,15 @@ function AlbumArtSwiper (props) {
       )
     ***REMOVED*** else {
       return (
-        <View style={styles.albumArtContainer***REMOVED***>
+        <View
+          style={[
+            styles.albumArtContainer,
+            {
+              width: Dimensions.get('window').width - marginWidth,
+              height: Dimensions.get('window').width - marginWidth
+            ***REMOVED***
+          ]***REMOVED***
+        >
           <SwipeBar
             isMiddle={true***REMOVED***
             side='left'
@@ -159,8 +186,8 @@ function AlbumArtSwiper (props) {
             >
               <SVG
                 name={item.svgName***REMOVED***
-                width={Dimensions.get('window').width - 80***REMOVED***
-                height={Dimensions.get('window').width - 80***REMOVED***
+                width={Dimensions.get('window').width - marginWidth***REMOVED***
+                height={Dimensions.get('window').width - marginWidth***REMOVED***
                 fill='#1D1E20'
               />
             </TouchableHighlight>
@@ -218,7 +245,7 @@ function AlbumArtSwiper (props) {
         horizontal={true***REMOVED***
         pagingEnabled={true***REMOVED***
         snapToAlignment={'start'***REMOVED***
-        snapToInterval={Dimensions.get('window').width - 60***REMOVED***
+        snapToInterval={Dimensions.get('window').width - layoutWidth***REMOVED***
         decelerationRate={'fast'***REMOVED***
         showsHorizontalScrollIndicator={false***REMOVED***
         ItemSeparatorComponent={() => (
@@ -227,8 +254,8 @@ function AlbumArtSwiper (props) {
         ListHeaderComponent={() => <View style={{ width: 40 ***REMOVED******REMOVED*** />***REMOVED***
         ListFooterComponent={() => <View style={{ width: 40 ***REMOVED******REMOVED*** />***REMOVED***
         getItemLayout={(data, index) => ({
-          length: Dimensions.get('window').width - 60,
-          offset: Dimensions.get('window').width - 60 * index,
+          length: Dimensions.get('window').width - layoutWidth,
+          offset: Dimensions.get('window').width - layoutWidth * index,
           index
         ***REMOVED***)***REMOVED***
         initialScrollIndex={1***REMOVED***
@@ -241,8 +268,6 @@ function AlbumArtSwiper (props) {
 
 const styles = StyleSheet.create({
   albumArtContainer: {
-    width: Dimensions.get('window').width - 80,
-    height: Dimensions.get('window').width - 80,
     borderRadius: 10,
     backgroundColor: colors.porcelain,
     overflow: 'hidden',

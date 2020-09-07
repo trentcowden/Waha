@@ -10,7 +10,7 @@ import ModalButton from '../components/ModalButton'
 import OptionsModal from '../components/OptionsModal'
 import SetItem from '../components/SetItem'
 import ShareModal from '../components/ShareModal'
-import { colors ***REMOVED*** from '../constants'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   downloadLesson,
   downloadVideo,
@@ -389,7 +389,8 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   studySetItemContainer: {
     width: '100%',
-    aspectRatio: 4
+    height: 100 * scaleMultiplier
+    // aspectRatio: 4
   ***REMOVED***,
   headerImage: {
     resizeMode: 'contain',

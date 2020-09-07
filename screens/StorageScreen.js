@@ -1,6 +1,13 @@
 import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Alert, Dimensions, FlatList, StyleSheet, View ***REMOVED*** from 'react-native'
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import LanguageStorageItem from '../components/LanguageStorageItem'
@@ -150,7 +157,7 @@ function StorageScreen (props) {
   ***REMOVED***
 
   return (
-    <View style={styles.screen***REMOVED***>
+    <SafeAreaView style={styles.screen***REMOVED***>
       <FlatList
         data={getInstalledLanguageInstances()***REMOVED***
         renderItem={renderLanguageStorageItem***REMOVED***
@@ -194,7 +201,7 @@ function StorageScreen (props) {
         ***REMOVED***
         style={{ alignSelf: 'center' ***REMOVED******REMOVED***
       />
-    </View>
+    </SafeAreaView>
   )
 ***REMOVED***
 
