@@ -14,7 +14,6 @@ import SwipeBar from '../components/SwipeBar'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function AlbumArtSwiper (props) {
-  // TODO: make album art swiper smaller if device width >= 600
   //+ STATE
 
   // keeps track of whether we're in the middle pane or not
@@ -261,6 +260,7 @@ function AlbumArtSwiper (props) {
         initialScrollIndex={1***REMOVED***
         viewabilityConfig={viewConfigRef.current***REMOVED***
         onViewableItemsChanged={onViewRef.current***REMOVED***
+        disableIntervalMomentum={true***REMOVED***
       />
     </View>
   )

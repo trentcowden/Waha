@@ -62,7 +62,7 @@ function DownloadStatusIndicator (props) {
         // if connected and currently downloading, show progress
         <View style={styles.downloadButtonContainer***REMOVED***>
           <AnimatedCircularProgress
-            size={22 * scaleMultiplier***REMOVED***
+            size={20 * scaleMultiplier***REMOVED***
             width={5 * scaleMultiplier***REMOVED***
             fill={getDownloadPercentage()***REMOVED***
             tintColor={colors.oslo***REMOVED***
