@@ -4,11 +4,8 @@ import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import Blurb from '../components/Blurb'
 import Hero from '../components/Hero'
-import KeyLabels from '../components/KeyLabels'
-import MessageModal from '../components/MessageModal'
 import ModalButton from '../components/ModalButton'
 import OptionsModal from '../components/OptionsModal'
-import Piano from '../components/Piano'
 import Separator from '../components/Separator'
 import WahaItem from '../components/WahaItem'
 import WahaItemDescription from '../components/WahaItemDescription'
@@ -119,7 +116,7 @@ function SecurityScreen (props) {
         />
       </WahaItem>
       <Separator />
-      <WahaItem
+      {/* <WahaItem
         title={props.translations.security.view_key_order_button_label***REMOVED***
         onPress={() => setShowViewKeyOrderModal(true)***REMOVED***
       >
@@ -129,7 +126,7 @@ function SecurityScreen (props) {
           size={50 * scaleMultiplier***REMOVED***
         />
       </WahaItem>
-      <Separator />
+      <Separator /> */***REMOVED***
     </View>
   ) : null
 
@@ -191,7 +188,7 @@ function SecurityScreen (props) {
         />
         {securityControls***REMOVED***
       </ScrollView>
-      <MessageModal
+      {/* <MessageModal
         isVisible={showViewKeyOrderModal***REMOVED***
         hideModal={() => setShowViewKeyOrderModal(false)***REMOVED***
         title={props.translations.security.your_key_order_label***REMOVED***
@@ -201,7 +198,7 @@ function SecurityScreen (props) {
       >
         <Piano setPattern={() => {***REMOVED******REMOVED*** />
         <KeyLabels keyOrder={props.security.code***REMOVED*** />
-      </MessageModal>
+      </MessageModal> */***REMOVED***
       <OptionsModal
         isVisible={showChangeTimeoutModal***REMOVED***
         hideModal={() => setShowChangeTimeoutModal(false)***REMOVED***

@@ -77,7 +77,7 @@ function LessonItem (props) {
                 : null
             ***REMOVED***
             size={24 * scaleMultiplier***REMOVED***
-            color={props.isComplete ? colors.oslo : props.primaryColor***REMOVED***
+            color={props.isComplete ? colors.chateau : props.primaryColor***REMOVED***
           />
         </View>
 

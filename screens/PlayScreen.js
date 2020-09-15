@@ -34,7 +34,6 @@ import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 console.disableYellowBox = true
 
 function PlayScreen (props) {
-  console.log(Dimensions.get('window').width)
   //+ AUDIO / VIDEO STATE
 
   // objects for storing audio/video
@@ -598,6 +597,14 @@ function PlayScreen (props) {
               changeChapter('training')
             ***REMOVED***
             break
+          case 'a':
+            if (
+              !props.route.params.thisSetProgress.includes(
+                props.route.params.thisLesson.index
+              )
+            ) {
+              changeCompleteStatus()
+            ***REMOVED***
         ***REMOVED***
       ***REMOVED*** else if (
         activeChapter === 'application' &&
@@ -737,6 +744,11 @@ function PlayScreen (props) {
             setIsVideoBuffering={setIsVideoBuffering***REMOVED***
             changeChapter={changeChapter***REMOVED***
             isMediaLoaded={isMediaLoaded***REMOVED***
+            lessonType={props.route.params.lessonType***REMOVED***
+            isComplete={props.route.params.thisSetProgress.includes(
+              props.route.params.thisLesson.index
+            )***REMOVED***
+            changeCompleteStatus={changeCompleteStatus***REMOVED***
           />
         ) : (
           <AlbumArtSwiper

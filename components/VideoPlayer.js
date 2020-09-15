@@ -59,13 +59,20 @@ function VideoPlayer (props) {
             else if (status.isBuffering) props.setIsVideoBuffering(true)
 
             // if video finishes, switch to last chapter
-            if (status.didJustFinish && props.route.params.lessonType !== 'v')
+            if (status.didJustFinish && props.lessonType !== 'v')
               props.changeChapter('application')
+            else if (
+              status.didJustFinish &&
+              props.lessonType === 'v' &&
+              !props.isComplete
+            ) {
+              props.changeCompleteStatus()
+            ***REMOVED***
           ***REMOVED******REMOVED***
           onLoadStart={() => props.setIsMediaLoaded(false)***REMOVED***
           onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
           onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
-            console.log(fullscreenUpdate)
+            // console.log(fullscreenUpdate)
           ***REMOVED******REMOVED***
         />
         {/* display a video icon placeholder when we're loading */***REMOVED***
