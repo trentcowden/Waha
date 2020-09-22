@@ -39,7 +39,9 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text style={Typography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***>
-          {props.megabytes + ' ' + props.translations.storage.megabyte_label***REMOVED***
+          {props.megabytes >= 0
+            ? props.megabytes + ' ' + props.translations.storage.megabyte_label
+            : props.translations.storage.megabyte_label***REMOVED***
         </Text>
         <Text
           style={[
