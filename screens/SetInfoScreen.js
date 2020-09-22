@@ -4,7 +4,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 
 function SetInfoScreen (props) {
@@ -85,7 +85,7 @@ function SetInfoScreen (props) {
         type='filled'
         color={colors.apple***REMOVED***
         onPress={() => {
-          props.addSet(props.activeGroup.name, props.route.params.thisSet.id)
+          props.addSet(props.activeGroup.name, props.route.params.thisSet)
           props.route.params.showSnackbar()
           props.navigation.goBack()
         ***REMOVED******REMOVED***
@@ -102,7 +102,8 @@ function SetInfoScreen (props) {
       />
       <FlatList
         data={props.activeDatabase.lessons.filter(
-          lesson => props.route.params.thisSet.id === lesson.setid
+          lesson =>
+            props.route.params.thisSet.id === getLessonInfo('setID', lesson.id)
         )***REMOVED***
         renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
       />
@@ -142,8 +143,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    addSet: (groupName, setID) => {
-      dispatch(addSet(groupName, setID))
+    addSet: (groupName, set) => {
+      dispatch(addSet(groupName, set))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

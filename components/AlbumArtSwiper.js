@@ -54,6 +54,49 @@ function AlbumArtSwiper (props) {
     ***REMOVED***
   ***REMOVED***, [])
 
+  function getTextData (key) {
+    if (key === '2') {
+      if (props.thisLesson.scripture) return props.thisLesson.scripture
+      else return null
+    ***REMOVED*** else {
+      if (props.thisLesson.fellowshipType) {
+        var combinedQuestionList = props.activeDatabase.questions[
+          props.thisLesson.fellowshipType
+        ]
+          // combine fellowship and application questions
+          .concat(
+            props.activeDatabase.questions[props.thisLesson.applicationType]
+          )
+        var updatedQuestionArray = []
+        combinedQuestionList.forEach((question, index) => {
+          var temp = {***REMOVED***
+          temp['header'] =
+            props.translations.play.question_header +
+            ' ' +
+            (index + 1).toString()
+          temp['text'] = question + '\n'
+          updatedQuestionArray.push(temp)
+        ***REMOVED***)
+        return updatedQuestionArray
+      ***REMOVED*** else return null
+    ***REMOVED***
+
+    return props.thisLesson.fellowshipType
+      ? // render questions on the first pane and scripture on the last
+        item.key === '0'
+        ? props.activeDatabase.questions[props.thisLesson.fellowshipType]
+            // combine fellowship and application questions
+            .concat(
+              props.activeDatabase.questions[props.thisLesson.applicationType]
+            )
+            // add newline after each question for spacing
+            .map(question => {
+              return { ...question, text: question.text + '\n' ***REMOVED***
+            ***REMOVED***)
+        : props.thisLesson.scripture
+      : []
+  ***REMOVED***
+
   //+ ANIMATION STUFF
 
   // opacities for the scroll bar opacities
@@ -121,30 +164,37 @@ function AlbumArtSwiper (props) {
             opacity={sideScrollBarOpacity***REMOVED***
           />
           <FlatList
-            data={
-              props.thisLesson.fellowshipType
-                ? // render questions on the first pane and scripture on the last
-                  item.key === '0'
-                  ? props.activeDatabase.questions[
-                      props.thisLesson.fellowshipType
-                    ]
-                      // combine fellowship and application questions
-                      .concat(
-                        props.activeDatabase.questions[
-                          props.thisLesson.applicationType
-                        ]
-                      )
-                      // add newline after each question for spacing
-                      .map(question => {
-                        return { ...question, text: question.text + '\n' ***REMOVED***
-                      ***REMOVED***)
-                  : props.thisLesson.scripture
-                : []
-            ***REMOVED***
+            data={getTextData(item.key)***REMOVED***
             renderItem={renderTextContent***REMOVED***
             keyExtractor={item => item.header***REMOVED***
             showsVerticalScrollIndicator={false***REMOVED***
             ListHeaderComponent={() => <View style={{ height: 10 ***REMOVED******REMOVED*** />***REMOVED***
+            ListFooterComponent={() => (
+              <View style={{ paddingHorizontal: 10, marginBottom: 10 ***REMOVED******REMOVED***>
+                <Text
+                  style={Typography(
+                    props,
+                    'd',
+                    'regular',
+                    'center',
+                    colors.chateau
+                  )***REMOVED***
+                >
+                  {props.translations.play.copyright_for_text***REMOVED***
+                </Text>
+                <Text
+                  style={Typography(
+                    props,
+                    'd',
+                    'regular',
+                    'center',
+                    colors.chateau
+                  )***REMOVED***
+                >
+                  {props.translations.play.copyright_for_audio***REMOVED***
+                </Text>
+              </View>
+            )***REMOVED***
           />
         </View>
       )
@@ -291,7 +341,8 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroup,
     activeDatabase: state.database[activeGroup.language],
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    translations: state.database[activeGroup.language].translations
   ***REMOVED***
 ***REMOVED***
 

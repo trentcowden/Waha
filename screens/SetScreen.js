@@ -9,7 +9,7 @@ import {
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/SetItem'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 
 function SetScreen (props) {
   //+ STUFF FOR TESTING
@@ -52,13 +52,13 @@ function SetScreen (props) {
     // if we're adding core sets, display them in numerical order
     return props.route.name === 'Core'
       ? props.activeDatabase.sets
-          .filter(set => set.category === setCategory)
+          .filter(set => getSetInfo('category', set.id) === setCategory)
           .filter(set =>
             props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
       : // if we're displaying topical/mt sets, display them in the order added
         props.activeDatabase.sets
-          .filter(set => set.category === setCategory)
+          .filter(set => getSetInfo('category', set.id) === setCategory)
           .filter(set =>
             props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
@@ -83,15 +83,15 @@ function SetScreen (props) {
 
   //+ RENDER
 
-  function renderStudySetItem (setList) {
+  function renderStudySetItem ({ item ***REMOVED***) {
     return (
       <SetItem
-        thisSet={setList.item***REMOVED***
+        thisSet={item***REMOVED***
         isSmall={false***REMOVED***
         mode='shown'
         onSetSelect={() =>
           props.navigation.navigate('LessonList', {
-            thisSet: setList.item
+            thisSet: item
           ***REMOVED***)
         ***REMOVED***
       />
@@ -192,7 +192,6 @@ function mapStateToProps (state) {
   var activeGroup = state.groups.filter(
     item => item.name === state.activeGroup
   )[0]
-  console.log(activeGroup)
   return {
     activeDatabase: state.database[activeGroup.language],
     isRTL: state.database[activeGroup.language].isRTL,

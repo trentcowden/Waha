@@ -43,7 +43,7 @@ function DownloadStatusIndicator (props) {
   ***REMOVED***
 
   // if lesson isn't only video
-  return props.lessonType !== 'q' && props.lessonType !== 'c' ? (
+  return props.lessonType !== 'q' && props.lessonType !== '' ? (
     // if lesson has audio source
     props.isDownloaded ? (
       // if lesson is downloaded, show check
@@ -62,12 +62,13 @@ function DownloadStatusIndicator (props) {
         // if connected and currently downloading, show progress
         <View style={styles.downloadButtonContainer***REMOVED***>
           <AnimatedCircularProgress
-            size={20 * scaleMultiplier***REMOVED***
-            width={5 * scaleMultiplier***REMOVED***
+            size={22 * scaleMultiplier***REMOVED***
+            width={4 * scaleMultiplier***REMOVED***
             fill={getDownloadPercentage()***REMOVED***
             tintColor={colors.oslo***REMOVED***
             rotation={0***REMOVED***
             backgroundColor={colors.white***REMOVED***
+            padding={2***REMOVED***
           />
         </View>
       ) : (
@@ -102,6 +103,7 @@ function DownloadStatusIndicator (props) {
 const styles = StyleSheet.create({
   downloadButtonContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 20
   ***REMOVED***
 ***REMOVED***)

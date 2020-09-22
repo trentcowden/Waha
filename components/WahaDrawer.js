@@ -109,14 +109,14 @@ function WahaDrawer (props) {
             onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
             label={props.translations.general.privacy***REMOVED***
           />
-          <SmallDrawerItem
+          {/* <SmallDrawerItem
             onPress={() =>
               openBrowser(
                 'https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif'
               )
             ***REMOVED***
             label={props.translations.general.credits***REMOVED***
-          />
+          /> */***REMOVED***
           <View
             style={{
               justifyContent: 'center',
@@ -127,7 +127,7 @@ function WahaDrawer (props) {
             <Text
               style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
             >
-              v0.5.3
+              v0.6.0
             </Text>
           </View>
         </SafeAreaView>

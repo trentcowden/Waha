@@ -1,8 +1,9 @@
 import '@firebase/firestore'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
+import i18n from 'i18n-js'
 import { changeActiveGroup, createGroup ***REMOVED*** from '../actions/groupsActions'
-
+import { logInstallLanguage ***REMOVED*** from '../LogEventFunctions'
 export const ADD_LANGUAGE = 'ADD_LANGUAGE'
 export const SET_FETCH_ERROR = 'SET_FETCH_ERROR'
 export const STORE_DATA = 'STORE_DATA'
@@ -147,10 +148,24 @@ export function addLanguage (language) {
             ***REMOVED***
           ***REMOVED***
 
+          //- OLD
           // downloads a file from url into local storage
-          function downloadSomething (source, fileName) {
+          // function downloadSomething (source, fileName) {
+          //   var downloadResumable = FileSystem.createDownloadResumable(
+          //     doc.data().sources[source],
+          //     FileSystem.documentDirectory + language + '-' + fileName,
+          //     {***REMOVED***,
+          //     callback
+          //   )
+          //   return downloadResumable.downloadAsync().catch(error => {
+          //     throw error
+          //   ***REMOVED***)
+          // ***REMOVED***
+
+          // downloads a file from url into local storage
+          function downloadSomething (url, fileName) {
             var downloadResumable = FileSystem.createDownloadResumable(
-              doc.data().sources[source],
+              url,
               FileSystem.documentDirectory + language + '-' + fileName,
               {***REMOVED***,
               callback
@@ -163,10 +178,17 @@ export function addLanguage (language) {
           // downloads everything we need
           function downloadEverything () {
             return Promise.all([
-              Object.keys(doc.data().sources).map(source => {
-                if (source === 'header')
-                  return downloadSomething(source, source + '.png')
-                else return downloadSomething(source, source + '.mp3')
+              doc.data().files.map(fileName => {
+                if (fileName.includes('header'))
+                  return downloadSomething(
+                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+                    fileName.slice(0, -3) + '.png'
+                  )
+                else
+                  return downloadSomething(
+                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+                    fileName.slice(0, -3) + '.mp3'
+                  )
               ***REMOVED***)
             ])
           ***REMOVED***
@@ -175,6 +197,7 @@ export function addLanguage (language) {
           // new group, and finally set isfetching to false so we can go into the app
           downloadEverything()
             .then(() => {
+              logInstallLanguage(language, i18n.locale)
               dispatch(createGroup(groupNames[language], language, 'default'))
               dispatch(changeActiveGroup(groupNames[language]))
               dispatch(setIsFetching(false))

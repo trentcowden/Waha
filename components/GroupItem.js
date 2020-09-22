@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import { changeActiveGroup, deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import GroupAvatar from './GroupAvatar'
 // renders a list item for a single group
@@ -29,13 +29,21 @@ function GroupItem (props) {
 
     // get the bookmrarked lesson object
     var bookmarkLesson = props.database[thisGroup.language].lessons
-      .filter(lesson => lesson.setid === thisGroup.setBookmark)
-      .filter(lesson => lesson.index === bookmarkSetBookmarkLesson)[0]
+      .filter(
+        lesson => getLessonInfo('setID', lesson.id) === thisGroup.setBookmark
+      )
+      .filter(
+        lesson =>
+          getLessonInfo('index', lesson.id) === bookmarkSetBookmarkLesson
+      )[0]
 
     // if both those exist, return them to display the bookmarks
     if (bookmarkLesson && bookmarkSet) {
       return {
-        lesson: bookmarkLesson.subtitle + ' ' + bookmarkLesson.title,
+        lesson:
+          getLessonInfo('subtitle', bookmarkLesson.id) +
+          ' ' +
+          bookmarkLesson.title,
         set: bookmarkSet.subtitle
       ***REMOVED***
     ***REMOVED*** else {

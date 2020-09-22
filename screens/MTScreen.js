@@ -115,7 +115,7 @@ function MTScreen (props) {
           <SectionList
             sections={getLanguageAndGroupData()***REMOVED***
             renderItem={({ item, section ***REMOVED***) => {
-              return props.database[section.languageID].hasToolkit ? (
+              return props.database[section.languageID].hasMTContent ? (
                 renderGroupItem(item)
               ) : (
                 <View

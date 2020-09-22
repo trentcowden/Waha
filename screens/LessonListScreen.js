@@ -10,7 +10,7 @@ import ModalButton from '../components/ModalButton'
 import OptionsModal from '../components/OptionsModal'
 import SetItem from '../components/SetItem'
 import ShareModal from '../components/ShareModal'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   downloadLesson,
   downloadVideo,
@@ -111,8 +111,8 @@ function LessonListScreen (props) {
     // options not allowed: av, a, or nothing
     var lessonType = ''
     lessonType += lesson.fellowshipType ? 'q' : ''
-    lessonType += lesson.audioSource ? 'a' : ''
-    lessonType += lesson.videoSource ? 'v' : ''
+    lessonType += lesson.hasAudio ? 'a' : ''
+    lessonType += lesson.hasVideo ? 'v' : ''
 
     return lessonType
   ***REMOVED***
@@ -180,24 +180,24 @@ function LessonListScreen (props) {
       case 'a':
         props.downloadLesson(
           activeLessonInModal.id,
-          activeLessonInModal.audioSource
+          getLessonInfo('audioSource', activeLessonInModal.id)
         )
         break
       case 'qav':
         props.downloadLesson(
           activeLessonInModal.id,
-          activeLessonInModal.audioSource
+          getLessonInfo('audioSource', activeLessonInModal.id)
         )
         props.downloadVideo(
           activeLessonInModal.id,
-          activeLessonInModal.videoSource
+          getLessonInfo('videoSource', activeLessonInModal.id)
         )
         break
       case 'qv':
       case 'v':
         props.downloadVideo(
           activeLessonInModal.id,
-          activeLessonInModal.videoSource
+          getLessonInfo('videoSource', activeLessonInModal.id)
         )
         break
     ***REMOVED***
@@ -242,8 +242,8 @@ function LessonListScreen (props) {
     setActiveLessonInModal(
       props.activeDatabase.lessons.filter(
         lesson =>
-          props.route.params.thisSet.id === lesson.setid &&
-          lesson.index === parseInt(data)
+          props.route.params.thisSet.id === getLessonInfo('setID', lesson.id) &&
+          getLessonInfo('index', lesson.id) === parseInt(data)
       )[0]
     )
   ***REMOVED***
@@ -260,26 +260,26 @@ function LessonListScreen (props) {
 
   //+ RENDER
 
-  function renderLessonItem (lessonList) {
+  function renderLessonItem ({ item ***REMOVED***) {
     return (
       <LessonItem
-        thisLesson={lessonList.item***REMOVED***
+        thisLesson={item***REMOVED***
         onLessonSelect={() =>
           props.navigation.navigate('Play', {
-            thisLesson: lessonList.item,
+            thisLesson: item,
             thisSet: props.route.params.thisSet,
             thisSetProgress: thisSetProgress,
-            isDownloaded: getIsLessonDownloaded(lessonList.item),
-            isDownloading: getIsLessonDownloading(lessonList.item),
-            lessonType: getLessonType(lessonList.item)
+            isDownloaded: getIsLessonDownloaded(item),
+            isDownloading: getIsLessonDownloading(item),
+            lessonType: getLessonType(item)
           ***REMOVED***)
         ***REMOVED***
-        isBookmark={lessonList.item.index === thisSetBookmark***REMOVED***
-        isDownloaded={getIsLessonDownloaded(lessonList.item)***REMOVED***
-        isDownloading={getIsLessonDownloading(lessonList.item)***REMOVED***
-        lessonType={getLessonType(lessonList.item)***REMOVED***
-        isComplete={thisSetProgress.includes(lessonList.item.index)***REMOVED***
-        setActiveLessonInModal={() => setActiveLessonInModal(lessonList.item)***REMOVED***
+        isBookmark={getLessonInfo('index', item.id) === thisSetBookmark***REMOVED***
+        isDownloaded={getIsLessonDownloaded(item)***REMOVED***
+        isDownloading={getIsLessonDownloading(item)***REMOVED***
+        lessonType={getLessonType(item)***REMOVED***
+        isComplete={thisSetProgress.includes(getLessonInfo('index', item.id))***REMOVED***
+        setActiveLessonInModal={() => setActiveLessonInModal(item)***REMOVED***
         setShowDownloadLessonModal={() => setShowDownloadLessonModal(true)***REMOVED***
         setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
       />
@@ -289,18 +289,20 @@ function LessonListScreen (props) {
   function renderLessonSwipeBackdrop (data, rowMap) {
     return (
       <LessonSwipeBackdrop
-        isComplete={thisSetProgress.includes(data.item.index)***REMOVED***
+        isComplete={thisSetProgress.includes(
+          getLessonInfo('index', data.item.id)
+        )***REMOVED***
         toggleComplete={() => {
           props.toggleComplete(
             props.activeGroup.name,
             props.route.params.thisSet,
-            data.item.index
+            getLessonInfo('index', data.item.id)
           )
-          rowMap[data.item.index].closeRow()
+          rowMap[getLessonInfo('index', data.item.id)].closeRow()
         ***REMOVED******REMOVED***
         showShareModal={() => {
           setShowShareModal(true)
-          rowMap[data.item.index].closeRow()
+          rowMap[getLessonInfo('index', data.item.id)].closeRow()
         ***REMOVED******REMOVED***
       />
     )
@@ -313,11 +315,12 @@ function LessonListScreen (props) {
       </View>
       <SwipeListView
         data={props.activeDatabase.lessons.filter(
-          lesson => props.route.params.thisSet.id === lesson.setid
+          lesson =>
+            props.route.params.thisSet.id === getLessonInfo('setID', lesson.id)
         )***REMOVED***
         renderItem={renderLessonItem***REMOVED***
         ListFooterComponent={() => <View style={{ height: 30 ***REMOVED******REMOVED*** />***REMOVED***
-        keyExtractor={item => item.index.toString()***REMOVED***
+        keyExtractor={item => getLessonInfo('index', item.id).toString()***REMOVED***
         renderHiddenItem={renderLessonSwipeBackdrop***REMOVED***
         leftOpenValue={50***REMOVED***
         rightOpenValue={-50***REMOVED***

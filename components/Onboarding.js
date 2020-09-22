@@ -19,7 +19,10 @@ function Onboarding (props) {
   const [pagerRef, setPagerRef] = useState()
 
   useEffect(() => {
-    if (onboardingPage === props.titles.length - 1) {
+    if (
+      (props.isRTL && onboardingPage === 0) ||
+      (!props.isRTL && onboardingPage === props.titles.length - 1)
+    ) {
       Animated.timing(checkmarkOpacity, {
         toValue: 1,
         duration: 200,
@@ -100,10 +103,10 @@ function Onboarding (props) {
         ref={ref => (ref ? setPagerRef(ref) : null)***REMOVED***
         // showPageIndicator
         style={styles.pager***REMOVED***
-        initialPage={0***REMOVED***
+        initialPage={props.isRTL ? pages.length - 1 : 0***REMOVED***
         onPageSelected={stuff => setOnboardingPage(stuff.nativeEvent.position)***REMOVED***
       >
-        {pages***REMOVED***
+        {props.isRTL ? pages.reverse() : pages***REMOVED***
       </ViewPager>
       <View
         style={{
@@ -123,7 +126,7 @@ function Onboarding (props) {
           style={{
             position: 'absolute',
             width: '100%',
-            alignItems: 'flex-end',
+            alignItems: props.isRTL ? 'flex-start' : 'flex-end',
             opacity: checkmarkOpacity
           ***REMOVED******REMOVED***
         >
@@ -144,7 +147,8 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: 'contain',
     width: Dimensions.get('window').width - 100 * scaleMultiplier,
-    height: Dimensions.get('window').width - 100 * scaleMultiplier
+    height: Dimensions.get('window').width - 100 * scaleMultiplier,
+    borderRadius: 20
   ***REMOVED***,
   pager: {
     flex: 1,

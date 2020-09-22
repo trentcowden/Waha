@@ -3,7 +3,7 @@ import React, { useEffect ***REMOVED*** from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import DownloadStatusIndicator from '../components/DownloadStatusIndicator'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import Typography from '../styles/typography'
 function LessonItem (props) {
@@ -87,16 +87,8 @@ function LessonItem (props) {
             flexDirection: 'column',
             justifyContent: 'center',
             flex: 1,
-            marginLeft: props.isRTL
-              ? props.thisLesson.audioSource
-                ? 0
-                : 20
-              : 20,
-            marginRight: props.isRTL
-              ? 20
-              : props.thisLesson.audioSource
-              ? 0
-              : 20
+            marginLeft: props.isRTL ? (props.thisLesson.hasAudio ? 0 : 20) : 20,
+            marginRight: props.isRTL ? 20 : props.thisLesson.hasAudio ? 0 : 20
           ***REMOVED******REMOVED***
         >
           <Text
@@ -115,7 +107,7 @@ function LessonItem (props) {
             style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
             numberOfLines={1***REMOVED***
           >
-            {props.thisLesson.subtitle***REMOVED***
+            {getLessonInfo('subtitle', props.thisLesson.id)***REMOVED***
           </Text>
         </View>
       </TouchableOpacity>
