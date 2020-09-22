@@ -34,7 +34,6 @@ export async function logCreateGroup (currentLanguage) {
   ***REMOVED***)
 ***REMOVED***
 export async function logEnableMobilizationToolsForAGroup (currentLanguage) {
-  console.log(currentLanguage)
   await Analytics.logEvent('EnableMobilizationToolsForAGroup', {
     currentLanguage: currentLanguage
   ***REMOVED***)
