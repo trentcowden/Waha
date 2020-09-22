@@ -115,7 +115,9 @@ function MTScreen (props) {
           <SectionList
             sections={getLanguageAndGroupData()***REMOVED***
             renderItem={({ item, section ***REMOVED***) => {
-              return props.database[section.languageID].hasMTContent ? (
+              return props.database[section.languageID].sets.some(set => {
+                return /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id)
+              ***REMOVED***) ? (
                 renderGroupItem(item)
               ) : (
                 <View
