@@ -9,6 +9,7 @@ import {
   Alert,
   Animated,
   Dimensions,
+  StatusBar,
   StyleSheet,
   Text,
   View
@@ -745,6 +746,7 @@ function PlayScreen (props) {
           ***REMOVED***
         ]***REMOVED***
       >
+        <StatusBar hidden />
         {/* don't display title section on audio book lessons */***REMOVED***
         {props.route.params.lessonType !== 'a' &&
         props.route.params.lessonType !== ''

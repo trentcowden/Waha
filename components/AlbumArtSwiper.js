@@ -169,32 +169,36 @@ function AlbumArtSwiper (props) {
             keyExtractor={item => item.header***REMOVED***
             showsVerticalScrollIndicator={false***REMOVED***
             ListHeaderComponent={() => <View style={{ height: 10 ***REMOVED******REMOVED*** />***REMOVED***
-            ListFooterComponent={() => (
-              <View style={{ paddingHorizontal: 10, marginBottom: 10 ***REMOVED******REMOVED***>
-                <Text
-                  style={Typography(
-                    props,
-                    'd',
-                    'regular',
-                    'center',
-                    colors.chateau
-                  )***REMOVED***
-                >
-                  {props.translations.play.copyright_for_text***REMOVED***
-                </Text>
-                <Text
-                  style={Typography(
-                    props,
-                    'd',
-                    'regular',
-                    'center',
-                    colors.chateau
-                  )***REMOVED***
-                >
-                  {props.translations.play.copyright_for_audio***REMOVED***
-                </Text>
-              </View>
-            )***REMOVED***
+            ListFooterComponent={
+              item.key === '2'
+                ? () => (
+                    <View style={{ paddingHorizontal: 10, marginBottom: 10 ***REMOVED******REMOVED***>
+                      <Text
+                        style={Typography(
+                          props,
+                          'd',
+                          'regular',
+                          'center',
+                          colors.chateau
+                        )***REMOVED***
+                      >
+                        {props.translations.play.copyright_for_text + '\n'***REMOVED***
+                      </Text>
+                      <Text
+                        style={Typography(
+                          props,
+                          'd',
+                          'regular',
+                          'center',
+                          colors.chateau
+                        )***REMOVED***
+                      >
+                        {props.translations.play.copyright_for_audio***REMOVED***
+                      </Text>
+                    </View>
+                  )
+                : null
+            ***REMOVED***
           />
         </View>
       )
