@@ -1,4 +1,5 @@
 import { Video ***REMOVED*** from 'expo-av'
+import * as ScreenOrientation from 'expo-screen-orientation'
 import React, { useState ***REMOVED*** from 'react'
 import {
   Dimensions,
@@ -28,13 +29,23 @@ function VideoPlayer (props) {
     >
       <View
         style={{
+          // flex: 1,
           height: Dimensions.get('window').width - 80,
-          width: '100%',
+          width: Dimensions.get('window').width,
           flexDirection: 'row',
-          justifyContent: 'center'
-          // backgroundColor: 'black'
+          justifyContent: 'center',
+          alignItems: 'center'
         ***REMOVED******REMOVED***
       >
+        {/* <View
+          style={{
+            // width: Dimensions.get('window').width,
+            // height: (Dimensions.get('window').width * 9) / 16,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+          ***REMOVED******REMOVED***
+        > */***REMOVED***
         <Video
           ref={ref => {
             setVideo(ref)
@@ -45,34 +56,67 @@ function VideoPlayer (props) {
           isMuted={false***REMOVED***
           resizeMode='contain'
           shouldPlay
-          usePoster
-          onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
-          style={{ flex: 1 ***REMOVED******REMOVED***
+          // onLoad={() => {
+          //   console.log('loaded')
+          //   props.setIsMediaLoaded(true)
+          // ***REMOVED******REMOVED***
+          style={{
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').width - 80
+            // height: (Dimensions.get('window').width * 9) / 16
+            // flex: 1
+          ***REMOVED******REMOVED***
           onPlaybackStatusUpdate={status => {
             // match up so there's a single source of truth between
-            // waha controls and native video controls
-            if (status.isPlaying) props.setIsMediaPlaying(true)
-            else if (!status.isPlaying) props.setIsMediaPlaying(false)
+            //  waha controls and full screen native video controls
+            if (
+              props.fullscreenStatus ===
+              Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT
+            ) {
+              if (status.isPlaying) props.setIsMediaPlaying(true)
+              else if (!status.isPlaying) props.setIsMediaPlaying(false)
+            ***REMOVED***
+
+            if (status.isLoaded && !props.isMediaLoaded) {
+              console.log('loaded')
+              props.setIsMediaLoaded(true)
+            ***REMOVED***
 
             // if we're buffering, turn play icon into activity indicator
-            if (!status.isBuffering) props.setIsVideoBuffering(false)
-            else if (status.isBuffering) props.setIsVideoBuffering(true)
+            // if (!status.isBuffering) props.setIsVideoBuffering(false)
+            // else if (status.isBuffering) props.setIsVideoBuffering(true)
 
             // if video finishes, switch to last chapter
+
+            // if (
+            //   props.fullscreenStatus ===
+            //   Video.IOS_FULLSCREEN_UPDATE_PLAYER_DID_DISMISS
+            // )
+
+            // exit fullscreen once video finishes
+            if (
+              status.didJustFinish &&
+              props.fullscreenStatus ===
+                Video.IOS_FULLSCREEN_UPDATE_PLAYER_DID_PRESENT
+            ) {
+              ScreenOrientation.lockAsync(props.lastPortraitOrientation)
+              props.video.dismissFullscreenPlayer()
+            ***REMOVED***
+
             if (status.didJustFinish && props.lessonType !== 'v')
-              props.changeChapter('application')
+              setTimeout(() => props.changeChapter('application'), 500)
             else if (
               status.didJustFinish &&
               props.lessonType === 'v' &&
               !props.isComplete
             ) {
-              props.changeCompleteStatus()
+              setTimeout(() => props.changeCompleteStatus(), 1000)
             ***REMOVED***
           ***REMOVED******REMOVED***
           onLoadStart={() => props.setIsMediaLoaded(false)***REMOVED***
           onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
           onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
-            // console.log(fullscreenUpdate)
+            props.setFullScreenStatus(fullscreenUpdate)
           ***REMOVED******REMOVED***
         />
         {/* display a video icon placeholder when we're loading */***REMOVED***
@@ -118,6 +162,7 @@ function VideoPlayer (props) {
             </TouchableOpacity>
           </View>
         ) : null***REMOVED***
+        {/* </View> */***REMOVED***
       </View>
     </TouchableWithoutFeedback>
   )

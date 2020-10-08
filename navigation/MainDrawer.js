@@ -2,6 +2,7 @@ import NetInfo from '@react-native-community/netinfo'
 import { createDrawerNavigator ***REMOVED*** from '@react-navigation/drawer'
 import { NavigationContainer ***REMOVED*** from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
+import sizeof from 'firestore-size'
 import React, { useEffect ***REMOVED*** from 'react'
 import { Alert ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
@@ -42,6 +43,7 @@ function MainDrawer (props) {
     db.collection('languages')
       .doc(props.activeGroup.language)
       .onSnapshot(function (doc) {
+        console.log(sizeof(doc.data()))
         // function downloadSomething (source, fileName) {
         //   var downloadResumable = FileSystem.createDownloadResumable(
         //     doc.data().sources[source],

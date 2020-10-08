@@ -1,7 +1,7 @@
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { AppState, StyleSheet, View, YellowBox ***REMOVED*** from 'react-native'
+import { AppState, LogBox, Platform, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
@@ -21,7 +21,7 @@ import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import en from '../translations/en.json'
 import SetsRoot from './SetsRoot'
-YellowBox.ignoreWarnings(['Setting a timer'])
+LogBox.ignoreLogs(['Setting a timer'])
 
 i18n.translations = {
   en
@@ -33,22 +33,18 @@ function MainStack (props) {
     return Date.now()
   ***REMOVED***
 
+  //+APP STATE STUFF
+
   const [appState, setAppState] = useState('')
 
   function handleAppStateChange (change) {
     setAppState(change)
   ***REMOVED***
 
-  function handleBlurStateChange (change) {
-    console.log(change)
-  ***REMOVED***
-
   useEffect(() => {
-    console.log(appState)
     if (appState === 'inactive' || appState === 'background') {
       // hide screen during multitasking / going home
-      console.log('navigating')
-      props.navigation.navigate('Splash')
+      if (Platform.OS === 'ios') props.navigation.navigate('Splash')
 
       // store current time for timeout checking later
       props.setTimer(Date.now())
@@ -69,12 +65,12 @@ function MainStack (props) {
             props.navigation.navigate('Game')
             // otherwise, if we haven't timed out, just go back to normal screen
           ***REMOVED*** else {
-            props.navigation.goBack()
+            if (Platform.OS === 'ios') props.navigation.goBack()
           ***REMOVED***
         ***REMOVED***
         // default: go back from splash to whatever screen we were on before
       ***REMOVED*** else {
-        props.navigation.goBack()
+        if (Platform.OS === 'ios') props.navigation.goBack()
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***, [appState])
@@ -84,17 +80,13 @@ function MainStack (props) {
       'change',
       handleAppStateChange
     )
-    const blurUnsubscribe = AppState.addEventListener(
-      'blur',
-      handleBlurStateChange
-    )
 
     return function cleanup () {
       AppState.removeEventListener('change', handleAppStateChange)
-      AppState.removeEventListener('blur', handleBlurStateChange)
     ***REMOVED***
   ***REMOVED***, [])
 
+  //- function for fading in/out game screen
   const forFade = ({ current ***REMOVED***) => ({
     cardStyle: {
       opacity: current.progress
@@ -361,7 +353,6 @@ function MainStack (props) {
         options={{
           gestureEnabled: false,
           headerShown: false,
-          // cardStyleInterpolator: forFade
           animationEnabled: false
         ***REMOVED******REMOVED***
       />
