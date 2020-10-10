@@ -17,7 +17,7 @@ function BackButton (props) {
       <Icon
         name={props.isRTL ? 'arrow-right' : 'arrow-left'***REMOVED***
         size={45 * scaleMultiplier***REMOVED***
-        color={colors.oslo***REMOVED***
+        color={props.color ? props.color : colors.oslo***REMOVED***
       />
     </TouchableOpacity>
   )

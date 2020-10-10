@@ -4,17 +4,16 @@ import {
   Dimensions,
   FlatList,
   Image,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View
 ***REMOVED*** from 'react-native'
+import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import GroupAvatar from '../components/GroupAvatar'
-import WahaButton from '../components/WahaButton'
 import {
   colors,
   groupIcons,
@@ -33,32 +32,27 @@ function AddEditGroupScreen (props) {
   //+ STATE
 
   // keeps track of the group name text input value
-  const [groupName, setGroupName] =
-    props.route.name === 'AddGroup'
-      ? useState('')
-      : useState(props.route.params.groupName)
+  const [groupName, setGroupName] = useState('')
 
   // the group that is being edited
-  const [editingGroup, setEditingGroup] = useState(
-    props.groups.filter(item => item.name === props.route.params.groupName)[0]
-  )
+  const [editingGroup, setEditingGroup] = useState({***REMOVED***)
 
   // keeps track of the source for the avatar image
-  const [emoji, setEmoji] =
-    props.route.name === 'AddGroup'
-      ? useState('default')
-      : useState(editingGroup.emoji)
+  const [emoji, setEmoji] = useState('default')
 
   // keeps track of whether the group being editted is currently the active group
   const [isActive, setIsActive] = useState(
-    props.activeGroup.name === props.route.params.groupName
+    props.activeGroup.name === props.groupName
   )
 
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
-  ***REMOVED***, [props.isRTL, groupName, emoji])
+    // props.navigation.setOptions(getNavOptions())
+    setEditingGroup(
+      props.groups.filter(item => item.name === props.groupName)[0]
+    )
+  ***REMOVED***, [props.activeGroup])
 
   //+ NAV OPTIONS
 
@@ -68,7 +62,7 @@ function AddEditGroupScreen (props) {
         ? () => (
             <BackButton
               onPress={() => {
-                if (props.route.name === 'EditGroup') {
+                if (props.type === 'EditGroup') {
                   if (!checkForDuplicate() && !checkForBlank()) editGroup()
                 ***REMOVED*** else props.navigation.goBack()
               ***REMOVED******REMOVED***
@@ -80,7 +74,7 @@ function AddEditGroupScreen (props) {
         : () => (
             <BackButton
               onPress={() => {
-                if (props.route.name === 'EditGroup') {
+                if (props.type === 'EditGroup') {
                   if (!checkForDuplicate() && !checkForBlank()) editGroup()
                 ***REMOVED*** else props.navigation.goBack()
               ***REMOVED******REMOVED***
@@ -93,7 +87,7 @@ function AddEditGroupScreen (props) {
 
   function checkForDuplicate () {
     var isDuplicate = false
-    if (props.route.name === 'AddGroup') {
+    if (props.type === 'AddGroup') {
       props.groups.forEach(group => {
         if (group.name === groupName) {
           Alert.alert(
@@ -107,10 +101,7 @@ function AddEditGroupScreen (props) {
       ***REMOVED***)
     ***REMOVED*** else {
       props.groups.forEach(group => {
-        if (
-          group.name === groupName &&
-          props.route.params.groupName !== groupName
-        ) {
+        if (group.name === groupName && props.groupName !== groupName) {
           Alert.alert(
             props.translations.add_edit_group.popups.duplicate_group_name_title,
             props.translations.add_edit_group.popups
@@ -141,66 +132,150 @@ function AddEditGroupScreen (props) {
   function addNewGroup () {
     if (checkForDuplicate() || checkForBlank()) return
 
-    props.createGroup(groupName, props.route.params.languageID, emoji)
+    props.createGroup(groupName, props.languageID, emoji)
     props.changeActiveGroup(groupName)
-    props.navigation.goBack()
+    props.hideModal()
   ***REMOVED***
 
   // edits a group and sets it as active
   function editGroup () {
-    if (props.route.params.groupName === props.activeGroup.name)
+    if (props.groupName === props.activeGroup.name)
       props.changeActiveGroup(groupName)
-    props.editGroup(props.route.params.groupName, groupName, emoji)
-    props.navigation.goBack()
+    props.editGroup(props.groupName, groupName, emoji)
+    props.hideModal()
   ***REMOVED***
 
   //+ RENDER
 
   // renders the delete group button conditionally because the currently active group can't be deleted
 
-  var resetButton =
-    props.route.name === 'EditGroup' ? (
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingVertical: 10
-        ***REMOVED******REMOVED***
-      >
-        <WahaButton
-          type='outline'
-          color={colors.red***REMOVED***
-          width={Dimensions.get('window').width - 40***REMOVED***
-          onPress={() =>
-            Alert.alert(
-              props.translations.add_edit_group.popups.reset_progress_title,
-              props.translations.add_edit_group.popups.reset_progress_message,
-              [
-                {
-                  text: props.translations.general.cancel,
-                  onPress: () => {***REMOVED***
-                ***REMOVED***,
-                {
-                  text: props.translations.general.ok,
-                  onPress: () => {
-                    props.resetProgress(props.route.params.groupName)
-                    props.navigation.goBack()
-                  ***REMOVED***
-                ***REMOVED***
-              ]
-            )
-          ***REMOVED***
-          label={props.translations.add_edit_group.reset_progress_button_label***REMOVED***
-          style={{ marginVertical: 10 ***REMOVED******REMOVED***
-          textStyle={{
-            fontFamily: props.font + '-regular'
-          ***REMOVED******REMOVED***
-        />
-      </View>
-    ) : null
+  // var resetButton =
+  //   props.type === 'EditGroup' ? (
+  //     <View
+  //       style={{
+  //         paddingHorizontal: 20,
+  //         paddingVertical: 10
+  //       ***REMOVED******REMOVED***
+  //     >
+  //       <WahaButton
+  //         type='outline'
+  //         color={colors.red***REMOVED***
+  //         width={Dimensions.get('window').width - 40***REMOVED***
+  //         onPress={() =>
+  //           Alert.alert(
+  //             props.translations.add_edit_group.popups.reset_progress_title,
+  //             props.translations.add_edit_group.popups.reset_progress_message,
+  //             [
+  //               {
+  //                 text: props.translations.general.cancel,
+  //                 onPress: () => {***REMOVED***
+  //               ***REMOVED***,
+  //               {
+  //                 text: props.translations.general.ok,
+  //                 onPress: () => {
+  //                   props.resetProgress(props.groupName)
+  //                   props.navigation.goBack()
+  //                 ***REMOVED***
+  //               ***REMOVED***
+  //             ]
+  //           )
+  //         ***REMOVED***
+  //         label={props.translations.add_edit_group.reset_progress_button_label***REMOVED***
+  //         style={{ marginVertical: 10 ***REMOVED******REMOVED***
+  //         textStyle={{
+  //           fontFamily: props.font + '-regular'
+  //         ***REMOVED******REMOVED***
+  //       />
+  //     </View>
+  //   ) : null
 
   return (
-    <SafeAreaView style={styles.screen***REMOVED***>
-      <View style={{ flex: 1 ***REMOVED******REMOVED***>
+    <Modal
+      isVisible={props.isVisible***REMOVED***
+      hasBackdrop={true***REMOVED***
+      onBackdropPress={props.hideModal***REMOVED***
+      backdropOpacity={0.3***REMOVED***
+      onSwipeComplete={props.hideModal***REMOVED***
+      swipeDirection={['down']***REMOVED***
+      propagateSwipe={true***REMOVED***
+      onModalWillShow={
+        props.type === 'AddGroup'
+          ? () => {
+              setGroupName('')
+              setEmoji('default')
+            ***REMOVED***
+          : () => {
+              setGroupName(props.groupName)
+              setEmoji(editingGroup.emoji)
+            ***REMOVED***
+      ***REMOVED***
+      style={{
+        flex: 1,
+        justifyContent: 'flex-end',
+        margin: 0,
+        marginTop: 30
+        // marginVertical: 20 * scaleMultiplier
+      ***REMOVED******REMOVED***
+    >
+      {/* <SafeAreaView style={styles.screen***REMOVED***> */***REMOVED***
+      <View
+        style={{
+          backgroundColor: colors.white,
+          flex: 1,
+          paddingBottom: 20,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15
+        ***REMOVED******REMOVED***
+      >
+        <View
+          style={{
+            width: '100%',
+            // height: 50 * scaleMultiplier,
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: 10
+          ***REMOVED******REMOVED***
+        >
+          <TouchableOpacity
+            onPress={() => {
+              setGroupName('')
+              setEmoji('default')
+              props.hideModal()
+            ***REMOVED******REMOVED***
+            style={{
+              width: 45 * scaleMultiplier,
+              height: 45 * scaleMultiplier
+            ***REMOVED******REMOVED***
+          >
+            <Icon
+              name='cancel'
+              size={45 * scaleMultiplier***REMOVED***
+              color={colors.oslo***REMOVED***
+            />
+          </TouchableOpacity>
+          <View style={{ flex: 1 ***REMOVED******REMOVED***>
+            <Text
+              style={Typography(props, 'h3', 'medium', 'center', colors.shark)***REMOVED***
+            >
+              {props.type === 'AddGroup'
+                ? props.translations.add_edit_group.header_add
+                : props.translations.add_edit_group.header_edit***REMOVED***
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={props.type === 'AddGroup' ? addNewGroup : editGroup***REMOVED***
+            style={{
+              width: 45 * scaleMultiplier,
+              height: 45 * scaleMultiplier
+            ***REMOVED******REMOVED***
+          >
+            <Icon
+              name='check'
+              size={40 * scaleMultiplier***REMOVED***
+              color={colors.oslo***REMOVED***
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.photoContainer***REMOVED***>
           <GroupAvatar
             style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
@@ -268,6 +343,7 @@ function AddEditGroupScreen (props) {
         >
           <FlatList
             data={groupIcons***REMOVED***
+            nestedScrollEnabled
             renderItem={({ item ***REMOVED***) => (
               <TouchableOpacity
                 style={{
@@ -298,23 +374,24 @@ function AddEditGroupScreen (props) {
             )***REMOVED***
           />
         </View>
-        {resetButton***REMOVED***
+        {/* {resetButton***REMOVED*** */***REMOVED***
       </View>
       {/* save button */***REMOVED***
-      {props.route.name === 'AddGroup' ? (
-        <WahaButton
-          type='filled'
-          color={colors.apple***REMOVED***
-          width={127 * scaleMultiplier***REMOVED***
-          style={{
-            alignSelf: props.isRTL ? 'flex-start' : 'flex-end',
-            marginHorizontal: 20
-          ***REMOVED******REMOVED***
-          onPress={addNewGroup***REMOVED***
-          label={props.translations.add_edit_group.save_button_label***REMOVED***
-        />
-      ) : null***REMOVED***
-    </SafeAreaView>
+      {/* {props.type === 'AddGroup' ? (
+          <WahaButton
+            type='filled'
+            color={colors.apple***REMOVED***
+            width={127 * scaleMultiplier***REMOVED***
+            style={{
+              alignSelf: props.isRTL ? 'flex-start' : 'flex-end',
+              marginHorizontal: 20
+            ***REMOVED******REMOVED***
+            onPress={addNewGroup***REMOVED***
+            label={props.translations.add_edit_group.save_button_label***REMOVED***
+          />
+        ) : null***REMOVED*** */***REMOVED***
+      {/* </SafeAreaView> */***REMOVED***
+    </Modal>
   )
 ***REMOVED***
 

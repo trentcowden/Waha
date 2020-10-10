@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React from 'react'
+import React, { useState ***REMOVED*** from 'react'
 import {
   Dimensions,
   StyleSheet,
@@ -13,7 +13,11 @@ import DrawerItem from '../components/DrawerItem'
 import GroupAvatar from '../components/GroupAvatar'
 import SmallDrawerItem from '../components/SmallDrawerItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import AddEditGroupScreen from '../screens/AddEditGroupScreen'
+
 function WahaDrawer (props) {
+  const [showEditGroupModal, setShowEditGroupModal] = useState(false)
+
   //+ FUNCTIONS
 
   // opens a local browser
@@ -43,13 +47,7 @@ function WahaDrawer (props) {
           {props.activeGroup.name***REMOVED***
         </Text>
         <View style={styles.pencilIconContainer***REMOVED***>
-          <TouchableOpacity
-            onPress={() =>
-              props.navigation.navigate('EditGroup', {
-                groupName: props.activeGroup.name
-              ***REMOVED***)
-            ***REMOVED***
-          >
+          <TouchableOpacity onPress={() => setShowEditGroupModal(true)***REMOVED***>
             <Icon
               name='pencil'
               size={25 * scaleMultiplier***REMOVED***
@@ -132,6 +130,12 @@ function WahaDrawer (props) {
           </View>
         </SafeAreaView>
       </View>
+      <AddEditGroupScreen
+        isVisible={showEditGroupModal***REMOVED***
+        hideModal={() => setShowEditGroupModal(false)***REMOVED***
+        type='EditGroup'
+        groupName={props.activeGroup.name***REMOVED***
+      />
     </SafeAreaView>
   )
 ***REMOVED***

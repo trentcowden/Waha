@@ -1,5 +1,13 @@
 import React, { useEffect ***REMOVED*** from 'react'
-import { FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
+import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
 import SetItem from '../components/SetItem'
@@ -15,7 +23,7 @@ function SetInfoScreen (props) {
   function getNavOptions () {
     return {
       title:
-        props.route.params.category === 'core'
+        props.category === 'core'
           ? props.translations.add_set.header_foundational
           : props.translations.add_set.header_topical,
       headerRight: props.isRTL
@@ -30,7 +38,7 @@ function SetInfoScreen (props) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    // props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
   //+ FUNCTIONS
@@ -43,7 +51,7 @@ function SetInfoScreen (props) {
       ***REMOVED***)
 
       return (
-        <View
+        <TouchableOpacity
           style={{
             marginVertical: 10 * scaleMultiplier,
             justifyContent: 'center',
@@ -58,11 +66,11 @@ function SetInfoScreen (props) {
           >
             {scriptureList***REMOVED***
           </Text>
-        </View>
+        </TouchableOpacity>
       )
     ***REMOVED*** else
       return (
-        <View
+        <TouchableOpacity
           style={{
             marginVertical: 10 * scaleMultiplier,
             justifyContent: 'center',
@@ -72,42 +80,167 @@ function SetInfoScreen (props) {
           <Text style={Typography(props, 'h4', 'medium', 'left', colors.shark)***REMOVED***>
             {item.title***REMOVED***
           </Text>
-        </View>
+        </TouchableOpacity>
       )
   ***REMOVED***
 
   return (
-    <View style={styles.screen***REMOVED***>
-      <View style={styles.studySetItemContainer***REMOVED***>
-        <SetItem thisSet={props.route.params.thisSet***REMOVED*** mode='setinfo' />
-      </View>
-      <WahaButton
-        type='filled'
-        color={colors.apple***REMOVED***
-        onPress={() => {
-          props.addSet(props.activeGroup.name, props.route.params.thisSet)
-          props.route.params.showSnackbar()
-          props.navigation.goBack()
+    <SafeAreaView>
+      <Modal
+        isVisible={props.isVisible***REMOVED***
+        hasBackdrop={true***REMOVED***
+        onBackdropPress={props.hideModal***REMOVED***
+        backdropOpacity={0.3***REMOVED***
+        onSwipeComplete={props.hideModal***REMOVED***
+        swipeDirection={['down']***REMOVED***
+        propagateSwipe={true***REMOVED***
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+          margin: 0,
+          marginTop: 30
+          // marginVertical: 20 * scaleMultiplier
         ***REMOVED******REMOVED***
-        style={{ marginHorizontal: 20, marginVertical: 10 ***REMOVED******REMOVED***
-        label={props.translations.add_set.add_new_story_set_button_label***REMOVED***
-        extraComponent={
-          <Icon
-            style={{ marginHorizontal: 10 ***REMOVED******REMOVED***
-            color={colors.white***REMOVED***
-            size={36 * scaleMultiplier***REMOVED***
-            name='playlist-add'
+      >
+        <View
+          style={{
+            backgroundColor: colors.white,
+            flex: 1,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15
+          ***REMOVED******REMOVED***
+        >
+          <View
+            style={{
+              width: '100%',
+              // height: 50 * scaleMultiplier,
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 10
+            ***REMOVED******REMOVED***
+          >
+            <TouchableOpacity
+              onPress={() => {
+                props.hideModal()
+              ***REMOVED******REMOVED***
+              style={{
+                width: 45 * scaleMultiplier,
+                height: 45 * scaleMultiplier
+              ***REMOVED******REMOVED***
+            >
+              <Icon
+                name='cancel'
+                size={45 * scaleMultiplier***REMOVED***
+                color={colors.oslo***REMOVED***
+              />
+            </TouchableOpacity>
+            <View style={{ flex: 1 ***REMOVED******REMOVED***>
+              <Text
+                style={Typography(
+                  props,
+                  'h3',
+                  'medium',
+                  'center',
+                  colors.shark
+                )***REMOVED***
+              >
+                {props.type === 'AddGroup'
+                  ? props.translations.add_edit_group.header_add
+                  : props.translations.add_edit_group.header_edit***REMOVED***
+              </Text>
+            </View>
+            <View
+              style={{
+                width: 45 * scaleMultiplier,
+                height: 45 * scaleMultiplier
+              ***REMOVED******REMOVED***
+            />
+          </View>
+          <View style={styles.studySetItemContainer***REMOVED***>
+            <SetItem thisSet={props.thisSet***REMOVED*** mode='setinfo' />
+          </View>
+          <WahaButton
+            type='filled'
+            color={colors.apple***REMOVED***
+            onPress={() => {
+              props.addSet(props.activeGroup.name, props.thisSet)
+              props.showSnackbar()
+              props.hideModal()
+            ***REMOVED******REMOVED***
+            style={{ marginHorizontal: 20, marginVertical: 10 ***REMOVED******REMOVED***
+            label={props.translations.add_set.add_new_story_set_button_label***REMOVED***
+            extraComponent={
+              <Icon
+                style={{ marginHorizontal: 10 ***REMOVED******REMOVED***
+                color={colors.white***REMOVED***
+                size={36 * scaleMultiplier***REMOVED***
+                name='playlist-add'
+              />
+            ***REMOVED***
           />
-        ***REMOVED***
-      />
-      <FlatList
-        data={props.activeDatabase.lessons.filter(
-          lesson =>
-            props.route.params.thisSet.id === getLessonInfo('setID', lesson.id)
-        )***REMOVED***
-        renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
-      />
-    </View>
+          {/* <ScrollView> */***REMOVED***
+          <View
+            style={{
+              width: '100%',
+              flex: 1,
+              alignItems: 'center'
+            ***REMOVED******REMOVED***
+            onStartShouldSetResponder={(): boolean => true***REMOVED***
+          >
+            <FlatList
+              nestedScrollEnabled
+              keyExtractor={item => item.id***REMOVED***
+              data={props.activeDatabase.lessons.filter(
+                lesson => props.thisSet.id === getLessonInfo('setID', lesson.id)
+              )***REMOVED***
+              renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
+            />
+          </View>
+          {/* <View
+          style={{
+            width: '100%',
+            flex: 1,
+            alignItems: 'center'
+          ***REMOVED******REMOVED***
+        >
+          <FlatList
+            data={groupIcons***REMOVED***
+            bounces={false***REMOVED***
+            nestedScrollEnabled
+            renderItem={({ item ***REMOVED***) => (
+              <View
+                style={{
+                  width: 50 * scaleMultiplier,
+                  height: 50 * scaleMultiplier,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 2,
+                  // borderWidth: 0,
+                  // borderColor: item === emoji ? colors.blue : null,
+                  borderRadius: 10
+                  // backgroundColor: item === emoji ? colors.blue + '38' : null
+                ***REMOVED******REMOVED***
+                // onPress={() => setEmoji(item)***REMOVED***
+              >
+                <Image
+                  style={{
+                    width: 40 * scaleMultiplier,
+                    height: 40 * scaleMultiplier
+                  ***REMOVED******REMOVED***
+                  source={groupIconSources[item]***REMOVED***
+                />
+              </View>
+            )***REMOVED***
+            keyExtractor={item => item***REMOVED***
+            numColumns={Math.floor(
+              (Dimensions.get('window').width - 50) / (50 * scaleMultiplier)
+            )***REMOVED***
+          />
+        </View> */***REMOVED***
+          {/* </ScrollView> */***REMOVED***
+        </View>
+      </Modal>
+    </SafeAreaView>
   )
 ***REMOVED***
 

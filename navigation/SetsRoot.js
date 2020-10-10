@@ -21,7 +21,7 @@ function SetsRoot (props) {
         headerTitleAlign: 'center',
         headerMode: 'float'
       ***REMOVED******REMOVED***
-      mode='modal'
+      mode='card'
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
