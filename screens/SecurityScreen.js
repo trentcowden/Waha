@@ -148,35 +148,22 @@ function SecurityScreen (props) {
         <WahaItem
           title={props.translations.security.security_mode_picker_label***REMOVED***
         >
-          <View
-            style={{
-              flexDirection: props.isRTL ? 'row-reverse' : 'row',
-              alignItems: 'center'
+          <Switch
+            trackColor={{ false: colors.chateau, true: colors.apple ***REMOVED******REMOVED***
+            thumbColor={colors.white***REMOVED***
+            ios_backgroundColor={colors.chateau***REMOVED***
+            onValueChange={() => {
+              // toggle security mode on or off for the active group
+              if (props.security.code) {
+                if (props.security.securityEnabled) {
+                  props.setSecurityEnabled(false)
+                ***REMOVED*** else props.setSecurityEnabled(true)
+              ***REMOVED*** else {
+                props.navigation.navigate('SecurityOnboarding')
+              ***REMOVED***
             ***REMOVED******REMOVED***
-          >
-            <Icon
-              name='error-filled'
-              size={40 * scaleMultiplier***REMOVED***
-              color={colors.red***REMOVED***
-              style={{ marginHorizontal: 20 ***REMOVED******REMOVED***
-            />
-            <Switch
-              trackColor={{ false: colors.chateau, true: colors.apple ***REMOVED******REMOVED***
-              thumbColor={colors.white***REMOVED***
-              ios_backgroundColor={colors.chateau***REMOVED***
-              onValueChange={() => {
-                // toggle security mode on or off for the active group
-                if (props.security.code) {
-                  if (props.security.securityEnabled) {
-                    props.setSecurityEnabled(false)
-                  ***REMOVED*** else props.setSecurityEnabled(true)
-                ***REMOVED*** else {
-                  props.navigation.navigate('SecurityOnboarding')
-                ***REMOVED***
-              ***REMOVED******REMOVED***
-              value={props.security.securityEnabled***REMOVED***
-            />
-          </View>
+            value={props.security.securityEnabled***REMOVED***
+          />
         </WahaItem>
         <Separator />
         <WahaItemDescription
