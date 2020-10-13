@@ -1,12 +1,23 @@
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
+import * as FileSystem from 'expo-file-system'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { AppState, LogBox, Platform, StyleSheet, View ***REMOVED*** from 'react-native'
+import {
+  AppState,
+  Image,
+  LogBox,
+  Platform,
+  StyleSheet,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
+import GroupAvatar from '../components/GroupAvatar'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import SetTabs from '../navigation/SetTabs'
 import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
-import AddEditGroupScreen from '../screens/AddEditGroupScreen'
+import AddEditGroupModal from '../screens/AddEditGroupModal'
+import AddSetScreen from '../screens/AddSetScreen'
 import GameScreen from '../screens/GameScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import KeyOrderSetScreen from '../screens/KeyOrderSetScreen'
@@ -20,7 +31,7 @@ import SecurityScreen from '../screens/SecurityScreen'
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import en from '../translations/en.json'
-import SetsRoot from './SetsRoot'
+
 LogBox.ignoreLogs(['Setting a timer'])
 
 i18n.translations = {
@@ -109,11 +120,51 @@ function MainStack (props) {
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
-        name='SetsRoot'
-        component={SetsRoot***REMOVED***
-        options={{ headerShown: false ***REMOVED******REMOVED***
+        name='SetTabs'
+        component={SetTabs***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: colors.aquaHaze
+          ***REMOVED***,
+          headerTitle: () => (
+            <Image
+              style={styles.headerImage***REMOVED***
+              source={{
+                uri:
+                  FileSystem.documentDirectory +
+                  props.activeGroup.language +
+                  '-header.png'
+              ***REMOVED******REMOVED***
+            />
+          ),
+          headerLeft: props.isRTL
+            ? () => <View></View>
+            : () => (
+                <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  <GroupAvatar
+                    style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
+                    emoji={props.activeGroup.emoji***REMOVED***
+                    size={35***REMOVED***
+                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    isActive={true***REMOVED***
+                  />
+                </View>
+              ),
+          headerRight: props.isRTL
+            ? () => (
+                <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  <GroupAvatar
+                    style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
+                    emoji={props.activeGroup.emoji***REMOVED***
+                    size={35***REMOVED***
+                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    isActive={true***REMOVED***
+                  />
+                </View>
+              )
+            : () => <View></View>
+        ***REMOVED******REMOVED***
       />
-
       {/* Lesson List Screen */***REMOVED***
       <Stack.Screen
         name='LessonList'
@@ -155,18 +206,10 @@ function MainStack (props) {
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='AddGroup'
-        component={AddEditGroupScreen***REMOVED***
+        name='AddSet'
+        component={AddSetScreen***REMOVED***
         options={{
-          gestureEnabled: false,
-          headerTitle: props.translations.add_edit_group.header_add,
-          headerStyle: {
-            backgroundColor: colors.white
-          ***REMOVED***,
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: props.font + '-medium'
-          ***REMOVED***
+          title: ''
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
@@ -190,7 +233,7 @@ function MainStack (props) {
       />
       <Stack.Screen
         name='EditGroup'
-        component={AddEditGroupScreen***REMOVED***
+        component={AddEditGroupModal***REMOVED***
         options={{
           gestureEnabled: false,
           headerTitle: props.translations.add_edit_group.header_edit,

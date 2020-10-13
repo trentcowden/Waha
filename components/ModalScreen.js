@@ -1,0 +1,105 @@
+import React from 'react'
+import { Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import Modal from 'react-native-modal'
+import { connect ***REMOVED*** from 'react-redux'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+
+function ModalScreen (props) {
+  return (
+    <View>
+      <Modal
+        isVisible={props.isVisible***REMOVED***
+        hasBackdrop={true***REMOVED***
+        onBackdropPress={props.hideModal***REMOVED***
+        backdropOpacity={0.3***REMOVED***
+        onSwipeComplete={props.hideModal***REMOVED***
+        swipeDirection={['down']***REMOVED***
+        propagateSwipe={true***REMOVED***
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+          margin: 0,
+          marginTop: 30
+          // marginVertical: 20 * scaleMultiplier
+        ***REMOVED******REMOVED***
+        onModalWillShow={props.onModalWillShow***REMOVED***
+      >
+        <View
+          style={{
+            backgroundColor: colors.white,
+            flex: 1,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15
+          ***REMOVED******REMOVED***
+        >
+          <View
+            style={{
+              width: '100%',
+              // height: 50 * scaleMultiplier,
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 10
+            ***REMOVED******REMOVED***
+          >
+            <TouchableOpacity
+              onPress={() => {
+                props.onCancelPress ? props.onCancelPress() : null
+                props.hideModal()
+              ***REMOVED******REMOVED***
+              style={{
+                width: 45 * scaleMultiplier,
+                height: 45 * scaleMultiplier
+              ***REMOVED******REMOVED***
+            >
+              <Icon
+                name='cancel'
+                size={45 * scaleMultiplier***REMOVED***
+                color={colors.oslo***REMOVED***
+              />
+            </TouchableOpacity>
+            <View style={{ flex: 1 ***REMOVED******REMOVED***>
+              <Text
+                style={Typography(
+                  props,
+                  'h3',
+                  'medium',
+                  'center',
+                  colors.shark
+                )***REMOVED***
+              >
+                {props.title***REMOVED***
+              </Text>
+            </View>
+            <View
+              style={{
+                width: 45 * scaleMultiplier,
+                height: 45 * scaleMultiplier
+              ***REMOVED******REMOVED***
+            >
+              {props.topRightComponent***REMOVED***
+            </View>
+          </View>
+          {props.children***REMOVED***
+        </View>
+      </Modal>
+    </View>
+  )
+***REMOVED***
+
+//+ REDUX
+
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    downloads: state.downloads,
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    font: state.database[activeGroup.language].font
+  ***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps)(ModalScreen)

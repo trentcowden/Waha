@@ -12,7 +12,7 @@ import GroupItem from '../components/GroupItem'
 import GroupListHeader from '../components/GroupListHeader'
 import Separator from '../components/Separator'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import AddEditGroupScreen from '../screens/AddEditGroupScreen'
+import AddEditGroupModal from './AddEditGroupModal'
 
 function GroupsScreen (props) {
   //+ STATE
@@ -223,13 +223,13 @@ function GroupsScreen (props) {
           </TouchableOpacity>
         ***REMOVED***
       />
-      <AddEditGroupScreen
+      <AddEditGroupModal
         isVisible={showAddGroupModal***REMOVED***
         hideModal={() => setShowAddGroupModal(false)***REMOVED***
         type='AddGroup'
         languageID={languageID***REMOVED***
       />
-      <AddEditGroupScreen
+      <AddEditGroupModal
         isVisible={showEditGroupModal***REMOVED***
         hideModal={() => setShowEditGroupModal(false)***REMOVED***
         type='EditGroup'

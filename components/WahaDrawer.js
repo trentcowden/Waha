@@ -13,7 +13,7 @@ import DrawerItem from '../components/DrawerItem'
 import GroupAvatar from '../components/GroupAvatar'
 import SmallDrawerItem from '../components/SmallDrawerItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import AddEditGroupScreen from '../screens/AddEditGroupScreen'
+import AddEditGroupModal from '../screens/AddEditGroupModal'
 
 function WahaDrawer (props) {
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
@@ -125,12 +125,12 @@ function WahaDrawer (props) {
             <Text
               style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
             >
-              v0.6.2
+              v0.6.3
             </Text>
           </View>
         </SafeAreaView>
       </View>
-      <AddEditGroupScreen
+      <AddEditGroupModal
         isVisible={showEditGroupModal***REMOVED***
         hideModal={() => setShowEditGroupModal(false)***REMOVED***
         type='EditGroup'
