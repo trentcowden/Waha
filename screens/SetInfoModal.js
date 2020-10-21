@@ -10,7 +10,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import ModalScreen from '../components/ModalScreen'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
-import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 
 function SetInfoModal (props) {
@@ -96,9 +96,7 @@ function SetInfoModal (props) {
         <FlatList
           nestedScrollEnabled
           keyExtractor={item => item.id***REMOVED***
-          data={props.activeDatabase.lessons.filter(
-            lesson => props.thisSet.id === getLessonInfo('setID', lesson.id)
-          )***REMOVED***
+          data={props.thisSet.lessons***REMOVED***
           renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
         />
       </View>

@@ -209,15 +209,15 @@ function PlayScreen (props) {
 
     // when leaving the screen, cancel the interval timer and unload the audio
     //  file
-    return function cleanup () {
+    return async function cleanup () {
       if (audio) {
-        audio.unloadAsync()
         setAudio(null)
+        await audio.unloadAsync()
       ***REMOVED***
 
       if (video) {
-        video.unloadAsync()
         setVideo(null)
+        await video.unloadAsync()
       ***REMOVED***
       // re-lock orientation to portrait up
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
@@ -491,7 +491,8 @@ function PlayScreen (props) {
         // auto scroll to scripture if
         //  1. there's no audio source
         //  2. we're currently downloading the lesson
-        //  3. there's an audio source, it's not downloading, and there's no internet
+        //  3. there's an audio source, it's not downloading, and there's no
+        //    internet
         if (!props.route.params.thisLesson.hasAudio) swipeToScripture()
       ***REMOVED*** else if (chapter === 'application') {
         setSeekPosition(0)
@@ -511,7 +512,7 @@ function PlayScreen (props) {
     ***REMOVED***
 
     // depending on what chapter we're on, either jump to the next
-    // chapter once we finish or toggle the whole lesson as complete
+    //  chapter once we finish or toggle the whole lesson as complete
     if (playbackStatus.didJustFinish) {
       if (activeChapter === 'fellowship') {
         if (!props.route.params.thisLesson.hasAudio) {
@@ -562,7 +563,6 @@ function PlayScreen (props) {
 
   //- pause lesson if we move to a different screen (i.e. when switching to
   //-   splash / game for security mode)
-
   useEffect(() => {
     if (isMediaPlaying) playHandler()
   ***REMOVED***, [props.navigation.isFocused()])
@@ -615,21 +615,10 @@ function PlayScreen (props) {
     )
 
     if (
-      props.route.params.thisSetProgress.includes(
+      !props.route.params.thisSetProgress.includes(
         getLessonInfo('index', props.route.params.thisLesson.id)
       )
     ) {
-      Alert.alert(
-        props.translations.play.popups.marked_as_incomplete_title,
-        props.translations.play.popups.marked_as_incomplete_message,
-        [
-          {
-            text: props.translations.general.ok,
-            onPress: () => props.navigation.goBack()
-          ***REMOVED***
-        ]
-      )
-    ***REMOVED*** else {
       Alert.alert(
         props.translations.play.popups.marked_as_complete_title,
         props.translations.play.popups.marked_as_complete_message,
@@ -762,11 +751,6 @@ function PlayScreen (props) {
         lessonType={props.route.params.lessonType***REMOVED***
         set={props.route.params.thisSet***REMOVED***
       />
-      {/* <HomeworkModal
-        isVisible={showHomeworkModal***REMOVED***
-        hideModal={() => setShowHomeworkModal(false)***REMOVED***
-        homework={props.route.params.thisLesson.homework***REMOVED***
-      /> */***REMOVED***
     </View>
   )
 ***REMOVED***
@@ -839,3 +823,9 @@ function mapDispatchToProps (dispatch) {
 ***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayScreen)
+
+/* <HomeworkModal
+        isVisible={showHomeworkModal***REMOVED***
+        hideModal={() => setShowHomeworkModal(false)***REMOVED***
+        homework={props.route.params.thisLesson.homework***REMOVED***
+/> */

@@ -1,14 +1,11 @@
 import NetInfo from '@react-native-community/netinfo'
 import { createDrawerNavigator ***REMOVED*** from '@react-navigation/drawer'
 import { NavigationContainer ***REMOVED*** from '@react-navigation/native'
-import * as FileSystem from 'expo-file-system'
-import sizeof from 'firestore-size'
 import React, { useEffect ***REMOVED*** from 'react'
-import { Alert ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import WahaDrawer from '../components/WahaDrawer'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import { db, storeData ***REMOVED*** from '../redux/actions/databaseActions'
+import { storeData ***REMOVED*** from '../redux/actions/databaseActions'
 import {
   removeDownload,
   resumeDownload
@@ -40,93 +37,92 @@ function MainDrawer (props) {
     ***REMOVED***)
 
     // add listener for receiving updates in firebase
-    db.collection('languages')
-      .doc(props.activeGroup.language)
-      .onSnapshot(function (doc) {
-        console.log(sizeof(doc.data()))
-        // function downloadSomething (source, fileName) {
-        //   var downloadResumable = FileSystem.createDownloadResumable(
-        //     doc.data().sources[source],
-        //     FileSystem.documentDirectory +
-        //       props.activeGroup.language +
-        //       '-' +
-        //       fileName,
-        //     {***REMOVED***
-        //   )
-        //   downloadResumable.downloadAsync().catch(error => {
-        //     throw error
-        //   ***REMOVED***)
-        // ***REMOVED***
+    // db.collection('languages')
+    //   .doc(props.activeGroup.language)
+    //   .onSnapshot(function (doc) {
+    //     // function downloadSomething (source, fileName) {
+    //     //   var downloadResumable = FileSystem.createDownloadResumable(
+    //     //     doc.data().sources[source],
+    //     //     FileSystem.documentDirectory +
+    //     //       props.activeGroup.language +
+    //     //       '-' +
+    //     //       fileName,
+    //     //     {***REMOVED***
+    //     //   )
+    //     //   downloadResumable.downloadAsync().catch(error => {
+    //     //     throw error
+    //     //   ***REMOVED***)
+    //     // ***REMOVED***
 
-        // check for new fellowship or application chapters
-        // Object.keys(doc.data().sources).forEach(source => {
-        //   if (
-        //     doc.data().sources[source] !== props.activeDatabase.sources[source]
-        //   ) {
-        //     // ALERT
-        //     Alert.alert(
-        //       props.translations.general.popups.new_chapter_downloading_title,
-        //       props.translations.general.popups.new_chapter_downloading_message,
-        //       [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
-        //     )
-        //     downloadSomething(source, source + '.mp3')
-        //   ***REMOVED***
-        // ***REMOVED***)
+    //     // check for new fellowship or application chapters
+    //     // Object.keys(doc.data().sources).forEach(source => {
+    //     //   if (
+    //     //     doc.data().sources[source] !== props.activeDatabase.sources[source]
+    //     //   ) {
+    //     //     // ALERT
+    //     //     Alert.alert(
+    //     //       props.translations.general.popups.new_chapter_downloading_title,
+    //     //       props.translations.general.popups.new_chapter_downloading_message,
+    //     //       [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+    //     //     )
+    //     //     downloadSomething(source, source + '.mp3')
+    //     //   ***REMOVED***
+    //     // ***REMOVED***)
 
-        function downloadSomething (url, fileName) {
-          var downloadResumable = FileSystem.createDownloadResumable(
-            url,
-            FileSystem.documentDirectory +
-              props.activeGroup.language +
-              '-' +
-              fileName,
-            {***REMOVED***
-          )
-          return downloadResumable.downloadAsync().catch(error => {
-            throw error
-          ***REMOVED***)
-        ***REMOVED***
+    //     function downloadSomething (url, fileName) {
+    //       var downloadResumable = FileSystem.createDownloadResumable(
+    //         url,
+    //         FileSystem.documentDirectory +
+    //           props.activeGroup.language +
+    //           '-' +
+    //           fileName,
+    //         {***REMOVED***
+    //       )
+    //       return downloadResumable.downloadAsync().catch(error => {
+    //         throw error
+    //       ***REMOVED***)
+    //     ***REMOVED***
 
-        // check for new fellowship or application chapters
-        doc.data().files.forEach(fileName => {
-          if (!props.activeDatabase.files.includes(fileName)) {
-            // ALERT
-            Alert.alert(
-              props.translations.general.popups.new_chapter_downloading_title,
-              props.translations.general.popups.new_chapter_downloading_message,
-              [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
-            )
-            if (fileName.includes('header'))
-              return downloadSomething(
-                `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
-                fileName.slice(0, -3) + '.png'
-              )
-            else
-              return downloadSomething(
-                `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
-                fileName.slice(0, -3) + '.mp3'
-              )
-          ***REMOVED***
-        ***REMOVED***)
+    //     // check for new fellowship or application chapters
+    //     doc.data().files.forEach(fileName => {
+    //       if (!props.activeDatabase.files.includes(fileName)) {
+    //         // ALERT
+    //         Alert.alert(
+    //           props.translations.general.popups.new_chapter_downloading_title,
+    //           props.translations.general.popups.new_chapter_downloading_message,
+    //           [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+    //         )
+    //         if (fileName.includes('header'))
+    //           return downloadSomething(
+    //             `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+    //             fileName.slice(0, -3) + '.png'
+    //           )
+    //         else
+    //           return downloadSomething(
+    //             `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+    //             fileName.slice(0, -3) + '.mp3'
+    //           )
+    //       ***REMOVED***
+    //     ***REMOVED***)
 
-        // store data
-        props.storeData(doc.data(), props.activeGroup.language)
+    //     // store data
+    //     props.storeData(doc.data(), props.activeGroup.language)
 
-        // if
-        // 1. all core story sets are completed
-        // 2. a new core story set has been addded
+    //     // if
+    //     // 1. all core story sets are completed
+    //     // 2. a new core story set has been addded
 
-        // 1. add it automatically to added sets for this group
-        // 2. make it display the 'new' icon somehow
+    //     // 1. add it automatically to added sets for this group
+    //     // 2. make it display the 'new' icon somehow
 
-        // if
-        // 1. mobilization tools is unlocked for this group
-        // 2. a new mobilization tools set is added
-        // if (props.activeGroup.showToolkit && )
+    //     // if
+    //     // 1. mobilization tools is unlocked for this group
+    //     // 2. a new mobilization tools set is added
+    //     // if (props.activeGroup.showToolkit && )
 
-        // 1. add it automatically to added sets for htis group
-        // 2. make it dispaly the 'new' icon somehow
-      ***REMOVED***)
+    //     // 1. add it automatically to added sets for htis group
+    //     // 2. make it dispaly the 'new' icon somehow
+    //   ***REMOVED***)
 
     return function cleanup () {
       netInfoUnsubscribe()
