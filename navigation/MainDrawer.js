@@ -5,7 +5,7 @@ import React, { useEffect ***REMOVED*** from 'react'
 import { connect ***REMOVED*** from 'react-redux'
 import WahaDrawer from '../components/WahaDrawer'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import { storeData ***REMOVED*** from '../redux/actions/databaseActions'
+import { db, storeData ***REMOVED*** from '../redux/actions/databaseActions'
 import {
   removeDownload,
   resumeDownload
@@ -13,6 +13,7 @@ import {
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
 import MainStack from './MainStack'
+
 const Drawer = createDrawerNavigator()
 
 function MainDrawer (props) {
@@ -37,92 +38,83 @@ function MainDrawer (props) {
     ***REMOVED***)
 
     // add listener for receiving updates in firebase
-    // db.collection('languages')
-    //   .doc(props.activeGroup.language)
-    //   .onSnapshot(function (doc) {
-    //     // function downloadSomething (source, fileName) {
-    //     //   var downloadResumable = FileSystem.createDownloadResumable(
-    //     //     doc.data().sources[source],
-    //     //     FileSystem.documentDirectory +
-    //     //       props.activeGroup.language +
-    //     //       '-' +
-    //     //       fileName,
-    //     //     {***REMOVED***
-    //     //   )
-    //     //   downloadResumable.downloadAsync().catch(error => {
-    //     //     throw error
-    //     //   ***REMOVED***)
-    //     // ***REMOVED***
+    db.collection('languages')
+      .doc(props.activeGroup.language)
+      .onSnapshot(function (doc) {
+        // download a file
+        function downloadSomething (url, fileName) {
+          var downloadResumable = FileSystem.createDownloadResumable(
+            url,
+            FileSystem.documentDirectory +
+              props.activeGroup.language +
+              '-' +
+              fileName,
+            {***REMOVED***
+          )
+          return downloadResumable.downloadAsync().catch(error => {
+            throw error
+          ***REMOVED***)
+        ***REMOVED***
 
-    //     // check for new fellowship or application chapters
-    //     // Object.keys(doc.data().sources).forEach(source => {
-    //     //   if (
-    //     //     doc.data().sources[source] !== props.activeDatabase.sources[source]
-    //     //   ) {
-    //     //     // ALERT
-    //     //     Alert.alert(
-    //     //       props.translations.general.popups.new_chapter_downloading_title,
-    //     //       props.translations.general.popups.new_chapter_downloading_message,
-    //     //       [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
-    //     //     )
-    //     //     downloadSomething(source, source + '.mp3')
-    //     //   ***REMOVED***
-    //     // ***REMOVED***)
+        // check for new fellowship or application chapters or header image
+        doc.data().files.forEach(fileName => {
+          if (!props.activeDatabase.files.includes(fileName)) {
+            // ALERT
+            Alert.alert(
+              props.translations.general.popups.new_chapter_downloading_title,
+              props.translations.general.popups.new_chapter_downloading_message,
+              [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            )
+            if (fileName.includes('header'))
+              return downloadSomething(
+                `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+                fileName.slice(0, -3) + '.png'
+              )
+            else
+              return downloadSomething(
+                `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+                fileName.slice(0, -3) + '.mp3'
+              )
+          ***REMOVED***
+        ***REMOVED***)
 
-    //     function downloadSomething (url, fileName) {
-    //       var downloadResumable = FileSystem.createDownloadResumable(
-    //         url,
-    //         FileSystem.documentDirectory +
-    //           props.activeGroup.language +
-    //           '-' +
-    //           fileName,
-    //         {***REMOVED***
-    //       )
-    //       return downloadResumable.downloadAsync().catch(error => {
-    //         throw error
-    //       ***REMOVED***)
-    //     ***REMOVED***
+        // store data
+        props.storeData(
+          { ...doc.data(), sets: props.activeDatabase.sets ***REMOVED***,
+          props.activeGroup.language
+        )
 
-    //     // check for new fellowship or application chapters
-    //     doc.data().files.forEach(fileName => {
-    //       if (!props.activeDatabase.files.includes(fileName)) {
-    //         // ALERT
-    //         Alert.alert(
-    //           props.translations.general.popups.new_chapter_downloading_title,
-    //           props.translations.general.popups.new_chapter_downloading_message,
-    //           [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
-    //         )
-    //         if (fileName.includes('header'))
-    //           return downloadSomething(
-    //             `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
-    //             fileName.slice(0, -3) + '.png'
-    //           )
-    //         else
-    //           return downloadSomething(
-    //             `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
-    //             fileName.slice(0, -3) + '.mp3'
-    //           )
-    //       ***REMOVED***
-    //     ***REMOVED***)
+        //     // if
+        //     // 1. all core story sets are completed
+        //     // 2. a new core story set has been addded
 
-    //     // store data
-    //     props.storeData(doc.data(), props.activeGroup.language)
+        //     // 1. add it automatically to added sets for this group
+        //     // 2. make it display the 'new' icon somehow
 
-    //     // if
-    //     // 1. all core story sets are completed
-    //     // 2. a new core story set has been addded
+        //     // if
+        //     // 1. mobilization tools is unlocked for this group
+        //     // 2. a new mobilization tools set is added
+        //     // if (props.activeGroup.showToolkit && )
 
-    //     // 1. add it automatically to added sets for this group
-    //     // 2. make it display the 'new' icon somehow
+        //     // 1. add it automatically to added sets for htis group
+        //     // 2. make it dispaly the 'new' icon somehow
+      ***REMOVED***)
 
-    //     // if
-    //     // 1. mobilization tools is unlocked for this group
-    //     // 2. a new mobilization tools set is added
-    //     // if (props.activeGroup.showToolkit && )
-
-    //     // 1. add it automatically to added sets for htis group
-    //     // 2. make it dispaly the 'new' icon somehow
-    //   ***REMOVED***)
+    db.collection('sets')
+      .where('languageID', '==', props.activeGroup.language)
+      .onSnapshot(querySnapshot => {
+        var sets = []
+        querySnapshot.forEach(doc => {
+          sets.push({
+            id: doc.id,
+            ...doc.data()
+          ***REMOVED***)
+        ***REMOVED***)
+        props.storeData(
+          { ...props.activeDatabase, sets: sets ***REMOVED***,
+          props.activeGroup.language
+        )
+      ***REMOVED***)
 
     return function cleanup () {
       netInfoUnsubscribe()
@@ -209,6 +201,7 @@ function mapStateToProps (state) {
   var activeGroup = state.groups.filter(
     item => item.name === state.activeGroup
   )[0]
+  // console.log(state.database[activeGroup.language])
   return {
     isRTL: state.database[activeGroup.language].isRTL,
     activeDatabase: state.database[activeGroup.language],

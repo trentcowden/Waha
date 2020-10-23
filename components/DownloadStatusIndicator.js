@@ -69,7 +69,17 @@ function DownloadStatusIndicator (props) {
             rotation={0***REMOVED***
             backgroundColor={colors.white***REMOVED***
             padding={2***REMOVED***
-          />
+          >
+            {() => (
+              <TouchableOpacity
+                style={{
+                  width: 5 * scaleMultiplier,
+                  height: 5 * scaleMultiplier,
+                  backgroundColor: colors.shark
+                ***REMOVED******REMOVED***
+              />
+            )***REMOVED***
+          </AnimatedCircularProgress>
         </View>
       ) : (
         // if not downloaded, not downloading, and connected, show download icon

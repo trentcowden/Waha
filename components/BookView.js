@@ -25,7 +25,7 @@ function BookView (props) {
               { marginHorizontal: 10 ***REMOVED***
             ]***REMOVED***
           >
-            {paragraphList.item***REMOVED***
+            {paragraphList.item + '\n'***REMOVED***
           </Text>
         )***REMOVED***
         keyExtractor={item => item***REMOVED***
