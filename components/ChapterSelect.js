@@ -1,11 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
+import { StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-// chapter select on play screen
-//  1. allows switching of lessons
-//  2. shows what your current chapter is
+import ChapterButton from '../components/ChapterButton'
+import ChapterSeparator from '../components/ChapterSeparator'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+
 function ChapterSelect (props) {
   // order of chapters is
   //  1. fellowship
@@ -15,360 +14,83 @@ function ChapterSelect (props) {
 
   // RENDER
 
-  // render story icon conditionally based off if it's not active, active, or completed
-  var storyIcon
-  if (props.activeChapter === 'fellowship') {
-    storyIcon = 'number-2-filled'
-  ***REMOVED*** else if (props.activeChapter === 'story') {
-    storyIcon = 'number-2-outline'
-  ***REMOVED*** else {
-    storyIcon = 'check-filled'
-  ***REMOVED***
-
-  // render training button based on a lot of factors
-  var trainingButton
-
-  // if our lesson type shows that we have a video, render the video button
-  // otherwise, render nothing for training button
-  if (props.lessonType === 'qav' || props.lessonType === 'qv') {
-    // if we're not connected to the internet, and the video is not downloaded,
-    //  then show a cloud slash icon. the user cannot play the video in this
-    //    case, so it's not touchable
-    if (!props.isConnected && !props.isDownloaded) {
-      trainingButton = (
-        <View
-          style={[
-            styles.chapterSelect,
-            {
-              borderColor: colors.chateau,
-              backgroundColor: colors.athens
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          <Icon
-            name='cloud-slash'
-            size={25 * scaleMultiplier***REMOVED***
-            color={colors.chateau***REMOVED***
-          />
-          <Text
-            style={[
-              styles.chapterSelectText,
-              {
-                color: colors.shark,
-                fontFamily: props.font + '-black'
-              ***REMOVED***
-            ]***REMOVED***
-          >
-            {props.translations.play.training***REMOVED***
-          </Text>
-        </View>
-      )
-      // if the video is currently downloading, show the progress bar
-    ***REMOVED*** else if (
-      props.downloads[props.lessonID + 'v'] &&
-      props.downloads[props.lessonID + 'v'] < 1
-    ) {
-      trainingButton = (
-        <View
-          style={[
-            styles.chapterSelect,
-            {
-              borderColor: colors.chateau,
-              backgroundColor: colors.athens
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          <AnimatedCircularProgress
-            size={20 * scaleMultiplier***REMOVED***
-            width={4***REMOVED***
-            fill={props.downloads[props.lessonID + 'v'] * 100***REMOVED***
-            tintColor={props.primaryColor***REMOVED***
-            rotation={0***REMOVED***
-            backgroundColor={colors.white***REMOVED***
-            style={{ margin: 5 ***REMOVED******REMOVED***
-          />
-          <Text
-            style={[
-              styles.chapterSelectText,
-              {
-                color: colors.chateau,
-                fontFamily: props.font + '-black'
-              ***REMOVED***
-            ]***REMOVED***
-          >
-            {props.translations.play.training***REMOVED***
-          </Text>
-        </View>
-      )
-      // if our video is downloaded or we have the internet to stream it, then
-      //  show the button as normal
-    ***REMOVED*** else {
-      trainingButton = (
-        <TouchableOpacity
-          style={[
-            styles.chapterSelect,
-            {
-              borderColor: props.primaryColor,
-              backgroundColor:
-                props.activeChapter === 'training'
-                  ? props.primaryColor
-                  : colors.athens
-            ***REMOVED***
-          ]***REMOVED***
-          onPress={() => props.onPress('training')***REMOVED***
-        >
-          <Icon
-            name={
-              props.activeChapter === 'application'
-                ? 'check-filled'
-                : props.activeChapter === 'training'
-                ? 'number-3-outline'
-                : 'number-3-filled'
-            ***REMOVED***
-            size={25 * scaleMultiplier***REMOVED***
-            color={
-              props.activeChapter === 'training'
-                ? colors.white
-                : props.primaryColor
-            ***REMOVED***
-          />
-          <Text
-            style={[
-              styles.chapterSelectText,
-              {
-                color:
-                  props.activeChapter === 'training'
-                    ? colors.white
-                    : props.primaryColor,
-                fontFamily: props.font + '-black'
-              ***REMOVED***
-            ]***REMOVED***
-          >
-            {props.translations.play.training***REMOVED***
-          </Text>
-        </TouchableOpacity>
-      )
+  function getActiveNumber () {
+    switch (props.activeChapter) {
+      case 'fellowship':
+        return 1
+        break
+      case 'story':
+        return 2
+        break
+      case 'training':
+        return 3
+        break
+      case 'application':
+        if (props.lessonType === 'qav' || props.lessonType === 'qv') return 4
+        else return 3
+        break
     ***REMOVED***
-  ***REMOVED*** else {
-    trainingButton = null
   ***REMOVED***
 
-  // render chapter 2 button based on a lot of factors
-  var storyButton
-
-  // if our lesson type shows we have an audio source, and we are not connected
-  //  and the lesson isn't downloaded, show the cloud slash icon. the user
-  //  can't listen to the audio, so it's not touchable
-  if (
-    (props.lessonType === 'qa' || props.lessonType === 'qav') &&
-    !props.isConnected &&
-    !props.isDownloaded
-  )
-    storyButton = (
-      <View
-        style={[
-          styles.chapterSelect,
-          {
-            borderColor: Colors.darkGrey1,
-            backgroundColor: Colors.lightGray3
-          ***REMOVED***
-        ]***REMOVED***
-      >
-        <Icon
-          name='cloud-slash'
-          size={25 * scaleMultiplier***REMOVED***
-          color={colors.chateau***REMOVED***
-        />
-        <Text
-          style={[
-            styles.chapterSelectText,
-            {
-              color: colors.chateau,
-
-              fontFamily: props.font + '-black'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.translations.play.story***REMOVED***
-        </Text>
-      </View>
-    )
-  // if the audio is downloading, show the progress
-  else if (
-    props.downloads[props.lessonID] &&
-    props.downloads[props.lessonID] < 1
-  )
-    storyButton = (
-      // if the lesson is downloading, show the progress in the chapter button
-      <View
-        style={[
-          styles.chapterSelect,
-          {
-            borderColor: colors.chateau,
-            backgroundColor: colors.athens
-          ***REMOVED***
-        ]***REMOVED***
-      >
-        <AnimatedCircularProgress
-          size={20 * scaleMultiplier***REMOVED***
-          width={4***REMOVED***
-          fill={props.downloads[props.lessonID] * 100***REMOVED***
-          tintColor={props.primaryColor***REMOVED***
-          rotation={0***REMOVED***
-          backgroundColor={colors.white***REMOVED***
-          style={{ margin: 5 ***REMOVED******REMOVED***
-        />
-        <Text
-          style={[
-            styles.chapterSelectText,
-            {
-              color: colors.chateau,
-              fontFamily: props.font + '-black'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.translations.play.story***REMOVED***
-        </Text>
-      </View>
-    )
-  // otherwise, show the button as normal
-  else
-    storyButton = (
-      <TouchableOpacity
-        style={[
-          styles.chapterSelect,
-          {
-            borderColor: props.primaryColor,
-            backgroundColor:
-              props.activeChapter === 'story'
-                ? props.primaryColor
-                : colors.athens
-          ***REMOVED***
-        ]***REMOVED***
-        onPress={() => props.onPress('story')***REMOVED***
-      >
-        <Icon
-          name={storyIcon***REMOVED***
-          size={25 * scaleMultiplier***REMOVED***
-          color={
-            props.activeChapter === 'story' ? colors.white : props.primaryColor
-          ***REMOVED***
-        />
-        <Text
-          style={[
-            styles.chapterSelectText,
-            {
-              color:
-                props.activeChapter === 'story'
-                  ? colors.white
-                  : props.primaryColor,
-              fontFamily: props.font + '-black'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.translations.play.story***REMOVED***
-        </Text>
-      </TouchableOpacity>
-    )
-
-  // other 2 buttons are always rendered, so they aren't dynamic
   return (
     <View style={styles.chapterSelectContainer***REMOVED***>
-      {/* fellowship button */***REMOVED***
-      <TouchableOpacity
-        style={[
-          styles.chapterSelect,
-          {
-            borderColor: props.primaryColor,
-            backgroundColor:
-              props.activeChapter === 'fellowship'
-                ? props.primaryColor
-                : colors.athens
+      <ChapterButton
+        name='fellowship'
+        mode={props.activeChapter === 'fellowship' ? 'active' : 'inactive'***REMOVED***
+        number={1***REMOVED***
+        activeNumber={getActiveNumber()***REMOVED***
+        onPress={props.onPress***REMOVED***
+      />
+      <ChapterSeparator />
+      <ChapterButton
+        name='story'
+        mode={
+          (props.lessonType === 'qa' || props.lessonType === 'qav') &&
+          !props.isConnected &&
+          !props.isDownloaded
+            ? 'disabled'
+            : props.downloads[props.lessonID] &&
+              props.downloads[props.lessonID] < 1
+            ? 'downloading'
+            : props.activeChapter === 'story'
+            ? 'active'
+            : 'inactive'
+        ***REMOVED***
+        number={2***REMOVED***
+        activeNumber={getActiveNumber()***REMOVED***
+        onPress={props.onPress***REMOVED***
+        downloadProgress={props.downloads[props.lessonID]***REMOVED***
+      />
+      {props.lessonType === 'qav' || props.lessonType === 'qv' ? (
+        <ChapterSeparator />
+      ) : null***REMOVED***
+      {props.lessonType === 'qav' || props.lessonType === 'qv' ? (
+        <ChapterButton
+          name='training'
+          mode={
+            !props.isConnected && !props.isDownloaded
+              ? 'disabled'
+              : props.downloads[props.lessonID + 'v'] &&
+                props.downloads[props.lessonID + 'v'] < 1
+              ? 'downloading'
+              : props.activeChapter === 'training'
+              ? 'active'
+              : 'inactive'
           ***REMOVED***
-        ]***REMOVED***
-        onPress={() => props.onPress('fellowship')***REMOVED***
-      >
-        <Icon
-          name={
-            props.activeChapter === 'fellowship'
-              ? 'number-1-outline'
-              : 'check-filled'
-          ***REMOVED***
-          size={25 * scaleMultiplier***REMOVED***
-          color={
-            props.activeChapter === 'fellowship'
-              ? colors.white
-              : props.primaryColor
-          ***REMOVED***
+          number={3***REMOVED***
+          activeNumber={getActiveNumber()***REMOVED***
+          onPress={props.onPress***REMOVED***
+          downloadProgress={props.downloads[props.lessonID + 'v']***REMOVED***
         />
-        <Text
-          style={[
-            styles.chapterSelectText,
-            {
-              color:
-                props.activeChapter === 'fellowship'
-                  ? colors.white
-                  : props.primaryColor,
-              fontFamily: props.font + '-black'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.translations.play.fellowship***REMOVED***
-        </Text>
-      </TouchableOpacity>
-
-      {/* story button (defined earlier) */***REMOVED***
-      {storyButton***REMOVED***
-
-      {/* training button (defined earlier) */***REMOVED***
-      {trainingButton***REMOVED***
-
-      {/* application button */***REMOVED***
-      <TouchableOpacity
-        style={[
-          styles.chapterSelect,
-          {
-            borderColor: props.primaryColor,
-            backgroundColor:
-              props.activeChapter === 'application'
-                ? props.primaryColor
-                : colors.athens
-          ***REMOVED***
-        ]***REMOVED***
-        onPress={() => props.onPress('application')***REMOVED***
-      >
-        <Icon
-          name={
-            props.lessonType === 'qav' || props.lessonType === 'qv'
-              ? props.activeChapter === 'application'
-                ? 'number-4-outline'
-                : 'number-4-filled'
-              : props.activeChapter === 'application'
-              ? 'number-3-outline'
-              : 'number-3-filled'
-          ***REMOVED***
-          size={25 * scaleMultiplier***REMOVED***
-          color={
-            props.activeChapter === 'application'
-              ? colors.white
-              : props.primaryColor
-          ***REMOVED***
-        />
-        <Text
-          style={[
-            styles.chapterSelectText,
-            {
-              color:
-                props.activeChapter === 'application'
-                  ? colors.white
-                  : props.primaryColor,
-              fontFamily: props.font + '-black'
-            ***REMOVED***
-          ]***REMOVED***
-        >
-          {props.translations.play.application***REMOVED***
-        </Text>
-      </TouchableOpacity>
+      ) : null***REMOVED***
+      <ChapterSeparator />
+      <ChapterButton
+        name='application'
+        mode={props.activeChapter === 'application' ? 'active' : 'inactive'***REMOVED***
+        number={props.lessonType === 'qav' || props.lessonType === 'qv' ? 4 : 3***REMOVED***
+        activeNumber={getActiveNumber()***REMOVED***
+        onPress={props.onPress***REMOVED***
+      />
     </View>
   )
 ***REMOVED***
@@ -387,9 +109,6 @@ const styles = StyleSheet.create({
     height: 55 * scaleMultiplier,
     justifyContent: 'center',
     borderWidth: 2
-  ***REMOVED***,
-  chapterSelectText: {
-    fontSize: 14 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
 
@@ -402,8 +121,6 @@ function mapStateToProps (state) {
   return {
     primaryColor: state.database[activeGroup.language].primaryColor,
     downloads: state.downloads,
-    translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
     isConnected: state.network.isConnected
   ***REMOVED***
 ***REMOVED***

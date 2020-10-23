@@ -1,14 +1,15 @@
 // only here because of wack errors, DON'T DELETE
 import { decode, encode ***REMOVED*** from 'base-64'
 import * as Font from 'expo-font'
-import * as ScreenOrientation from 'expo-screen-orientation'
 import React, { useEffect, useState ***REMOVED*** from 'react'
+import { StatusBar ***REMOVED*** from 'react-native'
 import { Provider ***REMOVED*** from 'react-redux'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
 import LoadingView from './components/LoadingView'
+import { colors ***REMOVED*** from './constants'
+// import { colors ***REMOVED*** from './constants'
 import Root from './navigation/Root'
 import { persistor, store ***REMOVED*** from './redux/store'
-
 if (!global.btoa) {
   global.btoa = encode
 ***REMOVED***
@@ -28,10 +29,11 @@ export default function App () {
     loadFonts()
   ***REMOVED***, [])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
-  // lock orientation to portrait or upside down
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+  // ScreenOrientation.getOrientationLockAsync().then(orientation =>
+  //   console.log(ScreenOrientation.OrientationLock[orientation])
+  // )
 
   // loads up all the fonts for all languages
   async function loadFonts () {
@@ -65,6 +67,10 @@ export default function App () {
     return (
       <Provider store={store***REMOVED***>
         <PersistGate loading={<LoadingView />***REMOVED*** persistor={persistor***REMOVED***>
+          <StatusBar
+            backgroundColor={colors.aquaHaze***REMOVED***
+            barStyle='dark-content'
+          />
           <Root />
         </PersistGate>
       </Provider>

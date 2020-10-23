@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 function KeyLabel (props) {
   // RENDER
 
@@ -13,13 +13,7 @@ function KeyLabel (props) {
         props.style
       ]***REMOVED***
     >
-      <Text
-        style={{
-          fontFamily: props.font + '-medium',
-          fontSize: 22 * scaleMultiplier,
-          color: colors.shark
-        ***REMOVED******REMOVED***
-      >
+      <Text style={Typography(props, 'h2', 'medium', 'center', colors.shark)***REMOVED***>
         {props.number***REMOVED***
       </Text>
     </View>
@@ -41,7 +35,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

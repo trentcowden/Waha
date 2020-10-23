@@ -1,20 +1,31 @@
 //basic imports
 import React from 'react'
-import { StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 function TimeDisplay (props) {
   //function to convert a time in milliseconds to a
   //nicely formatted string (for the scrubber)
   function msToTime (duration) {
     if (duration > 0 && duration <= props.max) {
-      var seconds = Math.floor((duration / 1000) % 60)
-      var minutes = Math.floor((duration / (1000 * 60)) % 60)
+      if (duration >= 3600000) {
+        var seconds = Math.floor((duration / 1000) % 60)
+        var minutes = Math.floor((duration / (1000 * 60)) % 60)
+        var hours = Math.floor((duration / (1000 * 60 * 60)) % 60)
 
-      minutes = minutes < 10 ? '0' + minutes : minutes
-      seconds = seconds < 10 ? '0' + seconds : seconds
+        minutes = minutes < 10 ? '0' + minutes : minutes
+        seconds = seconds < 10 ? '0' + seconds : seconds
 
-      return minutes + ':' + seconds
+        return hours + ':' + minutes + ':' + seconds
+      ***REMOVED*** else {
+        var seconds = Math.floor((duration / 1000) % 60)
+        var minutes = Math.floor((duration / (1000 * 60)) % 60)
+
+        minutes = minutes < 10 ? '0' + minutes : minutes
+        seconds = seconds < 10 ? '0' + seconds : seconds
+
+        return minutes + ':' + seconds
+      ***REMOVED***
     ***REMOVED*** else if (duration > props.max) {
       return msToTime(props.max)
     ***REMOVED*** else {
@@ -24,19 +35,12 @@ function TimeDisplay (props) {
 
   return (
     <View styles={props.style***REMOVED***>
-      <Text style={[styles.timeText, { fontFamily: props.font + '-regular' ***REMOVED***]***REMOVED***>
+      <Text style={Typography(props, 'd', 'regular', 'center', colors.shark)***REMOVED***>
         {msToTime(props.time)***REMOVED***
       </Text>
     </View>
   )
 ***REMOVED***
-
-const styles = StyleSheet.create({
-  timeText: {
-    color: colors.shark,
-    fontSize: 12 * scaleMultiplier
-  ***REMOVED***
-***REMOVED***)
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

@@ -1,12 +1,23 @@
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
+import * as FileSystem from 'expo-file-system'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { AppState, StyleSheet, View ***REMOVED*** from 'react-native'
+import {
+  AppState,
+  Image,
+  LogBox,
+  Platform,
+  StyleSheet,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
+import GroupAvatar from '../components/GroupAvatar'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import SetTabs from '../navigation/SetTabs'
 import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
-import AddEditGroupScreen from '../screens/AddEditGroupScreen'
+import AddEditGroupModal from '../screens/AddEditGroupModal'
+import AddSetScreen from '../screens/AddSetScreen'
 import GameScreen from '../screens/GameScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import KeyOrderSetScreen from '../screens/KeyOrderSetScreen'
@@ -20,7 +31,8 @@ import SecurityScreen from '../screens/SecurityScreen'
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import en from '../translations/en.json'
-import SetsRoot from './SetsRoot'
+
+LogBox.ignoreLogs(['Setting a timer'])
 
 i18n.translations = {
   en
@@ -32,6 +44,8 @@ function MainStack (props) {
     return Date.now()
   ***REMOVED***
 
+  //+APP STATE STUFF
+
   const [appState, setAppState] = useState('')
 
   function handleAppStateChange (change) {
@@ -41,7 +55,7 @@ function MainStack (props) {
   useEffect(() => {
     if (appState === 'inactive' || appState === 'background') {
       // hide screen during multitasking / going home
-      props.navigation.navigate('Splash')
+      if (Platform.OS === 'ios') props.navigation.navigate('Splash')
 
       // store current time for timeout checking later
       props.setTimer(Date.now())
@@ -53,7 +67,7 @@ function MainStack (props) {
           props.navigation.navigate('Game')
         ***REMOVED*** else {
           // check if we are now timed out
-          // if we are, set isTimedOut to true and navigate to game
+          // if we are, set isTimedOut to true and navigate to gamez
           if (
             Date.now() - props.security.timer >
             props.security.timeoutDuration
@@ -62,12 +76,12 @@ function MainStack (props) {
             props.navigation.navigate('Game')
             // otherwise, if we haven't timed out, just go back to normal screen
           ***REMOVED*** else {
-            props.navigation.goBack()
+            if (Platform.OS === 'ios') props.navigation.goBack()
           ***REMOVED***
         ***REMOVED***
         // default: go back from splash to whatever screen we were on before
       ***REMOVED*** else {
-        props.navigation.goBack()
+        if (Platform.OS === 'ios') props.navigation.goBack()
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***, [appState])
@@ -81,8 +95,9 @@ function MainStack (props) {
     return function cleanup () {
       AppState.removeEventListener('change', handleAppStateChange)
     ***REMOVED***
-  ***REMOVED***, [props.security.securityEnabled, props.security.activateOnSwitch])
+  ***REMOVED***, [])
 
+  //- function for fading in/out game screen
   const forFade = ({ current ***REMOVED***) => ({
     cardStyle: {
       opacity: current.progress
@@ -92,7 +107,7 @@ function MainStack (props) {
   return (
     //global navigation options
     <Stack.Navigator
-      initialRouteName={props.security.securityEnabled ? 'Game' : 'SetsRoot'***REMOVED***
+      initialRouteName={props.security.securityEnabled ? 'Game' : 'SetTabs'***REMOVED***
       screenOptions={{
         gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
         gestureResponseDistance: {
@@ -105,11 +120,51 @@ function MainStack (props) {
     >
       {/* Study Set Screen */***REMOVED***
       <Stack.Screen
-        name='SetsRoot'
-        component={SetsRoot***REMOVED***
-        options={{ headerShown: false ***REMOVED******REMOVED***
+        name='SetTabs'
+        component={SetTabs***REMOVED***
+        options={{
+          headerStyle: {
+            backgroundColor: colors.aquaHaze
+          ***REMOVED***,
+          headerTitle: () => (
+            <Image
+              style={styles.headerImage***REMOVED***
+              source={{
+                uri:
+                  FileSystem.documentDirectory +
+                  props.activeGroup.language +
+                  '-header.png'
+              ***REMOVED******REMOVED***
+            />
+          ),
+          headerLeft: props.isRTL
+            ? () => <View></View>
+            : () => (
+                <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  <GroupAvatar
+                    style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
+                    emoji={props.activeGroup.emoji***REMOVED***
+                    size={35***REMOVED***
+                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    isActive={true***REMOVED***
+                  />
+                </View>
+              ),
+          headerRight: props.isRTL
+            ? () => (
+                <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  <GroupAvatar
+                    style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
+                    emoji={props.activeGroup.emoji***REMOVED***
+                    size={35***REMOVED***
+                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    isActive={true***REMOVED***
+                  />
+                </View>
+              )
+            : () => <View></View>
+        ***REMOVED******REMOVED***
       />
-
       {/* Lesson List Screen */***REMOVED***
       <Stack.Screen
         name='LessonList'
@@ -151,18 +206,10 @@ function MainStack (props) {
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='AddGroup'
-        component={AddEditGroupScreen***REMOVED***
+        name='AddSet'
+        component={AddSetScreen***REMOVED***
         options={{
-          gestureEnabled: false,
-          headerTitle: props.translations.add_edit_group.header_add,
-          headerStyle: {
-            backgroundColor: colors.white
-          ***REMOVED***,
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: props.font + '-medium'
-          ***REMOVED***
+          title: ''
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
@@ -186,7 +233,7 @@ function MainStack (props) {
       />
       <Stack.Screen
         name='EditGroup'
-        component={AddEditGroupScreen***REMOVED***
+        component={AddEditGroupModal***REMOVED***
         options={{
           gestureEnabled: false,
           headerTitle: props.translations.add_edit_group.header_edit,
@@ -349,7 +396,6 @@ function MainStack (props) {
         options={{
           gestureEnabled: false,
           headerShown: false,
-          // cardStyleInterpolator: forFade
           animationEnabled: false
         ***REMOVED******REMOVED***
       />
@@ -366,7 +412,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

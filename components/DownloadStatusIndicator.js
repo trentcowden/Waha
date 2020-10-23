@@ -6,7 +6,7 @@ import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // renders the icon on the right side of lesson item that shows the download
 //  status
 function DownloadStatusIndicator (props) {
-  //// RENDER
+  //+ RENDER
 
   // HERE'S WHAT IS GOING ON
   // Has questionsType (i.e. isn't only video) ?
@@ -43,7 +43,7 @@ function DownloadStatusIndicator (props) {
   ***REMOVED***
 
   // if lesson isn't only video
-  return props.lessonType !== 'q' && props.lessonType !== 'c' ? (
+  return props.lessonType !== 'q' && props.lessonType !== '' ? (
     // if lesson has audio source
     props.isDownloaded ? (
       // if lesson is downloaded, show check
@@ -63,12 +63,23 @@ function DownloadStatusIndicator (props) {
         <View style={styles.downloadButtonContainer***REMOVED***>
           <AnimatedCircularProgress
             size={22 * scaleMultiplier***REMOVED***
-            width={5 * scaleMultiplier***REMOVED***
+            width={4 * scaleMultiplier***REMOVED***
             fill={getDownloadPercentage()***REMOVED***
             tintColor={colors.oslo***REMOVED***
             rotation={0***REMOVED***
             backgroundColor={colors.white***REMOVED***
-          />
+            padding={2***REMOVED***
+          >
+            {() => (
+              <TouchableOpacity
+                style={{
+                  width: 5 * scaleMultiplier,
+                  height: 5 * scaleMultiplier,
+                  backgroundColor: colors.shark
+                ***REMOVED******REMOVED***
+              />
+            )***REMOVED***
+          </AnimatedCircularProgress>
         </View>
       ) : (
         // if not downloaded, not downloading, and connected, show download icon
@@ -97,16 +108,17 @@ function DownloadStatusIndicator (props) {
   null
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   downloadButtonContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 20
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   return {

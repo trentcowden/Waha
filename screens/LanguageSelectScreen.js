@@ -3,7 +3,15 @@ import { Audio ***REMOVED*** from 'expo-av'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Alert, SectionList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import {
+  Alert,
+  Dimensions,
+  SafeAreaView,
+  SectionList,
+  StyleSheet,
+  Text,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import LanguageSelectItem from '../components/LanguageSelectItem'
 import Separator from '../components/Separator'
@@ -14,7 +22,7 @@ import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
 import en from '../translations/en.json'
 
 function LanguageSelectScreen (props) {
-  //// STATE
+  //+ STATE
 
   // keeps track of language selected in picker (TODO: change default to user's default language)
   const [selectedLanguage, setSelectedLanguage] = useState('')
@@ -42,7 +50,7 @@ function LanguageSelectScreen (props) {
     ***REMOVED***)
   ***REMOVED***
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
@@ -64,7 +72,7 @@ function LanguageSelectScreen (props) {
       : null
   ***REMOVED***
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   // plays text-to-speech audio file of language
 
@@ -73,7 +81,7 @@ function LanguageSelectScreen (props) {
     setSelectedLanguage(language)
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   // render start button conditionally as the user can't start if they don't have internet
   var startButton = isListEmpty ? (
@@ -111,6 +119,7 @@ function LanguageSelectScreen (props) {
           : i18n.t('addLanguage') + ' '
       ***REMOVED***
       style={{
+        width: Dimensions.get('window').width - 40,
         marginHorizontal: 20,
         height: 68 * scaleMultiplier
       ***REMOVED******REMOVED***
@@ -129,9 +138,20 @@ function LanguageSelectScreen (props) {
 
   var headerText =
     props.route.name === 'LanguageSelect' ? (
-      <View style={{ marginVertical: 40 * scaleMultiplier ***REMOVED******REMOVED***>
-        <Text style={styles.title***REMOVED***> {i18n.t('welcome')***REMOVED***</Text>
-        <Text style={styles.subtitle***REMOVED***> {i18n.t('selectLanguage')***REMOVED***</Text>
+      <View
+        style={{ marginVertical: 40 * scaleMultiplier, paddingHorizontal: 20 ***REMOVED******REMOVED***
+      >
+        <Text
+          style={[
+            Typography(props, 'h1', '', 'center', colors.shark),
+            { fontWeight: 'bold', margin: 5 ***REMOVED***
+          ]***REMOVED***
+        >
+          {i18n.t('welcome')***REMOVED***
+        </Text>
+        <Text style={Typography(props, 'h2', '', 'center', colors.shark)***REMOVED***>
+          {i18n.t('selectLanguage')***REMOVED***
+        </Text>
       </View>
     ) : null
 
@@ -158,8 +178,8 @@ function LanguageSelectScreen (props) {
     return (
       <View
         style={{
-          // height: 40 * scaleMultiplier,
-          aspectRatio: 8.7,
+          height: 40 * scaleMultiplier,
+          // aspectRatio: 8.7,
           width: '100%',
           flexDirection: 'row',
           alignItems: 'center',
@@ -170,7 +190,7 @@ function LanguageSelectScreen (props) {
               : colors.white
         ***REMOVED******REMOVED***
       >
-        <Text style={{ color: colors.chateau, fontSize: 18 * scaleMultiplier ***REMOVED******REMOVED***>
+        <Text style={Typography(props, 'h3', '', 'left', colors.chateau)***REMOVED***>
           {i18n.t(section.i18nName)***REMOVED***
         </Text>
       </View>
@@ -178,7 +198,7 @@ function LanguageSelectScreen (props) {
   ***REMOVED***
 
   return (
-    <View
+    <SafeAreaView
       style={[
         styles.screen,
         {
@@ -260,11 +280,11 @@ function LanguageSelectScreen (props) {
         />
       </View>
       {startButton***REMOVED***
-    </View>
+    </SafeAreaView>
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -272,32 +292,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 40 * scaleMultiplier
-  ***REMOVED***,
-  title: {
-    color: colors.shark,
-    textAlign: 'center',
-    fontSize: 36 * scaleMultiplier,
-    fontWeight: 'bold',
-    margin: 5
-  ***REMOVED***,
-  subtitle: {
-    color: colors.shark,
-    textAlign: 'center',
-    fontSize: 24 * scaleMultiplier
-  ***REMOVED***,
-  buttonTitle: {
-    textAlign: 'center',
-    fontSize: 24 * scaleMultiplier,
-    color: colors.white
-  ***REMOVED***,
-  errorMessage: {
-    textAlign: 'center',
-    fontSize: 16 * scaleMultiplier,
-    color: colors.oslo
   ***REMOVED***
 ***REMOVED***)
 
-////REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   return {

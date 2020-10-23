@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import { changeActiveGroup, deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
-import AvatarImage from './AvatarImage'
+import GroupAvatar from './GroupAvatar'
 // renders a list item for a single group
 function GroupItem (props) {
   // FUNCTIONS
@@ -17,30 +17,36 @@ function GroupItem (props) {
       group => group.name === props.groupName
     )[0]
 
-    // get the currently bookmarked set object
-    var bookmarkSet = props.database[thisGroup.language].sets.filter(
-      set => set.id === thisGroup.setBookmark
-    )[0]
+    if (thisGroup) {
+      // get the currently bookmarked set object
+      var bookmarkSet = props.database[thisGroup.language].sets.filter(
+        set => set.id === thisGroup.setBookmark
+      )[0]
 
-    // get the id of the bookmarked lesson from the bookmarked set
-    var bookmarkSetBookmarkLesson = thisGroup.addedSets.filter(
-      addedSet => addedSet.id === bookmarkSet.id
-    )[0].bookmark
+      // get the id of the bookmarked lesson from the bookmarked set
+      var bookmarkSetBookmarkLesson = thisGroup.addedSets.filter(
+        addedSet => addedSet.id === bookmarkSet.id
+      )[0].bookmark
 
-    // get the bookmrarked lesson object
-    var bookmarkLesson = props.database[thisGroup.language].lessons
-      .filter(lesson => lesson.setid === thisGroup.setBookmark)
-      .filter(lesson => lesson.index === bookmarkSetBookmarkLesson)[0]
+      // get the bookmrarked lesson object
+      var bookmarkLesson = bookmarkSet.lessons.filter(
+        lesson =>
+          getLessonInfo('index', lesson.id) === bookmarkSetBookmarkLesson
+      )[0]
 
-    // if both those exist, return them to display the bookmarks
-    if (bookmarkLesson && bookmarkSet) {
-      return {
-        lesson: bookmarkLesson.subtitle + ' ' + bookmarkLesson.title,
-        set: bookmarkSet.subtitle
+      // if both those exist, return them to display the bookmarks
+      if (bookmarkLesson && bookmarkSet) {
+        return {
+          lesson:
+            getLessonInfo('subtitle', bookmarkLesson.id) +
+            ' ' +
+            bookmarkLesson.title,
+          set: bookmarkSet.subtitle
+        ***REMOVED***
+      ***REMOVED*** else {
+        return ''
       ***REMOVED***
-    ***REMOVED*** else {
-      return ''
-    ***REMOVED***
+    ***REMOVED*** else return ''
   ***REMOVED***
 
   // RENDER
@@ -52,7 +58,22 @@ function GroupItem (props) {
     deleteButton = (
       <TouchableOpacity
         style={styles.minusButtonContainer***REMOVED***
-        onPress={() => props.deleteGroup(props.groupName)***REMOVED***
+        onPress={() => {
+          Alert.alert(
+            props.translations.groups.popups.delete_group_title,
+            props.translations.groups.popups.delete_group_message,
+            [
+              {
+                text: props.translations.general.cancel,
+                onPress: () => {***REMOVED***
+              ***REMOVED***,
+              {
+                text: props.translations.general.ok,
+                onPress: () => props.deleteGroup(props.groupName)
+              ***REMOVED***
+            ]
+          )
+        ***REMOVED******REMOVED***
       >
         <Icon
           name='minus-filled'
@@ -122,7 +143,7 @@ function GroupItem (props) {
               ***REMOVED***
         ***REMOVED***
       >
-        <AvatarImage
+        <GroupAvatar
           style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           size={50 * scaleMultiplier***REMOVED***
           emoji={props.emoji***REMOVED***
@@ -139,26 +160,14 @@ function GroupItem (props) {
           ]***REMOVED***
         >
           <Text
-            style={[
-              styles.groupNameText,
-              {
-                textAlign: props.isRTL ? 'right' : 'left',
-                fontFamily: props.font + '-black'
-              ***REMOVED***
-            ]***REMOVED***
+            style={Typography(props, 'h3', 'black', 'left', colors.shark)***REMOVED***
             numberOfLines={1***REMOVED***
           >
             {props.groupName***REMOVED***
           </Text>
           {getBookmarkText() === '' ? null : (
             <Text
-              style={[
-                styles.bookmarkText,
-                {
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontFamily: props.font + '-regular'
-                ***REMOVED***
-              ]***REMOVED***
+              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().set***REMOVED***
@@ -166,13 +175,7 @@ function GroupItem (props) {
           )***REMOVED***
           {getBookmarkText() === '' ? null : (
             <Text
-              style={[
-                styles.bookmarkText,
-                {
-                  textAlign: props.isRTL ? 'right' : 'left',
-                  fontFamily: props.font + '-regular'
-                ***REMOVED***
-              ]***REMOVED***
+              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().lesson***REMOVED***
@@ -189,8 +192,8 @@ function GroupItem (props) {
 
 const styles = StyleSheet.create({
   groupListItemContainer: {
-    // height: 80 * scaleMultiplier,
-    aspectRatio: 5,
+    height: 80 * scaleMultiplier,
+    // aspectRatio: 5,
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
@@ -220,16 +223,6 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     flexWrap: 'nowrap'
-  ***REMOVED***,
-  groupNameText: {
-    color: colors.shark,
-    fontSize: 18 * scaleMultiplier,
-    textAlign: 'left'
-  ***REMOVED***,
-  bookmarkText: {
-    fontSize: 12 * scaleMultiplier,
-    color: colors.chateau,
-    textAlign: 'left'
   ***REMOVED***
 ***REMOVED***)
 
@@ -245,7 +238,8 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     groups: state.groups,
     activeGroup: activeGroup,
-    font: state.database[activeGroup.language].font
+    font: state.database[activeGroup.language].font,
+    translations: state.database[activeGroup.language].translations
   ***REMOVED***
 ***REMOVED***
 
