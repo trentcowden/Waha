@@ -18,16 +18,16 @@ import WahaItem from '../components/WahaItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function MTScreen (props) {
-  //// STATE
+  //+ STATE
   const [showHowMTsWorkModal, setShowHowMTsWorkModal] = useState(false)
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
   function getNavOptions () {
     return {
       headerRight: props.isRTL
@@ -59,7 +59,7 @@ function MTScreen (props) {
     return installedLanguageInstances
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   // section list render functions
   function renderLanguageInstanceItem (section) {
@@ -115,7 +115,9 @@ function MTScreen (props) {
           <SectionList
             sections={getLanguageAndGroupData()***REMOVED***
             renderItem={({ item, section ***REMOVED***) => {
-              return props.database[section.languageID].hasToolkit ? (
+              return props.database[section.languageID].sets.some(set => {
+                return /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id)
+              ***REMOVED***) ? (
                 renderGroupItem(item)
               ) : (
                 <View
@@ -129,12 +131,13 @@ function MTScreen (props) {
                   ***REMOVED******REMOVED***
                 >
                   <Text
-                    style={{
-                      fontFamily: props.font + '-regular',
-                      fontSize: 14 * scaleMultiplier,
-                      color: colors.chateau,
-                      textAlign: 'center'
-                    ***REMOVED******REMOVED***
+                    style={Typography(
+                      props,
+                      'p',
+                      'regular',
+                      'center',
+                      colors.chateau
+                    )***REMOVED***
                   >
                     {
                       props.translations.mobilization_tools
@@ -202,7 +205,7 @@ function MTScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

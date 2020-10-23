@@ -4,11 +4,11 @@ import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 function GroupListHeaderMT (props) {
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   useEffect(() => {***REMOVED***, [])
 
-  //// RENDER
+  //+ RENDER
 
   // if our active language has a toolkit, show the list of groups
   // var list = props.activeDatabase.hasToolkit ? (
@@ -59,25 +59,13 @@ function GroupListHeaderMT (props) {
       ]***REMOVED***
     >
       <View>
-        <Text
-          style={{
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontFamily: props.font + '-medium',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.chateau
-          ***REMOVED******REMOVED***
-        >
+        <Text style={Typography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***>
           {props.languageName +
             ' ' +
             props.translations.mobilization_tools.groups_label***REMOVED***
         </Text>
         <Text
-          style={{
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontFamily: props.font + '-regular',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.chateau
-          ***REMOVED******REMOVED***
+          style={Typography(props, 'h3', 'regular', 'left', colors.chateau)***REMOVED***
         >
           {
             props.translations.mobilization_tools
@@ -95,7 +83,7 @@ function GroupListHeaderMT (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   languageHeaderContainer: {

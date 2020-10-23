@@ -1,6 +1,6 @@
 import i18n from 'i18n-js'
 import React, { useEffect ***REMOVED*** from 'react'
-import { StyleSheet, View ***REMOVED*** from 'react-native'
+import { SafeAreaView, StyleSheet ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import Onboarding from '../components/Onboarding'
 import { colors ***REMOVED*** from '../constants'
@@ -14,21 +14,21 @@ import { changeActiveGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import en from '../translations/en.json'
 
 function OnboardingSlidesScreen (props) {
-  //// STATE
+  //+ STATE
 
   // translations for language select
   i18n.translations = {
     en
   ***REMOVED***
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     var language = props.route.params.selectedLanguage
     props.addLanguage(language)
   ***REMOVED***, [])
 
-  // //// FUNCTIONS
+  // //+ FUNCTIONS
 
   // tells redux that we're ready to go to loading screen once onboarding is finished
   function finishOnboarding () {
@@ -36,10 +36,10 @@ function OnboardingSlidesScreen (props) {
     props.navigation.navigate('Loading')
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
-    <View style={styles.screen***REMOVED***>
+    <SafeAreaView style={styles.screen***REMOVED***>
       <Onboarding
         sources={[
           require('../assets/onboarding/onboarding1.png'),
@@ -61,11 +61,11 @@ function OnboardingSlidesScreen (props) {
         ]***REMOVED***
         onFinish={finishOnboarding***REMOVED***
       />
-    </View>
+    </SafeAreaView>
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-////REDUX
+//+REDUX
 
 function mapStateToProps (state) {
   return {
@@ -98,95 +98,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(OnboardingSlidesScreen)
-
-// function renderOnboardingSlide (slideList) {
-//   return (
-//     <View style={styles.pageContainer***REMOVED***>
-//       <View style={styles.titleContainer***REMOVED***>
-//         <Text style={styles.title***REMOVED***>{slideList.item.title***REMOVED***</Text>
-//       </View>
-//       <View style={styles.bodyContainer***REMOVED***>
-//         <Text style={styles.body***REMOVED***>{slideList.item.body***REMOVED***</Text>
-//       </View>
-//       <View style={styles.imageContainer***REMOVED***>
-//         <Image source={slideList.item.imageSource***REMOVED*** style={styles.image***REMOVED*** />
-//       </View>
-//     </View>
-//   )
-// ***REMOVED***
-
-/* <View style={styles.onboardingSequence***REMOVED***>
-        <FlatList
-          renderItem={renderOnboardingSlide***REMOVED***
-          data={onboardingData***REMOVED***
-          ref={ref => {
-            setFlatListRef(ref)
-          ***REMOVED******REMOVED***
-          horizontal={true***REMOVED***
-          pagingEnabled={true***REMOVED***
-          snapToAlignment={'start'***REMOVED***
-          snapToInterval={Dimensions.get('window').width - 64***REMOVED***
-          decelerationRate={'fast'***REMOVED***
-          getItemLayout={(data, index) => ({
-            length: Dimensions.get('window').width - 64,
-            offset: Dimensions.get('window').width - 64 * index,
-            index
-          ***REMOVED***)***REMOVED***
-          onViewableItemsChanged={onViewRef.current***REMOVED***
-          viewabilityConfig={viewConfigRef.current***REMOVED***
-          showsHorizontalScrollIndicator={false***REMOVED***
-        />
-        <View style={styles.buttonsContainer***REMOVED***>
-          <View>
-            {pageNumber > 0 ? (
-              <TouchableOpacity onPress={() => incrementPageNumber('prev')***REMOVED***>
-                <Text>{i18n.t('prev')***REMOVED***</Text>
-              </TouchableOpacity>
-            ) : null***REMOVED***
-          </View>
-          <View>
-            <TouchableOpacity
-              onPress={
-                pageNumber !== 3
-                  ? () => incrementPageNumber('next')
-                  : finishOnboarding
-              ***REMOVED***
-            >
-              <Text>
-                {pageNumber !== 3 ? i18n.t('next') : i18n.t('finish')***REMOVED***
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View> */
-
-// // updates scroll when page number updates
-// useEffect(() => {
-//   if (flatListRef) {
-//     flatListRef.scrollToIndex({ index: pageNumber ***REMOVED***)
-//   ***REMOVED***
-// ***REMOVED***, [pageNumber])
-
-// // decrements / increments page number
-// function incrementPageNumber (direction) {
-//   if (direction === 'next') {
-//     setPageNumber(oldPageNumber => (oldPageNumber += 1))
-//   ***REMOVED*** else {
-//     setPageNumber(oldPageNumber => (oldPageNumber -= 1))
-//   ***REMOVED***
-// ***REMOVED***
-
-// // stuff for flatlist
-// const onViewRef = useRef(info => {
-//   console.log(info)
-//   // if (viewableItems) {
-//   //   setPageNumber(viewableItems[0].index)
-//   // ***REMOVED***
-// ***REMOVED***)
-// const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 100 ***REMOVED***)
-
-// // keeps track of current onboarding page number
-// const [pageNumber, setPageNumber] = useState(0)
-
-// // reference to change flatlist
-// const [flatListRef, setFlatListRef] = useState()

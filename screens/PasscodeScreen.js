@@ -1,5 +1,5 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Alert, Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { Alert, Image, Keyboard, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/BackButton'
@@ -10,22 +10,22 @@ import {
   setMTUnlockTimeout
 ***REMOVED*** from '../redux/actions/securityActions'
 import { setToolkitEnabled ***REMOVED*** from '../redux/actions/toolkitEnabledActions'
-
+import { logUnlockMobilizationTools ***REMOVED*** from '../redux/LogEventFunctions'
 function PasscodeScreen (props) {
-  //// STATE
+  //+ STATE
   const [passcode, setPasscode] = useState('')
   const [pinRef, setPinRef] = useState()
   // const [passcodeStatusText, setPasscodeStatusText] = useState('')
   const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
   // const [numAttempts, setNumAttempts] = useState(0)
 
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     props.navigation.setOptions(getNavOptions())
   ***REMOVED***, [])
 
-  //// NAV OPTIONS
+  //+ NAV OPTIONS
   function getNavOptions () {
     return {
       headerRight: props.isRTL
@@ -44,18 +44,20 @@ function PasscodeScreen (props) {
     ***REMOVED***
   ***REMOVED***, [props.mtUnlockAttempts])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   function checkPasscode (passcode) {
     if (passcode === '281820') {
+      Keyboard.dismiss()
+      logUnlockMobilizationTools(props.activeGroup.language)
       setUnlockSuccessModal(true)
       props.setToolkitEnabled(true)
     ***REMOVED*** else {
       props.setMTUnlockAttempts(props.mtUnlockAttempts + 1)
       pinRef.shake().then(() => setPasscode(''))
       Alert.alert(
-        props.translations.passcode.popups.unlock_unsucessful_message,
         props.translations.passcode.popups.unlock_unsucessful_title,
+        props.translations.passcode.popups.unlock_unsucessful_message,
         [
           {
             text: props.translations.general.ok,
@@ -67,19 +69,18 @@ function PasscodeScreen (props) {
     ***REMOVED***
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <View style={styles.screen***REMOVED***>
       <Text
-        style={{
-          color: colors.shark,
-          fontFamily: props.font + '-regular',
-          fontSize: 18,
-          marginVertical: 30 * scaleMultiplier,
-          textAlign: 'center',
-          paddingHorizontal: 20
-        ***REMOVED******REMOVED***
+        style={[
+          Typography(props, 'h3', 'regular', 'center', colors.shark),
+          {
+            marginVertical: 30 * scaleMultiplier,
+            paddingHorizontal: 20
+          ***REMOVED***
+        ]***REMOVED***
       >
         {props.translations.passcode.enter_passcode_text***REMOVED***
       </Text>
@@ -102,14 +103,13 @@ function PasscodeScreen (props) {
         ***REMOVED***
       />
       <Text
-        style={{
-          fontFamily: props.font + '-regular',
-          fontSize: 18 * scaleMultiplier,
-          color: colors.red,
-          marginTop: 30 * scaleMultiplier,
-          paddingHorizontal: 20,
-          textAlign: 'center'
-        ***REMOVED******REMOVED***
+        style={[
+          Typography(props, 'h3', 'regular', 'center', colors.red),
+          {
+            marginTop: 30 * scaleMultiplier,
+            paddingHorizontal: 20
+          ***REMOVED***
+        ]***REMOVED***
       >
         {/* conditional text based on how many attempts user has left / if they're currently locked out */***REMOVED***
         {Date.now() - props.security.mtUnlockTimeout < 0
@@ -152,7 +152,7 @@ function PasscodeScreen (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   screen: {
@@ -162,13 +162,12 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(
     item => item.name === state.activeGroup
   )[0]
-  console.log(state.mtUnlockAttempts)
   return {
     activeDatabase: state.database[activeGroup.language],
     isRTL: state.database[activeGroup.language].isRTL,

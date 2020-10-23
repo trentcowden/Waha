@@ -1,15 +1,10 @@
 import React from 'react'
-import {
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-  View
-***REMOVED*** from 'react-native'
+import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // play, pause, and skip controls for play screen
 function PlayPauseSkip (props) {
-  //// RENDER
+  //+ RENDER
 
   return (
     <View style={styles.playPauseSkipContainer***REMOVED***>
@@ -39,7 +34,7 @@ function PlayPauseSkip (props) {
           color={colors.tuna***REMOVED***
         />
       </TouchableOpacity>
-      {props.isVideoBuffering ? (
+      {/* {props.isVideoBuffering ? (
         <View
           style={{
             width: 101 * scaleMultiplier,
@@ -50,18 +45,18 @@ function PlayPauseSkip (props) {
         >
           <ActivityIndicator size='large' />
         </View>
-      ) : (
-        <TouchableOpacity
-          style={styles.playPauseSkipButton***REMOVED***
-          onPress={props.onPlayPress***REMOVED***
-        >
-          <Icon
-            name={props.isPlaying ? 'pause' : 'play'***REMOVED***
-            size={100 * scaleMultiplier***REMOVED***
-            color={props.primaryColor***REMOVED***
-          />
-        </TouchableOpacity>
-      )***REMOVED***
+      ) : ( */***REMOVED***
+      <TouchableOpacity
+        style={styles.playPauseSkipButton***REMOVED***
+        onPress={props.onPlayPress***REMOVED***
+      >
+        <Icon
+          name={props.isMediaPlaying ? 'pause' : 'play'***REMOVED***
+          size={100 * scaleMultiplier***REMOVED***
+          color={props.primaryColor***REMOVED***
+        />
+      </TouchableOpacity>
+      {/* )***REMOVED*** */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
         onPress={() => props.onSkipPress(10000)***REMOVED***
@@ -76,7 +71,7 @@ function PlayPauseSkip (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   playPauseSkipContainer: {
@@ -92,7 +87,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

@@ -16,12 +16,7 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={{
-            textAlign: props.isRTL ? 'right' : 'left',
-            fontFamily: props.font + '-regular',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.chateau
-          ***REMOVED******REMOVED***
+          style={Typography(props, 'h3', 'regular', 'left', colors.chateau)***REMOVED***
         >
           {props.languageName +
             ' ' +
@@ -43,24 +38,19 @@ function LanguageStorageItem (props) {
           ***REMOVED***
         ]***REMOVED***
       >
-        <Text
-          style={{
-            fontFamily: props.font + '-medium',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.tuna
-          ***REMOVED******REMOVED***
-        >
-          {props.megabytes + ' ' + props.translations.storage.megabyte_label***REMOVED***
+        <Text style={Typography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***>
+          {props.megabytes >= 0
+            ? props.megabytes + ' ' + props.translations.storage.megabyte_label
+            : props.translations.storage.megabyte_label***REMOVED***
         </Text>
         <Text
-          style={{
-            fontFamily: props.font + '-regular',
-            fontSize: 18 * scaleMultiplier,
-            color: colors.tuna,
-            flex: 1,
-            paddingHorizontal: 20,
-            textAlign: props.isRTL ? 'right' : 'left'
-          ***REMOVED******REMOVED***
+          style={[
+            Typography(props, 'h3', 'regular', 'left', colors.tuna),
+            {
+              flex: 1,
+              paddingHorizontal: 20
+            ***REMOVED***
+          ]***REMOVED***
         >
           {props.translations.storage.storage_used_label***REMOVED***
         </Text>
@@ -85,8 +75,8 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   itemContainer: {
     width: '100%',
-    // height: 80 * scaleMultiplier,
-    aspectRatio: 5,
+    height: 80 * scaleMultiplier,
+    // aspectRatio: 5,
     backgroundColor: colors.white,
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -96,15 +86,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    // height: 40 * scaleMultiplier,
-    aspectRatio: 8.7,
+    height: 40 * scaleMultiplier,
+    // aspectRatio: 8.7,
     backgroundColor: colors.aquaHaze,
     paddingHorizontal: 20
-  ***REMOVED***,
-  languageHeaderText: {
-    fontSize: 18 * scaleMultiplier,
-    color: colors.chateau,
-    flex: 1
   ***REMOVED***,
   languageLogo: {
     resizeMode: 'contain',
@@ -120,19 +105,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10
-  ***REMOVED***,
-  storageUsedText: {
-    fontSize: 18,
-    color: colors.tuna
-  ***REMOVED***,
-  mbText: {
-    fontSize: 18,
-    color: colors.chateau,
-    alignSelf: 'center'
-  ***REMOVED***,
-  deleteText: {
-    fontSize: 18,
-    color: colors.red
   ***REMOVED***
 ***REMOVED***)
 

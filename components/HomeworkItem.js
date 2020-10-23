@@ -79,7 +79,7 @@ function HomeworkItem (props) {
 
 const styles = StyleSheet.create({***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

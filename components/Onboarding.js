@@ -1,4 +1,5 @@
 import ViewPager from '@react-native-community/viewpager'
+import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Animated,
@@ -6,9 +7,9 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 ***REMOVED*** from 'react-native'
+import WahaButton from '../components/WahaButton'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
 function Onboarding (props) {
@@ -19,7 +20,10 @@ function Onboarding (props) {
   const [pagerRef, setPagerRef] = useState()
 
   useEffect(() => {
-    if (onboardingPage === props.titles.length - 1) {
+    if (
+      (props.isRTL && onboardingPage === 0) ||
+      (!props.isRTL && onboardingPage === props.titles.length - 1)
+    ) {
       Animated.timing(checkmarkOpacity, {
         toValue: 1,
         duration: 200,
@@ -70,20 +74,14 @@ function Onboarding (props) {
           <Image style={styles.image***REMOVED*** source={props.sources[index]***REMOVED*** />
           <Text
             style={[
-              {
-                fontFamily: props.font ? props.font + '-medium' : null,
-                fontWeight: props.font ? null : 'bold'
-              ***REMOVED***,
-              styles.title
+              Typography(props, 'h2', 'medium', 'center', colors.shark),
+              { fontWeight: props.font ? null : 'bold', marginVertical: 10 ***REMOVED***
             ]***REMOVED***
           >
             {props.titles[index]***REMOVED***
           </Text>
           <Text
-            style={[
-              { fontFamily: props.font ? props.font + '-regular' : null ***REMOVED***,
-              styles.message
-            ]***REMOVED***
+            style={Typography(props, 'h3', 'regular', 'center', colors.chateau)***REMOVED***
           >
             {props.messages[index]***REMOVED***
           </Text>
@@ -102,19 +100,25 @@ function Onboarding (props) {
 
   return (
     <View style={{ flex: 1 ***REMOVED******REMOVED***>
+      {/* <TouchableOpacity
+        style={{ position: 'absolute', marginTop: 20, marginLeft: 10 ***REMOVED******REMOVED***
+        onPress={props.onFinish***REMOVED***
+      >
+        <Icon name='cancel' color={colors.oslo***REMOVED*** size={40 * scaleMultiplier***REMOVED*** />
+      </TouchableOpacity> */***REMOVED***
       <ViewPager
         ref={ref => (ref ? setPagerRef(ref) : null)***REMOVED***
         // showPageIndicator
         style={styles.pager***REMOVED***
-        initialPage={0***REMOVED***
+        initialPage={props.isRTL ? pages.length - 1 : 0***REMOVED***
         onPageSelected={stuff => setOnboardingPage(stuff.nativeEvent.position)***REMOVED***
       >
-        {pages***REMOVED***
+        {props.isRTL ? pages.reverse() : pages***REMOVED***
       </ViewPager>
       <View
         style={{
           width: '100%',
-          height: 80 * scaleMultiplier,
+          // height: 200 * scaleMultiplier,
           flexDirection: 'column',
           alignSelf: 'flex-end',
           alignItems: 'center',
@@ -122,35 +126,58 @@ function Onboarding (props) {
           padding: 20
         ***REMOVED******REMOVED***
       >
+        <WahaButton
+          type='filled'
+          color={
+            onboardingPage === pages.length - 1 ? colors.apple : colors.blue
+          ***REMOVED***
+          onPress={
+            onboardingPage === pages.length - 1
+              ? props.onFinish
+              : () => pagerRef.setPage(onboardingPage + 1)
+          ***REMOVED***
+          label={
+            onboardingPage === pages.length - 1
+              ? i18n.t('start')
+              : i18n.t('next')
+          ***REMOVED***
+          style={{
+            width: Dimensions.get('window').width - 40,
+            marginHorizontal: 20,
+            height: 68 * scaleMultiplier
+          ***REMOVED******REMOVED***
+        />
         <View style={{ flexDirection: 'row', alignItems: 'center' ***REMOVED******REMOVED***>
           {dots***REMOVED***
         </View>
-        <Animated.View
+
+        {/* <Animated.View
           style={{
             position: 'absolute',
             width: '100%',
-            alignItems: 'flex-end',
+            alignItems: props.isRTL ? 'flex-start' : 'flex-end',
             opacity: checkmarkOpacity
           ***REMOVED******REMOVED***
         >
           {/* <TouchableOpacity onPress={props.onFinish***REMOVED***> */***REMOVED***
-          <TouchableOpacity onPress={props.onFinish***REMOVED***>
-            <Icon name='check' size={50***REMOVED*** color={colors.tuna***REMOVED*** />
-          </TouchableOpacity>
-        </Animated.View>
+        {/* <TouchableOpacity onPress={props.onFinish***REMOVED***>
+          <Icon name='check' size={50***REMOVED*** color={colors.tuna***REMOVED*** />
+        </TouchableOpacity> */***REMOVED***
+        {/* </Animated.View> */***REMOVED***
       </View>
       {/* <ViewPager ref={ref => (ref ? console.log(ref.setPage) : null)***REMOVED*** /> */***REMOVED***
     </View>
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   image: {
     resizeMode: 'contain',
     width: Dimensions.get('window').width - 100 * scaleMultiplier,
-    height: Dimensions.get('window').width - 100 * scaleMultiplier
+    height: Dimensions.get('window').width - 100 * scaleMultiplier,
+    borderRadius: 20
   ***REMOVED***,
   pager: {
     flex: 1,
@@ -162,17 +189,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20 * scaleMultiplier
-  ***REMOVED***,
-  title: {
-    textAlign: 'center',
-    fontSize: 24 * scaleMultiplier,
-    color: colors.shark
-  ***REMOVED***,
-  message: {
-    textAlign: 'center',
-    fontSize: 18 * scaleMultiplier,
-    color: colors.oslo,
-    marginVertical: 20
   ***REMOVED***,
   dot: {
     marginHorizontal: 10

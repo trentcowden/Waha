@@ -3,10 +3,11 @@ import React, { useEffect ***REMOVED*** from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import DownloadStatusIndicator from '../components/DownloadStatusIndicator'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import Typography from '../styles/typography'
 function LessonItem (props) {
-  //// CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     // if we've completed the download for this lesson, remove the audio/video
@@ -34,7 +35,7 @@ function LessonItem (props) {
     ***REMOVED***
   ***REMOVED***, [props.downloads])
 
-  //// FUNCTIONS
+  //+ FUNCTIONS
 
   // calls the various modal functions on lessonlistscreen
   function showSaveModal () {
@@ -46,15 +47,13 @@ function LessonItem (props) {
     props.setShowDeleteLessonModal.call()
   ***REMOVED***
 
-  //// RENDER
+  //+ RENDER
 
   return (
     <View
       style={[
         styles.lessonItem,
-        {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
-        ***REMOVED***
+        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
     >
       {/* main touchable area */***REMOVED***
@@ -78,7 +77,7 @@ function LessonItem (props) {
                 : null
             ***REMOVED***
             size={24 * scaleMultiplier***REMOVED***
-            color={props.isComplete ? colors.oslo : props.primaryColor***REMOVED***
+            color={props.isComplete ? colors.chateau : props.primaryColor***REMOVED***
           />
         </View>
 
@@ -88,40 +87,27 @@ function LessonItem (props) {
             flexDirection: 'column',
             justifyContent: 'center',
             flex: 1,
-            marginLeft: props.isRTL
-              ? props.thisLesson.audioSource
-                ? 0
-                : 20
-              : 20,
-            marginRight: props.isRTL
-              ? 20
-              : props.thisLesson.audioSource
-              ? 0
-              : 20
+            marginLeft: props.isRTL ? (props.thisLesson.hasAudio ? 0 : 20) : 20,
+            marginRight: props.isRTL ? 20 : props.thisLesson.hasAudio ? 0 : 20
           ***REMOVED******REMOVED***
         >
           <Text
-            style={{
-              fontSize: 16 * scaleMultiplier,
-              textAlignVertical: 'center',
-              color: props.isComplete ? colors.chateau : colors.shark,
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-medium'
-            ***REMOVED******REMOVED***
+            style={Typography(
+              props,
+              'h4',
+              'medium',
+              'left',
+              props.isComplete ? colors.chateau : colors.shark
+            )***REMOVED***
             numberOfLines={2***REMOVED***
           >
             {props.thisLesson.title***REMOVED***
           </Text>
           <Text
-            style={{
-              fontSize: 12 * scaleMultiplier,
-              color: colors.chateau,
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular'
-            ***REMOVED******REMOVED***
+            style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
             numberOfLines={1***REMOVED***
           >
-            {props.thisLesson.subtitle***REMOVED***
+            {getLessonInfo('subtitle', props.thisLesson.id)***REMOVED***
           </Text>
         </View>
       </TouchableOpacity>
@@ -139,12 +125,12 @@ function LessonItem (props) {
   )
 ***REMOVED***
 
-//// STYLES
+//+ STYLES
 
 const styles = StyleSheet.create({
   lessonItem: {
-    // height: 68 * scaleMultiplier,
-    aspectRatio: 6.1,
+    height: 68 * scaleMultiplier,
+    // aspectRatio: 6.1,
     flexDirection: 'row',
     backgroundColor: colors.aquaHaze,
     flex: 1,
@@ -162,7 +148,7 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-//// REDUX
+//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

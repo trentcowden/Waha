@@ -1,7 +1,9 @@
 import '@firebase/firestore'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
+import i18n from 'i18n-js'
 import { changeActiveGroup, createGroup ***REMOVED*** from '../actions/groupsActions'
+import { logInstallLanguage ***REMOVED*** from '../LogEventFunctions'
 
 export const ADD_LANGUAGE = 'ADD_LANGUAGE'
 export const SET_FETCH_ERROR = 'SET_FETCH_ERROR'
@@ -14,24 +16,39 @@ export const DELETE_LANGUAGE = 'DELETE_LANGUAGE'
 export const ADD_SCRIPT = 'ADD_SCRIPT'
 export const REMOVE_SCRIPT = 'REMOVE_SCRIPT'
 export const SET_CURRENT_FETCH_PROGRESS = 'SET_CURRENT_FETCH_PROGRESS'
+export const SET_TOTAL_TO_DOWNLOAD = 'SET_TOTAL_TO_DOWNLOAD'
 
 // firebase initializing
+
+// PRODUCTION
+// ***REMOVED***
+//   apiKey: 'AIzaSyDTKOeIHXR1QTgqJJOfo6xuEkwd7K6WsPM',
+//   authDomain: 'waha-app-db.firebaseapp.com',
+//   databaseURL: 'https://waha-app-db.firebaseio.com',
+//   projectId: 'waha-app-db',
+//   storageBucket: 'waha-app-db.appspot.com',
+//   messagingSenderId: '831723165603',
+//   appId: '1:831723165603:web:21a474da50b2d0511bec16',
+//   measurementId: 'G-6SYY2T8DX1'
+// ***REMOVED***
+
+// TEST
 ***REMOVED***
-  apiKey: 'AIzaSyDTKOeIHXR1QTgqJJOfo6xuEkwd7K6WsPM',
-  authDomain: 'waha-app-db.firebaseapp.com',
-  databaseURL: 'https://waha-app-db.firebaseio.com',
-  projectId: 'waha-app-db',
-  storageBucket: 'waha-app-db.appspot.com',
-  messagingSenderId: '831723165603',
-  appId: '1:831723165603:web:21a474da50b2d0511bec16',
-  measurementId: 'G-6SYY2T8DX1'
+  apiKey: 'AIzaSyCh_ma-QDdHhaImEyedzAC1JJzy7YrwS8c',
+  authDomain: 'waha-app-test-db.firebaseapp.com',
+  databaseURL: 'https://waha-app-test-db.firebaseio.com',
+  projectId: 'waha-app-test-db',
+  storageBucket: 'waha-app-test-db.appspot.com',
+  messagingSenderId: '346600922120',
+  appId: '1:346600922120:web:a27e4abf05c9a7bf3845bd',
+  measurementId: 'G-LSESVSE9SS'
 ***REMOVED***
+
 firebase.initializeApp(config)
 export const db = firebase.firestore()
 
 const groupNames = {
-  en: 'Group 1',
-  da: 'Group 1 test'
+  en: 'Group 1'
 ***REMOVED***
 
 export function storeData (data, language) {
@@ -70,6 +87,12 @@ export function setCurrentFetchProgress (progress) {
   ***REMOVED***
 ***REMOVED***
 
+export function setTotalToDownload (total) {
+  return {
+    type: SET_TOTAL_TO_DOWNLOAD,
+    total
+  ***REMOVED***
+***REMOVED***
 export function setFetchError (status, language) {
   return {
     type: SET_FETCH_ERROR,
@@ -88,103 +111,98 @@ export function setFetchError (status, language) {
 // 6. header image
 
 export function addLanguage (language) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // set isFetching to true to signal that we're doing stuff and don't want to load the rest of the app
     dispatch(setIsFetching(true))
 
-    //// FIREBASE FETCH
+    //+ FIREBASE FETCH
+
+    var sets = []
+
+    await db
+      .collection('sets')
+      .where('languageID', '==', language)
+      .get()
+      .then(response => {
+        response.forEach(set => {
+          console.log(set.id)
+          sets.push({
+            id: set.id,
+            ...set.data()
+          ***REMOVED***)
+        ***REMOVED***)
+      ***REMOVED***)
 
     // get language object from database and throw it in redux
-    db.collection('languages')
+    await db
+      .collection('languages')
       .doc(language)
       .get()
-      .then(doc => {
+      .then(async doc => {
         if (doc.exists) {
-          dispatch(storeData(doc.data(), language))
-
-          var totalProgressObject = {***REMOVED***
-          var isFirstCallBackObject = {***REMOVED***
-          var totalToDownload = 0
-          var counter = 0
-
-          // callback function
-          function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
-            var allGood = true
-            // every first callback, update the total bytes to download across all downloads
-            if (!isFirstCallBackObject[totalBytesExpectedToWrite]) {
-              isFirstCallBackObject[totalBytesExpectedToWrite] = true
-              totalToDownload += totalBytesExpectedToWrite
-              for (value in isFirstCallBackObject) {
-                if (!isFirstCallBackObject[value]) {
-                  allGood = false
-                ***REMOVED***
-              ***REMOVED***
-            ***REMOVED***
-
-            if (allGood) {
-              // update fetch progress every 100 callbacks (for performance) or if we're just about done
-              if (
-                counter % 100 == 0 ||
-                totalBytesWritten / totalBytesExpectedToWrite > 0.99
-              ) {
-                // update progress specific to this download
-                totalProgressObject[
-                  totalBytesExpectedToWrite
-                ] = totalBytesWritten
-
-                // re add up the total progress each time
-                var totalProgress = 0
-                for (download in totalProgressObject) {
-                  totalProgress += totalProgressObject[download]
-                ***REMOVED***
-                if (totalToDownload != 0) {
-                  dispatch(
-                    setCurrentFetchProgress(totalProgress / totalToDownload)
-                  )
-                ***REMOVED***
-              ***REMOVED***
-              counter += 1
-            ***REMOVED***
-          ***REMOVED***
-
-          // downloads a file from url into local storage
-          function downloadSomething (source, fileName) {
-            var downloadResumable = FileSystem.createDownloadResumable(
-              doc.data().sources[source],
-              FileSystem.documentDirectory + language + '-' + fileName,
-              {***REMOVED***,
-              callback
+          dispatch(
+            storeData(
+              {
+                sets: sets,
+                ...doc.data()
+              ***REMOVED***,
+              language
             )
-            return downloadResumable.downloadAsync().catch(error => {
-              throw error
-            ***REMOVED***)
+          )
+          dispatch(setTotalToDownload(doc.data().files.length))
+
+          async function asyncForEach (array, callback) {
+            for (let index = 0; index < array.length; index++) {
+              await callback(array[index], index, array)
+            ***REMOVED***
           ***REMOVED***
 
-          // downloads everything we need
-          function downloadEverything () {
-            return Promise.all([
-              Object.keys(doc.data().sources).map(source => {
-                if (source === 'header')
-                  return downloadSomething(source, source + '.png')
-                else return downloadSomething(source, source + '.mp3')
-              ***REMOVED***)
-            ])
-          ***REMOVED***
+          var totalDownloaded = 0
 
-          // actually download everything, then create a group, set the active group to the
-          // new group, and finally set isfetching to false so we can go into the app
-          downloadEverything()
-            .then(() => {
+          const downloadStuff = async () => {
+            try {
+              await asyncForEach(
+                doc.data().files,
+                async (fileName, index, files) => {
+                  if (fileName.includes('header')) {
+                    await FileSystem.downloadAsync(
+                      `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+                      FileSystem.documentDirectory +
+                        language +
+                        '-' +
+                        fileName.slice(0, -3) +
+                        '.png'
+                    )
+                  ***REMOVED*** else {
+                    await FileSystem.downloadAsync(
+                      `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+                      FileSystem.documentDirectory +
+                        language +
+                        '-' +
+                        fileName.slice(0, -3) +
+                        '.mp3'
+                    ).catch(error => {
+                      console.log(error)
+                      setFetchError(true, language)
+                    ***REMOVED***)
+                  ***REMOVED***
+                  totalDownloaded += 1
+                  dispatch(setCurrentFetchProgress(totalDownloaded))
+                ***REMOVED***
+              )
+              logInstallLanguage(language, i18n.locale)
               dispatch(createGroup(groupNames[language], language, 'default'))
               dispatch(changeActiveGroup(groupNames[language]))
               dispatch(setIsFetching(false))
               dispatch(setFinishedInitialFetch(true))
               dispatch(setCurrentFetchProgress(0))
-            ***REMOVED***)
-            .catch(error => {
+            ***REMOVED*** catch (error) {
               console.log(error)
-              dispatch(setFetchError(true, language))
-            ***REMOVED***)
+              setFetchError(true, language)
+            ***REMOVED***
+          ***REMOVED***
+
+          downloadStuff()
         ***REMOVED*** else {
           dispatch(setFetchError(true, language))
         ***REMOVED***
