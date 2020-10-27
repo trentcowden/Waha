@@ -395,15 +395,15 @@ function LessonListScreen (props) {
       <MessageModal
         isVisible={showSetCompleteModal***REMOVED***
         hideModal={() => setShowSetCompleteModal(false)***REMOVED***
-        title={props.translations.general.popups.new_story_set_unlocked_title***REMOVED***
-        body={props.translations.general.popups.new_story_set_unlocked_message***REMOVED***
+        title={props.translations.general.popups.set_complete_title***REMOVED***
+        body={props.translations.general.popups.set_complete_message***REMOVED***
         confirmText={props.translations.general.got_it***REMOVED***
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
         ***REMOVED******REMOVED***
       >
         <Image
-          source={require('../assets/gifs/new_set.gif')***REMOVED***
+          source={require('../assets/gifs/set_complete.gif')***REMOVED***
           style={{
             height: 200 * scaleMultiplier,
             margin: 20,
