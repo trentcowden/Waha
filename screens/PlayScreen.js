@@ -10,6 +10,7 @@ import {
   Alert,
   Animated,
   Dimensions,
+  Image,
   StyleSheet,
   Text,
   View
@@ -19,12 +20,13 @@ import AlbumArtSwiper from '../components/AlbumArtSwiper'
 import BackButton from '../components/BackButton'
 import BookView from '../components/BookView'
 import ChapterSelect from '../components/ChapterSelect'
+import MessageModal from '../components/MessageModal'
 import PlayPauseSkip from '../components/PlayPauseSkip'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
 import ShareModal from '../components/ShareModal'
 import VideoPlayer from '../components/VideoPlayer'
-import { colors, getLessonInfo ***REMOVED*** from '../constants'
+import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   downloadLesson,
   downloadVideo,
@@ -71,6 +73,8 @@ function PlayScreen (props) {
 
   //+ MISCELLANEOUS STATE
 
+  const [thisSetProgress, setThisSetProgress] = useState([])
+
   // opacity/z-index of play button that pops up on play/pause
   const [playOpacity, setPlayOpacity] = useState(new Animated.Value(0))
   const [animationZIndex, setAnimationZIndex] = useState(0)
@@ -80,6 +84,7 @@ function PlayScreen (props) {
 
   // share modal
   const [showShareLessonModal, setShowShareLessonModal] = useState(false)
+  const [showSetCompleteModal, setShowSetCompleteModal] = useState(false)
 
   // keeps track of the current screen orientation for fullscreen videos
   const [fullscreenStatus, setFullscreenStatus] = useState(
@@ -143,6 +148,18 @@ function PlayScreen (props) {
     ***REMOVED***
   ***REMOVED***, [fullscreenStatus])
 
+  useEffect(() => {
+    setThisSetProgress(
+      props.activeGroup.addedSets.filter(
+        set => set.id === props.route.params.thisSet.id
+      )[0].progress
+    )
+  ***REMOVED***, [props.activeGroup.addedSets])
+
+  useEffect(() => {
+    props.navigation.setOptions(getNavOptions())
+  ***REMOVED***, [thisSetProgress])
+
   // keeps the screen always awake on this screen
   useKeepAwake()
 
@@ -157,7 +174,7 @@ function PlayScreen (props) {
             <PlayScreenHeaderButtons
               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
               completeOnPress={changeCompleteStatus***REMOVED***
-              completeCondition={props.route.params.thisSetProgress.includes(
+              completeCondition={thisSetProgress.includes(
                 getLessonInfo('index', props.route.params.thisLesson.id)
               )***REMOVED***
             />
@@ -167,7 +184,7 @@ function PlayScreen (props) {
             <PlayScreenHeaderButtons
               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
               completeOnPress={changeCompleteStatus***REMOVED***
-              completeCondition={props.route.params.thisSetProgress.includes(
+              completeCondition={thisSetProgress.includes(
                 getLessonInfo('index', props.route.params.thisLesson.id)
               )***REMOVED***
             />
@@ -179,9 +196,6 @@ function PlayScreen (props) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    //set nav options
-    props.navigation.setOptions(getNavOptions())
-
     // set some audio settings
     Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
@@ -223,11 +237,13 @@ function PlayScreen (props) {
     ***REMOVED***
   ***REMOVED***, [])
 
-  //+ LOADING FUNCTIONS
+  // useEffect(() => {
+  //   //set nav options
+  //   console.log('setting nav options')
 
-  useEffect(() => {
-    console.log(trainingSource)
-  ***REMOVED***, [trainingSource])
+  // ***REMOVED***, [props.activeGroup])
+
+  //+ LOADING FUNCTIONS
 
   //- sets the sources for all the chapters based on lesson type and whether
   //-   various chapters are downloaded or not
@@ -543,7 +559,7 @@ function PlayScreen (props) {
             break
           case 'a':
             if (
-              !props.route.params.thisSetProgress.includes(
+              !thisSetProgress.includes(
                 getLessonInfo('index', props.route.params.thisLesson.id)
               )
             ) {
@@ -552,7 +568,7 @@ function PlayScreen (props) {
         ***REMOVED***
       ***REMOVED*** else if (
         activeChapter === 'application' &&
-        !props.route.params.thisSetProgress.includes(
+        !thisSetProgress.includes(
           getLessonInfo('index', props.route.params.thisLesson.id)
         )
       ) {
@@ -614,22 +630,40 @@ function PlayScreen (props) {
       getLessonInfo('index', props.route.params.thisLesson.id)
     )
 
-    if (
-      !props.route.params.thisSetProgress.includes(
-        getLessonInfo('index', props.route.params.thisLesson.id)
-      )
-    ) {
-      Alert.alert(
-        props.translations.play.popups.marked_as_complete_title,
-        props.translations.play.popups.marked_as_complete_message,
-        [
-          {
-            text: props.translations.general.ok,
-            onPress: () => props.navigation.goBack()
-          ***REMOVED***
-        ]
-      )
+    props.navigation.setOptions(getNavOptions())
+
+    if (checkForFullyComplete()) {
+      setShowSetCompleteModal(true)
+    ***REMOVED*** else {
+      if (
+        !thisSetProgress.includes(
+          getLessonInfo('index', props.route.params.thisLesson.id)
+        )
+      ) {
+        Alert.alert(
+          props.translations.play.popups.marked_as_complete_title,
+          props.translations.play.popups.marked_as_complete_message,
+          [
+            {
+              text: props.translations.general.ok,
+              onPress: () => props.navigation.goBack()
+            ***REMOVED***
+          ]
+        )
+      ***REMOVED***
     ***REMOVED***
+  ***REMOVED***
+
+  function checkForFullyComplete () {
+    if (
+      props.activeGroup.addedSets.filter(
+        set => set.id === props.route.params.thisSet.id
+      )[0].progress.length /
+        (props.route.params.thisSet.lessons.length - 1) ===
+      1
+    ) {
+      return true
+    ***REMOVED*** else return false
   ***REMOVED***
 
   //+ RENDER
@@ -684,7 +718,7 @@ function PlayScreen (props) {
             changeChapter={changeChapter***REMOVED***
             isMediaLoaded={isMediaLoaded***REMOVED***
             lessonType={props.route.params.lessonType***REMOVED***
-            isComplete={props.route.params.thisSetProgress.includes(
+            isComplete={thisSetProgress.includes(
               getLessonInfo('index', props.route.params.thisLesson.id)
             )***REMOVED***
             changeCompleteStatus={changeCompleteStatus***REMOVED***
@@ -751,6 +785,27 @@ function PlayScreen (props) {
         lessonType={props.route.params.lessonType***REMOVED***
         set={props.route.params.thisSet***REMOVED***
       />
+      <MessageModal
+        isVisible={showSetCompleteModal***REMOVED***
+        hideModal={() => setShowSetCompleteModal(false)***REMOVED***
+        title={props.translations.general.popups.new_story_set_unlocked_title***REMOVED***
+        body={props.translations.general.popups.new_story_set_unlocked_message***REMOVED***
+        confirmText={props.translations.general.got_it***REMOVED***
+        confirmOnPress={() => {
+          setShowSetCompleteModal(false)
+          props.navigation.goBack()
+        ***REMOVED******REMOVED***
+      >
+        <Image
+          source={require('../assets/gifs/new_set.gif')***REMOVED***
+          style={{
+            height: 200 * scaleMultiplier,
+            margin: 20,
+            // padding: 20,
+            resizeMode: 'contain'
+          ***REMOVED******REMOVED***
+        />
+      </MessageModal>
     </View>
   )
 ***REMOVED***
