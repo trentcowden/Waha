@@ -1,9 +1,9 @@
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { ActivityIndicator, Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../constants'
 import { addLanguage, setFetchError ***REMOVED*** from '../redux/actions/databaseActions'
 // translations import
 import en from '../translations/en.json'
@@ -43,7 +43,7 @@ function LoadingScreen (props) {
     </View>
   ) : (
     <View style={styles.screen***REMOVED***>
-      <View style={{ flex: 2, justifyContent: 'flex-end' ***REMOVED******REMOVED***>
+      {/* <View style={{ flex: 2, justifyContent: 'flex-end' ***REMOVED******REMOVED***>
         <Image
           style={{
             resizeMode: 'center',
@@ -53,8 +53,16 @@ function LoadingScreen (props) {
           ***REMOVED******REMOVED***
           source={require('../assets/icon_transparent.png')***REMOVED***
         />
-      </View>
-      <View style={{ flex: 1, paddingHorizontal: 20 ***REMOVED******REMOVED***>
+      </View> */***REMOVED***
+      <View style={{ flex: 1 ***REMOVED******REMOVED*** />
+      <View
+        style={{
+          flex: 2,
+          paddingHorizontal: 20,
+          alignItems: 'center',
+          justifyContent: 'center'
+        ***REMOVED******REMOVED***
+      >
         <ActivityIndicator
           size='large'
           color={colors.shark***REMOVED***
@@ -78,7 +86,14 @@ function LoadingScreen (props) {
           borderColor={colors.shark***REMOVED***
         />
       </View> */***REMOVED***
-      <View style={{ paddingHorizontal: 20, flex: 1 ***REMOVED******REMOVED***>
+      <View
+        style={{
+          paddingHorizontal: 20,
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
+        ***REMOVED******REMOVED***
+      >
         <Text style={Typography(props, 'h3', '', 'center', colors.chateau)***REMOVED***>
           {i18n.t('protip' + proTipNum)***REMOVED***
         </Text>

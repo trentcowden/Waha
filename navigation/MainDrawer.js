@@ -5,7 +5,8 @@ import React, { useEffect ***REMOVED*** from 'react'
 import { connect ***REMOVED*** from 'react-redux'
 import WahaDrawer from '../components/WahaDrawer'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import { db, storeData ***REMOVED*** from '../redux/actions/databaseActions'
+import db from '../firebase/db'
+import { storeData ***REMOVED*** from '../redux/actions/databaseActions'
 import {
   removeDownload,
   resumeDownload
