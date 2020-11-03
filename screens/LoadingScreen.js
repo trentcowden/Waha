@@ -5,8 +5,10 @@ import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors ***REMOVED*** from '../constants'
 import { addLanguage, setFetchError ***REMOVED*** from '../redux/actions/databaseActions'
+import ar from '../translations/ar.json'
 // translations import
 import en from '../translations/en.json'
+
 function LoadingScreen (props) {
   const [proTipNum, setProTipNum] = useState(1)
 
@@ -17,7 +19,8 @@ function LoadingScreen (props) {
   ***REMOVED***, [proTipNum])
 
   i18n.translations = {
-    en
+    en,
+    ar
   ***REMOVED***
 
   function retry () {
