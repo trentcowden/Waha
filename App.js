@@ -49,15 +49,6 @@ export default function App () {
     await Font.loadAsync({
       'roboto-regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf')
     ***REMOVED***)
-    await Font.loadAsync({
-      'merriweather-black': require('./assets/fonts/Merriweather/Merriweather-Black.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'merriweather-medium': require('./assets/fonts/Merriweather/Merriweather-Bold.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'merriweather-regular': require('./assets/fonts/Merriweather/Merriweather-Regular.ttf')
-    ***REMOVED***)
     setFontsLoaded(true)
   ***REMOVED***
 
