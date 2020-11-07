@@ -1,4 +1,3 @@
-// only here because of wack errors, DON'T DELETE
 import { decode, encode ***REMOVED*** from 'base-64'
 import * as Font from 'expo-font'
 import React, { useEffect, useState ***REMOVED*** from 'react'
@@ -7,9 +6,10 @@ import { Provider ***REMOVED*** from 'react-redux'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
 import LoadingView from './components/LoadingView'
 import { colors ***REMOVED*** from './constants'
-// import { colors ***REMOVED*** from './constants'
 import Root from './navigation/Root'
 import { persistor, store ***REMOVED*** from './redux/store'
+
+// only here because of wack errors, DON'T DELETE
 if (!global.btoa) {
   global.btoa = encode
 ***REMOVED***
@@ -18,12 +18,12 @@ if (!global.atob) {
 ***REMOVED***
 
 export default function App () {
-  /// STATE
+  //+ STATE
 
   // keeps track of whether fonts are loaded
   const [fontsLoaded, setFontsLoaded] = useState(false)
 
-  /// / CONSTRUCTOR
+  //+ CONSTRUCTOR
 
   useEffect(() => {
     loadFonts()
@@ -31,11 +31,8 @@ export default function App () {
 
   //+ FUNCTIONS
 
-  // ScreenOrientation.getOrientationLockAsync().then(orientation =>
-  //   console.log(ScreenOrientation.OrientationLock[orientation])
-  // )
-
   // loads up all the fonts for all languages
+  //! flag: update on new language family
   async function loadFonts () {
     await Font.loadAsync({
       waha: require('./assets/fonts/waha.ttf')
@@ -52,7 +49,7 @@ export default function App () {
     setFontsLoaded(true)
   ***REMOVED***
 
-  /// / RENDER
+  //+ RENDER
 
   if (fontsLoaded) {
     return (

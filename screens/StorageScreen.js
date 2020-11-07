@@ -9,9 +9,9 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import BackButton from '../components/BackButton'
-import LanguageStorageItem from '../components/LanguageStorageItem'
-import WahaButton from '../components/WahaButton'
+import LanguageStorageItem from '../components/list-items/LanguageStorageItem'
+import BackButton from '../components/standard/BackButton'
+import WahaButton from '../components/standard/WahaButton'
 import { colors ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 

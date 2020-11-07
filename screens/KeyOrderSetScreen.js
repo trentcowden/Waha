@@ -8,10 +8,10 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import BackButton from '../components/BackButton'
-import KeyLabels from '../components/KeyLabels'
-import Piano from '../components/Piano'
-import WahaButton from '../components/WahaButton'
+import KeyLabelGroup from '../components/piano-stuff/KeyLabelGroup'
+import Piano from '../components/piano-stuff/Piano'
+import BackButton from '../components/standard/BackButton'
+import WahaButton from '../components/standard/WahaButton'
 import { colors ***REMOVED*** from '../constants'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
 function KeyOrderSetScreen (props) {
@@ -177,7 +177,7 @@ function KeyOrderSetScreen (props) {
             {instructionText***REMOVED***
           </Text>
         </View>
-        <KeyLabels keyOrder={keyOrder***REMOVED*** />
+        <KeyLabelGroup keyOrder={keyOrder***REMOVED*** />
         <WahaButton
           type='outline'
           onPress={() => setKeyOrder('')***REMOVED***

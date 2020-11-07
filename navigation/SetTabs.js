@@ -3,12 +3,14 @@ import React from 'react'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import SetScreen from '../screens/SetScreen'
+
 const Tab = createMaterialTopTabNavigator()
 
 function SetTabs (props) {
-  var toolkit = props.activeGroup.showToolkit ? (
+  var MobilizationToolsScreen = props.activeGroup
+    .shouldShowMobilizationToolsTab ? (
     <Tab.Screen
-      name='Mobilization Tools'
+      name='MobilizationTools'
       component={SetScreen***REMOVED***
       options={{
         title: props.translations.sets.mobilization_tools_sets_tab_label
@@ -16,31 +18,56 @@ function SetTabs (props) {
     />
   ) : null
 
-  var bookmarkSetCategory = getSetInfo(
-    'category',
-    props.activeDatabase.sets.filter(
-      set => set.id === props.activeGroup.setBookmark
-    )[0].id
+  var FoundationalScreen = (
+    <Tab.Screen
+      name='Foundational'
+      component={SetScreen***REMOVED***
+      options={{
+        title: props.translations.sets.foundational_story_sets_tab_label
+      ***REMOVED******REMOVED***
+    />
   )
-  var initialRouteName
 
-  switch (bookmarkSetCategory) {
-    case 'core':
-      initialRouteName = 'Core'
-      break
-    case 'topical':
-      initialRouteName = 'Topical'
-      break
-    case 'mt':
-      initialRouteName = 'Mobilization Tools'
-      break
-    default:
-      initialRouteName = 'Core'
+  var TopicalScreen = (
+    <Tab.Screen
+      name='Topical'
+      component={SetScreen***REMOVED***
+      options={{
+        title: props.translations.sets.topical_sets_tab_label
+      ***REMOVED******REMOVED***
+    />
+  )
+
+  // get the initial tab, which is whatever the category of the bookmarked set
+  //  is
+  function getInitialRouteName () {
+    var bookmarkSetCategory = getSetInfo(
+      'category',
+      props.activeDatabase.sets.filter(
+        set => set.id === props.activeGroup.setBookmark
+      )[0].id
+    )
+
+    var initialRouteName
+
+    switch (bookmarkSetCategory) {
+      case 'foundational':
+        return 'Foundational'
+        break
+      case 'topical':
+        return 'Topical'
+        break
+      case 'mobilization tools':
+        return 'MobilizationTools'
+        break
+      default:
+        return 'Foundational'
+    ***REMOVED***
   ***REMOVED***
 
-  var tabs = props.isRTL ? (
+  return (
     <Tab.Navigator
-      initialRouteName={initialRouteName***REMOVED***
+      initialRouteName={getInitialRouteName()***REMOVED***
       swipeEnabled={true***REMOVED***
       tabBarOptions={{
         style: {
@@ -58,62 +85,11 @@ function SetTabs (props) {
         ***REMOVED***
       ***REMOVED******REMOVED***
     >
-      {toolkit***REMOVED***
-      <Tab.Screen
-        name='Topical'
-        component={SetScreen***REMOVED***
-        options={{
-          title: props.translations.sets.topical_sets_tab_label
-        ***REMOVED******REMOVED***
-      />
-      <Tab.Screen
-        name='Core'
-        component={SetScreen***REMOVED***
-        options={{
-          title: props.translations.sets.foundational_story_sets_tab_label
-        ***REMOVED******REMOVED***
-      />
-    </Tab.Navigator>
-  ) : (
-    <Tab.Navigator
-      initialRouteName={initialRouteName***REMOVED***
-      swipeEnabled={true***REMOVED***
-      tabBarOptions={{
-        style: {
-          backgroundColor: colors.aquaHaze
-        ***REMOVED***,
-        labelStyle: {
-          fontSize: 14 * scaleMultiplier,
-          fontFamily: props.font + '-medium',
-          textTransform: 'none'
-        ***REMOVED***,
-        activeTintColor: props.primaryColor,
-        inactiveTintColor: colors.chateau,
-        indicatorStyle: {
-          backgroundColor: props.primaryColor
-        ***REMOVED***
-      ***REMOVED******REMOVED***
-    >
-      <Tab.Screen
-        name='Core'
-        component={SetScreen***REMOVED***
-        options={{
-          title: props.translations.sets.foundational_story_sets_tab_label
-        ***REMOVED******REMOVED***
-      />
-
-      <Tab.Screen
-        name='Topical'
-        component={SetScreen***REMOVED***
-        options={{
-          title: props.translations.sets.topical_sets_tab_label
-        ***REMOVED******REMOVED***
-      />
-      {toolkit***REMOVED***
+      {props.isRTL ? MobilizationToolsScreen : FoundationalScreen***REMOVED***
+      {TopicalScreen***REMOVED***
+      {props.isRTL ? FoundationalScreen : MobilizationToolsScreen***REMOVED***
     </Tab.Navigator>
   )
-
-  return tabs
 ***REMOVED***
 
 //+ REDUX

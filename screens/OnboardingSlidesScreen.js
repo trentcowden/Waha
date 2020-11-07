@@ -2,7 +2,7 @@ import i18n from 'i18n-js'
 import React, { useEffect ***REMOVED*** from 'react'
 import { SafeAreaView, StyleSheet ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import Onboarding from '../components/Onboarding'
+import OnboardingSwiper from '../components/OnboardingSwiper'
 import { colors ***REMOVED*** from '../constants'
 import {
   addLanguage,
@@ -42,7 +42,7 @@ function OnboardingSlidesScreen (props) {
 
   return (
     <SafeAreaView style={styles.screen***REMOVED***>
-      <Onboarding
+      <OnboardingSwiper
         sources={[
           require('../assets/onboarding/onboarding1.png'),
           require('../assets/onboarding/onboarding2.png'),

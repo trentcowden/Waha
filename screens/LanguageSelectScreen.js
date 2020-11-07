@@ -13,11 +13,12 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import LanguageSelectItem from '../components/LanguageSelectItem'
-import Separator from '../components/Separator'
-import WahaButton from '../components/WahaButton'
+import LanguageSelectItem from '../components/list-items/LanguageSelectItem'
+import Separator from '../components/standard/Separator'
+import WahaButton from '../components/standard/WahaButton'
 import { colors, languages, languageT2S, scaleMultiplier ***REMOVED*** from '../constants'
 import { addLanguage ***REMOVED*** from '../redux/actions/databaseActions'
+import Typography from '../styles/typography'
 import ar from '../translations/ar.json'
 // translations import
 import en from '../translations/en.json'
