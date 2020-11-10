@@ -60,7 +60,7 @@ function WahaDrawer (props) {
           />
           <DrawerItem
             iconName='security'
-            text='Security Mode'
+            text={props.translations.security.header***REMOVED***
             onPress={() => props.navigation.navigate('Security')***REMOVED***
           />
           <DrawerItem
