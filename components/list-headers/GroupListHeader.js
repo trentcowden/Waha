@@ -113,7 +113,16 @@ function GroupListHeader (props) {
       {trashButton***REMOVED***
       <Text
         style={[
-          Typography(props, 'h3', 'regular', 'left', colors.chateau),
+          Typography(
+            {
+              font: props.database[props.languageID].font,
+              isRTL: props.isRTL
+            ***REMOVED***,
+            'h3',
+            'regular',
+            'left',
+            colors.chateau
+          ),
           {
             flex: 1,
             marginLeft: props.isRTL ? 0 : props.isEditing ? 0 : 20,

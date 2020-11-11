@@ -50,7 +50,7 @@ function ChapterSelect (props) {
           !props.isDownloaded
             ? 'disabled'
             : props.downloads[props.lessonID] &&
-              props.downloads[props.lessonID] < 1
+              props.downloads[props.lessonID].progress < 1
             ? 'downloading'
             : props.activeChapter === 'story'
             ? 'active'
@@ -59,7 +59,11 @@ function ChapterSelect (props) {
         number={2***REMOVED***
         activeNumber={getActiveNumber()***REMOVED***
         onPress={props.onPress***REMOVED***
-        downloadProgress={props.downloads[props.lessonID]***REMOVED***
+        downloadProgress={
+          props.downloads[props.lessonID]
+            ? props.downloads[props.lessonID].progress
+            : null
+        ***REMOVED***
       />
       {props.lessonType === 'qav' || props.lessonType === 'qv' ? (
         <ChapterSeparator />
@@ -71,7 +75,7 @@ function ChapterSelect (props) {
             !props.isConnected && !props.isDownloaded
               ? 'disabled'
               : props.downloads[props.lessonID + 'v'] &&
-                props.downloads[props.lessonID + 'v'] < 1
+                props.downloads[props.lessonID + 'v'].progress < 1
               ? 'downloading'
               : props.activeChapter === 'training'
               ? 'active'
@@ -80,7 +84,11 @@ function ChapterSelect (props) {
           number={3***REMOVED***
           activeNumber={getActiveNumber()***REMOVED***
           onPress={props.onPress***REMOVED***
-          downloadProgress={props.downloads[props.lessonID + 'v']***REMOVED***
+          downloadProgress={
+            props.downloads[props.lessonID + 'v']
+              ? props.downloads[props.lessonID + 'v'].progress
+              : null
+          ***REMOVED***
         />
       ) : null***REMOVED***
       <ChapterSeparator />

@@ -16,6 +16,14 @@ export const ADD_SCRIPT = 'ADD_SCRIPT'
 export const REMOVE_SCRIPT = 'REMOVE_SCRIPT'
 export const SET_CURRENT_FETCH_PROGRESS = 'SET_CURRENT_FETCH_PROGRESS'
 export const SET_TOTAL_TO_DOWNLOAD = 'SET_TOTAL_TO_DOWNLOAD'
+export const STORE_DOWNLOAD = 'STORE_DOWNLOAD'
+
+export function storeDownload (downloadResumable) {
+  return {
+    type: STORE_DOWNLOAD,
+    downloadResumable
+  ***REMOVED***
+***REMOVED***
 
 export function storeData (data, language) {
   return {
@@ -67,6 +75,10 @@ export function setFetchError (status, language) {
   ***REMOVED***
 ***REMOVED***
 
+var shouldDownload = true
+
+setTimeout(() => (shouldDownload = false), 3000)
+
 // thunk function for adding a new language
 export function addLanguage (language) {
   return async (dispatch, getState) => {
@@ -91,6 +103,7 @@ export function addLanguage (language) {
           ***REMOVED***)
         ***REMOVED***)
       ***REMOVED***)
+      .catch(error => dispatch(setFetchError(true, language)))
 
     //- then get language object from database and throw all of it in redux
     await db
@@ -133,7 +146,7 @@ export function addLanguage (language) {
                 doc.data().files,
                 async (fileName, index, files) => {
                   if (fileName.includes('header')) {
-                    await FileSystem.downloadAsync(
+                    var download = FileSystem.createDownloadResumable(
                       `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
                       FileSystem.documentDirectory +
                         language +
@@ -141,19 +154,52 @@ export function addLanguage (language) {
                         fileName.slice(0, -3) +
                         '.png'
                     )
+
+                    // dispatch(storeDownload(download))
+
+                    // console.log(shouldDownload)
+
+                    await download
+                      .downloadAsync()
+                      .catch(error => dispatch(setFetchError(true, language)))
+
+                    // await FileSystem.downloadAsync(
+                    //   `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+                    //   FileSystem.documentDirectory +
+                    //     language +
+                    //     '-' +
+                    //     fileName.slice(0, -3) +
+                    //     '.png'
+                    // ).catch(error => dispatch(setFetchError(true, language)))
                   ***REMOVED*** else {
-                    await FileSystem.downloadAsync(
+                    var download = FileSystem.createDownloadResumable(
                       `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
                       FileSystem.documentDirectory +
                         language +
                         '-' +
                         fileName.slice(0, -3) +
                         '.mp3'
-                      // if there's an error downloading a file
-                    ).catch(error => {
-                      console.log(error)
-                      setFetchError(true, language)
-                    ***REMOVED***)
+                    )
+
+                    // dispatch(storeDownload(download))
+
+                    // console.log(shouldDownload)
+
+                    await download
+                      .downloadAsync()
+                      .catch(error => dispatch(setFetchError(true, language)))
+                    // await FileSystem.downloadAsync(
+                    //   `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+                    //   FileSystem.documentDirectory +
+                    //     language +
+                    //     '-' +
+                    //     fileName.slice(0, -3) +
+                    //     '.mp3'
+                    //   // if there's an error downloading a file
+                    // ).catch(error => {
+                    //   console.log(error)
+                    //   dispatch(setFetchError(true, language))
+                    // ***REMOVED***)
                   ***REMOVED***
                   totalDownloaded += 1
                   dispatch(setCurrentFetchProgress(totalDownloaded))
@@ -183,13 +229,16 @@ export function addLanguage (language) {
               dispatch(setTotalToDownload(doc.data().files.length))
             ***REMOVED*** catch (error) {
               console.log(error)
-              setFetchError(true, language)
+              dispatch(setFetchError(true, language))
             ***REMOVED***
           ***REMOVED***
 
           //+ ACTUALLY DOWNLOAD STUFF
-
-          downloadStuff()
+          try {
+            downloadStuff()
+          ***REMOVED*** catch (error) {
+            dispatch(setFetchError(true, language))
+          ***REMOVED***
         ***REMOVED*** else {
           // if doc doesn't exist, throw an error
           dispatch(setFetchError(true, language))

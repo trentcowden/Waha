@@ -3,6 +3,8 @@ import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+
 // renders the icon on the right side of lesson item that shows the download
 //  status
 function DownloadStatusIndicator (props) {
@@ -25,19 +27,24 @@ function DownloadStatusIndicator (props) {
     switch (props.lessonType) {
       case 'qa':
       case 'a':
-        return props.downloads[props.lessonID] * 100
+        return props.downloads[props.lessonID]
+          ? props.downloads[props.lessonID].progress * 100
+          : null
         break
       case 'qav':
-        return (
-          ((props.downloads[props.lessonID] +
-            props.downloads[props.lessonID + 'v']) /
-            2) *
-          100
-        )
+        return props.downloads[props.lessonID] &&
+          props.downloads[props.lessonID + 'v']
+          ? ((props.downloads[props.lessonID].progress +
+              props.downloads[props.lessonID + 'v'].progress) /
+              2) *
+              100
+          : null
         break
       case 'qv':
       case 'v':
-        return props.downloads[props.lessonID + 'v'] * 100
+        return props.downloads[props.lessonID + 'v']
+          ? props.downloads[props.lessonID + 'v'].progress * 100
+          : null
         break
     ***REMOVED***
   ***REMOVED***
@@ -60,7 +67,19 @@ function DownloadStatusIndicator (props) {
     ) : props.isConnected ? (
       props.isDownloading ? (
         // if connected and currently downloading, show progress
-        <View style={styles.downloadButtonContainer***REMOVED***>
+        <TouchableOpacity
+          style={styles.downloadButtonContainer***REMOVED***
+          onPress={() => {
+            if (props.downloads[props.lessonID]) {
+              props.downloads[props.lessonID].resumable.pauseAsync()
+              props.removeDownload(props.lessonID)
+            ***REMOVED***
+            if (props.downloads[props.lessonID + 'v']) {
+              props.downloads[props.lessonID + 'v'].resumable.pauseAsync()
+              props.removeDownload(props.lessonID + 'v')
+            ***REMOVED***
+          ***REMOVED******REMOVED***
+        >
           <AnimatedCircularProgress
             size={22 * scaleMultiplier***REMOVED***
             width={4 * scaleMultiplier***REMOVED***
@@ -69,9 +88,9 @@ function DownloadStatusIndicator (props) {
             rotation={0***REMOVED***
             backgroundColor={colors.white***REMOVED***
             padding={2***REMOVED***
-          />
-          {/* {() => (
-              <TouchableOpacity
+          >
+            {() => (
+              <View
                 style={{
                   width: 5 * scaleMultiplier,
                   height: 5 * scaleMultiplier,
@@ -79,8 +98,8 @@ function DownloadStatusIndicator (props) {
                 ***REMOVED******REMOVED***
               />
             )***REMOVED***
-          </AnimatedCircularProgress> */***REMOVED***
-        </View>
+          </AnimatedCircularProgress>
+        </TouchableOpacity>
       ) : (
         // if not downloaded, not downloading, and connected, show download icon
         <TouchableOpacity
@@ -127,4 +146,15 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(DownloadStatusIndicator)
+function mapDispatchToProps (dispatch) {
+  return {
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DownloadStatusIndicator)

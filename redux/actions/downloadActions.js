@@ -2,12 +2,12 @@ export const ADD_UPDATE_DOWNLOAD = 'ADD_UPDATE_DOWNLOAD'
 export const REMOVE_DOWNLOAD = 'REMOVE_DOWNLOAD'
 
 import * as FileSystem from 'expo-file-system'
-import { AsyncStorage ***REMOVED*** from 'react-native'
 
-export function addUpdateDownload (progress, lessonID) {
+export function addUpdateDownload (progress, resumable, lessonID) {
   return {
     type: ADD_UPDATE_DOWNLOAD,
     progress,
+    resumable,
     lessonID
   ***REMOVED***
 ***REMOVED***
@@ -19,59 +19,40 @@ export function removeDownload (lessonID) {
   ***REMOVED***
 ***REMOVED***
 
-export function downloadVideo (lessonID, source) {
-  var counter = 0
-
-  return dispatch => {
-    // callback function
-    function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
-      progress = totalBytesWritten / totalBytesExpectedToWrite
-      if (progress == 1) {
-        dispatch(addUpdateDownload(progress, lessonID + 'v'))
-      ***REMOVED*** else if (counter % 10 == 0) {
-        dispatch(addUpdateDownload(progress, lessonID + 'v'))
-      ***REMOVED***
-      counter += 1
-    ***REMOVED***
-
-    // create our download object
-    const downloadResumable = FileSystem.createDownloadResumable(
-      source,
-      FileSystem.documentDirectory + lessonID + 'v.mp4',
-      {***REMOVED***,
-      callback
-    )
-    // add our download to state with progress 0
-    dispatch(addUpdateDownload(0, lessonID + 'v'))
-
-    // attempt to download file
-    downloadResumable.downloadAsync().catch(() => {
-      // if we get an error, set our progress back to 0
-      dispatch(addUpdateDownload(0, lessonID + 'v'))
-
-      console.log('error')
-
-      // then, store the download resumable object so we can start it later
-      AsyncStorage.setItem(
-        lessonID + 'v',
-        JSON.stringify(downloadResumable.savable())
-      ).catch(err => dispatch(removeDownload(lessonID)))
-    ***REMOVED***)
-  ***REMOVED***
-***REMOVED***
-
 // thunk function for async downloading
-export function downloadLesson (lessonID, source) {
+export function downloadMedia (type, lessonID, source) {
   var counter = 0
+
+  var videoModifier = ''
+  var fileEnd
+
+  if (type === 'video') {
+    videoModifier = 'v'
+    fileEnd = 'v.mp4'
+  ***REMOVED*** else {
+    fileEnd = '.mp3'
+  ***REMOVED***
 
   return dispatch => {
     // callback function
     function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
       progress = totalBytesWritten / totalBytesExpectedToWrite
       if (progress == 1) {
-        dispatch(addUpdateDownload(progress, lessonID))
+        dispatch(
+          addUpdateDownload(
+            progress,
+            downloadResumable,
+            lessonID + videoModifier
+          )
+        )
       ***REMOVED*** else if (counter % 10 == 0) {
-        dispatch(addUpdateDownload(progress, lessonID))
+        dispatch(
+          addUpdateDownload(
+            progress,
+            downloadResumable,
+            lessonID + videoModifier
+          )
+        )
       ***REMOVED***
       counter += 1
     ***REMOVED***
@@ -79,78 +60,19 @@ export function downloadLesson (lessonID, source) {
     // create our download object
     const downloadResumable = FileSystem.createDownloadResumable(
       source,
-      FileSystem.documentDirectory + lessonID + '.mp3',
+      FileSystem.documentDirectory + lessonID + fileEnd,
       {***REMOVED***,
       callback
     )
 
     // add our download to state with progress 0
-    dispatch(addUpdateDownload(0, lessonID))
+    dispatch(addUpdateDownload(0, downloadResumable, lessonID + videoModifier))
+
+    // dispatch(storeDownload(downloadResumable, lessonID))
 
     // attempt to download file
     downloadResumable.downloadAsync().catch(error => {
       console.log(error)
-      // // if we get an error, set our progress back to 0
-      // dispatch(addUpdateDownload(0, lessonID))
-      // console.log(
-      //   'lesson download error, storing download in async storage for later'
-      // )
-      // // then, store the download resumable object so we can start it later
-      // // AsyncStorage.setItem(
-      // //   lessonID,
-      // //   JSON.stringify(downloadResumable.savable())
-      // // ).catch(err => dispatch(removeDownload(lessonID)))
-      // var oldPausedDownloads = {***REMOVED***
-      // AsyncStorage.getItem('pausedDownloads')
-      //   .then(downloads => {
-      //     console.log(downloads)
-      //     // get old paused downloads
-      //     oldPausedDownloads = JSON.parse(downloads)
-      //     // add this new paused download to paused downloads
-      //     oldPausedDownloads[lessonID] = downloadResumable.savable()
-      //     // convert paused downloads back into a string and store again
-      //     AsyncStorage.setItem(
-      //       'pausedDownloads',
-      //       JSON.stringify(oldPausedDownloads)
-      //     ).catch(err => dispatch(removeDownload(lessonID)))
-      //   ***REMOVED***)
-      //   .catch(err => dispatch(removeDownload(lessonID)))
     ***REMOVED***)
   ***REMOVED***
 ***REMOVED***
-
-// export function resumeDownload (lessonID, downloadSnapshotJSON) {
-//   console.log('beep')
-//   var counter = 0
-//   return async dispatch => {
-//     // callback function
-//     function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
-//       progress = totalBytesWritten / totalBytesExpectedToWrite
-//       if (progress == 1) {
-//         dispatch(addUpdateDownload(progress, lessonID))
-//         AsyncStorage.removeItem(lessonID)
-//       ***REMOVED*** else if (counter % 10 == 0) {
-//         dispatch(addUpdateDownload(progress, lessonID))
-//       ***REMOVED***
-//       counter += 1
-//     ***REMOVED***
-
-//     const downloadSnapshot = JSON.parse(downloadSnapshotJSON)
-//     const downloadResumable = new FileSystem.DownloadResumable(
-//       downloadSnapshot.url,
-//       downloadSnapshot.fileUri,
-//       downloadSnapshot.options,
-//       callback,
-//       downloadSnapshot.resumeData
-//     )
-
-//     downloadResumable
-//       .resumeAsync()
-//       .catch(() =>
-//         AsyncStorage.setItem(
-//           lessonID,
-//           JSON.stringify(downloadResumable.savable())
-//         )
-//       )
-//   ***REMOVED***
-// ***REMOVED***

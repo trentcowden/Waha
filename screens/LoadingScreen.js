@@ -1,16 +1,23 @@
+import NetInfo from '@react-native-community/netinfo'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import { ActivityIndicator, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors ***REMOVED*** from '../constants'
-import { addLanguage, setFetchError ***REMOVED*** from '../redux/actions/databaseActions'
+import {
+  addLanguage,
+  setFetchError,
+  setFinishedOnboarding,
+  setIsFetching
+***REMOVED*** from '../redux/actions/databaseActions'
 import ar from '../translations/ar.json'
 // translations import
 import en from '../translations/en.json'
 
 function LoadingScreen (props) {
   const [proTipNum, setProTipNum] = useState(1)
+  const [isConnected, setIsConnected] = useState(true)
 
   useEffect(() => {
     if (proTipNum !== 3)
@@ -18,6 +25,15 @@ function LoadingScreen (props) {
     else setTimeout(() => setProTipNum(1), 8000)
   ***REMOVED***, [proTipNum])
 
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected)
+    ***REMOVED***)
+
+    return function cleanup () {
+      unsubscribe()
+    ***REMOVED***
+  ***REMOVED***, [])
   i18n.translations = {
     en,
     ar
@@ -71,6 +87,7 @@ function LoadingScreen (props) {
           color={colors.shark***REMOVED***
           style={{ margin: 5 ***REMOVED******REMOVED***
         />
+
         <Text style={Typography(props, 'h2', '', 'center', colors.shark)***REMOVED***>
           {i18n.t('loadingMessage')***REMOVED***
         </Text>
@@ -79,6 +96,25 @@ function LoadingScreen (props) {
             ? props.currentFetchProgress + '/' + props.totalToDownload
             : ''***REMOVED***
         </Text>
+        {isConnected ? null : <Text>Trying to reconnect...</Text>***REMOVED***
+        <TouchableOpacity
+          onPress={() => {
+            // props.navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: 'LanguageSelect' ***REMOVED***]
+            // ***REMOVED***)
+            props.setIsFetching(false)
+            if (!props.finishedInitialFetch) {
+              props.setFinishedOnboarding(false)
+            ***REMOVED***
+            props.storedDownload
+              .pauseAsync()
+              .then(() => console.log('successfully paused'))
+          ***REMOVED******REMOVED***
+          style={{ width: '100%', height: 100 ***REMOVED******REMOVED***
+        >
+          <Text>Cancel</Text>
+        </TouchableOpacity>
       </View>
       {/* <View style={styles.progressBarContainer***REMOVED***>
         <Progress.Bar
@@ -130,11 +166,14 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   // console.log(state.fetchingStatus)
+  console.log(state.database.storedDownloads.length)
   return {
     currentFetchProgress: state.database.currentFetchProgress,
     totalToDownload: state.database.totalToDownload,
     fetchError: state.fetchingStatus.fetchError,
-    errorLanguage: state.fetchingStatus.errorLanguage
+    errorLanguage: state.fetchingStatus.errorLanguage,
+    finishedInitialFetch: state.fetchingStatus.finishedInitialFetch,
+    storedDownload: state.database.storedDownload
   ***REMOVED***
 ***REMOVED***
 
@@ -145,6 +184,12 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     setFetchError: (status, language) => {
       dispatch(setFetchError(status, language))
+    ***REMOVED***,
+    setIsFetching: status => {
+      dispatch(setIsFetching(status))
+    ***REMOVED***,
+    setFinishedOnboarding: status => {
+      dispatch(setFinishedOnboarding(status))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

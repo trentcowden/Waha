@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState ***REMOVED*** from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
@@ -11,15 +11,14 @@ import GroupAvatar from '../GroupAvatar'
 function GroupItem (props) {
   // FUNCTIONS
 
+  const [thisGroup, setThisGroup] = useState(
+    props.groups.filter(group => group.name === props.groupName)[0]
+  )
+
   // gets a formatted string of this the bookmark lesson for this group
   // the bookmark lesson is the earliest uncompleted lesson of the active set
   //  for this group, and the text displays the subtitle and the name
   function getBookmarkText () {
-    // get the active group object
-    var thisGroup = props.groups.filter(
-      group => group.name === props.groupName
-    )[0]
-
     if (thisGroup) {
       // get the currently bookmarked set object
       var bookmarkSet = props.database[thisGroup.language].sets.filter(
@@ -163,14 +162,32 @@ function GroupItem (props) {
           ]***REMOVED***
         >
           <Text
-            style={Typography(props, 'h3', 'black', 'left', colors.shark)***REMOVED***
+            style={Typography(
+              {
+                font: props.database[thisGroup.language].font,
+                isRTL: props.isRTL
+              ***REMOVED***,
+              'h3',
+              'black',
+              'left',
+              colors.shark
+            )***REMOVED***
             numberOfLines={1***REMOVED***
           >
             {props.groupName***REMOVED***
           </Text>
           {getBookmarkText() === '' ? null : (
             <Text
-              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
+              style={Typography(
+                {
+                  font: props.database[thisGroup.language].font,
+                  isRTL: props.isRTL
+                ***REMOVED***,
+                'd',
+                'regular',
+                'left',
+                colors.chateau
+              )***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().set***REMOVED***
@@ -178,7 +195,16 @@ function GroupItem (props) {
           )***REMOVED***
           {getBookmarkText() === '' ? null : (
             <Text
-              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
+              style={Typography(
+                {
+                  font: props.database[thisGroup.language].font,
+                  isRTL: props.isRTL
+                ***REMOVED***,
+                'd',
+                'regular',
+                'left',
+                colors.chateau
+              )***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().lesson***REMOVED***

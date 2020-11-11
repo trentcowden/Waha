@@ -12,11 +12,7 @@ import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
-import {
-  downloadLesson,
-  downloadVideo,
-  removeDownload
-***REMOVED*** from '../redux/actions/downloadActions'
+import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 
 function LessonListScreen (props) {
@@ -180,24 +176,28 @@ function LessonListScreen (props) {
     switch (getLessonType(activeLessonInModal)) {
       case 'qa':
       case 'a':
-        props.downloadLesson(
+        props.downloadMedia(
+          'audio',
           activeLessonInModal.id,
           getLessonInfo('audioSource', activeLessonInModal.id)
         )
         break
       case 'qav':
-        props.downloadLesson(
+        props.downloadMedia(
+          'audio',
           activeLessonInModal.id,
           getLessonInfo('audioSource', activeLessonInModal.id)
         )
-        props.downloadVideo(
+        props.downloadMedia(
+          'video',
           activeLessonInModal.id,
           getLessonInfo('videoSource', activeLessonInModal.id)
         )
         break
       case 'qv':
       case 'v':
-        props.downloadVideo(
+        props.downloadMedia(
+          'video',
           activeLessonInModal.id,
           getLessonInfo('videoSource', activeLessonInModal.id)
         )
@@ -455,11 +455,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    downloadLesson: (lessonID, source) => {
-      dispatch(downloadLesson(lessonID, source))
-    ***REMOVED***,
-    downloadVideo: (lessonID, source) => {
-      dispatch(downloadVideo(lessonID, source))
+    downloadMedia: (type, lessonID, source) => {
+      dispatch(downloadMedia(type, lessonID, source))
     ***REMOVED***,
     toggleComplete: (groupName, set, lessonIndex) => {
       dispatch(toggleComplete(groupName, set, lessonIndex))
