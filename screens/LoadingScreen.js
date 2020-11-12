@@ -1,15 +1,18 @@
 import NetInfo from '@react-native-community/netinfo'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { ActivityIndicator, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors ***REMOVED*** from '../constants'
 import {
   addLanguage,
+  setCurrentFetchProgress,
   setFetchError,
+  setFinishedInitialFetch,
   setFinishedOnboarding,
-  setIsFetching
+  setIsFetching,
+  setTotalToDownload
 ***REMOVED*** from '../redux/actions/databaseActions'
 import ar from '../translations/ar.json'
 // translations import
@@ -20,9 +23,9 @@ function LoadingScreen (props) {
   const [isConnected, setIsConnected] = useState(true)
 
   useEffect(() => {
-    if (proTipNum !== 3)
-      setTimeout(() => setProTipNum(current => current + 1), 8000)
-    else setTimeout(() => setProTipNum(1), 8000)
+    // if (proTipNum !== 3)
+    //   setTimeout(() => setProTipNum(current => current + 1), 8000)
+    // else setTimeout(() => setProTipNum(1), 8000)
   ***REMOVED***, [proTipNum])
 
   useEffect(() => {
@@ -73,49 +76,96 @@ function LoadingScreen (props) {
           source={require('../assets/icon_transparent.png')***REMOVED***
         />
       </View> */***REMOVED***
-      <View style={{ flex: 1 ***REMOVED******REMOVED*** />
-      <View
+      {/* <View style={{ flex: 1 ***REMOVED******REMOVED*** /> */***REMOVED***
+      <Image
+        style={{
+          width: Dimensions.get('window').width / 2,
+          height: Dimensions.get('window').width / 2,
+          tintColor: '#e43c44'
+        ***REMOVED******REMOVED***
+        source={require('../assets/adaptive-icon-foreground.png')***REMOVED***
+        resizeMode='contain'
+      />
+
+      {/* <View
         style={{
           flex: 2,
           paddingHorizontal: 20,
           alignItems: 'center',
           justifyContent: 'center'
         ***REMOVED******REMOVED***
-      >
-        <ActivityIndicator
+      > */***REMOVED***
+      {/* <ActivityIndicator
           size='large'
           color={colors.shark***REMOVED***
           style={{ margin: 5 ***REMOVED******REMOVED***
-        />
+        /> */***REMOVED***
 
-        <Text style={Typography(props, 'h2', '', 'center', colors.shark)***REMOVED***>
+      {/* <Text style={Typography(props, 'h2', '', 'center', colors.shark)***REMOVED***>
           {i18n.t('loadingMessage')***REMOVED***
-        </Text>
-        <Text style={Typography(props, 'h1', '', 'center', colors.shark)***REMOVED***>
+        </Text> */***REMOVED***
+      <View
+        style={{
+          width: Dimensions.get('window').width - 40,
+          height: 20,
+          borderRadius: 20,
+          flexDirection: 'row',
+          overflow: 'hidden',
+          justifyContent: 'center'
+        ***REMOVED******REMOVED***
+      >
+        <View
+          style={{
+            backgroundColor: '#e43c44',
+            height: '100%',
+            flex: props.currentFetchProgress,
+            borderRadius: 20
+          ***REMOVED******REMOVED***
+        />
+        <View
+          style={{
+            backgroundColor: colors.white,
+            height: '100%',
+            flex: props.totalToDownload - props.currentFetchProgress
+          ***REMOVED******REMOVED***
+        />
+      </View>
+      <Image
+        style={{
+          height: 50
+        ***REMOVED******REMOVED***
+        source={require('../assets/gifs/equalizer.gif')***REMOVED***
+        resizeMode='contain'
+      />
+      {/* <Text style={Typography(props, 'h1', '', 'center', colors.shark)***REMOVED***>
           {props.totalToDownload
             ? props.currentFetchProgress + '/' + props.totalToDownload
             : ''***REMOVED***
-        </Text>
-        {isConnected ? null : <Text>Trying to reconnect...</Text>***REMOVED***
-        <TouchableOpacity
-          onPress={() => {
-            // props.navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: 'LanguageSelect' ***REMOVED***]
-            // ***REMOVED***)
-            props.setIsFetching(false)
-            if (!props.finishedInitialFetch) {
-              props.setFinishedOnboarding(false)
-            ***REMOVED***
-            props.storedDownload
-              .pauseAsync()
-              .then(() => console.log('successfully paused'))
-          ***REMOVED******REMOVED***
-          style={{ width: '100%', height: 100 ***REMOVED******REMOVED***
-        >
-          <Text>Cancel</Text>
-        </TouchableOpacity>
-      </View>
+        </Text> */***REMOVED***
+      {isConnected ? null : <Text>Trying to reconnect...</Text>***REMOVED***
+      <TouchableOpacity
+        onPress={() => {
+          props.setCurrentFetchProgress(0)
+          props.setTotalToDownload(0)
+          props.setIsFetching(false)
+          // only if adding language for the first time
+          if (!props.haveFinishedInitialFetch) {
+            console.log('go to language select')
+            props.setFinishedOnboarding(false)
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'LanguageSelect' ***REMOVED***]
+            ***REMOVED***)
+          ***REMOVED***
+          props.storedDownloads.forEach(download => {
+            download.pauseAsync()
+          ***REMOVED***)
+        ***REMOVED******REMOVED***
+        style={{ width: '100%', height: 100, marginVertical: 20 ***REMOVED******REMOVED***
+      >
+        <Icon name='cancel' size={50***REMOVED*** color={colors.shark***REMOVED*** />
+      </TouchableOpacity>
+      {/* </View> */***REMOVED***
       {/* <View style={styles.progressBarContainer***REMOVED***>
         <Progress.Bar
           progress={props.progress***REMOVED***
@@ -125,7 +175,7 @@ function LoadingScreen (props) {
           borderColor={colors.shark***REMOVED***
         />
       </View> */***REMOVED***
-      <View
+      {/* <View
         style={{
           paddingHorizontal: 20,
           flex: 1,
@@ -136,7 +186,7 @@ function LoadingScreen (props) {
         <Text style={Typography(props, 'h3', '', 'center', colors.chateau)***REMOVED***>
           {i18n.t('protip' + proTipNum)***REMOVED***
         </Text>
-      </View>
+      </View> */***REMOVED***
     </View>
   )
 ***REMOVED***
@@ -147,7 +197,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: colors.white
   ***REMOVED***,
   progressBarContainer: {
     width: '100%',
@@ -159,21 +210,20 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.shark,
+    backgroundColor: colors.aquaHaze,
     borderRadius: 10
   ***REMOVED***
 ***REMOVED***)
 
 function mapStateToProps (state) {
-  // console.log(state.fetchingStatus)
-  console.log(state.database.storedDownloads.length)
   return {
     currentFetchProgress: state.database.currentFetchProgress,
     totalToDownload: state.database.totalToDownload,
     fetchError: state.fetchingStatus.fetchError,
     errorLanguage: state.fetchingStatus.errorLanguage,
-    finishedInitialFetch: state.fetchingStatus.finishedInitialFetch,
-    storedDownload: state.database.storedDownload
+    haveFinishedInitialFetch: state.database.haveFinishedInitialFetch,
+    storedDownloads: state.storedDownloads,
+    database: state.database
   ***REMOVED***
 ***REMOVED***
 
@@ -190,6 +240,15 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     setFinishedOnboarding: status => {
       dispatch(setFinishedOnboarding(status))
+    ***REMOVED***,
+    setFinishedInitialFetch: status => {
+      dispatch(setFinishedInitialFetch(status))
+    ***REMOVED***,
+    setTotalToDownload: totalToDownload => {
+      dispatch(setTotalToDownload(totalToDownload))
+    ***REMOVED***,
+    setCurrentFetchProgress: progress => {
+      dispatch(setCurrentFetchProgress(progress))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

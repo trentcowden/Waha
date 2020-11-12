@@ -9,6 +9,7 @@ import { groups ***REMOVED*** from '../reducers/groups'
 import { mtUnlockAttempts ***REMOVED*** from '../reducers/mtUnlockAttempts'
 import { network ***REMOVED*** from '../reducers/network'
 import { security ***REMOVED*** from '../reducers/security'
+import { storedDownloads ***REMOVED*** from '../reducers/storedDownloads'
 
 export default rootReducer = combineReducers({
   downloads,
@@ -19,5 +20,6 @@ export default rootReducer = combineReducers({
   fetchingStatus,
   areMobilizationToolsUnlocked,
   security,
-  mtUnlockAttempts
+  mtUnlockAttempts,
+  storedDownloads
 ***REMOVED***)

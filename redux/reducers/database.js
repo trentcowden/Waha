@@ -40,7 +40,10 @@ export function database (
     case STORE_DOWNLOAD:
       return {
         ...state,
-        storedDownload: action.downloadResumable
+        storedDownloads: {
+          ...state.storedDownloads,
+          [action.fileName]: action.resumable
+        ***REMOVED***
       ***REMOVED***
     default:
       return state
