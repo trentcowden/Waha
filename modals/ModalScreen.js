@@ -4,6 +4,8 @@ import { Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
+
 function ModalScreen (props) {
   return (
     <View>
@@ -64,7 +66,7 @@ function ModalScreen (props) {
             </TouchableOpacity>
             <View style={{ flex: 1 ***REMOVED******REMOVED***>
               <Text
-                style={Typography(
+                style={BrandTypography(
                   props,
                   'h3',
                   'medium',

@@ -12,6 +12,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import SVG from '../assets/svg'
 import SwipeBar from '../components/SwipeBar'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 
 function AlbumArtSwiper (props) {
   //+ STATE
@@ -175,7 +176,7 @@ function AlbumArtSwiper (props) {
                 ? () => (
                     <View style={{ paddingHorizontal: 10, marginBottom: 10 ***REMOVED******REMOVED***>
                       <Text
-                        style={Typography(
+                        style={BrandTypography(
                           props,
                           'd',
                           'regular',
@@ -186,7 +187,7 @@ function AlbumArtSwiper (props) {
                         {props.translations.play.copyright_for_text + '\n'***REMOVED***
                       </Text>
                       <Text
-                        style={Typography(
+                        style={BrandTypography(
                           props,
                           'd',
                           'regular',
@@ -281,10 +282,14 @@ function AlbumArtSwiper (props) {
   function renderTextContent (textList) {
     return (
       <View style={{ paddingHorizontal: 20 ***REMOVED******REMOVED***>
-        <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
+        <Text
+          style={BrandTypography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***
+        >
           {textList.item.header***REMOVED***
         </Text>
-        <Text style={Typography(props, 'h3', 'regular', 'left', colors.shark)***REMOVED***>
+        <Text
+          style={BrandTypography(props, 'h3', 'regular', 'left', colors.shark)***REMOVED***
+        >
           {textList.item.text***REMOVED***
         </Text>
       </View>

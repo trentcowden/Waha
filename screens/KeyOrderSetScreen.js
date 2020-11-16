@@ -14,6 +14,7 @@ import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
 import { colors ***REMOVED*** from '../constants'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 function KeyOrderSetScreen (props) {
   //+ STATE
 
@@ -172,7 +173,13 @@ function KeyOrderSetScreen (props) {
       <View style={{ width: '100%', alignItems: 'center' ***REMOVED******REMOVED***>
         <View style={{ width: '100%' ***REMOVED******REMOVED***>
           <Text
-            style={Typography(props, 'h2', 'medium', 'center', colors.shark)***REMOVED***
+            style={BrandTypography(
+              props,
+              'h2',
+              'medium',
+              'center',
+              colors.shark
+            )***REMOVED***
           >
             {instructionText***REMOVED***
           </Text>

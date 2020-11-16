@@ -9,6 +9,8 @@ import Separator from '../components/standard/Separator'
 import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import SetInfoModal from '../modals/SetInfoModal'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
+
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state'
 ])
@@ -220,7 +222,7 @@ function AddSetScreen (props) {
         ListEmptyComponent={
           <View style={{ width: '100%', margin: 10 ***REMOVED******REMOVED***>
             <Text
-              style={Typography(
+              style={BrandTypography(
                 props,
                 'p',
                 'regular',

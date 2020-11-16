@@ -13,6 +13,7 @@ import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
 import { deleteLanguage ***REMOVED*** from '../../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
+import { BrandTypography ***REMOVED*** from '../../styles/typography'
 function GroupListHeader (props) {
   //+ FUNCTIONS
 
@@ -113,7 +114,7 @@ function GroupListHeader (props) {
       {trashButton***REMOVED***
       <Text
         style={[
-          Typography(
+          BrandTypography(
             {
               font: props.database[props.languageID].font,
               isRTL: props.isRTL

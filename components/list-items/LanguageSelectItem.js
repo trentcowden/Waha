@@ -1,6 +1,8 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors, getSystemIsRTL, scaleMultiplier ***REMOVED*** from '../../constants'
+import { SystemTypography ***REMOVED*** from '../../styles/typography'
+
 function LanguageSelectItem (props) {
   // FUNCTIONS
 
@@ -23,7 +25,7 @@ function LanguageSelectItem (props) {
         height: 80 * scaleMultiplier,
         // aspectRatio: 5,
         width: '100%',
-        flexDirection: 'row',
+        flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: props.isSelected ? '#BFE5AF' : colors.white
@@ -36,7 +38,7 @@ function LanguageSelectItem (props) {
           height: '100%',
           alignItems: 'center',
           justifyContent: 'space-around',
-          flexDirection: 'row'
+          flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
         ***REMOVED******REMOVED***
         onPress={props.onPress***REMOVED***
       >
@@ -47,18 +49,25 @@ function LanguageSelectItem (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={[
-              Typography(props, 'h3', '', 'left', colors.shark),
-              { fontWeight: 'bold' ***REMOVED***
-            ]***REMOVED***
+            style={SystemTypography(
+              false,
+              'h3',
+              'medium',
+              'left',
+              colors.shark,
+              languages[]
+            )***REMOVED***
           >
             {props.nativeName***REMOVED***
           </Text>
           <Text
-            style={{
-              color: colors.shark,
-              fontSize: 14 * scaleMultiplier
-            ***REMOVED******REMOVED***
+            style={SystemTypography(
+              false,
+              'p',
+              'regular',
+              'left',
+              colors.shark
+            )***REMOVED***
           >
             {props.localeName***REMOVED***
           </Text>
@@ -81,7 +90,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier,
-    marginRight: 20
+    marginHorizontal: 20
   ***REMOVED***
 ***REMOVED***)
 

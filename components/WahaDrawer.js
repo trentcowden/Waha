@@ -8,6 +8,7 @@ import DrawerItem from '../components/list-items/DrawerItem'
 import SmallDrawerItem from '../components/list-items/SmallDrawerItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 
 function WahaDrawer (props) {
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
@@ -36,7 +37,7 @@ function WahaDrawer (props) {
           />
         </View>
         <Text
-          style={Typography(props, 'h2', 'black', 'center', colors.white)***REMOVED***
+          style={BrandTypography(props, 'h2', 'black', 'center', colors.white)***REMOVED***
           numberOfLines={2***REMOVED***
         >
           {props.activeGroup.name***REMOVED***
@@ -71,11 +72,7 @@ function WahaDrawer (props) {
           <DrawerItem
             iconName='storage'
             text={props.translations.storage.header***REMOVED***
-            onPress={() =>
-              props.navigation.navigate('Storage', {
-                isRTL: props.isFetching ? null : props.isRTL
-              ***REMOVED***)
-            ***REMOVED***
+            onPress={() => props.navigation.navigate('Storage')***REMOVED***
           />
           <DrawerItem
             iconName='bug'
@@ -118,7 +115,13 @@ function WahaDrawer (props) {
             ***REMOVED******REMOVED***
           >
             <Text
-              style={Typography(props, 'd', 'regular', 'left', colors.chateau)***REMOVED***
+              style={BrandTypography(
+                props,
+                'd',
+                'regular',
+                'left',
+                colors.chateau
+              )***REMOVED***
             >
               v0.7.0
             </Text>

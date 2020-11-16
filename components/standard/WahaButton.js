@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { BrandTypography, SystemTypography ***REMOVED*** from '../../styles/typography'
 
 function WahaButton (props) {
   switch (props.type) {
@@ -21,7 +22,9 @@ function WahaButton (props) {
         >
           <Text
             style={[
-              Typography(props, 'h3', 'medium', 'center', props.color),
+              props.useDefaultFont
+                ? SystemTypography(false, 'h3', 'medium', 'center', props.color)
+                : BrandTypography(props, 'h3', 'medium', 'center', props.color),
               { fontWeight: props.font ? null : 'bold' ***REMOVED***,
               props.textStyle
             ]***REMOVED***
@@ -49,7 +52,21 @@ function WahaButton (props) {
         >
           <Text
             style={[
-              Typography(props, 'h3', 'medium', 'center', colors.white),
+              props.useDefaultFont
+                ? SystemTypography(
+                    false,
+                    'h3',
+                    'medium',
+                    'center',
+                    colors.white
+                  )
+                : BrandTypography(
+                    props,
+                    'h3',
+                    'medium',
+                    'center',
+                    colors.white
+                  ),
               { fontWeight: props.font ? null : 'bold' ***REMOVED***,
               props.textStyle
             ]***REMOVED***
@@ -74,8 +91,21 @@ function WahaButton (props) {
         >
           <Text
             style={[
-              Typography(props, 'p', 'medium', 'center', colors.chateau),
-              { fontWeight: props.font ? null : 'bold' ***REMOVED***,
+              props.useDefaultFont
+                ? SystemTypography(
+                    false,
+                    'p',
+                    'medium',
+                    'center',
+                    colors.chateau
+                  )
+                : BrandTypography(
+                    props,
+                    'p',
+                    'medium',
+                    'center',
+                    colors.chateau
+                  ),
               props.textStyle
             ]***REMOVED***
           >

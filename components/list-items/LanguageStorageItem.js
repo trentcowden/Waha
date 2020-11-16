@@ -3,6 +3,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { BrandTypography ***REMOVED*** from '../../styles/typography'
 import Separator from '../standard/Separator'
 import WahaButton from '../standard/WahaButton'
 
@@ -16,7 +17,13 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={Typography(props, 'h3', 'regular', 'left', colors.chateau)***REMOVED***
+          style={BrandTypography(
+            props,
+            'h3',
+            'regular',
+            'left',
+            colors.chateau
+          )***REMOVED***
         >
           {props.languageName +
             ' ' +
@@ -38,14 +45,16 @@ function LanguageStorageItem (props) {
           ***REMOVED***
         ]***REMOVED***
       >
-        <Text style={Typography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***>
+        <Text
+          style={BrandTypography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***
+        >
           {props.megabytes >= 0
             ? props.megabytes + ' ' + props.translations.storage.megabyte_label
             : props.translations.storage.megabyte_label***REMOVED***
         </Text>
         <Text
           style={[
-            Typography(props, 'h3', 'regular', 'left', colors.tuna),
+            BrandTypography(props, 'h3', 'regular', 'left', colors.tuna),
             {
               flex: 1,
               paddingHorizontal: 20
@@ -84,7 +93,7 @@ const styles = StyleSheet.create({
   ***REMOVED***,
   languageHeaderContainer: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     width: '100%',
     height: 40 * scaleMultiplier,
     // aspectRatio: 8.7,

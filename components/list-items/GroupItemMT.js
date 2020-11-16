@@ -7,6 +7,7 @@ import {
   setShouldShowMobilizationToolsTab
 ***REMOVED*** from '../../redux/actions/groupsActions'
 import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../redux/LogEventFunctions'
+import { BrandTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 // variant of group list item that shows only avatar image, group name, and a switch to enable MTs
 function GroupItemMT (props) {
@@ -33,7 +34,9 @@ function GroupItemMT (props) {
         />
       </View>
       <View style={styles.groupNameContainer***REMOVED***>
-        <Text style={Typography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***>
+        <Text
+          style={BrandTypography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***
+        >
           {props.group.name***REMOVED***
         </Text>
       </View>

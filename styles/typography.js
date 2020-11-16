@@ -1,6 +1,24 @@
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import i18n from 'i18n-js'
+import {
+  getSystemFont,
+  getSystemIsRTL,
+  languages,
+  scaleMultiplier
+***REMOVED*** from '../constants'
 
-export default Typography = (props, fontSize, fontFamily, textAlign, color) => {
+export function BrandTypography (
+  props,
+  fontSize,
+  fontFamily,
+  textAlign,
+  color
+) {
+  const families = {
+    regular: props.font + '-regular',
+    medium: props.font + '-medium',
+    black: props.font + '-black'
+  ***REMOVED***
+
   const sizes = {
     d: 12 * scaleMultiplier,
     p: 14 * scaleMultiplier,
@@ -10,20 +28,61 @@ export default Typography = (props, fontSize, fontFamily, textAlign, color) => {
     h1: 36 * scaleMultiplier
   ***REMOVED***
 
-  const families = {
-    regular: props.font + '-regular',
-    medium: props.font + '-medium',
-    black: props.font + '-black'
-  ***REMOVED***
-
   const alignments = {
     left: props.isRTL ? 'right' : 'left',
     center: 'center'
   ***REMOVED***
+
   return {
     fontSize: sizes[fontSize],
     fontFamily: props.font ? families[fontFamily] : null,
     textAlign: alignments[textAlign],
     color: color
+  ***REMOVED***
+***REMOVED***
+
+export function SystemTypography (
+  isHeader,
+  fontSize,
+  fontFamily,
+  textAlign,
+  color,
+  overrideFont
+) {
+  const sizes = {
+    d: 12 * scaleMultiplier,
+    p: 14 * scaleMultiplier,
+    h4: 16 * scaleMultiplier,
+    h3: 18 * scaleMultiplier,
+    h2: 24 * scaleMultiplier,
+    h1: 36 * scaleMultiplier
+  ***REMOVED***
+
+  languages.forEach(languageFamily => {
+    if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
+      console.log('found!')
+      defaultFont = languageFamily.font
+      defaultIsRTL = languageFamily.isRTL
+    ***REMOVED***
+  ***REMOVED***)
+
+  const alignments = {
+    left: getSystemIsRTL() ? 'right' : 'left',
+    center: 'center'
+  ***REMOVED***
+
+  if (isHeader) {
+    return {
+      fontFamily: getSystemFont() + '-' + fontFamily,
+      textAlign: alignments[textAlign],
+      color: color
+    ***REMOVED***
+  ***REMOVED*** else {
+    return {
+      fontSize: sizes[fontSize],
+      fontFamily: getSystemFont() + '-' + fontFamily,
+      textAlign: alignments[textAlign],
+      color: color
+    ***REMOVED***
   ***REMOVED***
 ***REMOVED***

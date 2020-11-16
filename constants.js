@@ -1,3 +1,4 @@
+import i18n from 'i18n-js'
 import { Dimensions ***REMOVED*** from 'react-native'
 
 export const scaleMultiplier =
@@ -6,7 +7,8 @@ export const scaleMultiplier =
     : Dimensions.get('window').width / 400
 
 export const languageT2S = {
-  en: require('./assets/languageT2S/en.mp3')
+  en: require('./assets/languageT2S/en.mp3'),
+  ga: require('./assets/languageT2S/ga.mp3')
 ***REMOVED***
 
 export const groupNames = {
@@ -238,30 +240,54 @@ export const languages = [
   {
     i18nName: 'english',
     languageCode: 'en',
+    font: 'roboto',
+    isRTL: false,
     data: [
       {
         nativeName: 'English (Global)',
         wahaID: 'en',
         i18nName: 'englishGlobal',
         logoSource:
-          'https://res.cloudinary.com/waha/image/upload/v1594243650/English/Discovering_God_eorblz.png'
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-v1.png?alt=media'
       ***REMOVED***
     ]
   ***REMOVED***,
   {
     i18nName: 'arabic',
     languageCode: 'ar',
+    font: 'tajawal',
+    isRTL: true,
     data: [
       {
-        nativeName: 'Gulf Arabic (NEED TRANSLATION)',
+        nativeName: 'الخليج العربي',
         wahaID: 'ga',
         i18nName: 'gulfArabic',
         logoSource:
-          'https://res.cloudinary.com/waha/image/upload/v1594243650/English/Discovering_God_eorblz.png'
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-v1.png?alt=media'
       ***REMOVED***
     ]
   ***REMOVED***
 ]
+
+export function getSystemIsRTL () {
+  systemIsRTL = false
+  languages.forEach(languageFamily => {
+    if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
+      systemIsRTL = languageFamily.isRTL
+    ***REMOVED***
+  ***REMOVED***)
+  return systemIsRTL
+***REMOVED***
+
+export function getSystemFont () {
+  systemFont = 'roboto'
+  languages.forEach(languageFamily => {
+    if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
+      systemFont = languageFamily.font
+    ***REMOVED***
+  ***REMOVED***)
+  return systemFont
+***REMOVED***
 
 export const keyColors = {
   0: '#ffe119',

@@ -10,6 +10,7 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 
 function SetScreen (props) {
   //+ STUFF FOR TESTING
@@ -142,7 +143,7 @@ function SetScreen (props) {
               ***REMOVED******REMOVED***
             >
               <Text
-                style={Typography(
+                style={BrandTypography(
                   props,
                   'p',
                   'regular',

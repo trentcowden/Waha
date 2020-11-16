@@ -13,6 +13,7 @@ import BackButton from '../components/standard/BackButton'
 import Separator from '../components/standard/Separator'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 
 function GroupsScreen (props) {
   //+ STATE
@@ -54,7 +55,7 @@ function GroupsScreen (props) {
             >
               <Text
                 style={[
-                  Typography(
+                  BrandTypography(
                     props,
                     'h3',
                     isEditing ? 'medium' : 'regular',
@@ -79,7 +80,7 @@ function GroupsScreen (props) {
               onPress={() => setIsEditing(old => !old)***REMOVED***
             >
               <Text
-                style={Typography(
+                style={BrandTypography(
                   props,
                   'h3',
                   props.isEditing ? 'medium' : 'regular',
@@ -195,7 +196,13 @@ function GroupsScreen (props) {
                 />
               </View>
               <Text
-                style={Typography(props, 'h3', 'medium', 'left', colors.blue)***REMOVED***
+                style={BrandTypography(
+                  props,
+                  'h3',
+                  'medium',
+                  'left',
+                  colors.blue
+                )***REMOVED***
               >
                 {props.translations.groups.new_group_button_label***REMOVED***
               </Text>
@@ -217,7 +224,13 @@ function GroupsScreen (props) {
             ***REMOVED***
           >
             <Text
-              style={Typography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***
+              style={BrandTypography(
+                props,
+                'h3',
+                'medium',
+                'left',
+                colors.chateau
+              )***REMOVED***
             >
               {props.translations.groups.new_language_button_label***REMOVED***
             </Text>

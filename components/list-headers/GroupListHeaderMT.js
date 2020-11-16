@@ -3,6 +3,7 @@ import React, { useEffect ***REMOVED*** from 'react'
 import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { BrandTypography ***REMOVED*** from '../../styles/typography'
 function GroupListHeaderMT (props) {
   //+ FUNCTIONS
 
@@ -59,13 +60,21 @@ function GroupListHeaderMT (props) {
       ]***REMOVED***
     >
       <View>
-        <Text style={Typography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***>
+        <Text
+          style={BrandTypography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***
+        >
           {props.languageName +
             ' ' +
             props.translations.mobilization_tools.groups_label***REMOVED***
         </Text>
         <Text
-          style={Typography(props, 'h3', 'regular', 'left', colors.chateau)***REMOVED***
+          style={BrandTypography(
+            props,
+            'h3',
+            'regular',
+            'left',
+            colors.chateau
+          )***REMOVED***
         >
           {
             props.translations.mobilization_tools

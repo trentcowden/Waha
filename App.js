@@ -47,24 +47,6 @@ export default function App () {
       'roboto-regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'almarai-black': require('./assets/fonts/Almarai/Almarai-Black.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'almarai-medium': require('./assets/fonts/Almarai/Almarai-Medium.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'almarai-regular': require('./assets/fonts/Almarai/Almarai-Regular.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'cairo-black': require('./assets/fonts/Cairo/Cairo-Black.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'cairo-medium': require('./assets/fonts/Cairo/Cairo-Medium.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
-      'cairo-regular': require('./assets/fonts/Cairo/Cairo-Regular.ttf')
-    ***REMOVED***)
-    await Font.loadAsync({
       'tajawal-black': require('./assets/fonts/Tajawal/Tajawal-Black.ttf')
     ***REMOVED***)
     await Font.loadAsync({

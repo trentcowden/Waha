@@ -2,6 +2,7 @@ import React from 'react'
 import { FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 
 function BookView (props) {
   return (
@@ -21,7 +22,7 @@ function BookView (props) {
         renderItem={paragraphList => (
           <Text
             style={[
-              Typography(props, 'h4', 'regular', 'left', colors.shark),
+              BrandTypography(props, 'h4', 'regular', 'left', colors.shark),
               { marginHorizontal: 10 ***REMOVED***
             ]***REMOVED***
           >

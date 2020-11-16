@@ -8,7 +8,9 @@ import {
   Text,
   View
 ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { BrandTypography, SystemTypography ***REMOVED*** from '../styles/typography'
 import WahaButton from './standard/WahaButton'
 
 function OnboardingSwiper (props) {
@@ -51,14 +53,44 @@ function OnboardingSwiper (props) {
           <Image style={styles.image***REMOVED*** source={props.sources[index]***REMOVED*** />
           <Text
             style={[
-              Typography(props, 'h2', 'medium', 'center', colors.shark),
-              { fontWeight: props.font ? null : 'bold', marginVertical: 10 ***REMOVED***
+              props.useDefaultFont
+                ? SystemTypography(
+                    false,
+                    'h2',
+                    'medium',
+                    'center',
+                    colors.shark
+                  )
+                : BrandTypography(
+                    props,
+                    'h2',
+                    'medium',
+                    'center',
+                    colors.shark
+                  ),
+              { marginVertical: 10 ***REMOVED***
             ]***REMOVED***
           >
             {props.titles[index]***REMOVED***
           </Text>
           <Text
-            style={Typography(props, 'h3', 'regular', 'center', colors.chateau)***REMOVED***
+            style={
+              props.useDefaultFont
+                ? SystemTypography(
+                    false,
+                    'h3',
+                    'regular',
+                    'center',
+                    colors.chateau
+                  )
+                : BrandTypography(
+                    props,
+                    'h3',
+                    'regular',
+                    'center',
+                    colors.chateau
+                  )
+            ***REMOVED***
           >
             {props.messages[index]***REMOVED***
           </Text>
@@ -187,4 +219,16 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-export default OnboardingSwiper
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return activeGroup
+    ? {
+        font: state.database[activeGroup.language].font,
+        isRTL: state.database[activeGroup.language].isRTL
+      ***REMOVED***
+    : {***REMOVED***
+***REMOVED***
+
+export default connect(mapStateToProps)(OnboardingSwiper)

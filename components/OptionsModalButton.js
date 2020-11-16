@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { BrandTypography ***REMOVED*** from '../styles/typography'
 // button rendered on the options modal component
 function OptionsModalButton (props) {
   //+ RETURN
@@ -11,7 +12,7 @@ function OptionsModalButton (props) {
       <Text
         style={[
           props.style,
-          Typography(props, 'h3', 'regular', 'center', colors.shark)
+          BrandTypography(props, 'h3', 'regular', 'center', colors.shark)
         ]***REMOVED***
       >
         {props.title***REMOVED***
