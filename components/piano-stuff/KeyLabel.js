@@ -15,7 +15,13 @@ function KeyLabel (props) {
       ]***REMOVED***
     >
       <Text
-        style={BrandTypography(props, 'h2', 'medium', 'center', colors.shark)***REMOVED***
+        style={BrandTypography(
+          { font: 'roboto' ***REMOVED***,
+          'h2',
+          'medium',
+          'center',
+          colors.shark
+        )***REMOVED***
       >
         {props.number***REMOVED***
       </Text>

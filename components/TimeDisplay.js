@@ -37,7 +37,13 @@ function TimeDisplay (props) {
   return (
     <View styles={props.style***REMOVED***>
       <Text
-        style={BrandTypography(props, 'd', 'regular', 'center', colors.shark)***REMOVED***
+        style={BrandTypography(
+          { font: 'roboto' ***REMOVED***,
+          'd',
+          'regular',
+          'center',
+          colors.shark
+        )***REMOVED***
       >
         {msToTime(props.time)***REMOVED***
       </Text>

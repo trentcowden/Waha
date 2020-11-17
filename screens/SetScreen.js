@@ -44,7 +44,7 @@ function SetScreen (props) {
       )
       setSetCategory('mobilization tools')
     ***REMOVED***
-  ***REMOVED***, [props.activeGroup])
+  ***REMOVED***, [props.activeGroup, props.translations])
 
   //+ NAV OPTIONS
 
