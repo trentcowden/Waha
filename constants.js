@@ -244,9 +244,9 @@ export const languages = [
     isRTL: false,
     data: [
       {
-        nativeName: 'English (Global)',
+        nativeName: 'English',
         wahaID: 'en',
-        i18nName: 'englishGlobal',
+        i18nName: 'english',
         logoSource:
           'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-v1.png?alt=media'
       ***REMOVED***
@@ -288,6 +288,18 @@ export function getSystemFont () {
   ***REMOVED***)
   return systemFont
 ***REMOVED***
+
+// export function getI18nName (languageID) {
+//   var i18nName = ''
+//   languages.forEach(languageFamily => {
+//     languageFamily.data.forEach(language => {
+//       if (language.wahaID === languageID) {
+//         i18nName = language.i18nName
+//       ***REMOVED***
+//     ***REMOVED***)
+//   ***REMOVED***)
+//   return i18nName
+// ***REMOVED***
 
 export const keyColors = {
   0: '#ffe119',

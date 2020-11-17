@@ -118,35 +118,9 @@ function MobilizationToolsScreen (props) {
             renderItem={({ item, section ***REMOVED***) => {
               return props.database[section.languageID].sets.some(set => {
                 return /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id)
-              ***REMOVED***) ? (
-                renderGroupItem(item)
-              ) : (
-                <View
-                  style={{
-                    height: 80 * scaleMultiplier,
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: colors.white,
-                    justifyContent: 'center'
-                  ***REMOVED******REMOVED***
-                >
-                  <Text
-                    style={BrandTypography(
-                      props,
-                      'p',
-                      'regular',
-                      'center',
-                      colors.chateau
-                    )***REMOVED***
-                  >
-                    {
-                      props.translations.mobilization_tools
-                        .no_mobilization_tools_content_text
-                    ***REMOVED***
-                  </Text>
-                </View>
-              )
+              ***REMOVED***)
+                ? renderGroupItem(item)
+                : null
             ***REMOVED******REMOVED***
             ListHeaderComponent={() => (
               <View>
@@ -193,12 +167,58 @@ function MobilizationToolsScreen (props) {
             renderSectionHeader={({ section ***REMOVED***) =>
               renderLanguageInstanceItem(section)
             ***REMOVED***
-            renderSectionFooter={() => (
-              <View style={{ height: 20, width: '100%' ***REMOVED******REMOVED*** />
-            )***REMOVED***
+            renderSectionFooter={({ section ***REMOVED***) => {
+              var hasMTContent = props.database[section.languageID].sets.some(
+                set => {
+                  return /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id)
+                ***REMOVED***
+              )
+              return hasMTContent ? (
+                <View style={{ width: '100%', height: 20 ***REMOVED******REMOVED*** />
+              ) : (
+                // <Separator />
+                <View>
+                  <View
+                    style={{
+                      height: 80 * scaleMultiplier,
+                      justifyContent: 'flex-start',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: colors.white,
+                      justifyContent: 'center'
+                    ***REMOVED******REMOVED***
+                  >
+                    <Text
+                      style={BrandTypography(
+                        props,
+                        'p',
+                        'regular',
+                        'center',
+                        colors.chateau
+                      )***REMOVED***
+                    >
+                      {
+                        props.translations.mobilization_tools
+                          .no_mobilization_tools_content_text
+                      ***REMOVED***
+                    </Text>
+                  </View>
+                  <Separator />
+                  <View style={{ width: '100%', height: 20 ***REMOVED******REMOVED*** />
+                </View>
+              )
+            ***REMOVED******REMOVED***
             keyExtractor={item => item.name***REMOVED***
             ItemSeparatorComponent={() => <Separator />***REMOVED***
-            SectionSeparatorComponent={() => <Separator />***REMOVED***
+            SectionSeparatorComponent={({ section ***REMOVED***) => {
+              var hasMTContent = props.database[section.languageID].sets.some(
+                set => {
+                  return /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id)
+                ***REMOVED***
+              )
+
+              return hasMTContent ? <Separator /> : null
+            ***REMOVED******REMOVED***
           />
         ) : null***REMOVED***
       </View>
