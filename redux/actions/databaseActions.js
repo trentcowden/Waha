@@ -14,8 +14,6 @@ import { changeActiveGroup, createGroup ***REMOVED*** from './groupsActions'
 import { storeDownloads ***REMOVED*** from './storedDownloadsActions'
 
 export function storeData (data, language) {
-  console.log('beep')
-  console.log(data.translations.sets.add_foundational_story_set_button_label)
   return {
     type: STORE_DATA,
     data,
@@ -59,9 +57,8 @@ export function downloadLanguageFiles (language) {
     function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
       if (totalBytesWritten === totalBytesExpectedToWrite) {
         // totalDownloaded += 1
-
         // console.log(`file ${totalDownloaded***REMOVED*** downloaded`)
-        dispatch(setCurrentFetchProgress(totalDownloaded))
+        // dispatch(setCurrentFetchProgress(totalDownloaded))
       ***REMOVED***
     ***REMOVED***
 
@@ -105,9 +102,11 @@ export function downloadLanguageFiles (language) {
       return resumable
         .downloadAsync()
         .catch(error => console.log('download error'))
-        .then(() => {
-          totalDownloaded += 1
-          dispatch(setCurrentFetchProgress(totalDownloaded))
+        .then(status => {
+          if (status) {
+            totalDownloaded += 1
+            dispatch(setCurrentFetchProgress(totalDownloaded))
+          ***REMOVED***
         ***REMOVED***)
     ***REMOVED***
 
@@ -117,7 +116,6 @@ export function downloadLanguageFiles (language) {
 
     Promise.all(downloadFunctions)
       .then(() => {
-        console.log(`total downloaded: ${totalDownloaded***REMOVED***`)
         if (totalDownloaded === getState().database[language].files.length) {
           console.log('resolved')
           // var stupid = false
@@ -143,8 +141,8 @@ export function downloadLanguageFiles (language) {
           dispatch(
             setTotalToDownload(getState().database[language].files.length)
           )
-          // ***REMOVED***
         ***REMOVED***
+        // ***REMOVED***
       ***REMOVED***)
       .catch(error => {
         // FIREBASE ERROR
