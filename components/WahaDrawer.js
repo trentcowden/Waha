@@ -76,7 +76,7 @@ function WahaDrawer (props) {
           />
           <DrawerItem
             iconName='bug'
-            text={props.translations.general.bug_report***REMOVED***
+            text={props.translations.general.feedback***REMOVED***
             onPress={() =>
               openBrowser('https://airtable.com/shrGQY4b3FSPprzmt')
             ***REMOVED***
@@ -123,7 +123,7 @@ function WahaDrawer (props) {
                 colors.chateau
               )***REMOVED***
             >
-              v0.9.2
+              v1.0.0
             </Text>
           </View>
         </SafeAreaView>

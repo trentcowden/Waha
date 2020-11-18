@@ -13,9 +13,10 @@ function ModalScreen (props) {
         isVisible={props.isVisible***REMOVED***
         hasBackdrop={true***REMOVED***
         onBackdropPress={props.hideModal***REMOVED***
+        onBackButtonPress={props.hideModal***REMOVED***
         backdropOpacity={0.3***REMOVED***
         onSwipeComplete={props.hideModal***REMOVED***
-        swipeDirection={['down']***REMOVED***
+        // swipeDirection={['down']***REMOVED***
         propagateSwipe={true***REMOVED***
         style={{
           flex: 1,

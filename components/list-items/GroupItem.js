@@ -1,5 +1,5 @@
 import React, { useState ***REMOVED*** from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
 import {
