@@ -1,4 +1,5 @@
 import { decode, encode ***REMOVED*** from 'base-64'
+import { Audio ***REMOVED*** from 'expo-av'
 import * as Font from 'expo-font'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import { StatusBar ***REMOVED*** from 'react-native'
@@ -27,6 +28,15 @@ export default function App () {
 
   useEffect(() => {
     loadFonts()
+    Audio.setAudioModeAsync({
+      playsInSilentModeIOS: true,
+      allowsRecordingIOS: false,
+      staysActiveInBackground: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      playThroughEarpieceAndroid: false
+    ***REMOVED***)
   ***REMOVED***, [])
 
   //+ FUNCTIONS

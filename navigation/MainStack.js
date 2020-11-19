@@ -229,7 +229,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.chateau,
-            fontFamily: props.font + '-medium'
+            fontFamily: 'roboto-medium'
           ***REMOVED***,
           gestureEnabled: false
         ***REMOVED******REMOVED***
