@@ -289,18 +289,6 @@ export function getSystemFont () {
   return systemFont
 ***REMOVED***
 
-// export function getI18nName (languageID) {
-//   var i18nName = ''
-//   languages.forEach(languageFamily => {
-//     languageFamily.data.forEach(language => {
-//       if (language.wahaID === languageID) {
-//         i18nName = language.i18nName
-//       ***REMOVED***
-//     ***REMOVED***)
-//   ***REMOVED***)
-//   return i18nName
-// ***REMOVED***
-
 export const keyColors = {
   0: '#ffe119',
   1: '#3cb44b',

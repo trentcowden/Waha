@@ -123,7 +123,8 @@ function MainStack (props) {
         component={SetTabs***REMOVED***
         options={{
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors.aquaHaze,
+            elevation: 0 // remove shadow on Android
           ***REMOVED***,
           headerTitle: () => (
             <Image

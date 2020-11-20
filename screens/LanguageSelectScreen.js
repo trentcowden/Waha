@@ -167,7 +167,7 @@ function LanguageSelectScreen (props) {
   var startButton = isListEmpty ? (
     <WahaButton
       type='inactive'
-      color={colors.chateau***REMOVED***
+      color={colors.aquaHaze***REMOVED***
       style={{
         marginHorizontal: 20,
         height: 68 * scaleMultiplier
@@ -195,13 +195,18 @@ function LanguageSelectScreen (props) {
   ) : (
     <WahaButton
       type='inactive'
-      color={colors.chateau***REMOVED***
+      color={colors.geyser***REMOVED***
       style={{
-        marginHorizontal: 20,
+        width: Dimensions.get('window').width - 40,
         height: 68 * scaleMultiplier
       ***REMOVED******REMOVED***
-      label={i18n.t('noInternet')***REMOVED***
+      label={''***REMOVED***
       useDefaultFont={true***REMOVED***
+      extraComponent={
+        <View>
+          <Icon name='cloud-slash' size={40***REMOVED*** color={colors.chateau***REMOVED*** />
+        </View>
+      ***REMOVED***
     />
   )
 

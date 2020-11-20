@@ -92,21 +92,12 @@ function SetInfoModal (props) {
           />
         ***REMOVED***
       />
-      {/* <View
-        style={{
-          width: '100%',
-          flex: 1,
-          alignItems: 'center'
-        ***REMOVED******REMOVED***
-        onStartShouldSetResponder={(): boolean => true***REMOVED***
-      > */***REMOVED***
       <FlatList
-        // nestedScrollEnabled
         keyExtractor={item => item.id***REMOVED***
         data={props.thisSet.lessons***REMOVED***
         renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
+        contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
       />
-      {/* </View> */***REMOVED***
     </ModalScreen>
   )
 ***REMOVED***

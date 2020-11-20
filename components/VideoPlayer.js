@@ -22,7 +22,7 @@ function VideoPlayer (props) {
       onPress={() => {
         if (!showVideoControls) {
           setShowVideoControls(true)
-          setTimeout(() => setShowVideoControls(false), 1000)
+          setTimeout(() => setShowVideoControls(false), 2000)
         ***REMOVED***
       ***REMOVED******REMOVED***
       style={{ width: '100%' ***REMOVED******REMOVED***
@@ -38,15 +38,6 @@ function VideoPlayer (props) {
           backgroundColor: colors.shark
         ***REMOVED******REMOVED***
       >
-        {/* <View
-          style={{
-            // width: Dimensions.get('window').width,
-            // height: (Dimensions.get('window').width * 9) / 16,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center'
-          ***REMOVED******REMOVED***
-        > */***REMOVED***
         <Video
           ref={ref => {
             setVideo(ref)
@@ -117,6 +108,9 @@ function VideoPlayer (props) {
           onLoadStart={() => props.setIsMediaLoaded(false)***REMOVED***
           onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
           onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
+            if (status === Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS) {
+              ScreenOrientation.lockAsync(props.lastPortraitOrientation)
+            ***REMOVED***
             props.setFullScreenStatus(fullscreenUpdate)
           ***REMOVED******REMOVED***
         />
