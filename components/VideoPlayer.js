@@ -74,25 +74,29 @@ function VideoPlayer (props) {
               props.setIsMediaLoaded(true)
             ***REMOVED***
 
-            // if we're buffering, turn play icon into activity indicator
-            // if (!status.isBuffering) props.setIsVideoBuffering(false)
-            // else if (status.isBuffering) props.setIsVideoBuffering(true)
-
-            // if video finishes, switch to last chapter
-
-            // if (
-            //   props.fullscreenStatus ===
-            //   Video.IOS_FULLSCREEN_UPDATE_PLAYER_DID_DISMISS
-            // )
-
-            // exit fullscreen once video finishes
+            // lock portrait and exit full screen once the video finishes
             if (
               status.didJustFinish &&
               props.fullscreenStatus ===
                 Video.IOS_FULLSCREEN_UPDATE_PLAYER_DID_PRESENT
             ) {
-              ScreenOrientation.lockAsync(props.lastPortraitOrientation)
-              props.video.dismissFullscreenPlayer()
+              ScreenOrientation.supportsOrientationLockAsync(
+                ScreenOrientation.OrientationLock.PORTRAIT
+              ).then(isSupported => {
+                if (isSupported) {
+                  ScreenOrientation.lockAsync(
+                    ScreenOrientation.OrientationLock.PORTRAIT
+                  ).then(() => {
+                    props.video.dismissFullscreenPlayer()
+                  ***REMOVED***)
+                ***REMOVED*** else {
+                  ScreenOrientation.lockAsync(
+                    ScreenOrientation.OrientationLock.PORTRAIT_UP
+                  ).then(() => {
+                    props.video.dismissFullscreenPlayer()
+                  ***REMOVED***)
+                ***REMOVED***
+              ***REMOVED***)
             ***REMOVED***
 
             if (status.didJustFinish && props.lessonType !== 'v')
@@ -108,8 +112,32 @@ function VideoPlayer (props) {
           onLoadStart={() => props.setIsMediaLoaded(false)***REMOVED***
           onLoad={() => props.setIsMediaLoaded(true)***REMOVED***
           onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
-            if (status === Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS) {
-              ScreenOrientation.lockAsync(props.lastPortraitOrientation)
+            switch (fullscreenUpdate) {
+              // lock video to landscape whenever you enter full screen
+              case Video.FULLSCREEN_UPDATE_PLAYER_WILL_PRESENT:
+                ScreenOrientation.lockAsync(
+                  ScreenOrientation.OrientationLock.LANDSCAPE
+                )
+                break
+              // lock video to portrait when we exit full screen
+              case Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS:
+                ScreenOrientation.supportsOrientationLockAsync(
+                  ScreenOrientation.OrientationLock.PORTRAIT
+                ).then(isSupported => {
+                  if (isSupported) {
+                    ScreenOrientation.lockAsync(
+                      ScreenOrientation.OrientationLock.PORTRAIT
+                    )
+                  ***REMOVED*** else {
+                    ScreenOrientation.lockAsync(
+                      ScreenOrientation.OrientationLock.PORTRAIT_UP
+                    )
+                  ***REMOVED***
+                ***REMOVED***)
+                break
+              case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
+                props.video.playAsync()
+                props.setIsMediaPlaying(true)
             ***REMOVED***
             props.setFullScreenStatus(fullscreenUpdate)
           ***REMOVED******REMOVED***
@@ -136,22 +164,23 @@ function VideoPlayer (props) {
           <View
             style={{
               width: '100%',
-              height: 65 * scaleMultiplier,
+              height: '100%',
               position: 'absolute',
-              alignSelf: 'flex-end',
-              backgroundColor: colors.shark + '50',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: colors.shark + '70'
             ***REMOVED******REMOVED***
           >
             <TouchableOpacity
-              style={{ alignSelf: 'flex-end' ***REMOVED******REMOVED***
+              style={{***REMOVED******REMOVED***
               onPress={() => {
                 video.presentFullscreenPlayer()
+                // props.navigateToFullscreen()
               ***REMOVED******REMOVED***
             >
               <Icon
                 name='fullscreen-enter'
-                size={50 * scaleMultiplier***REMOVED***
+                size={100 * scaleMultiplier***REMOVED***
                 color={colors.white***REMOVED***
               />
             </TouchableOpacity>
