@@ -2,7 +2,7 @@ import useInterval from '@use-it/interval'
 import { Audio, Video ***REMOVED*** from 'expo-av'
 import * as FileSystem from 'expo-file-system'
 import { useKeepAwake ***REMOVED*** from 'expo-keep-awake'
-import * as ScreenOrientation from 'expo-screen-orientation'
+import { DeviceMotion ***REMOVED*** from 'expo-sensors'
 import React, { useEffect, useRef, useState ***REMOVED*** from 'react'
 import {
   ActivityIndicator,
@@ -10,6 +10,7 @@ import {
   Animated,
   Dimensions,
   Image,
+  Platform,
   StyleSheet,
   Text,
   View
@@ -29,7 +30,6 @@ import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { BrandTypography ***REMOVED*** from '../styles/typography'
-
 function PlayScreen (props) {
   //+ AUDIO / VIDEO STATE
 
@@ -87,59 +87,59 @@ function PlayScreen (props) {
     Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS
   )
 
-  const [orientation, setOrientation] = useState()
+  // const [orientation, setOrientation] = useState()
 
-  useEffect(() => {
-    console.log(orientation)
-    ScreenOrientation.getOrientationAsync().then(orientation =>
-      setOrientation(orientation)
-    )
-  ***REMOVED***, [fullscreenStatus])
+  // useEffect(() => {
+  //   console.log(orientation)
+  //   ScreenOrientation.getOrientationAsync().then(orientation =>
+  //     setOrientation(orientation)
+  //   )
+  // ***REMOVED***, [fullscreenStatus])
 
-  // const [deviceRotation, setDeviceRotation] = useState({***REMOVED***)
+  const [deviceRotation, setDeviceRotation] = useState({***REMOVED***)
   // const [lastPortraitOrientation, setLastPortraitOrientation] = useState(
   //   ScreenOrientation.OrientationLock.PORTRAIT_UP
   // )
 
   // handle device rotation changes and set device orientation accordingly
-  // useEffect(() => {
-  //   if (deviceRotation) {
-  //     if (fullscreenStatus === Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS) {
-  // if (
-  //   video &&
-  //   trainingSource &&
-  //   deviceRotation &&
-  //   (deviceRotation.alpha > 1 || deviceRotation.alpha < -1) &&
-  //   (deviceRotation.gamma > 0.7 || deviceRotation.gamma < -0.7) &&
-  //   deviceRotation.beta > -0.2 &&
-  //   deviceRotation.beta < 0.2
-  // )
-  //   video.presentFullscreenPlayer()
-  // else
-  // if (deviceRotation.beta < -0.7) {
-  //   ScreenOrientation.supportsOrientationLockAsync(
-  //     ScreenOrientation.OrientationLock.PORTRAIT_DOWN
-  //   ).then(isSupported => {
-  //     if (isSupported) {
-  //       ScreenOrientation.lockAsync(
-  //         ScreenOrientation.OrientationLock.PORTRAIT_DOWN
-  //       )
-  //       setLastPortraitOrientation(
-  //         ScreenOrientation.OrientationLock.PORTRAIT_DOWN
-  //       )
-  //     ***REMOVED***
-  //   ***REMOVED***)
-  // ***REMOVED*** else if (deviceRotation.beta > 0.7) {
-  //   setLastPortraitOrientation(
-  //     ScreenOrientation.OrientationLock.PORTRAIT_UP
-  //   )
-  //   ScreenOrientation.lockAsync(
-  //     ScreenOrientation.OrientationLock.PORTRAIT_UP
-  //   )
-  // ***REMOVED***
-  //     ***REMOVED***
-  //   ***REMOVED***
-  // ***REMOVED***, [deviceRotation, video, trainingSource])
+  useEffect(() => {
+    if (deviceRotation && Platform.OS === 'ios') {
+      if (fullscreenStatus === Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS) {
+        if (
+          video &&
+          trainingSource &&
+          deviceRotation &&
+          (deviceRotation.alpha > 1 || deviceRotation.alpha < -1) &&
+          (deviceRotation.gamma > 0.7 || deviceRotation.gamma < -0.7) &&
+          deviceRotation.beta > -0.2 &&
+          deviceRotation.beta < 0.2
+        )
+          video.presentFullscreenPlayer()
+        // else
+        // if (deviceRotation.beta < -0.7) {
+        //   ScreenOrientation.supportsOrientationLockAsync(
+        //     ScreenOrientation.OrientationLock.PORTRAIT_DOWN
+        //   ).then(isSupported => {
+        //     if (isSupported) {
+        //       ScreenOrientation.lockAsync(
+        //         ScreenOrientation.OrientationLock.PORTRAIT_DOWN
+        //       )
+        //       setLastPortraitOrientation(
+        //         ScreenOrientation.OrientationLock.PORTRAIT_DOWN
+        //       )
+        //     ***REMOVED***
+        //   ***REMOVED***)
+        // ***REMOVED*** else if (deviceRotation.beta > 0.7) {
+        //   setLastPortraitOrientation(
+        //     ScreenOrientation.OrientationLock.PORTRAIT_UP
+        //   )
+        //   ScreenOrientation.lockAsync(
+        //     ScreenOrientation.OrientationLock.PORTRAIT_UP
+        //   )
+        // ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***
+  ***REMOVED***, [deviceRotation, video, trainingSource])
 
   // useEffect(() => {
   //   if (fullscreenStatus === Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT) {
@@ -208,14 +208,16 @@ function PlayScreen (props) {
     setSources()
 
     // check if we can get any device motion data and if so, add a listener
-    // DeviceMotion.isAvailableAsync().then(isAvailable => {
-    //   if (isAvailable) {
-    //     DeviceMotion.setUpdateInterval(1000)
-    //     DeviceMotion.addListener(({ rotation ***REMOVED***) => {
-    //       setDeviceRotation(rotation)
-    //     ***REMOVED***)
-    //   ***REMOVED***
-    // ***REMOVED***)
+    if (Platform.OS === 'ios') {
+      DeviceMotion.isAvailableAsync().then(isAvailable => {
+        if (isAvailable) {
+          DeviceMotion.setUpdateInterval(1000)
+          DeviceMotion.addListener(({ rotation ***REMOVED***) => {
+            setDeviceRotation(rotation)
+          ***REMOVED***)
+        ***REMOVED***
+      ***REMOVED***)
+    ***REMOVED***
 
     // when leaving the screen, cancel the interval timer and unload the audio
     //  file
@@ -642,6 +644,10 @@ function PlayScreen (props) {
     props.navigation.setOptions(getNavOptions())
 
     if (checkForFullyComplete()) {
+      logCompleteStorySet(
+        props.route.params.thisSet,
+        props.activeGroup.language
+      )
       setShowSetCompleteModal(true)
     ***REMOVED*** else {
       if (
