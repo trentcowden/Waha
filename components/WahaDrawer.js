@@ -129,7 +129,7 @@ function WahaDrawer (props) {
                 colors.chateau
               )***REMOVED***
             >
-              v1.0.3
+              v1.0.1
             </Text>
           </View>
         </SafeAreaView>
