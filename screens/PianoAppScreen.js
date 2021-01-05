@@ -15,7 +15,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/piano-stuff/Piano'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function PianoAppScreen (props) {
   //+ STATE
@@ -72,7 +72,7 @@ function PianoAppScreen (props) {
         />
         <Text
           style={[
-            BrandTypography(props, 'h1', 'medium', 'center', colors.shark),
+            StandardTypography(props, 'h1', 'medium', 'center', colors.shark),
             { paddingHorizontal: 10 ***REMOVED***
           ]***REMOVED***
         >
@@ -120,7 +120,7 @@ function PianoAppScreen (props) {
               ***REMOVED******REMOVED***
             >
               <Text
-                style={BrandTypography(
+                style={StandardTypography(
                   props,
                   'h2',
                   'regular',

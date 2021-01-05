@@ -3,7 +3,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 import Separator from '../standard/Separator'
 import WahaButton from '../standard/WahaButton'
 
@@ -17,7 +17,7 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={BrandTypography(
+          style={StandardTypography(
             props,
             'h3',
             'regular',
@@ -46,7 +46,7 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={BrandTypography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***
+          style={StandardTypography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***
         >
           {props.megabytes >= 0
             ? props.megabytes + ' ' + props.translations.storage.megabyte_label
@@ -54,7 +54,7 @@ function LanguageStorageItem (props) {
         </Text>
         <Text
           style={[
-            BrandTypography(props, 'h3', 'regular', 'left', colors.tuna),
+            StandardTypography(props, 'h3', 'regular', 'left', colors.tuna),
             {
               flex: 1,
               paddingHorizontal: 20

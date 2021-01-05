@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function WahaItem (props) {
   return props.onPress ? (
@@ -17,7 +17,7 @@ function WahaItem (props) {
       onPress={props.onPress***REMOVED***
     >
       <Text
-        style={BrandTypography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***
+        style={StandardTypography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***
       >
         {props.title***REMOVED***
       </Text>
@@ -34,7 +34,7 @@ function WahaItem (props) {
       ]***REMOVED***
     >
       <Text
-        style={BrandTypography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***
+        style={StandardTypography(props, 'h3', 'medium', 'left', colors.shark)***REMOVED***
       >
         {props.title***REMOVED***
       </Text>

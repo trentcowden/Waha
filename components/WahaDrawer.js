@@ -8,7 +8,7 @@ import DrawerItem from '../components/list-items/DrawerItem'
 import SmallDrawerItem from '../components/list-items/SmallDrawerItem'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function WahaDrawer (props) {
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
@@ -37,7 +37,13 @@ function WahaDrawer (props) {
           />
         </View>
         <Text
-          style={BrandTypography(props, 'h2', 'black', 'center', colors.white)***REMOVED***
+          style={StandardTypography(
+            props,
+            'h2',
+            'black',
+            'center',
+            colors.white
+          )***REMOVED***
           numberOfLines={2***REMOVED***
         >
           {props.activeGroup.name***REMOVED***
@@ -115,7 +121,7 @@ function WahaDrawer (props) {
             ***REMOVED******REMOVED***
           >
             <Text
-              style={BrandTypography(
+              style={StandardTypography(
                 props,
                 'd',
                 'regular',

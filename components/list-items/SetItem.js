@@ -7,7 +7,7 @@ import SVG from '../../assets/svg.js'
 import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
 import MessageModal from '../../modals/MessageModal'
 import { addSet ***REMOVED*** from '../../redux/actions/groupsActions'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 function SetItem (props) {
   //+ STATE
 
@@ -284,7 +284,7 @@ function SetItem (props) {
       >
         <Text
           style={[
-            BrandTypography(
+            StandardTypography(
               props,
               'd',
               'regular',
@@ -302,7 +302,7 @@ function SetItem (props) {
         </Text>
         <Text
           style={[
-            BrandTypography(
+            StandardTypography(
               props,
               'h3',
               'black',

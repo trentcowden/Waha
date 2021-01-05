@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function WahaItemDescription (props) {
   return (
@@ -15,7 +15,9 @@ function WahaItemDescription (props) {
         flexDirection: props.isRTL ? 'row-reverse' : 'row'
       ***REMOVED******REMOVED***
     >
-      <Text style={BrandTypography(props, 'p', 'regular', 'left', colors.oslo)***REMOVED***>
+      <Text
+        style={StandardTypography(props, 'p', 'regular', 'left', colors.oslo)***REMOVED***
+      >
         {props.text***REMOVED***
       </Text>
     </View>

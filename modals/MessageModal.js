@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-nati
 import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 // modal variant that shows some information
 function MessageModal (props) {
   var cancelButton = props.cancelText ? (
@@ -15,7 +15,9 @@ function MessageModal (props) {
       ***REMOVED******REMOVED***
       onPress={props.cancelOnPress***REMOVED***
     >
-      <Text style={BrandTypography(props, 'h2', 'medium', 'left', colors.red)***REMOVED***>
+      <Text
+        style={StandardTypography(props, 'h2', 'medium', 'left', colors.red)***REMOVED***
+      >
         {props.cancelText***REMOVED***
       </Text>
     </TouchableOpacity>
@@ -35,7 +37,7 @@ function MessageModal (props) {
         {props.children***REMOVED***
         <Text
           style={[
-            BrandTypography(props, 'h1', 'black', 'center', colors.shark),
+            StandardTypography(props, 'h1', 'black', 'center', colors.shark),
             { marginVertical: 10 ***REMOVED***
           ]***REMOVED***
         >
@@ -43,7 +45,7 @@ function MessageModal (props) {
         </Text>
         <Text
           style={[
-            BrandTypography(props, 'h3', 'medium', 'center', colors.shark),
+            StandardTypography(props, 'h3', 'medium', 'center', colors.shark),
             { paddingHorizontal: 20 ***REMOVED***
           ]***REMOVED***
         >
@@ -61,7 +63,7 @@ function MessageModal (props) {
           onPress={props.confirmOnPress***REMOVED***
         >
           <Text
-            style={BrandTypography(
+            style={StandardTypography(
               props,
               'h2',
               'medium',

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function ChapterButton (props) {
   // styles for the different modes
@@ -28,16 +28,22 @@ function ChapterButton (props) {
   ***REMOVED***
 
   const textStyles = {
-    active: BrandTypography(props, 'p', 'black', 'center', colors.white),
-    inactive: BrandTypography(
+    active: StandardTypography(props, 'p', 'black', 'center', colors.white),
+    inactive: StandardTypography(
       props,
       'p',
       'black',
       'center',
       props.primaryColor
     ),
-    downloading: BrandTypography(props, 'p', 'black', 'center', colors.chateau),
-    disabled: BrandTypography(props, 'p', 'black', 'center', colors.chateau)
+    downloading: StandardTypography(
+      props,
+      'p',
+      'black',
+      'center',
+      colors.chateau
+    ),
+    disabled: StandardTypography(props, 'p', 'black', 'center', colors.chateau)
   ***REMOVED***
 
   // get the icon name depending on the mode/if this button is active or not

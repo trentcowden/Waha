@@ -6,7 +6,17 @@ import {
   scaleMultiplier
 ***REMOVED*** from '../constants'
 
-export function BrandTypography (
+const lineSpacingStandard = {
+  roboto: 4,
+  tajawal: 8
+***REMOVED***
+
+const lineSpacingSystem = {
+  en: 4,
+  ar: 8
+***REMOVED***
+
+export function StandardTypography (
   props,
   fontSize,
   fontFamily,
@@ -38,7 +48,7 @@ export function BrandTypography (
     fontFamily: props.font ? families[fontFamily] : null,
     textAlign: alignments[textAlign],
     color: color,
-    lineHeight: sizes[fontSize] + 4
+    lineHeight: sizes[fontSize] + lineSpacingStandard[props.font]
   ***REMOVED***
 ***REMOVED***
 
@@ -86,7 +96,10 @@ export function SystemTypography (
         ? overrideFont + '-' + fontFamily
         : getSystemFont() + '-' + fontFamily,
       textAlign: alignments[textAlign],
-      color: color
+      color: color,
+      lineHeight: lineSpacingSystem[i18n.locale.slice(0, 2)]
+        ? sizes[fontSize] + lineSpacingSystem[i18n.locale.slice(0, 2)]
+        : null
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***
