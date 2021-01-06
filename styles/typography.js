@@ -7,13 +7,13 @@ import {
 ***REMOVED*** from '../constants'
 
 const lineSpacingByFont = {
-  roboto: 4,
-  tajawal: 8
+  roboto: 5,
+  tajawal: 7
 ***REMOVED***
 
 const lineSpacingBySystemLanguage = {
-  en: 4,
-  ar: 8
+  en: 5,
+  ar: 7
 ***REMOVED***
 
 export function StandardTypography (
