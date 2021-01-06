@@ -178,16 +178,22 @@ function GroupItem (props) {
           </Text>
           {getBookmarkText() === '' ? null : (
             <Text
-              style={StandardTypography(
+              maxFontSizeMultiplier={1.2***REMOVED***
+              style={[
+                StandardTypography(
+                  {
+                    font: props.database[thisGroup.language].font,
+                    isRTL: props.isRTL
+                  ***REMOVED***,
+                  'd',
+                  'regular',
+                  'left',
+                  colors.chateau
+                ),
                 {
-                  font: props.database[thisGroup.language].font,
-                  isRTL: props.isRTL
-                ***REMOVED***,
-                'd',
-                'regular',
-                'left',
-                colors.chateau
-              )***REMOVED***
+                  lineHeight: 12 * scaleMultiplier
+                ***REMOVED***
+              ]***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().set***REMOVED***
@@ -195,16 +201,21 @@ function GroupItem (props) {
           )***REMOVED***
           {getBookmarkText() === '' ? null : (
             <Text
-              style={StandardTypography(
+              style={[
+                StandardTypography(
+                  {
+                    font: props.database[thisGroup.language].font,
+                    isRTL: props.isRTL
+                  ***REMOVED***,
+                  'd',
+                  'regular',
+                  'left',
+                  colors.chateau
+                ),
                 {
-                  font: props.database[thisGroup.language].font,
-                  isRTL: props.isRTL
-                ***REMOVED***,
-                'd',
-                'regular',
-                'left',
-                colors.chateau
-              )***REMOVED***
+                  lineHeight: 12 * scaleMultiplier
+                ***REMOVED***
+              ]***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().lesson***REMOVED***
@@ -221,7 +232,7 @@ function GroupItem (props) {
 
 const styles = StyleSheet.create({
   groupListItemContainer: {
-    height: 85 * scaleMultiplier,
+    height: 80 * scaleMultiplier,
     // aspectRatio: 5,
     justifyContent: 'flex-start',
     flexDirection: 'row',
