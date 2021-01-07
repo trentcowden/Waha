@@ -176,29 +176,24 @@ function GroupItem (props) {
           >
             {props.groupName***REMOVED***
           </Text>
-          {getBookmarkText() === '' ? null : (
+          {/* {getBookmarkText() === '' ? null : (
             <Text
               maxFontSizeMultiplier={1.2***REMOVED***
-              style={[
-                StandardTypography(
-                  {
-                    font: props.database[thisGroup.language].font,
-                    isRTL: props.isRTL
-                  ***REMOVED***,
-                  'd',
-                  'regular',
-                  'left',
-                  colors.chateau
-                ),
+              style={StandardTypography(
                 {
-                  lineHeight: 12 * scaleMultiplier
-                ***REMOVED***
-              ]***REMOVED***
+                  font: props.database[thisGroup.language].font,
+                  isRTL: props.isRTL
+                ***REMOVED***,
+                'd',
+                'regular',
+                'left',
+                colors.chateau
+              )***REMOVED***
               numberOfLines={1***REMOVED***
             >
               {getBookmarkText().set***REMOVED***
             </Text>
-          )***REMOVED***
+          )***REMOVED*** */***REMOVED***
           {getBookmarkText() === '' ? null : (
             <Text
               style={[
@@ -213,7 +208,7 @@ function GroupItem (props) {
                   colors.chateau
                 ),
                 {
-                  lineHeight: 12 * scaleMultiplier
+                  // lineHeight: 12 * scaleMultiplier
                 ***REMOVED***
               ]***REMOVED***
               numberOfLines={1***REMOVED***

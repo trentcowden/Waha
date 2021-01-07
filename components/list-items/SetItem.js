@@ -4,7 +4,12 @@ import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-prog
 import { connect ***REMOVED*** from 'react-redux'
 import Icon from '../../assets/fonts/icons'
 import SVG from '../../assets/svg.js'
-import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  colors,
+  getSetInfo,
+  itemHeights,
+  scaleMultiplier
+***REMOVED*** from '../../constants'
 import MessageModal from '../../modals/MessageModal'
 import { addSet ***REMOVED*** from '../../redux/actions/groupsActions'
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
@@ -263,7 +268,10 @@ function SetItem (props) {
     <TouchableOpacity
       style={[
         styles.studySetItem,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        {
+          flexDirection: props.isRTL ? 'row-reverse' : 'row',
+          height: itemHeights[props.font].SetItem
+        ***REMOVED***
       ]***REMOVED***
       onPress={props.onSetSelect***REMOVED***
       // disable feedback if there's no onSetSelect
@@ -351,11 +359,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     flex: 1,
-    height: 100 * scaleMultiplier,
+    // height: 100 * scaleMultiplier,
     // aspectRatio: 4,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20
+    // borderWidth: 1
   ***REMOVED***,
   iconContainer: {
     flexDirection: 'column',
