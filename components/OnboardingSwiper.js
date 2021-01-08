@@ -9,7 +9,7 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { StandardTypography, SystemTypography ***REMOVED*** from '../styles/typography'
 import WahaButton from './standard/WahaButton'
 
@@ -58,14 +58,14 @@ function OnboardingSwiper (props) {
                   ? SystemTypography(
                       false,
                       'h2',
-                      'medium',
+                      'Bold',
                       'center',
                       colors.shark
                     )
                   : StandardTypography(
                       props,
                       'h2',
-                      'medium',
+                      'Bold',
                       'center',
                       colors.shark
                     ),
@@ -80,14 +80,14 @@ function OnboardingSwiper (props) {
                   ? SystemTypography(
                       false,
                       'h3',
-                      'regular',
+                      'Regular',
                       'center',
                       colors.chateau
                     )
                   : StandardTypography(
                       props,
                       'h3',
-                      'regular',
+                      'Regular',
                       'center',
                       colors.chateau
                     )
@@ -234,7 +234,8 @@ function mapStateToProps (state) {
   )[0]
   return activeGroup
     ? {
-        font: state.database[activeGroup.language].font
+        font: getLanguageFont(activeGroup.language),
+        activeGroup: activeGroup
       ***REMOVED***
     : {***REMOVED***
 ***REMOVED***

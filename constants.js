@@ -4,17 +4,18 @@ import { Dimensions, PixelRatio ***REMOVED*** from 'react-native'
 const fontScale =
   PixelRatio.getFontScale() >= 1.2 ? 1.2 : PixelRatio.getFontScale()
 const heightScaleModifier = 1 + (fontScale - 1) / 2
+
 export const scaleMultiplier =
   Dimensions.get('window').width > 400
     ? 1
     : Dimensions.get('window').width / 400
 
 export const itemHeights = {
-  roboto: {
+  Roboto: {
     LessonItem: 60 * heightScaleModifier,
     SetItem: 95 * heightScaleModifier
   ***REMOVED***,
-  tajawal: {
+  NotoSansArabic: {
     LessonItem: 83 * heightScaleModifier,
     SetItem: 108 * heightScaleModifier
   ***REMOVED***
@@ -254,7 +255,7 @@ export const languages = [
   {
     i18nName: 'english',
     languageCode: 'en',
-    font: 'roboto',
+    font: 'Roboto',
     isRTL: false,
     data: [
       {
@@ -269,7 +270,7 @@ export const languages = [
   {
     i18nName: 'arabic',
     languageCode: 'ar',
-    font: 'tajawal',
+    font: 'NotoSansArabic',
     isRTL: true,
     data: [
       {
@@ -294,13 +295,22 @@ export function getSystemIsRTL () {
 ***REMOVED***
 
 export function getSystemFont () {
-  systemFont = 'roboto'
+  systemFont = 'Roboto'
   languages.forEach(languageFamily => {
     if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
       systemFont = languageFamily.font
     ***REMOVED***
   ***REMOVED***)
   return systemFont
+***REMOVED***
+
+export function getLanguageFont (languageID) {
+  var languageFont
+  languages.forEach(languageFamily => {
+    if (languageFamily.data.some(language => language.wahaID === languageID))
+      languageFont = languageFamily.font
+  ***REMOVED***)
+  return languageFont
 ***REMOVED***
 
 export const keyColors = {

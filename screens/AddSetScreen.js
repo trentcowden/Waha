@@ -6,7 +6,12 @@ import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import BackButton from '../components/standard/BackButton'
 import Separator from '../components/standard/Separator'
-import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  colors,
+  getLanguageFont,
+  getSetInfo,
+  scaleMultiplier
+***REMOVED*** from '../constants'
 import SetInfoModal from '../modals/SetInfoModal'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
@@ -98,7 +103,7 @@ function AddSetScreen (props) {
         alignItems: 'center',
         paddingHorizontal: 20 * scaleMultiplier
       ***REMOVED******REMOVED***
-      textStyle={{ color: colors.oslo, fontFamily: props.font + '-regular' ***REMOVED******REMOVED***
+      textStyle={{ color: colors.oslo, fontFamily: props.font + '-Regular' ***REMOVED******REMOVED***
       activeTagStyle={{
         borderRadius: 20,
         // make primary color
@@ -107,7 +112,7 @@ function AddSetScreen (props) {
       ***REMOVED******REMOVED***
       activeTextStyle={{
         color: colors.white,
-        fontFamily: props.font + '-regular'
+        fontFamily: props.font + '-Regular'
       ***REMOVED******REMOVED***
     />
   )
@@ -225,7 +230,7 @@ function AddSetScreen (props) {
               style={StandardTypography(
                 props,
                 'p',
-                'regular',
+                'Regular',
                 'center',
                 colors.chateau
               )***REMOVED***
@@ -241,7 +246,7 @@ function AddSetScreen (props) {
         messageStyle={{
           color: colors.white,
           fontSize: 24 * scaleMultiplier,
-          fontFamily: props.font + '-black',
+          fontFamily: props.font + '-Black',
           textAlign: 'center'
         ***REMOVED******REMOVED***
         backgroundColor={colors.apple***REMOVED***
@@ -272,7 +277,7 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     translations: state.database[activeGroup.language].translations,
     isRTL: state.database[activeGroup.language].isRTL,
     activeDatabase: state.database[activeGroup.language],

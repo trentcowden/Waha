@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system'
 import React from 'react'
 import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
 import Separator from '../standard/Separator'
 import WahaButton from '../standard/WahaButton'
@@ -20,7 +20,7 @@ function LanguageStorageItem (props) {
           style={StandardTypography(
             props,
             'h3',
-            'regular',
+            'Regular',
             'left',
             colors.chateau
           )***REMOVED***
@@ -46,7 +46,7 @@ function LanguageStorageItem (props) {
         ]***REMOVED***
       >
         <Text
-          style={StandardTypography(props, 'h3', 'medium', 'left', colors.tuna)***REMOVED***
+          style={StandardTypography(props, 'h3', 'Bold', 'left', colors.tuna)***REMOVED***
         >
           {props.megabytes >= 0
             ? props.megabytes + ' ' + props.translations.storage.megabyte_label
@@ -54,7 +54,7 @@ function LanguageStorageItem (props) {
         </Text>
         <Text
           style={[
-            StandardTypography(props, 'h3', 'regular', 'left', colors.tuna),
+            StandardTypography(props, 'h3', 'Regular', 'left', colors.tuna),
             {
               flex: 1,
               paddingHorizontal: 20
@@ -70,7 +70,7 @@ function LanguageStorageItem (props) {
           width={92 * scaleMultiplier***REMOVED***
           onPress={props.clearDownloads***REMOVED***
           style={{ height: 45 * scaleMultiplier ***REMOVED******REMOVED***
-          textStyle={{ fontFamily: props.font + '-regular' ***REMOVED******REMOVED***
+          textStyle={{ fontFamily: props.font + '-Regular' ***REMOVED******REMOVED***
         />
       </View>
       <Separator />
@@ -122,9 +122,10 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations
+    translations: state.database[activeGroup.language].translations,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

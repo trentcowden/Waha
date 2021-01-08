@@ -2,7 +2,7 @@ import { Video ***REMOVED*** from 'expo-av'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import { Dimensions, StatusBar, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors ***REMOVED*** from '../constants'
+import { colors, getLanguageFont ***REMOVED*** from '../constants'
 
 function VideoScreen (props) {
   //+ STATE
@@ -76,7 +76,7 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
     security: state.security,
     mtUnlockAttempts: state.mtUnlockAttempts

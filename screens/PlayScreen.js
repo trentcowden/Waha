@@ -25,7 +25,12 @@ import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
 import BackButton from '../components/standard/BackButton'
 import VideoPlayer from '../components/VideoPlayer'
-import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  colors,
+  getLanguageFont,
+  getLessonInfo,
+  scaleMultiplier
+***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
@@ -699,7 +704,7 @@ function PlayScreen (props) {
   var titleSection = (
     <View style={styles.titlesContainer***REMOVED***>
       <Text
-        style={StandardTypography(props, 'h3', 'black', 'center', colors.shark)***REMOVED***
+        style={StandardTypography(props, 'h3', 'Black', 'center', colors.shark)***REMOVED***
         numberOfLines={1***REMOVED***
       >
         {props.route.params.thisLesson.title***REMOVED***
@@ -892,7 +897,7 @@ function mapStateToProps (state) {
     downloads: state.downloads,
     primaryColor: state.database[activeGroup.language].primaryColor,
     isRTL: state.database[activeGroup.language].isRTL,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     isConnected: state.network.isConnected
   ***REMOVED***
 ***REMOVED***

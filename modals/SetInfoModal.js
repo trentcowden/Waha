@@ -3,7 +3,7 @@ import { Dimensions, FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import WahaButton from '../components/standard/WahaButton'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 import ModalScreen from './ModalScreen'
@@ -31,7 +31,7 @@ function SetInfoModal (props) {
             style={StandardTypography(
               props,
               'h4',
-              'medium',
+              'Bold',
               'left',
               colors.shark
             )***REMOVED***
@@ -42,7 +42,7 @@ function SetInfoModal (props) {
             style={StandardTypography(
               props,
               'p',
-              'regular',
+              'Regular',
               'left',
               colors.chateau
             )***REMOVED***
@@ -65,7 +65,7 @@ function SetInfoModal (props) {
             style={StandardTypography(
               props,
               'h4',
-              'medium',
+              'Bold',
               'left',
               colors.shark
             )***REMOVED***
@@ -140,7 +140,7 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language)
   ***REMOVED***
 ***REMOVED***
 

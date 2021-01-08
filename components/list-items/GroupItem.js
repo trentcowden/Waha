@@ -1,7 +1,12 @@
 import React, { useState ***REMOVED*** from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  colors,
+  getLanguageFont,
+  getLessonInfo,
+  scaleMultiplier
+***REMOVED*** from '../../constants'
 import {
   changeActiveGroup,
   deleteGroup
@@ -164,11 +169,11 @@ function GroupItem (props) {
           <Text
             style={StandardTypography(
               {
-                font: props.database[thisGroup.language].font,
+                font: getLanguageFont(thisGroup.language),
                 isRTL: props.isRTL
               ***REMOVED***,
               'h3',
-              'black',
+              'Black',
               'left',
               colors.shark
             )***REMOVED***
@@ -185,7 +190,7 @@ function GroupItem (props) {
                   isRTL: props.isRTL
                 ***REMOVED***,
                 'd',
-                'regular',
+                'Regular',
                 'left',
                 colors.chateau
               )***REMOVED***
@@ -199,11 +204,11 @@ function GroupItem (props) {
               style={[
                 StandardTypography(
                   {
-                    font: props.database[thisGroup.language].font,
+                    font: getLanguageFont(thisGroup.language),
                     isRTL: props.isRTL
                   ***REMOVED***,
                   'd',
-                  'regular',
+                  'Regular',
                   'left',
                   colors.chateau
                 ),
@@ -273,7 +278,7 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     groups: state.groups,
     activeGroup: activeGroup,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     translations: state.database[activeGroup.language].translations
   ***REMOVED***
 ***REMOVED***

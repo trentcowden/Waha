@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function WahaItemDescription (props) {
@@ -16,7 +16,7 @@ function WahaItemDescription (props) {
       ***REMOVED******REMOVED***
     >
       <Text
-        style={StandardTypography(props, 'p', 'regular', 'left', colors.oslo)***REMOVED***
+        style={StandardTypography(props, 'p', 'Regular', 'left', colors.oslo)***REMOVED***
       >
         {props.text***REMOVED***
       </Text>
@@ -29,8 +29,9 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    font: state.database[activeGroup.language].font,
-    isRTL: state.database[activeGroup.language].isRTL
+    font: getLanguageFont(activeGroup.language),
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

@@ -3,7 +3,7 @@ import { Alert, Image, Keyboard, StyleSheet, Text, View ***REMOVED*** from 'reac
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/standard/BackButton'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
 import { setAreMobilizationToolsUnlocked ***REMOVED*** from '../redux/actions/areMobilizationToolsUnlockedActions'
 import {
@@ -76,7 +76,7 @@ function PasscodeScreen (props) {
     <View style={styles.screen***REMOVED***>
       <Text
         style={[
-          StandardTypography(props, 'h3', 'regular', 'center', colors.shark),
+          StandardTypography(props, 'h3', 'Regular', 'center', colors.shark),
           {
             marginVertical: 30 * scaleMultiplier,
             paddingHorizontal: 20
@@ -105,7 +105,7 @@ function PasscodeScreen (props) {
       />
       <Text
         style={[
-          StandardTypography(props, 'h3', 'regular', 'center', colors.red),
+          StandardTypography(props, 'h3', 'Regular', 'center', colors.red),
           {
             marginTop: 30 * scaleMultiplier,
             paddingHorizontal: 20
@@ -174,7 +174,7 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
     security: state.security,
     mtUnlockAttempts: state.mtUnlockAttempts

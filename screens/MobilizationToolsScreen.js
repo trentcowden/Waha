@@ -15,7 +15,7 @@ import Blurb from '../components/standard/Blurb'
 import Hero from '../components/standard/Hero'
 import Separator from '../components/standard/Separator'
 import WahaItem from '../components/standard/WahaItem'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function MobilizationToolsScreen (props) {
@@ -172,7 +172,7 @@ function MobilizationToolsScreen (props) {
                     style={StandardTypography(
                       props,
                       'h2',
-                      'black',
+                      'Black',
                       'left',
                       colors.shark
                     )***REMOVED***
@@ -214,7 +214,7 @@ function MobilizationToolsScreen (props) {
                       style={StandardTypography(
                         props,
                         'p',
-                        'regular',
+                        'Regular',
                         'center',
                         colors.chateau
                       )***REMOVED***
@@ -289,7 +289,7 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     groups: state.groups

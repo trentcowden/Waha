@@ -14,7 +14,7 @@ import {
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/piano-stuff/Piano'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
@@ -78,7 +78,7 @@ function PianoAppScreen (props) {
         />
         <Text
           style={[
-            StandardTypography(props, 'h1', 'medium', 'center', colors.shark),
+            StandardTypography(props, 'h1', 'Bold', 'center', colors.shark),
             { paddingHorizontal: 10 ***REMOVED***
           ]***REMOVED***
         >
@@ -129,7 +129,7 @@ function PianoAppScreen (props) {
                 style={StandardTypography(
                   props,
                   'h2',
-                  'regular',
+                  'Regular',
                   'center',
                   colors.white
                 )***REMOVED***
@@ -220,7 +220,8 @@ function mapStateToProps (state) {
   )[0]
   return {
     security: state.security,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations
   ***REMOVED***
 ***REMOVED***

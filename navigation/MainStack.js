@@ -13,7 +13,7 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import BackButton from '../components/standard/BackButton'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { analyticsMode, dbMode, reduxMode ***REMOVED*** from '../modeSwitch'
 import SetTabs from '../navigation/SetTabs'
 import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
@@ -148,7 +148,7 @@ function MainStack (props) {
                         StandardTypography(
                           props,
                           'p',
-                          'regular',
+                          'Regular',
                           'center',
                           colors.red
                         ),
@@ -195,7 +195,7 @@ function MainStack (props) {
                         StandardTypography(
                           props,
                           'p',
-                          'regular',
+                          'Regular',
                           'center',
                           colors.red
                         ),
@@ -230,7 +230,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.chateau,
-            fontFamily: 'roboto-medium'
+            fontFamily: 'Roboto-Bold'
           ***REMOVED***,
           gestureEnabled: false
         ***REMOVED******REMOVED***
@@ -252,7 +252,7 @@ function MainStack (props) {
           title: '',
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -266,7 +266,7 @@ function MainStack (props) {
           headerTitleStyle: SystemTypography(
             true,
             '',
-            'medium',
+            'Bold',
             'center',
             colors.shark
           ),
@@ -288,7 +288,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -302,7 +302,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -316,7 +316,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -330,7 +330,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -344,7 +344,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -357,7 +357,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -370,7 +370,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -383,7 +383,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -396,7 +396,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -409,7 +409,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-medium'
+            fontFamily: props.font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -461,7 +461,7 @@ function mapStateToProps (state) {
   return {
     isRTL: state.database[activeGroup.language].isRTL,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
     security: state.security
   ***REMOVED***

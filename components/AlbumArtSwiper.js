@@ -11,7 +11,7 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import SVG from '../assets/svg'
 import SwipeBar from '../components/SwipeBar'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function AlbumArtSwiper (props) {
@@ -179,7 +179,7 @@ function AlbumArtSwiper (props) {
                         style={StandardTypography(
                           props,
                           'd',
-                          'regular',
+                          'Regular',
                           'center',
                           colors.chateau
                         )***REMOVED***
@@ -190,7 +190,7 @@ function AlbumArtSwiper (props) {
                         style={StandardTypography(
                           props,
                           'd',
-                          'regular',
+                          'Regular',
                           'center',
                           colors.chateau
                         )***REMOVED***
@@ -283,13 +283,7 @@ function AlbumArtSwiper (props) {
     return (
       <View style={{ paddingHorizontal: 20 ***REMOVED******REMOVED***>
         <Text
-          style={StandardTypography(
-            props,
-            'h3',
-            'medium',
-            'left',
-            colors.shark
-          )***REMOVED***
+          style={StandardTypography(props, 'h3', 'Bold', 'left', colors.shark)***REMOVED***
         >
           {textList.item.header***REMOVED***
         </Text>
@@ -297,7 +291,7 @@ function AlbumArtSwiper (props) {
           style={StandardTypography(
             props,
             'h3',
-            'regular',
+            'Regular',
             'left',
             colors.shark
           )***REMOVED***
@@ -363,7 +357,7 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroup,
     activeDatabase: state.database[activeGroup.language],
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     translations: state.database[activeGroup.language].translations,
     isRTL: state.database[activeGroup.language].isRTL
   ***REMOVED***
