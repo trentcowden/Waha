@@ -11,6 +11,7 @@ import {
   Dimensions,
   Image,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   View
@@ -778,7 +779,7 @@ function PlayScreen (props) {
       {/* AUDIO CONTROLS */***REMOVED***
       {props.route.params.lessonType !== '' ? (
         isMediaLoaded ? (
-          <View style={styles.audioControlContainer***REMOVED***>
+          <SafeAreaView style={styles.audioControlContainer***REMOVED***>
             {props.route.params.lessonType !== 'v' &&
             props.route.params.lessonType !== 'a' ? (
               <ChapterSelect
@@ -804,11 +805,11 @@ function PlayScreen (props) {
                 playFromLocation(seekPosition + value)
               ***REMOVED******REMOVED***
             />
-          </View>
+          </SafeAreaView>
         ) : (
-          <View style={styles.audioControlContainer***REMOVED***>
+          <SafeAreaView style={styles.audioControlContainer***REMOVED***>
             <ActivityIndicator size='large' color={colors.shark***REMOVED*** />
-          </View>
+          </SafeAreaView>
         )
       ) : null***REMOVED***
 

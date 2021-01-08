@@ -51,49 +51,51 @@ function OnboardingSwiper (props) {
       <View style={{ flexDirection: 'row', flex: 1 ***REMOVED******REMOVED*** key={index***REMOVED***>
         <View style={styles.page***REMOVED***>
           <Image style={styles.image***REMOVED*** source={props.sources[index]***REMOVED*** />
-          <Text
-            style={[
-              props.useDefaultFont
-                ? SystemTypography(
-                    false,
-                    'h2',
-                    'medium',
-                    'center',
-                    colors.shark
-                  )
-                : StandardTypography(
-                    props,
-                    'h2',
-                    'medium',
-                    'center',
-                    colors.shark
-                  ),
-              { marginVertical: 10 ***REMOVED***
-            ]***REMOVED***
-          >
-            {props.titles[index]***REMOVED***
-          </Text>
-          <Text
-            style={
-              props.useDefaultFont
-                ? SystemTypography(
-                    false,
-                    'h3',
-                    'regular',
-                    'center',
-                    colors.chateau
-                  )
-                : StandardTypography(
-                    props,
-                    'h3',
-                    'regular',
-                    'center',
-                    colors.chateau
-                  )
-            ***REMOVED***
-          >
-            {props.messages[index]***REMOVED***
-          </Text>
+          <View>
+            <Text
+              style={[
+                props.useDefaultFont
+                  ? SystemTypography(
+                      false,
+                      'h2',
+                      'medium',
+                      'center',
+                      colors.shark
+                    )
+                  : StandardTypography(
+                      props,
+                      'h2',
+                      'medium',
+                      'center',
+                      colors.shark
+                    ),
+                { marginVertical: 10 ***REMOVED***
+              ]***REMOVED***
+            >
+              {props.titles[index]***REMOVED***
+            </Text>
+            <Text
+              style={
+                props.useDefaultFont
+                  ? SystemTypography(
+                      false,
+                      'h3',
+                      'regular',
+                      'center',
+                      colors.chateau
+                    )
+                  : StandardTypography(
+                      props,
+                      'h3',
+                      'regular',
+                      'center',
+                      colors.chateau
+                    )
+              ***REMOVED***
+            >
+              {props.messages[index]***REMOVED***
+            </Text>
+          </View>
         </View>
 
         {/* <View style={{***REMOVED******REMOVED***>
@@ -199,8 +201,15 @@ function OnboardingSwiper (props) {
 const styles = StyleSheet.create({
   image: {
     resizeMode: 'contain',
-    width: Dimensions.get('window').width - 100 * scaleMultiplier,
-    height: Dimensions.get('window').width - 100 * scaleMultiplier,
+    width:
+      (Dimensions.get('window').width - 100) *
+      scaleMultiplier *
+      scaleMultiplier,
+    height:
+      (Dimensions.get('window').width - 100) *
+      0.6 *
+      scaleMultiplier *
+      scaleMultiplier,
     borderRadius: 20
   ***REMOVED***,
   pager: {
@@ -209,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   ***REMOVED***,
   page: {
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20 * scaleMultiplier

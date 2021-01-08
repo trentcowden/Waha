@@ -141,16 +141,17 @@ function SecurityScreen (props) {
 
   return (
     <View style={styles.screen***REMOVED***>
-      <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
-
-      <Blurb
-        text={props.translations.security.security_mode_description_text***REMOVED***
-      />
       <ScrollView
         style={{
           width: '100%'
         ***REMOVED******REMOVED***
       >
+        <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
+
+        <Blurb
+          text={props.translations.security.security_mode_description_text***REMOVED***
+        />
+
         <Separator />
         <WahaItem
           title={props.translations.security.security_mode_picker_label***REMOVED***
