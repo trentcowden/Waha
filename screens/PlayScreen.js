@@ -35,7 +35,9 @@ import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+// import { logCompleteStorySet ***REMOVED*** from '../redux/LogEventFunctions'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
+
 /**
  * Component for the Play Screen, where the user listens to or watches the lesson.
  * @component
@@ -658,11 +660,11 @@ function PlayScreen (props) {
     props.navigation.setOptions(getNavOptions())
 
     if (checkForFullyComplete()) {
-      logCompleteStorySet(
-        props.route.params.thisSet,
-        props.activeGroup.language
-      )
       setShowSetCompleteModal(true)
+      // logCompleteStorySet(
+      //   props.route.params.thisSet,
+      //   props.activeGroup.language
+      // )
     ***REMOVED*** else {
       if (
         !thisSetProgress.includes(
