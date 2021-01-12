@@ -18,8 +18,9 @@ import {
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function StorySetsScreen ({
-  route: { name: routeName ***REMOVED***,
   navigation: { navigate ***REMOVED***,
+  route: { name: routeName ***REMOVED***,
+  // passed from redux
   activeDatabase,
   isRTL,
   activeGroup,
@@ -99,7 +100,6 @@ function StorySetsScreen ({
     return (
       <SetItem
         thisSet={item***REMOVED***
-        isSmall={false***REMOVED***
         mode='shown'
         onSetSelect={() =>
           navigate('Lessons', {

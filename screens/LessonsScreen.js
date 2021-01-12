@@ -23,16 +23,20 @@ import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 // import { logCompleteStorySet ***REMOVED*** from '../redux/LogEventFunctions'
 
 function LessonsScreen ({
+  navigation: { goBack, setOptions, navigate ***REMOVED***,
+  route: {
+    params: { thisSet ***REMOVED***
+  ***REMOVED***,
+  // passed from redux
   downloads,
   isRTL,
   activeDatabase,
   activeGroup,
   translations,
   font,
-  navigation: { goBack, setOptions ***REMOVED***,
-  route: {
-    params: { thisSet ***REMOVED***
-  ***REMOVED***
+  downloadMedia,
+  toggleComplete,
+  removeDownload
 ***REMOVED***) {
   //+ STATE
 
@@ -65,24 +69,24 @@ function LessonsScreen ({
           source={{
             uri:
               FileSystem.documentDirectory +
-              props.activeGroup.language +
+              activeGroup.language +
               '-header.png'
           ***REMOVED******REMOVED***
         />
       ),
-      headerRight: props.isRTL
-        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+      headerRight: isRTL
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>,
-      headerLeft: props.isRTL
+      headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />
     ***REMOVED***
   ***REMOVED***
 
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
   ***REMOVED***, [])
 
   //+ FUNCTIONS
@@ -92,7 +96,7 @@ function LessonsScreen ({
     var whichLessonsDownloaded = {***REMOVED***
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
       .then(contents => {
-        props.route.params.thisSet.lessons.forEach(lesson => {
+        thisSet.lessons.forEach(lesson => {
           if (contents.includes(lesson.id + '.mp3'))
             whichLessonsDownloaded[lesson.id] = true
           if (contents.includes(lesson.id + 'v.mp4')) {
@@ -104,21 +108,17 @@ function LessonsScreen ({
       .then(whichLessonsDownloaded => {
         setDownloadsInFileSystem(whichLessonsDownloaded)
       ***REMOVED***)
-  ***REMOVED***, [props.downloads])
+  ***REMOVED***, [downloads])
 
   //- whenever progress or bookmarks update, update the progress and bookmarks for this set
   useEffect(() => {
     setThisSetProgress(
-      props.activeGroup.addedSets.filter(
-        set => set.id === props.route.params.thisSet.id
-      )[0].progress
+      activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].progress
     )
     setThisSetBookmark(
-      props.activeGroup.addedSets.filter(
-        set => set.id === props.route.params.thisSet.id
-      )[0].bookmark
+      activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].bookmark
     )
-  ***REMOVED***, [props.activeGroup.addedSets, props.activeGroup.setBookmark])
+  ***REMOVED***, [activeGroup.addedSets, activeGroup.setBookmark])
 
   //- gets the type of a lesson in string form
   //! note: not stored in db for ssot purposes
@@ -173,17 +173,16 @@ function LessonsScreen ({
     switch (getLessonType(lesson)) {
       case 'qa':
       case 'a':
-        if (props.downloads[lesson.id]) return true
+        if (downloads[lesson.id]) return true
         else return false
         break
       case 'qav':
-        if (props.downloads[lesson.id] && props.downloads[lesson.id + 'v'])
-          return true
+        if (downloads[lesson.id] && downloads[lesson.id + 'v']) return true
         else return false
         break
       case 'qv':
       case 'v':
-        if (props.downloads[lesson.id + 'v']) return true
+        if (downloads[lesson.id + 'v']) return true
         else return false
         break
     ***REMOVED***
@@ -194,19 +193,19 @@ function LessonsScreen ({
     switch (getLessonType(activeLessonInModal)) {
       case 'qa':
       case 'a':
-        props.downloadMedia(
+        downloadMedia(
           'audio',
           activeLessonInModal.id,
           getLessonInfo('audioSource', activeLessonInModal.id)
         )
         break
       case 'qav':
-        props.downloadMedia(
+        downloadMedia(
           'audio',
           activeLessonInModal.id,
           getLessonInfo('audioSource', activeLessonInModal.id)
         )
-        props.downloadMedia(
+        downloadMedia(
           'video',
           activeLessonInModal.id,
           getLessonInfo('videoSource', activeLessonInModal.id)
@@ -214,7 +213,7 @@ function LessonsScreen ({
         break
       case 'qv':
       case 'v':
-        props.downloadMedia(
+        downloadMedia(
           'video',
           activeLessonInModal.id,
           getLessonInfo('videoSource', activeLessonInModal.id)
@@ -249,8 +248,8 @@ function LessonsScreen ({
         break
     ***REMOVED***
 
-    props.removeDownload(activeLessonInModal.id)
-    props.removeDownload(activeLessonInModal.id + 'v')
+    removeDownload(activeLessonInModal.id)
+    removeDownload(activeLessonInModal.id + 'v')
     hideModals()
   ***REMOVED***
 
@@ -260,7 +259,7 @@ function LessonsScreen ({
   //-   share/mark it as complete
   function onLessonSwipeBegin (data) {
     setActiveLessonInModal(
-      props.route.params.thisSet.lessons.filter(
+      thisSet.lessons.filter(
         lesson => getLessonInfo('index', lesson.id) === parseInt(data)
       )[0]
     )
@@ -268,13 +267,12 @@ function LessonsScreen ({
 
   function checkForFullyComplete () {
     if (
-      thisSetProgress.length ===
-        props.route.params.thisSet.lessons.length - 1 &&
+      thisSetProgress.length === thisSet.lessons.length - 1 &&
       !thisSetProgress.includes(getLessonInfo('index', activeLessonInModal.id))
     ) {
       // logCompleteStorySet(
-      //   props.route.params.thisSet,
-      //   props.activeGroup.language
+      //   thisSet,
+      //   activeGroup.language
       // )
       setShowSetCompleteModal(true)
     ***REMOVED***
@@ -283,11 +281,7 @@ function LessonsScreen ({
   //- marks a lesson as complete from a swipe and closes the row
   function markLessonAsCompleteFromSwipe (data) {
     if (data.isActivated) {
-      props.toggleComplete(
-        props.activeGroup.name,
-        props.route.params.thisSet,
-        parseInt(data.key)
-      )
+      toggleComplete(activeGroup.name, thisSet, parseInt(data.key))
 
       // check if we just fully completed the set
       checkForFullyComplete()
@@ -301,9 +295,9 @@ function LessonsScreen ({
       <LessonItem
         thisLesson={item***REMOVED***
         onLessonSelect={() =>
-          props.navigation.navigate('Play', {
+          navigate('Play', {
             thisLesson: item,
-            thisSet: props.route.params.thisSet,
+            thisSet: thisSet,
             // thisSetProgress: thisSetProgress,
             isDownloaded: getIsLessonDownloaded(item),
             isDownloading: getIsLessonDownloading(item),
@@ -329,9 +323,9 @@ function LessonsScreen ({
           getLessonInfo('index', data.item.id)
         )***REMOVED***
         toggleComplete={() => {
-          props.toggleComplete(
-            props.activeGroup.name,
-            props.route.params.thisSet,
+          toggleComplete(
+            activeGroup.name,
+            thisSet,
             getLessonInfo('index', data.item.id)
           )
           checkForFullyComplete()
@@ -351,14 +345,14 @@ function LessonsScreen ({
         style={[
           styles.studySetItemContainer,
           {
-            height: itemHeights[props.font].SetItem
+            height: itemHeights[font].SetItem
           ***REMOVED***
         ]***REMOVED***
       >
-        <SetItem thisSet={props.route.params.thisSet***REMOVED*** mode='lessons_screen' />
+        <SetItem thisSet={thisSet***REMOVED*** mode='lessons_screen' />
       </View>
       <SwipeListView
-        data={props.route.params.thisSet.lessons***REMOVED***
+        data={thisSet.lessons***REMOVED***
         renderItem={renderLessonItem***REMOVED***
         ListFooterComponent={() => <View style={{ height: 30 ***REMOVED******REMOVED*** />***REMOVED***
         keyExtractor={item => getLessonInfo('index', item.id).toString()***REMOVED***
@@ -378,14 +372,14 @@ function LessonsScreen ({
         stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
         stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
         onLeftActionStatusChange={
-          props.isRTL
+          isRTL
             ? data => setShowShareModal(true)
             : data => {
                 markLessonAsCompleteFromSwipe(data)
               ***REMOVED***
         ***REMOVED***
         onRightActionStatusChange={
-          props.isRTL
+          isRTL
             ? data => markLessonAsCompleteFromSwipe(data)
             : data => setShowShareModal(true)
         ***REMOVED***
@@ -396,37 +390,37 @@ function LessonsScreen ({
       <OptionsModal
         isVisible={showDownloadLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={props.translations.general.cancel***REMOVED***
+        closeText={translations.general.cancel***REMOVED***
       >
         <OptionsModalButton
-          title={props.translations.lessons.popups.download_lesson_button_label***REMOVED***
+          title={translations.lessons.popups.download_lesson_button_label***REMOVED***
           onPress={downloadLessonFromModal***REMOVED***
         />
       </OptionsModal>
       <OptionsModal
         isVisible={showDeleteLessonModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={props.translations.general.cancel***REMOVED***
+        closeText={translations.general.cancel***REMOVED***
       >
         <OptionsModalButton
-          title={props.translations.lessons.popups.delete_lesson_button_label***REMOVED***
+          title={translations.lessons.popups.delete_lesson_button_label***REMOVED***
           onPress={deleteLessonFromModal***REMOVED***
         />
       </OptionsModal>
       <ShareModal
         isVisible={showShareModal***REMOVED***
         hideModal={hideModals***REMOVED***
-        closeText={props.translations.general.close***REMOVED***
+        closeText={translations.general.close***REMOVED***
         lesson={activeLessonInModal***REMOVED***
         lessonType={getLessonType(activeLessonInModal)***REMOVED***
-        set={props.route.params.thisSet***REMOVED***
+        set={thisSet***REMOVED***
       />
       <MessageModal
         isVisible={showSetCompleteModal***REMOVED***
         hideModal={() => setShowSetCompleteModal(false)***REMOVED***
-        title={props.translations.general.popups.set_complete_title***REMOVED***
-        body={props.translations.general.popups.set_complete_message***REMOVED***
-        confirmText={props.translations.general.got_it***REMOVED***
+        title={translations.general.popups.set_complete_title***REMOVED***
+        body={translations.general.popups.set_complete_message***REMOVED***
+        confirmText={translations.general.got_it***REMOVED***
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
         ***REMOVED******REMOVED***

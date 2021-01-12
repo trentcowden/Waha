@@ -14,7 +14,20 @@ import {
 import MessageModal from '../../modals/MessageModal'
 import { addSet ***REMOVED*** from '../../redux/actions/groupsActions'
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
-function SetItem (props) {
+function SetItem ({
+  // passed from parent
+  mode,
+  thisSet,
+  onSetSelect,
+  // passed from redux
+  isRTL,
+  activeDatabase,
+  primaryColor,
+  font,
+  activeGroup,
+  translations,
+  addSet
+***REMOVED***) {
   //+ STATE
 
   // keeps track of the number of completed lessons in this set
@@ -37,13 +50,13 @@ function SetItem (props) {
   //- sets components of the set items based on the type prop
   useEffect(() => {
     // big switch statement that renders the 2 dynamic components (the big icon,
-    // and the action button) of a set item based on props.mode
+    // and the action button) of a set item based on mode
     // 1. SHOWN is for sets that have been added to the set screen
     // 2. LESSONLIST is for the set component on the lesson list screen
     // 3. ADDSET is for sets that have not been added and live on the add set screen
     // 4. SETINFO is for the set on the top of the setinfo screen
 
-    switch (props.mode) {
+    switch (mode) {
       case 'shown':
         setProgress()
         setIcon(
@@ -52,9 +65,7 @@ function SetItem (props) {
               size={78 * scaleMultiplier***REMOVED***
               width={7 * scaleMultiplier***REMOVED***
               fill={progressPercentage * 100***REMOVED***
-              tintColor={
-                fullyCompleted ? props.primaryColor + '50' : props.primaryColor
-              ***REMOVED***
+              tintColor={fullyCompleted ? primaryColor + '50' : primaryColor***REMOVED***
               rotation={0***REMOVED***
               backgroundColor={colors.white***REMOVED***
             >
@@ -67,7 +78,7 @@ function SetItem (props) {
                   ***REMOVED******REMOVED***
                 >
                   <SVG
-                    name={props.thisSet.iconName***REMOVED***
+                    name={thisSet.iconName***REMOVED***
                     width={70 * scaleMultiplier***REMOVED***
                     height={70 * scaleMultiplier***REMOVED***
                     fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
@@ -90,14 +101,14 @@ function SetItem (props) {
             <View style={styles.actionContainer***REMOVED***>
               <Icon
                 name={
-                  props.thisSet.id === props.activeGroup.setBookmark
-                    ? props.isRTL
+                  thisSet.id === activeGroup.setBookmark
+                    ? isRTL
                       ? 'triangle-left'
                       : 'triangle-right'
                     : null
                 ***REMOVED***
                 size={30 * scaleMultiplier***REMOVED***
-                color={props.primaryColor***REMOVED***
+                color={primaryColor***REMOVED***
               />
             </View>
           )
@@ -111,9 +122,7 @@ function SetItem (props) {
               size={78 * scaleMultiplier***REMOVED***
               width={7 * scaleMultiplier***REMOVED***
               fill={progressPercentage * 100***REMOVED***
-              tintColor={
-                fullyCompleted ? props.primaryColor + '50' : props.primaryColor
-              ***REMOVED***
+              tintColor={fullyCompleted ? primaryColor + '50' : primaryColor***REMOVED***
               rotation={0***REMOVED***
               backgroundColor={colors.white***REMOVED***
             >
@@ -126,7 +135,7 @@ function SetItem (props) {
                   ***REMOVED******REMOVED***
                 >
                   <SVG
-                    name={props.thisSet.iconName***REMOVED***
+                    name={thisSet.iconName***REMOVED***
                     width={70 * scaleMultiplier***REMOVED***
                     height={70 * scaleMultiplier***REMOVED***
                     fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
@@ -153,7 +162,7 @@ function SetItem (props) {
             ]***REMOVED***
           >
             <SVG
-              name={props.thisSet.iconName***REMOVED***
+              name={thisSet.iconName***REMOVED***
               width={80 * scaleMultiplier***REMOVED***
               height={80 * scaleMultiplier***REMOVED***
               fill={colors.tuna***REMOVED***
@@ -163,9 +172,9 @@ function SetItem (props) {
         setAction(
           <View style={styles.actionContainer***REMOVED***>
             <Icon
-              name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+              name={isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
               size={30 * scaleMultiplier***REMOVED***
-              color={props.primaryColor***REMOVED***
+              color={primaryColor***REMOVED***
             />
           </View>
         )
@@ -185,7 +194,7 @@ function SetItem (props) {
             ]***REMOVED***
           >
             <SVG
-              name={props.thisSet.iconName***REMOVED***
+              name={thisSet.iconName***REMOVED***
               width={80 * scaleMultiplier***REMOVED***
               height={80 * scaleMultiplier***REMOVED***
               fill={colors.tuna***REMOVED***
@@ -200,18 +209,18 @@ function SetItem (props) {
     //  changes
     progressPercentage,
     fullyCompleted,
-    props.activeGroup.setBookmark,
-    props.activeGroup.addedSets,
-    props.isRTL
+    activeGroup.setBookmark,
+    activeGroup.addedSets,
+    isRTL
   ])
 
   //- sets the progress through this set
   function setProgress () {
-    var setLength = props.thisSet.lessons.length
+    var setLength = thisSet.lessons.length
     // set the percentage through a set
     setProgressPercentage(
-      props.activeGroup.addedSets.filter(set => set.id === props.thisSet.id)[0]
-        .progress.length / setLength
+      activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].progress
+        .length / setLength
     )
   ***REMOVED***
 
@@ -229,11 +238,10 @@ function SetItem (props) {
     ***REMOVED*** else setFullyCompleted(false)
 
     // get the set AFTER the one that you're setting progress for
-    var nextSet = props.activeDatabase.sets.filter(
+    var nextSet = activeDatabase.sets.filter(
       dbSet =>
         getSetInfo('category', dbSet.id) === 'foundational' &&
-        getSetInfo('index', dbSet.id) ===
-          getSetInfo('index', props.thisSet.id) + 1
+        getSetInfo('index', dbSet.id) === getSetInfo('index', thisSet.id) + 1
     )[0]
 
     // we want to automatically add the next set if the next set exists AND
@@ -242,20 +250,18 @@ function SetItem (props) {
         // we've completed 85% of a set AND
         progressPercentage > 0.85 &&
         // this set is a core set AND
-        getSetInfo('category', props.thisSet.id) === 'foundational' &&
+        getSetInfo('category', thisSet.id) === 'foundational' &&
         // the next set after this one hasn't already been added AND
-        !props.activeGroup.addedSets.some(
-          addedSet => addedSet.id === nextSet.id
-        )
+        !activeGroup.addedSets.some(addedSet => addedSet.id === nextSet.id)
       ) {
-        props.addSet(
-          props.activeGroup.name,
-          props.activeDatabase.sets
+        addSet(
+          activeGroup.name,
+          activeDatabase.sets
             .filter(set => getSetInfo('category', set.id) === 'foundational')
             .filter(
               set =>
                 getSetInfo('index', set.id) ===
-                getSetInfo('index', props.thisSet.id) + 1
+                getSetInfo('index', thisSet.id) + 1
             )[0]
         )
         setShowUnlockModal(true)
@@ -270,13 +276,13 @@ function SetItem (props) {
       style={[
         styles.studySetItem,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row',
-          height: itemHeights[props.font].SetItem
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          height: itemHeights[font].SetItem
         ***REMOVED***
       ]***REMOVED***
-      onPress={props.onSetSelect***REMOVED***
+      onPress={onSetSelect***REMOVED***
       // disable feedback if there's no onSetSelect
-      activeOpacity={props.onSetSelect ? 0.2 : 1***REMOVED***
+      activeOpacity={onSetSelect ? 0.2 : 1***REMOVED***
     >
       {/* large icon rendered earlier */***REMOVED***
       {icon***REMOVED***
@@ -286,15 +292,15 @@ function SetItem (props) {
         style={[
           styles.titleContainer,
           {
-            marginRight: props.isRTL ? 20 : 0,
-            marginLeft: props.isRTL ? 0 : 20
+            marginRight: isRTL ? 20 : 0,
+            marginLeft: isRTL ? 0 : 20
           ***REMOVED***
         ]***REMOVED***
       >
         <Text
           style={[
             StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'd',
               'Regular',
               'left',
@@ -307,12 +313,12 @@ function SetItem (props) {
           ]***REMOVED***
           numberOfLines={1***REMOVED***
         >
-          {props.thisSet.subtitle***REMOVED***
+          {thisSet.subtitle***REMOVED***
         </Text>
         <Text
           style={[
             StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'h3',
               'Black',
               'left',
@@ -325,7 +331,7 @@ function SetItem (props) {
           ]***REMOVED***
           numberOfLines={2***REMOVED***
         >
-          {props.thisSet.title***REMOVED***
+          {thisSet.title***REMOVED***
         </Text>
       </View>
 
@@ -334,9 +340,9 @@ function SetItem (props) {
       <MessageModal
         isVisible={showUnlockModal***REMOVED***
         hideModal={() => setShowUnlockModal(false)***REMOVED***
-        title={props.translations.general.popups.new_story_set_unlocked_title***REMOVED***
-        body={props.translations.general.popups.new_story_set_unlocked_message***REMOVED***
-        confirmText={props.translations.general.got_it***REMOVED***
+        title={translations.general.popups.new_story_set_unlocked_title***REMOVED***
+        body={translations.general.popups.new_story_set_unlocked_message***REMOVED***
+        confirmText={translations.general.got_it***REMOVED***
         confirmOnPress={() => setShowUnlockModal(false)***REMOVED***
       >
         <Image
@@ -411,39 +417,3 @@ function mapDispatchToProps (dispatch) {
 ***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetItem)
-
-// case 'folder':
-//   setIcon(
-//     <View style={styles.iconContainer***REMOVED***>
-//       <SVG
-//         name={props.thisSet.icon***REMOVED***
-//         width={80 * scaleMultiplier***REMOVED***
-//         height={80 * scaleMultiplier***REMOVED***
-//         fill='#1D1E20'
-//       />
-//     </View>
-//   )
-//   setAction(
-//     <View style={styles.actionContainer***REMOVED***>
-//       <Icon
-//         name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-//         size={30 * scaleMultiplier***REMOVED***
-//         color={props.primaryColor***REMOVED***
-//       />
-//     </View>
-//   )
-//   setInfo()
-//   // INFO BUTTON (keep for later)
-//   // <TouchableOpacity
-//   //   style={[
-//   //     styles.actionContainer,
-//   //     {
-//   //       marginRight: props.isRTL ? 0 : 10,
-//   //       marginLeft: props.isRTL ? 10 : 0
-//   //     ***REMOVED***
-//   //   ]***REMOVED***
-//   //   onPress={() => {***REMOVED******REMOVED***
-//   // >
-//   //   <Icon name='info' size={30 * scaleMultiplier***REMOVED*** color={colors.chateau***REMOVED*** />
-//   // </TouchableOpacity>
-//   break

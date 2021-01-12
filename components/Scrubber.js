@@ -3,27 +3,35 @@ import React from 'react'
 import { StyleSheet, View ***REMOVED*** from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
 import { colors ***REMOVED*** from '../constants'
+
 // scrubber component rendered on play screen
-function Scrubber (props) {
+function Scrubber ({
+  // passed from parent
+  value,
+  onSlidingComplete,
+  onValueChange,
+  maximumValue,
+  seekPosition
+***REMOVED***) {
   //+ RENDER
 
   return (
     <View style={styles.scrubberContainer***REMOVED***>
       <View style={styles.scrubber***REMOVED***>
         <Slider
-          value={props.value***REMOVED***
-          onSlidingComplete={value => props.onSlidingComplete(value)***REMOVED***
-          onValueChange={props.onValueChange***REMOVED***
+          value={value***REMOVED***
+          onSlidingComplete={value => onSlidingComplete(value)***REMOVED***
+          onValueChange={onValueChange***REMOVED***
           minimumValue={0***REMOVED***
-          maximumValue={props.maximumValue***REMOVED***
+          maximumValue={maximumValue***REMOVED***
           step={100***REMOVED***
           minimumTrackTintColor={colors.tuna***REMOVED***
           thumbTintColor={colors.tuna***REMOVED***
         />
       </View>
       <View style={styles.timeInfo***REMOVED***>
-        <TimeDisplay time={props.seekPosition***REMOVED*** max={props.maximumValue***REMOVED*** />
-        <TimeDisplay time={props.maximumValue***REMOVED*** max={props.maximumValue***REMOVED*** />
+        <TimeDisplay time={seekPosition***REMOVED*** max={maximumValue***REMOVED*** />
+        <TimeDisplay time={maximumValue***REMOVED*** max={maximumValue***REMOVED*** />
       </View>
     </View>
   )

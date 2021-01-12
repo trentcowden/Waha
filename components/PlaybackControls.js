@@ -3,12 +3,19 @@ import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 // play, pause, and skip controls for play screen
-function PlaybackControls (props) {
+function PlaybackControls ({
+  // passed from parent
+  isMediaPlaying,
+  onPlayPress,
+  onSkipPress,
+  // passed from redux
+  primaryColor
+***REMOVED***) {
   //+ RENDER
 
   return (
     <View style={styles.playPauseSkipContainer***REMOVED***>
-      {props.hasHomework ? (
+      {/* {hasHomework ? (
         <View
           style={{
             width: '100%',
@@ -18,15 +25,15 @@ function PlaybackControls (props) {
         >
           <TouchableOpacity
             style={{ position: 'absolute', paddingHorizontal: 20 ***REMOVED******REMOVED***
-            onPress={props.showHomeworkModal***REMOVED***
+            onPress={showHomeworkModal***REMOVED***
           >
             <Icon name='list' size={40 * scaleMultiplier***REMOVED*** color={colors.tuna***REMOVED*** />
           </TouchableOpacity>
         </View>
-      ) : null***REMOVED***
+      ) : null***REMOVED*** */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
-        onPress={() => props.onSkipPress(-10000)***REMOVED***
+        onPress={() => onSkipPress(-10000)***REMOVED***
       >
         <Icon
           name='skip-back'
@@ -34,7 +41,7 @@ function PlaybackControls (props) {
           color={colors.tuna***REMOVED***
         />
       </TouchableOpacity>
-      {/* {props.isVideoBuffering ? (
+      {/* {isVideoBuffering ? (
         <View
           style={{
             width: 101 * scaleMultiplier,
@@ -48,18 +55,18 @@ function PlaybackControls (props) {
       ) : ( */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
-        onPress={props.onPlayPress***REMOVED***
+        onPress={onPlayPress***REMOVED***
       >
         <Icon
-          name={props.isMediaPlaying ? 'pause' : 'play'***REMOVED***
+          name={isMediaPlaying ? 'pause' : 'play'***REMOVED***
           size={100 * scaleMultiplier***REMOVED***
-          color={props.primaryColor***REMOVED***
+          color={primaryColor***REMOVED***
         />
       </TouchableOpacity>
       {/* )***REMOVED*** */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
-        onPress={() => props.onSkipPress(10000)***REMOVED***
+        onPress={() => onSkipPress(10000)***REMOVED***
       >
         <Icon
           name='skip-forward'

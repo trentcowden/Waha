@@ -4,7 +4,15 @@ import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
-function BookView (props) {
+function BookView ({
+  // passed from parent
+  thisLesson,
+  titleSection,
+  // passed from redux
+  font,
+  activeGroup,
+  isRTL
+***REMOVED***) {
   return (
     <View
       style={{
@@ -18,11 +26,17 @@ function BookView (props) {
       ***REMOVED******REMOVED***
     >
       <FlatList
-        data={props.thisLesson.text.split('\n')***REMOVED***
+        data={thisLesson.text.split('\n')***REMOVED***
         renderItem={paragraphList => (
           <Text
             style={[
-              StandardTypography(props, 'h4', 'Regular', 'left', colors.shark),
+              StandardTypography(
+                { font, isRTL ***REMOVED***,
+                'h4',
+                'Regular',
+                'left',
+                colors.shark
+              ),
               { marginHorizontal: 10 ***REMOVED***
             ]***REMOVED***
           >
@@ -31,7 +45,7 @@ function BookView (props) {
         )***REMOVED***
         keyExtractor={item => item***REMOVED***
         ListHeaderComponent={
-          <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>{props.titleSection***REMOVED***</View>
+          <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>{titleSection***REMOVED***</View>
         ***REMOVED***
       />
     </View>
