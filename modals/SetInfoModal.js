@@ -83,7 +83,7 @@ function SetInfoModal (props) {
       isVisible={props.isVisible***REMOVED***
     >
       <View style={styles.studySetItemContainer***REMOVED***>
-        <SetItem thisSet={props.thisSet***REMOVED*** mode='setinfo' />
+        <SetItem thisSet={props.thisSet***REMOVED*** mode='setinfo_modal' />
       </View>
       <WahaButton
         type='filled'

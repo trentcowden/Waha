@@ -15,13 +15,13 @@ import GroupAvatar from '../components/GroupAvatar'
 import BackButton from '../components/standard/BackButton'
 import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { analyticsMode, dbMode, reduxMode ***REMOVED*** from '../modeSwitch'
-import SetTabs from '../navigation/SetTabs'
+import StorySetTabs from '../navigation/StorySetTabs'
 import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
 import AddSetScreen from '../screens/AddSetScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import KeyOrderSetScreen from '../screens/KeyOrderSetScreen'
 import LanguageSelectScreen from '../screens/LanguageSelectScreen'
-import LessonListScreen from '../screens/LessonListScreen'
+import LessonsScreen from '../screens/LessonsScreen'
 import MobilizationToolsScreen from '../screens/MobilizationToolsScreen'
 import PasscodeScreen from '../screens/PasscodeScreen'
 import PianoAppScreen from '../screens/PianoAppScreen'
@@ -107,7 +107,9 @@ function MainStack (props) {
   return (
     <Stack.Navigator
       // set the initial screen based on whether security is enabled or not
-      initialRouteName={props.security.securityEnabled ? 'PianoApp' : 'SetTabs'***REMOVED***
+      initialRouteName={
+        props.security.securityEnabled ? 'PianoApp' : 'StorySetTabs'
+      ***REMOVED***
       screenOptions={{
         gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
         gestureResponseDistance: {
@@ -119,8 +121,8 @@ function MainStack (props) {
       mode='card'
     >
       <Stack.Screen
-        name='SetTabs'
-        component={SetTabs***REMOVED***
+        name='StorySetTabs'
+        component={StorySetTabs***REMOVED***
         options={{
           headerStyle: {
             backgroundColor: colors.aquaHaze,
@@ -212,8 +214,8 @@ function MainStack (props) {
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='LessonList'
-        component={LessonListScreen***REMOVED***
+        name='Lessons'
+        component={LessonsScreen***REMOVED***
         options={{
           headerStyle: {
             backgroundColor: colors.aquaHaze

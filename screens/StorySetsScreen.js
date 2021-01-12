@@ -17,7 +17,15 @@ import {
 ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
-function SetScreen (props) {
+function StorySetsScreen ({
+  route: { name: routeName ***REMOVED***,
+  navigation: { navigate ***REMOVED***,
+  activeDatabase,
+  isRTL,
+  activeGroup,
+  translations,
+  font
+***REMOVED***) {
   //+ STUFF FOR TESTING
 
   // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
@@ -34,52 +42,50 @@ function SetScreen (props) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    // console.log(props.route.name)
-    if (props.route.name === 'Foundational') {
+    // console.log(routeName)
+    if (routeName === 'Foundational') {
       setAddNewSetLabel(
-        props.translations.sets.add_foundational_story_set_button_label
+        translations.sets.add_foundational_story_set_button_label
       )
       setSetCategory('foundational')
-    ***REMOVED*** else if (props.route.name === 'Topical') {
-      setAddNewSetLabel(props.translations.sets.add_topical_set_button_label)
+    ***REMOVED*** else if (routeName === 'Topical') {
+      setAddNewSetLabel(translations.sets.add_topical_set_button_label)
       setSetCategory('topical')
     ***REMOVED*** else {
-      setAddNewSetLabel(
-        props.translations.sets.add_mobilization_tool_button_label
-      )
+      setAddNewSetLabel(translations.sets.add_mobilization_tool_button_label)
       setSetCategory('mobilization tools')
     ***REMOVED***
-  ***REMOVED***, [props.activeGroup, props.translations])
+  ***REMOVED***, [activeGroup, translations])
 
   //+ NAV OPTIONS
 
   // get the sets for whatever tab we're on
   function getSetData () {
     // if we're adding core sets, display them in numerical order
-    return props.route.name === 'Foundational'
-      ? props.activeDatabase.sets
+    return routeName === 'Foundational'
+      ? activeDatabase.sets
           .filter(set => getSetInfo('category', set.id) === setCategory)
           .filter(set =>
-            props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+            activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
       : // if we're displaying topical/mt sets, display them in the order added
-        props.activeDatabase.sets
+        activeDatabase.sets
           .filter(set => getSetInfo('category', set.id) === setCategory)
           .filter(set =>
-            props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+            activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
           .sort((a, b) => {
             return a.index - b.index
           ***REMOVED***)
           .sort((a, b) => {
             return (
-              props.activeGroup.addedSets.indexOf(
-                props.activeGroup.addedSets.filter(
+              activeGroup.addedSets.indexOf(
+                activeGroup.addedSets.filter(
                   addedSet => addedSet.id === a.id
                 )[0]
               ) -
-              props.activeGroup.addedSets.indexOf(
-                props.activeGroup.addedSets.filter(
+              activeGroup.addedSets.indexOf(
+                activeGroup.addedSets.filter(
                   addedSet => addedSet.id === b.id
                 )[0]
               )
@@ -96,7 +102,7 @@ function SetScreen (props) {
         isSmall={false***REMOVED***
         mode='shown'
         onSetSelect={() =>
-          props.navigation.navigate('LessonList', {
+          navigate('Lessons', {
             thisSet: item
           ***REMOVED***)
         ***REMOVED***
@@ -109,15 +115,15 @@ function SetScreen (props) {
       <FlatList
         data={getSetData()***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
-        extraData={props.activeGroup***REMOVED***
+        extraData={activeGroup***REMOVED***
         ListFooterComponent={
           <TouchableOpacity
             style={[
               styles.addNewSetContainer,
-              { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+              { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
             ]***REMOVED***
             onPress={() =>
-              props.navigation.navigate('AddSet', {
+              navigate('AddSet', {
                 category: setCategory
               ***REMOVED***)
             ***REMOVED***
@@ -143,13 +149,13 @@ function SetScreen (props) {
                 flex: 1,
                 justifyContent: 'center',
                 flexDirection: 'column',
-                marginRight: props.isRTL ? 20 : 0,
-                marginLeft: props.isRTL ? 0 : 20
+                marginRight: isRTL ? 20 : 0,
+                marginLeft: isRTL ? 0 : 20
               ***REMOVED******REMOVED***
             >
               <Text
                 style={StandardTypography(
-                  props,
+                  { font, isRTL ***REMOVED***,
                   'p',
                   'Regular',
                   'left',
@@ -205,4 +211,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(SetScreen)
+export default connect(mapStateToProps)(StorySetsScreen)
