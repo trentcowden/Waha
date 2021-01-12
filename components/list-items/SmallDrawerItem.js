@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors ***REMOVED*** from '../../constants'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { colors, getLanguageFont ***REMOVED*** from '../../constants'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function SmallDrawerItem (props) {
   //+ RENDER
@@ -16,7 +16,7 @@ function SmallDrawerItem (props) {
       onPress={props.onPress***REMOVED***
     >
       <Text
-        style={BrandTypography(props, 'h3', 'medium', 'left', colors.chateau)***REMOVED***
+        style={StandardTypography(props, 'h3', 'Bold', 'left', colors.chateau)***REMOVED***
       >
         {props.label***REMOVED***
       </Text>
@@ -40,7 +40,8 @@ function mapStateToProps (state) {
   )[0]
   return {
     isRTL: state.database[activeGroup.language].isRTL,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

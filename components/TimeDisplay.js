@@ -2,8 +2,8 @@
 import React from 'react'
 import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors ***REMOVED*** from '../constants'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { colors, getLanguageFont ***REMOVED*** from '../constants'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 function TimeDisplay (props) {
   //function to convert a time in milliseconds to a
   //nicely formatted string (for the scrubber)
@@ -37,10 +37,10 @@ function TimeDisplay (props) {
   return (
     <View styles={props.style***REMOVED***>
       <Text
-        style={BrandTypography(
-          { font: 'roboto' ***REMOVED***,
+        style={StandardTypography(
+          { font: 'Roboto' ***REMOVED***,
           'd',
-          'regular',
+          'Regular',
           'center',
           colors.shark
         )***REMOVED***
@@ -56,7 +56,8 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

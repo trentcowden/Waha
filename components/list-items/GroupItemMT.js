@@ -1,13 +1,18 @@
 import React from 'react'
 import { StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  colors,
+  getLanguageFont,
+  getSetInfo,
+  scaleMultiplier
+***REMOVED*** from '../../constants'
 import {
   addSet,
   setShouldShowMobilizationToolsTab
 ***REMOVED*** from '../../redux/actions/groupsActions'
 import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../redux/LogEventFunctions'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 // variant of group list item that shows only avatar image, group name, and a switch to enable MTs
 function GroupItemMT (props) {
@@ -35,13 +40,13 @@ function GroupItemMT (props) {
       </View>
       <View style={styles.groupNameContainer***REMOVED***>
         <Text
-          style={BrandTypography(
+          style={StandardTypography(
             {
-              font: props.database[props.group.language].font,
+              font: getLanguageFont(props.group.language),
               isRTL: props.isRTL
             ***REMOVED***,
             'h3',
-            'medium',
+            'Bold',
             'left',
             colors.shark
           )***REMOVED***
@@ -112,7 +117,7 @@ function mapStateToProps (state) {
     database: state.database,
     isRTL: state.database[activeGroup.language].isRTL,
     groups: state.groups,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     activeGroup: activeGroup
   ***REMOVED***

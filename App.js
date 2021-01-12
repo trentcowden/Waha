@@ -3,7 +3,7 @@ import { Audio ***REMOVED*** from 'expo-av'
 import * as Font from 'expo-font'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { StatusBar ***REMOVED*** from 'react-native'
+import { StatusBar, Text ***REMOVED*** from 'react-native'
 import { Provider ***REMOVED*** from 'react-redux'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
 import LoadingView from './components/LoadingView'
@@ -11,6 +11,11 @@ import { colors ***REMOVED*** from './constants'
 import Root from './navigation/Root'
 import { persistor, store ***REMOVED*** from './redux/store'
 
+// set the max font scaling allowed
+Text.defaultProps = {
+  ...Text.defaultProps,
+  maxFontSizeMultiplier: 1.2
+***REMOVED***
 // only here because of wack errors, DON'T DELETE
 if (!global.btoa) {
   global.btoa = encode
@@ -65,22 +70,22 @@ export default function App () {
       waha: require('./assets/fonts/waha.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'roboto-black': require('./assets/fonts/Roboto/Roboto-Black.ttf')
+      'Roboto-Black': require('./assets/fonts/Roboto/Roboto-Black.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'roboto-medium': require('./assets/fonts/Roboto/Roboto-Medium.ttf')
+      'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Medium.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'roboto-regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf')
+      'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'tajawal-black': require('./assets/fonts/Tajawal/Tajawal-Black.ttf')
+      'NotoSansArabic-Black': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedBlack.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'tajawal-medium': require('./assets/fonts/Tajawal/Tajawal-Medium.ttf')
+      'NotoSansArabic-Bold': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedSemiBold.ttf')
     ***REMOVED***)
     await Font.loadAsync({
-      'tajawal-regular': require('./assets/fonts/Tajawal/Tajawal-Regular.ttf')
+      'NotoSansArabic-Regular': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensed.ttf')
     ***REMOVED***)
     setFontsLoaded(true)
   ***REMOVED***

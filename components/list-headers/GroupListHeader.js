@@ -9,11 +9,11 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
 import { deleteLanguageData ***REMOVED*** from '../../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 function GroupListHeader (props) {
   //+ FUNCTIONS
 
@@ -114,13 +114,13 @@ function GroupListHeader (props) {
       {trashButton***REMOVED***
       <Text
         style={[
-          BrandTypography(
+          StandardTypography(
             {
-              font: props.database[props.languageID].font,
+              font: getLanguageFont(props.languageID),
               isRTL: props.isRTL
             ***REMOVED***,
             'h3',
-            'regular',
+            'Regular',
             'left',
             colors.chateau
           ),
@@ -174,7 +174,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language)
   ***REMOVED***
 ***REMOVED***
 

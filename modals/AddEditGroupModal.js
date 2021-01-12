@@ -14,6 +14,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import {
   colors,
+  getLanguageFont,
   groupIcons,
   groupIconSources,
   scaleMultiplier
@@ -26,7 +27,7 @@ import {
   editGroup,
   resetProgress
 ***REMOVED*** from '../redux/actions/groupsActions'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function AddEditGroupModal (props) {
   //+ STATE
@@ -169,17 +170,24 @@ function AddEditGroupModal (props) {
         ***REMOVED******REMOVED***
       >
         <Text
-          style={BrandTypography(props, 'p', 'regular', 'left', colors.chateau)***REMOVED***
+          style={StandardTypography(
+            props,
+            'p',
+            'Regular',
+            'left',
+            colors.chateau
+          )***REMOVED***
         >
           {props.translations.add_edit_group.group_name_form_label***REMOVED***
         </Text>
         <TextInput
           style={[
             styles.addNewGroupContainer,
-            {
-              textAlign: props.isRTL ? 'right' : 'left',
-              fontFamily: props.font + '-regular'
-            ***REMOVED***
+            StandardTypography(props, 'h3', 'Regular', 'left', colors.shark)
+            // {
+            //   textAlign: props.isRTL ? 'right' : 'left',
+            //   fontFamily: props.font + '-Regular'
+            // ***REMOVED***
           ]***REMOVED***
           onChangeText={text => setGroupName(text)***REMOVED***
           value={groupName***REMOVED***
@@ -195,7 +203,7 @@ function AddEditGroupModal (props) {
       </View>
       <Text
         style={[
-          BrandTypography(props, 'p', 'regular', 'left', colors.chateau),
+          StandardTypography(props, 'p', 'Regular', 'left', colors.chateau),
           {
             marginHorizontal: 20,
             marginTop: 20 * scaleMultiplier,
@@ -275,7 +283,7 @@ const styles = StyleSheet.create({
   addNewGroupContainer: {
     borderBottomColor: colors.athens,
     borderBottomWidth: 2,
-    height: 40 * scaleMultiplier,
+    height: 50 * scaleMultiplier,
     fontSize: 18 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
@@ -290,7 +298,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     isRTL: state.database[activeGroup.language].isRTL,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***

@@ -12,9 +12,9 @@ import KeyLabelGroup from '../components/piano-stuff/KeyLabelGroup'
 import Piano from '../components/piano-stuff/Piano'
 import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
-import { colors ***REMOVED*** from '../constants'
+import { colors, getLanguageFont ***REMOVED*** from '../constants'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 function KeyOrderSetScreen (props) {
   //+ STATE
 
@@ -173,10 +173,10 @@ function KeyOrderSetScreen (props) {
       <View style={{ width: '100%', alignItems: 'center' ***REMOVED******REMOVED***>
         <View style={{ width: '100%', paddingHorizontal: 20 ***REMOVED******REMOVED***>
           <Text
-            style={BrandTypography(
+            style={StandardTypography(
               props,
               'h2',
-              'medium',
+              'Bold',
               'center',
               colors.shark
             )***REMOVED***
@@ -216,9 +216,10 @@ function mapStateToProps (state) {
   )[0]
   return {
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     security: state.security,
-    isRTL: state.database[activeGroup.language].isRTL
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

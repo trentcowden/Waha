@@ -12,7 +12,7 @@ import { connect ***REMOVED*** from 'react-redux'
 import LanguageStorageItem from '../components/list-items/LanguageStorageItem'
 import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
-import { colors ***REMOVED*** from '../constants'
+import { colors, getLanguageFont ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
 function StorageScreen (props) {
@@ -226,7 +226,8 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     database: state.database,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

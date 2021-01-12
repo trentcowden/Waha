@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 // modal variant that shows some information
 function MessageModal (props) {
   var cancelButton = props.cancelText ? (
@@ -15,7 +15,7 @@ function MessageModal (props) {
       ***REMOVED******REMOVED***
       onPress={props.cancelOnPress***REMOVED***
     >
-      <Text style={BrandTypography(props, 'h2', 'medium', 'left', colors.red)***REMOVED***>
+      <Text style={StandardTypography(props, 'h2', 'Bold', 'left', colors.red)***REMOVED***>
         {props.cancelText***REMOVED***
       </Text>
     </TouchableOpacity>
@@ -35,7 +35,7 @@ function MessageModal (props) {
         {props.children***REMOVED***
         <Text
           style={[
-            BrandTypography(props, 'h1', 'black', 'center', colors.shark),
+            StandardTypography(props, 'h2', 'Black', 'center', colors.shark),
             { marginVertical: 10 ***REMOVED***
           ]***REMOVED***
         >
@@ -43,7 +43,7 @@ function MessageModal (props) {
         </Text>
         <Text
           style={[
-            BrandTypography(props, 'h3', 'medium', 'center', colors.shark),
+            StandardTypography(props, 'h4', 'Bold', 'center', colors.shark),
             { paddingHorizontal: 20 ***REMOVED***
           ]***REMOVED***
         >
@@ -61,10 +61,10 @@ function MessageModal (props) {
           onPress={props.confirmOnPress***REMOVED***
         >
           <Text
-            style={BrandTypography(
+            style={StandardTypography(
               props,
               'h2',
-              'medium',
+              'Bold',
               'center',
               colors.apple
             )***REMOVED***
@@ -95,7 +95,8 @@ function mapStateToProps (state) {
     item => item.name === state.activeGroup
   )[0]
   return {
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors ***REMOVED*** from '../../constants'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { colors, getLanguageFont ***REMOVED*** from '../../constants'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 function KeyLabel (props) {
   // RENDER
 
@@ -15,10 +15,10 @@ function KeyLabel (props) {
       ]***REMOVED***
     >
       <Text
-        style={BrandTypography(
-          { font: 'roboto' ***REMOVED***,
+        style={StandardTypography(
+          { font: 'Roboto' ***REMOVED***,
           'h2',
-          'medium',
+          'Bold',
           'center',
           colors.shark
         )***REMOVED***
@@ -52,7 +52,8 @@ function mapStateToProps (state) {
   )[0]
   return {
     isRTL: state.database[activeGroup.language].isRTL,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

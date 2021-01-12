@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 // renders a simple touchable item within the main navigation drawer
 function DrawerItem (props) {
@@ -25,7 +25,7 @@ function DrawerItem (props) {
       </View>
       <Text
         style={[
-          BrandTypography(props, 'h3', 'medium', 'left', colors.shark),
+          StandardTypography(props, 'h3', 'Bold', 'left', colors.shark),
           { paddingHorizontal: 10 ***REMOVED***
         ]***REMOVED***
       >
@@ -61,7 +61,8 @@ function mapStateToProps (state) {
   )[0]
   return {
     isRTL: state.database[activeGroup.language].isRTL,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
   ***REMOVED***
 ***REMOVED***
 

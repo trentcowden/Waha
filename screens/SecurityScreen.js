@@ -8,14 +8,14 @@ import Hero from '../components/standard/Hero'
 import Separator from '../components/standard/Separator'
 import WahaItem from '../components/standard/WahaItem'
 import WahaItemDescription from '../components/standard/WahaItemDescription'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import OptionsModal from '../modals/OptionsModal'
 import {
   setIsTimedOut,
   setSecurityEnabled,
   setTimeoutDuration
 ***REMOVED*** from '../redux/actions/securityActions'
-import { BrandTypography ***REMOVED*** from '../styles/typography'
+import { StandardTypography ***REMOVED*** from '../styles/typography'
 
 function SecurityScreen (props) {
   //+ STATE
@@ -94,10 +94,10 @@ function SecurityScreen (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={BrandTypography(
+            style={StandardTypography(
               props,
               'h4',
-              'regular',
+              'Regular',
               'left',
               colors.chateau
             )***REMOVED***
@@ -141,16 +141,17 @@ function SecurityScreen (props) {
 
   return (
     <View style={styles.screen***REMOVED***>
-      <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
-
-      <Blurb
-        text={props.translations.security.security_mode_description_text***REMOVED***
-      />
       <ScrollView
         style={{
           width: '100%'
         ***REMOVED******REMOVED***
       >
+        <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
+
+        <Blurb
+          text={props.translations.security.security_mode_description_text***REMOVED***
+        />
+
         <Separator />
         <WahaItem
           title={props.translations.security.security_mode_picker_label***REMOVED***
@@ -323,7 +324,7 @@ function mapStateToProps (state) {
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
-    font: state.database[activeGroup.language].font,
+    font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     security: state.security

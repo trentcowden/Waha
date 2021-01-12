@@ -2,9 +2,15 @@
 import React, { useEffect ***REMOVED*** from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  colors,
+  getLanguageFont,
+  getLessonInfo,
+  itemHeights,
+  scaleMultiplier
+***REMOVED*** from '../../constants'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
-import { BrandTypography ***REMOVED*** from '../../styles/typography'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 import DownloadStatusIndicator from '../DownloadStatusIndicator'
 function LessonItem (props) {
   //+ CONSTRUCTOR
@@ -61,7 +67,10 @@ function LessonItem (props) {
     <View
       style={[
         styles.lessonItem,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        {
+          flexDirection: props.isRTL ? 'row-reverse' : 'row',
+          height: itemHeights[props.font].LessonItem
+        ***REMOVED***
       ]***REMOVED***
     >
       {/* main touchable area */***REMOVED***
@@ -100,10 +109,10 @@ function LessonItem (props) {
           ***REMOVED******REMOVED***
         >
           <Text
-            style={BrandTypography(
+            style={StandardTypography(
               props,
               'h4',
-              'medium',
+              'Bold',
               'left',
               props.isComplete ? colors.chateau : colors.shark
             )***REMOVED***
@@ -112,10 +121,10 @@ function LessonItem (props) {
             {props.thisLesson.title***REMOVED***
           </Text>
           <Text
-            style={BrandTypography(
+            style={StandardTypography(
               props,
               'd',
-              'regular',
+              'Regular',
               'left',
               colors.chateau
             )***REMOVED***
@@ -143,12 +152,13 @@ function LessonItem (props) {
 
 const styles = StyleSheet.create({
   lessonItem: {
-    height: 68 * scaleMultiplier,
+    // height: 80 * scaleMultiplier,
     // aspectRatio: 6.1,
     flexDirection: 'row',
     backgroundColor: colors.aquaHaze,
     flex: 1,
     paddingLeft: 20
+    // paddingVertical: 5
   ***REMOVED***,
   progressAndTitle: {
     justifyContent: 'flex-start',
@@ -175,7 +185,7 @@ function mapStateToProps (state) {
     downloads: state.downloads,
     translations: state.database[activeGroup.language].translations,
     isConnected: state.network.isConnected,
-    font: state.database[activeGroup.language].font
+    font: getLanguageFont(activeGroup.language)
   ***REMOVED***
 ***REMOVED***
 
