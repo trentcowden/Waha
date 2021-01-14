@@ -4,41 +4,63 @@ import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
-function WahaItem (props) {
-  return props.onPress ? (
+function WahaItem ({
+  // passed from parents
+  onPress,
+  style = {***REMOVED***,
+  title,
+  children = null,
+  // passed from redux
+  font,
+  isRTL,
+  activeGroup
+***REMOVED***) {
+  return onPress ? (
     <TouchableOpacity
       style={[
         styles.itemContainer,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         ***REMOVED***,
-        props.style
+        style
       ]***REMOVED***
-      onPress={props.onPress***REMOVED***
+      onPress={onPress***REMOVED***
     >
       <Text
-        style={StandardTypography(props, 'h3', 'Bold', 'left', colors.shark)***REMOVED***
+        style={StandardTypography(
+          { font, isRTL ***REMOVED***,
+          'h3',
+          'Bold',
+          'left',
+          colors.shark
+        )***REMOVED***
       >
-        {props.title***REMOVED***
+        {title***REMOVED***
       </Text>
-      {props.children***REMOVED***
+      {children***REMOVED***
     </TouchableOpacity>
   ) : (
     <View
       style={[
         styles.itemContainer,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         ***REMOVED***,
-        props.style
+        style
       ]***REMOVED***
     >
       <Text
-        style={StandardTypography(props, 'h3', 'Bold', 'left', colors.shark)***REMOVED***
+        style={StandardTypography(
+          { font, isRTL ***REMOVED***,
+          'h3',
+          'Bold',
+          'left',
+          colors.shark
+        )***REMOVED***
       >
-        {props.title***REMOVED***
+        {title***REMOVED***
       </Text>
-      {props.children***REMOVED***
+      {children***REMOVED***
     </View>
   )
 ***REMOVED***

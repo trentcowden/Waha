@@ -1,8 +1,8 @@
 //basic imports
 import React from 'react'
-import { View, Text ***REMOVED*** from 'react-native'
+import { Text, View ***REMOVED*** from 'react-native'
 
-function LoadingView (props) {
+function LoadingView ({***REMOVED***) {
   return (
     <View>
       <Text>Loading...</Text>

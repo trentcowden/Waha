@@ -24,7 +24,20 @@ LogBox.ignoreLogs([
  * Component for the add set screen, which shows a list of available story sets to add in a specific category.
  * @param {****REMOVED*** props
  */
-function AddSetScreen (props) {
+function AddSetScreen ({
+  navigation: { setOptions, goBack ***REMOVED***,
+  // passed from previous screen
+  route: {
+    params: { category ***REMOVED***
+  ***REMOVED***,
+  // passed from redux
+  font,
+  translations,
+  isRTL,
+  activeDatabase,
+  activeGroup,
+  primaryColor
+***REMOVED***) {
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -43,14 +56,14 @@ function AddSetScreen (props) {
   const [setInModal, setSetInModal] = useState({***REMOVED***)
 
   useEffect(() => {
-    switch (props.route.params.category) {
+    switch (category) {
       case 'foundational':
-        setHeaderTitle(props.translations.add_set.header_foundational)
+        setHeaderTitle(translations.add_set.header_foundational)
         break
       case 'topical':
-        setHeaderTitle(props.translations.add_set.header_topical)
-        var tempTags = [props.translations.add_set.all_tag_label]
-        props.activeDatabase.sets
+        setHeaderTitle(translations.add_set.header_topical)
+        var tempTags = [translations.add_set.all_tag_label]
+        activeDatabase.sets
           .filter(set => getSetInfo('category', set.id) === 'topical')
           .forEach(topicalSet => {
             topicalSet.tags.forEach(tag => {
@@ -62,13 +75,13 @@ function AddSetScreen (props) {
         setTags(tempTags)
         break
       case 'mobilization tools':
-        setHeaderTitle(props.translations.add_set.header_mt)
+        setHeaderTitle(translations.add_set.header_mt)
         break
     ***REMOVED***
   ***REMOVED***, [])
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
   ***REMOVED***, [headerTitle])
 
   // useEffect(() => {
@@ -80,11 +93,11 @@ function AddSetScreen (props) {
   function getNavOptions () {
     return {
       title: headerTitle,
-      headerLeft: props.isRTL
+      headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />,
-      headerRight: props.isRTL
-        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />,
+      headerRight: isRTL
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>
     ***REMOVED***
   ***REMOVED***
@@ -112,16 +125,16 @@ function AddSetScreen (props) {
         alignItems: 'center',
         paddingHorizontal: 20 * scaleMultiplier
       ***REMOVED******REMOVED***
-      textStyle={{ color: colors.oslo, fontFamily: props.font + '-Regular' ***REMOVED******REMOVED***
+      textStyle={{ color: colors.oslo, fontFamily: font + '-Regular' ***REMOVED******REMOVED***
       activeTagStyle={{
         borderRadius: 20,
         // make primary color
-        backgroundColor: props.primaryColor,
-        borderColor: props.primaryColor
+        backgroundColor: primaryColor,
+        borderColor: primaryColor
       ***REMOVED******REMOVED***
       activeTextStyle={{
         color: colors.white,
-        fontFamily: props.font + '-Regular'
+        fontFamily: font + '-Regular'
       ***REMOVED******REMOVED***
     />
   )
@@ -142,26 +155,22 @@ function AddSetScreen (props) {
 
   return (
     <View style={styles.screen***REMOVED***>
-      {props.route.params.category === 'topical' ? tagSelectComponent : null***REMOVED***
+      {category === 'topical' ? tagSelectComponent : null***REMOVED***
       <FlatList
         style={{ flex: 1 ***REMOVED******REMOVED***
         data={
-          props.route.params.category === 'topical'
-            ? props.activeDatabase.sets
-                .filter(
-                  set =>
-                    getSetInfo('category', set.id) ===
-                    props.route.params.category
-                )
+          category === 'topical'
+            ? activeDatabase.sets
+                .filter(set => getSetInfo('category', set.id) === category)
                 .filter(
                   topicalSet =>
-                    !props.activeGroup.addedSets.some(
+                    !activeGroup.addedSets.some(
                       addedSet => addedSet.id === topicalSet.id
                     )
                 )
                 .filter(topicalAddedSet => {
                   return activeTag.length === 0 ||
-                    activeTag.includes(props.translations.add_set.all_tag_label)
+                    activeTag.includes(translations.add_set.all_tag_label)
                     ? true
                     : topicalAddedSet.tags.some(tag => activeTag.includes(tag))
                 ***REMOVED***)
@@ -176,15 +185,11 @@ function AddSetScreen (props) {
                     return 1
                   ***REMOVED***
                 ***REMOVED***)
-            : props.activeDatabase.sets
+            : activeDatabase.sets
+                .filter(set => getSetInfo('category', set.id) === category)
                 .filter(
                   set =>
-                    getSetInfo('category', set.id) ===
-                    props.route.params.category
-                )
-                .filter(
-                  set =>
-                    !props.activeGroup.addedSets.some(
+                    !activeGroup.addedSets.some(
                       addedSet => addedSet.id === set.id
                     )
                 )
@@ -199,32 +204,6 @@ function AddSetScreen (props) {
                     return 1
                   ***REMOVED***
                 ***REMOVED***)
-          // NOT USED: for folders
-          // // if we're displaying topical sets:
-          // // 1. filter by all sets that are topical,
-          // // 2. filter by topical sets in the specified folder, and then
-          // // 3. filter to only display sets that haven't already been added
-          // props.route.params.category === 'topical'
-          //   ? props.activeDatabase.sets
-          //       .filter(set => set.category === 'topical')
-          //       .filter(set => set.folder === props.route.params.folder)
-          //       .filter(
-          //         set =>
-          //           !props.activeGroup.addedSets.some(
-          //             addedSet => addedSet.id === set.id
-          //           )
-          //       )
-          //   : // if we're displaying core or folders:
-          //     // 1. filter by cateogry (core or folder)
-          //     // 2. filter to only display sets that haven't already been added
-          //     props.activeDatabase.sets
-          //       .filter(set => set.category === props.route.params.category)
-          //       .filter(
-          //         set =>
-          //           !props.activeGroup.addedSets.some(
-          //             addedSet => addedSet.id === set.id
-          //           )
-          //       )
         ***REMOVED***
         ItemSeparatorComponent={() => <Separator />***REMOVED***
         ListFooterComponent={() => <Separator />***REMOVED***
@@ -234,25 +213,25 @@ function AddSetScreen (props) {
           <View style={{ width: '100%', margin: 10 ***REMOVED******REMOVED***>
             <Text
               style={StandardTypography(
-                props,
+                { font, isRTL ***REMOVED***,
                 'p',
                 'Regular',
                 'center',
                 colors.chateau
               )***REMOVED***
             >
-              {props.translations.add_set.no_more_sets_text***REMOVED***
+              {translations.add_set.no_more_sets_text***REMOVED***
             </Text>
           </View>
         ***REMOVED***
       />
       <SnackBar
         visible={showSnackbar***REMOVED***
-        textMessage={props.translations.add_set.set_added_message***REMOVED***
+        textMessage={translations.add_set.set_added_message***REMOVED***
         messageStyle={{
           color: colors.white,
           fontSize: 24 * scaleMultiplier,
-          fontFamily: props.font + '-Black',
+          fontFamily: font + '-Black',
           textAlign: 'center'
         ***REMOVED******REMOVED***
         backgroundColor={colors.apple***REMOVED***
@@ -260,7 +239,7 @@ function AddSetScreen (props) {
       <SetInfoModal
         isVisible={showSetInfoModal***REMOVED***
         hideModal={() => setShowSetInfoModal(false)***REMOVED***
-        category={props.route.params.category***REMOVED***
+        category={category***REMOVED***
         thisSet={setInModal***REMOVED***
         showSnackbar={() => {
           setShowSnackbar(true)

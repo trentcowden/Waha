@@ -18,7 +18,17 @@ import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constan
 import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
-function PianoAppScreen (props) {
+function PianoAppScreen ({
+  navigation: { canGoBack, goBack, reset ***REMOVED***,
+  // passed from redux
+  security,
+  font,
+  activeGroup,
+  translations,
+  isRTL,
+  setIsMuted,
+  setIsTimedOut
+***REMOVED***) {
   //+ STATE
 
   const [pattern, setPattern] = useState('')
@@ -30,19 +40,19 @@ function PianoAppScreen (props) {
   useEffect(() => {
     Keyboard.dismiss()
 
-    if (pattern.includes(props.security.code)) {
-      if (!props.security.isMuted) {
+    if (pattern.includes(security.code)) {
+      if (!security.isMuted) {
         var note = new Audio.Sound()
         note
           .loadAsync(require('../assets/notes/Success.mp3'))
           .then(() => note.playAsync())
       ***REMOVED***
-      props.setIsTimedOut(false)
-      if (props.navigation.canGoBack()) {
-        if (Platform.OS === 'ios') props.navigation.goBack()
-        props.navigation.goBack()
+      setIsTimedOut(false)
+      if (canGoBack()) {
+        if (Platform.OS === 'ios') goBack()
+        goBack()
       ***REMOVED*** else
-        props.navigation.reset({
+        reset({
           index: 0,
           routes: [{ name: 'StorySetTabs' ***REMOVED***]
         ***REMOVED***)
@@ -78,17 +88,23 @@ function PianoAppScreen (props) {
         />
         <Text
           style={[
-            StandardTypography(props, 'h1', 'Bold', 'center', colors.shark),
+            StandardTypography(
+              { font, isRTL ***REMOVED***,
+              'h1',
+              'Bold',
+              'center',
+              colors.shark
+            ),
             { paddingHorizontal: 10 ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.security.game_screen_title***REMOVED***
+          {translations.security.game_screen_title***REMOVED***
         </Text>
       </View>
       <View>
         <View
           style={{
-            flexDirection: props.isRTL ? 'row-reverse' : 'row',
+            flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'center',
             alignItems: 'center'
           ***REMOVED******REMOVED***
@@ -105,9 +121,9 @@ function PianoAppScreen (props) {
                 : () => {
                     setCountdown('')
                   ***REMOVED***
-              // props.security.isMuted
-              //   ? () => props.setIsMuted(false)
-              //   : () => props.setIsMuted(true)
+              // security.isMuted
+              //   ? () => setIsMuted(false)
+              //   : () => setIsMuted(true)
             ***REMOVED***
             style={{
               margin: 20
@@ -127,7 +143,7 @@ function PianoAppScreen (props) {
             >
               <Text
                 style={StandardTypography(
-                  props,
+                  { font, isRTL ***REMOVED***,
                   'h2',
                   'Regular',
                   'center',
@@ -163,12 +179,12 @@ function PianoAppScreen (props) {
             ***REMOVED******REMOVED***
             source={require('../assets/piano.png')***REMOVED***
           />
-          <Piano setPattern={setPattern***REMOVED*** isMuted={props.security.isMuted***REMOVED*** />
+          <Piano setPattern={setPattern***REMOVED*** isMuted={security.isMuted***REMOVED*** />
         </View>
         <View
           style={{
             width: Dimensions.get('window').width,
-            flexDirection: props.isRTL ? 'row-reverse' : 'row',
+            flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'space-between',
             alignItems: 'center'
           ***REMOVED******REMOVED***
@@ -183,16 +199,16 @@ function PianoAppScreen (props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={
-              props.security.isMuted
-                ? () => props.setIsMuted(false)
-                : () => props.setIsMuted(true)
+              security.isMuted
+                ? () => setIsMuted(false)
+                : () => setIsMuted(true)
             ***REMOVED***
             style={{
               margin: 20
             ***REMOVED******REMOVED***
           >
             <Icon
-              name={props.security.isMuted ? 'volume-off' : 'volume'***REMOVED***
+              name={security.isMuted ? 'volume-off' : 'volume'***REMOVED***
               size={50***REMOVED***
               color={colors.tuna***REMOVED***
             />
@@ -222,7 +238,8 @@ function mapStateToProps (state) {
     security: state.security,
     font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations
+    translations: state.database[activeGroup.language].translations,
+    isRTL: state.database[activeGroup.language].isRTL
   ***REMOVED***
 ***REMOVED***
 

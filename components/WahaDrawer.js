@@ -10,7 +10,15 @@ import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constan
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
-function WahaDrawer (props) {
+function WahaDrawer ({
+  navigation: { navigate ***REMOVED***,
+  // passed from redux
+  primaryColor,
+  isRTL,
+  activeGroup,
+  translations,
+  font
+***REMOVED***) {
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
   //+ FUNCTIONS
@@ -24,21 +32,21 @@ function WahaDrawer (props) {
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: props.primaryColor ***REMOVED***]***REMOVED***
+      style={[styles.container, { backgroundColor: primaryColor ***REMOVED***]***REMOVED***
       forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' ***REMOVED******REMOVED***
     >
       <View style={styles.drawerHeaderContainer***REMOVED***>
         <View style={styles.groupIconContainer***REMOVED***>
           <GroupAvatar
             style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
-            emoji={props.activeGroup.emoji***REMOVED***
+            emoji={activeGroup.emoji***REMOVED***
             size={120***REMOVED***
             onPress={() => setShowEditGroupModal(true)***REMOVED***
           />
         </View>
         <Text
           style={StandardTypography(
-            props,
+            { font, isRTL ***REMOVED***,
             'h2',
             'Black',
             'center',
@@ -46,7 +54,7 @@ function WahaDrawer (props) {
           )***REMOVED***
           numberOfLines={2***REMOVED***
         >
-          {props.activeGroup.name***REMOVED***
+          {activeGroup.name***REMOVED***
         </Text>
         {/* <View style={styles.pencilIconContainer***REMOVED***>
           <TouchableOpacity onPress={() => setShowEditGroupModal(true)***REMOVED***>
@@ -62,27 +70,27 @@ function WahaDrawer (props) {
         <View style={{ flex: 1 ***REMOVED******REMOVED***>
           <DrawerItem
             iconName='group'
-            text={props.translations.groups.header***REMOVED***
-            onPress={() => props.navigation.navigate('Groups')***REMOVED***
+            text={translations.groups.header***REMOVED***
+            onPress={() => navigate('Groups')***REMOVED***
           />
           <DrawerItem
             iconName='security'
-            text={props.translations.security.header***REMOVED***
-            onPress={() => props.navigation.navigate('Security')***REMOVED***
+            text={translations.security.header***REMOVED***
+            onPress={() => navigate('Security')***REMOVED***
           />
           <DrawerItem
             iconName='boat'
-            text={props.translations.mobilization_tools.header***REMOVED***
-            onPress={() => props.navigation.navigate('MobilizationTools')***REMOVED***
+            text={translations.mobilization_tools.header***REMOVED***
+            onPress={() => navigate('MobilizationTools')***REMOVED***
           />
           <DrawerItem
             iconName='storage'
-            text={props.translations.storage.header***REMOVED***
-            onPress={() => props.navigation.navigate('Storage')***REMOVED***
+            text={translations.storage.header***REMOVED***
+            onPress={() => navigate('Storage')***REMOVED***
           />
           <DrawerItem
             iconName='email'
-            text={props.translations.general.feedback***REMOVED***
+            text={translations.general.feedback***REMOVED***
             onPress={() =>
               openBrowser('https://airtable.com/shrGQY4b3FSPprzmt')
             ***REMOVED***
@@ -94,7 +102,7 @@ function WahaDrawer (props) {
             {
               flexDirection:
                 Dimensions.get('window').height < 550
-                  ? props.isRTL
+                  ? isRTL
                     ? 'row-reverse'
                     : 'row'
                   : 'column'
@@ -103,7 +111,7 @@ function WahaDrawer (props) {
         >
           <SmallDrawerItem
             onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
-            label={props.translations.general.privacy***REMOVED***
+            label={translations.general.privacy***REMOVED***
           />
           {/* <SmallDrawerItem
             onPress={() =>
@@ -111,7 +119,7 @@ function WahaDrawer (props) {
                 'https://media.giphy.com/media/C4msBrFb6szHG/giphy.gif'
               )
             ***REMOVED***
-            label={props.translations.general.credits***REMOVED***
+            label={translations.general.credits***REMOVED***
           /> */***REMOVED***
           <View
             style={{
@@ -122,7 +130,7 @@ function WahaDrawer (props) {
           >
             <Text
               style={StandardTypography(
-                props,
+                { font, isRTL ***REMOVED***,
                 'd',
                 'Regular',
                 'left',
@@ -138,7 +146,7 @@ function WahaDrawer (props) {
         isVisible={showEditGroupModal***REMOVED***
         hideModal={() => setShowEditGroupModal(false)***REMOVED***
         type='EditGroup'
-        groupName={props.activeGroup.name***REMOVED***
+        groupName={activeGroup.name***REMOVED***
       />
     </SafeAreaView>
   )

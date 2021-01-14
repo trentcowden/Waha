@@ -4,11 +4,19 @@ import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLanguageFont ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
-function TimeDisplay (props) {
+function TimeDisplay ({
+  // passed from parent
+  max,
+  time,
+  style,
+  // passed from redux
+  font,
+  activeGroup
+***REMOVED***) {
   //function to convert a time in milliseconds to a
   //nicely formatted string (for the scrubber)
   function msToTime (duration) {
-    if (duration > 0 && duration <= props.max) {
+    if (duration > 0 && duration <= max) {
       if (duration >= 3600000) {
         var seconds = Math.floor((duration / 1000) % 60)
         var minutes = Math.floor((duration / (1000 * 60)) % 60)
@@ -27,15 +35,15 @@ function TimeDisplay (props) {
 
         return minutes + ':' + seconds
       ***REMOVED***
-    ***REMOVED*** else if (duration > props.max) {
-      return msToTime(props.max)
+    ***REMOVED*** else if (duration > max) {
+      return msToTime(max)
     ***REMOVED*** else {
       return '00:00'
     ***REMOVED***
   ***REMOVED***
 
   return (
-    <View styles={props.style***REMOVED***>
+    <View styles={style***REMOVED***>
       <Text
         style={StandardTypography(
           { font: 'Roboto' ***REMOVED***,
@@ -45,7 +53,7 @@ function TimeDisplay (props) {
           colors.shark
         )***REMOVED***
       >
-        {msToTime(props.time)***REMOVED***
+        {msToTime(time)***REMOVED***
       </Text>
     </View>
   )

@@ -3,21 +3,34 @@ import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
-// button rendered on the options modal component
-function OptionsModalButton (props) {
-  //+ RETURN
 
+// button rendered on the options modal component
+function OptionsModalButton ({
+  onPress,
+  style,
+  title,
+  children = null,
+  font,
+  isRTL,
+  activeGroup
+***REMOVED***) {
   return (
-    <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={props.onPress***REMOVED***>
+    <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={onPress***REMOVED***>
       <Text
         style={[
-          props.style,
-          StandardTypography(props, 'h3', 'Regular', 'center', colors.shark)
+          style,
+          StandardTypography(
+            { font, isRTL ***REMOVED***,
+            'h3',
+            'Regular',
+            'center',
+            colors.shark
+          )
         ]***REMOVED***
       >
-        {props.title***REMOVED***
+        {title***REMOVED***
       </Text>
-      {props.children***REMOVED***
+      {children***REMOVED***
     </TouchableOpacity>
   )
 ***REMOVED***

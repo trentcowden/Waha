@@ -5,31 +5,42 @@ import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../cons
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 // renders a simple touchable item within the main navigation drawer
-function DrawerItem (props) {
+function DrawerItem ({
+  // passed from parent
+  onPress,
+  iconName,
+  text,
+  // passed from redux
+  isRTL,
+  font,
+  activeGroup
+***REMOVED***) {
   // RENDER
 
   return (
     <TouchableOpacity
       style={[
         styles.settingsItem,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
-      onPress={props.onPress***REMOVED***
+      onPress={onPress***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
-        <Icon
-          name={props.iconName***REMOVED***
-          size={45 * scaleMultiplier***REMOVED***
-          color={colors.tuna***REMOVED***
-        />
+        <Icon name={iconName***REMOVED*** size={45 * scaleMultiplier***REMOVED*** color={colors.tuna***REMOVED*** />
       </View>
       <Text
         style={[
-          StandardTypography(props, 'h3', 'Bold', 'left', colors.shark),
+          StandardTypography(
+            { font, isRTL ***REMOVED***,
+            'h3',
+            'Bold',
+            'left',
+            colors.shark
+          ),
           { paddingHorizontal: 10 ***REMOVED***
         ]***REMOVED***
       >
-        {props.text***REMOVED***
+        {text***REMOVED***
       </Text>
     </TouchableOpacity>
   )

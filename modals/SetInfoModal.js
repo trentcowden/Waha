@@ -8,7 +8,22 @@ import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
-function SetInfoModal (props) {
+function SetInfoModal ({
+  // passed from parent
+  isVisible,
+  hideModal,
+  category,
+  thisSet,
+  showSnackbar,
+  // passed from redux
+  downloads,
+  activeDatabase,
+  isRTL,
+  activeGroup,
+  translations,
+  font,
+  addSet
+***REMOVED***) {
   //+ FUNCTIONS
 
   function renderLessonInfoItem (item) {
@@ -29,7 +44,7 @@ function SetInfoModal (props) {
         >
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'h4',
               'Bold',
               'left',
@@ -40,7 +55,7 @@ function SetInfoModal (props) {
           </Text>
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'p',
               'Regular',
               'left',
@@ -63,7 +78,7 @@ function SetInfoModal (props) {
         >
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'h4',
               'Bold',
               'left',
@@ -78,23 +93,23 @@ function SetInfoModal (props) {
 
   return (
     <ModalScreen
-      title={props.translations.add_set.header_set_details***REMOVED***
-      hideModal={props.hideModal***REMOVED***
-      isVisible={props.isVisible***REMOVED***
+      title={translations.add_set.header_set_details***REMOVED***
+      hideModal={hideModal***REMOVED***
+      isVisible={isVisible***REMOVED***
     >
       <View style={styles.studySetItemContainer***REMOVED***>
-        <SetItem thisSet={props.thisSet***REMOVED*** mode='setinfo_modal' />
+        <SetItem thisSet={thisSet***REMOVED*** mode='setinfo_modal' />
       </View>
       <WahaButton
         type='filled'
         color={colors.apple***REMOVED***
         onPress={() => {
-          props.addSet(props.activeGroup.name, props.thisSet)
-          props.showSnackbar()
-          props.hideModal()
+          addSet(activeGroup.name, thisSet)
+          showSnackbar()
+          hideModal()
         ***REMOVED******REMOVED***
         style={{ marginHorizontal: 20, marginVertical: 10 ***REMOVED******REMOVED***
-        label={props.translations.add_set.add_new_story_set_button_label***REMOVED***
+        label={translations.add_set.add_new_story_set_button_label***REMOVED***
         extraComponent={
           <Icon
             style={{ marginHorizontal: 10 ***REMOVED******REMOVED***
@@ -106,7 +121,7 @@ function SetInfoModal (props) {
       />
       <FlatList
         keyExtractor={item => item.id***REMOVED***
-        data={props.thisSet.lessons***REMOVED***
+        data={thisSet.lessons***REMOVED***
         renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
         contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
       />

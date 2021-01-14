@@ -4,33 +4,42 @@ import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
-function OptionsModal (props) {
+function OptionsModal ({
+  // passed from parent
+  isVisible,
+  hideModal,
+  closeText,
+  children = null,
+  // passed from redux
+  font,
+  isRTL
+***REMOVED***) {
   //+ RENDER
   return (
     <Modal
-      isVisible={props.isVisible***REMOVED***
+      isVisible={isVisible***REMOVED***
       hasBackdrop={true***REMOVED***
-      onBackdropPress={props.hideModal***REMOVED***
+      onBackdropPress={hideModal***REMOVED***
       backdropOpacity={0.3***REMOVED***
       style={{ justifyContent: 'flex-end' ***REMOVED******REMOVED***
     >
       <View style={{***REMOVED******REMOVED***>
-        <View style={styles.buttonsContainer***REMOVED***>{props.children***REMOVED***</View>
+        <View style={styles.buttonsContainer***REMOVED***>{children***REMOVED***</View>
         <View style={styles.closeButtonContainer***REMOVED***>
           <TouchableOpacity
-            onPress={props.hideModal***REMOVED***
+            onPress={hideModal***REMOVED***
             style={styles.closeButtonContainer***REMOVED***
           >
             <Text
               style={StandardTypography(
-                props,
+                { font, isRTL ***REMOVED***,
                 'h3',
                 'Bold',
                 'center',
                 colors.red
               )***REMOVED***
             >
-              {props.closeText***REMOVED***
+              {closeText***REMOVED***
             </Text>
           </TouchableOpacity>
         </View>
@@ -61,7 +70,7 @@ function mapStateToProps (state) {
   )[0]
   return {
     font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
+    isRTL: state.database[activeGroup.language].isRTL
   ***REMOVED***
 ***REMOVED***
 

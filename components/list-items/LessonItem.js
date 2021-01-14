@@ -157,7 +157,6 @@ function LessonItem ({
       <DownloadStatusIndicator
         isDownloaded={isDownloaded***REMOVED***
         isDownloading={isDownloading***REMOVED***
-        isConnected={isConnected***REMOVED***
         showDeleteModal={showDeleteModal***REMOVED***
         showSaveModal={showSaveModal***REMOVED***
         lessonID={thisLesson.id***REMOVED***

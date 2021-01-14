@@ -3,15 +3,15 @@ import React from 'react'
 import { Animated, StyleSheet, View ***REMOVED*** from 'react-native'
 import { colors, scaleMultiplier ***REMOVED*** from '../constants'
 
-function SwipeBar (props) {
+function SwipeBar ({ opacity, side ***REMOVED***) {
   return (
     <View
       style={[
         styles.swipeBarContainer,
-        { alignSelf: props.side === 'right' ? 'flex-start' : 'flex-end' ***REMOVED***
+        { alignSelf: side === 'right' ? 'flex-start' : 'flex-end' ***REMOVED***
       ]***REMOVED***
     >
-      <Animated.View style={[styles.swipeBar, { opacity: props.opacity ***REMOVED***]***REMOVED*** />
+      <Animated.View style={[styles.swipeBar, { opacity: opacity ***REMOVED***]***REMOVED*** />
     </View>
   )
 ***REMOVED***

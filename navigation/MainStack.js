@@ -36,7 +36,16 @@ LogBox.ignoreLogs(['Setting a timer'])
 
 const Stack = createStackNavigator()
 
-function MainStack (props) {
+function MainStack ({
+  navigation: { navigate, goBack, toggleDrawer ***REMOVED***,
+  isRTL,
+  translations,
+  font,
+  activeGroup,
+  security,
+  setTimer,
+  setIsTimedOut
+***REMOVED***) {
   async function getTime () {
     return Date.now()
   ***REMOVED***
@@ -52,33 +61,30 @@ function MainStack (props) {
   useEffect(() => {
     if (appState === 'inactive' || appState === 'background') {
       // hide screen during multitasking / going home
-      if (Platform.OS === 'ios') props.navigation.navigate('Splash')
+      if (Platform.OS === 'ios') navigate('Splash')
 
       // store current time for timeout checking later
-      props.setTimer(Date.now())
+      setTimer(Date.now())
     ***REMOVED***
     if (appState === 'active') {
-      if (props.security.securityEnabled) {
+      if (security.securityEnabled) {
         // if we've already timed out, go straight to game
-        if (props.security.isTimedOut) {
-          props.navigation.navigate('PianoApp')
+        if (security.isTimedOut) {
+          navigate('PianoApp')
         ***REMOVED*** else {
           // check if we are now timed out
           // if we are, set isTimedOut to true and navigate to gamez
-          if (
-            Date.now() - props.security.timer >
-            props.security.timeoutDuration
-          ) {
-            props.setIsTimedOut(true)
-            props.navigation.navigate('PianoApp')
+          if (Date.now() - security.timer > security.timeoutDuration) {
+            setIsTimedOut(true)
+            navigate('PianoApp')
             // otherwise, if we haven't timed out, just go back to normal screen
           ***REMOVED*** else {
-            if (Platform.OS === 'ios') props.navigation.goBack()
+            if (Platform.OS === 'ios') goBack()
           ***REMOVED***
         ***REMOVED***
         // default: go back from splash to whatever screen we were on before
       ***REMOVED*** else {
-        if (Platform.OS === 'ios') props.navigation.goBack()
+        if (Platform.OS === 'ios') goBack()
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***, [appState])
@@ -107,11 +113,9 @@ function MainStack (props) {
   return (
     <Stack.Navigator
       // set the initial screen based on whether security is enabled or not
-      initialRouteName={
-        props.security.securityEnabled ? 'PianoApp' : 'StorySetTabs'
-      ***REMOVED***
+      initialRouteName={security.securityEnabled ? 'PianoApp' : 'StorySetTabs'***REMOVED***
       screenOptions={{
-        gestureDirection: props.isRTL ? 'horizontal-inverted' : 'horizontal',
+        gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
         gestureResponseDistance: {
           horizontal: 50 * scaleMultiplier,
           vertical: 135
@@ -134,12 +138,12 @@ function MainStack (props) {
               source={{
                 uri:
                   FileSystem.documentDirectory +
-                  props.activeGroup.language +
+                  activeGroup.language +
                   '-header.png'
               ***REMOVED******REMOVED***
             />
           ),
-          headerLeft: props.isRTL
+          headerLeft: isRTL
             ? () => (
                 <View>
                   {dbMode === 'test' ||
@@ -148,7 +152,7 @@ function MainStack (props) {
                     <Text
                       style={[
                         StandardTypography(
-                          props,
+                          { font, isRTL ***REMOVED***,
                           'p',
                           'Regular',
                           'center',
@@ -168,21 +172,21 @@ function MainStack (props) {
                 <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
                   <GroupAvatar
                     style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
-                    emoji={props.activeGroup.emoji***REMOVED***
+                    emoji={activeGroup.emoji***REMOVED***
                     size={35***REMOVED***
-                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    onPress={() => toggleDrawer()***REMOVED***
                     isActive={true***REMOVED***
                   />
                 </View>
               ),
-          headerRight: props.isRTL
+          headerRight: isRTL
             ? () => (
                 <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
                   <GroupAvatar
                     style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
-                    emoji={props.activeGroup.emoji***REMOVED***
+                    emoji={activeGroup.emoji***REMOVED***
                     size={35***REMOVED***
-                    onPress={() => props.navigation.toggleDrawer()***REMOVED***
+                    onPress={() => toggleDrawer()***REMOVED***
                     isActive={true***REMOVED***
                   />
                 </View>
@@ -195,7 +199,7 @@ function MainStack (props) {
                     <Text
                       style={[
                         StandardTypography(
-                          props,
+                          { font, isRTL ***REMOVED***,
                           'p',
                           'Regular',
                           'center',
@@ -241,7 +245,7 @@ function MainStack (props) {
         name='Groups'
         component={GroupsScreen***REMOVED***
         options={{
-          headerTitle: props.translations.groups.header,
+          headerTitle: translations.groups.header,
           headerStyle: {
             backgroundColor: colors.aquaHaze
           ***REMOVED***
@@ -254,7 +258,7 @@ function MainStack (props) {
           title: '',
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -272,25 +276,25 @@ function MainStack (props) {
             'center',
             colors.shark
           ),
-          headerRight: props.isRTL
-            ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+          headerRight: isRTL
+            ? () => <BackButton onPress={() => goBack()***REMOVED*** />
             : () => <View></View>,
-          headerLeft: props.isRTL
+          headerLeft: isRTL
             ? () => <View></View>
-            : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+            : () => <BackButton onPress={() => goBack()***REMOVED*** />
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
         name='Storage'
         component={StorageScreen***REMOVED***
         options={{
-          headerTitle: props.translations.storage.header,
+          headerTitle: translations.storage.header,
           headerStyle: {
             backgroundColor: colors.aquaHaze
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -298,13 +302,13 @@ function MainStack (props) {
         name='MobilizationTools'
         component={MobilizationToolsScreen***REMOVED***
         options={{
-          headerTitle: props.translations.mobilization_tools.header,
+          headerTitle: translations.mobilization_tools.header,
           headerStyle: {
             backgroundColor: colors.aquaHaze
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -312,13 +316,13 @@ function MainStack (props) {
         name='Passcode'
         component={PasscodeScreen***REMOVED***
         options={{
-          headerTitle: props.translations.mobilization_tools.header,
+          headerTitle: translations.mobilization_tools.header,
           headerStyle: {
             backgroundColor: colors.white
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -326,13 +330,13 @@ function MainStack (props) {
         name='Security'
         component={SecurityScreen***REMOVED***
         options={{
-          headerTitle: props.translations.security.header,
+          headerTitle: translations.security.header,
           headerStyle: {
             backgroundColor: colors.aquaHaze
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -340,13 +344,13 @@ function MainStack (props) {
         name='SecurityOnboardingSlides'
         component={SecurityOnboardingSlidesScreen***REMOVED***
         options={{
-          headerTitle: props.translations.security.header,
+          headerTitle: translations.security.header,
           headerStyle: {
             backgroundColor: colors.white
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -359,7 +363,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -372,7 +376,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -385,7 +389,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -398,7 +402,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />
@@ -411,7 +415,7 @@ function MainStack (props) {
           ***REMOVED***,
           headerTitleStyle: {
             color: colors.shark,
-            fontFamily: props.font + '-Bold'
+            fontFamily: font + '-Bold'
           ***REMOVED***
         ***REMOVED******REMOVED***
       />

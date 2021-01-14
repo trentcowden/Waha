@@ -7,32 +7,41 @@ import { StandardTypography ***REMOVED*** from '../../styles/typography'
 import Separator from '../standard/Separator'
 import WahaButton from '../standard/WahaButton'
 
-function LanguageStorageItem (props) {
+function LanguageStorageItem ({
+  // passed from parent
+  languageName,
+  languageID,
+  megabytes,
+  clearDownloads,
+  // passed from redux
+  font,
+  isRTL,
+  translations,
+  activeGroup
+***REMOVED***) {
   return (
     <View style={styles.storageContainer***REMOVED***>
       <View
         style={[
           styles.languageHeaderContainer,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+          { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
         ]***REMOVED***
       >
         <Text
           style={StandardTypography(
-            props,
+            { font, isRTL ***REMOVED***,
             'h3',
             'Regular',
             'left',
             colors.chateau
           )***REMOVED***
         >
-          {props.languageName +
-            ' ' +
-            props.translations.storage.downloads_label***REMOVED***
+          {languageName + ' ' + translations.storage.downloads_label***REMOVED***
         </Text>
         <Image
           style={styles.languageLogo***REMOVED***
           source={{
-            uri: FileSystem.documentDirectory + props.languageID + '-header.png'
+            uri: FileSystem.documentDirectory + languageID + '-header.png'
           ***REMOVED******REMOVED***
         />
       </View>
@@ -41,36 +50,48 @@ function LanguageStorageItem (props) {
         style={[
           styles.itemContainer,
           {
-            flexDirection: props.isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row'
           ***REMOVED***
         ]***REMOVED***
       >
         <Text
-          style={StandardTypography(props, 'h3', 'Bold', 'left', colors.tuna)***REMOVED***
+          style={StandardTypography(
+            { font, isRTL ***REMOVED***,
+            'h3',
+            'Bold',
+            'left',
+            colors.tuna
+          )***REMOVED***
         >
-          {props.megabytes >= 0
-            ? props.megabytes + ' ' + props.translations.storage.megabyte_label
-            : props.translations.storage.megabyte_label***REMOVED***
+          {megabytes >= 0
+            ? megabytes + ' ' + translations.storage.megabyte_label
+            : translations.storage.megabyte_label***REMOVED***
         </Text>
         <Text
           style={[
-            StandardTypography(props, 'h3', 'Regular', 'left', colors.tuna),
+            StandardTypography(
+              { font, isRTL ***REMOVED***,
+              'h3',
+              'Regular',
+              'left',
+              colors.tuna
+            ),
             {
               flex: 1,
               paddingHorizontal: 20
             ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.storage.storage_used_label***REMOVED***
+          {translations.storage.storage_used_label***REMOVED***
         </Text>
         <WahaButton
           type='outline'
           color={colors.red***REMOVED***
-          label={props.translations.storage.clear_button_label***REMOVED***
+          label={translations.storage.clear_button_label***REMOVED***
           width={92 * scaleMultiplier***REMOVED***
-          onPress={props.clearDownloads***REMOVED***
+          onPress={clearDownloads***REMOVED***
           style={{ height: 45 * scaleMultiplier ***REMOVED******REMOVED***
-          textStyle={{ fontFamily: props.font + '-Regular' ***REMOVED******REMOVED***
+          textStyle={{ fontFamily: font + '-Regular' ***REMOVED******REMOVED***
         />
       </View>
       <Separator />

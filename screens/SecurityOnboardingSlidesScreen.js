@@ -5,24 +5,30 @@ import OnboardingSwiper from '../components/OnboardingSwiper'
 import BackButton from '../components/standard/BackButton'
 import { colors, getLanguageFont ***REMOVED*** from '../constants'
 
-function SecurityOnboardingSlidesScreen (props) {
+function SecurityOnboardingSlidesScreen ({
+  navigation: { setOptions, navigate, goBack ***REMOVED***,
+  translations,
+  font,
+  isRTL,
+  activeGroup
+***REMOVED***) {
   //+ STATE
 
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
   ***REMOVED***, [])
 
   //+ NAV OPTIONS
   function getNavOptions () {
     return {
-      headerRight: props.isRTL
-        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+      headerRight: isRTL
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>,
-      headerLeft: props.isRTL
+      headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />
     ***REMOVED***
   ***REMOVED***
 
@@ -31,7 +37,7 @@ function SecurityOnboardingSlidesScreen (props) {
   return (
     <View style={styles.screen***REMOVED***>
       <OnboardingSwiper
-        isRTL={props.isRTL ? true : false***REMOVED***
+        isRTL={isRTL ? true : false***REMOVED***
         sources={[
           require('../assets/onboarding/security_onboarding1.png'),
           require('../assets/onboarding/security_onboarding2.png'),
@@ -39,20 +45,20 @@ function SecurityOnboardingSlidesScreen (props) {
           require('../assets/onboarding/security_onboarding4.png')
         ]***REMOVED***
         titles={[
-          props.translations.security.popups.onboarding_1_title,
-          props.translations.security.popups.onboarding_2_title,
-          props.translations.security.popups.onboarding_3_title,
-          props.translations.security.popups.onboarding_4_title
+          translations.security.popups.onboarding_1_title,
+          translations.security.popups.onboarding_2_title,
+          translations.security.popups.onboarding_3_title,
+          translations.security.popups.onboarding_4_title
         ]***REMOVED***
         messages={[
-          props.translations.security.popups.onboarding_1_message,
-          props.translations.security.popups.onboarding_2_message,
-          props.translations.security.popups.onboarding_3_message,
-          props.translations.security.popups.onboarding_4_message
+          translations.security.popups.onboarding_1_message,
+          translations.security.popups.onboarding_2_message,
+          translations.security.popups.onboarding_3_message,
+          translations.security.popups.onboarding_4_message
         ]***REMOVED***
-        onFinish={() => props.navigation.navigate('KeyOrderSet_Initial')***REMOVED***
-        nextTranslation={props.translations.general.next***REMOVED***
-        startTranslation={props.translations.general.start***REMOVED***
+        onFinish={() => navigate('KeyOrderSet_Initial')***REMOVED***
+        nextTranslation={translations.general.next***REMOVED***
+        startTranslation={translations.general.start***REMOVED***
         useDefaultFont={false***REMOVED***
       />
     </View>

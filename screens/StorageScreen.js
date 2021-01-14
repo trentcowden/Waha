@@ -15,7 +15,15 @@ import WahaButton from '../components/standard/WahaButton'
 import { colors, getLanguageFont ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 
-function StorageScreen (props) {
+function StorageScreen ({
+  navigation: { setOptions, goBack ***REMOVED***,
+  isRTL,
+  database,
+  translations,
+  font,
+  activeGroup,
+  removeDownload
+***REMOVED***) {
   //+ STATE
 
   // keeps track of storage size of each language's downloaded chapter 2s
@@ -27,7 +35,7 @@ function StorageScreen (props) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
     getAllStorageUsed()
   ***REMOVED***, [])
 
@@ -35,12 +43,12 @@ function StorageScreen (props) {
 
   function getNavOptions () {
     return {
-      headerRight: props.isRTL
-        ? () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+      headerRight: isRTL
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>,
-      headerLeft: props.isRTL
+      headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => props.navigation.goBack()***REMOVED*** />
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />
     ***REMOVED***
   ***REMOVED***
 
@@ -98,10 +106,10 @@ function StorageScreen (props) {
           if (hasMatch) {
             if (!language) {
               FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-              props.removeDownload(item.slice(0, 5))
+              removeDownload(item.slice(0, 5))
             ***REMOVED*** else if (item.slice(0, 2) === language) {
               FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-              props.removeDownload(item.slice(0, 5))
+              removeDownload(item.slice(0, 5))
             ***REMOVED***
           ***REMOVED***
         ***REMOVED***
@@ -114,10 +122,10 @@ function StorageScreen (props) {
   // gets all the installed languages
   function getInstalledLanguageInstances () {
     var installedLanguageInstances = []
-    for (key in props.database) {
+    for (key in database) {
       if (key.length === 2) {
         var languageObject = {***REMOVED***
-        languageObject['languageName'] = props.database[key].displayName
+        languageObject['languageName'] = database[key].displayName
         languageObject['languageID'] = key
         installedLanguageInstances.push(languageObject)
       ***REMOVED***
@@ -130,24 +138,22 @@ function StorageScreen (props) {
   function renderLanguageStorageItem (languageList) {
     return (
       <LanguageStorageItem
-        languageName={
-          props.translations.general.brands[languageList.item.languageID]
-        ***REMOVED***
+        languageName={translations.general.brands[languageList.item.languageID]***REMOVED***
         languageID={languageList.item.languageID***REMOVED***
         megabytes={storageObject[languageList.item.languageID]***REMOVED***
         clearDownloads={() => {
           Alert.alert(
-            props.translations.storage.popups
+            translations.storage.popups
               .clear_all_downloaded_lessons_for_a_language_title,
-            props.translations.storage.popups
+            translations.storage.popups
               .clear_all_downloaded_lessons_for_a_language_message,
             [
               {
-                text: props.translations.general.cancel,
+                text: translations.general.cancel,
                 onPress: () => {***REMOVED***
               ***REMOVED***,
               {
-                text: props.translations.general.ok,
+                text: translations.general.ok,
                 onPress: () =>
                   deleteDownloadedLessons(languageList.item.languageID)
               ***REMOVED***
@@ -175,27 +181,25 @@ function StorageScreen (props) {
         type='filled'
         color={colors.red***REMOVED***
         label={
-          props.translations.storage.clear_all_downloaded_lessons_button_label +
+          translations.storage.clear_all_downloaded_lessons_button_label +
           ' (' +
           totalStorage +
           ' ' +
-          props.translations.storage.megabyte_label +
+          translations.storage.megabyte_label +
           ')'
         ***REMOVED***
         width={Dimensions.get('window').width - 40***REMOVED***
         onPress={() =>
           Alert.alert(
-            props.translations.storage.popups
-              .clear_all_downloaded_lessons_title,
-            props.translations.storage.popups
-              .clear_all_downloaded_lessons_message,
+            translations.storage.popups.clear_all_downloaded_lessons_title,
+            translations.storage.popups.clear_all_downloaded_lessons_message,
             [
               {
-                text: props.translations.general.cancel,
+                text: translations.general.cancel,
                 onPress: () => {***REMOVED***
               ***REMOVED***,
               {
-                text: props.translations.general.ok,
+                text: translations.general.ok,
                 onPress: () => deleteDownloadedLessons()
               ***REMOVED***
             ]

@@ -17,6 +17,19 @@ import {
 ***REMOVED*** from '../constants'
 import { StandardTypography ***REMOVED*** from '../styles/typography'
 
+/**
+ * Screen component for the story sets screen. This screen shows the list of currently added story sets in a category. Used three times for the three tabs.
+ * @param {Object***REMOVED*** props - Props passed to this screen.
+ * @param {Object***REMOVED*** navigation - Navigation object passed to this screen.
+ * @param {Function***REMOVED*** navigate - Navigation function used to navigate to another screen.
+ * @param {Object***REMOVED*** route - Route object passed from navigation to this screen.
+ * @param {string***REMOVED*** name - Name of the route of the version of this screen. Can be "Foundational", "Topical", or "Mobilization Tools". This screen is used for all 3 tabs and the route name changes which sets are shown.
+ * @param {Object***REMOVED*** activeDatabase - The database object for the language of the currently active group. Contains translations, sets, etc.
+ * @param {boolean***REMOVED*** isRTL - Whether the language of the currently selected group is right-to-left aligned or not.
+ * @param {Object***REMOVED*** activeGroup - The object for the currently active group.
+ * @param {Object***REMOVED*** translations - The translations for the language of the currently selected group.
+ * @param {string***REMOVED*** font - The name of the font for the langauge script of the currently selected group. Matches with fonts names in the assets folder.
+ */
 function StorySetsScreen ({
   navigation: { navigate ***REMOVED***,
   route: { name: routeName ***REMOVED***,

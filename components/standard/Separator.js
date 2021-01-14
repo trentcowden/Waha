@@ -2,7 +2,7 @@ import React from 'react'
 import { View ***REMOVED*** from 'react-native'
 import { colors ***REMOVED*** from '../../constants'
 
-function Separator (props) {
+function Separator ({***REMOVED***) {
   return (
     <View
       style={{
