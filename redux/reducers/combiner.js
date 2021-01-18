@@ -12,6 +12,9 @@ import { network ***REMOVED*** from '../reducers/network'
 import { security ***REMOVED*** from '../reducers/security'
 import { storedDownloads ***REMOVED*** from '../reducers/storedDownloads'
 
+/**
+ * Combines all the different reducers together.
+ */
 export default rootReducer = combineReducers({
   downloads,
   database,

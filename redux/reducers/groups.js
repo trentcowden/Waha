@@ -10,9 +10,9 @@ import {
 ***REMOVED*** from '../actions/groupsActions'
 
 /**
- * The groups redux reducer stores all the information related to groups.
+ * The groups redux reducer stores all the information related to groups. This state is persisted across app restarts.
  * @param {Object***REMOVED*** action Parameters passed from groupActions.js functions.
- * @param {Object[]***REMOVED*** groups Stores all the created groups in an array.
+ * @param {Object[]***REMOVED*** groups (state) Stores all the created groups in an array.
  * @param {string***REMOVED*** groups[].name The name of the group.
  * @param {string***REMOVED*** groups[].language The language ID associated with the group.
  * @param {string***REMOVED*** groups[].emoji The name of the emoji used for this group's avatar. Called 'default' by default.
