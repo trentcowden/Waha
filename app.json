@@ -34,7 +34,8 @@
         "foregroundImage": "./assets/adaptive-icon-foreground.png",
         "backgroundColor": "#e43c44"
       ***REMOVED***,
-      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha"
+      "playStoreUrl": "https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha",
+      "permissions": []
     ***REMOVED***,
     "githubUrl": "https://github.com/trentcowden/Waha",
     "icon": "./assets/wahaIcon.png",
