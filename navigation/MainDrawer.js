@@ -45,18 +45,18 @@ function MainDrawer ({
     var localLanguageInfo = {***REMOVED***
     var localSets = []
 
-    if (props.isConnected) {
+    if (isConnected) {
       try {
         // listener for languages collection
         db.collection('languages')
-          .doc(props.activeGroup.language)
+          .doc(activeGroup.language)
           .onSnapshot(function (doc) {
             //- download a file
             function downloadSomething (url, fileName) {
               var downloadResumable = FileSystem.createDownloadResumable(
                 url,
                 FileSystem.documentDirectory +
-                  props.activeGroup.language +
+                  activeGroup.language +
                   '-' +
                   fileName,
                 {***REMOVED***
@@ -68,36 +68,34 @@ function MainDrawer ({
 
             // check for new fellowship or application chapters or header image
             doc.data().files.forEach(fileName => {
-              if (!props.activeDatabase.files.includes(fileName)) {
+              if (!activeDatabase.files.includes(fileName)) {
                 Alert.alert(
-                  props.translations.general.popups
-                    .new_chapter_downloading_title,
-                  props.translations.general.popups
-                    .new_chapter_downloading_message,
-                  [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+                  translations.general.popups.new_chapter_downloading_title,
+                  translations.general.popups.new_chapter_downloading_message,
+                  [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
                 )
                 if (fileName.includes('header'))
                   return downloadSomething(
-                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
                     fileName.slice(0, -3) + '.png'
                   )
                 else
                   return downloadSomething(
-                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
                     fileName.slice(0, -3) + '.mp3'
                   )
               ***REMOVED***
             ***REMOVED***)
 
             // store data from update
-            props.storeLanguageData(
-              { ...doc.data(), sets: props.activeDatabase.sets ***REMOVED***,
-              props.activeGroup.language
+            storeLanguageData(
+              { ...doc.data(), sets: activeDatabase.sets ***REMOVED***,
+              activeGroup.language
             )
 
             localLanguageInfo = doc.data()
 
-            // console.log(props.activeDatabase.translations)
+            // console.log(activeDatabase.translations)
 
             // TODO at some point
             // if
@@ -110,7 +108,7 @@ function MainDrawer ({
             // if
             // 1. mobilization tools is unlocked for this group
             // 2. a new mobilization tools set is added
-            // if (props.activeGroup.setShouldShowMobilizationToolsTab && )
+            // if (activeGroup.setShouldShowMobilizationToolsTab && )
 
             // 1. add it automatically to added sets for htis group
             // 2. make it dispaly the 'new' icon somehow
@@ -118,7 +116,7 @@ function MainDrawer ({
 
         // listener for sets collection
         db.collection('sets')
-          .where('languageID', '==', props.activeGroup.language)
+          .where('languageID', '==', activeGroup.language)
           .onSnapshot(querySnapshot => {
             // get all sets and put them in one object for redux storage
             var sets = []
@@ -130,9 +128,9 @@ function MainDrawer ({
             ***REMOVED***)
 
             // store the new sets object
-            props.storeLanguageData(
+            storeLanguageData(
               { ...localLanguageInfo, sets: sets ***REMOVED***,
-              props.activeGroup.language
+              activeGroup.language
             )
           ***REMOVED***)
       ***REMOVED*** catch (error) {
