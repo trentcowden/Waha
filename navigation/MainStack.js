@@ -164,6 +164,30 @@ function MainStack (props) {
               )
             : () => (
                 <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
+                  {true ? (
+                    // <View
+                    //   style={{
+                    //     width: '100%',
+                    //     height: 12,
+                    //     position: 'absolute',
+                    //     alignSelf: 'flex-start'
+                    //   ***REMOVED******REMOVED***
+                    // >
+                    <View>
+                      <View
+                        style={{
+                          width: 12,
+                          height: 12,
+                          borderRadius: 6,
+                          position: 'absolute',
+                          backgroundColor: colors.apple,
+                          alignSelf: 'flex-end',
+                          zIndex: 100
+                        ***REMOVED******REMOVED***
+                      />
+                      <View style={{ width: 5 ***REMOVED******REMOVED*** />
+                    </View>
+                  ) : null***REMOVED***
                   <GroupAvatar
                     style={{ backgroundColor: colors.white ***REMOVED******REMOVED***
                     emoji={props.activeGroup.emoji***REMOVED***
