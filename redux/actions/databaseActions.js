@@ -9,8 +9,10 @@ export const SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS =
 export const SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD =
   'SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD'
 export const SET_HAS_FETCHED_LANGUAGE_DATA = 'SET_HAS_FETCHED_LANGUAGE_DATA'
+export const STORE_CORE_FILES_CREATED_TIMES = 'STORE_CORE_FILES_CREATED_TIMES'
 
 import * as FileSystem from 'expo-file-system'
+import firebase from 'firebase'
 import i18n from 'i18n-js'
 import { groupNames ***REMOVED*** from '../../constants'
 import { logInstallLanguage ***REMOVED*** from '../LogEventFunctions'
@@ -74,6 +76,14 @@ export function deleteLanguageData (languageInstanceID) {
   ***REMOVED***
 ***REMOVED***
 
+export function storeCoreFilesCreatedTimes (fileName, timeCreated) {
+  return {
+    type: STORE_CORE_FILES_CREATED_TIMES,
+    fileName,
+    timeCreated
+  ***REMOVED***
+***REMOVED***
+
 export function downloadLanguageCoreFiles (language) {
   return async (dispatch, getState) => {
     var totalDownloaded = 0
@@ -97,8 +107,23 @@ export function downloadLanguageCoreFiles (language) {
     getState().database[language].files.forEach(fileName => {
       var download
       if (fileName.includes('header')) {
+        const url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`
+
+        firebase
+          .storage()
+          .refFromURL(url)
+          .getMetadata()
+          .then(metadata =>
+            dispatch(
+              storeCoreFilesCreatedTimes(
+                language + '-' + fileName,
+                metadata.timeCreated
+              )
+            )
+          )
+
         download = FileSystem.createDownloadResumable(
-          `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+          url,
           FileSystem.documentDirectory +
             language +
             '-' +
@@ -108,8 +133,23 @@ export function downloadLanguageCoreFiles (language) {
           callback
         )
       ***REMOVED*** else {
+        const url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`
+
+        firebase
+          .storage()
+          .refFromURL(url)
+          .getMetadata()
+          .then(metadata =>
+            dispatch(
+              storeCoreFilesCreatedTimes(
+                language + '-' + fileName,
+                metadata.timeCreated
+              )
+            )
+          )
+
         download = FileSystem.createDownloadResumable(
-          `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+          url,
           FileSystem.documentDirectory +
             language +
             '-' +
