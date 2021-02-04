@@ -4,14 +4,15 @@ import {
   getFocusedRouteNameFromRoute,
   NavigationContainer
 ***REMOVED*** from '@react-navigation/native'
-import * as FileSystem from 'expo-file-system'
 import React, { useEffect ***REMOVED*** from 'react'
-import { Alert ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import WahaDrawer from '../components/WahaDrawer'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import db from '../firebase/db'
-import { storeLanguageData ***REMOVED*** from '../redux/actions/databaseActions'
+import {
+  storeLanguageData,
+  storeLanguageSets
+***REMOVED*** from '../redux/actions/databaseActions'
 import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
 import MainStack from './MainStack'
 
@@ -44,100 +45,127 @@ function MainDrawer (props) {
     var localLanguageInfo = {***REMOVED***
     var localSets = []
 
-    if (props.isConnected) {
-      try {
-        // listener for languages collection
-        db.collection('languages')
-          .doc(props.activeGroup.language)
-          .onSnapshot(function (doc) {
-            //- download a file
-            function downloadSomething (url, fileName) {
-              var downloadResumable = FileSystem.createDownloadResumable(
-                url,
-                FileSystem.documentDirectory +
-                  props.activeGroup.language +
-                  '-' +
-                  fileName,
-                {***REMOVED***
-              )
-              return downloadResumable.downloadAsync().catch(error => {
-                throw error
-              ***REMOVED***)
-            ***REMOVED***
+    db.collection('languages')
+      .doc(props.activeGroup.language)
+      .onSnapshot(function (doc) {
+        if (doc.data()) {
+          props.storeLanguageData(doc.data(), props.activeGroup.language)
+          localLanguageInfo = doc.data()
+        ***REMOVED***
+      ***REMOVED***)
 
-            // check for new fellowship or application chapters or header image
-            doc.data().files.forEach(fileName => {
-              if (!props.activeDatabase.files.includes(fileName)) {
-                Alert.alert(
-                  props.translations.general.popups
-                    .new_chapter_downloading_title,
-                  props.translations.general.popups
-                    .new_chapter_downloading_message,
-                  [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
-                )
-                if (fileName.includes('header'))
-                  return downloadSomething(
-                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
-                    fileName.slice(0, -3) + '.png'
-                  )
-                else
-                  return downloadSomething(
-                    `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
-                    fileName.slice(0, -3) + '.mp3'
-                  )
-              ***REMOVED***
+    db.collection('sets')
+      .where('languageID', '==', props.activeGroup.language)
+      .onSnapshot(querySnapshot => {
+        // make this work without internet
+        if (!querySnapshot.empty) {
+          var sets = []
+          querySnapshot.forEach(doc => {
+            sets.push({
+              id: doc.id,
+              ...doc.data()
             ***REMOVED***)
-
-            // store data from update
-            props.storeLanguageData(
-              { ...doc.data(), sets: props.activeDatabase.sets ***REMOVED***,
-              props.activeGroup.language
-            )
-
-            localLanguageInfo = doc.data()
-
-            // console.log(props.activeDatabase.translations)
-
-            // TODO at some point
-            // if
-            // 1. all core story sets are completed
-            // 2. a new core story set has been addded
-
-            // 1. add it automatically to added sets for this group
-            // 2. make it display the 'new' icon somehow
-
-            // if
-            // 1. mobilization tools is unlocked for this group
-            // 2. a new mobilization tools set is added
-            // if (props.activeGroup.setShouldShowMobilizationToolsTab && )
-
-            // 1. add it automatically to added sets for htis group
-            // 2. make it dispaly the 'new' icon somehow
           ***REMOVED***)
 
-        // listener for sets collection
-        db.collection('sets')
-          .where('languageID', '==', props.activeGroup.language)
-          .onSnapshot(querySnapshot => {
-            // get all sets and put them in one object for redux storage
-            var sets = []
-            querySnapshot.forEach(doc => {
-              sets.push({
-                id: doc.id,
-                ...doc.data()
-              ***REMOVED***)
-            ***REMOVED***)
+          // store the new sets object
+          props.storeLanguageSets(sets, props.activeGroup.language)
+        ***REMOVED***
+      ***REMOVED***)
 
-            // store the new sets object
-            props.storeLanguageData(
-              { ...localLanguageInfo, sets: sets ***REMOVED***,
-              props.activeGroup.language
-            )
-          ***REMOVED***)
-      ***REMOVED*** catch (error) {
-        console.log(error)
-      ***REMOVED***
-    ***REMOVED***
+    // if (props.isConnected) {
+    // try {
+    //   // listener for languages collection
+    //   db.collection('languages')
+    //     .doc(props.activeGroup.language)
+    //     .onSnapshot(function (doc) {
+    //       console.log(Object.keys(doc.data()))
+    //       //- download a file
+    //       function downloadSomething (url, fileName) {
+    //         var downloadResumable = FileSystem.createDownloadResumable(
+    //           url,
+    //           FileSystem.documentDirectory +
+    //             props.activeGroup.language +
+    //             '-' +
+    //             fileName,
+    //           {***REMOVED***
+    //         )
+    //         return downloadResumable.downloadAsync().catch(error => {
+    //           throw error
+    //         ***REMOVED***)
+    //       ***REMOVED***
+
+    //       // check for new fellowship or application chapters or header image
+    //       doc.data().files.forEach(fileName => {
+    //         if (!props.activeDatabase.files.includes(fileName)) {
+    //           Alert.alert(
+    //             props.translations.general.popups.new_chapter_downloading_title,
+    //             props.translations.general.popups
+    //               .new_chapter_downloading_message,
+    //             [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+    //           )
+    //           if (fileName.includes('header'))
+    //             return downloadSomething(
+    //               `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.png?alt=media`,
+    //               fileName.slice(0, -3) + '.png'
+    //             )
+    //           else
+    //             return downloadSomething(
+    //               `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.mp3?alt=media`,
+    //               fileName.slice(0, -3) + '.mp3'
+    //             )
+    //         ***REMOVED***
+    //       ***REMOVED***)
+
+    //       // store data from update
+    //       props.storeLanguageData(
+    //         { ...doc.data(), sets: props.activeDatabase.sets ***REMOVED***,
+    //         props.activeGroup.language
+    //       )
+
+    //       localLanguageInfo = doc.data()
+
+    //       // console.log(props.activeDatabase.translations)
+
+    //       // TODO at some point
+    //       // if
+    //       // 1. all core story sets are completed
+    //       // 2. a new core story set has been addded
+
+    //       // 1. add it automatically to added sets for this group
+    //       // 2. make it display the 'new' icon somehow
+
+    //       // if
+    //       // 1. mobilization tools is unlocked for this group
+    //       // 2. a new mobilization tools set is added
+    //       // if (props.activeGroup.setShouldShowMobilizationToolsTab && )
+
+    //       // 1. add it automatically to added sets for htis group
+    //       // 2. make it dispaly the 'new' icon somehow
+    //     ***REMOVED***)
+
+    //   // listener for sets collection
+    //   db.collection('sets')
+    //     .where('languageID', '==', props.activeGroup.language)
+    //     .onSnapshot(querySnapshot => {
+    //       // get all sets and put them in one object for redux storage
+    //       var sets = []
+    //       querySnapshot.forEach(doc => {
+    //         sets.push({
+    //           id: doc.id,
+    //           ...doc.data()
+    //         ***REMOVED***)
+    //       ***REMOVED***)
+
+    //       // store the new sets object
+    //       props.storeLanguageData(
+    //         { ...localLanguageInfo, sets: sets ***REMOVED***,
+    //         props.activeGroup.language
+    //       )
+    //     ***REMOVED***)
+    // ***REMOVED*** catch (error) {
+    //   console.log(error)
+    // ***REMOVED***
+    // ***REMOVED***
     return function cleanup () {
       netInfoUnsubscribe()
     ***REMOVED***
@@ -190,6 +218,9 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     storeLanguageData: (data, language) => {
       dispatch(storeLanguageData(data, language))
+    ***REMOVED***,
+    storeLanguageSets: (sets, language) => {
+      dispatch(storeLanguageSets(sets, language))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***
