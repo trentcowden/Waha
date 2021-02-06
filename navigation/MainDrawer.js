@@ -12,6 +12,7 @@ import WahaDrawer from '../components/WahaDrawer'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import db from '../firebase/db'
 import {
+  storeLanguageCoreFilesToUpdate,
   storeLanguageData,
   storeLanguageSets
 ***REMOVED*** from '../redux/actions/databaseActions'
@@ -42,7 +43,8 @@ function MainDrawer (props) {
       props.updateConnectionStatus(state.isConnected)
     ***REMOVED***)
 
-    console.log(props.coreFilesCreatedTimes)
+    // console.log(Object.keys(props.database))
+    console.log(props.languageCoreFilesToUpdate)
 
     // const ref = firebase
     //   .storage()
@@ -70,7 +72,12 @@ function MainDrawer (props) {
           // 1. Check for changes in already downloaded files by comparing created times in redux with created times of current firebase storage files. If the created times don't match, queue the new file to download.
           doc.data().files.forEach(fileName => {
             var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
-            var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+
+            // PRODUCTION FIREBASE URL
+            // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+
+            // TEST FIREBASE URL
+            var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${props.activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
 
             firebase
               .storage()
@@ -78,12 +85,24 @@ function MainDrawer (props) {
               .getMetadata()
               .then(({ timeCreated ***REMOVED***) => {
                 if (
-                  timeCreated !==
-                  props.coreFilesCreatedTimes[
+                  props.languageCoreFilesCreatedTimes[
                     props.activeGroup.language + '-' + fileName
-                  ]
+                  ] &&
+                  timeCreated !==
+                    props.languageCoreFilesCreatedTimes[
+                      props.activeGroup.language + '-' + fileName
+                    ]
                 ) {
                   // Add file to queue to download.
+                  if (
+                    !props.languageCoreFilesToUpdate.includes(
+                      props.activeGroup.language + '-' + fileName
+                    )
+                  ) {
+                    props.storeLanguageCoreFilesToUpdate(
+                      props.activeGroup.language + '-' + fileName
+                    )
+                  ***REMOVED***
                 ***REMOVED***
               ***REMOVED***)
           ***REMOVED***)
@@ -92,12 +111,22 @@ function MainDrawer (props) {
           FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
             contents => {
               doc.data().files.forEach(fileName => {
+                var fileExtension = fileName === 'header' ? 'png' : 'mp3'
                 if (
                   !contents.includes(
-                    props.activeGroup.language + '-' + fileName
+                    `${props.activeGroup.language***REMOVED***-${fileName***REMOVED***.${fileExtension***REMOVED***`
                   )
                 ) {
                   // Add file to queue to download.
+                  if (
+                    !props.languageCoreFilesToUpdate.includes(
+                      props.activeGroup.language + '-' + fileName
+                    )
+                  ) {
+                    props.storeLanguageCoreFilesToUpdate(
+                      props.activeGroup.language + '-' + fileName
+                    )
+                  ***REMOVED***
                 ***REMOVED***
               ***REMOVED***)
             ***REMOVED***
@@ -251,12 +280,15 @@ function mapStateToProps (state) {
 
   return {
     isRTL: state.database[activeGroup.language].isRTL,
+    database: state.database,
     activeDatabase: state.database[activeGroup.language],
     isConnected: state.network.isConnected,
     translations: state.database[activeGroup.language].translations,
     activeGroup: activeGroup,
     security: state.security,
-    coreFilesCreatedTimes: state.database.coreFilesCreatedTimes
+    languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
+    mtUnlockAttempts: state.mtUnlockAttempts
   ***REMOVED***
 ***REMOVED***
 
@@ -270,6 +302,9 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     storeLanguageSets: (sets, language) => {
       dispatch(storeLanguageSets(sets, language))
+    ***REMOVED***,
+    storeLanguageCoreFilesToUpdate: fileName => {
+      dispatch(storeLanguageCoreFilesToUpdate(fileName))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***

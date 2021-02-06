@@ -5,7 +5,8 @@ import {
   SET_HAS_ONBOARDED,
   SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS,
   SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD,
-  STORE_CORE_FILES_CREATED_TIMES,
+  STORE_LANGUAGE_CORE_FILES_CREATED_TIMES,
+  STORE_LANGUAGE_CORE_FILES_TO_UPDATE,
   STORE_LANGUAGE_DATA,
   STORE_LANGUAGE_SETS
 ***REMOVED*** from '../actions/databaseActions'
@@ -15,7 +16,8 @@ export function database (
     hasOnboarded: false,
     hasInstalledFirstLanguageInstance: false,
     languageCoreFilesDownloadProgress: 0,
-    storedDownloads: []
+    storedDownloads: [],
+    languageCoreFilesToUpdate: []
   ***REMOVED***,
   action
 ) {
@@ -67,13 +69,21 @@ export function database (
       const languageToDelete = action.languageInstanceID
       const { [languageToDelete]: value, ...newObject ***REMOVED*** = state
       return newObject
-    case STORE_CORE_FILES_CREATED_TIMES:
+    case STORE_LANGUAGE_CORE_FILES_CREATED_TIMES:
       return {
         ...state,
-        coreFilesCreatedTimes: {
-          ...state.coreFilesCreatedTimes,
+        languageCoreFilesCreatedTimes: {
+          ...state.languageCoreFilesCreatedTimes,
           [action.fileName]: action.timeCreated
         ***REMOVED***
+      ***REMOVED***
+    case STORE_LANGUAGE_CORE_FILES_TO_UPDATE:
+      return {
+        ...state,
+        languageCoreFilesToUpdate: [
+          ...state.languageCoreFilesToUpdate,
+          action.fileName
+        ]
       ***REMOVED***
     case SET_HAS_FETCHED_LANGUAGE_DATA:
       return { ...state, hasFetchedLanguageData: action.hasFetchedLanguageData ***REMOVED***

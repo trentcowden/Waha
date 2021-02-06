@@ -61,29 +61,31 @@ function WahaDrawer (props) {
       </View>
       <View style={{ backgroundColor: colors.white, flex: 1 ***REMOVED******REMOVED***>
         <View style={{ flex: 1 ***REMOVED******REMOVED***>
-          <WahaButton
-            type='filled'
-            color={colors.apple***REMOVED***
-            onPress={() => {***REMOVED******REMOVED***
-            label='Update available'
-            extraComponent={
-              <Icon
-                name='error-filled'
-                size={45 * scaleMultiplier***REMOVED***
-                color={colors.white***REMOVED***
-              />
-            ***REMOVED***
-            style={{
-              marginHorizontal: 10,
-              marginTop: 10,
-              marginBottom: 2,
-              height: 55 * scaleMultiplier,
-              flexDirection: props.isRTL ? 'row' : 'row-reverse',
-              justifyContent: props.isRTL ? 'flex-start' : 'flex-end',
-              paddingHorizontal: 2.5
-            ***REMOVED******REMOVED***
-            textStyle={{ marginHorizontal: 12.5 ***REMOVED******REMOVED***
-          />
+          {props.languageCoreFilesToUpdate.length !== 0 ? (
+            <WahaButton
+              type='filled'
+              color={colors.apple***REMOVED***
+              onPress={() => {***REMOVED******REMOVED***
+              label='Update available'
+              extraComponent={
+                <Icon
+                  name='error-filled'
+                  size={45 * scaleMultiplier***REMOVED***
+                  color={colors.white***REMOVED***
+                />
+              ***REMOVED***
+              style={{
+                marginHorizontal: 10,
+                marginTop: 10,
+                marginBottom: 2,
+                height: 55 * scaleMultiplier,
+                flexDirection: props.isRTL ? 'row' : 'row-reverse',
+                justifyContent: props.isRTL ? 'flex-start' : 'flex-end',
+                paddingHorizontal: 2.5
+              ***REMOVED******REMOVED***
+              textStyle={{ marginHorizontal: 12.5 ***REMOVED******REMOVED***
+            />
+          ) : null***REMOVED***
           <DrawerItem
             iconName='group'
             text={props.translations.groups.header***REMOVED***
@@ -211,7 +213,8 @@ function mapStateToProps (state) {
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
     font: getLanguageFont(activeGroup.language),
-    isConnected: state.network.isConnected
+    isConnected: state.network.isConnected,
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
   ***REMOVED***
 ***REMOVED***
 

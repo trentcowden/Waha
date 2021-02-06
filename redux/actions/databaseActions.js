@@ -10,9 +10,13 @@ export const SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS =
 export const SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD =
   'SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD'
 export const SET_HAS_FETCHED_LANGUAGE_DATA = 'SET_HAS_FETCHED_LANGUAGE_DATA'
-export const STORE_CORE_FILES_CREATED_TIMES = 'STORE_CORE_FILES_CREATED_TIMES'
+export const STORE_LANGUAGE_CORE_FILES_CREATED_TIMES =
+  'STORE_LANGUAGE_CORE_FILES_CREATED_TIMES'
+export const STORE_LANGUAGE_CORE_FILES_TO_UPDATE =
+  'STORE_LANGUAGE_CORE_FILES_TO_UPDATE'
 
 import * as FileSystem from 'expo-file-system'
+import firebase from 'firebase'
 import i18n from 'i18n-js'
 import { groupNames ***REMOVED*** from '../../constants'
 import { logInstallLanguage ***REMOVED*** from '../LogEventFunctions'
@@ -84,11 +88,18 @@ export function deleteLanguageData (languageInstanceID) {
   ***REMOVED***
 ***REMOVED***
 
-export function storeCoreFilesCreatedTimes (fileName, timeCreated) {
+export function storeLanguageCoreFilesCreatedTimes (fileName, timeCreated) {
   return {
-    type: STORE_CORE_FILES_CREATED_TIMES,
+    type: STORE_LANGUAGE_CORE_FILES_CREATED_TIMES,
     fileName,
     timeCreated
+  ***REMOVED***
+***REMOVED***
+
+export function storeLanguageCoreFilesToUpdate (fileName) {
+  return {
+    type: STORE_LANGUAGE_CORE_FILES_TO_UPDATE,
+    fileName
   ***REMOVED***
 ***REMOVED***
 
@@ -98,6 +109,7 @@ export function storeCoreFilesCreatedTimes (fileName, timeCreated) {
  * @param {string***REMOVED*** language - The ID for the language instance that we're downloading the core files for.
  */
 export function downloadLanguageCoreFiles (language) {
+  console.log('In download function.')
   return async (dispatch, getState) => {
     // Set the totalDownloaded variable to 0. This is our download progress tracking variable. We add one to this variable whenever we finish downloading a file.
     var totalDownloaded = 0
@@ -118,15 +130,30 @@ export function downloadLanguageCoreFiles (language) {
       var download
 
       // Set the file extension based on what type of file we're downloading. Every language core file is an mp3 except for the header image which is a png.
-      var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
+
+      // OLD (uses file name slicing)
+      // var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
+
+      // NEW (doesn't use file name slicing)
+      var fileExtension = fileName === 'header' ? 'png' : 'mp3'
 
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
-      var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+
+      // PRODUCTION URL
+      // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+
+      // TEST URL
+      var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
 
       // Set the local storage path to download to and the name of the file. The format is simple: FileSystem/languageID-fileName.extension.
-      var localPath = `${
-        FileSystem.documentDirectory
-      ***REMOVED***${language***REMOVED***-${fileName.slice(0, -3)***REMOVED***.${fileExtension***REMOVED***`
+
+      // OLD (w/ file name slicing)
+      // var localPath = `${
+      //   FileSystem.documentDirectory
+      // ***REMOVED***${language***REMOVED***-${fileName.slice(0, -3)***REMOVED***.${fileExtension***REMOVED***`
+
+      // NEW (no file name slicing)
+      var localPath = `${FileSystem.documentDirectory***REMOVED***${language***REMOVED***-${fileName***REMOVED***.${fileExtension***REMOVED***`
 
       // Create the download object. Uses url and localPath from above, an empty parameters object, and an empty callback function.
       download = FileSystem.createDownloadResumable(
@@ -138,6 +165,20 @@ export function downloadLanguageCoreFiles (language) {
 
       // Add this download to the filesToDownload object.
       filesToDownload.push(download)
+
+      // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
+      firebase
+        .storage()
+        .refFromURL(url)
+        .getMetadata()
+        .then(metadata =>
+          dispatch(
+            storeLanguageCoreFilesCreatedTimes(
+              language + '-' + fileName,
+              metadata.timeCreated
+            )
+          )
+        )
     ***REMOVED***)
 
     // 2. Store out download resumables array in redux.
