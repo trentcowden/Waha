@@ -1,5 +1,6 @@
 import NetInfo from '@react-native-community/netinfo'
 import { Audio ***REMOVED*** from 'expo-av'
+import * as FileSystem from 'expo-file-system'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
@@ -19,10 +20,13 @@ import WahaButton from '../components/standard/WahaButton'
 import { colors, languages, languageT2S, scaleMultiplier ***REMOVED*** from '../constants'
 import db from '../firebase/db'
 import {
+  deleteLanguageData,
   downloadLanguageCoreFiles,
   setHasFetchedLanguageData,
-  storeLanguageData
+  storeLanguageData,
+  storeLanguageSets
 ***REMOVED*** from '../redux/actions/databaseActions'
+import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance ***REMOVED*** from '../redux/actions/isInstallingLanguageInstanceActions'
 import { storeDownloads ***REMOVED*** from '../redux/actions/storedDownloadsActions'
 import { SystemTypography ***REMOVED*** from '../styles/typography'
@@ -77,6 +81,24 @@ function LanguageSelectScreen ({
   useEffect(() => {
     setOptions(getNavOptions())
 
+    // Clear out the database and downloaded files in case we somehow come back to the Language Select screen after installing anything.
+    if (props.route.name === 'LanguageSelect') {
+      props.groups.forEach(group => props.deleteGroup(group.name))
+
+      Object.keys(props.database).forEach(languageID => {
+        props.deleteLanguageData(languageID)
+        FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+          contents => {
+            for (const item of contents) {
+              if (item.slice(0, 2) === languageID) {
+                FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***
+        )
+      ***REMOVED***)
+    ***REMOVED***
+
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected)
     ***REMOVED***)
@@ -100,19 +122,20 @@ function LanguageSelectScreen ({
     storeDownloads([])
     setIsInstallingLanguageInstance(true)
     //- get sets first
-    var sets = []
 
     await db
       .collection('sets')
       .where('languageID', '==', selectedLanguage)
       .get()
       .then(response => {
+        var sets = []
         response.forEach(set => {
           sets.push({
             id: set.id,
             ...set.data()
           ***REMOVED***)
         ***REMOVED***)
+        props.storeLanguageSets(sets, selectedLanguage)
       ***REMOVED***)
       .catch(error => {
         console.log(error)
@@ -126,13 +149,7 @@ function LanguageSelectScreen ({
       .get()
       .then(async doc => {
         if (doc.exists) {
-          storeLanguageData(
-            {
-              sets: sets,
-              ...doc.data()
-            ***REMOVED***,
-            selectedLanguage
-          )
+          props.storeLanguageData(doc.data(), selectedLanguage)
         ***REMOVED***
       ***REMOVED***)
       .catch(error => {
@@ -425,7 +442,10 @@ const styles = StyleSheet.create({
 //+ REDUX
 
 function mapStateToProps (state) {
-  return {***REMOVED***
+  return {
+    database: state.database,
+    groups: state.groups
+  ***REMOVED***
 ***REMOVED***
 
 function mapDispatchToProps (dispatch) {
@@ -434,11 +454,16 @@ function mapDispatchToProps (dispatch) {
       dispatch(downloadLanguageCoreFiles(languageInstanceID)),
     storeLanguageData: (data, languageInstanceID) =>
       dispatch(storeLanguageData(data, languageInstanceID)),
+    deleteLanguageData: languageInstanceID =>
+      dispatch(deleteLanguageData(languageInstanceID)),
+    storeLanguageSets: (sets, languageInstanceID) =>
+      dispatch(storeLanguageSets(sets, languageInstanceID)),
     setIsInstallingLanguageInstance: toSet =>
       dispatch(setIsInstallingLanguageInstance(toSet)),
     storeDownloads: downloads => dispatch(storeDownloads(downloads)),
     setHasFetchedLanguageData: hasFetchedLanguageData =>
-      dispatch(setHasFetchedLanguageData(hasFetchedLanguageData))
+      dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
+    deleteGroup: groupName => dispatch(deleteGroup(groupName))
   ***REMOVED***
 ***REMOVED***
 
