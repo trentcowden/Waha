@@ -1,7 +1,10 @@
 import React from 'react'
 import { Image, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Icon from '../assets/fonts/icons'
-import { colors, groupIconSources, scaleMultiplier ***REMOVED*** from '../constants'
+import { groupIconSources ***REMOVED*** from '../assets/groupIcons/groupIcons'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
+
 // component for a group's avatar
 function GroupAvatar ({
   style,

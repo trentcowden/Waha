@@ -14,9 +14,10 @@ import {
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/piano-stuff/Piano'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function PianoAppScreen ({
   navigation: { canGoBack, goBack, reset ***REMOVED***,

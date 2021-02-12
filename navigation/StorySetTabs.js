@@ -1,13 +1,10 @@
 import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/material-top-tabs'
 import React from 'react'
 import { connect ***REMOVED*** from 'react-redux'
-import {
-  colors,
-  getLanguageFont,
-  getSetInfo,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import StorySetsScreen from '../screens/StorySetsScreen'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 const Tab = createMaterialTopTabNavigator()
 

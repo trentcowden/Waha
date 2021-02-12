@@ -25,19 +25,13 @@ import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
 import BackButton from '../components/standard/BackButton'
 import VideoPlayer from '../components/VideoPlayer'
-import {
-  colors,
-  getLanguageFont,
-  getLessonInfo,
-  lockPortrait,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { getLessonInfo, lockPortrait, scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
-// import { logCompleteStorySet ***REMOVED*** from '../redux/LogEventFunctions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 /**
  * Component for the Play Screen, where the user listens to or watches the lesson.

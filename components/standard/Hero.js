@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, View ***REMOVED*** from 'react-native'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
 import Separator from '../standard/Separator'
 
 function Hero ({

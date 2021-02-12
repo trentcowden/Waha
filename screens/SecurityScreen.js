@@ -8,14 +8,15 @@ import Hero from '../components/standard/Hero'
 import Separator from '../components/standard/Separator'
 import WahaItem from '../components/standard/WahaItem'
 import WahaItemDescription from '../components/standard/WahaItemDescription'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import OptionsModal from '../modals/OptionsModal'
 import {
   setIsTimedOut,
   setSecurityEnabled,
   setTimeoutDuration
 ***REMOVED*** from '../redux/actions/securityActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function SecurityScreen ({
   navigation: { setOptions, goBack, navigate ***REMOVED***,

@@ -2,8 +2,9 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import { colors ***REMOVED*** from '../styles/colors'
 
 // renders the icon on the right side of lesson item that shows the download
 //  status

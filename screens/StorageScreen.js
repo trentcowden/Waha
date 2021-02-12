@@ -12,8 +12,9 @@ import { connect ***REMOVED*** from 'react-redux'
 import LanguageStorageItem from '../components/list-items/LanguageStorageItem'
 import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
-import { colors, getLanguageFont ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 function StorageScreen ({
   navigation: { setOptions, goBack ***REMOVED***,

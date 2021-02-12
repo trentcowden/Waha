@@ -2,8 +2,7 @@ import Slider from '@react-native-community/slider'
 import React from 'react'
 import { StyleSheet, View ***REMOVED*** from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
-import { colors ***REMOVED*** from '../constants'
-
+import { colors ***REMOVED*** from '../styles/colors'
 // scrubber component rendered on play screen
 function Scrubber ({
   // passed from parent

@@ -1,10 +1,6 @@
 import i18n from 'i18n-js'
-import {
-  getSystemFont,
-  getSystemIsRTL,
-  languages,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { getSystemIsRTL, scaleMultiplier ***REMOVED*** from '../constants'
+import { languages ***REMOVED*** from '../languages'
 
 export function StandardTypography (
   props,
@@ -90,4 +86,23 @@ export function SystemTypography (
       color: color
     ***REMOVED***
   ***REMOVED***
+***REMOVED***
+
+export function getSystemFont () {
+  systemFont = 'Roboto'
+  languages.forEach(languageFamily => {
+    if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
+      systemFont = languageFamily.font
+    ***REMOVED***
+  ***REMOVED***)
+  return systemFont
+***REMOVED***
+
+export function getLanguageFont (languageID) {
+  var languageFont
+  languages.forEach(languageFamily => {
+    if (languageFamily.data.some(language => language.wahaID === languageID))
+      languageFont = languageFamily.font
+  ***REMOVED***)
+  return languageFont
 ***REMOVED***

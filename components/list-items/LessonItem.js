@@ -2,15 +2,10 @@
 import React, { useEffect ***REMOVED*** from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import {
-  colors,
-  getLanguageFont,
-  getLessonInfo,
-  itemHeights,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
+import { getLessonInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../../constants'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import DownloadStatusIndicator from '../DownloadStatusIndicator'
 
 function LessonItem ({

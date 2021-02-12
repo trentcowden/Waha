@@ -4,16 +4,12 @@ import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-prog
 import { connect ***REMOVED*** from 'react-redux'
 import Icon from '../../assets/fonts/icons'
 import SVG from '../../assets/svg.js'
-import {
-  colors,
-  getLanguageFont,
-  getSetInfo,
-  itemHeights,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
+import { getSetInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../../constants'
 import MessageModal from '../../modals/MessageModal'
 import { addSet ***REMOVED*** from '../../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+
 function SetItem ({
   // passed from parent
   mode,

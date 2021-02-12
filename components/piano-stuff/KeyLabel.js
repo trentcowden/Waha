@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, View ***REMOVED*** from 'react-native'
-import { colors ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
 import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function KeyLabel ({ backgroundColor, style, number ***REMOVED***) {

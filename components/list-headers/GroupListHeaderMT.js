@@ -2,8 +2,9 @@ import * as FileSystem from 'expo-file-system'
 import React from 'react'
 import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function GroupListHeaderMT ({
   // passed from parent

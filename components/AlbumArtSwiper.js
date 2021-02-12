@@ -11,9 +11,9 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import SVG from '../assets/svg'
 import SwipeBar from '../components/SwipeBar'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
-
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 function AlbumArtSwiper ({
   // passed from parent
   setAlbumArtSwiperRef,

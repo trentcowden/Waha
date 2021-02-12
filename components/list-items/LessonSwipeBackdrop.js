@@ -1,7 +1,9 @@
 import React from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
+
 // component rendered behind a lesson item that shows the swipe options
 
 function LessonSwipeBackdrop ({

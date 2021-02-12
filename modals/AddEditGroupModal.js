@@ -11,23 +11,18 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import { groupIcons, groupIconSources ***REMOVED*** from '../assets/groupIcons/groupIcons'
 import GroupAvatar from '../components/GroupAvatar'
-import {
-  colors,
-  getLanguageFont,
-  groupIcons,
-  groupIconSources,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import ModalScreen from '../modals/ModalScreen'
 import {
   changeActiveGroup,
   createGroup,
-  deleteGroup,
   editGroup,
   resetProgress
 ***REMOVED*** from '../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function AddEditGroupModal ({
   // passed from parent
@@ -332,9 +327,6 @@ function mapDispatchToProps (dispatch) {
     createGroup: (groupName, language, emoji) =>
       dispatch(createGroup(groupName, language, emoji)),
     changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName)),
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    ***REMOVED***,
     resetProgress: name => {
       dispatch(resetProgress(name))
     ***REMOVED***

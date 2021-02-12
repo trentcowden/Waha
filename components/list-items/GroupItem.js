@@ -1,17 +1,13 @@
 import React, { useState ***REMOVED*** from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import {
-  colors,
-  getLanguageFont,
-  getLessonInfo,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
+import { getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
 import {
   changeActiveGroup,
   deleteGroup
 ***REMOVED*** from '../../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 
 function GroupItem ({

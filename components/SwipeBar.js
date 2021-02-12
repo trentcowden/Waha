@@ -1,7 +1,8 @@
 //basic imports
 import React from 'react'
 import { Animated, StyleSheet, View ***REMOVED*** from 'react-native'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
 
 function SwipeBar ({ opacity, side ***REMOVED***) {
   return (

@@ -1,19 +1,16 @@
 import React from 'react'
 import { StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import {
-  colors,
-  getLanguageFont,
-  getSetInfo,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
 import {
   addSet,
   setShouldShowMobilizationToolsTab
 ***REMOVED*** from '../../redux/actions/groupsActions'
 import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../redux/LogEventFunctions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
+
 // variant of group list item that shows only avatar image, group name, and a switch to enable MTs
 
 function GroupItemMT ({

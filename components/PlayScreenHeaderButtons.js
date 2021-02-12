@@ -1,7 +1,8 @@
 import React from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
 
 function PlayScreenHeaderButtons ({
   // passed from parent
