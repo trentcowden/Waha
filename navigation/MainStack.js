@@ -13,7 +13,7 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import BackButton from '../components/standard/BackButton'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import { analyticsMode, dbMode, reduxMode ***REMOVED*** from '../modeSwitch'
 import StorySetTabs from '../navigation/StorySetTabs'
 import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
@@ -30,8 +30,13 @@ import SecurityOnboardingSlidesScreen from '../screens/SecurityOnboardingSlidesS
 import SecurityScreen from '../screens/SecurityScreen'
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
+import { colors ***REMOVED*** from '../styles/colors'
 // import VideoScreen from '../screens/VideoScreen'
-import { StandardTypography, SystemTypography ***REMOVED*** from '../styles/typography'
+import {
+  getLanguageFont,
+  StandardTypography,
+  SystemTypography
+***REMOVED*** from '../styles/typography'
 LogBox.ignoreLogs(['Setting a timer'])
 
 const Stack = createStackNavigator()

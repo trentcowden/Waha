@@ -6,15 +6,11 @@ import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import BackButton from '../components/standard/BackButton'
 import Separator from '../components/standard/Separator'
-import {
-  colors,
-  getLanguageFont,
-  getSetInfo,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import SetInfoModal from '../modals/SetInfoModal'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state'
