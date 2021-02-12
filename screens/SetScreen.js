@@ -1,4 +1,4 @@
-// import * as FileSystem from 'expo-file-system'
+import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   FlatList,
@@ -9,20 +9,13 @@ import {
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
-import {
-  colors,
-  getLanguageFont,
-  getSetInfo,
-  scaleMultiplier
-***REMOVED*** from '../constants'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function SetScreen (props) {
   //+ STUFF FOR TESTING
 
-  // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(contents => {
-  //   console.log(contents)
-  // ***REMOVED***)
   // console.log(scaleMultiplier)
 
   //+ STATE
@@ -30,6 +23,7 @@ function SetScreen (props) {
   // shows the add new set modal
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
   const [setCategory, setSetCategory] = useState('')
+  const [downloadedFiles, setDownloadedFiles] = useState([])
 
   //+ CONSTRUCTOR
 
@@ -53,6 +47,55 @@ function SetScreen (props) {
 
   //+ NAV OPTIONS
 
+  useEffect(() => {
+    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+      contents => {
+        console.log('Files:')
+        console.log(contents)
+        setDownloadedFiles(contents)
+      ***REMOVED***
+    )
+    // console.log(`Groups:`)
+    // props.groups.forEach(group => console.log(group.language))
+
+    // console.log(
+    //   `Languages in DB: ${Object.keys(props.database).filter(
+    //     key => key.length === 2
+    //   )***REMOVED***`
+    // )
+    console.log(
+      `Language core files to update: ${props.languageCoreFilesToUpdate***REMOVED***\n`
+    )
+    console.log(
+      `Language core files created times: ${JSON.stringify(
+        props.languageCoreFilesCreatedTimes
+      )***REMOVED***\n`
+    )
+  ***REMOVED***, [props.languageCoreFilesToUpdate])
+
+  function filterForDownloadedQuestionSets (set) {
+    var requiredQuestionSets = []
+
+    set.lessons.forEach(lesson => {
+      if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
+        requiredQuestionSets.push(lesson.fellowshipType)
+      ***REMOVED***
+      if (!requiredQuestionSets.includes(lesson.applicationType)) {
+        requiredQuestionSets.push(lesson.applicationType)
+      ***REMOVED***
+    ***REMOVED***)
+
+    if (
+      requiredQuestionSets.every(questionSet =>
+        downloadedFiles.includes(
+          props.activeGroup.language + '-' + questionSet + '.mp3'
+        )
+      )
+    )
+      return true
+    else return false
+  ***REMOVED***
+
   // get the sets for whatever tab we're on
   function getSetData () {
     // if we're adding core sets, display them in numerical order
@@ -62,12 +105,14 @@ function SetScreen (props) {
           .filter(set =>
             props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
+          .filter(filterForDownloadedQuestionSets)
       : // if we're displaying topical/mt sets, display them in the order added
         props.activeDatabase.sets
           .filter(set => getSetInfo('category', set.id) === setCategory)
           .filter(set =>
             props.activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
+          .filter(filterForDownloadedQuestionSets)
           .sort((a, b) => {
             return a.index - b.index
           ***REMOVED***)
@@ -197,11 +242,15 @@ function mapStateToProps (state) {
   )[0]
   return {
     activeDatabase: state.database[activeGroup.language],
+    groups: state.groups,
+    database: state.database,
     isRTL: state.database[activeGroup.language].isRTL,
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
     font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
+    activeGroup: activeGroup,
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
+    languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes
   ***REMOVED***
 ***REMOVED***
 

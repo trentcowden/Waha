@@ -1,4 +1,5 @@
 import NetInfo from '@react-native-community/netinfo'
+import * as FileSystem from 'expo-file-system'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
@@ -10,14 +11,17 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import {
+  deleteLanguageData,
   setHasFetchedLanguageData,
   setHasOnboarded,
   setLanguageCoreFilesDownloadProgress,
   setTotalLanguageCoreFilesToDownload
 ***REMOVED*** from '../redux/actions/databaseActions'
+import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance ***REMOVED*** from '../redux/actions/isInstallingLanguageInstanceActions'
+import { colors ***REMOVED*** from '../styles/colors'
 import { SystemTypography ***REMOVED*** from '../styles/typography'
 import ar from '../translations/ar.json'
 import en from '../translations/en.json'
@@ -57,6 +61,56 @@ function LoadingScreen (props) {
     props.storedDownloads.forEach(download => {
       download.pauseAsync().catch(() => console.log('error pausing download'))
     ***REMOVED***)
+
+    if (
+      props.actingLanguageID !== null &&
+      (!props.activeGroup ||
+        props.activeGroup.language !== props.actingLanguageID)
+    ) {
+      console.log(
+        'Cancelled a language instance installation. Removing language data from redux and deleting any files for that language instance.'
+      )
+      props.groups.forEach(group => {
+        if (group.language === props.actingLanguageID) {
+          props.deleteGroup(group.name)
+        ***REMOVED***
+      ***REMOVED***)
+      props.deleteLanguageData(props.actingLanguageID)
+      FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+        contents => {
+          for (const item of contents) {
+            if (item.slice(0, 2) === props.actingLanguageID) {
+              FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
+      )
+    ***REMOVED***
+
+    // if (condition that distinguishes updating from downloading is downloading AND language isn't the active group AND language isn't the only language installed)
+    //  delete the language from the db and remove all files
+
+    // // delete all groups w/ this language
+    // props.groups.map(group => {
+    //   if (group.language === props.languageID) {
+    //     props.deleteGroup(group.name)
+    //   ***REMOVED***
+    // ***REMOVED***)
+
+    // // delete all downloaded files for this language
+    // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+    //   contents => {
+    //     for (const item of contents) {
+    //       if (item.slice(0, 2) === props.languageID) {
+    //         FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+    //         props.removeDownload(item.slice(0, 5))
+    //       ***REMOVED***
+    //     ***REMOVED***
+    //   ***REMOVED***
+    // )
+
+    // // delete section of database for this language
+    // props.deleteLanguageData(props.languageID)
   ***REMOVED***
 
   return (
@@ -77,42 +131,40 @@ function LoadingScreen (props) {
           source={require('../assets/gifs/waha_loading.gif')***REMOVED***
           resizeMode='contain'
         />
-        {props.route.name === 'Loading' ? (
-          <View
-            style={{
-              width: Dimensions.get('window').width - 60,
-              height: 40 * scaleMultiplier,
-              borderRadius: 30,
-              flexDirection: 'row',
-              overflow: 'hidden',
-              justifyContent: 'center',
-              borderWidth: 2,
-              borderColor: colors.porcelain
-            ***REMOVED******REMOVED***
-          >
-            {props.languageCoreFilesDownloadProgress ? (
-              <View
-                style={{
-                  backgroundColor: '#e43c44',
-                  height: '100%',
-                  flex: props.languageCoreFilesDownloadProgress,
-                  borderRadius: 20
-                ***REMOVED******REMOVED***
-              />
-            ) : null***REMOVED***
-            {props.languageCoreFilesDownloadProgress ? (
-              <View
-                style={{
-                  backgroundColor: '#F1FAEE',
-                  height: '100%',
-                  flex:
-                    props.totalLanguageCoreFilesToDownload -
-                    props.languageCoreFilesDownloadProgress
-                ***REMOVED******REMOVED***
-              />
-            ) : null***REMOVED***
-          </View>
-        ) : null***REMOVED***
+        <View
+          style={{
+            width: Dimensions.get('window').width - 60,
+            height: 40 * scaleMultiplier,
+            borderRadius: 30,
+            flexDirection: 'row',
+            overflow: 'hidden',
+            justifyContent: 'center',
+            borderWidth: 2,
+            borderColor: colors.porcelain
+          ***REMOVED******REMOVED***
+        >
+          {props.languageCoreFilesDownloadProgress ? (
+            <View
+              style={{
+                backgroundColor: '#e43c44',
+                height: '100%',
+                flex: props.languageCoreFilesDownloadProgress,
+                borderRadius: 20
+              ***REMOVED******REMOVED***
+            />
+          ) : null***REMOVED***
+          {props.languageCoreFilesDownloadProgress ? (
+            <View
+              style={{
+                backgroundColor: '#F1FAEE',
+                height: '100%',
+                flex:
+                  props.totalLanguageCoreFilesToDownload -
+                  props.languageCoreFilesDownloadProgress
+              ***REMOVED******REMOVED***
+            />
+          ) : null***REMOVED***
+        </View>
         <View
           style={{
             width: Dimensions.get('window').width,
@@ -191,6 +243,9 @@ const styles = StyleSheet.create({
 ***REMOVED***)
 
 function mapStateToProps (state) {
+  var activeGroup = state.activeGroup
+    ? state.groups.filter(item => item.name === state.activeGroup)[0]
+    : null
   return {
     languageCoreFilesDownloadProgress:
       state.database.languageCoreFilesDownloadProgress,
@@ -200,7 +255,10 @@ function mapStateToProps (state) {
       state.database.hasInstalledFirstLanguageInstance,
     storedDownloads: state.storedDownloads,
     database: state.database,
-    hasFetchedLanguageData: state.database.hasFetchedLanguageData
+    hasFetchedLanguageData: state.database.hasFetchedLanguageData,
+    actingLanguageID: state.database.actingLanguageID,
+    activeGroup: activeGroup,
+    groups: state.groups
   ***REMOVED***
 ***REMOVED***
 
@@ -220,8 +278,13 @@ function mapDispatchToProps (dispatch) {
     setLanguageCoreFilesDownloadProgress: progress => {
       dispatch(setLanguageCoreFilesDownloadProgress(progress))
     ***REMOVED***,
-    setHasFetchedLanguageData: hasFetchedLanguageData =>
+    setHasFetchedLanguageData: hasFetchedLanguageData => {
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData))
+    ***REMOVED***,
+    deleteLanguageData: language => {
+      dispatch(deleteLanguageData(language))
+    ***REMOVED***,
+    deleteGroup: groupName => dispatch(deleteGroup(groupName))
   ***REMOVED***
 ***REMOVED***
 

@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect ***REMOVED*** from 'react'
+import React from 'react'
 import {
   Alert,
   Image,
@@ -9,30 +9,15 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
 import { deleteLanguageData ***REMOVED*** from '../../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+
 function GroupListHeader (props) {
   //+ FUNCTIONS
-
-  useEffect(() => {
-    // check if there was a failed language add, i.e. if the app crashed/user quit during a fetch
-    // and clear out the already downloaded content if there was
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
-        props.database[props.languageID].files.forEach(fileName => {
-          // SLICE
-          if (
-            !contents.includes(`${props.languageID***REMOVED***-${fileName***REMOVED***.mp3`) &&
-            !contents.includes(`${props.languageID***REMOVED***-${fileName***REMOVED***.png`)
-          )
-            deleteLanguageInstance()
-        ***REMOVED***)
-      ***REMOVED***
-    )
-  ***REMOVED***, [])
 
   // deletes all material for a language
   function deleteLanguageInstance () {
