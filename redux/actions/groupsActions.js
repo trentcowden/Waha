@@ -34,7 +34,7 @@ export function changeActiveGroup (groupName) {
  * @param {string***REMOVED*** groupName - The name of the new group.
  * @param {string***REMOVED*** language - The language ID of the new group.
  * @param {string***REMOVED*** emoji - The name of the emoji for the new group's avatar.
- * @return {Object***REMOVED*** Object to send to the reducer.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
  */
 export function createGroup (groupName, language, emoji) {
   logCreateGroup(language)
