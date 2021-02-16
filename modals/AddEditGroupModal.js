@@ -11,7 +11,7 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { groupIcons, groupIconSources ***REMOVED*** from '../assets/groupIcons/groupIcons'
+import { groupIcons, groupIconSources ***REMOVED*** from '../assets/groupIcons/_groupIcons'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import ModalScreen from '../modals/ModalScreen'

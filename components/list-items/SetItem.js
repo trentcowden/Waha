@@ -2,13 +2,13 @@ import React, { useEffect, useState ***REMOVED*** from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
 import { connect ***REMOVED*** from 'react-redux'
-import Icon from '../../assets/fonts/icons'
-import SVG from '../../assets/svg.js'
+import Icon from '../../assets/fonts/icon_font_config'
 import { getSetInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../../constants'
 import MessageModal from '../../modals/MessageModal'
 import { addSet ***REMOVED*** from '../../redux/actions/groupsActions'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+import SVG from '../SVG.js'
 
 function SetItem ({
   // Props passed from a parent component.
@@ -77,7 +77,7 @@ function SetItem ({
                     name={thisSet.iconName***REMOVED***
                     width={70 * scaleMultiplier***REMOVED***
                     height={70 * scaleMultiplier***REMOVED***
-                    fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
+                    color={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
                   />
                 </View>
               )***REMOVED***
@@ -134,7 +134,7 @@ function SetItem ({
                     name={thisSet.iconName***REMOVED***
                     width={70 * scaleMultiplier***REMOVED***
                     height={70 * scaleMultiplier***REMOVED***
-                    fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
+                    color={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
                   />
                 </View>
               )***REMOVED***
@@ -161,7 +161,7 @@ function SetItem ({
               name={thisSet.iconName***REMOVED***
               width={80 * scaleMultiplier***REMOVED***
               height={80 * scaleMultiplier***REMOVED***
-              fill={colors.tuna***REMOVED***
+              color={colors.tuna***REMOVED***
             />
           </View>
         )
@@ -193,7 +193,7 @@ function SetItem ({
               name={thisSet.iconName***REMOVED***
               width={80 * scaleMultiplier***REMOVED***
               height={80 * scaleMultiplier***REMOVED***
-              fill={colors.tuna***REMOVED***
+              color={colors.tuna***REMOVED***
             />
           </View>
         )
