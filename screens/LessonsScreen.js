@@ -7,6 +7,7 @@ import LessonItem from '../components/list-items/LessonItem'
 import LessonSwipeBackdrop from '../components/list-items/LessonSwipeBackdrop'
 import SetItem from '../components/list-items/SetItem'
 import OptionsModalButton from '../components/OptionsModalButton'
+import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import BackButton from '../components/standard/BackButton'
 import { getLessonInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
@@ -60,22 +61,12 @@ function LessonsScreen ({
 
   function getNavOptions () {
     return {
-      headerTitle: () => (
-        <Image
-          style={styles.headerImage***REMOVED***
-          source={{
-            uri:
-              FileSystem.documentDirectory +
-              activeGroup.language +
-              '-header.png'
-          ***REMOVED******REMOVED***
-        />
-      ),
+      headerTitle: () => <ScreenHeaderImage />,
       headerRight: isRTL
         ? () => <BackButton onPress={() => goBack()***REMOVED*** />
-        : () => <View></View>,
+        : () => {***REMOVED***,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => {***REMOVED***
         : () => <BackButton onPress={() => goBack()***REMOVED*** />
     ***REMOVED***
   ***REMOVED***

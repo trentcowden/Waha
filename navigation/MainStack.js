@@ -1,12 +1,12 @@
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
-import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { AppState, Image, LogBox, Text, View ***REMOVED*** from 'react-native'
+import { AppState, LogBox, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
+import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import BackButton from '../components/standard/BackButton'
+import TestModeDisplay from '../components/TestModeDisplay'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import { analyticsMode, dbMode, reduxMode ***REMOVED*** from '../modeSwitch'
 import StorySetTabs from '../navigation/StorySetTabs'
 import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityActions'
 import AddSetScreen from '../screens/AddSetScreen'
@@ -23,17 +23,17 @@ import SecurityOnboardingSlidesScreen from '../screens/SecurityOnboardingSlidesS
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors ***REMOVED*** from '../styles/colors'
-import {
-  getLanguageFont,
-  StandardTypography,
-  SystemTypography
-***REMOVED*** from '../styles/typography'
+import { getLanguageFont, SystemTypography ***REMOVED*** from '../styles/typography'
 
+// Ignore the Android timer warning because it's annoying.
 LogBox.ignoreLogs(['Setting a timer'])
 
-// Create our stack navigator.
+// Create the stack navigator.
 const Stack = createStackNavigator()
 
+/**
+ * This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.js is because this component has access to the navigation prop.
+ */
 function MainStack ({
   // Props passed from navigation.
   navigation: { navigate, goBack, toggleDrawer ***REMOVED***,
@@ -48,6 +48,20 @@ function MainStack ({
 ***REMOVED***) {
   /** Keeps track of the current app state. Can be "active", "inactive", or "background". Set by the app state listener function. */
   const [appState, setAppState] = useState('')
+
+  /**
+   * useEffect function that acts as a constructor. It starts up the app state listener and cleans it up as well.
+   * @function
+   */
+  useEffect(() => {
+    const appStateUnsubscribe = AppState.addEventListener('change', change =>
+      setAppState(change)
+    )
+
+    return function cleanup () {
+      AppState.removeEventListener('change', change => setAppState(change))
+    ***REMOVED***
+  ***REMOVED***, [])
 
   /**
    * useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts.
@@ -84,20 +98,6 @@ function MainStack ({
   ***REMOVED***, [appState])
 
   /**
-   * useEffect function that acts as a constructor. It starts up the app state listener and cleans it up as well.
-   * @function
-   */
-  useEffect(() => {
-    const appStateUnsubscribe = AppState.addEventListener('change', change =>
-      setAppState(change)
-    )
-
-    return function cleanup () {
-      AppState.removeEventListener('change', change => setAppState(change))
-    ***REMOVED***
-  ***REMOVED***, [])
-
-  /**
    * Function for fading out from the piano screen into the normal navigator.
    */
   const forFade = ({ current ***REMOVED***) => ({
@@ -106,13 +106,12 @@ function MainStack ({
     ***REMOVED***
   ***REMOVED***)
 
-  //+ RENDER
-
   return (
     <Stack.Navigator
       // Set the initial screen based on whether security is enabled or not. If it is, our initial screen should be the pianp app. Otherwise, it should be the StorySetTabs.
       initialRouteName={security.securityEnabled ? 'PianoApp' : 'StorySetTabs'***REMOVED***
       screenOptions={{
+        // The drawer must open from the opposite side if the active group's language is RTL.
         gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
         gestureResponseDistance: {
           horizontal: 50 * scaleMultiplier,
@@ -131,47 +130,9 @@ function MainStack ({
             // Remove the header shadow on Android.
             elevation: 0
           ***REMOVED***,
-          headerTitle: () => (
-            <Image
-              style={{
-                resizeMode: 'contain',
-                width: 150,
-                flex: 1,
-                alignSelf: 'center'
-              ***REMOVED******REMOVED***
-              source={{
-                uri:
-                  FileSystem.documentDirectory +
-                  activeGroup.language +
-                  '-header.png'
-              ***REMOVED******REMOVED***
-            />
-          ),
+          headerTitle: () => <ScreenHeaderImage />,
           headerLeft: isRTL
-            ? () => (
-                <View>
-                  {dbMode === 'test' ||
-                  reduxMode === 'test' ||
-                  analyticsMode === 'test' ? (
-                    <Text
-                      style={[
-                        StandardTypography(
-                          { font, isRTL ***REMOVED***,
-                          'p',
-                          'Regular',
-                          'center',
-                          colors.red
-                        ),
-                        {
-                          paddingHorizontal: 20
-                        ***REMOVED***
-                      ]***REMOVED***
-                    >
-                      TEST MODE
-                    </Text>
-                  ) : null***REMOVED***
-                </View>
-              )
+            ? () => <TestModeDisplay />
             : () => (
                 <View style={{ paddingHorizontal: 10 ***REMOVED******REMOVED***>
                   <GroupAvatar
@@ -195,30 +156,7 @@ function MainStack ({
                   />
                 </View>
               )
-            : () => (
-                <View>
-                  {dbMode === 'test' ||
-                  reduxMode === 'test' ||
-                  analyticsMode === 'test' ? (
-                    <Text
-                      style={[
-                        StandardTypography(
-                          { font, isRTL ***REMOVED***,
-                          'p',
-                          'Regular',
-                          'center',
-                          colors.red
-                        ),
-                        {
-                          paddingHorizontal: 20
-                        ***REMOVED***
-                      ]***REMOVED***
-                    >
-                      TEST MODE
-                    </Text>
-                  ) : null***REMOVED***
-                </View>
-              )
+            : () => <TestModeDisplay />
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
@@ -242,6 +180,7 @@ function MainStack ({
             color: colors.chateau,
             fontFamily: 'Roboto-Bold'
           ***REMOVED***,
+          // Disable gestures on this screen because there are already horizontally-swipable elements on it.
           gestureEnabled: false
         ***REMOVED******REMOVED***
       />
@@ -273,6 +212,7 @@ function MainStack ({
           headerStyle: {
             backgroundColor: colors.white
           ***REMOVED***,
+          // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
           headerTitleStyle: SystemTypography(
             true,
             '',
@@ -282,9 +222,9 @@ function MainStack ({
           ),
           headerRight: isRTL
             ? () => <BackButton onPress={() => goBack()***REMOVED*** />
-            : () => <View></View>,
+            : () => {***REMOVED***,
           headerLeft: isRTL
-            ? () => <View></View>
+            ? () => {***REMOVED***
             : () => <BackButton onPress={() => goBack()***REMOVED*** />
         ***REMOVED******REMOVED***
       />
@@ -429,6 +369,7 @@ function MainStack ({
         options={{
           gestureEnabled: false,
           headerShown: false,
+          // Set the transition out of the piano screen to be a fade instead of a swipe.
           cardStyleInterpolator: forFade
         ***REMOVED******REMOVED***
       />

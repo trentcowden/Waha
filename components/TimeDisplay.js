@@ -1,4 +1,3 @@
-//basic imports
 import React from 'react'
 import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
