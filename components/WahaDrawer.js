@@ -77,7 +77,7 @@ function WahaDrawer ({
           <DrawerItem
             iconName='security'
             text={translations.security.header***REMOVED***
-            onPress={() => navigate('Security')***REMOVED***
+            onPress={() => navigate('SecurityMode')***REMOVED***
           />
           <DrawerItem
             iconName='boat'

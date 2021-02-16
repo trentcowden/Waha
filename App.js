@@ -1,22 +1,17 @@
 import { decode, encode ***REMOVED*** from 'base-64'
 import { Audio ***REMOVED*** from 'expo-av'
 import * as Font from 'expo-font'
-import * as ScreenOrientation from 'expo-screen-orientation'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import { StatusBar, Text ***REMOVED*** from 'react-native'
 import { Provider ***REMOVED*** from 'react-redux'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
 import LoadingView from './components/LoadingView'
+import { lockPortrait ***REMOVED*** from './constants'
 import Root from './navigation/Root'
 import { persistor, store ***REMOVED*** from './redux/store'
 import { colors ***REMOVED*** from './styles/colors'
 
-// set the max font scaling allowed
-Text.defaultProps = {
-  ...Text.defaultProps,
-  maxFontSizeMultiplier: 1.2
-***REMOVED***
-// only here because of wack errors, DON'T DELETE
+// These are only here because of some wack errors. Please do not delete.
 if (!global.btoa) {
   global.btoa = encode
 ***REMOVED***
@@ -24,32 +19,31 @@ if (!global.atob) {
   global.atob = decode
 ***REMOVED***
 
+// Set the max font scaling allowed. This is based on the system font scaling that the user sets in their phone's accessibility settings. We limit it so that the text in the app isn't allowed to get absolutely massive, which would not be good for the UI.
+Text.defaultProps = {
+  ...Text.defaultProps,
+  maxFontSizeMultiplier: 1.2
+***REMOVED***
+
+// App.js is the most root level component.
 export default function App () {
   //+ STATE
 
-  // keeps track of whether fonts are loaded
+  /**  Keeps track of whether all the fonts are loaded. */
   const [fontsLoaded, setFontsLoaded] = useState(false)
 
-  //+ CONSTRUCTOR
-
+  /**
+   * useEffect function that acts as a constructor and takes care of a few tasks we always need to do when we start up the app.
+   * @function
+   */
   useEffect(() => {
-    // load up fonts
+    // Load up all the fonts.
     loadFonts()
 
-    // lock orientation
-    ScreenOrientation.supportsOrientationLockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT
-    ).then(isSupported => {
-      if (isSupported) {
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
-      ***REMOVED*** else {
-        ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.PORTRAIT_UP
-        )
-      ***REMOVED***
-    ***REMOVED***)
+    // Lock our orientation to portrait.
+    lockPortrait(() => {***REMOVED***)
 
-    // set audio mode
+    // Set up some config options for app audio.
     Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
       allowsRecordingIOS: false,
@@ -61,9 +55,7 @@ export default function App () {
     ***REMOVED***)
   ***REMOVED***, [])
 
-  //+ FUNCTIONS
-
-  // loads up all the fonts for all languages
+  // Loads up all the fonts for all languages
   //! flag: update on new language family
   async function loadFonts () {
     await Font.loadAsync({

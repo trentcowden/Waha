@@ -7,9 +7,6 @@ import { SET_ARE_MOBILIZATION_TOOLS_UNLOCKED ***REMOVED*** from '../actions/areM
  */
 export function areMobilizationToolsUnlocked (state = false, action) {
   switch (action.type) {
-    /**
-     * Updates whether the mobilization tools are unlocked or not.
-     */
     case SET_ARE_MOBILIZATION_TOOLS_UNLOCKED:
       return action.toSet
     default:

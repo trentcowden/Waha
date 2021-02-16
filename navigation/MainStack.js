@@ -1,15 +1,7 @@
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import {
-  AppState,
-  Image,
-  LogBox,
-  Platform,
-  StyleSheet,
-  Text,
-  View
-***REMOVED*** from 'react-native'
+import { AppState, Image, LogBox, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import BackButton from '../components/standard/BackButton'
@@ -20,14 +12,14 @@ import { setIsTimedOut, setTimer ***REMOVED*** from '../redux/actions/securityAc
 import AddSetScreen from '../screens/AddSetScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import KeyOrderSetScreen from '../screens/KeyOrderSetScreen'
-import LanguageSelectScreen from '../screens/LanguageSelectScreen'
+import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
 import LessonsScreen from '../screens/LessonsScreen'
 import MobilizationToolsScreen from '../screens/MobilizationToolsScreen'
-import PasscodeScreen from '../screens/PasscodeScreen'
+import MobilizationToolsUnlockScreen from '../screens/MobilizationToolsUnlockScreen'
 import PianoAppScreen from '../screens/PianoAppScreen'
 import PlayScreen from '../screens/PlayScreen'
+import SecurityModeScreen from '../screens/SecurityModeScreen'
 import SecurityOnboardingSlidesScreen from '../screens/SecurityOnboardingSlidesScreen'
-import SecurityScreen from '../screens/SecurityScreen'
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors ***REMOVED*** from '../styles/colors'
@@ -51,58 +43,54 @@ function MainStack ({
   setTimer,
   setIsTimedOut
 ***REMOVED***) {
-  async function getTime () {
-    return Date.now()
-  ***REMOVED***
-
-  //+ APP STATE STUFF
-
+  /** Keeps track of the current app state. Can be "active", "inactive", or "background". Set by the app state listener function. */
   const [appState, setAppState] = useState('')
 
-  function handleAppStateChange (change) {
-    setAppState(change)
-  ***REMOVED***
-
+  /**
+   * useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts.
+   * @function
+   */
   useEffect(() => {
     if (appState === 'inactive' || appState === 'background') {
-      // hide screen during multitasking / going home
+      // Hide screen during multitasking or going to the home screen on iOS.
       if (Platform.OS === 'ios') navigate('Splash')
 
-      // store current time for timeout checking later
+      // Store the current time for security mode timeout checking later.
       setTimer(Date.now())
-    ***REMOVED***
-    if (appState === 'active') {
+    ***REMOVED*** else if (appState === 'active') {
       if (security.securityEnabled) {
-        // if we've already timed out, go straight to game
+        // If we've already timed out...
         if (security.isTimedOut) {
+          // ...then go straight to the piano screen.
           navigate('PianoApp')
         ***REMOVED*** else {
-          // check if we are now timed out
-          // if we are, set isTimedOut to true and navigate to gamez
+          // If we are now timed out, set isTimedOut to true and navigate to the piano screen.
           if (Date.now() - security.timer > security.timeoutDuration) {
             setIsTimedOut(true)
             navigate('PianoApp')
-            // otherwise, if we haven't timed out, just go back to normal screen
+            // Otherwise, if we haven't timed out yet, on Android, do nothing. On iOS, we will have navigated to the splash screen upon coming back into the app so we have to go back to get back to the screen we were on before.
           ***REMOVED*** else {
             if (Platform.OS === 'ios') goBack()
           ***REMOVED***
         ***REMOVED***
-        // default: go back from splash to whatever screen we were on before
+        // Similarly, on iOS, we have to go back when we get back into the app since we previously navigated to the splash screen.
       ***REMOVED*** else {
         if (Platform.OS === 'ios') goBack()
       ***REMOVED***
     ***REMOVED***
   ***REMOVED***, [appState])
 
-  // start up app state listeners
+  /**
+   * useEffect function that acts as a constructor. It starts up the app state listener and cleans it up as well.
+   * @function
+   */
   useEffect(() => {
-    const appStateUnsubscribe = AppState.addEventListener(
-      'change',
-      handleAppStateChange
+    const appStateUnsubscribe = AppState.addEventListener('change', change =>
+      setAppState(change)
     )
 
     return function cleanup () {
-      AppState.removeEventListener('change', handleAppStateChange)
+      AppState.removeEventListener('change', change => setAppState(change))
     ***REMOVED***
   ***REMOVED***, [])
 
@@ -139,7 +127,12 @@ function MainStack ({
           ***REMOVED***,
           headerTitle: () => (
             <Image
-              style={styles.headerImage***REMOVED***
+              style={{
+                resizeMode: 'contain',
+                width: 150,
+                flex: 1,
+                alignSelf: 'center'
+              ***REMOVED******REMOVED***
               source={{
                 uri:
                   FileSystem.documentDirectory +
@@ -268,8 +261,8 @@ function MainStack ({
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='AddLanguage'
-        component={LanguageSelectScreen***REMOVED***
+        name='SubsequentlLanguageInstanceInstall'
+        component={LanguageInstanceInstallScreen***REMOVED***
         options={{
           headerStyle: {
             backgroundColor: colors.white
@@ -318,8 +311,8 @@ function MainStack ({
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='Passcode'
-        component={PasscodeScreen***REMOVED***
+        name='MobilizationToolsUnlock'
+        component={MobilizationToolsUnlockScreen***REMOVED***
         options={{
           headerTitle: translations.mobilization_tools.header,
           headerStyle: {
@@ -332,8 +325,8 @@ function MainStack ({
         ***REMOVED******REMOVED***
       />
       <Stack.Screen
-        name='Security'
-        component={SecurityScreen***REMOVED***
+        name='SecurityMode'
+        component={SecurityModeScreen***REMOVED***
         options={{
           headerTitle: translations.security.header,
           headerStyle: {
@@ -442,26 +435,9 @@ function MainStack ({
           animationEnabled: false
         ***REMOVED******REMOVED***
       />
-      {/* <Stack.Screen
-        name='Video'
-        component={VideoScreen***REMOVED***
-        options={{
-          headerShown: false,
-          cardStyleInterpolator: forFade
-        ***REMOVED******REMOVED***
-      /> */***REMOVED***
     </Stack.Navigator>
   )
 ***REMOVED***
-
-const styles = StyleSheet.create({
-  headerImage: {
-    resizeMode: 'contain',
-    width: 150,
-    flex: 1,
-    alignSelf: 'center'
-  ***REMOVED***
-***REMOVED***)
 
 //+ REDUX
 

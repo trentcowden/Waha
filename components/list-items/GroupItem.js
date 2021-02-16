@@ -2,10 +2,8 @@ import React, { useState ***REMOVED*** from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
-import {
-  changeActiveGroup,
-  deleteGroup
-***REMOVED*** from '../../redux/actions/groupsActions'
+import { changeActiveGroup ***REMOVED*** from '../../redux/actions/activeGroupActions'
+import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'

@@ -14,7 +14,7 @@ i18n.translations = {
   ar
 ***REMOVED***
 
-function OnboardingSlidesScreen ({
+function WahaOnboardingSlidesScreen ({
   navigation: { navigate ***REMOVED***,
   route: {
     params: { selectedLanguage ***REMOVED***
@@ -90,4 +90,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OnboardingSlidesScreen)
+)(WahaOnboardingSlidesScreen)

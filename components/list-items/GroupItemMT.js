@@ -2,11 +2,11 @@ import React from 'react'
 import { StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../LogEventFunctions'
 import {
   addSet,
   setShouldShowMobilizationToolsTab
 ***REMOVED*** from '../../redux/actions/groupsActions'
-import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../redux/LogEventFunctions'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'

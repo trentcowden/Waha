@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/mat
 import React from 'react'
 import { connect ***REMOVED*** from 'react-redux'
 import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
-import StorySetsScreen from '../screens/StorySetsScreen'
+import SetsScreen from '../screens/SetsScreen'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
@@ -19,7 +19,7 @@ function StorySetTabs ({
   var MobilizationToolsScreen = activeGroup.shouldShowMobilizationToolsTab ? (
     <Tab.Screen
       name='MobilizationTools'
-      component={StorySetsScreen***REMOVED***
+      component={SetsScreen***REMOVED***
       options={{
         title: translations.sets.mobilization_tools_sets_tab_label
       ***REMOVED******REMOVED***
@@ -29,7 +29,7 @@ function StorySetTabs ({
   var FoundationalScreen = (
     <Tab.Screen
       name='Foundational'
-      component={StorySetsScreen***REMOVED***
+      component={SetsScreen***REMOVED***
       options={{
         title: translations.sets.foundational_story_sets_tab_label
       ***REMOVED******REMOVED***
@@ -39,7 +39,7 @@ function StorySetTabs ({
   var TopicalScreen = (
     <Tab.Screen
       name='Topical'
-      component={StorySetsScreen***REMOVED***
+      component={SetsScreen***REMOVED***
       options={{
         title: translations.sets.topical_sets_tab_label
       ***REMOVED******REMOVED***
