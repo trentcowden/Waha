@@ -23,14 +23,15 @@ import SecurityOnboardingSlidesScreen from '../screens/SecurityOnboardingSlidesS
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors ***REMOVED*** from '../styles/colors'
-// import VideoScreen from '../screens/VideoScreen'
 import {
   getLanguageFont,
   StandardTypography,
   SystemTypography
 ***REMOVED*** from '../styles/typography'
+
 LogBox.ignoreLogs(['Setting a timer'])
 
+// Create our stack navigator.
 const Stack = createStackNavigator()
 
 function MainStack ({
@@ -94,7 +95,9 @@ function MainStack ({
     ***REMOVED***
   ***REMOVED***, [])
 
-  //- function for fading in/out game screen
+  /**
+   * Function for fading out from the piano screen into the normal navigator.
+   */
   const forFade = ({ current ***REMOVED***) => ({
     cardStyle: {
       opacity: current.progress
@@ -105,7 +108,7 @@ function MainStack ({
 
   return (
     <Stack.Navigator
-      // set the initial screen based on whether security is enabled or not
+      // Set the initial screen based on whether security is enabled or not. If it is, our initial screen should be the pianp app. Otherwise, it should be the StorySetTabs.
       initialRouteName={security.securityEnabled ? 'PianoApp' : 'StorySetTabs'***REMOVED***
       screenOptions={{
         gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
@@ -123,7 +126,8 @@ function MainStack ({
         options={{
           headerStyle: {
             backgroundColor: colors.aquaHaze,
-            elevation: 0 // remove shadow on Android
+            // Remove the header shadow on Android.
+            elevation: 0
           ***REMOVED***,
           headerTitle: () => (
             <Image
@@ -438,8 +442,6 @@ function MainStack ({
     </Stack.Navigator>
   )
 ***REMOVED***
-
-//+ REDUX
 
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(

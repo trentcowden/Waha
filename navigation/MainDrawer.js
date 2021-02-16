@@ -31,7 +31,7 @@ function MainDrawer ({
 ***REMOVED***) {
   /**
    * Determines whether a screen should be able to access the navigation drawer via gesture. Should only return true on the StorySetTabs navigator because this is the only spot we should be able to swipe to open the drawer.
-   * @param {string***REMOVED*** route
+   * @param {string***REMOVED*** route - The route passed from the navigator.
    * @return {shouldGestureBeEnabled***REMOVED***
    */
   function getGestureEnabled (route) {
@@ -41,7 +41,7 @@ function MainDrawer ({
   ***REMOVED***
 
   useEffect(() => {
-    // add listener for connection status and update it accordingly
+    // Add a listener for connection status and update the redux state accordingly.
     const netInfoUnsubscribe = NetInfo.addEventListener(state => {
       updateConnectionStatus(state.isConnected)
     ***REMOVED***)
@@ -80,13 +80,10 @@ function MainDrawer ({
     ***REMOVED***
   ***REMOVED***, [])
 
-  // side of navigation drawer
-  var direction = isRTL ? 'right' : 'left'
-
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerPosition={direction***REMOVED***
+        drawerPosition={isRTL ? 'right' : 'left'***REMOVED***
         drawerType='back'
         drawerContent={props => <WahaDrawer {...props***REMOVED*** />***REMOVED***
         drawerStyle={{
