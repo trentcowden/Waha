@@ -5,11 +5,11 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 
 function PlayScreenHeaderButtons ({
-  // passed from parent
+  // Props passed from a parent component.
   shareOnPress,
   completeOnPress,
   completeCondition,
-  // passed from redux
+  // Props passed from redux.
   isRTL
 ***REMOVED***) {
   //+ RENDER

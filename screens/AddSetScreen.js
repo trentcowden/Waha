@@ -21,12 +21,13 @@ LogBox.ignoreLogs([
  * @param {****REMOVED*** props
  */
 function AddSetScreen ({
+  // Props passed from navigation.
   navigation: { setOptions, goBack ***REMOVED***,
-  // passed from previous screen
   route: {
+    // Props passed from previous screen.
     params: { category ***REMOVED***
   ***REMOVED***,
-  // passed from redux
+  // Props passed from redux.
   font,
   translations,
   isRTL,

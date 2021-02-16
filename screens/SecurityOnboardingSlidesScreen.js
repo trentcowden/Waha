@@ -7,6 +7,7 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 function SecurityOnboardingSlidesScreen ({
+  // Props passed from navigation.
   navigation: { setOptions, navigate, goBack ***REMOVED***,
   translations,
   font,

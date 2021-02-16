@@ -5,7 +5,7 @@ import TimeDisplay from '../components/TimeDisplay'
 import { colors ***REMOVED*** from '../styles/colors'
 // scrubber component rendered on play screen
 function Scrubber ({
-  // passed from parent
+  // Props passed from a parent component.
   value,
   onSlidingComplete,
   onValueChange,

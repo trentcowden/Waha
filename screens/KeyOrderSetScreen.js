@@ -17,9 +17,14 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function KeyOrderSetScreen ({
+  // Props passed from navigation.
   navigation: { setOptions, navigate, goBack ***REMOVED***,
-  route: { name: routeName, params: { keyOrder ***REMOVED*** = { keyOrder: null ***REMOVED*** ***REMOVED***,
-  // passed from redux
+  route: {
+    name: routeName,
+    // Props passed from previous screen.
+    params: { keyOrder ***REMOVED*** = { keyOrder: null ***REMOVED***
+  ***REMOVED***,
+  // Props passed from redux.
   translations,
   font,
   security,

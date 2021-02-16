@@ -20,8 +20,9 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function PianoAppScreen ({
+  // Props passed from navigation.
   navigation: { canGoBack, goBack, reset ***REMOVED***,
-  // passed from redux
+  // Props passed from redux.
   security,
   font,
   activeGroup,

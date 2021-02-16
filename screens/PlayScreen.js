@@ -40,11 +40,13 @@ import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typog
  * @module PlayScreen
  */
 function PlayScreen ({
+  // Props passed from navigation.
   navigation: { goBack, setOptions, isFocused ***REMOVED***,
   route: {
+    // Props passed from previous screen.
     params: { thisLesson, thisSet, isDownloaded, isDownloading, lessonType ***REMOVED***
   ***REMOVED***,
-  // passed from redux
+  // Props passed from redux.
   database,
   activeGroup,
   activeDatabase,

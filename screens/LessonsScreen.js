@@ -18,11 +18,13 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 function LessonsScreen ({
+  // Props passed from navigation.
   navigation: { goBack, setOptions, navigate ***REMOVED***,
   route: {
+    // Props passed from previous screen.
     params: { thisSet ***REMOVED***
   ***REMOVED***,
-  // passed from redux
+  // Props passed from redux.
   downloads,
   isRTL,
   activeDatabase,

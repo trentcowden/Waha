@@ -6,9 +6,9 @@ import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function Blurb ({
-  // passed from parent
+  // Props passed from a parent component.
   text,
-  // passed from redux
+  // Props passed from redux.
   font,
   isRTL
 ***REMOVED***) {

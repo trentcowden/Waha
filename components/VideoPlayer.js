@@ -12,7 +12,7 @@ import { lockLandscape, lockPortrait, scaleMultiplier ***REMOVED*** from '../con
 import { colors ***REMOVED*** from '../styles/colors'
 
 function VideoPlayer ({
-  // passed from parent
+  // Props passed from a parent component.
   videoSource,
   video,
   setVideo,

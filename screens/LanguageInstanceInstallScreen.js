@@ -42,14 +42,16 @@ i18n.translations = {
 ***REMOVED***
 
 function LanguageInstanceInstallScreen ({
+  // Props passed from navigation.
   navigation: { setOptions, goBack, reset, navigate ***REMOVED***,
   route: {
     name: routeName,
+    // Props passed from previous screen.
     params: { installedLanguageInstances ***REMOVED*** = {
       installedLanguageInstances: null
     ***REMOVED***
   ***REMOVED***,
-  // passed from redux
+  // Props passed from redux.
   downloadLanguageCoreFiles,
   storeLanguageData,
   setIsInstallingLanguageInstance,

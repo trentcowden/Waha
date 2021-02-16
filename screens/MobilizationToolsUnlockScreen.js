@@ -15,8 +15,9 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function MobilizationToolsUnlockScreen ({
+  // Props passed from navigation.
   navigation: { setOptions, goBack ***REMOVED***,
-  // passed from redux
+  // Props passed from redux.
   activeDatabase,
   isRTL,
   translations,

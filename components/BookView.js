@@ -6,10 +6,10 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function BookView ({
-  // passed from parent
+  // Props passed from a parent component.
   thisLesson,
   titleSection,
-  // passed from redux
+  // Props passed from redux.
   font,
   activeGroup,
   isRTL
