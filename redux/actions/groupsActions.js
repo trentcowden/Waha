@@ -102,7 +102,7 @@ export function resetProgress (groupName) {
 ***REMOVED***
 
 export function addSet (groupName, set) {
-  logAddStorySet(set)
+  logAddStorySet(set, groupName)
   return {
     type: ADD_SET,
     groupName,
