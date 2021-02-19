@@ -4,7 +4,6 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/standard/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import { logUnlockMobilizationTools ***REMOVED*** from '../logEventFunctions'
 import MessageModal from '../modals/MessageModal'
 import { setAreMobilizationToolsUnlocked ***REMOVED*** from '../redux/actions/areMobilizationToolsUnlockedActions'
 import {
@@ -65,7 +64,6 @@ function MobilizationToolsUnlockScreen ({
   function checkPasscode (passcode) {
     if (passcode === '281820') {
       Keyboard.dismiss()
-      logUnlockMobilizationTools(activeGroup.language)
       setUnlockSuccessModal(true)
       setAreMobilizationToolsUnlocked(true)
     ***REMOVED*** else {

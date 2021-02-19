@@ -13,6 +13,7 @@ import Piano from '../components/piano-stuff/Piano'
 import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
 import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
+import { logEnableSecurityMode ***REMOVED*** from '../redux/LogEventFunctions'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
@@ -33,8 +34,6 @@ function KeyOrderSetScreen ({
   setSecurityEnabled,
   setCode
 ***REMOVED***) {
-  //+ STATE
-
   const [localKeyOrder, setLocalKeyOrder] = useState('')
   const [instructionText, setInstructionText] = useState('')
   //+ CONSTRUCTOR
@@ -76,8 +75,11 @@ function KeyOrderSetScreen ({
               translations.security.popups.key_order_set_confirmation_message,
               [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
             )
+            // Log the enabling of Security Mode in Firebase analytics.
+            logEnableSecurityMode(props.activeGroup.id)
+
             setSecurityEnabled(true)
-            setCode(localKeyOrder)
+            setCode(keyOrder)
             goBack()
             goBack()
             goBack()

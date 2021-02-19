@@ -1,6 +1,5 @@
 import NetInfo from '@react-native-community/netinfo'
 import { Audio ***REMOVED*** from 'expo-av'
-import * as FileSystem from 'expo-file-system'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import React, { useEffect, useState ***REMOVED*** from 'react'
@@ -95,18 +94,18 @@ function LanguageInstanceInstallScreen ({
     if (routeName === 'InitialLanguageInstanceInstall') {
       groups.forEach(group => deleteGroup(group.name))
 
-      Object.keys(database).forEach(languageID => {
-        deleteLanguageData(languageID)
-        FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-          contents => {
-            for (const item of contents) {
-              if (item.slice(0, 2) === languageID) {
-                FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-              ***REMOVED***
-            ***REMOVED***
-          ***REMOVED***
-        )
-      ***REMOVED***)
+      // Object.keys(props.database).forEach(languageID => {
+      //   props.deleteLanguageData(languageID)
+      //   FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+      //     contents => {
+      //       for (const item of contents) {
+      //         if (item.slice(0, 2) === languageID) {
+      //           FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+      //         ***REMOVED***
+      //       ***REMOVED***
+      //     ***REMOVED***
+      //   )
+      // ***REMOVED***)
     ***REMOVED***
 
     const unsubscribe = NetInfo.addEventListener(state => {

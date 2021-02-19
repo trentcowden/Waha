@@ -2,6 +2,7 @@ import { getLessonInfo, getSetInfo ***REMOVED*** from '../../constants'
 import {
   logAddStorySet,
   logCompleteLesson,
+  logCompleteStorySet,
   logCreateGroup
 ***REMOVED*** from '../../logEventFunctions'
 
@@ -14,6 +15,13 @@ export const ADD_SET = 'ADD_SET'
 export const SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB =
   'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
 
+export function changeActiveGroup (groupName) {
+  return {
+    type: CHANGE_ACTIVE_GROUP,
+    groupName
+  ***REMOVED***
+***REMOVED***
+
 /**
  * Creates a new group.
  * @export
@@ -22,13 +30,15 @@ export const SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB =
  * @param {string***REMOVED*** emoji - The name of the emoji for the new group's avatar.
  * @return {Object***REMOVED*** - Object to send to the reducer.
  */
-export function createGroup (groupName, language, emoji) {
-  logCreateGroup(language)
+export function createGroup (groupName, language, emoji, groupID, groupNumber) {
+  logCreateGroup(language, groupID, groupNumber)
+  // console.log(groupID)
   return {
     type: CREATE_GROUP,
     groupName,
     language,
-    emoji
+    emoji,
+    groupID
   ***REMOVED***
 ***REMOVED***
 
@@ -121,12 +131,17 @@ export function toggleComplete (groupName, set, lessonIndex) {
       addedSet => addedSet.id === set.id
     )[0].progress
 
-    // if we're marking a lesson as complete, log the event in firebase
+    // Track analytics.
     if (!thisSetProgress.includes(lessonIndex)) {
-      logCompleteLesson(thisLesson, set, thisLanguage)
+      logCompleteLesson(thisLesson, thisGroup.id)
+    ***REMOVED***
+    if (
+      !thisSetProgress.includes(lessonIndex) &&
+      thisSetProgress.length === setLength - 1
+    ) {
+      logCompleteStorySet(set, thisGroup.id)
     ***REMOVED***
 
-    // finally, dispatch the update progress action with all of our new information
     dispatch(updateProgress(groupName, set, nextSet, lessonIndex, setLength))
   ***REMOVED***
 ***REMOVED***
@@ -151,10 +166,8 @@ export function resetProgress (groupName) {
  * @param {Object***REMOVED*** set - The object for the set that we are adding to this group.
  * @return {Object***REMOVED*** - Object to send to the reducer.
  */
-export function addSet (groupName, set) {
-  // log adding a new story set in firebase
-  logAddStorySet(set)
-
+export function addSet (groupName, groupID, set) {
+  logAddStorySet(set, groupID)
   return {
     type: ADD_SET,
     groupName,
