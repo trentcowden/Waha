@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
-import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../logEventFunctions'
+import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../LogEventFunctions'
 import {
   addSet,
   setShouldShowMobilizationToolsTab
@@ -81,15 +81,15 @@ function GroupItemMT ({
               logEnableMobilizationToolsForAGroup(
                 activeGroup.language,
                 group.id,
-                groups.indexOf(props.group) + 1
+                groups.indexOf(group) + 1
               )
-              for (const set of props.database[props.group.language].sets) {
+              for (const set of database[group.language].sets) {
                 if (
                   getSetInfo('category', set.id) === 'mobilization tools' &&
                   (getSetInfo('index', set.id) === 1 ||
                     getSetInfo('index', set.id) === 2)
                 ) {
-                  addSet(props.group.name, props.group.id, set)
+                  addSet(group.name, group.id, set)
                 ***REMOVED***
               ***REMOVED***
             ***REMOVED***

@@ -4,7 +4,7 @@ import {
   logCompleteLesson,
   logCompleteStorySet,
   logCreateGroup
-***REMOVED*** from '../../logEventFunctions'
+***REMOVED*** from '../../LogEventFunctions'
 
 export const CREATE_GROUP = 'CREATE_GROUP'
 export const EDIT_GROUP = 'EDIT_GROUP'
@@ -15,19 +15,14 @@ export const ADD_SET = 'ADD_SET'
 export const SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB =
   'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
 
-export function changeActiveGroup (groupName) {
-  return {
-    type: CHANGE_ACTIVE_GROUP,
-    groupName
-  ***REMOVED***
-***REMOVED***
-
 /**
  * Creates a new group.
  * @export
  * @param {string***REMOVED*** groupName - The name of the new group.
  * @param {string***REMOVED*** language - The language ID of the new group.
  * @param {string***REMOVED*** emoji - The name of the emoji for the new group's avatar.
+ * @param {number***REMOVED*** groupID - A unique ID for this group. Taken from the globalGroupCounter redux variable.
+ * @param {number***REMOVED*** groupNumber - The number this group is in relation to the total number of groups already created.
  * @return {Object***REMOVED*** - Object to send to the reducer.
  */
 export function createGroup (groupName, language, emoji, groupID, groupNumber) {
@@ -101,32 +96,32 @@ function updateProgress (groupName, set, nextSet, lessonIndex, setLength) {
  * @return {Object***REMOVED*** - Thunk object that allows us to get the state and dispatch actions.
  */
 export function toggleComplete (groupName, set, lessonIndex) {
-  // set up as thunk function so we can get state and dispatch other actions from within
+  // Set up a thunk function so we can get state and dispatch other actions from within this action.
   return (dispatch, getState) => {
-    // get the language for the group we're editing the progress of
+    // Firstly, get the language for the group we're editing the progress of.
     var thisLanguage = getState().groups.filter(
       group => group.name === groupName
     )[0].language
 
-    // get the set AFTER the set we're updating the progress in
+    // Get the set after the set we're updating the progress in. This is in case we complete a set and need to automatically add the next one.
     var nextSet = getState().database[thisLanguage].sets.filter(
       dbSet =>
         getSetInfo('category', dbSet.id) === getSetInfo('category', set.id) &&
         getSetInfo('index', dbSet.id) === getSetInfo('index', set.id) + 1
     )[0]
 
-    // get the object for the lesson that we're updating the progress of
+    // Get the object for the lesson that we're updating the progress of.
     var thisLesson = set.lessons.filter(
       lesson => getLessonInfo('index', lesson.id) === lessonIndex
     )[0]
 
-    // get the length of the set that the lesson we're updating the progress of is in
+    // Get the length of the set that the lesson we're updating the progress of is in.
     var setLength = set.lessons.length
 
-    // get the object for the group that we're updating the progress in
+    // Get the object for the group that we're updating the progress in.
     var thisGroup = getState().groups.filter(item => item.name === groupName)[0]
 
-    // get the progress array for the set that we're updating progrses in
+    // Get the progress array for the set that we're updating progrses in.
     var thisSetProgress = thisGroup.addedSets.filter(
       addedSet => addedSet.id === set.id
     )[0].progress
@@ -142,6 +137,7 @@ export function toggleComplete (groupName, set, lessonIndex) {
       logCompleteStorySet(set, thisGroup.id)
     ***REMOVED***
 
+    // Dispatch our update progress action with all the information we just got.
     dispatch(updateProgress(groupName, set, nextSet, lessonIndex, setLength))
   ***REMOVED***
 ***REMOVED***
@@ -163,6 +159,7 @@ export function resetProgress (groupName) {
  * Adds a new set to a specified group.
  * @export
  * @param {string***REMOVED*** groupName - The name of the group to add a set in.
+ * @param {number***REMOVED*** groupID - The ID of the group to add a set in. Used for analytics.
  * @param {Object***REMOVED*** set - The object for the set that we are adding to this group.
  * @return {Object***REMOVED*** - Object to send to the reducer.
  */

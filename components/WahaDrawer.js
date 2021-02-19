@@ -71,28 +71,28 @@ function WahaDrawer ({
       <View style={{ backgroundColor: colors.white, flex: 1 ***REMOVED******REMOVED***>
         <View style={{ flex: 1 ***REMOVED******REMOVED***>
           <DrawerItem
-            iconName='group'
-            text={translations.groups.header***REMOVED***
+            icon='group'
+            label={translations.groups.header***REMOVED***
             onPress={() => navigate('Groups')***REMOVED***
           />
           <DrawerItem
-            iconName='security'
-            text={translations.security.header***REMOVED***
+            icon='security'
+            label={translations.security.header***REMOVED***
             onPress={() => navigate('SecurityMode')***REMOVED***
           />
           <DrawerItem
-            iconName='boat'
-            text={translations.mobilization_tools.header***REMOVED***
+            icon='boat'
+            label={translations.mobilization_tools.header***REMOVED***
             onPress={() => navigate('MobilizationTools')***REMOVED***
           />
           <DrawerItem
-            iconName='storage'
-            text={translations.storage.header***REMOVED***
+            icon='storage'
+            label={translations.storage.header***REMOVED***
             onPress={() => navigate('Storage')***REMOVED***
           />
           <DrawerItem
-            iconName='email'
-            text={translations.general.feedback***REMOVED***
+            icon='email'
+            label={translations.general.feedback***REMOVED***
             onPress={() =>
               openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
             ***REMOVED***
@@ -148,7 +148,7 @@ function WahaDrawer ({
         isVisible={showEditGroupModal***REMOVED***
         hideModal={() => setShowEditGroupModal(false)***REMOVED***
         type='EditGroup'
-        group={props.activeGroup***REMOVED***
+        group={activeGroup***REMOVED***
       />
     </SafeAreaView>
   )

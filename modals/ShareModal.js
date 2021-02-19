@@ -5,7 +5,7 @@ import { Alert, Share, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import OptionsModalButton from '../components/OptionsModalButton'
 import Separator from '../components/standard/Separator'
-import { logShareApp, logShareAudio, logShareText ***REMOVED*** from '../logEventFunctions'
+import { logShareApp, logShareAudio, logShareText ***REMOVED*** from '../LogEventFunctions'
 import OptionsModal from './OptionsModal'
 
 function ShareModal ({
@@ -29,7 +29,7 @@ function ShareModal ({
           message:
             'iOS: https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294\n\nAndroid: https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha'
         ***REMOVED***).then(() => {
-          logShareApp(props.activeGroup.id)
+          logShareApp(activeGroup.id)
           hideModal()
         ***REMOVED***)
         break
@@ -43,7 +43,7 @@ function ShareModal ({
         Share.share({
           message: scriptureString
         ***REMOVED***).then(() => {
-          logShareText(props.lesson, props.activeGroup.id)
+          logShareText(lesson, activeGroup.id)
           hideModal()
         ***REMOVED***)
         break
@@ -56,7 +56,7 @@ function ShareModal ({
             ? Sharing.shareAsync(
                 FileSystem.documentDirectory + lesson.id + '.mp3'
               ).then(() => {
-                logShareAudio(props.lesson, props.activeGroup.id)
+                logShareAudio(lesson, activeGroup.id)
                 hideModal()
               ***REMOVED***)
             : Alert.alert(
