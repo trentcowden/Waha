@@ -16,7 +16,6 @@ function mapStateToProps (state) {
 
 /**
  * A pressable item used in Waha's navigation drawer.
- * @param {Object***REMOVED*** props - Props passed to this component.
  * @param {function***REMOVED*** props.onPress - The function to call when the user presses the drawer item.
  * @param {string***REMOVED*** props.icon - The name of the icon to display on the drawer item.
  * @param {string***REMOVED*** props.label - The label to display on the drawer item.
