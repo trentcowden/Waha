@@ -39,6 +39,9 @@ function LoadingScreen ({
   hasInstalledFirstLanguageInstance,
   storedDownloads,
   database,
+  actingLanguageID,
+  activeGroup,
+  groups,
   hasFetchedLanguageData,
   setIsInstallingLanguageInstance,
   setHasOnboarded,
@@ -77,23 +80,22 @@ function LoadingScreen ({
     ***REMOVED***)
 
     if (
-      props.actingLanguageID !== null &&
-      (!props.activeGroup ||
-        props.activeGroup.language !== props.actingLanguageID)
+      actingLanguageID !== null &&
+      (!activeGroup || activeGroup.language !== actingLanguageID)
     ) {
       console.log(
         'Cancelled a language instance installation. Removing language data from redux and deleting any files for that language instance.'
       )
-      props.groups.forEach(group => {
-        if (group.language === props.actingLanguageID) {
-          props.deleteGroup(group.name)
+      groups.forEach(group => {
+        if (group.language === actingLanguageID) {
+          deleteGroup(group.name)
         ***REMOVED***
       ***REMOVED***)
-      props.deleteLanguageData(props.actingLanguageID)
+      deleteLanguageData(actingLanguageID)
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
         contents => {
           for (const item of contents) {
-            if (item.slice(0, 2) === props.actingLanguageID) {
+            if (item.slice(0, 2) === actingLanguageID) {
               FileSystem.deleteAsync(FileSystem.documentDirectory + item)
             ***REMOVED***
           ***REMOVED***
@@ -105,9 +107,9 @@ function LoadingScreen ({
     //  delete the language from the db and remove all files
 
     // // delete all groups w/ this language
-    // props.groups.map(group => {
-    //   if (group.language === props.languageID) {
-    //     props.deleteGroup(group.name)
+    // groups.map(group => {
+    //   if (group.language === languageID) {
+    //     deleteGroup(group.name)
     //   ***REMOVED***
     // ***REMOVED***)
 
@@ -115,16 +117,16 @@ function LoadingScreen ({
     // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
     //   contents => {
     //     for (const item of contents) {
-    //       if (item.slice(0, 2) === props.languageID) {
+    //       if (item.slice(0, 2) === languageID) {
     //         FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-    //         props.removeDownload(item.slice(0, 5))
+    //         removeDownload(item.slice(0, 5))
     //       ***REMOVED***
     //     ***REMOVED***
     //   ***REMOVED***
     // )
 
     // // delete section of database for this language
-    // props.deleteLanguageData(props.languageID)
+    // deleteLanguageData(languageID)
   ***REMOVED***
 
   return (

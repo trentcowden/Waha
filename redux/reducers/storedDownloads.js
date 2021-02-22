@@ -5,10 +5,10 @@ import { STORE_DOWNLOADS ***REMOVED*** from '../actions/storedDownloadsActions'
  * @param {Object***REMOVED*** action - Parameters passed from storedDownloadsActions.js functions.
  * @param {Object[]***REMOVED*** storedDownloads - (state) An array of download resumable objects.
  */
-export function storedDownloads (state = [], action) {
-  switch (action.type) {
+export function storedDownloads (state = [], params) {
+  switch (params.type) {
     case STORE_DOWNLOADS:
-      return action.resumables
+      return params.resumables
     default:
       return state
   ***REMOVED***

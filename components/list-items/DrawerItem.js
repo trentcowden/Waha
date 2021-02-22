@@ -39,11 +39,7 @@ function DrawerItem ({
       onPress={onPress***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
-        <Icon
-          name={props.iconName***REMOVED***
-          size={30 * scaleMultiplier***REMOVED***
-          color={colors.tuna***REMOVED***
-        />
+        <Icon name={icon***REMOVED*** size={30 * scaleMultiplier***REMOVED*** color={colors.tuna***REMOVED*** />
       </View>
       <Text
         style={[

@@ -6,10 +6,10 @@ import { UPDATE_CONNECTION_STATUS ***REMOVED*** from '../actions/networkActions'
  * @param {Object***REMOVED*** network - (state) Stores information related to the app's network connection.
  * @param {boolean***REMOVED*** network.isConnected - Whether the app is connected to the internet or not. Defaults to true.
  */
-export function network (state = { isConnected: true ***REMOVED***, action) {
-  switch (action.type) {
+export function network (state = { isConnected: true ***REMOVED***, params) {
+  switch (params.type) {
     case UPDATE_CONNECTION_STATUS:
-      return { isConnected: action.status ***REMOVED***
+      return { isConnected: params.status ***REMOVED***
     default:
       return state
   ***REMOVED***

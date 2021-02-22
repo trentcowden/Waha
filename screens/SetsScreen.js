@@ -35,7 +35,10 @@ function SetsScreen ({
   isRTL,
   activeGroup,
   translations,
-  font
+  font,
+  languageCoreFilesToUpdate,
+  languageCoreFilesCreatedTimes,
+  globalGroupCounter
 ***REMOVED***) {
   //+ STUFF FOR TESTING
 
@@ -77,22 +80,20 @@ function SetsScreen ({
       ***REMOVED***
     )
     // console.log(`Groups:`)
-    // props.groups.forEach(group => console.log(group.language))
+    // groups.forEach(group => console.log(group.language))
 
     // console.log(
-    //   `Languages in DB: ${Object.keys(props.database).filter(
+    //   `Languages in DB: ${Object.keys(database).filter(
     //     key => key.length === 2
     //   )***REMOVED***`
     // )
-    console.log(
-      `Language core files to update: ${props.languageCoreFilesToUpdate***REMOVED***\n`
-    )
+    console.log(`Language core files to update: ${languageCoreFilesToUpdate***REMOVED***\n`)
     console.log(
       `Language core files created times: ${JSON.stringify(
-        props.languageCoreFilesCreatedTimes
+        languageCoreFilesCreatedTimes
       )***REMOVED***\n`
     )
-  ***REMOVED***, [props.languageCoreFilesToUpdate])
+  ***REMOVED***, [languageCoreFilesToUpdate])
 
   function filterForDownloadedQuestionSets (set) {
     var requiredQuestionSets = []
@@ -109,7 +110,7 @@ function SetsScreen ({
     if (
       requiredQuestionSets.every(questionSet =>
         downloadedFiles.includes(
-          props.activeGroup.language + '-' + questionSet + '.mp3'
+          activeGroup.language + '-' + questionSet + '.mp3'
         )
       )
     )
@@ -268,7 +269,6 @@ function mapStateToProps (state) {
     activeGroup: activeGroup,
     translations: state.database[activeGroup.language].translations,
     font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter

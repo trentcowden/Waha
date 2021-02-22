@@ -11,7 +11,7 @@ import {
 
 /**
  * The groups redux reducer stores all the information related to groups. This state is persisted across app restarts.
- * @param {Object***REMOVED*** action - Parameters passed from groupActions.js functions.
+ * @param {Object***REMOVED*** params - Parameters passed from groupActions.js functions.
  * @param {Object[]***REMOVED*** groups - (state) Stores all the created groups in an array.
  * @param {string***REMOVED*** groups[].name - The name of the group.
  * @param {string***REMOVED*** groups[].language - The language ID associated with the group.
@@ -34,7 +34,7 @@ export function groups (state = [], params) {
         ...state,
         {
           name: params.groupName,
-          id: action.groupID,
+          id: params.groupID,
           language: params.language,
           emoji: params.emoji,
           // Set the recent Foundational or Mobilization Tool set and the set bookmark to the Set 1.1.
