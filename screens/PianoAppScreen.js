@@ -58,7 +58,7 @@ function PianoAppScreen ({
       ***REMOVED*** else
         reset({
           index: 0,
-          routes: [{ name: 'StorySetTabs' ***REMOVED***]
+          routes: [{ name: 'SetsTabs' ***REMOVED***]
         ***REMOVED***)
     ***REMOVED***
   ***REMOVED***, [pattern])
