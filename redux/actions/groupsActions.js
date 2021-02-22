@@ -2,6 +2,7 @@ import { getLessonInfo, getSetInfo ***REMOVED*** from '../../constants'
 import {
   logAddStorySet,
   logCompleteLesson,
+  logCompleteStorySet,
   logCreateGroup
 ***REMOVED*** from '../LogEventFunctions'
 
@@ -22,13 +23,15 @@ export function changeActiveGroup (groupName) {
   ***REMOVED***
 ***REMOVED***
 
-export function createGroup (groupName, language, emoji) {
-  logCreateGroup(language)
+export function createGroup (groupName, language, emoji, groupID, groupNumber) {
+  logCreateGroup(language, groupID, groupNumber)
+  // console.log(groupID)
   return {
     type: CREATE_GROUP,
     groupName,
     language,
-    emoji
+    emoji,
+    groupID
   ***REMOVED***
 ***REMOVED***
 
@@ -77,9 +80,18 @@ export function toggleComplete (groupName, set, lessonIndex) {
     var thisSetProgress = thisGroup.addedSets.filter(
       addedSet => addedSet.id === set.id
     )[0].progress
+
+    // Track analytics.
     if (!thisSetProgress.includes(lessonIndex)) {
-      logCompleteLesson(thisLesson, set, thisLanguage)
+      logCompleteLesson(thisLesson, thisGroup.id)
     ***REMOVED***
+    if (
+      !thisSetProgress.includes(lessonIndex) &&
+      thisSetProgress.length === setLength - 1
+    ) {
+      logCompleteStorySet(set, thisGroup.id)
+    ***REMOVED***
+
     dispatch(updateProgress(groupName, set, nextSet, lessonIndex, setLength))
   ***REMOVED***
 ***REMOVED***
@@ -91,8 +103,8 @@ export function resetProgress (groupName) {
   ***REMOVED***
 ***REMOVED***
 
-export function addSet (groupName, set) {
-  logAddStorySet(set)
+export function addSet (groupName, groupID, set) {
+  logAddStorySet(set, groupID)
   return {
     type: ADD_SET,
     groupName,
