@@ -1,17 +1,28 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { colors, getSystemIsRTL, scaleMultiplier ***REMOVED*** from '../../constants'
+import Icon from '../../assets/fonts/icon_font_config'
+import { getSystemIsRTL, scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
 import { SystemTypography ***REMOVED*** from '../../styles/typography'
 
-function LanguageSelectItem (props) {
+function LanguageSelectItem ({
+  // Props passed from a parent component.
+  nativeName,
+  localeName,
+  font,
+  logoSource,
+  onPress,
+  isSelected,
+  playAudio
+***REMOVED***) {
   // FUNCTIONS
-  var iconComponent = props.isSelected ? (
+  var iconComponent = isSelected ? (
     <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
       <Icon name='check' size={30***REMOVED*** color={colors.apple***REMOVED*** />
     </View>
   ) : (
     <TouchableOpacity
-      onPress={props.playAudio***REMOVED***
+      onPress={playAudio***REMOVED***
       style={{
         height: '100%',
         width: 70,
@@ -32,7 +43,7 @@ function LanguageSelectItem (props) {
         flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: props.isSelected ? '#BFE5AF' : colors.white
+        backgroundColor: isSelected ? '#BFE5AF' : colors.white
       ***REMOVED******REMOVED***
     >
       {iconComponent***REMOVED***
@@ -44,7 +55,7 @@ function LanguageSelectItem (props) {
           justifyContent: 'space-around',
           flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
         ***REMOVED******REMOVED***
-        onPress={props.onPress***REMOVED***
+        onPress={onPress***REMOVED***
       >
         <View
           style={{
@@ -59,10 +70,10 @@ function LanguageSelectItem (props) {
               'Bold',
               'left',
               colors.shark,
-              props.font
+              font
             )***REMOVED***
           >
-            {props.nativeName***REMOVED***
+            {nativeName***REMOVED***
           </Text>
           <Text
             style={SystemTypography(
@@ -73,13 +84,13 @@ function LanguageSelectItem (props) {
               colors.shark
             )***REMOVED***
           >
-            {props.localeName***REMOVED***
+            {localeName***REMOVED***
           </Text>
         </View>
         <Image
           style={styles.headerImage***REMOVED***
           source={{
-            uri: props.logoSource
+            uri: logoSource
           ***REMOVED******REMOVED***
         />
       </TouchableOpacity>

@@ -1,22 +1,17 @@
 import { decode, encode ***REMOVED*** from 'base-64'
 import { Audio ***REMOVED*** from 'expo-av'
 import * as Font from 'expo-font'
-import * as ScreenOrientation from 'expo-screen-orientation'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { StatusBar, Text ***REMOVED*** from 'react-native'
+import { StatusBar ***REMOVED*** from 'react-native'
 import { Provider ***REMOVED*** from 'react-redux'
 import { PersistGate ***REMOVED*** from 'redux-persist/lib/integration/react'
 import LoadingView from './components/LoadingView'
-import { colors ***REMOVED*** from './constants'
+import { lockPortrait ***REMOVED*** from './constants'
 import Root from './navigation/Root'
 import { persistor, store ***REMOVED*** from './redux/store'
+import { colors ***REMOVED*** from './styles/colors'
 
-// set the max font scaling allowed
-Text.defaultProps = {
-  ...Text.defaultProps,
-  maxFontSizeMultiplier: 1.2
-***REMOVED***
-// only here because of wack errors, DON'T DELETE
+// These are only here because of some wack errors. Please do not delete.
 if (!global.btoa) {
   global.btoa = encode
 ***REMOVED***
@@ -24,32 +19,25 @@ if (!global.atob) {
   global.atob = decode
 ***REMOVED***
 
+/**
+ * App.js is the most root level component and is the start of all rendering for Waha.
+ */
 export default function App () {
-  //+ STATE
-
-  // keeps track of whether fonts are loaded
+  /**  Keeps track of whether all the fonts are loaded. */
   const [fontsLoaded, setFontsLoaded] = useState(false)
 
-  //+ CONSTRUCTOR
-
+  /**
+   * useEffect function that acts as a constructor and takes care of a few tasks we always need to do when we start up the app.
+   * @function
+   */
   useEffect(() => {
-    // load up fonts
+    // Load up all the fonts.
     loadFonts()
 
-    // lock orientation
-    ScreenOrientation.supportsOrientationLockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT
-    ).then(isSupported => {
-      if (isSupported) {
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
-      ***REMOVED*** else {
-        ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.PORTRAIT_UP
-        )
-      ***REMOVED***
-    ***REMOVED***)
+    // Lock our orientation to portrait.
+    lockPortrait(() => {***REMOVED***)
 
-    // set audio mode
+    // Set up some config options for app audio.
     Audio.setAudioModeAsync({
       playsInSilentModeIOS: true,
       allowsRecordingIOS: false,
@@ -61,14 +49,16 @@ export default function App () {
     ***REMOVED***)
   ***REMOVED***, [])
 
-  //+ FUNCTIONS
-
-  // loads up all the fonts for all languages
-  //! flag: update on new language family
+  /**
+   * Loads all of the fonts to be used across all languages in Waha.
+   */
   async function loadFonts () {
+    // Load the icon font.
     await Font.loadAsync({
-      waha: require('./assets/fonts/waha.ttf')
+      waha: require('./assets/fonts/waha_icon_font.ttf')
     ***REMOVED***)
+
+    // Load the language-specific fonts.
     await Font.loadAsync({
       'Roboto-Black': require('./assets/fonts/Roboto/Roboto-Black.ttf')
     ***REMOVED***)
@@ -87,15 +77,18 @@ export default function App () {
     await Font.loadAsync({
       'NotoSansArabic-Regular': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensed.ttf')
     ***REMOVED***)
+
+    // Once we finish loading every font, set our fontsLoaded state to true so we know we can render the app now.
     setFontsLoaded(true)
   ***REMOVED***
 
-  //+ RENDER
-
   if (fontsLoaded) {
     return (
+      // The provider passes the redux store to every component in Waha.
       <Provider store={store***REMOVED***>
+        {/* The persist gate allows the redux data to persist across restarts. */***REMOVED***
         <PersistGate loading={<LoadingView />***REMOVED*** persistor={persistor***REMOVED***>
+          {/* Set a few settings related to the status bar. */***REMOVED***
           <StatusBar
             backgroundColor={colors.aquaHaze***REMOVED***
             barStyle='dark-content'

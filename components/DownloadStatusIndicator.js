@@ -2,12 +2,25 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import { colors ***REMOVED*** from '../styles/colors'
 
 // renders the icon on the right side of lesson item that shows the download
 //  status
-function DownloadStatusIndicator (props) {
+function DownloadStatusIndicator ({
+  // Props passed from a parent component.s
+  isDownloaded,
+  isDownloading,
+  showDeleteModal,
+  showSaveModal,
+  lessonID,
+  lessonType,
+  // Props passed from redux.
+  isConnected,
+  downloads,
+  removeDownload
+***REMOVED***) {
   //+ RENDER
 
   // HERE'S WHAT IS GOING ON
@@ -24,38 +37,35 @@ function DownloadStatusIndicator (props) {
   //  false: cloud-down (able to download)
 
   function getDownloadPercentage () {
-    switch (props.lessonType) {
+    switch (lessonType) {
       case 'qa':
       case 'a':
-        return props.downloads[props.lessonID]
-          ? props.downloads[props.lessonID].progress * 100
-          : null
+        return downloads[lessonID] ? downloads[lessonID].progress * 100 : null
         break
       case 'qav':
-        return props.downloads[props.lessonID] &&
-          props.downloads[props.lessonID + 'v']
-          ? ((props.downloads[props.lessonID].progress +
-              props.downloads[props.lessonID + 'v'].progress) /
+        return downloads[lessonID] && downloads[lessonID + 'v']
+          ? ((downloads[lessonID].progress +
+              downloads[lessonID + 'v'].progress) /
               2) *
               100
           : null
         break
       case 'qv':
       case 'v':
-        return props.downloads[props.lessonID + 'v']
-          ? props.downloads[props.lessonID + 'v'].progress * 100
+        return downloads[lessonID + 'v']
+          ? downloads[lessonID + 'v'].progress * 100
           : null
         break
     ***REMOVED***
   ***REMOVED***
 
   // if lesson isn't only video
-  return props.lessonType !== 'q' && props.lessonType !== '' ? (
+  return lessonType !== 'q' && lessonType !== '' ? (
     // if lesson has audio source
-    props.isDownloaded ? (
+    isDownloaded ? (
       // if lesson is downloaded, show check
       <TouchableOpacity
-        onPress={props.showDeleteModal***REMOVED***
+        onPress={showDeleteModal***REMOVED***
         style={styles.downloadButtonContainer***REMOVED***
       >
         <Icon
@@ -64,19 +74,19 @@ function DownloadStatusIndicator (props) {
           size={22 * scaleMultiplier***REMOVED***
         />
       </TouchableOpacity>
-    ) : props.isConnected ? (
-      props.isDownloading ? (
+    ) : isConnected ? (
+      isDownloading ? (
         // if connected and currently downloading, show progress
         <TouchableOpacity
           style={styles.downloadButtonContainer***REMOVED***
           onPress={() => {
-            if (props.downloads[props.lessonID]) {
-              props.downloads[props.lessonID].resumable.pauseAsync()
-              props.removeDownload(props.lessonID)
+            if (downloads[lessonID]) {
+              downloads[lessonID].resumable.pauseAsync()
+              removeDownload(lessonID)
             ***REMOVED***
-            if (props.downloads[props.lessonID + 'v']) {
-              props.downloads[props.lessonID + 'v'].resumable.pauseAsync()
-              props.removeDownload(props.lessonID + 'v')
+            if (downloads[lessonID + 'v']) {
+              downloads[lessonID + 'v'].resumable.pauseAsync()
+              removeDownload(lessonID + 'v')
             ***REMOVED***
           ***REMOVED******REMOVED***
         >
@@ -103,12 +113,12 @@ function DownloadStatusIndicator (props) {
       ) : (
         // if not downloaded, not downloading, and connected, show download icon
         <TouchableOpacity
-          onPress={props.showSaveModal***REMOVED***
+          onPress={showSaveModal***REMOVED***
           style={styles.downloadButtonContainer***REMOVED***
         >
           <Icon
             name='cloud-download'
-            color={props.isDownloaded ? colors.chateau : colors.tuna***REMOVED***
+            color={isDownloaded ? colors.chateau : colors.tuna***REMOVED***
             size={22 * scaleMultiplier***REMOVED***
           />
         </TouchableOpacity>

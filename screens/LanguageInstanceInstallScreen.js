@@ -14,7 +14,7 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { languageT2S ***REMOVED*** from '../assets/languageT2S/languageT2S'
+import { languageT2S ***REMOVED*** from '../assets/languageT2S/_languageT2S'
 import LanguageSelectItem from '../components/list-items/LanguageSelectItem'
 import Separator from '../components/standard/Separator'
 import WahaButton from '../components/standard/WahaButton'
@@ -41,7 +41,28 @@ i18n.translations = {
   ar
 ***REMOVED***
 
-function LanguageSelectScreen (props) {
+function LanguageInstanceInstallScreen ({
+  // Props passed from navigation.
+  navigation: { setOptions, goBack, reset, navigate ***REMOVED***,
+  route: {
+    name: routeName,
+    // Props passed from previous screen.
+    params: { installedLanguageInstances ***REMOVED*** = {
+      installedLanguageInstances: null
+    ***REMOVED***
+  ***REMOVED***,
+  // Props passed from redux.
+  downloadLanguageCoreFiles,
+  storeLanguageData,
+  setIsInstallingLanguageInstance,
+  storeDownloads,
+  setHasFetchedLanguageData,
+  storeLanguageSets,
+  deleteLanguageData,
+  deleteGroup,
+  groups,
+  database
+***REMOVED***) {
   //+ STATE
 
   // keeps track of language selected in picker (TODO: change default to user's default language)
@@ -68,7 +89,7 @@ function LanguageSelectScreen (props) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
 
     // Clear out the database and downloaded files in case we somehow come back to the Language Select screen after installing anything.
     if (props.route.name === 'LanguageSelect') {
@@ -113,7 +134,7 @@ function LanguageSelectScreen (props) {
   ***REMOVED***, [])
 
   function getNavOptions () {
-    return props.route.name === 'AddLanguage'
+    return routeName === 'SubsequentlLanguageInstanceInstall'
       ? {
           headerTitle: i18n.t('newLanguage')
         ***REMOVED***
@@ -124,7 +145,7 @@ function LanguageSelectScreen (props) {
 
   async function fetchFirebaseData () {
     // props.storeDownloads([])
-    props.setIsInstallingLanguageInstance(true)
+    setIsInstallingLanguageInstance(true)
     //- get sets first
 
     await db
@@ -139,7 +160,7 @@ function LanguageSelectScreen (props) {
             ...set.data()
           ***REMOVED***)
         ***REMOVED***)
-        props.storeLanguageSets(sets, selectedLanguage)
+        storeLanguageSets(sets, selectedLanguage)
       ***REMOVED***)
       .catch(error => {
         console.log(error)
@@ -153,7 +174,7 @@ function LanguageSelectScreen (props) {
       .get()
       .then(async doc => {
         if (doc.exists) {
-          props.storeLanguageData(doc.data(), selectedLanguage)
+          storeLanguageData(doc.data(), selectedLanguage)
         ***REMOVED***
       ***REMOVED***)
       .catch(error => {
@@ -167,24 +188,24 @@ function LanguageSelectScreen (props) {
     if (selectedLanguage) {
       fetchFirebaseData()
         .then(() => {
-          props.setHasFetchedLanguageData(true)
-          props.downloadLanguageCoreFiles(selectedLanguage)
+          setHasFetchedLanguageData(true)
+          downloadLanguageCoreFiles(selectedLanguage)
         ***REMOVED***)
         .catch(error => {
           Alert.alert(i18n.t('fetchErrorTitle'), i18n.t('fetchErrorMessage'), [
             {
               text: i18n.t('ok'),
               onPress: () => {
-                props.navigation.reset({
+                reset({
                   index: 0,
-                  routes: [{ name: 'LanguageSelect' ***REMOVED***]
+                  routes: [{ name: 'InitialLanguageInstanceInstall' ***REMOVED***]
                 ***REMOVED***)
               ***REMOVED***
             ***REMOVED***
           ])
         ***REMOVED***)
-      if (props.route.name === 'LanguageSelect') {
-        props.navigation.navigate('OnboardingSlides', {
+      if (routeName === 'InitialLanguageInstanceInstall') {
+        navigate('WahaOnboardingSlides', {
           selectedLanguage: selectedLanguage
         ***REMOVED***)
       ***REMOVED***
@@ -227,7 +248,7 @@ function LanguageSelectScreen (props) {
       color={colors.apple***REMOVED***
       onPress={onStartPress***REMOVED***
       label={
-        props.route.name === 'LanguageSelect'
+        routeName === 'InitialLanguageInstanceInstall'
           ? i18n.t('letsBegin')
           : i18n.t('addLanguage') + ' '
       ***REMOVED***
@@ -257,7 +278,7 @@ function LanguageSelectScreen (props) {
   )
 
   var headerText =
-    props.route.name === 'LanguageSelect' ? (
+    routeName === 'InitialLanguageInstanceInstall' ? (
       <View
         style={{
           marginVertical: 20 * scaleMultiplier,
@@ -318,7 +339,7 @@ function LanguageSelectScreen (props) {
           alignItems: 'center',
           paddingHorizontal: 20,
           backgroundColor:
-            props.route.name === 'LanguageSelect'
+            routeName === 'InitialLanguageInstanceInstall'
               ? colors.aquaHaze
               : colors.white
         ***REMOVED******REMOVED***
@@ -344,7 +365,7 @@ function LanguageSelectScreen (props) {
         styles.screen,
         {
           backgroundColor:
-            props.route.name === 'LanguageSelect'
+            routeName === 'InitialLanguageInstanceInstall'
               ? colors.aquaHaze
               : colors.white
         ***REMOVED***
@@ -365,7 +386,7 @@ function LanguageSelectScreen (props) {
           //  top
           style={{ height: '100%' ***REMOVED******REMOVED***
           sections={
-            props.route.name === 'LanguageSelect'
+            routeName === 'InitialLanguageInstanceInstall'
               ? languages.sort((a, b) => {
                   if (i18n.locale.includes(a.languageCode)) return -1
                   else if (i18n.locale.includes(b.languageCode)) return 1
@@ -387,7 +408,7 @@ function LanguageSelectScreen (props) {
                       //  screen
                       data: languageFamily.data.filter(language => {
                         if (
-                          props.route.params.installedLanguageInstances.some(
+                          installedLanguageInstances.some(
                             installedLanguage =>
                               installedLanguage.languageID === language.wahaID
                           )
@@ -478,4 +499,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LanguageSelectScreen)
+)(LanguageInstanceInstallScreen)

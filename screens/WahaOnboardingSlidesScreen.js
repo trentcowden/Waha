@@ -3,8 +3,9 @@ import React from 'react'
 import { SafeAreaView, StyleSheet ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import OnboardingSwiper from '../components/OnboardingSwiper'
-import { colors, getSystemIsRTL ***REMOVED*** from '../constants'
+import { getSystemIsRTL ***REMOVED*** from '../constants'
 import { setHasOnboarded ***REMOVED*** from '../redux/actions/databaseActions'
+import { colors ***REMOVED*** from '../styles/colors'
 import ar from '../translations/ar.json'
 import en from '../translations/en.json'
 
@@ -13,14 +14,23 @@ i18n.translations = {
   ar
 ***REMOVED***
 
-function OnboardingSlidesScreen (props) {
+function WahaOnboardingSlidesScreen ({
+  // Props passed from navigation.
+  navigation: { navigate ***REMOVED***,
+  route: {
+    // Props passed from previous screen.
+    params: { selectedLanguage ***REMOVED***
+  ***REMOVED***,
+  // Props passed from redux.
+  setHasOnboarded
+***REMOVED***) {
   //+ FUNCTIONS
 
   // tells redux that we're ready to go to loading screen once onboarding is finished
   function finishOnboarding () {
-    props.setHasOnboarded(true)
-    props.navigation.navigate('Loading', {
-      selectedLanguage: props.route.params.selectedLanguage
+    setHasOnboarded(true)
+    navigate('Loading', {
+      selectedLanguage: selectedLanguage
     ***REMOVED***)
   ***REMOVED***
 
@@ -30,10 +40,10 @@ function OnboardingSlidesScreen (props) {
     <SafeAreaView style={styles.screen***REMOVED***>
       <OnboardingSwiper
         sources={[
-          require('../assets/onboarding/onboarding1.png'),
-          require('../assets/onboarding/onboarding2.png'),
-          require('../assets/onboarding/onboarding3.png'),
-          require('../assets/onboarding/onboarding4.png')
+          require('../assets/onboardingImages/onboarding1.png'),
+          require('../assets/onboardingImages/onboarding2.png'),
+          require('../assets/onboardingImages/onboarding3.png'),
+          require('../assets/onboardingImages/onboarding4.png')
         ]***REMOVED***
         titles={[
           i18n.t('title0'),
@@ -82,4 +92,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OnboardingSlidesScreen)
+)(WahaOnboardingSlidesScreen)

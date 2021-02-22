@@ -1,82 +1,117 @@
-import React, { useState ***REMOVED*** from 'react'
+import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import { getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import { changeActiveGroup ***REMOVED*** from '../../redux/actions/activeGroupActions'
+import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
 import {
-  colors,
-  getLanguageFont,
-  getLessonInfo,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
-import {
-  changeActiveGroup,
-  deleteGroup
-***REMOVED*** from '../../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+  activeGroupLanguageSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
-function GroupItem (props) {
-  // FUNCTIONS
 
-  const [thisGroup, setThisGroup] = useState(
-    props.groups.filter(group => group.name === props.group.name)[0]
-  )
+function mapStateToProps (state) {
+  return {
+    database: state.database,
+    activeDatabase: state.database[activeGroupLanguageSelector(state)],
+    isRTL: state.database[activeGroupLanguageSelector(state)].isRTL,
+    groups: state.groups,
+    activeGroup: activeGroupSelector(state),
+    font: getLanguageFont(activeGroupLanguageSelector(state)),
+    translations:
+      state.database[activeGroupLanguageSelector(state)].translations
+  ***REMOVED***
+***REMOVED***
 
+function mapDispatchToProps (dispatch) {
+  return {
+    deleteGroup: name => {
+      dispatch(deleteGroup(name))
+    ***REMOVED***,
+    changeActiveGroup: name => {
+      dispatch(changeActiveGroup(name))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+/**
+ * A pressable item used on the GroupScreen to display a group. It shows the name of the group, the icon, whether it's active or not, and the current bookmark, and allows for editing and deleting.
+ * @param {Object***REMOVED*** thisGroup - The object for the group that we're displaying in this component.
+ * @param {boolean***REMOVED*** isEditing - Whether we're in "editing" mode or not.
+ * @param {Function***REMOVED*** openEditModal - A function that opens the modal that allows us to edit the information for a group.
+ */
+function GroupItem ({
+  // Props passed from a parent component.
+  thisGroup,
+  isEditing,
+  openEditModal,
+  // Props passed from redux.
+  database,
+  activeDatabase,
+  isRTL,
+  groups,
+  activeGroup,
+  font,
+  translations,
+  deleteGroup,
+  changeActiveGroup
+***REMOVED***) {
   // gets a formatted string of this the bookmark lesson for this group
   // the bookmark lesson is the earliest uncompleted lesson of the active set
   //  for this group, and the text displays the subtitle and the name
-  function getBookmarkText () {
+
+  /**
+   * Gets the bookmark for this group and returns it in a nicely formatted string.
+   * @return {string***REMOVED*** - The bookmarked lesson.
+   */
+  function getBookmarkLesson () {
+    // If for some reason no group got passed, return an empty string.
     if (thisGroup) {
-      // get the currently bookmarked set object
-      var bookmarkSet = props.database[thisGroup.language].sets.filter(
+      // Get the object for the currently bookmarked set.
+      var bookmarkSet = database[thisGroup.language].sets.filter(
         set => set.id === thisGroup.setBookmark
       )[0]
 
-      // get the id of the bookmarked lesson from the bookmarked set
+      // Get the index of the bookmarked lesson within the bookmarked set.
       var bookmarkSetBookmarkLesson = thisGroup.addedSets.filter(
         addedSet => addedSet.id === bookmarkSet.id
       )[0].bookmark
 
-      // get the bookmrarked lesson object
+      // Finally, get the object for the bookmarked lesson. This will be the most useful information to see on the group item.
       var bookmarkLesson = bookmarkSet.lessons.filter(
         lesson =>
           getLessonInfo('index', lesson.id) === bookmarkSetBookmarkLesson
       )[0]
 
-      // if both those exist, return them to display the bookmarks
-      if (bookmarkLesson && bookmarkSet) {
-        return {
-          lesson:
-            getLessonInfo('subtitle', bookmarkLesson.id) +
-            ' ' +
-            bookmarkLesson.title,
-          set: bookmarkSet.subtitle
-        ***REMOVED***
-      ***REMOVED*** else {
-        return ''
-      ***REMOVED***
+      // If everything is good, return the bookmark lesson. Otherwise, return an empty string.
+      return bookmarkLesson && bookmarkSet
+        ? `${getLessonInfo('subtitle', bookmarkLesson.id)***REMOVED*** ${
+            bookmarkLesson.title
+          ***REMOVED***`
+        : ''
     ***REMOVED*** else return ''
   ***REMOVED***
 
-  // RENDER
-
-  // render the delete button
   var deleteButton
   // if we're editing and not in the active group, show tappable delete button
-  if (props.isEditing && props.activeGroup.name != props.group.name) {
+  if (isEditing && activeGroup.name != thisGroup.name) {
     deleteButton = (
       <TouchableOpacity
         style={styles.minusButtonContainer***REMOVED***
         onPress={() => {
           Alert.alert(
-            props.translations.groups.popups.delete_group_title,
-            props.translations.groups.popups.delete_group_message,
+            translations.groups.popups.delete_group_title,
+            translations.groups.popups.delete_group_message,
             [
               {
-                text: props.translations.general.cancel,
+                text: translations.general.cancel,
                 onPress: () => {***REMOVED***
               ***REMOVED***,
               {
-                text: props.translations.general.ok,
-                onPress: () => props.deleteGroup(props.group.name)
+                text: translations.general.ok,
+                onPress: () => deleteGroup(thisGroup.name)
               ***REMOVED***
             ]
           )
@@ -90,7 +125,7 @@ function GroupItem (props) {
       </TouchableOpacity>
     )
     // if we're editing and in the active group, show an untappable check
-  ***REMOVED*** else if (props.isEditing && props.activeGroup.name === props.group.name) {
+  ***REMOVED*** else if (isEditing && activeGroup.name === thisGroup.name) {
     deleteButton = (
       <View style={styles.minusButtonContainer***REMOVED***>
         <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color={colors.blue***REMOVED*** />
@@ -101,17 +136,17 @@ function GroupItem (props) {
   // render right button conditionally; can be either right arrow when in edit mode,
   // checkmark if in edit mode and this group is active, or an empty view
   var rightButton
-  if (props.isEditing) {
+  if (isEditing) {
     rightButton = (
       <View style={styles.iconContainer***REMOVED*** onPress={() => {***REMOVED******REMOVED***>
         <Icon
-          name={props.isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+          name={isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
           size={36 * scaleMultiplier***REMOVED***
           color={colors.chateau***REMOVED***
         />
       </View>
     )
-  ***REMOVED*** else if (props.activeGroup.name === props.group.name) {
+  ***REMOVED*** else if (activeGroup.name === thisGroup.name) {
     rightButton = (
       <View style={styles.iconContainer***REMOVED***>
         <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color={colors.blue***REMOVED*** />
@@ -128,7 +163,7 @@ function GroupItem (props) {
       style={[
         styles.groupListItemContainer,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         ***REMOVED***
       ]***REMOVED***
     >
@@ -138,31 +173,31 @@ function GroupItem (props) {
         style={[
           styles.touchableContainer,
           {
-            flexDirection: props.isRTL ? 'row-reverse' : 'row',
-            paddingLeft: props.isEditing ? 0 : 20
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            paddingLeft: isEditing ? 0 : 20
           ***REMOVED***
         ]***REMOVED***
         onPress={
-          props.isEditing
-            ? () => props.openEditModal()
+          isEditing
+            ? () => openEditModal()
             : () => {
-                props.changeActiveGroup(props.group.name)
+                changeActiveGroup(thisGroup.name)
               ***REMOVED***
         ***REMOVED***
       >
         <GroupAvatar
           style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           size={50 * scaleMultiplier***REMOVED***
-          emoji={props.group.emoji***REMOVED***
-          isActive={props.activeGroup.name === props.group.name***REMOVED***
+          emoji={thisGroup.emoji***REMOVED***
+          isActive={activeGroup.name === thisGroup.name***REMOVED***
         />
         {/* text portion includes group name and bookmark text */***REMOVED***
         <View
           style={[
             styles.groupNameContainer,
             {
-              marginLeft: props.isRTL ? 0 : 20,
-              marginRight: props.isRTL ? 20 : 0
+              marginLeft: isRTL ? 0 : 20,
+              marginRight: isRTL ? 20 : 0
             ***REMOVED***
           ]***REMOVED***
         >
@@ -170,7 +205,7 @@ function GroupItem (props) {
             style={StandardTypography(
               {
                 font: getLanguageFont(thisGroup.language),
-                isRTL: props.isRTL
+                isRTL: isRTL
               ***REMOVED***,
               'h3',
               'Black',
@@ -179,46 +214,25 @@ function GroupItem (props) {
             )***REMOVED***
             numberOfLines={1***REMOVED***
           >
-            {props.group.name***REMOVED***
+            {thisGroup.name***REMOVED***
           </Text>
-          {/* {getBookmarkText() === '' ? null : (
-            <Text
-              maxFontSizeMultiplier={1.2***REMOVED***
-              style={StandardTypography(
-                {
-                  font: props.database[thisGroup.language].font,
-                  isRTL: props.isRTL
-                ***REMOVED***,
-                'd',
-                'Regular',
-                'left',
-                colors.chateau
-              )***REMOVED***
-              numberOfLines={1***REMOVED***
-            >
-              {getBookmarkText().set***REMOVED***
-            </Text>
-          )***REMOVED*** */***REMOVED***
-          {getBookmarkText() === '' ? null : (
+          {getBookmarkLesson() === '' ? null : (
             <Text
               style={[
                 StandardTypography(
                   {
                     font: getLanguageFont(thisGroup.language),
-                    isRTL: props.isRTL
+                    isRTL: isRTL
                   ***REMOVED***,
                   'd',
                   'Regular',
                   'left',
                   colors.chateau
-                ),
-                {
-                  // lineHeight: 12 * scaleMultiplier
-                ***REMOVED***
+                )
               ]***REMOVED***
               numberOfLines={1***REMOVED***
             >
-              {getBookmarkText().lesson***REMOVED***
+              {getBookmarkLesson()***REMOVED***
             </Text>
           )***REMOVED***
         </View>
@@ -265,33 +279,5 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap'
   ***REMOVED***
 ***REMOVED***)
-
-// REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    database: state.database,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    groups: state.groups,
-    activeGroup: activeGroup,
-    font: getLanguageFont(activeGroup.language),
-    translations: state.database[activeGroup.language].translations
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    ***REMOVED***,
-    changeActiveGroup: name => {
-      dispatch(changeActiveGroup(name))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupItem)

@@ -14,11 +14,23 @@ import {
 import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
 import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/piano-stuff/Piano'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-function PianoAppScreen (props) {
+function PianoAppScreen ({
+  // Props passed from navigation.
+  navigation: { canGoBack, goBack, reset ***REMOVED***,
+  // Props passed from redux.
+  security,
+  font,
+  activeGroup,
+  translations,
+  isRTL,
+  setIsMuted,
+  setIsTimedOut
+***REMOVED***) {
   //+ STATE
 
   const [pattern, setPattern] = useState('')
@@ -30,21 +42,23 @@ function PianoAppScreen (props) {
   useEffect(() => {
     Keyboard.dismiss()
 
-    if (pattern.includes(props.security.code)) {
-      if (!props.security.isMuted) {
+    if (pattern.includes(security.code)) {
+      if (!security.isMuted) {
         var note = new Audio.Sound()
         note
-          .loadAsync(require('../assets/notes/Success.mp3'))
+          .loadAsync(
+            require('../assets/securityMode/unlock_security_mode_sound.mp3')
+          )
           .then(() => note.playAsync())
       ***REMOVED***
-      props.setIsTimedOut(false)
-      if (props.navigation.canGoBack()) {
-        if (Platform.OS === 'ios') props.navigation.goBack()
-        props.navigation.goBack()
+      setIsTimedOut(false)
+      if (canGoBack()) {
+        if (Platform.OS === 'ios') goBack()
+        goBack()
       ***REMOVED*** else
-        props.navigation.reset({
+        reset({
           index: 0,
-          routes: [{ name: 'SetTabs' ***REMOVED***]
+          routes: [{ name: 'StorySetTabs' ***REMOVED***]
         ***REMOVED***)
     ***REMOVED***
   ***REMOVED***, [pattern])
@@ -68,7 +82,7 @@ function PianoAppScreen (props) {
         ***REMOVED******REMOVED***
       >
         <Image
-          source={require('../assets/wahaIcon.png')***REMOVED***
+          source={require('../assets/icons/waha_icon.png')***REMOVED***
           style={{
             resizeMode: 'contain',
             width: 50,
@@ -78,17 +92,23 @@ function PianoAppScreen (props) {
         />
         <Text
           style={[
-            StandardTypography(props, 'h1', 'Bold', 'center', colors.shark),
+            StandardTypography(
+              { font, isRTL ***REMOVED***,
+              'h1',
+              'Bold',
+              'center',
+              colors.shark
+            ),
             { paddingHorizontal: 10 ***REMOVED***
           ]***REMOVED***
         >
-          {props.translations.security.game_screen_title***REMOVED***
+          {translations.security.game_screen_title***REMOVED***
         </Text>
       </View>
       <View>
         <View
           style={{
-            flexDirection: props.isRTL ? 'row-reverse' : 'row',
+            flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'center',
             alignItems: 'center'
           ***REMOVED******REMOVED***
@@ -105,9 +125,9 @@ function PianoAppScreen (props) {
                 : () => {
                     setCountdown('')
                   ***REMOVED***
-              // props.security.isMuted
-              //   ? () => props.setIsMuted(false)
-              //   : () => props.setIsMuted(true)
+              // security.isMuted
+              //   ? () => setIsMuted(false)
+              //   : () => setIsMuted(true)
             ***REMOVED***
             style={{
               margin: 20
@@ -127,7 +147,7 @@ function PianoAppScreen (props) {
             >
               <Text
                 style={StandardTypography(
-                  props,
+                  { font, isRTL ***REMOVED***,
                   'h2',
                   'Regular',
                   'center',
@@ -161,14 +181,14 @@ function PianoAppScreen (props) {
               height: 60 * scaleMultiplier,
               borderRadius: 10
             ***REMOVED******REMOVED***
-            source={require('../assets/piano.png')***REMOVED***
+            source={require('../assets/securityMode/piano.png')***REMOVED***
           />
-          <Piano setPattern={setPattern***REMOVED*** isMuted={props.security.isMuted***REMOVED*** />
+          <Piano setPattern={setPattern***REMOVED*** isMuted={security.isMuted***REMOVED*** />
         </View>
         <View
           style={{
             width: Dimensions.get('window').width,
-            flexDirection: props.isRTL ? 'row-reverse' : 'row',
+            flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'space-between',
             alignItems: 'center'
           ***REMOVED******REMOVED***
@@ -183,16 +203,16 @@ function PianoAppScreen (props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={
-              props.security.isMuted
-                ? () => props.setIsMuted(false)
-                : () => props.setIsMuted(true)
+              security.isMuted
+                ? () => setIsMuted(false)
+                : () => setIsMuted(true)
             ***REMOVED***
             style={{
               margin: 20
             ***REMOVED******REMOVED***
           >
             <Icon
-              name={props.security.isMuted ? 'volume-off' : 'volume'***REMOVED***
+              name={security.isMuted ? 'volume-off' : 'volume'***REMOVED***
               size={50***REMOVED***
               color={colors.tuna***REMOVED***
             />
@@ -222,7 +242,8 @@ function mapStateToProps (state) {
     security: state.security,
     font: getLanguageFont(activeGroup.language),
     activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations
+    translations: state.database[activeGroup.language].translations,
+    isRTL: state.database[activeGroup.language].isRTL
   ***REMOVED***
 ***REMOVED***
 

@@ -1,28 +1,38 @@
 import React from 'react'
 import { StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import {
-  colors,
-  getLanguageFont,
-  getSetInfo,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../../constants'
+import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../LogEventFunctions'
 import {
   addSet,
   setShouldShowMobilizationToolsTab
 ***REMOVED*** from '../../redux/actions/groupsActions'
-import { logEnableMobilizationToolsForAGroup ***REMOVED*** from '../../redux/LogEventFunctions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
+
 // variant of group list item that shows only avatar image, group name, and a switch to enable MTs
-function GroupItemMT (props) {
+
+function GroupItemMT ({
+  // Props passed from a parent component.
+  group,
+  // Props passed from redux.
+  database,
+  isRTL,
+  groups,
+  font,
+  areMobilizationToolsUnlocked,
+  activeGroup,
+  setShouldShowMobilizationToolsTab,
+  addSet
+***REMOVED***) {
   // FUNCTIONS
   return (
     <View
       style={[
         styles.groupListItemContainer,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         ***REMOVED***
       ]***REMOVED***
     >
@@ -34,16 +44,16 @@ function GroupItemMT (props) {
         <GroupAvatar
           style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           size={50 * scaleMultiplier***REMOVED***
-          emoji={props.group.emoji***REMOVED***
-          isActive={props.activeGroup.name === props.group.name***REMOVED***
+          emoji={group.emoji***REMOVED***
+          isActive={activeGroup.name === group.name***REMOVED***
         />
       </View>
       <View style={styles.groupNameContainer***REMOVED***>
         <Text
           style={StandardTypography(
             {
-              font: getLanguageFont(props.group.language),
-              isRTL: props.isRTL
+              font: getLanguageFont(group.language),
+              isRTL: isRTL
             ***REMOVED***,
             'h3',
             'Bold',
@@ -51,7 +61,7 @@ function GroupItemMT (props) {
             colors.shark
           )***REMOVED***
         >
-          {props.group.name***REMOVED***
+          {group.name***REMOVED***
         </Text>
       </View>
       <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
@@ -61,31 +71,31 @@ function GroupItemMT (props) {
           ios_backgroundColor={colors.chateau***REMOVED***
           onValueChange={() => {
             // toggle MTs on or off
-            props.setShouldShowMobilizationToolsTab(
-              props.group.name,
-              !props.group.shouldShowMobilizationToolsTab
+            setShouldShowMobilizationToolsTab(
+              group.name,
+              !group.shouldShowMobilizationToolsTab
             )
 
             // if we're toggling MTs on for the first time, add the first 2 MT sets
-            if (!props.group.shouldShowMobilizationToolsTab) {
+            if (!group.shouldShowMobilizationToolsTab) {
               logEnableMobilizationToolsForAGroup(
-                props.activeGroup.language,
-                props.group.id,
-                props.groups.indexOf(props.group) + 1
+                activeGroup.language,
+                group.id,
+                groups.indexOf(group) + 1
               )
-              for (const set of props.database[props.group.language].sets) {
+              for (const set of database[group.language].sets) {
                 if (
                   getSetInfo('category', set.id) === 'mobilization tools' &&
                   (getSetInfo('index', set.id) === 1 ||
                     getSetInfo('index', set.id) === 2)
                 ) {
-                  props.addSet(props.group.name, props.group.id, set)
+                  addSet(group.name, group.id, set)
                 ***REMOVED***
               ***REMOVED***
             ***REMOVED***
           ***REMOVED******REMOVED***
-          value={props.group.shouldShowMobilizationToolsTab***REMOVED***
-          disabled={props.areMobilizationToolsUnlocked ? false : true***REMOVED***
+          value={group.shouldShowMobilizationToolsTab***REMOVED***
+          disabled={areMobilizationToolsUnlocked ? false : true***REMOVED***
         />
       </View>
     </View>

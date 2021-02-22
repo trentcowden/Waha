@@ -2,13 +2,13 @@ import React from 'react'
 import { View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 
-function ChapterSeparator (props) {
+function ChapterSeparator ({ primaryColor ***REMOVED***) {
   return (
     <View
       style={{
         height: '100%',
         width: 2,
-        backgroundColor: props.primaryColor
+        backgroundColor: primaryColor
       ***REMOVED******REMOVED***
     />
   )

@@ -1,8 +1,8 @@
 import React from 'react'
 import { View ***REMOVED*** from 'react-native'
-import { colors ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
 
-function Separator (props) {
+function Separator ({***REMOVED***) {
   return (
     <View
       style={{

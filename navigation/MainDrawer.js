@@ -20,20 +20,39 @@ import {
 import { changeActiveGroup, deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
 import MainStack from './MainStack'
+
+// Create the drawer navigator.
 const Drawer = createDrawerNavigator()
 
-function MainDrawer (props) {
-  //- allows only accessing hamburger swipe from study set screen
+/**
+ * This component renders a drawer navigator that contains Waha's navigation drawer. It's placed around the MainStack navigator. It also contains a ton of logic related to things that happen globally in the background, such as updating the connection status and retrieving updates from Firestore.
+ */
+function MainDrawer ({
+  // Props passed from redux.
+  isRTL,
+  activeDatabase,
+  isConnected,
+  translations,
+  activeGroup,
+  security,
+  updateConnectionStatus,
+  storeLanguageData
+***REMOVED***) {
+  /**
+   * Determines whether a screen should be able to access the navigation drawer via gesture. Should only return true on the StorySetTabs navigator because this is the only spot we should be able to swipe to open the drawer.
+   * @param {string***REMOVED*** route - The route passed from the navigation component.
+   * @return {boolean***REMOVED*** - Whether gestures should be enabled or not.
+   */
   function getGestureEnabled (route) {
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'SetTabs'
-    if (routeName === 'SetTabs') return true
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'StorySetTabs'
+    if (routeName === 'StorySetTabs') return true
     else return false
   ***REMOVED***
 
   useEffect(() => {
-    // Add listener for connection status and update the redux isConnected variable accordingly.
+    // Add a listener for connection status and update the redux state accordingly.
     const netInfoUnsubscribe = NetInfo.addEventListener(state => {
-      props.updateConnectionStatus(state.isConnected)
+      updateConnectionStatus(state.isConnected)
     ***REMOVED***)
 
     return function cleanup () {
@@ -147,7 +166,7 @@ function MainDrawer (props) {
 
     // Fetch data from the Story Sets Firestore collection. Get all Story Sets of the current language.
     db.collection('sets')
-      .where('languageID', '==', props.activeGroup.language)
+      .where('languageID', '==', activeGroup.language)
       .get()
       .then(querySnapshot => {
         // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
@@ -162,7 +181,7 @@ function MainDrawer (props) {
               ***REMOVED***)
             ***REMOVED***)
             /// ...and write all of them to redux.
-            props.storeLanguageSets(sets, props.activeGroup.language)
+            storeLanguageSets(sets, props.activeGroup.language)
           ***REMOVED***
         ***REMOVED***
       ***REMOVED***)
@@ -174,7 +193,7 @@ function MainDrawer (props) {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerPosition={props.isRTL ? 'right' : 'left'***REMOVED***
+        drawerPosition={isRTL ? 'right' : 'left'***REMOVED***
         drawerType='back'
         drawerContent={props => <WahaDrawer {...props***REMOVED*** />***REMOVED***
         drawerStyle={{
@@ -193,6 +212,7 @@ function MainDrawer (props) {
     </NavigationContainer>
   )
 ***REMOVED***
+
 function mapStateToProps (state) {
   var activeGroup = state.groups.filter(
     item => item.name === state.activeGroup

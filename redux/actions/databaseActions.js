@@ -23,16 +23,30 @@ import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
 import i18n from 'i18n-js'
 import { groupNames ***REMOVED*** from '../../constants'
-import { logInstallLanguage ***REMOVED*** from '../LogEventFunctions'
-import { changeActiveGroup, createGroup ***REMOVED*** from './groupsActions'
+import { logInstallLanguage ***REMOVED*** from '../../LogEventFunctions'
+import { changeActiveGroup ***REMOVED*** from './activeGroupActions'
+import { createGroup ***REMOVED*** from './groupsActions'
 import { setIsInstallingLanguageInstance ***REMOVED*** from './isInstallingLanguageInstanceActions'
 import { storeDownloads ***REMOVED*** from './storedDownloadsActions'
 
+/**
+ * Increments the global group counter redux variable by 1.
+ * @export
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function incrementGlobalGroupCounter () {
   return {
     type: INCREMENT_GLOBAL_GROUP_COUNTER
   ***REMOVED***
 ***REMOVED***
+
+/**
+ * Stores the langauge data for a language instance in redux. This includes the display name, the bible ID, whether this language is RTL, the primary color of this language instance, the list of core files to download, the questions for every question set, and all the app translations.
+ * @export
+ * @param {Object***REMOVED*** languageData - All the data for a language.
+ * @param {string***REMOVED*** languageaInstanceID - The ID of the language instance that we're storing data for.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function storeLanguageData (languageData, languageInstanceID) {
   return {
     type: STORE_LANGUAGE_DATA,
@@ -41,6 +55,13 @@ export function storeLanguageData (languageData, languageInstanceID) {
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * Stores all the sets for a language instance. The sets are stored as individual objects in Firestore but are combined before getting to this action. Then, they are stored as the "sets" key in the language data object.
+ * @export
+ * @param {Object[]***REMOVED*** languageSets - An array of all the sets to store in redux.
+ * @param {string***REMOVED*** languageInstanceID - The ID of the language instance that we're storing data for.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function storeLanguageSets (languageSets, languageInstanceID) {
   return {
     type: STORE_LANGUAGE_SETS,
@@ -48,7 +69,12 @@ export function storeLanguageSets (languageSets, languageInstanceID) {
     languageInstanceID
   ***REMOVED***
 ***REMOVED***
-
+/**
+ * Sets whether the user has completed the initial onboarding or not.
+ * @export
+ * @param {boolean***REMOVED*** hasOnboarded - Whether the user has onboarded.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function setHasOnboarded (hasOnboarded) {
   return {
     type: SET_HAS_ONBOARDED,
@@ -56,6 +82,12 @@ export function setHasOnboarded (hasOnboarded) {
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * Sets whether the user has installed their first language instance or not.
+ * @export
+ * @param {boolean***REMOVED*** hasInstalledFirstLanguageInstance - Whether the user has installed their first language instance.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function setHasInstalledFirstLanguageInstance (
   hasInstalledFirstLanguageInstance
 ) {
@@ -65,6 +97,12 @@ export function setHasInstalledFirstLanguageInstance (
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * Sets whether the app has fetched the necessary Firebase data for a language instance install.
+ * @export
+ * @param {boolean***REMOVED*** hasFetchedLanguageData
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function setHasFetchedLanguageData (hasFetchedLanguageData) {
   return {
     type: SET_HAS_FETCHED_LANGUAGE_DATA,
@@ -72,6 +110,12 @@ export function setHasFetchedLanguageData (hasFetchedLanguageData) {
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * Sets the progress of downloading the core files for a language.
+ * @export
+ * @param {number***REMOVED*** languageCoreFilesDownloadProgress - The number of core files that have been downloaded.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function setLanguageCoreFilesDownloadProgress (
   languageCoreFilesDownloadProgress
 ) {
@@ -81,6 +125,12 @@ export function setLanguageCoreFilesDownloadProgress (
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * Sets the total number of language core files to download. Used in tandem with languageCoreFilesDownloadProgress to calculate the progress through the downloads.
+ * @export
+ * @param {number***REMOVED*** totalLanguageCoreFilesToDownload - The number of core files to download.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function setTotalLanguageCoreFilesToDownload (
   totalLanguageCoreFilesToDownload
 ) {
@@ -90,6 +140,12 @@ export function setTotalLanguageCoreFilesToDownload (
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * Deletes all of the redux data for a language instance. This includes language data and language sets.
+ * @export
+ * @param {string***REMOVED*** languageInstanceID - The ID of the language instance to delete.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
+ */
 export function deleteLanguageData (languageInstanceID) {
   return {
     type: DELETE_LANGUAGE_DATA,

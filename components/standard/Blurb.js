@@ -1,22 +1,29 @@
 import React from 'react'
 import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
-function Blurb (props) {
+function Blurb ({
+  // Props passed from a parent component.
+  text,
+  // Props passed from redux.
+  font,
+  isRTL
+***REMOVED***) {
   return (
     <View style={{ width: '100%', padding: 20 * scaleMultiplier ***REMOVED******REMOVED***>
       <Text
         style={StandardTypography(
-          props,
+          { font, isRTL ***REMOVED***,
           'p',
           'Regular',
           'center',
           colors.shark
         )***REMOVED***
       >
-        {props.text***REMOVED***
+        {text***REMOVED***
       </Text>
     </View>
   )
@@ -28,7 +35,7 @@ function mapStateToProps (state) {
   )[0]
   return {
     font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
+    isRTL: state.database[activeGroup.language].isRTL
   ***REMOVED***
 ***REMOVED***
 

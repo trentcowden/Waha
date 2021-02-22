@@ -16,15 +16,29 @@ import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
-function GroupListHeader (props) {
-  //+ FUNCTIONS
-
+function GroupListHeader ({
+  // Props passed from a parent component.s
+  languageName,
+  languageID,
+  isEditing,
+  // Props passed from redux.
+  isRTL,
+  database,
+  activeDatabase,
+  groups,
+  activeGroup,
+  translations,
+  font,
+  deleteGroup,
+  deleteLanguageData,
+  removeDownload
+***REMOVED***) {
   // deletes all material for a language
   function deleteLanguageInstance () {
     // delete all groups w/ this language
-    props.groups.map(group => {
-      if (group.language === props.languageID) {
-        props.deleteGroup(group.name)
+    groups.map(group => {
+      if (group.language === languageID) {
+        deleteGroup(group.name)
       ***REMOVED***
     ***REMOVED***)
 
@@ -32,22 +46,22 @@ function GroupListHeader (props) {
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
       contents => {
         for (const item of contents) {
-          if (item.slice(0, 2) === props.languageID) {
+          if (item.slice(0, 2) === languageID) {
             FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-            props.removeDownload(item.slice(0, 5))
+            removeDownload(item.slice(0, 5))
           ***REMOVED***
         ***REMOVED***
       ***REMOVED***
     )
 
     // delete section of database for this language
-    props.deleteLanguageData(props.languageID)
+    deleteLanguageData(languageID)
   ***REMOVED***
 
   // render trash button conditionally because it's only shown when editing mode is active
   var trashButton
   // if we're editing and not in the active group, we can delete, so show trash can
-  if (props.isEditing && !(props.activeGroup.language === props.languageID)) {
+  if (isEditing && !(activeGroup.language === languageID)) {
     trashButton = (
       <TouchableOpacity
         style={{
@@ -58,15 +72,15 @@ function GroupListHeader (props) {
         ***REMOVED******REMOVED***
         onPress={() =>
           Alert.alert(
-            props.translations.groups.popups.delete_language_title,
-            props.translations.groups.popups.delete_language_message,
+            translations.groups.popups.delete_language_title,
+            translations.groups.popups.delete_language_message,
             [
               {
-                text: props.translations.general.cancel,
+                text: translations.general.cancel,
                 onPress: () => {***REMOVED***
               ***REMOVED***,
               {
-                text: props.translations.general.ok,
+                text: translations.general.ok,
                 onPress: deleteLanguageInstance
               ***REMOVED***
             ]
@@ -77,10 +91,7 @@ function GroupListHeader (props) {
       </TouchableOpacity>
     )
     // if we're editing and active, show an empty view
-  ***REMOVED*** else if (
-    props.isEditing &&
-    props.activeGroup.language === props.languageID
-  ) {
+  ***REMOVED*** else if (isEditing && activeGroup.language === languageID) {
     trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
     // otherwise, make it nothin
   ***REMOVED*** else {
@@ -92,7 +103,7 @@ function GroupListHeader (props) {
       style={[
         styles.languageHeaderContainer,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         ***REMOVED***
       ]***REMOVED***
     >
@@ -101,8 +112,8 @@ function GroupListHeader (props) {
         style={[
           StandardTypography(
             {
-              font: getLanguageFont(props.languageID),
-              isRTL: props.isRTL
+              font: getLanguageFont(languageID),
+              isRTL: isRTL
             ***REMOVED***,
             'h3',
             'Regular',
@@ -111,17 +122,17 @@ function GroupListHeader (props) {
           ),
           {
             flex: 1,
-            marginLeft: props.isRTL ? 0 : props.isEditing ? 0 : 20,
-            marginRight: props.isRTL ? (props.isEditing ? 0 : 20) : 0
+            marginLeft: isRTL ? 0 : isEditing ? 0 : 20,
+            marginRight: isRTL ? (isEditing ? 0 : 20) : 0
           ***REMOVED***
         ]***REMOVED***
       >
-        {props.languageName***REMOVED***
+        {languageName***REMOVED***
       </Text>
       <Image
         style={styles.languageLogo***REMOVED***
         source={{
-          uri: FileSystem.documentDirectory + props.languageID + '-header.png'
+          uri: FileSystem.documentDirectory + languageID + '-header.png'
         ***REMOVED******REMOVED***
       />
     </View>

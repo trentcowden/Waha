@@ -19,36 +19,53 @@ import {
 import { connect ***REMOVED*** from 'react-redux'
 import AlbumArtSwiper from '../components/AlbumArtSwiper'
 import BookView from '../components/BookView'
-import ChapterSelect from '../components/ChapterSelect'
+import ChapterSelector from '../components/ChapterSelector'
 import PlaybackControls from '../components/PlaybackControls'
 import PlayScreenHeaderButtons from '../components/PlayScreenHeaderButtons'
 import Scrubber from '../components/Scrubber'
 import BackButton from '../components/standard/BackButton'
 import VideoPlayer from '../components/VideoPlayer'
-import {
-  colors,
-  getLanguageFont,
-  getLessonInfo,
-  lockPortrait,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { getLessonInfo, lockPortrait, scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
-// import { logCompleteStorySet ***REMOVED*** from '../redux/LogEventFunctions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 /**
  * Component for the Play Screen, where the user listens to or watches the lesson.
- * @component
  * @category Screen
  * @param props
+ * @module PlayScreen
  */
-function PlayScreen (props) {
+function PlayScreen ({
+  // Props passed from navigation.
+  navigation: { goBack, setOptions, isFocused ***REMOVED***,
+  route: {
+    // Props passed from previous screen.
+    params: { thisLesson, thisSet, isDownloaded, isDownloading, lessonType ***REMOVED***
+  ***REMOVED***,
+  // Props passed from redux.
+  database,
+  activeGroup,
+  activeDatabase,
+  translations,
+  downloads,
+  primaryColor,
+  isRTL,
+  font,
+  isConnected,
+  toggleComplete,
+  downloadMedia,
+  removeDownload
+***REMOVED***) {
   //+ AUDIO / VIDEO STATE
 
-  /** State for audio object. */
+  /**
+   * State for audio object.
+   * @exports PlayScreen
+   * */
   const [audio, setAudio] = useState(new Audio.Sound())
 
   /** State for video object. */
@@ -136,38 +153,36 @@ function PlayScreen (props) {
   ***REMOVED***, [deviceRotation, video, trainingSource])
 
   /**
-   * useEffect function that updates the thisSetProgress state variable with the most updated version of the set that this lesson is a part of's progress.
+   * useEffect function that updates the thisSetProgress state variable with the most updated version of the progress of the set that this lesson is a part of.
    * @function
    */
   useEffect(() => {
     setThisSetProgress(
-      props.activeGroup.addedSets.filter(
-        set => set.id === props.route.params.thisSet.id
-      )[0].progress
+      activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].progress
     )
-  ***REMOVED***, [props.activeGroup.addedSets])
+  ***REMOVED***, [activeGroup.addedSets])
 
   /**
    * useEffect function that sets the header for this screen. Dependent on thisSetProgress because we want to update the "Set as complete" header button whenever the complete status of this lesson changes.
    * @function
    */
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
   ***REMOVED***, [thisSetProgress])
 
-  /** Keeps the screen from auto-dimming or auto-locking on this screen. */
+  /** Keeps the screen from auto-dimming or auto-locking. */
   useKeepAwake()
 
   /** Sets the navigation options for this screen. */
   function getNavOptions () {
     return {
-      headerTitle: getLessonInfo('subtitle', props.route.params.thisLesson.id),
-      headerRight: props.isRTL
+      headerTitle: getLessonInfo('subtitle', thisLesson.id),
+      headerRight: isRTL
         ? () => (
             <BackButton
               onPress={() => {
                 lockPortrait(() => {***REMOVED***)
-                props.navigation.goBack()
+                goBack()
               ***REMOVED******REMOVED***
             />
           )
@@ -176,17 +191,17 @@ function PlayScreen (props) {
               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
               completeOnPress={changeCompleteStatus***REMOVED***
               completeCondition={thisSetProgress.includes(
-                getLessonInfo('index', props.route.params.thisLesson.id)
+                getLessonInfo('index', thisLesson.id)
               )***REMOVED***
             />
           ),
-      headerLeft: props.isRTL
+      headerLeft: isRTL
         ? () => (
             <PlayScreenHeaderButtons
               shareOnPress={() => setShowShareLessonModal(true)***REMOVED***
               completeOnPress={changeCompleteStatus***REMOVED***
               completeCondition={thisSetProgress.includes(
-                getLessonInfo('index', props.route.params.thisLesson.id)
+                getLessonInfo('index', thisLesson.id)
               )***REMOVED***
             />
           )
@@ -194,7 +209,7 @@ function PlayScreen (props) {
             <BackButton
               onPress={() => {
                 lockPortrait(() => {***REMOVED***)
-                props.navigation.goBack()
+                goBack()
               ***REMOVED******REMOVED***
             />
           )
@@ -245,42 +260,34 @@ function PlayScreen (props) {
     // set all possible sources for ease of use later
     var fellowshipLocal =
       FileSystem.documentDirectory +
-      props.activeGroup.language +
+      activeGroup.language +
       '-' +
-      props.route.params.thisLesson.fellowshipType +
+      thisLesson.fellowshipType +
       '.mp3'
 
     var applicationLocal =
       FileSystem.documentDirectory +
-      props.activeGroup.language +
+      activeGroup.language +
       '-' +
-      props.route.params.thisLesson.applicationType +
+      thisLesson.applicationType +
       '.mp3'
 
-    var storyLocal =
-      FileSystem.documentDirectory + props.route.params.thisLesson.id + '.mp3'
+    var storyLocal = FileSystem.documentDirectory + thisLesson.id + '.mp3'
 
-    var storyStream = getLessonInfo(
-      'audioSource',
-      props.route.params.thisLesson.id
-    )
+    var storyStream = getLessonInfo('audioSource', thisLesson.id)
 
     var storyDummy =
       FileSystem.documentDirectory +
-      props.activeGroup.language +
+      activeGroup.language +
       '-' +
       'dummy-story.mp3'
 
-    var trainingLocal =
-      FileSystem.documentDirectory + props.route.params.thisLesson.id + 'v.mp4'
+    var trainingLocal = FileSystem.documentDirectory + thisLesson.id + 'v.mp4'
 
-    var trainingStream = getLessonInfo(
-      'videoSource',
-      props.route.params.thisLesson.id
-    )
+    var trainingStream = getLessonInfo('videoSource', thisLesson.id)
 
     // set sources appropriately based on the lesson type
-    switch (props.route.params.lessonType) {
+    switch (lessonType) {
       case 'qa':
         setFellowshipSource(fellowshipLocal)
         setStorySource(storyLocal)
@@ -288,14 +295,11 @@ function PlayScreen (props) {
         setApplicationSource(applicationLocal)
 
         // start downloading stuff if it's not downloaded
-        if (
-          !props.route.params.isDownloaded &&
-          !props.route.params.isDownloading
-        )
-          props.downloadMedia(
+        if (!isDownloaded && !isDownloading)
+          downloadMedia(
             'audio',
-            props.route.params.thisLesson.id,
-            getLessonInfo('audioSource', props.route.params.thisLesson.id)
+            thisLesson.id,
+            getLessonInfo('audioSource', thisLesson.id)
           )
         break
       case 'qav':
@@ -305,19 +309,16 @@ function PlayScreen (props) {
         setApplicationSource(applicationLocal)
 
         // start downloading stuff if it's not downloaded
-        if (
-          !props.route.params.isDownloaded &&
-          !props.route.params.isDownloading
-        ) {
-          props.downloadMedia(
+        if (!isDownloaded && !isDownloading) {
+          downloadMedia(
             'audio',
-            props.route.params.thisLesson.id,
-            getLessonInfo('audioSource', props.route.params.thisLesson.id)
+            thisLesson.id,
+            getLessonInfo('audioSource', thisLesson.id)
           )
-          props.downloadMedia(
+          downloadMedia(
             'video',
-            props.route.params.thisLesson.id,
-            getLessonInfo('videoSource', props.route.params.thisLesson.id)
+            thisLesson.id,
+            getLessonInfo('videoSource', thisLesson.id)
           )
         ***REMOVED***
         break
@@ -328,23 +329,18 @@ function PlayScreen (props) {
         setApplicationSource(applicationLocal)
 
         // start downloading stuff if it's not downloaded
-        if (
-          !props.route.params.isDownloaded &&
-          !props.route.params.isDownloading
-        )
-          props.downloadMedia(
+        if (!isDownloaded && !isDownloading)
+          downloadMedia(
             'video',
-            props.route.params.thisLesson.id,
-            getLessonInfo('videoSource', props.route.params.thisLesson.id)
+            thisLesson.id,
+            getLessonInfo('videoSource', thisLesson.id)
           )
         break
       case 'v':
         changeChapter('training')
         setFellowshipSource(null)
         setStorySource(null)
-        setTrainingSource(
-          props.route.params.isDownloaded ? trainingLocal : trainingStream
-        )
+        setTrainingSource(isDownloaded ? trainingLocal : trainingStream)
         setApplicationSource(null)
         break
       case 'q':
@@ -356,9 +352,7 @@ function PlayScreen (props) {
       case 'a':
         changeChapter('story')
         setFellowshipSource(null)
-        setStorySource(
-          props.route.params.isDownloaded ? storyLocal : storyStream
-        )
+        setStorySource(isDownloaded ? storyLocal : storyStream)
         setTrainingSource(null)
         setApplicationSource(null)
         break
@@ -377,14 +371,14 @@ function PlayScreen (props) {
   ***REMOVED***, [fellowshipSource])
 
   /**
-   * useEffect function that reloads the video file if we end up going offline and come online again.
+   * useEffect function that reloads the streaming video file if we end up going offline and come online again.
    * @function
    */
   useEffect(() => {
-    if (props.route.params.lessonType === 'v')
-      if (props.isConnected && !isMediaLoaded && trainingSource)
+    if (lessonType === 'v')
+      if (isConnected && !isMediaLoaded && trainingSource)
         loadVideoFile('video', trainingSource)
-  ***REMOVED***, [props.isConnected])
+  ***REMOVED***, [isConnected])
 
   /**
    * Loads audio or video for playing.
@@ -425,7 +419,7 @@ function PlayScreen (props) {
    * @function
    */
   useEffect(() => {
-    if (props.route.params.lessonType === 'a' && storySource) {
+    if (lessonType === 'a' && storySource) {
       loadMedia('audio', storySource)
     ***REMOVED***
   ***REMOVED***, [storySource])
@@ -531,7 +525,7 @@ function PlayScreen (props) {
         //  2. we're currently downloading the lesson
         //  3. there's an audio source, it's not downloading, and there's no
         //    internet
-        if (!props.route.params.thisLesson.hasAudio) swipeToScripture()
+        if (!thisLesson.hasAudio) swipeToScripture()
       ***REMOVED*** else if (chapter === 'application') {
         lockPortrait(() => {***REMOVED***)
         setSeekPosition(0)
@@ -557,46 +551,41 @@ function PlayScreen (props) {
     //  chapter once we finish or toggle the whole lesson as complete
     if (playbackStatus.didJustFinish) {
       if (activeChapter === 'fellowship') {
-        if (!props.route.params.thisLesson.hasAudio) {
+        if (!thisLesson.hasAudio) {
           changeChapter('story')
           swipeToScripture()
         ***REMOVED*** else if (
-          props.downloads[props.route.params.thisLesson.id] ||
-          ((props.route.params.lessonType === 'qa' ||
-            props.route.params.lessonType === 'qav') &&
-            !props.isConnected &&
-            !props.route.params.isDownloaded)
+          downloads[thisLesson.id] ||
+          ((lessonType === 'qa' || lessonType === 'qav') &&
+            !isConnected &&
+            !isDownloaded)
         ) {
           swipeToScripture()
         ***REMOVED*** else {
           changeChapter('story')
         ***REMOVED***
       ***REMOVED*** else if (activeChapter === 'story') {
-        switch (props.route.params.lessonType) {
+        switch (lessonType) {
           case 'qa':
-            if (!props.isDownloading) {
+            if (!isDownloading) {
               setTimeout(() => changeChapter('application'), 1000)
             ***REMOVED***
             break
           case 'qav':
-            if (!props.downloads[props.route.params.thisLesson.id + 'v']) {
+            if (!downloads[thisLesson.id + 'v']) {
               setTimeout(() => changeChapter('training'), 1000)
             ***REMOVED***
             break
           case 'a':
             if (
-              !thisSetProgress.includes(
-                getLessonInfo('index', props.route.params.thisLesson.id)
-              )
+              !thisSetProgress.includes(getLessonInfo('index', thisLesson.id))
             ) {
               changeCompleteStatus()
             ***REMOVED***
         ***REMOVED***
       ***REMOVED*** else if (
         activeChapter === 'application' &&
-        !thisSetProgress.includes(
-          getLessonInfo('index', props.route.params.thisLesson.id)
-        )
+        !thisSetProgress.includes(getLessonInfo('index', thisLesson.id))
       ) {
         changeCompleteStatus()
       ***REMOVED***
@@ -611,7 +600,7 @@ function PlayScreen (props) {
    */
   useEffect(() => {
     if (isMediaPlaying) playHandler()
-  ***REMOVED***, [props.navigation.isFocused()])
+  ***REMOVED***, [isFocused()])
 
   //+ OTHER FUNCTIONS
 
@@ -634,69 +623,62 @@ function PlayScreen (props) {
    * @function
    */
   useEffect(() => {
-    switch (props.route.params.lessonType) {
+    switch (lessonType) {
       case 'qa':
-        if (
-          props.downloads[props.route.params.thisLesson.id] &&
-          props.downloads[props.route.params.thisLesson.id].progress === 1
-        )
-          props.removeDownload(props.route.params.thisLesson.id)
+        if (downloads[thisLesson.id] && downloads[thisLesson.id].progress === 1)
+          removeDownload(thisLesson.id)
         break
       case 'qav':
         if (
-          props.downloads[props.route.params.thisLesson.id] &&
-          props.downloads[props.route.params.thisLesson.id + 'v'] &&
-          props.downloads[props.route.params.thisLesson.id].progress === 1 &&
-          props.downloads[props.route.params.thisLesson.id + 'v'].progress === 1
+          downloads[thisLesson.id] &&
+          downloads[thisLesson.id + 'v'] &&
+          downloads[thisLesson.id].progress === 1 &&
+          downloads[thisLesson.id + 'v'].progress === 1
         ) {
-          props.removeDownload(props.route.params.thisLesson.id)
-          props.removeDownload(props.route.params.thisLesson.id + 'v')
+          removeDownload(thisLesson.id)
+          removeDownload(thisLesson.id + 'v')
         ***REMOVED***
         break
       case 'qv':
       case 'v':
         if (
-          props.downloads[props.route.params.thisLesson.id + 'v'] &&
-          props.downloads[props.route.params.thisLesson.id + 'v'].progress === 1
+          downloads[thisLesson.id + 'v'] &&
+          downloads[thisLesson.id + 'v'].progress === 1
         )
-          props.removeDownload(props.route.params.thisLesson.id + 'v')
+          removeDownload(thisLesson.id + 'v')
         break
     ***REMOVED***
-  ***REMOVED***, [props.downloads])
+  ***REMOVED***, [downloads])
 
   /**
    * Switches the complete status of a lesson to the opposite of its current status and alerts the user of the change. Also shows the set complete modal if this is the last lesson to complete in a story set.
    */
   function changeCompleteStatus () {
     lockPortrait(() => {***REMOVED***)
-    props.toggleComplete(
-      props.activeGroup.name,
-      props.route.params.thisSet,
-      getLessonInfo('index', props.route.params.thisLesson.id)
+    toggleComplete(
+      activeGroup.name,
+      thisSet,
+      getLessonInfo('index', thisLesson.id)
     )
 
     // update the nav options since our header button has changed
-    props.navigation.setOptions(getNavOptions())
+    setOptions(getNavOptions())
 
     if (checkForFullyComplete()) {
       setShowSetCompleteModal(true)
       // logCompleteStorySet(
-      //   props.route.params.thisSet,
-      //   props.activeGroup.language
+      //   thisSet,
+      //   activeGroup.language
       // )
     ***REMOVED*** else {
-      if (
-        !thisSetProgress.includes(
-          getLessonInfo('index', props.route.params.thisLesson.id)
-        )
-      ) {
+      if (!thisSetProgress.includes(getLessonInfo('index', thisLesson.id))) {
         Alert.alert(
-          props.translations.play.popups.marked_as_complete_title,
-          props.translations.play.popups.marked_as_complete_message,
+          translations.play.popups.marked_as_complete_title,
+          translations.play.popups.marked_as_complete_message,
           [
             {
-              text: props.translations.general.ok,
-              onPress: () => props.navigation.goBack()
+              text: translations.general.ok,
+              onPress: () => goBack()
             ***REMOVED***
           ]
         )
@@ -709,10 +691,9 @@ function PlayScreen (props) {
    */
   function checkForFullyComplete () {
     if (
-      props.activeGroup.addedSets.filter(
-        set => set.id === props.route.params.thisSet.id
-      )[0].progress.length /
-        (props.route.params.thisSet.lessons.length - 1) ===
+      activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].progress
+        .length /
+        (thisSet.lessons.length - 1) ===
       1
     ) {
       return true
@@ -725,10 +706,16 @@ function PlayScreen (props) {
   var titleSection = (
     <View style={styles.titlesContainer***REMOVED***>
       <Text
-        style={StandardTypography(props, 'h3', 'Black', 'center', colors.shark)***REMOVED***
+        style={StandardTypography(
+          { font, isRTL ***REMOVED***,
+          'h3',
+          'Black',
+          'center',
+          colors.shark
+        )***REMOVED***
         numberOfLines={1***REMOVED***
       >
-        {props.route.params.thisLesson.title***REMOVED***
+        {thisLesson.title***REMOVED***
       </Text>
     </View>
   )
@@ -739,15 +726,12 @@ function PlayScreen (props) {
         style={[
           styles.topHalfContainer,
           {
-            marginBottom: props.route.params.lessonType === '' ? 10 : 0
+            marginBottom: lessonType === '' ? 10 : 0
           ***REMOVED***
         ]***REMOVED***
       >
         {/* don't display title section on audio book lessons */***REMOVED***
-        {props.route.params.lessonType !== 'a' &&
-        props.route.params.lessonType !== ''
-          ? titleSection
-          : null***REMOVED***
+        {lessonType !== 'a' && lessonType !== '' ? titleSection : null***REMOVED***
 
         {/* 
           MIDDLE SECTION 
@@ -755,12 +739,8 @@ function PlayScreen (props) {
           2. video player for lessons with videos
           3. album art swiper to display album art, scripture, and questions
         */***REMOVED***
-        {props.route.params.lessonType === 'a' ||
-        props.route.params.lessonType === '' ? (
-          <BookView
-            thisLesson={props.route.params.thisLesson***REMOVED***
-            titleSection={titleSection***REMOVED***
-          />
+        {lessonType === 'a' || lessonType === '' ? (
+          <BookView thisLesson={thisLesson***REMOVED*** titleSection={titleSection***REMOVED*** />
         ) : activeChapter === 'training' ? (
           <VideoPlayer
             videoSource={trainingSource***REMOVED***
@@ -771,29 +751,19 @@ function PlayScreen (props) {
             // setIsVideoBuffering={setIsVideoBuffering***REMOVED***
             changeChapter={changeChapter***REMOVED***
             isMediaLoaded={isMediaLoaded***REMOVED***
-            lessonType={props.route.params.lessonType***REMOVED***
+            lessonType={lessonType***REMOVED***
             isComplete={thisSetProgress.includes(
-              getLessonInfo('index', props.route.params.thisLesson.id)
+              getLessonInfo('index', thisLesson.id)
             )***REMOVED***
             changeCompleteStatus={changeCompleteStatus***REMOVED***
             setFullScreenStatus={status => setFullscreenStatus(status)***REMOVED***
             fullscreenStatus={fullscreenStatus***REMOVED***
-            // lastPortraitOrientation={lastPortraitOrientation***REMOVED***
-            // navigateToFullscreen={() =>
-            //   video.getStatusAsync().then(status => {
-            //     props.navigation.navigate('Video', {
-            //       shouldPlay: props.isMediaPlaying ? true : false,
-            //       playFromPosition: status.positionMillis,
-            //       source: trainingSource
-            //     ***REMOVED***)
-            //   ***REMOVED***)
-            // ***REMOVED***
           />
         ) : (
           <AlbumArtSwiper
             setAlbumArtSwiperRef={setAlbumArtSwiperRef***REMOVED***
-            iconName={props.route.params.thisSet.iconName***REMOVED***
-            thisLesson={props.route.params.thisLesson***REMOVED***
+            iconName={thisSet.iconName***REMOVED***
+            thisLesson={thisLesson***REMOVED***
             playHandler={playHandler***REMOVED***
             playOpacity={playOpacity***REMOVED***
             animationZIndex={animationZIndex***REMOVED***
@@ -803,17 +773,16 @@ function PlayScreen (props) {
       </View>
 
       {/* AUDIO CONTROLS */***REMOVED***
-      {props.route.params.lessonType !== '' ? (
+      {lessonType !== '' ? (
         isMediaLoaded ? (
           <SafeAreaView style={styles.audioControlContainer***REMOVED***>
-            {props.route.params.lessonType !== 'v' &&
-            props.route.params.lessonType !== 'a' ? (
-              <ChapterSelect
+            {lessonType !== 'v' && lessonType !== 'a' ? (
+              <ChapterSelector
                 activeChapter={activeChapter***REMOVED***
-                lessonID={props.route.params.thisLesson.id***REMOVED***
+                lessonID={thisLesson.id***REMOVED***
                 onPress={chapter => changeChapter(chapter)***REMOVED***
-                lessonType={props.route.params.lessonType***REMOVED***
-                isDownloaded={props.route.params.isDownloaded***REMOVED***
+                lessonType={lessonType***REMOVED***
+                isDownloaded={isDownloaded***REMOVED***
               />
             ) : null***REMOVED***
             <Scrubber
@@ -825,7 +794,6 @@ function PlayScreen (props) {
             />
             <PlaybackControls
               isMediaPlaying={isMediaPlaying***REMOVED***
-              // isVideoBuffering={isVideoBuffering***REMOVED***
               onPlayPress={playHandler***REMOVED***
               onSkipPress={value => {
                 playFromLocation(seekPosition + value)
@@ -843,20 +811,20 @@ function PlayScreen (props) {
       <ShareModal
         isVisible={showShareLessonModal***REMOVED***
         hideModal={() => setShowShareLessonModal(false)***REMOVED***
-        closeText={props.translations.general.close***REMOVED***
-        lesson={props.route.params.thisLesson***REMOVED***
-        lessonType={props.route.params.lessonType***REMOVED***
-        set={props.route.params.thisSet***REMOVED***
+        closeText={translations.general.close***REMOVED***
+        lesson={thisLesson***REMOVED***
+        lessonType={lessonType***REMOVED***
+        set={thisSet***REMOVED***
       />
       <MessageModal
         isVisible={showSetCompleteModal***REMOVED***
         hideModal={() => setShowSetCompleteModal(false)***REMOVED***
-        title={props.translations.general.popups.set_complete_title***REMOVED***
-        body={props.translations.general.popups.set_complete_message***REMOVED***
-        confirmText={props.translations.general.got_it***REMOVED***
+        title={translations.general.popups.set_complete_title***REMOVED***
+        body={translations.general.popups.set_complete_message***REMOVED***
+        confirmText={translations.general.got_it***REMOVED***
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
-          props.navigation.goBack()
+          goBack()
         ***REMOVED******REMOVED***
       >
         <Image
@@ -942,5 +910,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayScreen)
 /* <HomeworkModal
         isVisible={showHomeworkModal***REMOVED***
         hideModal={() => setShowHomeworkModal(false)***REMOVED***
-        homework={props.route.params.thisLesson.homework***REMOVED***
+        homework={thisLesson.homework***REMOVED***
 /> */

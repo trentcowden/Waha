@@ -1,11 +1,21 @@
 import React from 'react'
 import { StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import ChapterButton from '../components/ChapterButton'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import ChapterButton from './ChapterButton'
 import ChapterSeparator from './ChapterSeparator'
 
-function ChapterSelect (props) {
+function ChapterSelector ({
+  // Props passed from a parent component.
+  activeChapter,
+  lessonID,
+  onPress,
+  lessonType,
+  isDownloaded,
+  // Props passed from redux.
+  primaryColor,
+  downloads,
+  isConnected
+***REMOVED***) {
   // order of chapters is
   //  1. fellowship
   //  2. story
@@ -15,7 +25,7 @@ function ChapterSelect (props) {
   // RENDER
 
   function getActiveNumber () {
-    switch (props.activeChapter) {
+    switch (activeChapter) {
       case 'fellowship':
         return 1
         break
@@ -26,7 +36,7 @@ function ChapterSelect (props) {
         return 3
         break
       case 'application':
-        if (props.lessonType === 'qav' || props.lessonType === 'qv') return 4
+        if (lessonType === 'qav' || lessonType === 'qv') return 4
         else return 3
         break
     ***REMOVED***
@@ -36,57 +46,54 @@ function ChapterSelect (props) {
     <View style={styles.chapterSelectContainer***REMOVED***>
       <ChapterButton
         name='fellowship'
-        mode={props.activeChapter === 'fellowship' ? 'active' : 'inactive'***REMOVED***
+        mode={activeChapter === 'fellowship' ? 'active' : 'inactive'***REMOVED***
         number={1***REMOVED***
         activeNumber={getActiveNumber()***REMOVED***
-        onPress={props.onPress***REMOVED***
+        onPress={onPress***REMOVED***
       />
       <ChapterSeparator />
       <ChapterButton
         name='story'
         mode={
-          (props.lessonType === 'qa' || props.lessonType === 'qav') &&
-          !props.isConnected &&
-          !props.isDownloaded
+          (lessonType === 'qa' || lessonType === 'qav') &&
+          !isConnected &&
+          !isDownloaded
             ? 'disabled'
-            : props.downloads[props.lessonID] &&
-              props.downloads[props.lessonID].progress < 1
+            : downloads[lessonID] && downloads[lessonID].progress < 1
             ? 'downloading'
-            : props.activeChapter === 'story'
+            : activeChapter === 'story'
             ? 'active'
             : 'inactive'
         ***REMOVED***
         number={2***REMOVED***
         activeNumber={getActiveNumber()***REMOVED***
-        onPress={props.onPress***REMOVED***
+        onPress={onPress***REMOVED***
         downloadProgress={
-          props.downloads[props.lessonID]
-            ? props.downloads[props.lessonID].progress
-            : null
+          downloads[lessonID] ? downloads[lessonID].progress : null
         ***REMOVED***
       />
-      {props.lessonType === 'qav' || props.lessonType === 'qv' ? (
+      {lessonType === 'qav' || lessonType === 'qv' ? (
         <ChapterSeparator />
       ) : null***REMOVED***
-      {props.lessonType === 'qav' || props.lessonType === 'qv' ? (
+      {lessonType === 'qav' || lessonType === 'qv' ? (
         <ChapterButton
           name='training'
           mode={
-            !props.isConnected && !props.isDownloaded
+            !isConnected && !isDownloaded
               ? 'disabled'
-              : props.downloads[props.lessonID + 'v'] &&
-                props.downloads[props.lessonID + 'v'].progress < 1
+              : downloads[lessonID + 'v'] &&
+                downloads[lessonID + 'v'].progress < 1
               ? 'downloading'
-              : props.activeChapter === 'training'
+              : activeChapter === 'training'
               ? 'active'
               : 'inactive'
           ***REMOVED***
           number={3***REMOVED***
           activeNumber={getActiveNumber()***REMOVED***
-          onPress={props.onPress***REMOVED***
+          onPress={onPress***REMOVED***
           downloadProgress={
-            props.downloads[props.lessonID + 'v']
-              ? props.downloads[props.lessonID + 'v'].progress
+            downloads[lessonID + 'v']
+              ? downloads[lessonID + 'v'].progress
               : null
           ***REMOVED***
         />
@@ -94,10 +101,10 @@ function ChapterSelect (props) {
       <ChapterSeparator />
       <ChapterButton
         name='application'
-        mode={props.activeChapter === 'application' ? 'active' : 'inactive'***REMOVED***
-        number={props.lessonType === 'qav' || props.lessonType === 'qv' ? 4 : 3***REMOVED***
+        mode={activeChapter === 'application' ? 'active' : 'inactive'***REMOVED***
+        number={lessonType === 'qav' || lessonType === 'qv' ? 4 : 3***REMOVED***
         activeNumber={getActiveNumber()***REMOVED***
-        onPress={props.onPress***REMOVED***
+        onPress={onPress***REMOVED***
       />
     </View>
   )
@@ -109,14 +116,6 @@ const styles = StyleSheet.create({
   chapterSelectContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  ***REMOVED***,
-  chapterSelect: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: 55 * scaleMultiplier,
-    justifyContent: 'center',
-    borderWidth: 2
   ***REMOVED***
 ***REMOVED***)
 
@@ -133,4 +132,4 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-export default connect(mapStateToProps)(ChapterSelect)
+export default connect(mapStateToProps)(ChapterSelector)

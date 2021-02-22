@@ -1,8 +1,17 @@
 import React from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
-function PlayScreenHeaderButtons (props) {
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
+
+function PlayScreenHeaderButtons ({
+  // Props passed from a parent component.
+  shareOnPress,
+  completeOnPress,
+  completeCondition,
+  // Props passed from redux.
+  isRTL
+***REMOVED***) {
   //+ RENDER
 
   return (
@@ -10,12 +19,12 @@ function PlayScreenHeaderButtons (props) {
       style={[
         styles.headerButtonsContainer,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row',
+          flexDirection: isRTL ? 'row-reverse' : 'row',
           marginHorizonal: 5
         ***REMOVED***
       ]***REMOVED***
     >
-      <TouchableOpacity onPress={props.shareOnPress***REMOVED***>
+      <TouchableOpacity onPress={shareOnPress***REMOVED***>
         <Icon
           name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'***REMOVED***
           size={32 * scaleMultiplier***REMOVED***
@@ -24,10 +33,10 @@ function PlayScreenHeaderButtons (props) {
       </TouchableOpacity>
       <TouchableOpacity
         style={{ marginHorizontal: 5 ***REMOVED******REMOVED***
-        onPress={props.completeOnPress***REMOVED***
+        onPress={completeOnPress***REMOVED***
       >
         <Icon
-          name={props.completeCondition ? 'check-filled' : 'check-outline'***REMOVED***
+          name={completeCondition ? 'check-filled' : 'check-outline'***REMOVED***
           size={35 * scaleMultiplier***REMOVED***
           color={colors.oslo***REMOVED***
         />

@@ -2,63 +2,77 @@
 import React, { useEffect ***REMOVED*** from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import {
-  colors,
-  getLanguageFont,
-  getLessonInfo,
-  itemHeights,
-  scaleMultiplier
-***REMOVED*** from '../../constants'
+import { getLessonInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../../constants'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import DownloadStatusIndicator from '../DownloadStatusIndicator'
-function LessonItem (props) {
+
+function LessonItem ({
+  // Props passed from a parent component.
+  thisLesson,
+  onLessonSelect,
+  isBookmark,
+  isDownloaded,
+  isDownloading,
+  lessonType,
+  isComplete,
+  setActiveLessonInModal,
+  setShowDownloadLessonModal,
+  setShowDeleteLessonModal,
+  // Props passed from redux.
+  primaryColor,
+  isRTL,
+  activeGroup,
+  downloads,
+  translations,
+  isConnected,
+  font,
+  removeDownload
+***REMOVED***) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
     // if we've completed the download for this lesson, remove the audio/video
     //  download from redux
-    switch (props.lessonType) {
+    switch (lessonType) {
       case 'qa':
       case 'a':
-        if (
-          props.downloads[props.thisLesson.id] &&
-          props.downloads[props.thisLesson.id].progress === 1
-        )
-          props.removeDownload(props.thisLesson.id)
+        if (downloads[thisLesson.id] && downloads[thisLesson.id].progress === 1)
+          removeDownload(thisLesson.id)
         break
       case 'qav':
         if (
-          props.downloads[props.thisLesson.id] &&
-          props.downloads[props.thisLesson.id] + 'v' &&
-          props.downloads[props.thisLesson.id].progress === 1 &&
-          props.downloads[props.thisLesson.id + 'v'].progress === 1
+          downloads[thisLesson.id] &&
+          downloads[thisLesson.id] + 'v' &&
+          downloads[thisLesson.id].progress === 1 &&
+          downloads[thisLesson.id + 'v'].progress === 1
         ) {
-          props.removeDownload(props.thisLesson.id)
-          props.removeDownload(props.thisLesson.id + 'v')
+          removeDownload(thisLesson.id)
+          removeDownload(thisLesson.id + 'v')
         ***REMOVED***
         break
       case 'qv':
       case 'v':
         if (
-          props.downloads[props.thisLesson.id + 'v'] &&
-          props.downloads[props.thisLesson.id + 'v'].progress === 1
+          downloads[thisLesson.id + 'v'] &&
+          downloads[thisLesson.id + 'v'].progress === 1
         )
-          props.removeDownload(props.thisLesson.id + 'v')
+          removeDownload(thisLesson.id + 'v')
         break
     ***REMOVED***
-  ***REMOVED***, [props.downloads])
+  ***REMOVED***, [downloads])
 
   //+ FUNCTIONS
 
-  // calls the various modal functions on lessonlistscreen
+  // calls the various modal functions on LessonsScreen
   function showSaveModal () {
-    props.setActiveLessonInModal.call()
-    props.setShowDownloadLessonModal.call()
+    setActiveLessonInModal.call()
+    setShowDownloadLessonModal.call()
   ***REMOVED***
   function showDeleteModal () {
-    props.setActiveLessonInModal.call()
-    props.setShowDeleteLessonModal.call()
+    setActiveLessonInModal.call()
+    setShowDeleteLessonModal.call()
   ***REMOVED***
 
   //+ RENDER
@@ -68,8 +82,8 @@ function LessonItem (props) {
       style={[
         styles.lessonItem,
         {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row',
-          height: itemHeights[props.font].LessonItem
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          height: itemHeights[font].LessonItem
         ***REMOVED***
       ]***REMOVED***
     >
@@ -77,24 +91,24 @@ function LessonItem (props) {
       <TouchableOpacity
         style={[
           styles.progressAndTitle,
-          { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+          { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
         ]***REMOVED***
-        onPress={props.onLessonSelect***REMOVED***
+        onPress={onLessonSelect***REMOVED***
       >
         {/* complete status indicator */***REMOVED***
         <View style={styles.completeStatusContainer***REMOVED***>
           <Icon
             name={
-              props.isComplete
+              isComplete
                 ? 'check-outline'
-                : props.isBookmark
-                ? props.isRTL
+                : isBookmark
+                ? isRTL
                   ? 'triangle-left'
                   : 'triangle-right'
                 : null
             ***REMOVED***
             size={24 * scaleMultiplier***REMOVED***
-            color={props.isComplete ? colors.chateau : props.primaryColor***REMOVED***
+            color={isComplete ? colors.chateau : primaryColor***REMOVED***
           />
         </View>
 
@@ -104,25 +118,25 @@ function LessonItem (props) {
             flexDirection: 'column',
             justifyContent: 'center',
             flex: 1,
-            marginLeft: props.isRTL ? (props.thisLesson.hasAudio ? 0 : 20) : 20,
-            marginRight: props.isRTL ? 20 : props.thisLesson.hasAudio ? 0 : 20
+            marginLeft: isRTL ? (thisLesson.hasAudio ? 0 : 20) : 20,
+            marginRight: isRTL ? 20 : thisLesson.hasAudio ? 0 : 20
           ***REMOVED******REMOVED***
         >
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'h4',
               'Bold',
               'left',
-              props.isComplete ? colors.chateau : colors.shark
+              isComplete ? colors.chateau : colors.shark
             )***REMOVED***
             numberOfLines={2***REMOVED***
           >
-            {props.thisLesson.title***REMOVED***
+            {thisLesson.title***REMOVED***
           </Text>
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'd',
               'Regular',
               'left',
@@ -130,19 +144,18 @@ function LessonItem (props) {
             )***REMOVED***
             numberOfLines={1***REMOVED***
           >
-            {getLessonInfo('subtitle', props.thisLesson.id)***REMOVED***
+            {getLessonInfo('subtitle', thisLesson.id)***REMOVED***
           </Text>
         </View>
       </TouchableOpacity>
       {/* cloud icon/download indicator */***REMOVED***
       <DownloadStatusIndicator
-        isDownloaded={props.isDownloaded***REMOVED***
-        isDownloading={props.isDownloading***REMOVED***
-        isConnected={props.isConnected***REMOVED***
+        isDownloaded={isDownloaded***REMOVED***
+        isDownloading={isDownloading***REMOVED***
         showDeleteModal={showDeleteModal***REMOVED***
         showSaveModal={showSaveModal***REMOVED***
-        lessonID={props.thisLesson.id***REMOVED***
-        lessonType={props.lessonType***REMOVED***
+        lessonID={thisLesson.id***REMOVED***
+        lessonType={lessonType***REMOVED***
       />
     </View>
   )
