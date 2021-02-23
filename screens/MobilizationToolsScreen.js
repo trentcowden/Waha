@@ -102,7 +102,7 @@ function MobilizationToolsScreen ({
   ***REMOVED***
 
   function renderGroupItem (group) {
-    return <GroupItemMT group={group***REMOVED*** />
+    return <GroupItemMT thisGroup={group***REMOVED*** />
   ***REMOVED***
 
   // list of all the groups with options to turn MTs on or off for each

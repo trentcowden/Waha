@@ -37,11 +37,13 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-// variant of group list item that shows only avatar image, group name, and a switch to enable MTs
-
+/**
+ * A pressable item used on the MobilizationTools screen to display a group. Similar to the GroupItem component, but a lot simpler. It still displays the group name, but just allows the user to enable the Mobilization Tools for a specific group.
+ * @param {Object***REMOVED*** thisGroup - The object for the group that we're displaying in this component.
+ */
 function GroupItemMT ({
   // Props passed from a parent component.
-  group,
+  thisGroup,
   // Props passed from redux.
   database,
   isRTL,
@@ -70,15 +72,15 @@ function GroupItemMT ({
         <GroupAvatar
           style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           size={50 * scaleMultiplier***REMOVED***
-          emoji={group.emoji***REMOVED***
-          isActive={activeGroup.name === group.name***REMOVED***
+          emoji={thisGroup.emoji***REMOVED***
+          isActive={activeGroup.name === thisGroup.name***REMOVED***
         />
       </View>
       <View style={styles.groupNameContainer***REMOVED***>
         <Text
           style={StandardTypography(
             {
-              font: getLanguageFont(group.language),
+              font: getLanguageFont(thisGroup.language),
               isRTL: isRTL
             ***REMOVED***,
             'h3',
@@ -87,7 +89,7 @@ function GroupItemMT ({
             colors.shark
           )***REMOVED***
         >
-          {group.name***REMOVED***
+          {thisGroup.name***REMOVED***
         </Text>
       </View>
       <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
@@ -98,29 +100,29 @@ function GroupItemMT ({
           onValueChange={() => {
             // toggle MTs on or off
             setShouldShowMobilizationToolsTab(
-              group.name,
-              !group.shouldShowMobilizationToolsTab
+              thisGroup.name,
+              !thisGroup.shouldShowMobilizationToolsTab
             )
 
             // if we're toggling MTs on for the first time, add the first 2 MT sets
-            if (!group.shouldShowMobilizationToolsTab) {
+            if (!thisGroup.shouldShowMobilizationToolsTab) {
               logEnableMobilizationToolsForAGroup(
                 activeGroup.language,
-                group.id,
-                groups.indexOf(group) + 1
+                thisGroup.id,
+                groups.indexOf(thisGroup) + 1
               )
-              for (const set of database[group.language].sets) {
+              for (const set of database[thisGroup.language].sets) {
                 if (
                   getSetInfo('category', set.id) === 'mobilization tools' &&
                   (getSetInfo('index', set.id) === 1 ||
                     getSetInfo('index', set.id) === 2)
                 ) {
-                  addSet(group.name, group.id, set)
+                  addSet(thisGroup.name, thisGroup.id, set)
                 ***REMOVED***
               ***REMOVED***
             ***REMOVED***
           ***REMOVED******REMOVED***
-          value={group.shouldShowMobilizationToolsTab***REMOVED***
+          value={thisGroup.shouldShowMobilizationToolsTab***REMOVED***
           disabled={areMobilizationToolsUnlocked ? false : true***REMOVED***
         />
       </View>
