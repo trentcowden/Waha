@@ -5,6 +5,16 @@ import { analyticsMode, dbMode, reduxMode ***REMOVED*** from '../modeSwitch'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, SystemTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    isRTL: state.database[activeGroup.language].isRTL
+  ***REMOVED***
+***REMOVED***
+
 /**
  * This component displays some simple text that says "TEST MODE" whenever any of the modes in modeSwitch.js are set to "test". This is displayed in the corner on the opposite side of the group avatar on the SetsTabs screen.
  */
@@ -36,16 +46,6 @@ function TestModeDisplay ({
       ) : null***REMOVED***
     </View>
   )
-***REMOVED***
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
 ***REMOVED***
 
 export default connect(mapStateToProps)(TestModeDisplay)

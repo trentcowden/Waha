@@ -7,6 +7,20 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    downloads: state.downloads,
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language)
+  ***REMOVED***
+***REMOVED***
+
 function ModalScreen ({
   // Props passed from a parent component.
   isVisible,
@@ -109,22 +123,6 @@ function ModalScreen ({
       </Modal>
     </View>
   )
-***REMOVED***
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    downloads: state.downloads,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
 ***REMOVED***
 
 export default connect(mapStateToProps)(ModalScreen)

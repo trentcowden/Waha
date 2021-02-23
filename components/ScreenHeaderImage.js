@@ -3,6 +3,16 @@ import React from 'react'
 import { Image ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    activeGroup: activeGroup,
+    database: state.database
+  ***REMOVED***
+***REMOVED***
+
 function ScreenHeaderImage ({
   // Props passed from redux.
   activeGroup,
@@ -21,16 +31,6 @@ function ScreenHeaderImage ({
       ***REMOVED******REMOVED***
     />
   )
-***REMOVED***
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    activeGroup: activeGroup,
-    database: state.database
-  ***REMOVED***
 ***REMOVED***
 
 export default connect(mapStateToProps)(ScreenHeaderImage)

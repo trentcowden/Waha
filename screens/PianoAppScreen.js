@@ -19,6 +19,30 @@ import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/security
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    security: state.security,
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    isRTL: state.database[activeGroup.language].isRTL
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    setIsMuted: toSet => {
+      dispatch(setIsMuted(toSet))
+    ***REMOVED***,
+    setIsTimedOut: toSet => {
+      dispatch(setIsTimedOut(toSet))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 function PianoAppScreen ({
   // Props passed from navigation.
   navigation: { canGoBack, goBack, reset ***REMOVED***,
@@ -233,29 +257,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    security: state.security,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    setIsMuted: toSet => {
-      dispatch(setIsMuted(toSet))
-    ***REMOVED***,
-    setIsTimedOut: toSet => {
-      dispatch(setIsTimedOut(toSet))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(PianoAppScreen)

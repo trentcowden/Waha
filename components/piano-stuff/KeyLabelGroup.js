@@ -6,6 +6,18 @@ import { colors, keyColors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../../styles/typography'
 import KeyLabel from './KeyLabel'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    security: state.security,
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup
+  ***REMOVED***
+***REMOVED***
+
 function KeyLabelGroup ({
   // Props passed from a parent component.s
   keyOrder,
@@ -97,17 +109,5 @@ const styles = StyleSheet.create({
     borderWidth: 2
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    security: state.security,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(KeyLabelGroup)

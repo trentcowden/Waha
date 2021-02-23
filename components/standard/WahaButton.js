@@ -9,6 +9,19 @@ import {
   SystemTypography
 ***REMOVED*** from '../../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return activeGroup
+    ? {
+        font: getLanguageFont(activeGroup.language),
+        isRTL: state.database[activeGroup.language].isRTL,
+        activeGroup: activeGroup
+      ***REMOVED***
+    : {***REMOVED***
+***REMOVED***
+
 function WahaButton ({
   // Props passed from a parent component.s
   type,
@@ -145,18 +158,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return activeGroup
-    ? {
-        font: getLanguageFont(activeGroup.language),
-        isRTL: state.database[activeGroup.language].isRTL,
-        activeGroup: activeGroup
-      ***REMOVED***
-    : {***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(WahaButton)

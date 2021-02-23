@@ -16,6 +16,27 @@ import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    isRTL: state.database[activeGroup.language].isRTL,
+    database: state.database,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 function StorageScreen ({
   // Props passed from navigation.
   navigation: { setOptions, goBack ***REMOVED***,
@@ -221,28 +242,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.aquaHaze
   ***REMOVED***
 ***REMOVED***)
-
-//+REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    isRTL: state.database[activeGroup.language].isRTL,
-    database: state.database,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(StorageScreen)

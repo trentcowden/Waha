@@ -19,6 +19,22 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    database: state.database,
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
+    groups: state.groups
+  ***REMOVED***
+***REMOVED***
+
 function MobilizationToolsScreen ({
   // Props passed from navigation.
   navigation: { setOptions, goBack, navigate ***REMOVED***,
@@ -274,23 +290,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    database: state.database,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    groups: state.groups
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(MobilizationToolsScreen)

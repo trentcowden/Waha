@@ -33,6 +33,37 @@ import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    database: state.database,
+    activeGroup: activeGroup,
+    activeDatabase: state.database[activeGroup.language],
+    translations: state.database[activeGroup.language].translations,
+    downloads: state.downloads,
+    primaryColor: state.database[activeGroup.language].primaryColor,
+    isRTL: state.database[activeGroup.language].isRTL,
+    font: getLanguageFont(activeGroup.language),
+    isConnected: state.network.isConnected
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    toggleComplete: (groupName, set, lessonIndex) => {
+      dispatch(toggleComplete(groupName, set, lessonIndex))
+    ***REMOVED***,
+    downloadMedia: (type, lessonID, source) => {
+      dispatch(downloadMedia(type, lessonID, source))
+    ***REMOVED***,
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 /**
  * Component for the Play Screen, where the user listens to or watches the lesson.
  * @category Screen
@@ -871,39 +902,6 @@ const styles = StyleSheet.create({
     height: '33%'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    database: state.database,
-    activeGroup: activeGroup,
-    activeDatabase: state.database[activeGroup.language],
-    translations: state.database[activeGroup.language].translations,
-    downloads: state.downloads,
-    primaryColor: state.database[activeGroup.language].primaryColor,
-    isRTL: state.database[activeGroup.language].isRTL,
-    font: getLanguageFont(activeGroup.language),
-    isConnected: state.network.isConnected
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    toggleComplete: (groupName, set, lessonIndex) => {
-      dispatch(toggleComplete(groupName, set, lessonIndex))
-    ***REMOVED***,
-    downloadMedia: (type, lessonID, source) => {
-      dispatch(downloadMedia(type, lessonID, source))
-    ***REMOVED***,
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayScreen)
 

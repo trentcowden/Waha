@@ -13,6 +13,22 @@ import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language),
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
+    languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
+    globalGroupCounter: state.database.globalGroupCounter
+  ***REMOVED***
+***REMOVED***
+
 /**
  * Screen component for the story sets screen. This screen shows the list of currently added story sets in a category. Used three times for the three tabs.
  * @param {Object***REMOVED*** props - Props passed to this screen.
@@ -87,12 +103,12 @@ function SetsScreen ({
     //     key => key.length === 2
     //   )***REMOVED***`
     // )
-    console.log(`Language core files to update: ${languageCoreFilesToUpdate***REMOVED***\n`)
-    console.log(
-      `Language core files created times: ${JSON.stringify(
-        languageCoreFilesCreatedTimes
-      )***REMOVED***\n`
-    )
+    // console.log(`Language core files to update: ${languageCoreFilesToUpdate***REMOVED***\n`)
+    // console.log(
+    //   `Language core files created times: ${JSON.stringify(
+    //     languageCoreFilesCreatedTimes
+    //   )***REMOVED***\n`
+    // )
   ***REMOVED***, [languageCoreFilesToUpdate])
 
   function filterForDownloadedQuestionSets (set) {
@@ -254,25 +270,5 @@ const styles = StyleSheet.create({
     padding: 20
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    activeDatabase: state.database[activeGroup.language],
-    groups: state.groups,
-    database: state.database,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
-    languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
-    globalGroupCounter: state.database.globalGroupCounter
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(SetsScreen)

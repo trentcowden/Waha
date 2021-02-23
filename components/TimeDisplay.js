@@ -4,6 +4,16 @@ import { connect ***REMOVED*** from 'react-redux'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup
+  ***REMOVED***
+***REMOVED***
+
 function TimeDisplay ({
   // Props passed from a parent component.
   max,
@@ -57,16 +67,6 @@ function TimeDisplay ({
       </Text>
     </View>
   )
-***REMOVED***
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
-  ***REMOVED***
 ***REMOVED***
 
 export default connect(mapStateToProps)(TimeDisplay)

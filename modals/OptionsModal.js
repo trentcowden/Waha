@@ -6,6 +6,16 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    isRTL: state.database[activeGroup.language].isRTL
+  ***REMOVED***
+***REMOVED***
+
 function OptionsModal ({
   // Props passed from a parent component.
   isVisible,
@@ -65,15 +75,5 @@ const styles = StyleSheet.create({
     // marginTop: 5
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(OptionsModal)

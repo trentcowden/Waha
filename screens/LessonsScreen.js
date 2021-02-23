@@ -18,6 +18,34 @@ import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    downloads: state.downloads,
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeDatabase: state.database[activeGroup.language],
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language)
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    downloadMedia: (type, lessonID, source) => {
+      dispatch(downloadMedia(type, lessonID, source))
+    ***REMOVED***,
+    toggleComplete: (groupName, set, lessonIndex) => {
+      dispatch(toggleComplete(groupName, set, lessonIndex))
+    ***REMOVED***,
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 function LessonsScreen ({
   // Props passed from navigation.
   navigation: { goBack, setOptions, navigate ***REMOVED***,
@@ -448,35 +476,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    downloads: state.downloads,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeDatabase: state.database[activeGroup.language],
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    downloadMedia: (type, lessonID, source) => {
-      dispatch(downloadMedia(type, lessonID, source))
-    ***REMOVED***,
-    toggleComplete: (groupName, set, lessonIndex) => {
-      dispatch(toggleComplete(groupName, set, lessonIndex))
-    ***REMOVED***,
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonsScreen)

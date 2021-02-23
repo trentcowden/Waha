@@ -13,6 +13,34 @@ import {
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
+    security: state.security,
+    mtUnlockAttempts: state.mtUnlockAttempts
+  ***REMOVED***
+***REMOVED***
+function mapDispatchToProps (dispatch) {
+  return {
+    setAreMobilizationToolsUnlocked: toSet => {
+      dispatch(setAreMobilizationToolsUnlocked(toSet))
+    ***REMOVED***,
+    setMTUnlockTimeout: time => {
+      dispatch(setMTUnlockTimeout(time))
+    ***REMOVED***,
+    setMTUnlockAttempts: numAttempts => {
+      dispatch(setMTUnlockAttempts(numAttempts))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 function MobilizationToolsUnlockScreen ({
   // Props passed from navigation.
   navigation: { setOptions, goBack ***REMOVED***,
@@ -187,36 +215,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    security: state.security,
-    mtUnlockAttempts: state.mtUnlockAttempts
-  ***REMOVED***
-***REMOVED***
-function mapDispatchToProps (dispatch) {
-  return {
-    setAreMobilizationToolsUnlocked: toSet => {
-      dispatch(setAreMobilizationToolsUnlocked(toSet))
-    ***REMOVED***,
-    setMTUnlockTimeout: time => {
-      dispatch(setMTUnlockTimeout(time))
-    ***REMOVED***,
-    setMTUnlockAttempts: numAttempts => {
-      dispatch(setMTUnlockAttempts(numAttempts))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(
   mapStateToProps,

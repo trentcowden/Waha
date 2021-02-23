@@ -11,6 +11,31 @@ import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    database: state.database,
+    isRTL: state.database[activeGroup.language].isRTL,
+    groups: state.groups,
+    font: getLanguageFont(activeGroup.language),
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
+    activeGroup: activeGroup
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    setShouldShowMobilizationToolsTab: (groupName, toSet) => {
+      dispatch(setShouldShowMobilizationToolsTab(groupName, toSet))
+    ***REMOVED***,
+    addSet: (groupName, groupID, set) => {
+      dispatch(addSet(groupName, groupID, set))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 // variant of group list item that shows only avatar image, group name, and a switch to enable MTs
 
 function GroupItemMT ({
@@ -120,32 +145,5 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap'
   ***REMOVED***
 ***REMOVED***)
-
-// REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    database: state.database,
-    isRTL: state.database[activeGroup.language].isRTL,
-    groups: state.groups,
-    font: getLanguageFont(activeGroup.language),
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    activeGroup: activeGroup
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    setShouldShowMobilizationToolsTab: (groupName, toSet) => {
-      dispatch(setShouldShowMobilizationToolsTab(groupName, toSet))
-    ***REMOVED***,
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupItemMT)

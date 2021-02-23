@@ -16,6 +16,35 @@ import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    isRTL: state.database[activeGroup.language].isRTL,
+    database: state.database,
+    activeDatabase: state.database[activeGroup.language],
+    groups: state.groups,
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language)
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    deleteGroup: name => {
+      dispatch(deleteGroup(name))
+    ***REMOVED***,
+    deleteLanguageData: language => {
+      dispatch(deleteLanguageData(language))
+    ***REMOVED***,
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 function GroupListHeader ({
   // Props passed from a parent component.s
   languageName,
@@ -156,36 +185,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   ***REMOVED***
 ***REMOVED***)
-
-// REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    isRTL: state.database[activeGroup.language].isRTL,
-    database: state.database,
-    activeDatabase: state.database[activeGroup.language],
-    groups: state.groups,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    ***REMOVED***,
-    deleteLanguageData: language => {
-      dispatch(deleteLanguageData(language))
-    ***REMOVED***,
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupListHeader)

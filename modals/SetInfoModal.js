@@ -9,6 +9,28 @@ import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    downloads: state.downloads,
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language)
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    addSet: (groupName, groupID, set) => {
+      dispatch(addSet(groupName, groupID, set))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 function SetInfoModal ({
   // Props passed from a parent component.
   isVisible,
@@ -143,29 +165,5 @@ const styles = StyleSheet.create({
     height: 100 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    downloads: state.downloads,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetInfoModal)

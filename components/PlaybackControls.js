@@ -4,6 +4,15 @@ import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    primaryColor: state.database[activeGroup.language].primaryColor
+  ***REMOVED***
+***REMOVED***
+
 // play, pause, and skip controls for play screen
 function PlaybackControls ({
   // Props passed from a parent component.
@@ -95,16 +104,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    primaryColor: state.database[activeGroup.language].primaryColor
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(PlaybackControls)

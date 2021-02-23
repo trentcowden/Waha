@@ -5,6 +5,17 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup
+  ***REMOVED***
+***REMOVED***
+
 // button rendered on the options modal component
 function OptionsModalButton ({
   onPress,
@@ -47,16 +58,5 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(OptionsModalButton)

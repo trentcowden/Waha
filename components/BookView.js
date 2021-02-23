@@ -5,6 +5,17 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
+    isRTL: state.database[activeGroup.language].isRTL
+  ***REMOVED***
+***REMOVED***
+
 function BookView ({
   // Props passed from a parent component.
   thisLesson,
@@ -66,16 +77,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(BookView)

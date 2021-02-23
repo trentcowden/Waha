@@ -1,4 +1,3 @@
-//imports
 import React, { useEffect ***REMOVED*** from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
@@ -7,6 +6,29 @@ import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import DownloadStatusIndicator from '../DownloadStatusIndicator'
+
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    primaryColor: state.database[activeGroup.language].primaryColor,
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeGroup: activeGroup,
+    downloads: state.downloads,
+    translations: state.database[activeGroup.language].translations,
+    isConnected: state.network.isConnected,
+    font: getLanguageFont(activeGroup.language)
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 function LessonItem ({
   // Props passed from a parent component.
@@ -184,30 +206,5 @@ const styles = StyleSheet.create({
     width: 24 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    primaryColor: state.database[activeGroup.language].primaryColor,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    downloads: state.downloads,
-    translations: state.database[activeGroup.language].translations,
-    isConnected: state.network.isConnected,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonItem)

@@ -6,8 +6,21 @@ import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
+    primaryColor: state.database[activeGroup.language].primaryColor,
+    translations: state.database[activeGroup.language].translations,
+    isRTL: state.database[activeGroup.language].isRTL
+  ***REMOVED***
+***REMOVED***
+
 function ChapterButton ({
-  // Props passed from a parent component.s
+  // Props passed from a parent component.
   name,
   mode,
   number,
@@ -142,18 +155,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    primaryColor: state.database[activeGroup.language].primaryColor,
-    translations: state.database[activeGroup.language].translations,
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(ChapterButton)

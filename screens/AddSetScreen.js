@@ -17,6 +17,28 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state'
 ])
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    font: getLanguageFont(activeGroup.language),
+    translations: state.database[activeGroup.language].translations,
+    isRTL: state.database[activeGroup.language].isRTL,
+    activeDatabase: state.database[activeGroup.language],
+    activeGroup: activeGroup,
+    primaryColor: state.database[activeGroup.language].primaryColor
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    addSet: (groupName, setID) => {
+      dispatch(addSet(groupName, setID))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
 /**
  * Component for the add set screen, which shows a list of available story sets to add in a specific category.
  * @param {****REMOVED*** props
@@ -34,7 +56,8 @@ function AddSetScreen ({
   isRTL,
   activeDatabase,
   activeGroup,
-  primaryColor
+  primaryColor,
+  addSet
 ***REMOVED***) {
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
@@ -289,27 +312,5 @@ const styles = StyleSheet.create({
     flex: 1
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    translations: state.database[activeGroup.language].translations,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeDatabase: state.database[activeGroup.language],
-    activeGroup: activeGroup,
-    primaryColor: state.database[activeGroup.language].primaryColor
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    addSet: (groupName, setID) => {
-      dispatch(addSet(groupName, setID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddSetScreen)

@@ -18,6 +18,30 @@ import {
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    database: state.database,
+    activeDatabase: state.database[activeGroup.language],
+    isRTL: state.database[activeGroup.language].isRTL,
+    translations: state.database[activeGroup.language].translations,
+    font: getLanguageFont(activeGroup.language),
+    activeGroup: activeGroup,
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
+    security: state.security
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
+    setIsTimedOut: toSet => dispatch(setIsTimedOut(toSet)),
+    setTimeoutDuration: ms => dispatch(setTimeoutDuration(ms))
+  ***REMOVED***
+***REMOVED***
+
 function SecurityModeScreen ({
   // Props passed from navigation.
   navigation: { setOptions, goBack, navigate ***REMOVED***,
@@ -323,31 +347,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.aquaHaze
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    database: state.database,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    security: state.security
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
-    setIsTimedOut: toSet => dispatch(setIsTimedOut(toSet)),
-    setTimeoutDuration: ms => dispatch(setTimeoutDuration(ms))
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(SecurityModeScreen)

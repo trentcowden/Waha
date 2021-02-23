@@ -4,6 +4,15 @@ import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { colors ***REMOVED*** from '../styles/colors'
 
+function mapStateToProps (state) {
+  var activeGroup = state.groups.filter(
+    item => item.name === state.activeGroup
+  )[0]
+  return {
+    isRTL: state.database[activeGroup.language].isRTL
+  ***REMOVED***
+***REMOVED***
+
 function PlayScreenHeaderButtons ({
   // Props passed from a parent component.
   shareOnPress,
@@ -53,16 +62,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(PlayScreenHeaderButtons)
