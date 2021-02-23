@@ -204,7 +204,24 @@ function WahaDrawer ({
           />
           <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
           <Separator />
-          <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
+          {/* <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** /> */***REMOVED***
+          <Text
+            style={[
+              StandardTypography(
+                { font, isRTL ***REMOVED***,
+                'p',
+                'Regular',
+                'left',
+                colors.chateau
+              ),
+              {
+                marginHorizontal: 20,
+                marginVertical: 15
+              ***REMOVED***
+            ]***REMOVED***
+          >
+            {translations.general.other***REMOVED***
+          </Text>
           <DrawerItem
             icon='storage'
             label={translations.storage.header***REMOVED***
@@ -218,18 +235,18 @@ function WahaDrawer ({
             ***REMOVED***
           />
           <DrawerItem
-            iconName='language'
+            icon='language'
             onPress={() =>
               openBrowser(
                 'https://kingdomstrategies.givingfuel.com/general-giving'
               )
             ***REMOVED***
-            text={translations.general.donate_to_waha***REMOVED***
+            label={translations.general.donate_to_waha***REMOVED***
           />
           <DrawerItem
-            iconName='info'
+            icon='info'
             onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
-            text={translations.general.privacy***REMOVED***
+            label={translations.general.privacy***REMOVED***
           />
           <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
           <Text
