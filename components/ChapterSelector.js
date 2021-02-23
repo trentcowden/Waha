@@ -1,15 +1,13 @@
 import React from 'react'
 import { StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import { activeDatabaseSelector ***REMOVED*** from '../redux/reducers/activeGroup'
 import ChapterButton from './ChapterButton'
 import ChapterSeparator from './ChapterSeparator'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    primaryColor: state.database[activeGroup.language].primaryColor,
+    primaryColor: activeDatabaseSelector(state).primaryColor,
     downloads: state.downloads,
     isConnected: state.network.isConnected
   ***REMOVED***

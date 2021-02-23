@@ -15,20 +15,21 @@ import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
 import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
     downloads: state.downloads,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeDatabase: state.database[activeGroup.language],
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeDatabase: activeDatabaseSelector(state),
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language)
   ***REMOVED***
 ***REMOVED***
 

@@ -13,21 +13,22 @@ import { scaleMultiplier ***REMOVED*** from '../../constants'
 import { deleteLanguageData ***REMOVED*** from '../../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    isRTL: state.database[activeGroup.language].isRTL,
+    isRTL: activeDatabaseSelector(state).isRTL,
     database: state.database,
-    activeDatabase: state.database[activeGroup.language],
+    activeDatabase: activeDatabaseSelector(state),
     groups: state.groups,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language)
   ***REMOVED***
 ***REMOVED***
 

@@ -13,21 +13,22 @@ import BackButton from '../components/standard/BackButton'
 import Separator from '../components/standard/Separator'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
     database: state.database,
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
+    isRTL: activeDatabaseSelector(state).isRTL,
+    translations: activeDatabaseSelector(state).translations,
     isConnected: state.network.isConnected,
-    font: getLanguageFont(activeGroup.language),
+    font: getLanguageFont(activeGroupSelector(state).language),
     groups: state.groups,
-    activeGroup: activeGroup
+    activeGroup: activeGroupSelector(state)
   ***REMOVED***
 ***REMOVED***
 

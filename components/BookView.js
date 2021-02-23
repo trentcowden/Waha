@@ -2,17 +2,18 @@ import React from 'react'
 import { FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    isRTL: state.database[activeGroup.language].isRTL
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state),
+    isRTL: activeDatabaseSelector(state).isRTL
   ***REMOVED***
 ***REMOVED***
 

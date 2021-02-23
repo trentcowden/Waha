@@ -1,16 +1,14 @@
 import React from 'react'
 import { Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import { activeGroupSelector ***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state)
   ***REMOVED***
 ***REMOVED***
 

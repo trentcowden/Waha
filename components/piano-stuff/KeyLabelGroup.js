@@ -2,19 +2,20 @@ import React from 'react'
 import { Dimensions, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
 import { colors, keyColors ***REMOVED*** from '../../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../../styles/typography'
 import KeyLabel from './KeyLabel'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    font: getLanguageFont(activeGroup.language),
+    font: getLanguageFont(activeGroupSelector(state).language),
     security: state.security,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state)
   ***REMOVED***
 ***REMOVED***
 

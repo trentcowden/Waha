@@ -4,20 +4,21 @@ import { Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
     downloads: state.downloads,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
+    activeDatabase: activeDatabaseSelector(state),
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language)
   ***REMOVED***
 ***REMOVED***
 

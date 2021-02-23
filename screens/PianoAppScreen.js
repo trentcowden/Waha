@@ -16,19 +16,20 @@ import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/piano-stuff/Piano'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
     security: state.security,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    isRTL: state.database[activeGroup.language].isRTL
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    isRTL: activeDatabaseSelector(state).isRTL
   ***REMOVED***
 ***REMOVED***
 

@@ -21,6 +21,7 @@ import {
 ***REMOVED*** from '../redux/actions/databaseActions'
 import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance ***REMOVED*** from '../redux/actions/isInstallingLanguageInstanceActions'
+import { activeGroupSelector ***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { SystemTypography ***REMOVED*** from '../styles/typography'
 import ar from '../translations/ar.json'
@@ -46,7 +47,7 @@ function mapStateToProps (state) {
     database: state.database,
     hasFetchedLanguageData: state.database.hasFetchedLanguageData,
     actingLanguageID: state.database.actingLanguageID,
-    activeGroup: activeGroup,
+    activeGroup: activeGroupSelector(state),
     groups: state.groups
   ***REMOVED***
 ***REMOVED***

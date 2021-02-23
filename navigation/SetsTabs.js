@@ -2,6 +2,10 @@ import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/mat
 import React from 'react'
 import { connect ***REMOVED*** from 'react-redux'
 import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import SetsScreen from '../screens/SetsScreen'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
@@ -10,16 +14,13 @@ import { getLanguageFont ***REMOVED*** from '../styles/typography'
 const Tab = createMaterialTopTabNavigator()
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    primaryColor: state.database[activeGroup.language].primaryColor,
-    activeGroup: activeGroup,
-    activeDatabase: state.database[activeGroup.language]
+    isRTL: activeDatabaseSelector(state).isRTL,
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language),
+    primaryColor: activeDatabaseSelector(state).primaryColor,
+    activeGroup: activeGroupSelector(state),
+    activeDatabase: activeDatabaseSelector(state)
   ***REMOVED***
 ***REMOVED***
 

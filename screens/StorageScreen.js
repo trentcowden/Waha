@@ -13,19 +13,20 @@ import LanguageStorageItem from '../components/list-items/LanguageStorageItem'
 import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
 import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    isRTL: state.database[activeGroup.language].isRTL,
+    isRTL: activeDatabaseSelector(state).isRTL,
     database: state.database,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state)
   ***REMOVED***
 ***REMOVED***
 

@@ -2,6 +2,10 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../../styles/colors'
 import {
   getLanguageFont,
@@ -10,14 +14,11 @@ import {
 ***REMOVED*** from '../../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return activeGroup
+  return activeGroupSelector(state)
     ? {
-        font: getLanguageFont(activeGroup.language),
-        isRTL: state.database[activeGroup.language].isRTL,
-        activeGroup: activeGroup
+        font: getLanguageFont(activeGroupSelector(state).language),
+        isRTL: activeDatabaseSelector(state).isRTL,
+        activeGroup: activeGroupSelector(state)
       ***REMOVED***
     : {***REMOVED***
 ***REMOVED***

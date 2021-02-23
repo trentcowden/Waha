@@ -19,23 +19,23 @@ import {
 ***REMOVED*** from '../redux/actions/databaseActions'
 import { changeActiveGroup, deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
 import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import MainStack from './MainStack'
 
 // Create the drawer navigator.
 const Drawer = createDrawerNavigator()
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-
   return {
-    isRTL: state.database[activeGroup.language].isRTL,
+    isRTL: activeDatabaseSelector(state).isRTL,
     database: state.database,
-    activeDatabase: state.database[activeGroup.language],
+    activeDatabase: activeDatabaseSelector(state),
     isConnected: state.network.isConnected,
-    translations: state.database[activeGroup.language].translations,
-    activeGroup: activeGroup,
+    translations: activeDatabaseSelector(state).translations,
+    activeGroup: activeGroupSelector(state),
     security: state.security,
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,

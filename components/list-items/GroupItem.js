@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
 import { changeActiveGroup ***REMOVED*** from '../../redux/actions/activeGroupActions'
 import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
 import {
-  activeGroupLanguageSelector,
+  activeDatabaseSelector,
   activeGroupSelector
 ***REMOVED*** from '../../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../../styles/colors'
@@ -15,13 +15,12 @@ import GroupAvatar from '../GroupAvatar'
 function mapStateToProps (state) {
   return {
     database: state.database,
-    activeDatabase: state.database[activeGroupLanguageSelector(state)],
-    isRTL: state.database[activeGroupLanguageSelector(state)].isRTL,
+    activeDatabase: activeDatabaseSelector(state),
+    isRTL: activeDatabaseSelector(state).isRTL,
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
-    font: getLanguageFont(activeGroupLanguageSelector(state)),
-    translations:
-      state.database[activeGroupLanguageSelector(state)].translations
+    font: getLanguageFont(activeGroupSelector(state).language),
+    translations: activeDatabaseSelector(state).translations
   ***REMOVED***
 ***REMOVED***
 
@@ -58,9 +57,25 @@ function GroupItem ({
   deleteGroup,
   changeActiveGroup
 ***REMOVED***) {
-  // gets a formatted string of this the bookmark lesson for this group
-  // the bookmark lesson is the earliest uncompleted lesson of the active set
-  //  for this group, and the text displays the subtitle and the name
+  /** Keeps track of whether this group is the last group in a language instance. */
+  const [
+    isLastGroupInLanguageInstance,
+    setIsLastGroupInLanguageInstance
+  ] = useState(false)
+
+  /**
+   * useEffect function that determines whether this group is the last in a language instance.
+   * @function
+   */
+  useEffect(() => {
+    if (
+      groups.filter(group => group.language === thisGroup.language).length === 1
+    ) {
+      setIsLastGroupInLanguageInstance(true)
+    ***REMOVED*** else {
+      setIsLastGroupInLanguageInstance(false)
+    ***REMOVED***
+  ***REMOVED***, [isEditing, groups])
 
   /**
    * Gets the bookmark for this group and returns it in a nicely formatted string.
@@ -94,9 +109,14 @@ function GroupItem ({
     ***REMOVED*** else return ''
   ***REMOVED***
 
+  // Determine what to render for the delete button. This button shows up next to groups in editing mode and if that group is able to be deleted. Exceptions are that you can't delete the active group and that you can't delete a group that's the last in a language instance.
   var deleteButton
-  // if we're editing and not in the active group, show tappable delete button
-  if (isEditing && activeGroup.name != thisGroup.name) {
+
+  if (
+    isEditing &&
+    activeGroup.name !== thisGroup.name &&
+    !isLastGroupInLanguageInstance
+  ) {
     deleteButton = (
       <TouchableOpacity
         style={styles.minusButtonContainer***REMOVED***
@@ -124,18 +144,26 @@ function GroupItem ({
         />
       </TouchableOpacity>
     )
-    // if we're editing and in the active group, show an untappable check
   ***REMOVED*** else if (isEditing && activeGroup.name === thisGroup.name) {
     deleteButton = (
       <View style={styles.minusButtonContainer***REMOVED***>
         <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color={colors.blue***REMOVED*** />
       </View>
     )
+  ***REMOVED*** else if (isEditing && isLastGroupInLanguageInstance) {
+    deleteButton = (
+      <View
+        style={{
+          // Make the width such that the group avatar/text doesn't change position in editing mode. This width makes up for the padding that is lost in editing mode.
+          width: 20
+        ***REMOVED******REMOVED***
+      />
+    )
   ***REMOVED***
 
-  // render right button conditionally; can be either right arrow when in edit mode,
-  // checkmark if in edit mode and this group is active, or an empty view
+  // Determine what to render for the 'right' button. This button highlights the active group with a blue checkmark while in regular mode and switches to a right arrow for all groups while in edit mode.
   var rightButton
+
   if (isEditing) {
     rightButton = (
       <View style={styles.iconContainer***REMOVED*** onPress={() => {***REMOVED******REMOVED***>

@@ -14,20 +14,21 @@ import {
 ***REMOVED*** from '../redux/actions/databaseActions'
 import { setIsInstallingLanguageInstance ***REMOVED*** from '../redux/actions/isInstallingLanguageInstanceActions'
 import { storeDownloads ***REMOVED*** from '../redux/actions/storedDownloadsActions'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 import Separator from './standard/Separator'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    primaryColor: state.database[activeGroup.language].primaryColor,
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
+    primaryColor: activeDatabaseSelector(state).primaryColor,
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language),
     isConnected: state.network.isConnected,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
   ***REMOVED***
