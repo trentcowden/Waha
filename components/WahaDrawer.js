@@ -8,7 +8,6 @@ import DrawerItem from '../components/list-items/DrawerItem'
 import WahaButton from '../components/standard/WahaButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { appVersion ***REMOVED*** from '../modeSwitch'
 import {
   setHasFetchedLanguageData,
   updateLanguageCoreFiles
@@ -216,7 +215,8 @@ function WahaDrawer ({
               ),
               {
                 marginHorizontal: 20,
-                marginVertical: 15
+                marginTop: 20 * scaleMultiplier,
+                marginBottom: 15 * scaleMultiplier
               ***REMOVED***
             ]***REMOVED***
           >
@@ -234,7 +234,7 @@ function WahaDrawer ({
               openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
             ***REMOVED***
           />
-          <DrawerItem
+          {/* <DrawerItem
             icon='language'
             onPress={() =>
               openBrowser(
@@ -242,13 +242,18 @@ function WahaDrawer ({
               )
             ***REMOVED***
             label={translations.general.donate_to_waha***REMOVED***
-          />
+          /> */***REMOVED***
           <DrawerItem
+            icon='info'
+            onPress={() => navigate('Information')***REMOVED***
+            label={translations.general.information***REMOVED***
+          />
+          {/* <DrawerItem
             icon='info'
             onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
             label={translations.general.privacy***REMOVED***
-          />
-          <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
+          /> */***REMOVED***
+          {/* <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
           <Text
             style={StandardTypography(
               { font, isRTL ***REMOVED***,
@@ -259,7 +264,7 @@ function WahaDrawer ({
             )***REMOVED***
           >
             {'v' + appVersion***REMOVED***
-          </Text>
+          </Text> */***REMOVED***
           {/* <DrawerItem
             iconName='info'
             text={'You are using ' + appVersion***REMOVED***
