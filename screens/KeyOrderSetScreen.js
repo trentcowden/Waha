@@ -67,9 +67,6 @@ function KeyOrderSetScreen ({
       case 'KeyOrderSet_Confirm':
         setInstructionText(translations.security.confirm_key_order_label)
         break
-      case 'KeyOrderChange_Old':
-        setInstructionText(translations.security.enter_old_key_order_label)
-        break
       case 'KeyOrderChange_Initial':
         setInstructionText(translations.security.choose_new_key_order_label)
         break
@@ -113,18 +110,6 @@ function KeyOrderSetScreen ({
             goBack()
           ***REMOVED***
           break
-        case 'KeyOrderChange_Old':
-          if (localKeyOrder === security.code) {
-            navigate('KeyOrderChange_Initial')
-          ***REMOVED*** else {
-            setLocalKeyOrder('')
-            Alert.alert(
-              translations.security.popups.incorrect_key_order_enetered_title,
-              translations.security.popups.incorrect_key_order_enetered_message,
-              [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
-            )
-          ***REMOVED***
-          break
         case 'KeyOrderChange_Initial':
           navigate('KeyOrderChange_Confirm', {
             keyOrder: localKeyOrder
@@ -140,7 +125,6 @@ function KeyOrderSetScreen ({
             )
             setSecurityEnabled(true)
             setCode(localKeyOrder)
-            goBack()
             goBack()
             goBack()
           ***REMOVED*** else {
@@ -167,11 +151,7 @@ function KeyOrderSetScreen ({
               onPress={() => {
                 goBack()
 
-                if (
-                  routeName === 'KeyOrderSet_Initial' ||
-                  routeName === 'KeyOrderChange_Initial'
-                )
-                  goBack()
+                if (routeName === 'KeyOrderSet_Initial') goBack()
               ***REMOVED******REMOVED***
             />
           )
@@ -183,11 +163,7 @@ function KeyOrderSetScreen ({
               onPress={() => {
                 goBack()
 
-                if (
-                  routeName === 'KeyOrderSet_Initial' ||
-                  routeName === 'KeyOrderChange_Initial'
-                )
-                  goBack()
+                if (routeName === 'KeyOrderSet_Initial') goBack()
               ***REMOVED******REMOVED***
             />
           )

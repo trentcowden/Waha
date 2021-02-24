@@ -228,11 +228,13 @@ function WahaDrawer ({
         <DrawerItem
           icon='email'
           label={translations.general.feedback***REMOVED***
-          onPress={() =>
-            // openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
-            openBrowser(
-              `https://coda.io/form/Contact-Us_dOsPhfw4nDB?Language=${activeGroup.language***REMOVED***`
-            )
+          onPress={
+            () =>
+              openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
+            // New "contact us form" testing
+            // openBrowser(
+            //   `https://coda.io/form/Contact-Us_dOsPhfw4nDB?Language=${activeGroup.language***REMOVED***`
+            // )
           ***REMOVED***
         />
         <DrawerItem
