@@ -63,7 +63,10 @@ function GroupsScreen ({
     setOptions(getNavOptions())
   ***REMOVED***, [isEditing, isRTL, activeGroup])
 
-  /** Returns the navigation options for this screen. */
+  /**
+   * Returns the navigation options for this screen.
+   * @return {Object***REMOVED*** - The navigation options.
+   */
   function getNavOptions () {
     return {
       headerStyle: {
