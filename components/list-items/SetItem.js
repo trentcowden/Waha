@@ -1,3 +1,4 @@
+// import SvgUri from 'expo-svg-uri'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
@@ -102,6 +103,16 @@ function SetItem ({
                     height={70 * scaleMultiplier***REMOVED***
                     color={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
                   />
+                  {/* <SvgUri
+                    source={{
+                      uri: ''
+                    ***REMOVED******REMOVED***
+                    width={70 * scaleMultiplier***REMOVED***
+                    height={70 * scaleMultiplier***REMOVED***
+                    // fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
+                    fill={colors.chateau***REMOVED***
+                    fillAll
+                  /> */***REMOVED***
                 </View>
               )***REMOVED***
             </AnimatedCircularProgress>

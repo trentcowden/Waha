@@ -112,212 +112,135 @@ function WahaDrawer ({
           {activeGroup.name***REMOVED***
         </Text>
       </View>
-      <View
-        style={{
-          backgroundColor: colors.white,
-          flex: 1
-        ***REMOVED******REMOVED***
+      <ScrollView
+        bounces={false***REMOVED***
+        style={{ backgroundColor: colors.white, flex: 1 ***REMOVED******REMOVED***
       >
-        <ScrollView bounces={false***REMOVED*** style={{ flex: 1 ***REMOVED******REMOVED***>
-          {/* Show an update button if we have any core files to update. */***REMOVED***
-          {languageCoreFilesToUpdate.length !== 0 ? (
-            <WahaButton
-              type={isConnected ? 'filled' : 'inactive'***REMOVED***
-              color={isConnected ? colors.apple : colors.geyser***REMOVED***
-              onPress={() => {
-                Alert.alert(
-                  'A new update is available to download.',
-                  'Would you like to download it now?',
-                  [
-                    {
-                      text: translations.general.cancel,
-                      onPress: () => {***REMOVED***
-                    ***REMOVED***,
-                    {
-                      text: translations.general.ok,
-                      onPress: onUpdatePress
-                    ***REMOVED***
-                  ]
-                )
-              ***REMOVED******REMOVED***
-              label='Download Update'
-              extraComponent={
-                isConnected ? (
-                  <View
-                    style={{
-                      width: 50 * scaleMultiplier,
-                      alignItems: 'center'
-                    ***REMOVED******REMOVED***
-                  >
-                    <Icon
-                      name='error-filled'
-                      size={30 * scaleMultiplier***REMOVED***
-                      color={colors.white***REMOVED***
-                    />
-                  </View>
-                ) : (
-                  <View style={{ width: 50 * scaleMultiplier ***REMOVED******REMOVED***>
-                    <Icon
-                      name='cloud-slash'
-                      size={30 * scaleMultiplier***REMOVED***
-                      color={colors.chateau***REMOVED***
-                    />
-                  </View>
-                )
-              ***REMOVED***
-              style={{
-                marginHorizontal: 5,
-                marginTop: 5,
-                marginBottom: 0,
-                height: 50 * scaleMultiplier,
-                flexDirection: isRTL ? 'row' : 'row-reverse',
-                justifyContent: 'flex-end',
-                paddingHorizontal: 5
-              ***REMOVED******REMOVED***
-              textStyle={[
-                { paddingHorizontal: 10 ***REMOVED***,
-                StandardTypography(
-                  { font, isRTL ***REMOVED***,
-                  'h3',
-                  'Bold',
-                  'center',
-                  isConnected ? colors.white : colors.chateau
-                )
-              ]***REMOVED***
-            />
-          ) : null***REMOVED***
-          <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
-          <DrawerItem
-            icon='group'
-            label={translations.groups.header***REMOVED***
-            onPress={() => navigate('Groups')***REMOVED***
-          />
-          <DrawerItem
-            icon='security'
-            label={translations.security.header***REMOVED***
-            onPress={() => navigate('SecurityMode')***REMOVED***
-          />
-          <DrawerItem
-            icon='boat'
-            label={translations.mobilization_tools.header***REMOVED***
-            onPress={() => navigate('MobilizationTools')***REMOVED***
-          />
-          <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
-          <Separator />
-          {/* <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** /> */***REMOVED***
-          <Text
-            style={[
-              StandardTypography(
-                { font, isRTL ***REMOVED***,
-                'p',
-                'Regular',
-                'left',
-                colors.chateau
-              ),
-              {
-                marginHorizontal: 20,
-                marginTop: 20 * scaleMultiplier,
-                marginBottom: 15 * scaleMultiplier
-              ***REMOVED***
-            ]***REMOVED***
-          >
-            {translations.general.other***REMOVED***
-          </Text>
-          <DrawerItem
-            icon='storage'
-            label={translations.storage.header***REMOVED***
-            onPress={() => navigate('Storage')***REMOVED***
-          />
-          <DrawerItem
-            icon='email'
-            label={translations.general.feedback***REMOVED***
-            onPress={() =>
-              openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
-            ***REMOVED***
-          />
-          {/* <DrawerItem
-            icon='language'
-            onPress={() =>
-              openBrowser(
-                'https://kingdomstrategies.givingfuel.com/general-giving'
+        {/* Show an update button if we have any core files to update. */***REMOVED***
+        {languageCoreFilesToUpdate.length !== 0 ? (
+          <WahaButton
+            type={isConnected ? 'filled' : 'inactive'***REMOVED***
+            color={isConnected ? colors.apple : colors.geyser***REMOVED***
+            onPress={() => {
+              Alert.alert(
+                'A new update is available to download.',
+                'Would you like to download it now?',
+                [
+                  {
+                    text: translations.general.cancel,
+                    onPress: () => {***REMOVED***
+                  ***REMOVED***,
+                  {
+                    text: translations.general.ok,
+                    onPress: onUpdatePress
+                  ***REMOVED***
+                ]
+              )
+            ***REMOVED******REMOVED***
+            label='Download Update'
+            extraComponent={
+              isConnected ? (
+                <View
+                  style={{
+                    width: 50 * scaleMultiplier,
+                    alignItems: 'center'
+                  ***REMOVED******REMOVED***
+                >
+                  <Icon
+                    name='error-filled'
+                    size={30 * scaleMultiplier***REMOVED***
+                    color={colors.white***REMOVED***
+                  />
+                </View>
+              ) : (
+                <View style={{ width: 50 * scaleMultiplier ***REMOVED******REMOVED***>
+                  <Icon
+                    name='cloud-slash'
+                    size={30 * scaleMultiplier***REMOVED***
+                    color={colors.chateau***REMOVED***
+                  />
+                </View>
               )
             ***REMOVED***
-            label={translations.general.donate_to_waha***REMOVED***
-          /> */***REMOVED***
-          <DrawerItem
-            icon='info'
-            onPress={() => navigate('Information')***REMOVED***
-            label={translations.general.information***REMOVED***
+            style={{
+              marginHorizontal: 5,
+              marginTop: 5,
+              marginBottom: 0,
+              height: 50 * scaleMultiplier,
+              flexDirection: isRTL ? 'row' : 'row-reverse',
+              justifyContent: 'flex-end',
+              paddingHorizontal: 5
+            ***REMOVED******REMOVED***
+            textStyle={[
+              { paddingHorizontal: 10 ***REMOVED***,
+              StandardTypography(
+                { font, isRTL ***REMOVED***,
+                'h3',
+                'Bold',
+                'center',
+                isConnected ? colors.white : colors.chateau
+              )
+            ]***REMOVED***
           />
-          {/* <DrawerItem
-            icon='info'
-            onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
-            label={translations.general.privacy***REMOVED***
-          /> */***REMOVED***
-          {/* <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
-          <Text
-            style={StandardTypography(
-              { font, isRTL ***REMOVED***,
-              'd',
-              'Regular',
-              'center',
-              colors.chateau
-            )***REMOVED***
-          >
-            {'v' + appVersion***REMOVED***
-          </Text> */***REMOVED***
-          {/* <DrawerItem
-            iconName='info'
-            text={'You are using ' + appVersion***REMOVED***
-            onPress={() => {***REMOVED******REMOVED***
-          /> */***REMOVED***
-        </ScrollView>
-        {/* <SafeAreaView
+        ) : null***REMOVED***
+        <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
+        <DrawerItem
+          icon='group'
+          label={translations.groups.header***REMOVED***
+          onPress={() => navigate('Groups')***REMOVED***
+        />
+        <DrawerItem
+          icon='security'
+          label={translations.security.header***REMOVED***
+          onPress={() => navigate('SecurityMode')***REMOVED***
+        />
+        <DrawerItem
+          icon='boat'
+          label={translations.mobilization_tools.header***REMOVED***
+          onPress={() => navigate('MobilizationTools')***REMOVED***
+        />
+        <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
+        <Separator />
+        {/* <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** /> */***REMOVED***
+        <Text
           style={[
-            styles.smallDrawerItemsContainer,
+            StandardTypography(
+              { font, isRTL ***REMOVED***,
+              'p',
+              'Regular',
+              'left',
+              colors.chateau
+            ),
             {
-              flexDirection:
-                Dimensions.get('window').height < 550
-                  ? isRTL
-                    ? 'row-reverse'
-                    : 'row'
-                  : 'column'
+              marginHorizontal: 20,
+              marginTop: 20 * scaleMultiplier,
+              marginBottom: 15 * scaleMultiplier
             ***REMOVED***
           ]***REMOVED***
         >
-          <SmallDrawerItem
-            onPress={() =>
-              openBrowser(
-                'https://kingdomstrategies.givingfuel.com/general-giving'
-              )
-            ***REMOVED***
-            label={translations.general.donate_to_waha***REMOVED***
-          />
-          <SmallDrawerItem
-            onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
-            label={translations.general.privacy***REMOVED***
-          />
-          <View
-            style={{
-              justifyContent: 'center',
-              paddingHorizontal: 10,
-              marginVertical: 5
-            ***REMOVED******REMOVED***
-          >
-            <Text
-              style={StandardTypography(
-                { font, isRTL ***REMOVED***,
-                'd',
-                'Regular',
-                'left',
-                colors.chateau
-              )***REMOVED***
-            >
-              {appVersion***REMOVED***
-            </Text>
-          </View>
-        </SafeAreaView> */***REMOVED***
-      </View>
+          {translations.general.other***REMOVED***
+        </Text>
+        <DrawerItem
+          icon='storage'
+          label={translations.storage.header***REMOVED***
+          onPress={() => navigate('Storage')***REMOVED***
+        />
+        <DrawerItem
+          icon='email'
+          label={translations.general.feedback***REMOVED***
+          onPress={() =>
+            // openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
+            openBrowser(
+              `https://coda.io/form/Contact-Us_dOsPhfw4nDB?Language=${activeGroup.language***REMOVED***`
+            )
+          ***REMOVED***
+        />
+        <DrawerItem
+          icon='info'
+          onPress={() => navigate('Information')***REMOVED***
+          label={translations.general.information***REMOVED***
+        />
+      </ScrollView>
       <AddEditGroupModal
         isVisible={showEditGroupModal***REMOVED***
         hideModal={() => setShowEditGroupModal(false)***REMOVED***
