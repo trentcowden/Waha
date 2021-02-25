@@ -12,34 +12,28 @@ import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/ty
 
 function mapStateToProps (state) {
   return {
-    activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
-    groups: state.groups,
-    activeGroup: activeGroupSelector(state),
     translations: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language)
   ***REMOVED***
 ***REMOVED***
 
+/**
+ * The header for the groups section list used on the Mobilization Tools screen. Displays the name of the language in the active group's language and the language instance's logo.
+ * @param {string***REMOVED*** languageID - The ID for the language instance.
+ */
 function GroupListHeaderMT ({
   // Props passed from a parent component.
   languageID,
   // Props passed from redux.
-  activeDatabase,
   isRTL,
-  groups,
-  activeGroup,
   translations,
   font
 ***REMOVED***) {
-  //+ FUNCTIONS
-
-  //+ RENDER
-
   return (
     <View
       style={[
-        styles.languageHeaderContainer,
+        styles.groupListHeaderMTContainer,
         { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
     >
@@ -53,27 +47,8 @@ function GroupListHeaderMT ({
             colors.chateau
           )***REMOVED***
         >
-          {
-            translations.general.brands[languageID]
-            // +
-            //   ' ' +
-            //   translations.mobilization_tools.groups_label
-          ***REMOVED***
+          {translations.general.brands[languageID]***REMOVED***
         </Text>
-        {/* <Text
-          style={StandardTypography(
-            props,
-            'h3',
-            'Regular',
-            'left',
-            colors.chateau
-          )***REMOVED***
-        >
-          {
-            translations.mobilization_tools
-              .mobilization_tools_status_label
-          ***REMOVED***
-        </Text> */***REMOVED***
       </View>
       <Image
         style={styles.languageLogo***REMOVED***
@@ -85,10 +60,8 @@ function GroupListHeaderMT ({
   )
 ***REMOVED***
 
-//+ STYLES
-
 const styles = StyleSheet.create({
-  languageHeaderContainer: {
+  groupListHeaderMTContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',

@@ -1,14 +1,13 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import { ScrollView, StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import OptionsModalButton from '../components/OptionsModalButton'
 import BackButton from '../components/standard/BackButton'
 import Blurb from '../components/standard/Blurb'
 import Hero from '../components/standard/Hero'
 import Separator from '../components/standard/Separator'
 import WahaItem from '../components/standard/WahaItem'
 import { scaleMultiplier ***REMOVED*** from '../constants'
-import OptionsModal from '../modals/OptionsModal'
+import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
 import {
   setSecurityEnabled,
   setTimeoutDuration
@@ -143,11 +142,7 @@ function SecurityModeScreen ({
 
   return (
     <View style={styles.screen***REMOVED***>
-      <ScrollView
-        style={{
-          width: '100%'
-        ***REMOVED******REMOVED***
-      >
+      <ScrollView bounces={false***REMOVED***>
         <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
         <Blurb text={translations.security.security_mode_description_text***REMOVED*** />
         <Separator />
@@ -157,7 +152,7 @@ function SecurityModeScreen ({
             thumbColor={colors.white***REMOVED***
             ios_backgroundColor={colors.chateau***REMOVED***
             onValueChange={() => {
-              // toggle security mode on or off for the active group
+              // If we have never enabled security mode before (meaning we have never set a code), then navigate to the security onboarding slides. Otherwise, toggle security mode on or off.
               if (security.code) {
                 if (security.securityEnabled) {
                   setSecurityEnabled(false)
@@ -171,131 +166,13 @@ function SecurityModeScreen ({
         </WahaItem>
         <Separator />
         <View style={{ height: 20 * scaleMultiplier ***REMOVED******REMOVED*** />
-        {/* <WahaItemDescription
-          text={
-            security.code
-              ? translations.security.security_mode_picker_blurb_post_code
-              : translations.security.security_mode_picker_blurb_pre_code
-          ***REMOVED***
-        /> */***REMOVED***
         {securityControls***REMOVED***
       </ScrollView>
-      {/* <MessageModal
-        isVisible={showViewKeyOrderModal***REMOVED***
-        hideModal={() => setShowViewKeyOrderModal(false)***REMOVED***
-        title={translations.security.your_key_order_label***REMOVED***
-        body={translations.security.security_mode_description_text***REMOVED***
-        confirmText={translations.general.close***REMOVED***
-        confirmOnPress={() => setShowViewKeyOrderModal(false)***REMOVED***
-      >
-        <Piano setPattern={() => {***REMOVED******REMOVED*** />
-        <KeyLabels keyOrder={security.code***REMOVED*** />
-      </MessageModal> */***REMOVED***
-      <OptionsModal
+      {/* Modals */***REMOVED***
+      <SecurityTimeoutPickerModal
         isVisible={showChangeTimeoutModal***REMOVED***
         hideModal={() => setShowChangeTimeoutModal(false)***REMOVED***
-        closeText={translations.general.cancel***REMOVED***
-      >
-        <OptionsModalButton
-          title={translations.security.instant_label***REMOVED***
-          onPress={() => {
-            setTimeoutDuration(0), setShowChangeTimeoutModal(false)
-          ***REMOVED******REMOVED***
-        >
-          {security.timeoutDuration === 0 ? (
-            <Icon
-              name='check'
-              color={colors.apple***REMOVED***
-              size={30 * scaleMultiplier***REMOVED***
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                paddingHorizontal: 20
-              ***REMOVED******REMOVED***
-            />
-          ) : null***REMOVED***
-        </OptionsModalButton>
-        <Separator />
-        <OptionsModalButton
-          title={translations.security.one_minute_label***REMOVED***
-          onPress={() => {
-            setTimeoutDuration(60000), setShowChangeTimeoutModal(false)
-          ***REMOVED******REMOVED***
-        >
-          {security.timeoutDuration === 60000 ? (
-            <Icon
-              name='check'
-              color={colors.apple***REMOVED***
-              size={30 * scaleMultiplier***REMOVED***
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                paddingHorizontal: 20
-              ***REMOVED******REMOVED***
-            />
-          ) : null***REMOVED***
-        </OptionsModalButton>
-        <Separator />
-        <OptionsModalButton
-          title={translations.security.five_minutes_label***REMOVED***
-          onPress={() => {
-            setTimeoutDuration(300000), setShowChangeTimeoutModal(false)
-          ***REMOVED******REMOVED***
-        >
-          {security.timeoutDuration === 300000 ? (
-            <Icon
-              name='check'
-              color={colors.apple***REMOVED***
-              size={30 * scaleMultiplier***REMOVED***
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                paddingHorizontal: 20
-              ***REMOVED******REMOVED***
-            />
-          ) : null***REMOVED***
-        </OptionsModalButton>
-        <Separator />
-        <OptionsModalButton
-          title={translations.security.fifteen_minutes_label***REMOVED***
-          onPress={() => {
-            setTimeoutDuration(900000), setShowChangeTimeoutModal(false)
-          ***REMOVED******REMOVED***
-        >
-          {security.timeoutDuration === 900000 ? (
-            <Icon
-              name='check'
-              color={colors.apple***REMOVED***
-              size={30 * scaleMultiplier***REMOVED***
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                paddingHorizontal: 20
-              ***REMOVED******REMOVED***
-            />
-          ) : null***REMOVED***
-        </OptionsModalButton>
-        <Separator />
-        <OptionsModalButton
-          title={translations.security.one_hour_label***REMOVED***
-          onPress={() => {
-            setTimeoutDuration(3600000), setShowChangeTimeoutModal(false)
-          ***REMOVED******REMOVED***
-        >
-          {security.timeoutDuration === 3600000 ? (
-            <Icon
-              name='check'
-              color={colors.apple***REMOVED***
-              size={30 * scaleMultiplier***REMOVED***
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                paddingHorizontal: 20
-              ***REMOVED******REMOVED***
-            />
-          ) : null***REMOVED***
-        </OptionsModalButton>
-      </OptionsModal>
+      />
     </View>
   )
 ***REMOVED***
