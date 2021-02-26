@@ -17,9 +17,7 @@ import {
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state'
-])
+LogBox.ignoreLogs(['Animated: `useNativeDriver`'])
 
 function mapStateToProps (state) {
   return {
@@ -110,6 +108,10 @@ function AddSetScreen ({
         setDownloadedFiles(contents)
       ***REMOVED***
     )
+
+    return function cleanup () {
+      setShowSnackbar(false)
+    ***REMOVED***
   ***REMOVED***, [])
 
   useEffect(() => {
@@ -293,6 +295,7 @@ function AddSetScreen ({
           </View>
         ***REMOVED***
       />
+      {/* Modals */***REMOVED***
       <SnackBar
         visible={showSnackbar***REMOVED***
         textMessage={translations.add_set.set_added_message***REMOVED***
