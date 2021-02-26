@@ -366,7 +366,7 @@ function LessonsScreen ({
           ***REMOVED***
         ]***REMOVED***
       >
-        <SetItem thisSet={thisSet***REMOVED*** mode='lessons_screen' />
+        <SetItem thisSet={thisSet***REMOVED*** screen='Lessons' />
       </View>
       <SwipeListView
         data={thisSet.lessons***REMOVED***

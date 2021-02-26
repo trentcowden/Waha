@@ -134,7 +134,7 @@ function GroupsScreen ({
   ***REMOVED***
 
   /**
-   * Renders the GroupListHeader component used for the Groups SectionList section header.
+   * Renders a GroupListHeader component used for the Groups SectionList section header.
    * @param {Object***REMOVED*** languageInstance - The object for the language instance to render.
    * @return {Component***REMOVED*** - The GroupListHeader component.
    */
@@ -149,7 +149,7 @@ function GroupsScreen ({
   ***REMOVED***
 
   /**
-   * Renders the GroupItem component used for the Groups SectionList item.
+   * Renders a GroupItem component used for the Groups SectionList item.
    * @param {Object***REMOVED*** group - The object for the group to render.
    * @return {Component***REMOVED*** - The GroupItem component.
    */
