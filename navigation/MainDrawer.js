@@ -14,6 +14,7 @@ import db from '../firebase/db'
 import { appVersion ***REMOVED*** from '../modeSwitch'
 import {
   addLanguageCoreFileToUpdate,
+  storeLanguageCoreFileCreatedTime,
   storeLanguageData,
   storeLanguageSets
 ***REMOVED*** from '../redux/actions/databaseActions'
@@ -41,7 +42,10 @@ function mapStateToProps (state) {
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
     mtUnlockAttempts: state.mtUnlockAttempts,
     downloads: state.downloads,
-    groups: state.groups
+    groups: state.groups,
+    installedLanguageInstances: Object.keys(state.database).filter(
+      key => key.length === 2
+    )
   ***REMOVED***
 ***REMOVED***
 
@@ -64,7 +68,9 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     deleteGroup: name => {
       dispatch(deleteGroup(name))
-    ***REMOVED***
+    ***REMOVED***,
+    storeLanguageCoreFileCreatedTime: (fileName, timeCreated) =>
+      dispatch(storeLanguageCoreFileCreatedTime(fileName, timeCreated))
   ***REMOVED***
 ***REMOVED***
 
@@ -74,22 +80,25 @@ function mapDispatchToProps (dispatch) {
 function MainDrawer ({
   // Props passed from redux.
   isRTL,
+  database,
   activeDatabase,
   isConnected,
   translations,
   activeGroup,
   security,
   languageCoreFilesCreatedTimes,
-  languageCoreFilesToUpdate,
+  languageCoreFilesToUpdate = [],
   mtUnlockAttempts,
   downloads,
   groups,
+  installedLanguageInstances,
   updateConnectionStatus,
   storeLanguageData,
   storeLanguageSets,
   addLanguageCoreFileToUpdate,
   changeActiveGroup,
-  deleteGroup
+  deleteGroup,
+  storeLanguageCoreFileCreatedTime
 ***REMOVED***) {
   /**
    * Determines whether a screen should be able to access the navigation drawer via gesture. Should only return true on the SetsTabs navigator because this is the only spot we should be able to swipe to open the drawer.
@@ -113,6 +122,31 @@ function MainDrawer ({
       netInfoUnsubscribe()
     ***REMOVED***
   ***REMOVED***, [])
+
+  // Temporary check to makes sure that users who update have the language core file created times.
+  if (!languageCoreFilesCreatedTimes) {
+    installedLanguageInstances.forEach(language => {
+      database[language].files.forEach(fileName => {
+        var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
+        var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+        // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
+        firebase
+          .storage()
+          .refFromURL(url)
+          .getMetadata()
+          .then(metadata =>
+            storeLanguageCoreFileCreatedTime(
+              // For when file name includes "v1".
+              `${language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`,
+              metadata.timeCreated
+              // For when file name DOESN'T includes "v1".
+              // language + '-' + fileName,
+              // metadata.timeCreated
+            )
+          )
+      ***REMOVED***)
+    ***REMOVED***)
+  ***REMOVED***
 
   // Check for database updates. This function gets triggered whenever a user downloads a new lesson and whenever the active group changes.
   useEffect(() => {
