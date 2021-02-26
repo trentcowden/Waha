@@ -8,13 +8,14 @@ import {
   activeGroupSelector
 ***REMOVED*** from '../../redux/reducers/activeGroup'
 import { colors ***REMOVED*** from '../../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+import { getLanguageFont, SystemTypography ***REMOVED*** from '../../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     translations: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    database: state.database
   ***REMOVED***
 ***REMOVED***
 
@@ -28,7 +29,8 @@ function GroupListHeaderMT ({
   // Props passed from redux.
   isRTL,
   translations,
-  font
+  font,
+  database
 ***REMOVED***) {
   return (
     <View
@@ -39,15 +41,16 @@ function GroupListHeaderMT ({
     >
       <View>
         <Text
-          style={StandardTypography(
-            { font, isRTL ***REMOVED***,
+          style={SystemTypography(
+            false,
             'h3',
             'Bold',
             'left',
-            colors.chateau
+            colors.chateau,
+            getLanguageFont(languageID)
           )***REMOVED***
         >
-          {translations.general.brands[languageID]***REMOVED***
+          {database[languageID].displayName***REMOVED***
         </Text>
       </View>
       <Image
