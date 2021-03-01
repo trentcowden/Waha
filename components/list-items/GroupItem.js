@@ -1,5 +1,12 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Alert, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import {
+  Alert,
+  Animated,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import { getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
 import { changeActiveGroup ***REMOVED*** from '../../redux/actions/activeGroupActions'
@@ -63,6 +70,22 @@ function GroupItem ({
     setIsLastGroupInLanguageInstance
   ] = useState(false)
 
+  const [leftIconXPos, setLeftIconXPos] = useState(
+    new Animated.Value(
+      isRTL ? 24 * scaleMultiplier + 20 : -24 * scaleMultiplier - 20
+    )
+  )
+
+  useEffect(() => {
+    setLeftIconXPos(
+      new Animated.Value(
+        isRTL ? 24 * scaleMultiplier + 20 : -24 * scaleMultiplier - 20
+      )
+    )
+  ***REMOVED***, [isRTL])
+
+  // const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
+
   /**
    * useEffect function that determines whether this group is the last in a language instance.
    * @function
@@ -113,44 +136,63 @@ function GroupItem ({
   var deleteButton
 
   if (
-    isEditing &&
+    // isEditing &&
     activeGroup.name !== thisGroup.name &&
     !isLastGroupInLanguageInstance
   ) {
     deleteButton = (
-      <TouchableOpacity
-        style={styles.minusButtonContainer***REMOVED***
-        onPress={() => {
-          Alert.alert(
-            translations.groups.popups.delete_group_title,
-            translations.groups.popups.delete_group_message,
-            [
-              {
-                text: translations.general.cancel,
-                onPress: () => {***REMOVED***
-              ***REMOVED***,
-              {
-                text: translations.general.ok,
-                onPress: () => deleteGroup(thisGroup.name)
-              ***REMOVED***
-            ]
-          )
+      <Animated.View
+        style={{
+          transform: [{ translateX: leftIconXPos ***REMOVED***]
         ***REMOVED******REMOVED***
       >
-        <Icon
-          name='minus-filled'
-          size={24 * scaleMultiplier***REMOVED***
-          color={colors.red***REMOVED***
-        />
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.minusButtonContainer***REMOVED***
+          onPress={() => {
+            Alert.alert(
+              translations.groups.popups.delete_group_title,
+              translations.groups.popups.delete_group_message,
+              [
+                {
+                  text: translations.general.cancel,
+                  onPress: () => {***REMOVED***
+                ***REMOVED***,
+                {
+                  text: translations.general.ok,
+                  onPress: () => deleteGroup(thisGroup.name)
+                ***REMOVED***
+              ]
+            )
+          ***REMOVED******REMOVED***
+        >
+          <Icon
+            name='minus-filled'
+            size={24 * scaleMultiplier***REMOVED***
+            color={colors.red***REMOVED***
+          />
+        </TouchableOpacity>
+      </Animated.View>
     )
-  ***REMOVED*** else if (isEditing && activeGroup.name === thisGroup.name) {
+  ***REMOVED*** else if (
+    // isEditing &&
+    activeGroup.name === thisGroup.name
+  ) {
     deleteButton = (
-      <View style={styles.minusButtonContainer***REMOVED***>
+      <Animated.View
+        style={[
+          styles.minusButtonContainer,
+          {
+            transform: [{ translateX: leftIconXPos ***REMOVED***]
+          ***REMOVED***
+        ]***REMOVED***
+      >
         <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color={colors.blue***REMOVED*** />
-      </View>
+      </Animated.View>
     )
-  ***REMOVED*** else if (isEditing && isLastGroupInLanguageInstance) {
+  ***REMOVED*** else if (
+    // isEditing &&
+    isLastGroupInLanguageInstance
+  ) {
     deleteButton = (
       <View
         style={{
@@ -160,6 +202,18 @@ function GroupItem ({
       />
     )
   ***REMOVED***
+
+  useEffect(() => {
+    if (isEditing) {
+      Animated.spring(leftIconXPos, {
+        toValue: 0
+      ***REMOVED***).start()
+    ***REMOVED*** else if (!isEditing) {
+      Animated.spring(leftIconXPos, {
+        toValue: isRTL ? 24 * scaleMultiplier + 20 : -24 * scaleMultiplier - 20
+      ***REMOVED***).start()
+    ***REMOVED***
+  ***REMOVED***, [isEditing])
 
   // Determine what to render for the 'right' button. This button highlights the active group with a blue checkmark while in regular mode and switches to a right arrow for all groups while in edit mode.
   var rightButton
@@ -200,8 +254,8 @@ function GroupItem ({
         style={[
           styles.touchableAreaContainer,
           {
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            paddingLeft: isEditing ? 0 : 20
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+            // paddingLeft: isEditing ? 0 : 20
           ***REMOVED***
         ]***REMOVED***
         onPress={
@@ -213,18 +267,33 @@ function GroupItem ({
               ***REMOVED***
         ***REMOVED***
       >
-        <GroupAvatar
-          style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
-          size={50 * scaleMultiplier***REMOVED***
-          emoji={thisGroup.emoji***REMOVED***
-          isActive={activeGroup.name === thisGroup.name***REMOVED***
-        />
-        <View
+        <Animated.View
+          style={{
+            transform:
+              isLastGroupInLanguageInstance &&
+              activeGroup.name !== thisGroup.name
+                ? null
+                : [{ translateX: leftIconXPos ***REMOVED***]
+          ***REMOVED******REMOVED***
+        >
+          <GroupAvatar
+            style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
+            size={50 * scaleMultiplier***REMOVED***
+            emoji={thisGroup.emoji***REMOVED***
+            isActive={activeGroup.name === thisGroup.name***REMOVED***
+          />
+        </Animated.View>
+        <Animated.View
           style={[
             styles.groupTextContainer,
             {
               marginLeft: isRTL ? 0 : 20,
-              marginRight: isRTL ? 20 : 0
+              marginRight: isRTL ? 20 : 0,
+              transform:
+                isLastGroupInLanguageInstance &&
+                activeGroup.name !== thisGroup.name
+                  ? null
+                  : [{ translateX: leftIconXPos ***REMOVED***]
             ***REMOVED***
           ]***REMOVED***
         >
@@ -264,7 +333,7 @@ function GroupItem ({
               {getBookmarkLesson()***REMOVED***
             </Text>
           )***REMOVED***
-        </View>
+        </Animated.View>
         {rightButton***REMOVED***
       </TouchableOpacity>
     </View>

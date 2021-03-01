@@ -1,7 +1,8 @@
 import * as FileSystem from 'expo-file-system'
-import React from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Alert,
+  Animated,
   Image,
   StyleSheet,
   Text,
@@ -69,6 +70,32 @@ function GroupListHeader ({
   deleteLanguageData,
   removeDownload
 ***REMOVED***) {
+  const [leftIconXPos, setLeftIconXPos] = useState(
+    new Animated.Value(
+      isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
+    )
+  )
+
+  useEffect(() => {
+    setLeftIconXPos(
+      new Animated.Value(
+        isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
+      )
+    )
+  ***REMOVED***, [isRTL])
+
+  useEffect(() => {
+    if (isEditing) {
+      Animated.spring(leftIconXPos, {
+        toValue: 0
+      ***REMOVED***).start()
+    ***REMOVED*** else if (!isEditing) {
+      Animated.spring(leftIconXPos, {
+        toValue: isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
+      ***REMOVED***).start()
+    ***REMOVED***
+  ***REMOVED***, [isEditing])
+
   /**
    * Deletes an entire language instance. This involves deleting every group, every downloaded file, and all data stored in redux for a language instance. Triggered by pressing the trash can icon next to the langauge's name in editing mode.
    */
@@ -99,7 +126,7 @@ function GroupListHeader ({
   // Determine what to render for the trash button. This button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
   var trashButton
 
-  if (isEditing && !(activeGroup.language === languageID)) {
+  if (!(activeGroup.language === languageID)) {
     trashButton = (
       <TouchableOpacity
         style={{
@@ -129,11 +156,13 @@ function GroupListHeader ({
       </TouchableOpacity>
     )
     // For the language instance that contains the active group, render an empty view for this button so the styling lines up.
-  ***REMOVED*** else if (isEditing && activeGroup.language === languageID) {
+  ***REMOVED*** else if (activeGroup.language === languageID) {
     trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
-  ***REMOVED*** else {
-    trashButton = null
+    // trashButton = null
   ***REMOVED***
+  // else {
+  //   trashButton = null
+  // ***REMOVED***
 
   return (
     <View
@@ -144,28 +173,39 @@ function GroupListHeader ({
         ***REMOVED***
       ]***REMOVED***
     >
-      {trashButton***REMOVED***
-      <Text
-        style={[
-          StandardTypography(
-            {
-              font: getLanguageFont(languageID),
-              isRTL: isRTL
-            ***REMOVED***,
-            'h3',
-            'Regular',
-            'left',
-            colors.chateau
-          ),
-          {
-            flex: 1,
-            marginLeft: isRTL ? 0 : isEditing ? 0 : 20,
-            marginRight: isRTL ? (isEditing ? 0 : 20) : 0
-          ***REMOVED***
-        ]***REMOVED***
+      <Animated.View
+        style={{
+          transform:
+            activeGroup.language === languageID
+              ? null
+              : [{ translateX: leftIconXPos ***REMOVED***],
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          flex: 1
+        ***REMOVED******REMOVED***
       >
-        {languageName***REMOVED***
-      </Text>
+        {trashButton***REMOVED***
+        <Text
+          style={[
+            StandardTypography(
+              {
+                font: getLanguageFont(languageID),
+                isRTL: isRTL
+              ***REMOVED***,
+              'h3',
+              'Regular',
+              'left',
+              colors.chateau
+            ),
+            {
+              flex: 1
+              // marginLeft: isRTL ? 0 : isEditing ? 0 : 20,
+              // marginRight: isRTL ? (isEditing ? 0 : 20) : 0
+            ***REMOVED***
+          ]***REMOVED***
+        >
+          {languageName***REMOVED***
+        </Text>
+      </Animated.View>
       <Image
         style={styles.languageLogoImage***REMOVED***
         source={{
