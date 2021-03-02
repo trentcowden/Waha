@@ -1,6 +1,12 @@
 import * as WebBrowser from 'expo-web-browser'
-import React, { useEffect ***REMOVED*** from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import {
+  Clipboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/standard/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
@@ -27,6 +33,9 @@ function InformationScreen ({
   font,
   translations
 ***REMOVED***) {
+  /** Whether the snackbar that pops up is visible or not.  */
+  const [showSnackbar, setShowSnackbar] = useState(false)
+
   function getNavOptions () {
     return {
       headerRight: isRTL
@@ -101,6 +110,11 @@ function InformationScreen ({
             flexDirection: isRTL ? 'row-reverse' : 'row'
           ***REMOVED***
         ]***REMOVED***
+        onPress={() => {
+          setShowSnackbar(true)
+          setTimeout(() => setShowSnackbar(false), 2000)
+          Clipboard.setString(appVersion)
+        ***REMOVED******REMOVED***
       >
         <View>
           <Text
@@ -126,8 +140,40 @@ function InformationScreen ({
             {appVersion***REMOVED***
           </Text>
         </View>
-        <Icon name='bug' color={colors.tuna***REMOVED*** size={25 * scaleMultiplier***REMOVED*** />
+        <Icon
+          name='clipboard'
+          color={colors.tuna***REMOVED***
+          size={25 * scaleMultiplier***REMOVED***
+        />
       </TouchableOpacity>
+      <View style={{ flex: 1, justifyContent: 'flex-end' ***REMOVED******REMOVED***>
+        <View
+          style={{
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginVertical: 3
+          ***REMOVED******REMOVED***
+        >
+          <Text
+            style={[
+              StandardTypography(
+                { font, isRTL ***REMOVED***,
+                'd',
+                'Regular',
+                'center',
+                colors.geyser
+              ),
+              {
+                marginHorizontal: 2
+              ***REMOVED***
+            ]***REMOVED***
+          >
+            Made with
+          </Text>
+          <Icon name='heart' size={15***REMOVED*** color={colors.geyser***REMOVED*** />
+        </View>
+      </View>
     </View>
   )
 ***REMOVED***
