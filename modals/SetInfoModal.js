@@ -1,5 +1,12 @@
 import React from 'react'
-import { Dimensions, FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import WahaButton from '../components/standard/WahaButton'
@@ -59,13 +66,15 @@ function SetInfoModal ({
       ***REMOVED***)
 
       return (
-        <View
+        // These are touchable because scrolling a FlatList within a modal only works when the items are touchable. Weird, but necessary.
+        <TouchableOpacity
           style={{
             marginVertical: 10 * scaleMultiplier,
             justifyContent: 'center',
             paddingHorizontal: 40,
             width: Dimensions.get('window').width
           ***REMOVED******REMOVED***
+          activeOpacity={1***REMOVED***
         >
           <Text
             style={StandardTypography(
@@ -89,11 +98,11 @@ function SetInfoModal ({
           >
             {scriptureList***REMOVED***
           </Text>
-        </View>
+        </TouchableOpacity>
       )
     ***REMOVED*** else
       return (
-        <View
+        <TouchableOpacity
           style={{
             marginVertical: 10 * scaleMultiplier,
             justifyContent: 'center',
@@ -112,7 +121,7 @@ function SetInfoModal ({
           >
             {item.title***REMOVED***
           </Text>
-        </View>
+        </TouchableOpacity>
       )
   ***REMOVED***
 
@@ -144,12 +153,15 @@ function SetInfoModal ({
           />
         ***REMOVED***
       />
-      <FlatList
-        keyExtractor={item => item.id***REMOVED***
-        data={thisSet.lessons***REMOVED***
-        renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
-        contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
-      />
+      <View style={{ flex: 1 ***REMOVED******REMOVED***>
+        <FlatList
+          keyExtractor={item => item.id***REMOVED***
+          // nestedScrollEnabled
+          data={thisSet.lessons***REMOVED***
+          renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
+          contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
+        />
+      </View>
     </ModalScreen>
   )
 ***REMOVED***

@@ -126,10 +126,13 @@ function GroupsScreen ({
         // Get all the groups that are a part of this language instance.
         languageObject['data'] = groups.filter(group => group.language === key)
 
+        console.log(key)
+
         // Add all of this to the installedLanguageInstances array.
         installedLanguageInstances.push(languageObject)
       ***REMOVED***
     ***REMOVED***
+    console.log('-------------------------------')
     return installedLanguageInstances
   ***REMOVED***
 

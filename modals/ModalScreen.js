@@ -44,12 +44,13 @@ function ModalScreen ({
       <Modal
         isVisible={isVisible***REMOVED***
         hasBackdrop={true***REMOVED***
+        useNativeDriver
         onBackdropPress={hideModal***REMOVED***
         onBackButtonPress={hideModal***REMOVED***
         backdropOpacity={0.3***REMOVED***
         onSwipeComplete={hideModal***REMOVED***
-        // swipeDirection={['down']***REMOVED***
-        // propagateSwipe={true***REMOVED***
+        swipeDirection={['down']***REMOVED***
+        propagateSwipe={true***REMOVED***
         style={{
           flex: 1,
           justifyContent: 'flex-end',

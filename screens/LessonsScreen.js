@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Dimensions, Image, Platform, StyleSheet, View ***REMOVED*** from 'react-native'
+import { Dimensions, Image, StyleSheet, View ***REMOVED*** from 'react-native'
 import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
 import { connect ***REMOVED*** from 'react-redux'
 import LessonItem from '../components/list-items/LessonItem'

@@ -100,7 +100,7 @@ function LanguageInstanceInstallScreen ({
   const [isConnected, setIsConnected] = useState(true)
 
   const [buttonYPos, setButtonYPos] = useState(
-    new Animated.Value(Dimensions.get('window').height)
+    new Animated.Value(68 * scaleMultiplier + 20)
   )
 
   const headerHeight = useHeaderHeight()
@@ -230,36 +230,71 @@ function LanguageInstanceInstallScreen ({
 
   function startSlideAnimation () {
     Animated.spring(buttonYPos, {
-      toValue:
-        Dimensions.get('screen').height - 108 * scaleMultiplier - headerHeight
+      toValue: 0
       // routeName === 'InitialLanguageInstanceInstall'
       //   ? Dimensions.get('screen').height - 108 * scaleMultiplier
       //   : Dimensions.get('screen').height -
     ***REMOVED***).start()
   ***REMOVED***
 
+  function getLanguageData () {
+    var sections
+    if (routeName === 'InitialLanguageInstanceInstall')
+      sections = languages.sort((a, b) => {
+        if (i18n.locale.includes(a.languageCode)) return -1
+        else if (i18n.locale.includes(b.languageCode)) return 1
+        else return 0
+      ***REMOVED***)
+    else
+      sections = languages
+        // sort based on closeness to phone language
+        .sort((a, b) => {
+          if (i18n.locale.includes(a.languageCode)) return -1
+          else if (i18n.locale.includes(b.languageCode)) return 1
+          else return 0
+        ***REMOVED***)
+        // filter out languages that are already installed
+        .map(languageFamily => {
+          return {
+            ...languageFamily,
+            // filter out languages that are in
+            //  installedLanguageInstances which came from previous
+            //  screen
+            data: languageFamily.data.filter(language => {
+              if (
+                installedLanguageInstances.some(
+                  installedLanguage =>
+                    installedLanguage.languageID === language.wahaID
+                )
+              ) {
+                return false
+              ***REMOVED*** else {
+                return true
+              ***REMOVED***
+            ***REMOVED***)
+          ***REMOVED***
+        ***REMOVED***)
+        // if a language family has every language installed, don't
+        //  show it
+        .filter(languageFamily => {
+          if (languageFamily.data.length !== 0) return true
+          else return false
+        ***REMOVED***)
+    if (sections.length === 0 && !isListEmpty) setIsListEmpty(true)
+    return sections
+  ***REMOVED***
+
   //+ RENDER
 
   // render start button conditionally as the user can't start if they don't have internet
 
-  var noMoreLanguagesButton = (
-    <WahaButton
-      type='inactive'
-      color={colors.aquaHaze***REMOVED***
-      style={{
-        marginHorizontal: 20,
-        height: 68 * scaleMultiplier
-      ***REMOVED******REMOVED***
-      label={i18n.t('noMoreLanguages')***REMOVED***
-      useDefaultFont={true***REMOVED***
-    />
-  )
-
   var letsBeginButton = (
-    // isConnected ? (
     <Animated.View
       style={{
         position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
         transform: [{ translateY: buttonYPos ***REMOVED***]
       ***REMOVED******REMOVED***
     >
@@ -290,69 +325,6 @@ function LanguageInstanceInstallScreen ({
       />
     </Animated.View>
   )
-  // ) : (
-  //   <WahaButton
-  //     type='inactive'
-  //     color={colors.geyser***REMOVED***
-  //     style={{
-  //       width: Dimensions.get('window').width - 40,
-  //       height: 68 * scaleMultiplier
-  //     ***REMOVED******REMOVED***
-  //     label={''***REMOVED***
-  //     useDefaultFont={true***REMOVED***
-  //     extraComponent={
-  //       <View>
-  //         <Icon name='cloud-slash' size={40***REMOVED*** color={colors.chateau***REMOVED*** />
-  //       </View>
-  //     ***REMOVED***
-  //   />
-  // )
-
-  // var startButton = isListEmpty ? (
-  //   <WahaButton
-  //     type='inactive'
-  //     color={colors.aquaHaze***REMOVED***
-  //     style={{
-  //       marginHorizontal: 20,
-  //       height: 68 * scaleMultiplier
-  //     ***REMOVED******REMOVED***
-  //     label={i18n.t('noMoreLanguages')***REMOVED***
-  //     useDefaultFont={true***REMOVED***
-  //   />
-  // ) : isConnected ? (
-  //   <WahaButton
-  //     type='filled'
-  //     color={colors.apple***REMOVED***
-  //     onPress={onStartPress***REMOVED***
-  //     label={
-  //       routeName === 'InitialLanguageInstanceInstall'
-  //         ? i18n.t('letsBegin')
-  //         : i18n.t('addLanguage') + ' '
-  //     ***REMOVED***
-  //     style={{
-  //       width: Dimensions.get('window').width - 40,
-  //       marginHorizontal: 20,
-  //       height: 68 * scaleMultiplier
-  //     ***REMOVED******REMOVED***
-  //     useDefaultFont={true***REMOVED***
-  //   />
-  // ) : (
-  //   <WahaButton
-  //     type='inactive'
-  //     color={colors.geyser***REMOVED***
-  //     style={{
-  //       width: Dimensions.get('window').width - 40,
-  //       height: 68 * scaleMultiplier
-  //     ***REMOVED******REMOVED***
-  //     label={''***REMOVED***
-  //     useDefaultFont={true***REMOVED***
-  //     extraComponent={
-  //       <View>
-  //         <Icon name='cloud-slash' size={40***REMOVED*** color={colors.chateau***REMOVED*** />
-  //       </View>
-  //     ***REMOVED***
-  //   />
-  // )
 
   var headerText =
     routeName === 'InitialLanguageInstanceInstall' ? (
@@ -466,53 +438,70 @@ function LanguageInstanceInstallScreen ({
           //  top
           style={{ height: '100%' ***REMOVED******REMOVED***
           sections={
-            routeName === 'InitialLanguageInstanceInstall'
-              ? languages.sort((a, b) => {
-                  if (i18n.locale.includes(a.languageCode)) return -1
-                  else if (i18n.locale.includes(b.languageCode)) return 1
-                  else return 0
-                ***REMOVED***)
-              : languages
-                  // sort based on closeness to phone language
-                  .sort((a, b) => {
-                    if (i18n.locale.includes(a.languageCode)) return -1
-                    else if (i18n.locale.includes(b.languageCode)) return 1
-                    else return 0
-                  ***REMOVED***)
-                  // filter out languages that are already installed
-                  .map(languageFamily => {
-                    return {
-                      ...languageFamily,
-                      // filter out languages that are in
-                      //  installedLanguageInstances which came from previous
-                      //  screen
-                      data: languageFamily.data.filter(language => {
-                        if (
-                          installedLanguageInstances.some(
-                            installedLanguage =>
-                              installedLanguage.languageID === language.wahaID
-                          )
-                        ) {
-                          return false
-                        ***REMOVED*** else {
-                          return true
-                        ***REMOVED***
-                      ***REMOVED***)
-                    ***REMOVED***
-                  ***REMOVED***)
-                  // if a language family has every language installed, don't
-                  //  show it
-                  .filter(languageFamily => {
-                    if (languageFamily.data.length !== 0) return true
-                    else return false
-                  ***REMOVED***)
+            getLanguageData()
+            // routeName === 'InitialLanguageInstanceInstall'
+            //   ? languages.sort((a, b) => {
+            //       if (i18n.locale.includes(a.languageCode)) return -1
+            //       else if (i18n.locale.includes(b.languageCode)) return 1
+            //       else return 0
+            //     ***REMOVED***)
+            //   : languages
+            //       // sort based on closeness to phone language
+            //       .sort((a, b) => {
+            //         if (i18n.locale.includes(a.languageCode)) return -1
+            //         else if (i18n.locale.includes(b.languageCode)) return 1
+            //         else return 0
+            //       ***REMOVED***)
+            //       // filter out languages that are already installed
+            //       .map(languageFamily => {
+            //         return {
+            //           ...languageFamily,
+            //           // filter out languages that are in
+            //           //  installedLanguageInstances which came from previous
+            //           //  screen
+            //           data: languageFamily.data.filter(language => {
+            //             if (
+            //               installedLanguageInstances.some(
+            //                 installedLanguage =>
+            //                   installedLanguage.languageID === language.wahaID
+            //               )
+            //             ) {
+            //               return false
+            //             ***REMOVED*** else {
+            //               return true
+            //             ***REMOVED***
+            //           ***REMOVED***)
+            //         ***REMOVED***
+            //       ***REMOVED***)
+            //       // if a language family has every language installed, don't
+            //       //  show it
+            //       .filter(languageFamily => {
+            //         if (languageFamily.data.length !== 0) return true
+            //         else return false
+            //       ***REMOVED***)
           ***REMOVED***
           ItemSeparatorComponent={() => <Separator />***REMOVED***
           SectionSeparatorComponent={() => <Separator />***REMOVED***
-          ListEmptyComponent={() => {
-            setIsListEmpty(true)
-            return null
-          ***REMOVED******REMOVED***
+          ListEmptyComponent={() => (
+            <View>
+              <View
+                style={{ width: '100%', marginBottom: 18 * scaleMultiplier ***REMOVED******REMOVED***
+              >
+                <Text
+                  style={SystemTypography(
+                    false,
+                    'p',
+                    'Regular',
+                    'center',
+                    colors.chateau
+                  )***REMOVED***
+                >
+                  {i18n.t('noMoreLanguages')***REMOVED***
+                </Text>
+              </View>
+              <Separator />
+            </View>
+          )***REMOVED***
           keyExtractor={item => item.wahaID***REMOVED***
           renderItem={renderLanguage***REMOVED***
           renderSectionHeader={({ section ***REMOVED***) => renderLanguageHeader(section)***REMOVED***
@@ -521,8 +510,6 @@ function LanguageInstanceInstallScreen ({
           )***REMOVED***
         />
       </View>
-      {/* {startButton***REMOVED*** */***REMOVED***
-      {isListEmpty ? noMoreLanguagesButton : null***REMOVED***
       {letsBeginButton***REMOVED***
     </SafeAreaView>
   )

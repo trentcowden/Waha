@@ -17,7 +17,7 @@ import {
 import { colors ***REMOVED*** from '../styles/colors'
 import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-LogBox.ignoreLogs(['Animated: `useNativeDriver`'])
+LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
 function mapStateToProps (state) {
   return {
@@ -280,7 +280,7 @@ function AddSetScreen ({
         ListHeaderComponent={() => <Separator />***REMOVED***
         renderItem={renderStudySetItem***REMOVED***
         ListEmptyComponent={
-          <View style={{ width: '100%', margin: 10 ***REMOVED******REMOVED***>
+          <View style={{ width: '100%', marginVertical: 20 ***REMOVED******REMOVED***>
             <Text
               style={StandardTypography(
                 { font, isRTL ***REMOVED***,

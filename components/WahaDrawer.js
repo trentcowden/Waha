@@ -67,7 +67,9 @@ function WahaDrawer ({
 
   // opens a local browser
   async function openBrowser (url) {
-    await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'cancel' ***REMOVED***)
+    await WebBrowser.openBrowserAsync(url, {
+      dismissButtonStyle: 'close'
+    ***REMOVED***)
   ***REMOVED***
 
   function onUpdatePress () {

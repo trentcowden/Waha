@@ -177,7 +177,7 @@ function GroupListHeader ({
         style={{
           transform:
             activeGroup.language === languageID
-              ? null
+              ? []
               : [{ translateX: leftIconXPos ***REMOVED***],
           flexDirection: isRTL ? 'row-reverse' : 'row',
           flex: 1
