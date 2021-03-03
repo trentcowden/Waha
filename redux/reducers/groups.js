@@ -14,6 +14,7 @@ import {
  * @param {Object***REMOVED*** params - Parameters passed from groupActions.js functions.
  * @param {Object[]***REMOVED*** groups - (state) Stores all the created groups in an array.
  * @param {string***REMOVED*** groups[].name - The name of the group.
+ * @param {number***REMOVED*** groups[].id - The unique ID for the group.
  * @param {string***REMOVED*** groups[].language - The language ID associated with the group.
  * @param {string***REMOVED*** groups[].emoji - The name of the emoji used for this group's avatar. Called 'default' by default.
  * @param {string***REMOVED*** groups[].recentCoreOrTool - The ID of the most recent foundational or mobilization tools set that has completed a lesson. Note: the name is outdated.
