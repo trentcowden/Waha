@@ -132,7 +132,6 @@ function GroupsScreen ({
         installedLanguageInstances.push(languageObject)
       ***REMOVED***
     ***REMOVED***
-    console.log('-------------------------------')
 
     return installedLanguageInstances.some(
       key => database[key.languageID].installTime === null
