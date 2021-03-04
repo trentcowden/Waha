@@ -1,23 +1,49 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
-// button rendered on the options modal component
-function OptionsModalButton (props) {
-  //+ RETURN
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
+function mapStateToProps (state) {
+  return {
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state)
+  ***REMOVED***
+***REMOVED***
+
+// button rendered on the options modal component
+function OptionsModalButton ({
+  onPress,
+  style,
+  title,
+  children = null,
+  font,
+  isRTL,
+  activeGroup
+***REMOVED***) {
   return (
-    <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={props.onPress***REMOVED***>
+    <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={onPress***REMOVED***>
       <Text
         style={[
-          props.style,
-          StandardTypography(props, 'h3', 'Regular', 'center', colors.shark)
+          style,
+          StandardTypography(
+            { font, isRTL ***REMOVED***,
+            'h3',
+            'Regular',
+            'center',
+            colors.shark
+          )
         ]***REMOVED***
       >
-        {props.title***REMOVED***
+        {title***REMOVED***
       </Text>
-      {props.children***REMOVED***
+      {children***REMOVED***
     </TouchableOpacity>
   )
 ***REMOVED***
@@ -33,16 +59,5 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(OptionsModalButton)

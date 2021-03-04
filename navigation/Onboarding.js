@@ -2,14 +2,17 @@ import { NavigationContainer ***REMOVED*** from '@react-navigation/native'
 import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
 import React from 'react'
 import { getSystemIsRTL ***REMOVED*** from '../constants'
-import LanguageSelectScreen from '../screens/LanguageSelectScreen'
+import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
 import LoadingScreen from '../screens/LoadingScreen'
-import OnboardingSlidesScreen from '../screens/OnboardingSlidesScreen'
+import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
 
+// Create the stack navigator.
 const Stack = createStackNavigator()
 
+/**
+ * This component renders the stack navigator used for the initial onboarding screens. This navigator is the first thing the user sees when they open the app for the first time. It contains the language instance install screen, the onboarindg slides screen, and the loading screen.
+ */
 function Onboarding () {
-  //+ RENDER
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -20,10 +23,13 @@ function Onboarding () {
             : 'horizontal'
         ***REMOVED******REMOVED***
       >
-        <Stack.Screen name='LanguageSelect' component={LanguageSelectScreen***REMOVED*** />
         <Stack.Screen
-          name='OnboardingSlides'
-          component={OnboardingSlidesScreen***REMOVED***
+          name='InitialLanguageInstanceInstall'
+          component={LanguageInstanceInstallScreen***REMOVED***
+        />
+        <Stack.Screen
+          name='WahaOnboardingSlides'
+          component={WahaOnboardingSlidesScreen***REMOVED***
           options={{
             gestureEnabled: false
           ***REMOVED******REMOVED***

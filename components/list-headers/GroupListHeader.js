@@ -1,7 +1,8 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect ***REMOVED*** from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Alert,
+  Animated,
   Image,
   StyleSheet,
   Text,
@@ -9,172 +10,26 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
 import { deleteLanguageData ***REMOVED*** from '../../redux/actions/databaseActions'
 import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
-function GroupListHeader (props) {
-  //+ FUNCTIONS
-
-  useEffect(() => {
-    // check if there was a failed language add, i.e. if the app crashed/user quit during a fetch
-    // and clear out the already downloaded content if there was
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
-        props.database[props.languageID].files.forEach(fileName => {
-          var tempFileName = fileName.slice(0, -3)
-          if (
-            !contents.includes(`${props.languageID***REMOVED***-${tempFileName***REMOVED***.mp3`) &&
-            !contents.includes(`${props.languageID***REMOVED***-${tempFileName***REMOVED***.png`)
-          )
-            deleteLanguageInstance()
-        ***REMOVED***)
-      ***REMOVED***
-    )
-  ***REMOVED***, [])
-
-  // deletes all material for a language
-  function deleteLanguageInstance () {
-    // delete all groups w/ this language
-    props.groups.map(group => {
-      if (group.language === props.languageID) {
-        props.deleteGroup(group.name)
-      ***REMOVED***
-    ***REMOVED***)
-
-    // delete all downloaded files for this language
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
-        for (const item of contents) {
-          if (item.slice(0, 2) === props.languageID) {
-            FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-            props.removeDownload(item.slice(0, 5))
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***
-    )
-
-    // delete section of database for this language
-    props.deleteLanguageData(props.languageID)
-  ***REMOVED***
-
-  // render trash button conditionally because it's only shown when editing mode is active
-  var trashButton
-  // if we're editing and not in the active group, we can delete, so show trash can
-  if (props.isEditing && !(props.activeGroup.language === props.languageID)) {
-    trashButton = (
-      <TouchableOpacity
-        style={{
-          marginHorizontal: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: 24 * scaleMultiplier
-        ***REMOVED******REMOVED***
-        onPress={() =>
-          Alert.alert(
-            props.translations.groups.popups.delete_language_title,
-            props.translations.groups.popups.delete_language_message,
-            [
-              {
-                text: props.translations.general.cancel,
-                onPress: () => {***REMOVED***
-              ***REMOVED***,
-              {
-                text: props.translations.general.ok,
-                onPress: deleteLanguageInstance
-              ***REMOVED***
-            ]
-          )
-        ***REMOVED***
-      >
-        <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color={colors.red***REMOVED*** />
-      </TouchableOpacity>
-    )
-    // if we're editing and active, show an empty view
-  ***REMOVED*** else if (
-    props.isEditing &&
-    props.activeGroup.language === props.languageID
-  ) {
-    trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
-    // otherwise, make it nothin
-  ***REMOVED*** else {
-    trashButton = null
-  ***REMOVED***
-
-  return (
-    <View
-      style={[
-        styles.languageHeaderContainer,
-        {
-          flexDirection: props.isRTL ? 'row-reverse' : 'row'
-        ***REMOVED***
-      ]***REMOVED***
-    >
-      {trashButton***REMOVED***
-      <Text
-        style={[
-          StandardTypography(
-            {
-              font: getLanguageFont(props.languageID),
-              isRTL: props.isRTL
-            ***REMOVED***,
-            'h3',
-            'Regular',
-            'left',
-            colors.chateau
-          ),
-          {
-            flex: 1,
-            marginLeft: props.isRTL ? 0 : props.isEditing ? 0 : 20,
-            marginRight: props.isRTL ? (props.isEditing ? 0 : 20) : 0
-          ***REMOVED***
-        ]***REMOVED***
-      >
-        {props.languageName***REMOVED***
-      </Text>
-      <Image
-        style={styles.languageLogo***REMOVED***
-        source={{
-          uri: FileSystem.documentDirectory + props.languageID + '-header.png'
-        ***REMOVED******REMOVED***
-      />
-    </View>
-  )
-***REMOVED***
-
-//+ STYLES
-
-const styles = StyleSheet.create({
-  languageHeaderContainer: {
-    alignItems: 'center',
-    width: '100%',
-    height: 40 * scaleMultiplier,
-    // aspectRatio: 8.7,
-    backgroundColor: colors.aquaHaze
-  ***REMOVED***,
-  languageLogo: {
-    resizeMode: 'contain',
-    width: 120 * scaleMultiplier,
-    height: 16.8 * scaleMultiplier,
-    marginHorizontal: 20
-  ***REMOVED***
-***REMOVED***)
-
-// REDUX
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    isRTL: state.database[activeGroup.language].isRTL,
+    isRTL: activeDatabaseSelector(state).isRTL,
     database: state.database,
-    activeDatabase: state.database[activeGroup.language],
+    activeDatabase: activeDatabaseSelector(state),
     groups: state.groups,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language)
   ***REMOVED***
 ***REMOVED***
 
@@ -191,5 +46,189 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***
+
+/**
+ * The header for the groups section list used on the Groups screen. Displays the name of the language and the language instance's logo.
+ * @param {string***REMOVED*** languageName - The name of the language.
+ * @param {string***REMOVED*** languageID - The ID for the language instance.
+ * @param {boolean***REMOVED*** isEditing - Whether the Groups screen is in editing mode or not.
+ */
+function GroupListHeader ({
+  // Props passed from a parent component.
+  languageName,
+  languageID,
+  isEditing,
+  // Props passed from redux.
+  isRTL,
+  database,
+  activeDatabase,
+  groups,
+  activeGroup,
+  translations,
+  font,
+  deleteGroup,
+  deleteLanguageData,
+  removeDownload
+***REMOVED***) {
+  const [leftIconXPos, setLeftIconXPos] = useState(
+    new Animated.Value(
+      isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
+    )
+  )
+
+  useEffect(() => {
+    setLeftIconXPos(
+      new Animated.Value(
+        isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
+      )
+    )
+  ***REMOVED***, [isRTL])
+
+  useEffect(() => {
+    if (isEditing) {
+      Animated.spring(leftIconXPos, {
+        toValue: 0
+      ***REMOVED***).start()
+    ***REMOVED*** else if (!isEditing) {
+      Animated.spring(leftIconXPos, {
+        toValue: isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
+      ***REMOVED***).start()
+    ***REMOVED***
+  ***REMOVED***, [isEditing])
+
+  /**
+   * Deletes an entire language instance. This involves deleting every group, every downloaded file, and all data stored in redux for a language instance. Triggered by pressing the trash can icon next to the langauge's name in editing mode.
+   */
+  function deleteLanguageInstance () {
+    // Delete every group for this language instance.
+    groups.map(group => {
+      if (group.language === languageID) {
+        deleteGroup(group.name)
+      ***REMOVED***
+    ***REMOVED***)
+
+    // Delete all downloaded files for this language instance.
+    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+      contents => {
+        for (const item of contents) {
+          if (item.slice(0, 2) === languageID) {
+            FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+            removeDownload(item.slice(0, 5))
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
+    )
+
+    // Delete redux data for this language instance.
+    deleteLanguageData(languageID)
+  ***REMOVED***
+
+  // Determine what to render for the trash button. This button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
+  var trashButton
+
+  if (!(activeGroup.language === languageID)) {
+    trashButton = (
+      <TouchableOpacity
+        style={{
+          marginHorizontal: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 24 * scaleMultiplier
+        ***REMOVED******REMOVED***
+        onPress={() =>
+          Alert.alert(
+            translations.groups.popups.delete_language_title,
+            translations.groups.popups.delete_language_message,
+            [
+              {
+                text: translations.general.cancel,
+                onPress: () => {***REMOVED***
+              ***REMOVED***,
+              {
+                text: translations.general.ok,
+                onPress: deleteLanguageInstance
+              ***REMOVED***
+            ]
+          )
+        ***REMOVED***
+      >
+        <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color={colors.red***REMOVED*** />
+      </TouchableOpacity>
+    )
+    // For the language instance that contains the active group, render an empty view for this button so the styling lines up.
+  ***REMOVED*** else if (activeGroup.language === languageID) {
+    trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
+    // trashButton = null
+  ***REMOVED***
+  // else {
+  //   trashButton = null
+  // ***REMOVED***
+
+  return (
+    <View
+      style={[
+        styles.groupListHeaderContainer,
+        {
+          flexDirection: isRTL ? 'row-reverse' : 'row'
+        ***REMOVED***
+      ]***REMOVED***
+    >
+      <Animated.View
+        style={{
+          transform:
+            activeGroup.language === languageID
+              ? []
+              : [{ translateX: leftIconXPos ***REMOVED***],
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          flex: 1
+        ***REMOVED******REMOVED***
+      >
+        {trashButton***REMOVED***
+        <Text
+          style={[
+            StandardTypography(
+              {
+                font: getLanguageFont(languageID),
+                isRTL: isRTL
+              ***REMOVED***,
+              'h3',
+              'Regular',
+              'left',
+              colors.chateau
+            ),
+            {
+              flex: 1
+              // marginLeft: isRTL ? 0 : isEditing ? 0 : 20,
+              // marginRight: isRTL ? (isEditing ? 0 : 20) : 0
+            ***REMOVED***
+          ]***REMOVED***
+        >
+          {languageName***REMOVED***
+        </Text>
+      </Animated.View>
+      <Image
+        style={styles.languageLogoImage***REMOVED***
+        source={{
+          uri: FileSystem.documentDirectory + languageID + '-header.png'
+        ***REMOVED******REMOVED***
+      />
+    </View>
+  )
+***REMOVED***
+
+const styles = StyleSheet.create({
+  groupListHeaderContainer: {
+    alignItems: 'center',
+    width: '100%',
+    height: 40 * scaleMultiplier,
+    backgroundColor: colors.aquaHaze
+  ***REMOVED***,
+  languageLogoImage: {
+    resizeMode: 'contain',
+    width: 120 * scaleMultiplier,
+    height: 16.8 * scaleMultiplier,
+    marginHorizontal: 20
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupListHeader)

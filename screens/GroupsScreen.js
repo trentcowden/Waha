@@ -1,156 +1,177 @@
 import React, { useEffect, useState ***REMOVED*** from 'react'
-import {
-  SectionList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-***REMOVED*** from 'react-native'
+import { SectionList, StyleSheet, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import AddNewGroupButton from '../components/AddNewGroupButton'
+import AddNewLanguageInstanceButton from '../components/AddNewLanguageInstanceButton'
+import GroupsScreenEditButton from '../components/GroupsScreenEditButton'
 import GroupListHeader from '../components/list-headers/GroupListHeader'
 import GroupItem from '../components/list-items/GroupItem'
 import BackButton from '../components/standard/BackButton'
 import Separator from '../components/standard/Separator'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
-function GroupsScreen (props) {
-  //+ STATE
+function mapStateToProps (state) {
+  return {
+    database: state.database,
+    isRTL: activeDatabaseSelector(state).isRTL,
+    translations: activeDatabaseSelector(state).translations,
+    isConnected: state.network.isConnected,
+    font: getLanguageFont(activeGroupSelector(state).language),
+    groups: state.groups,
+    activeGroup: activeGroupSelector(state)
+  ***REMOVED***
+***REMOVED***
 
+/**
+ * A screen that displays all of the installed language instances and the groups in those language instances. Allows for switching the active group and  editing, deleting, and adding groups & languages.
+ */
+function GroupsScreen ({
+  // Props passed from navigation.
+  navigation: { setOptions, goBack, navigate ***REMOVED***,
+  // Props passed from redux.
+  database,
+  isRTL,
+  translations,
+  isConnected,
+  font,
+  groups,
+  activeGroup
+***REMOVED***) {
+  /** Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen. */
   const [isEditing, setIsEditing] = useState(false)
+
+  /** When adding a new group, this state keeps track of the language instance that the user is adding a group in so it can be passed into the CreateGroup() function. */
+  const [languageID, setLanguageID] = useState(activeGroup.languageID)
+
+  /** When editing a specific group, this component stores the object for the group that is being edited. */
+  const [editingGroup, setEditingGroup] = useState(activeGroup)
+
+  /** Keeps track of whether the add group modal is visible. */
   const [showAddGroupModal, setShowAddGroupModal] = useState(false)
+
+  /** Keeps track of whether the edit gruop modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
-  const [languageID, setLanguageID] = useState(props.activeGroup.languageID)
-  const [editingGroup, setEditingGroup] = useState(props.activeGroup)
 
-  //+ CONSTRUCTOR
-
+  /** useEffect function that sets the navigation options for this screen. Unlock similar functions in other screens, this one is updated more often since the header must update whenever the active group changes and when editingMode changes. */
   useEffect(() => {
-    props.navigation.setOptions(getNavOptions())
-  ***REMOVED***, [isEditing, props])
+    setOptions(getNavOptions())
+  ***REMOVED***, [isEditing, isRTL, activeGroup])
 
-  //+ NAV OPTIONS
-
+  /**
+   * Returns the navigation options for this screen.
+   * @return {Object***REMOVED*** - The navigation options.
+   */
   function getNavOptions () {
     return {
       headerStyle: {
+        // Switch the background color of the header in editing mode to reflect that we're in a non-standard screen view.
         backgroundColor: isEditing ? colors.blue : colors.aquaHaze
       ***REMOVED***,
       headerTitleStyle: {
+        // Update the header text color to go with the background color changes.
         color: isEditing ? colors.white : colors.shark,
-        fontFamily: props.font + '-Bold'
+        fontFamily: font + '-Bold'
       ***REMOVED***,
-      headerRight: props.isRTL
+      headerRight: isRTL
         ? () => (
             <BackButton
               color={isEditing ? colors.white : null***REMOVED***
-              onPress={() => props.navigation.goBack()***REMOVED***
+              onPress={() => goBack()***REMOVED***
             />
           )
         : () => (
-            <TouchableOpacity
-              style={styles.editButtonContainer***REMOVED***
+            <GroupsScreenEditButton
               onPress={() => setIsEditing(old => !old)***REMOVED***
-            >
-              <Text
-                style={[
-                  StandardTypography(
-                    props,
-                    'h3',
-                    isEditing ? 'Bold' : 'Regular',
-                    'center',
-                    isEditing ? colors.white : colors.blue
-                  ),
-                  {
-                    textDecorationLine: isEditing ? 'underline' : null
-                  ***REMOVED***
-                ]***REMOVED***
-              >
-                {isEditing
-                  ? props.translations.groups.done_button_label
-                  : props.translations.groups.edit_button_label***REMOVED***
-              </Text>
-            </TouchableOpacity>
+              isEditing={isEditing***REMOVED***
+            />
           ),
-      headerLeft: props.isRTL
+      headerLeft: isRTL
         ? () => (
-            <TouchableOpacity
-              style={styles.editButtonContainer***REMOVED***
+            <GroupsScreenEditButton
               onPress={() => setIsEditing(old => !old)***REMOVED***
-            >
-              <Text
-                style={StandardTypography(
-                  props,
-                  'h3',
-                  props.isEditing ? 'Bold' : 'Regular',
-                  'center',
-                  isEditing ? colors.white : colors.blue
-                )***REMOVED***
-              >
-                {isEditing
-                  ? props.translations.groups.done_button_label
-                  : props.translations.groups.edit_button_label***REMOVED***
-              </Text>
-            </TouchableOpacity>
+              isEditing={isEditing***REMOVED***
+            />
           )
         : () => (
             <BackButton
               color={isEditing ? colors.white : null***REMOVED***
-              onPress={() => props.navigation.goBack()***REMOVED***
+              onPress={() => goBack()***REMOVED***
             />
           )
     ***REMOVED***
   ***REMOVED***
 
-  //+ FUNCTIONS
-
-  // get the list of installed languages and all the groups with that language
-  //  to populate section list
+  /**
+   * Gets an array of all the installed language instances and their groups. This is used as the data for the section list of all the groups on this screen and on the MobilizationTools screen.
+   * @return {Object[]***REMOVED*** - A list of the installed language instances and their groups.
+   * @return {Object[].title***REMOVED*** - The name of the language.
+   * @return {Object[].languageID***REMOVED*** - The ID of the language instance.
+   * @return {Object[].data[]***REMOVED*** - An array of the groups that are a part of this language instance.
+   */
   function getLanguageAndGroupData () {
     var installedLanguageInstances = []
-    for (key in props.database) {
+    for (key in database) {
+      // Because there are other redux variables stored in the database object, filter for just the language objects (which all have a length of 2).
       if (key.length === 2) {
         var languageObject = {***REMOVED***
-        languageObject['title'] = props.database[key].displayName
+        languageObject['languageName'] = database[key].displayName
         languageObject['languageID'] = key
 
-        // get groups for that language
-        languageObject['data'] = props.groups.filter(
-          group => group.language === key
-        )
+        // Get all the groups that are a part of this language instance.
+        languageObject['data'] = groups.filter(group => group.language === key)
+
+        // Add all of this to the installedLanguageInstances array.
         installedLanguageInstances.push(languageObject)
       ***REMOVED***
     ***REMOVED***
-    return installedLanguageInstances
+
+    // (TEMP) If we have the install times stored, sort the languages by the time installed.
+    return installedLanguageInstances.some(
+      key => database[key.languageID].installTime === null
+    )
+      ? installedLanguageInstances
+      : installedLanguageInstances.sort(
+          (a, b) =>
+            database[a.languageID].installTime -
+            database[b.languageID].installTime
+        )
   ***REMOVED***
 
-  //+ RENDER
-
-  function renderLanguageInstanceItem (section) {
+  /**
+   * Renders a GroupListHeader component used for the Groups SectionList section header.
+   * @param {Object***REMOVED*** languageInstance - The object for the language instance to render.
+   * @return {Component***REMOVED*** - The GroupListHeader component.
+   */
+  function renderGroupListHeader (languageInstance) {
     return (
       <GroupListHeader
-        languageName={section.title***REMOVED***
-        languageID={section.languageID***REMOVED***
+        languageName={languageInstance.languageName***REMOVED***
+        languageID={languageInstance.languageID***REMOVED***
         isEditing={isEditing***REMOVED***
       />
     )
   ***REMOVED***
 
+  /**
+   * Renders a GroupItem component used for the Groups SectionList item.
+   * @param {Object***REMOVED*** group - The object for the group to render.
+   * @return {Component***REMOVED*** - The GroupItem component.
+   */
   function renderGroupItem (group) {
     return (
       <GroupItem
-        group={group***REMOVED***
+        thisGroup={group***REMOVED***
         isEditing={isEditing***REMOVED***
         openEditModal={() => {
           setEditingGroup(group)
           setShowEditGroupModal(true)
         ***REMOVED******REMOVED***
-        // goToEditGroupScreen={groupName => {
-        //   setGroupName(groupName)
-        //   setShowEditGroupModal(true)
-        //   // props.navigation.navigate('EditGroup', { groupName: groupName ***REMOVED***)
-        // ***REMOVED******REMOVED***
       />
     )
   ***REMOVED***
@@ -160,86 +181,28 @@ function GroupsScreen (props) {
       <SectionList
         sections={getLanguageAndGroupData()***REMOVED***
         renderItem={({ item ***REMOVED***) => renderGroupItem(item)***REMOVED***
-        renderSectionHeader={({ section ***REMOVED***) =>
-          renderLanguageInstanceItem(section)
-        ***REMOVED***
+        renderSectionHeader={({ section ***REMOVED***) => renderGroupListHeader(section)***REMOVED***
         keyExtractor={item => item.name***REMOVED***
         ItemSeparatorComponent={() => <Separator />***REMOVED***
         SectionSeparatorComponent={() => <Separator />***REMOVED***
         renderSectionFooter={({ section ***REMOVED***) => (
-          <View>
-            <TouchableOpacity
-              style={[
-                styles.addGroupContainer,
-                { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
-              ]***REMOVED***
-              onPress={
-                () => {
-                  setLanguageID(section.languageID)
-                  setShowAddGroupModal(true)
-                ***REMOVED***
-                // props.navigation.navigate('AddGroup', {
-                //   languageID: section.languageID
-                // ***REMOVED***)
-              ***REMOVED***
-            >
-              <View
-                style={{
-                  width: 55 * scaleMultiplier,
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 20
-                ***REMOVED******REMOVED***
-              >
-                <Icon
-                  name='group-add'
-                  size={40 * scaleMultiplier***REMOVED***
-                  color={colors.chateau***REMOVED***
-                />
-              </View>
-              <Text
-                style={StandardTypography(
-                  props,
-                  'h3',
-                  'Bold',
-                  'left',
-                  colors.blue
-                )***REMOVED***
-              >
-                {props.translations.groups.new_group_button_label***REMOVED***
-              </Text>
-            </TouchableOpacity>
-            <Separator />
-            <View style={{ height: 20 * scaleMultiplier, width: '100%' ***REMOVED******REMOVED*** />
-          </View>
+          <AddNewGroupButton
+            section={section***REMOVED***
+            setLanguageID={languageID => setLanguageID(languageID)***REMOVED***
+            setShowAddGroupModal={toSet => setShowAddGroupModal(toSet)***REMOVED***
+          />
         )***REMOVED***
         ListHeaderComponent={() => (
           <View style={{ height: 10, width: '100%' ***REMOVED******REMOVED*** />
         )***REMOVED***
         ListFooterComponent={
-          <TouchableOpacity
-            style={styles.addNewLanguageContainer***REMOVED***
-            onPress={() =>
-              props.navigation.navigate('AddLanguage', {
-                installedLanguageInstances: getLanguageAndGroupData()
-              ***REMOVED***)
-            ***REMOVED***
-          >
-            <Text
-              style={StandardTypography(
-                props,
-                'h3',
-                'Bold',
-                'left',
-                colors.chateau
-              )***REMOVED***
-            >
-              {props.translations.groups.new_language_button_label***REMOVED***
-            </Text>
-          </TouchableOpacity>
+          <AddNewLanguageInstanceButton
+            navigate={(screen, params) => navigate(screen, params)***REMOVED***
+            languageAndGroupData={getLanguageAndGroupData()***REMOVED***
+          />
         ***REMOVED***
       />
+      {/* Modals */***REMOVED***
       <AddEditGroupModal
         isVisible={showAddGroupModal***REMOVED***
         hideModal={() => setShowAddGroupModal(false)***REMOVED***
@@ -250,56 +213,17 @@ function GroupsScreen (props) {
         isVisible={showEditGroupModal***REMOVED***
         hideModal={() => setShowEditGroupModal(false)***REMOVED***
         type='EditGroup'
-        // groupName={groupName***REMOVED***
         group={editingGroup***REMOVED***
       />
     </View>
   )
 ***REMOVED***
 
-//+ STYLES
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.aquaHaze
-  ***REMOVED***,
-  addNewLanguageContainer: {
-    height: 80 * scaleMultiplier,
-    justifyContent: 'center',
-    paddingHorizontal: 20
-  ***REMOVED***,
-  editButtonContainer: {
-    width: 80,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  ***REMOVED***,
-  addGroupContainer: {
-    height: 80 * scaleMultiplier,
-    // aspectRatio: 5,
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    database: state.database,
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
-    isConnected: state.network.isConnected,
-    font: getLanguageFont(activeGroup.language),
-    groups: state.groups,
-    activeGroup: activeGroup
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(GroupsScreen)

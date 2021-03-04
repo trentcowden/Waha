@@ -1,110 +1,70 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect ***REMOVED*** from 'react'
+import React from 'react'
 import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../../constants'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
-function GroupListHeaderMT (props) {
-  //+ FUNCTIONS
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, SystemTypography ***REMOVED*** from '../../styles/typography'
 
-  useEffect(() => {***REMOVED***, [])
+function mapStateToProps (state) {
+  return {
+    isRTL: activeDatabaseSelector(state).isRTL,
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language),
+    database: state.database
+  ***REMOVED***
+***REMOVED***
 
-  //+ RENDER
-
-  // if our active language has a toolkit, show the list of groups
-  // var list = props.activeDatabase.hasToolkit ? (
-  //   <FlatList
-  //     data={props.groups.filter(group => group.language === props.languageID)***REMOVED***
-  //     renderItem={renderGroupItem***REMOVED***
-  //     keyExtractor={item => item.name***REMOVED***
-  //   />
-  // ) : (
-  //   // otherwise, show a message that says MTs are not available for that language
-  //   <View
-  //     style={{
-  //       height: 80 * scaleMultiplier,
-  //       justifyContent: 'flex-start',
-  //       flexDirection: 'row',
-  //       alignItems: 'center',
-  //       backgroundColor: colors.white,
-  //       margin: 2,
-  //       justifyContent: 'center'
-  //     ***REMOVED******REMOVED***
-  //   >
-  //     <Text
-  //       style={{
-  //         fontFamily: props.font + '-Regular',
-  //         fontSize: 14 * scaleMultiplier,
-  //         color: colors.chateau,
-  //         textAlign: 'center'
-  //       ***REMOVED******REMOVED***
-  //     >
-  //       {
-  //         props.translations.mobilization_tools
-  //           .no_mobilization_tools_content_text
-  //       ***REMOVED***
-  //     </Text>
-  //   </View>
-  // )
-
-  // // renders a group item
-  // function renderGroupItem (groups) {
-  //   return <GroupItemMT group={groups.item***REMOVED*** />
-  // ***REMOVED***
-
+/**
+ * The header for the groups section list used on the Mobilization Tools screen. Displays the name of the language in the active group's language and the language instance's logo.
+ * @param {string***REMOVED*** languageID - The ID for the language instance.
+ */
+function GroupListHeaderMT ({
+  // Props passed from a parent component.
+  languageID,
+  // Props passed from redux.
+  isRTL,
+  translations,
+  font,
+  database
+***REMOVED***) {
   return (
     <View
       style={[
-        styles.languageHeaderContainer,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        styles.groupListHeaderMTContainer,
+        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
     >
       <View>
         <Text
-          style={StandardTypography(
-            props,
+          style={SystemTypography(
+            false,
             'h3',
             'Bold',
             'left',
-            colors.chateau
+            colors.chateau,
+            getLanguageFont(languageID)
           )***REMOVED***
         >
-          {
-            props.translations.general.brands[props.languageID]
-            // +
-            //   ' ' +
-            //   props.translations.mobilization_tools.groups_label
-          ***REMOVED***
+          {database[languageID].displayName***REMOVED***
         </Text>
-        {/* <Text
-          style={StandardTypography(
-            props,
-            'h3',
-            'Regular',
-            'left',
-            colors.chateau
-          )***REMOVED***
-        >
-          {
-            props.translations.mobilization_tools
-              .mobilization_tools_status_label
-          ***REMOVED***
-        </Text> */***REMOVED***
       </View>
       <Image
         style={styles.languageLogo***REMOVED***
         source={{
-          uri: FileSystem.documentDirectory + props.languageID + '-header.png'
+          uri: FileSystem.documentDirectory + languageID + '-header.png'
         ***REMOVED******REMOVED***
       />
     </View>
   )
 ***REMOVED***
 
-//+ STYLES
-
 const styles = StyleSheet.create({
-  languageHeaderContainer: {
+  groupListHeaderMTContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
@@ -119,21 +79,5 @@ const styles = StyleSheet.create({
     height: 16.8 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
-
-// REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    groups: state.groups,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(GroupListHeaderMT)

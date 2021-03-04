@@ -3,21 +3,54 @@ import React from 'react'
 import { Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-function ModalScreen (props) {
+function mapStateToProps (state) {
+  return {
+    downloads: state.downloads,
+    activeDatabase: activeDatabaseSelector(state),
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language)
+  ***REMOVED***
+***REMOVED***
+
+function ModalScreen ({
+  // Props passed from a parent component.
+  isVisible,
+  hideModal,
+  topRightComponent,
+  onCancelPress,
+  onModalWillShow,
+  title,
+  children = null,
+  // Props passed from redux.
+  downloads,
+  activeDatabase,
+  isRTL,
+  activeGroup,
+  translations,
+  font
+***REMOVED***) {
   return (
     <View>
       <Modal
-        isVisible={props.isVisible***REMOVED***
+        isVisible={isVisible***REMOVED***
         hasBackdrop={true***REMOVED***
-        onBackdropPress={props.hideModal***REMOVED***
-        onBackButtonPress={props.hideModal***REMOVED***
+        useNativeDriver
+        onBackdropPress={hideModal***REMOVED***
+        onBackButtonPress={hideModal***REMOVED***
         backdropOpacity={0.3***REMOVED***
-        onSwipeComplete={props.hideModal***REMOVED***
-        // swipeDirection={['down']***REMOVED***
-        // propagateSwipe={true***REMOVED***
+        onSwipeComplete={hideModal***REMOVED***
+        swipeDirection={['down']***REMOVED***
+        propagateSwipe={true***REMOVED***
         style={{
           flex: 1,
           justifyContent: 'flex-end',
@@ -30,7 +63,7 @@ function ModalScreen (props) {
               : 20
           // marginVertical: 20 * scaleMultiplier
         ***REMOVED******REMOVED***
-        onModalWillShow={props.onModalWillShow***REMOVED***
+        onModalWillShow={onModalWillShow***REMOVED***
       >
         <View
           style={{
@@ -51,8 +84,8 @@ function ModalScreen (props) {
           >
             <TouchableOpacity
               onPress={() => {
-                props.onCancelPress ? props.onCancelPress() : null
-                props.hideModal()
+                onCancelPress ? onCancelPress() : null
+                hideModal()
               ***REMOVED******REMOVED***
               style={{
                 width: 45 * scaleMultiplier,
@@ -68,14 +101,14 @@ function ModalScreen (props) {
             <View style={{ flex: 1 ***REMOVED******REMOVED***>
               <Text
                 style={StandardTypography(
-                  props,
+                  { font, isRTL ***REMOVED***,
                   'h3',
                   'Bold',
                   'center',
                   colors.shark
                 )***REMOVED***
               >
-                {props.title***REMOVED***
+                {title***REMOVED***
               </Text>
             </View>
             <View
@@ -84,30 +117,14 @@ function ModalScreen (props) {
                 height: 45 * scaleMultiplier
               ***REMOVED******REMOVED***
             >
-              {props.topRightComponent***REMOVED***
+              {topRightComponent***REMOVED***
             </View>
           </View>
-          {props.children***REMOVED***
+          {children***REMOVED***
         </View>
       </Modal>
     </View>
   )
-***REMOVED***
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    downloads: state.downloads,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
 ***REMOVED***
 
 export default connect(mapStateToProps)(ModalScreen)

@@ -1,14 +1,30 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { activeDatabaseSelector ***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+
+function mapStateToProps (state) {
+  return {
+    primaryColor: activeDatabaseSelector(state).primaryColor
+  ***REMOVED***
+***REMOVED***
+
 // play, pause, and skip controls for play screen
-function PlaybackControls (props) {
+function PlaybackControls ({
+  // Props passed from a parent component.
+  isMediaPlaying,
+  onPlayPress,
+  onSkipPress,
+  // Props passed from redux.
+  primaryColor
+***REMOVED***) {
   //+ RENDER
 
   return (
     <View style={styles.playPauseSkipContainer***REMOVED***>
-      {props.hasHomework ? (
+      {/* {hasHomework ? (
         <View
           style={{
             width: '100%',
@@ -18,23 +34,23 @@ function PlaybackControls (props) {
         >
           <TouchableOpacity
             style={{ position: 'absolute', paddingHorizontal: 20 ***REMOVED******REMOVED***
-            onPress={props.showHomeworkModal***REMOVED***
+            onPress={showHomeworkModal***REMOVED***
           >
             <Icon name='list' size={40 * scaleMultiplier***REMOVED*** color={colors.tuna***REMOVED*** />
           </TouchableOpacity>
         </View>
-      ) : null***REMOVED***
+      ) : null***REMOVED*** */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
-        onPress={() => props.onSkipPress(-10000)***REMOVED***
+        onPress={() => onSkipPress(-5000)***REMOVED***
       >
         <Icon
-          name='skip-back'
+          name='skip-back-5'
           size={69 * scaleMultiplier***REMOVED***
           color={colors.tuna***REMOVED***
         />
       </TouchableOpacity>
-      {/* {props.isVideoBuffering ? (
+      {/* {isVideoBuffering ? (
         <View
           style={{
             width: 101 * scaleMultiplier,
@@ -48,21 +64,21 @@ function PlaybackControls (props) {
       ) : ( */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
-        onPress={props.onPlayPress***REMOVED***
+        onPress={onPlayPress***REMOVED***
       >
         <Icon
-          name={props.isMediaPlaying ? 'pause' : 'play'***REMOVED***
+          name={isMediaPlaying ? 'pause' : 'play'***REMOVED***
           size={100 * scaleMultiplier***REMOVED***
-          color={props.primaryColor***REMOVED***
+          color={primaryColor***REMOVED***
         />
       </TouchableOpacity>
       {/* )***REMOVED*** */***REMOVED***
       <TouchableOpacity
         style={styles.playPauseSkipButton***REMOVED***
-        onPress={() => props.onSkipPress(10000)***REMOVED***
+        onPress={() => onSkipPress(5000)***REMOVED***
       >
         <Icon
-          name='skip-forward'
+          name='skip-forward-5'
           size={69 * scaleMultiplier***REMOVED***
           color={colors.tuna***REMOVED***
         />
@@ -86,16 +102,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    primaryColor: state.database[activeGroup.language].primaryColor
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(PlaybackControls)

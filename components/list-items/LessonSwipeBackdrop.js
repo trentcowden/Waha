@@ -1,22 +1,39 @@
 import React from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, scaleMultiplier ***REMOVED*** from '../../constants'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { activeDatabaseSelector ***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+
+function mapStateToProps (state) {
+  return {
+    isRTL: activeDatabaseSelector(state).isRTL
+  ***REMOVED***
+***REMOVED***
+
 // component rendered behind a lesson item that shows the swipe options
-function LessonSwipeBackdrop (props) {
+
+function LessonSwipeBackdrop ({
+  // Props passed from a parent component.s
+  isComplete,
+  toggleComplete,
+  showShareModal,
+  // Props passed from redux.
+  isRTL
+***REMOVED***) {
   //+ RENDER
 
   // render complete button conditionally since it could be complete or incomplete
-  var completeButton = props.isComplete ? (
+  var completeButton = isComplete ? (
     <TouchableOpacity
       style={[
         styles.buttonContainer,
         {
           backgroundColor: colors.chateau,
-          alignItems: props.isRTL ? 'flex-end' : 'flex-start'
+          alignItems: isRTL ? 'flex-end' : 'flex-start'
         ***REMOVED***
       ]***REMOVED***
-      onPress={props.toggleComplete***REMOVED***
+      onPress={toggleComplete***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
         <Icon name='cancel-filled' size={20***REMOVED*** color={colors.white***REMOVED*** />
@@ -28,10 +45,10 @@ function LessonSwipeBackdrop (props) {
         styles.buttonContainer,
         {
           backgroundColor: colors.apple,
-          alignItems: props.isRTL ? 'flex-end' : 'flex-start'
+          alignItems: isRTL ? 'flex-end' : 'flex-start'
         ***REMOVED***
       ]***REMOVED***
-      onPress={props.toggleComplete***REMOVED***
+      onPress={toggleComplete***REMOVED***
     >
       <View style={styles.iconContainer***REMOVED***>
         <Icon name='check-filled' size={20***REMOVED*** color={colors.white***REMOVED*** />
@@ -43,7 +60,7 @@ function LessonSwipeBackdrop (props) {
     <View
       style={[
         styles.lessonSwipeBackdropContainer,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
     >
       {completeButton***REMOVED***
@@ -52,10 +69,10 @@ function LessonSwipeBackdrop (props) {
           styles.buttonContainer,
           {
             backgroundColor: colors.blue,
-            alignItems: props.isRTL ? 'flex-start' : 'flex-end'
+            alignItems: isRTL ? 'flex-start' : 'flex-end'
           ***REMOVED***
         ]***REMOVED***
-        onPress={props.showShareModal***REMOVED***
+        onPress={showShareModal***REMOVED***
       >
         <View style={styles.iconContainer***REMOVED***>
           <Icon
@@ -86,14 +103,5 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(LessonSwipeBackdrop)

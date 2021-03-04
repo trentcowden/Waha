@@ -1,10 +1,31 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-function BookView (props) {
+function mapStateToProps (state) {
+  return {
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state),
+    isRTL: activeDatabaseSelector(state).isRTL
+  ***REMOVED***
+***REMOVED***
+
+function BookView ({
+  // Props passed from a parent component.
+  thisLesson,
+  titleSection,
+  // Props passed from redux.
+  font,
+  activeGroup,
+  isRTL
+***REMOVED***) {
   return (
     <View
       style={{
@@ -18,11 +39,17 @@ function BookView (props) {
       ***REMOVED******REMOVED***
     >
       <FlatList
-        data={props.thisLesson.text.split('\n')***REMOVED***
+        data={thisLesson.text.split('\n')***REMOVED***
         renderItem={paragraphList => (
           <Text
             style={[
-              StandardTypography(props, 'h4', 'Regular', 'left', colors.shark),
+              StandardTypography(
+                { font, isRTL ***REMOVED***,
+                'h4',
+                'Regular',
+                'left',
+                colors.shark
+              ),
               { marginHorizontal: 10 ***REMOVED***
             ]***REMOVED***
           >
@@ -31,7 +58,7 @@ function BookView (props) {
         )***REMOVED***
         keyExtractor={item => item***REMOVED***
         ListHeaderComponent={
-          <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>{props.titleSection***REMOVED***</View>
+          <View style={{ marginVertical: 20 ***REMOVED******REMOVED***>{titleSection***REMOVED***</View>
         ***REMOVED***
       />
     </View>
@@ -51,16 +78,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    isRTL: state.database[activeGroup.language].isRTL
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(BookView)

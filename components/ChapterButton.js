@@ -2,19 +2,48 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-function ChapterButton (props) {
+function mapStateToProps (state) {
+  return {
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state),
+    primaryColor: activeDatabaseSelector(state).primaryColor,
+    translations: activeDatabaseSelector(state).translations,
+    isRTL: activeDatabaseSelector(state).isRTL
+  ***REMOVED***
+***REMOVED***
+
+function ChapterButton ({
+  // Props passed from a parent component.
+  name,
+  mode,
+  number,
+  activeNumber,
+  onPress,
+  downloadProgress,
+  // Props passed from redux.
+  font,
+  activeGroup,
+  primaryColor,
+  translations,
+  isRTL
+***REMOVED***) {
   // styles for the different modes
 
   const buttonStyles = {
     active: {
-      backgroundColor: props.primaryColor,
-      borderColor: props.primaryColor
+      backgroundColor: primaryColor,
+      borderColor: primaryColor
     ***REMOVED***,
     inactive: {
-      borderColor: props.primaryColor,
+      borderColor: primaryColor,
       backgroundColor: colors.athens
     ***REMOVED***,
     downloading: {
@@ -28,22 +57,34 @@ function ChapterButton (props) {
   ***REMOVED***
 
   const textStyles = {
-    active: StandardTypography(props, 'p', 'Black', 'center', colors.white),
-    inactive: StandardTypography(
-      props,
+    active: StandardTypography(
+      { font, isRTL ***REMOVED***,
       'p',
       'Black',
       'center',
-      props.primaryColor
+      colors.white
+    ),
+    inactive: StandardTypography(
+      { font, isRTL ***REMOVED***,
+      'p',
+      'Black',
+      'center',
+      primaryColor
     ),
     downloading: StandardTypography(
-      props,
+      { font, isRTL ***REMOVED***,
       'p',
       'Black',
       'center',
       colors.chateau
     ),
-    disabled: StandardTypography(props, 'p', 'Black', 'center', colors.chateau)
+    disabled: StandardTypography(
+      { font, isRTL ***REMOVED***,
+      'p',
+      'Black',
+      'center',
+      colors.chateau
+    )
   ***REMOVED***
 
   // get the icon name depending on the mode/if this button is active or not
@@ -60,50 +101,46 @@ function ChapterButton (props) {
       3: 'number-3-filled',
       4: 'number-4-filled'
     ***REMOVED***
-    if (props.activeNumber > props.number) return 'check-filled'
-    else if (props.mode === 'active') return iconNamesOutline[props.number]
-    else return iconNamesFilled[props.number]
+    if (activeNumber > number) return 'check-filled'
+    else if (mode === 'active') return iconNamesOutline[number]
+    else return iconNamesFilled[number]
   ***REMOVED***
 
   return (
     <TouchableOpacity
-      style={[styles.chapterButton, buttonStyles[props.mode]]***REMOVED***
+      style={[styles.chapterButton, buttonStyles[mode]]***REMOVED***
       // no onPress if button is disabled
       onPress={
-        props.mode === 'disabled' || props.mode === 'downloading'
+        mode === 'disabled' || mode === 'downloading'
           ? () => {***REMOVED***
-          : () => props.onPress(props.name)
+          : () => onPress(name)
       ***REMOVED***
-      activeOpacity={
-        props.mode === 'disabled' || props.mode === 'downloading' ? 1 : 0.2
-      ***REMOVED***
+      activeOpacity={mode === 'disabled' || mode === 'downloading' ? 1 : 0.2***REMOVED***
     >
-      {props.mode === 'downloading' ? (
+      {mode === 'downloading' ? (
         <AnimatedCircularProgress
           size={22 * scaleMultiplier***REMOVED***
           width={4***REMOVED***
-          fill={props.downloadProgress * 100***REMOVED***
-          tintColor={props.primaryColor***REMOVED***
+          fill={downloadProgress * 100***REMOVED***
+          tintColor={primaryColor***REMOVED***
           rotation={0***REMOVED***
           backgroundColor={colors.white***REMOVED***
           padding={4***REMOVED***
         />
       ) : (
         <Icon
-          name={props.mode === 'disabled' ? 'cloud-slash' : getNumberIcon()***REMOVED***
+          name={mode === 'disabled' ? 'cloud-slash' : getNumberIcon()***REMOVED***
           size={25 * scaleMultiplier***REMOVED***
           color={
-            props.mode === 'disabled'
+            mode === 'disabled'
               ? colors.chateau
-              : props.mode === 'active'
+              : mode === 'active'
               ? colors.white
-              : props.primaryColor
+              : primaryColor
           ***REMOVED***
         />
       )***REMOVED***
-      <Text style={textStyles[props.mode]***REMOVED***>
-        {props.translations.play[props.name]***REMOVED***
-      </Text>
+      <Text style={textStyles[mode]***REMOVED***>{translations.play[name]***REMOVED***</Text>
     </TouchableOpacity>
   )
 ***REMOVED***
@@ -119,17 +156,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    primaryColor: state.database[activeGroup.language].primaryColor,
-    translations: state.database[activeGroup.language].translations
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(ChapterButton)

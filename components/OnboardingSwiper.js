@@ -9,16 +9,42 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
-import { StandardTypography, SystemTypography ***REMOVED*** from '../styles/typography'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { activeGroupSelector ***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import {
+  getLanguageFont,
+  StandardTypography,
+  SystemTypography
+***REMOVED*** from '../styles/typography'
 import WahaButton from './standard/WahaButton'
 
-function OnboardingSwiper (props) {
+function mapStateToProps (state) {
+  return activeGroupSelector(state)
+    ? {
+        font: getLanguageFont(activeGroupSelector(state).language)
+      ***REMOVED***
+    : {***REMOVED***
+***REMOVED***
+
+function OnboardingSwiper ({
+  // Props passed from a parent component.
+  isRTL,
+  sources,
+  titles,
+  messages,
+  onFinish,
+  nextTranslation,
+  startTranslation,
+  useDefaultFont,
+  // Props passed from redux.
+  font = null
+***REMOVED***) {
   const [onboardingPage, setOnboardingPage] = useState(1)
   const [pagerRef, setPagerRef] = useState()
   var dots = []
 
-  props.titles.forEach((title, index) => {
+  titles.forEach((title, index) => {
     dots.push(
       <View
         style={[
@@ -46,15 +72,15 @@ function OnboardingSwiper (props) {
   ***REMOVED***)
 
   var pages = []
-  props.titles.forEach((title, index) => {
+  titles.forEach((title, index) => {
     pages.push(
       <View style={{ flexDirection: 'row', flex: 1 ***REMOVED******REMOVED*** key={index***REMOVED***>
         <View style={styles.page***REMOVED***>
-          <Image style={styles.image***REMOVED*** source={props.sources[index]***REMOVED*** />
+          <Image style={styles.image***REMOVED*** source={sources[index]***REMOVED*** />
           <View>
             <Text
               style={[
-                props.useDefaultFont
+                useDefaultFont
                   ? SystemTypography(
                       false,
                       'h2',
@@ -63,7 +89,7 @@ function OnboardingSwiper (props) {
                       colors.shark
                     )
                   : StandardTypography(
-                      props,
+                      { font, isRTL ***REMOVED***,
                       'h2',
                       'Bold',
                       'center',
@@ -72,11 +98,11 @@ function OnboardingSwiper (props) {
                 { marginVertical: 10 ***REMOVED***
               ]***REMOVED***
             >
-              {props.titles[index]***REMOVED***
+              {titles[index]***REMOVED***
             </Text>
             <Text
               style={
-                props.useDefaultFont
+                useDefaultFont
                   ? SystemTypography(
                       false,
                       'h3',
@@ -85,7 +111,7 @@ function OnboardingSwiper (props) {
                       colors.chateau
                     )
                   : StandardTypography(
-                      props,
+                      { font, isRTL ***REMOVED***,
                       'h3',
                       'Regular',
                       'center',
@@ -93,14 +119,14 @@ function OnboardingSwiper (props) {
                     )
               ***REMOVED***
             >
-              {props.messages[index]***REMOVED***
+              {messages[index]***REMOVED***
             </Text>
           </View>
         </View>
 
         {/* <View style={{***REMOVED******REMOVED***>
-          {index === props.titles.length - 1 ? (
-            <TouchableOpacity onPress={props.onFinish***REMOVED***>
+          {index === titles.length - 1 ? (
+            <TouchableOpacity onPress={onFinish***REMOVED***>
               <Icon name='check' size={50***REMOVED*** color={colors.tuna***REMOVED*** />
             </TouchableOpacity>
           ) : null***REMOVED***
@@ -113,7 +139,7 @@ function OnboardingSwiper (props) {
     <SafeAreaView style={{ flex: 1 ***REMOVED******REMOVED***>
       {/* <TouchableOpacity
         style={{ position: 'absolute', marginTop: 20, marginLeft: 10 ***REMOVED******REMOVED***
-        onPress={props.onFinish***REMOVED***
+        onPress={onFinish***REMOVED***
       >
         <Icon name='cancel' color={colors.oslo***REMOVED*** size={40 * scaleMultiplier***REMOVED*** />
       </TouchableOpacity> */***REMOVED***
@@ -121,10 +147,10 @@ function OnboardingSwiper (props) {
         ref={ref => (ref ? setPagerRef(ref) : null)***REMOVED***
         // showPageIndicator
         style={styles.pager***REMOVED***
-        initialPage={props.isRTL ? pages.length - 1 : 0***REMOVED***
+        initialPage={isRTL ? pages.length - 1 : 0***REMOVED***
         onPageSelected={stuff => setOnboardingPage(stuff.nativeEvent.position)***REMOVED***
       >
-        {props.isRTL ? pages.reverse() : pages***REMOVED***
+        {isRTL ? pages.reverse() : pages***REMOVED***
       </ViewPager>
       <View
         style={{
@@ -141,7 +167,7 @@ function OnboardingSwiper (props) {
         <WahaButton
           type='filled'
           color={
-            props.isRTL
+            isRTL
               ? onboardingPage === 0
                 ? colors.apple
                 : colors.blue
@@ -150,22 +176,22 @@ function OnboardingSwiper (props) {
               : colors.blue
           ***REMOVED***
           onPress={
-            props.isRTL
+            isRTL
               ? onboardingPage === 0
-                ? props.onFinish
+                ? onFinish
                 : () => pagerRef.setPage(onboardingPage - 1)
               : onboardingPage === pages.length - 1
-              ? props.onFinish
+              ? onFinish
               : () => pagerRef.setPage(onboardingPage + 1)
           ***REMOVED***
           label={
-            props.isRTL
+            isRTL
               ? onboardingPage === 0
-                ? props.startTranslation
-                : props.nextTranslation
+                ? startTranslation
+                : nextTranslation
               : onboardingPage === pages.length - 1
-              ? props.startTranslation
-              : props.nextTranslation
+              ? startTranslation
+              : nextTranslation
           ***REMOVED***
           style={{
             width: Dimensions.get('window').width - 40,
@@ -181,12 +207,12 @@ function OnboardingSwiper (props) {
           style={{
             position: 'absolute',
             width: '100%',
-            alignItems: props.isRTL ? 'flex-start' : 'flex-end',
+            alignItems: isRTL ? 'flex-start' : 'flex-end',
             opacity: checkmarkOpacity
           ***REMOVED******REMOVED***
         >
-          {/* <TouchableOpacity onPress={props.onFinish***REMOVED***> */***REMOVED***
-        {/* <TouchableOpacity onPress={props.onFinish***REMOVED***>
+          {/* <TouchableOpacity onPress={onFinish***REMOVED***> */***REMOVED***
+        {/* <TouchableOpacity onPress={onFinish***REMOVED***>
           <Icon name='check' size={50***REMOVED*** color={colors.tuna***REMOVED*** />
         </TouchableOpacity> */***REMOVED***
         {/* </Animated.View> */***REMOVED***
@@ -221,17 +247,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   ***REMOVED***
 ***REMOVED***)
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return activeGroup
-    ? {
-        font: getLanguageFont(activeGroup.language),
-        activeGroup: activeGroup
-      ***REMOVED***
-    : {***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps)(OnboardingSwiper)

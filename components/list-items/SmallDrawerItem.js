@@ -1,24 +1,42 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
-import { colors, getLanguageFont ***REMOVED*** from '../../constants'
-import { StandardTypography ***REMOVED*** from '../../styles/typography'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
-function SmallDrawerItem (props) {
+function SmallDrawerItem ({
+  // Props passed from a parent component.s
+  onPress,
+  label,
+  // Props passed from redux.
+  isRTL,
+  font,
+  activeGroup
+***REMOVED***) {
   //+ RENDER
 
   return (
     <TouchableOpacity
       style={[
         styles.smallDrawerItemContainer,
-        { flexDirection: props.isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
       ]***REMOVED***
-      onPress={props.onPress***REMOVED***
+      onPress={onPress***REMOVED***
     >
       <Text
-        style={StandardTypography(props, 'h3', 'Bold', 'left', colors.chateau)***REMOVED***
+        style={StandardTypography(
+          { font, isRTL ***REMOVED***,
+          'h3',
+          'Bold',
+          'left',
+          colors.chateau
+        )***REMOVED***
       >
-        {props.label***REMOVED***
+        {label***REMOVED***
       </Text>
     </TouchableOpacity>
   )
@@ -35,13 +53,10 @@ const styles = StyleSheet.create({
 ***REMOVED***)
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    isRTL: state.database[activeGroup.language].isRTL,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup
+    isRTL: activeDatabaseSelector(state).isRTL,
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state)
   ***REMOVED***
 ***REMOVED***
 

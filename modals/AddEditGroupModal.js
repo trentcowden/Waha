@@ -11,26 +11,70 @@ import {
   View
 ***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
+import { groupIcons, groupIconSources ***REMOVED*** from '../assets/groupIcons/_groupIcons'
 import GroupAvatar from '../components/GroupAvatar'
-import {
-  colors,
-  getLanguageFont,
-  groupIcons,
-  groupIconSources,
-  scaleMultiplier
-***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import ModalScreen from '../modals/ModalScreen'
+import { changeActiveGroup ***REMOVED*** from '../redux/actions/activeGroupActions'
 import { incrementGlobalGroupCounter ***REMOVED*** from '../redux/actions/databaseActions'
 import {
-  changeActiveGroup,
   createGroup,
-  deleteGroup,
   editGroup,
   resetProgress
 ***REMOVED*** from '../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
-function AddEditGroupModal (props) {
+function mapStateToProps (state) {
+  return {
+    groups: state.groups,
+    isRTL: activeDatabaseSelector(state).isRTL,
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language),
+    activeGroup: activeGroupSelector(state),
+    globalGroupCounter: state.database.globalGroupCounter
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    editGroup: (oldGroupName, newGroupName, emoji) =>
+      dispatch(editGroup(oldGroupName, newGroupName, emoji)),
+    createGroup: (groupName, language, emoji, groupID, groupNumber) =>
+      dispatch(createGroup(groupName, language, emoji, groupID, groupNumber)),
+    changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName)),
+    resetProgress: name => {
+      dispatch(resetProgress(name))
+    ***REMOVED***,
+    incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter())
+  ***REMOVED***
+***REMOVED***
+
+function AddEditGroupModal ({
+  // Props passed from a parent component.
+  isVisible,
+  hideModal,
+  type,
+  group = null,
+  languageID = null,
+  // Props passed from redux.
+  groups,
+  isRTL,
+  translations,
+  font,
+  activeGroup,
+  globalGroupCounter,
+  editGroup,
+  createGroup,
+  changeActiveGroup,
+  deleteGroup,
+  resetProgress,
+  incrementGlobalGroupCounter
+***REMOVED***) {
   //+ STATE
 
   // keeps track of the group name text input value
@@ -41,38 +85,34 @@ function AddEditGroupModal (props) {
 
   // keeps track of whether the group being editted is currently the active group
   const [isActive, setIsActive] = useState(
-    props.type === 'EditGroup'
-      ? props.activeGroup.name === props.groupName
-      : false
+    type === 'EditGroup' ? activeGroup.name === group.name : false
   )
 
   //+ FUNCTIONS
 
   function checkForDuplicate () {
     var isDuplicate = false
-    if (props.type === 'AddGroup') {
-      props.groups.forEach(group => {
+    if (type === 'AddGroup') {
+      groups.forEach(group => {
         if (group.name === groupNameInput) {
           Alert.alert(
-            props.translations.add_edit_group.popups.duplicate_group_name_title,
-            props.translations.add_edit_group.popups
-              .duplicate_group_name_message,
-            [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            translations.add_edit_group.popups.duplicate_group_name_title,
+            translations.add_edit_group.popups.duplicate_group_name_message,
+            [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           isDuplicate = true
         ***REMOVED***
       ***REMOVED***)
     ***REMOVED*** else {
-      props.groups.forEach(group => {
+      groups.forEach(storedGroup => {
         if (
-          group.name === groupNameInput &&
-          props.group.name !== groupNameInput
+          storedGroup.name === groupNameInput &&
+          group.name !== groupNameInput
         ) {
           Alert.alert(
-            props.translations.add_edit_group.popups.duplicate_group_name_title,
-            props.translations.add_edit_group.popups
-              .duplicate_group_name_message,
-            [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+            translations.add_edit_group.popups.duplicate_group_name_title,
+            translations.add_edit_group.popups.duplicate_group_name_message,
+            [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           isDuplicate = true
         ***REMOVED***
@@ -84,9 +124,9 @@ function AddEditGroupModal (props) {
   function checkForBlank () {
     if (groupNameInput === '') {
       Alert.alert(
-        props.translations.add_edit_group.popups.blank_group_name_title,
-        props.translations.add_edit_group.popups.blank_group_name_message,
-        [{ text: props.translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+        translations.add_edit_group.popups.blank_group_name_title,
+        translations.add_edit_group.popups.blank_group_name_message,
+        [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
       )
       return true
     ***REMOVED***
@@ -94,43 +134,42 @@ function AddEditGroupModal (props) {
   ***REMOVED***
 
   // adds a group to redux if it passes all error checking
-  function addNewGroup () {
+  function createGroupHandler () {
     if (checkForDuplicate() || checkForBlank()) return
 
-    props.createGroup(
+    createGroup(
       groupNameInput,
-      props.languageID,
+      languageID,
       emojiInput,
-      props.globalGroupCounter + 1,
-      props.groups.length + 1
+      globalGroupCounter + 1,
+      groups.length + 1
     )
-    props.changeActiveGroup(groupNameInput)
+    changeActiveGroup(groupNameInput)
 
     // Increment the global group counter redux variable.
-    props.incrementGlobalGroupCounter()
+    incrementGlobalGroupCounter()
 
-    props.hideModal()
+    hideModal()
   ***REMOVED***
 
   // edits a group and sets it as active
-  function editGroup () {
+  function editGroupHandler () {
     if (checkForDuplicate() || checkForBlank()) return
 
-    if (props.group.name === props.activeGroup.name)
-      props.changeActiveGroup(groupNameInput)
-    props.editGroup(props.group.name, groupNameInput, emojiInput)
-    props.hideModal()
+    if (group.name === activeGroup.name) changeActiveGroup(groupNameInput)
+    editGroup(group.name, groupNameInput, emojiInput)
+    hideModal()
   ***REMOVED***
 
   //+ RENDER
 
   return (
     <ModalScreen
-      isVisible={props.isVisible***REMOVED***
-      hideModal={props.hideModal***REMOVED***
+      isVisible={isVisible***REMOVED***
+      hideModal={hideModal***REMOVED***
       topRightComponent={
         <TouchableOpacity
-          onPress={props.type === 'AddGroup' ? addNewGroup : editGroup***REMOVED***
+          onPress={type === 'AddGroup' ? createGroupHandler : editGroupHandler***REMOVED***
           style={{
             width: 45 * scaleMultiplier,
             height: 45 * scaleMultiplier
@@ -144,20 +183,20 @@ function AddEditGroupModal (props) {
         setEmojiInput('default')
       ***REMOVED******REMOVED***
       onModalWillShow={
-        props.type === 'AddGroup'
+        type === 'AddGroup'
           ? () => {
               setGroupNameInput('')
               setEmojiInput('default')
             ***REMOVED***
           : () => {
-              setGroupNameInput(props.group.name)
-              setEmojiInput(props.group.emoji)
+              setGroupNameInput(group.name)
+              setEmojiInput(group.emoji)
             ***REMOVED***
       ***REMOVED***
       title={
-        props.type === 'AddGroup'
-          ? props.translations.add_edit_group.header_add
-          : props.translations.add_edit_group.header_edit
+        type === 'AddGroup'
+          ? translations.add_edit_group.header_add
+          : translations.add_edit_group.header_edit
       ***REMOVED***
     >
       <View style={styles.photoContainer***REMOVED***>
@@ -165,7 +204,6 @@ function AddEditGroupModal (props) {
           style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
           emoji={emojiInput***REMOVED***
           size={120***REMOVED***
-          isChangeable={true***REMOVED***
         />
       </View>
       <View
@@ -175,31 +213,35 @@ function AddEditGroupModal (props) {
       >
         <Text
           style={StandardTypography(
-            props,
+            { font, isRTL ***REMOVED***,
             'p',
             'Regular',
             'left',
             colors.chateau
           )***REMOVED***
         >
-          {props.translations.add_edit_group.group_name_form_label***REMOVED***
+          {translations.add_edit_group.group_name_form_label***REMOVED***
         </Text>
         <TextInput
           style={[
             styles.addNewGroupContainer,
-            StandardTypography(props, 'h3', 'Regular', 'left', colors.shark)
+            StandardTypography(
+              { font, isRTL ***REMOVED***,
+              'h3',
+              'Regular',
+              'left',
+              colors.shark
+            )
             // {
-            //   textAlign: props.isRTL ? 'right' : 'left',
-            //   fontFamily: props.font + '-Regular'
+            //   textAlign: isRTL ? 'right' : 'left',
+            //   fontFamily: font + '-Regular'
             // ***REMOVED***
           ]***REMOVED***
           onChangeText={text => setGroupNameInput(text)***REMOVED***
           value={groupNameInput***REMOVED***
           autoCapitalize='words'
           autoCorrect={false***REMOVED***
-          placeholder={
-            props.translations.add_edit_group.group_name_form_placeholder
-          ***REMOVED***
+          placeholder={translations.add_edit_group.group_name_form_placeholder***REMOVED***
           placeholderTextColor={colors.chateau***REMOVED***
           maxLength={50***REMOVED***
           returnKeyType='done'
@@ -207,7 +249,13 @@ function AddEditGroupModal (props) {
       </View>
       <Text
         style={[
-          StandardTypography(props, 'p', 'Regular', 'left', colors.chateau),
+          StandardTypography(
+            { font, isRTL ***REMOVED***,
+            'p',
+            'Regular',
+            'left',
+            colors.chateau
+          ),
           {
             marginHorizontal: 20,
             marginTop: 20 * scaleMultiplier,
@@ -215,7 +263,7 @@ function AddEditGroupModal (props) {
           ***REMOVED***
         ]***REMOVED***
       >
-        {props.translations.add_edit_group.icon_form_label***REMOVED***
+        {translations.add_edit_group.icon_form_label***REMOVED***
       </Text>
       <View
         style={{
@@ -291,39 +339,6 @@ const styles = StyleSheet.create({
     fontSize: 18 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    groups: state.groups,
-    isRTL: state.database[activeGroup.language].isRTL,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language),
-    activeGroup: activeGroup,
-    globalGroupCounter: state.database.globalGroupCounter
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    editGroup: (oldGroupName, newGroupName, emoji) =>
-      dispatch(editGroup(oldGroupName, newGroupName, emoji)),
-    createGroup: (groupName, language, emoji, groupID, groupNumber) =>
-      dispatch(createGroup(groupName, language, emoji, groupID, groupNumber)),
-    changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName)),
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    ***REMOVED***,
-    resetProgress: name => {
-      dispatch(resetProgress(name))
-    ***REMOVED***,
-    incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter())
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditGroupModal)
 

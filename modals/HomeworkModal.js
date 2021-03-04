@@ -10,7 +10,13 @@ import Modal from 'react-native-modal'
 import { connect ***REMOVED*** from 'react-redux'
 import HomeworkItem from '../components/list-items/HomeworkItem'
 import WahaItemDescription from '../components/standard/standard/WahaItemDescription'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 // modal variant that shows some information
 function HomeworkModal (props) {
@@ -94,13 +100,10 @@ const styles = StyleSheet.create({
 ***REMOVED***)
 
 function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
   return {
-    font: getLanguageFont(activeGroup.language),
-    translations: state.database[activeGroup.language].translations,
-    activeGroup: activeGroup
+    font: getLanguageFont(activeGroupSelector(state).language),
+    translations: activeDatabaseSelector(state).translations,
+    activeGroup: activeGroupSelector(state)
   ***REMOVED***
 ***REMOVED***
 

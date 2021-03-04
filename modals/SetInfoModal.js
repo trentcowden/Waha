@@ -1,14 +1,61 @@
 import React from 'react'
-import { Dimensions, FlatList, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+***REMOVED*** from 'react-native'
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import WahaButton from '../components/standard/WahaButton'
-import { colors, getLanguageFont, scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
-import { StandardTypography ***REMOVED*** from '../styles/typography'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
-function SetInfoModal (props) {
+function mapStateToProps (state) {
+  return {
+    downloads: state.downloads,
+    activeDatabase: activeDatabaseSelector(state),
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state),
+    translations: activeDatabaseSelector(state).translations,
+    font: getLanguageFont(activeGroupSelector(state).language)
+  ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {
+    addSet: (groupName, groupID, set) => {
+      dispatch(addSet(groupName, groupID, set))
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
+
+/** A modal screen that displays the various lessons in a set and their scripture references. */
+function SetInfoModal ({
+  // Props passed from a parent component.
+  isVisible,
+  hideModal,
+  category,
+  thisSet,
+  showSnackbar,
+  // Props passed from redux.
+  downloads,
+  activeDatabase,
+  isRTL,
+  activeGroup,
+  translations,
+  font,
+  addSet
+***REMOVED***) {
   //+ FUNCTIONS
 
   function renderLessonInfoItem (item) {
@@ -19,17 +66,19 @@ function SetInfoModal (props) {
       ***REMOVED***)
 
       return (
-        <View
+        // These are touchable because scrolling a FlatList within a modal only works when the items are touchable. Weird, but necessary.
+        <TouchableOpacity
           style={{
             marginVertical: 10 * scaleMultiplier,
             justifyContent: 'center',
             paddingHorizontal: 40,
             width: Dimensions.get('window').width
           ***REMOVED******REMOVED***
+          activeOpacity={1***REMOVED***
         >
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'h4',
               'Bold',
               'left',
@@ -40,7 +89,7 @@ function SetInfoModal (props) {
           </Text>
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'p',
               'Regular',
               'left',
@@ -49,11 +98,11 @@ function SetInfoModal (props) {
           >
             {scriptureList***REMOVED***
           </Text>
-        </View>
+        </TouchableOpacity>
       )
     ***REMOVED*** else
       return (
-        <View
+        <TouchableOpacity
           style={{
             marginVertical: 10 * scaleMultiplier,
             justifyContent: 'center',
@@ -63,7 +112,7 @@ function SetInfoModal (props) {
         >
           <Text
             style={StandardTypography(
-              props,
+              { font, isRTL ***REMOVED***,
               'h4',
               'Bold',
               'left',
@@ -72,33 +121,29 @@ function SetInfoModal (props) {
           >
             {item.title***REMOVED***
           </Text>
-        </View>
+        </TouchableOpacity>
       )
   ***REMOVED***
 
   return (
     <ModalScreen
-      title={props.translations.add_set.header_set_details***REMOVED***
-      hideModal={props.hideModal***REMOVED***
-      isVisible={props.isVisible***REMOVED***
+      title={translations.add_set.header_set_details***REMOVED***
+      hideModal={hideModal***REMOVED***
+      isVisible={isVisible***REMOVED***
     >
       <View style={styles.studySetItemContainer***REMOVED***>
-        <SetItem thisSet={props.thisSet***REMOVED*** mode='setinfo' />
+        <SetItem thisSet={thisSet***REMOVED*** screen='SetInfo' />
       </View>
       <WahaButton
         type='filled'
         color={colors.apple***REMOVED***
         onPress={() => {
-          props.addSet(
-            props.activeGroup.name,
-            props.activeGroup.id,
-            props.thisSet
-          )
-          props.showSnackbar()
-          props.hideModal()
+          addSet(activeGroup.name, activeGroup.id, thisSet)
+          showSnackbar()
+          hideModal()
         ***REMOVED******REMOVED***
         style={{ marginHorizontal: 20, marginVertical: 10 ***REMOVED******REMOVED***
-        label={props.translations.add_set.add_new_story_set_button_label***REMOVED***
+        label={translations.add_set.add_new_story_set_button_label***REMOVED***
         extraComponent={
           <Icon
             style={{ marginHorizontal: 10 ***REMOVED******REMOVED***
@@ -108,12 +153,15 @@ function SetInfoModal (props) {
           />
         ***REMOVED***
       />
-      <FlatList
-        keyExtractor={item => item.id***REMOVED***
-        data={props.thisSet.lessons***REMOVED***
-        renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
-        contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
-      />
+      <View style={{ flex: 1 ***REMOVED******REMOVED***>
+        <FlatList
+          keyExtractor={item => item.id***REMOVED***
+          // nestedScrollEnabled
+          data={thisSet.lessons***REMOVED***
+          renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
+          contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
+        />
+      </View>
     </ModalScreen>
   )
 ***REMOVED***
@@ -131,29 +179,5 @@ const styles = StyleSheet.create({
     height: 100 * scaleMultiplier
   ***REMOVED***
 ***REMOVED***)
-
-//+ REDUX
-
-function mapStateToProps (state) {
-  var activeGroup = state.groups.filter(
-    item => item.name === state.activeGroup
-  )[0]
-  return {
-    downloads: state.downloads,
-    activeDatabase: state.database[activeGroup.language],
-    isRTL: state.database[activeGroup.language].isRTL,
-    activeGroup: activeGroup,
-    translations: state.database[activeGroup.language].translations,
-    font: getLanguageFont(activeGroup.language)
-  ***REMOVED***
-***REMOVED***
-
-function mapDispatchToProps (dispatch) {
-  return {
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetInfoModal)
