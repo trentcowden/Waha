@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Clipboard,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -56,7 +57,7 @@ function InformationScreen ({
   ***REMOVED***
 
   return (
-    <View style={styles.screen***REMOVED***>
+    <SafeAreaView style={styles.screen***REMOVED***>
       <TouchableOpacity
         style={[
           styles.informationItem,
@@ -172,9 +173,25 @@ function InformationScreen ({
             Made with
           </Text>
           <Icon name='heart' size={15***REMOVED*** color={colors.geyser***REMOVED*** />
+          <Text
+            style={[
+              StandardTypography(
+                { font, isRTL ***REMOVED***,
+                'd',
+                'Regular',
+                'center',
+                colors.geyser
+              ),
+              {
+                marginHorizontal: 2
+              ***REMOVED***
+            ]***REMOVED***
+          >
+            by the Waha team
+          </Text>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 ***REMOVED***
 
