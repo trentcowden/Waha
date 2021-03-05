@@ -25,6 +25,7 @@ import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typog
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
+    activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     translations: activeDatabaseSelector(state).translations
@@ -35,12 +36,13 @@ function ContactUsScreen ({
   navigation: { setOptions, goBack ***REMOVED***,
   // Props passed from redux.
   activeGroup,
+  activeDatabase,
   isRTL,
   font,
   translations
 ***REMOVED***) {
   const [emailTextInput, setEmailTextInput] = useState(null)
-  const [messageTextInput, setMessageTextInput] = useState(null)
+  const [messageTextInput, setMessageTextInput] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [emailError, setEmailError] = useState(null)
@@ -72,6 +74,27 @@ function ContactUsScreen ({
     if (emailTextInput.match(/^.+@.+\..+$/)) setEmailError(false)
     else setEmailError(true)
   ***REMOVED***
+
+  var asteriskComponent = isRTL ? (
+    <Text
+      style={[
+        StandardTypography({ font, isRTL ***REMOVED***, 'h3', 'Bold', 'left', colors.red)
+      ]***REMOVED***
+    >
+      {'* '***REMOVED***
+    </Text>
+  ) : (
+    <Text
+      style={[
+        StandardTypography({ font, isRTL ***REMOVED***, 'h3', 'Bold', 'left', colors.red)
+      ]***REMOVED***
+    >
+      {' *'***REMOVED***
+    </Text>
+  )
+
+  var leftAsterisk = isRTL ? asteriskComponent : null
+  var rightAsterisk = isRTL ? null : asteriskComponent
 
   return (
     <SafeAreaView style={styles.screen***REMOVED***>
@@ -125,20 +148,9 @@ function ContactUsScreen ({
               ***REMOVED***
             ]***REMOVED***
           >
-            Email
-            <Text
-              style={[
-                StandardTypography(
-                  { font, isRTL ***REMOVED***,
-                  'h3',
-                  'Bold',
-                  'left',
-                  colors.red
-                )
-              ]***REMOVED***
-            >
-              {' *'***REMOVED***
-            </Text>
+            {leftAsterisk***REMOVED***
+            {translations.contact_us.email_label***REMOVED***
+            {rightAsterisk***REMOVED***
           </Text>
           <View
             style={{
@@ -197,21 +209,13 @@ function ContactUsScreen ({
             justifyContent: 'center'
           ***REMOVED******REMOVED***
         >
-          <Text
-            style={[
-              StandardTypography(
-                { font, isRTL ***REMOVED***,
-                'h3',
-                'Bold',
-                'left',
-                colors.shark
-              ),
-              {
-                marginVertical: 10 * scaleMultiplier
-              ***REMOVED***
-            ]***REMOVED***
+          <View
+            style={{
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            ***REMOVED******REMOVED***
           >
-            Message
             <Text
               style={[
                 StandardTypography(
@@ -219,13 +223,31 @@ function ContactUsScreen ({
                   'h3',
                   'Bold',
                   'left',
-                  colors.red
+                  colors.shark
+                ),
+                {
+                  marginVertical: 10 * scaleMultiplier
+                ***REMOVED***
+              ]***REMOVED***
+            >
+              {leftAsterisk***REMOVED***
+              {translations.contact_us.message_label***REMOVED***
+              {rightAsterisk***REMOVED***
+            </Text>
+            <Text
+              style={[
+                StandardTypography(
+                  { font, isRTL ***REMOVED***,
+                  'h4',
+                  'regular',
+                  'left',
+                  messageTextInput.length > 500 ? colors.red : colors.chateau
                 )
               ]***REMOVED***
             >
-              {' *'***REMOVED***
+              {messageTextInput.length + '/500'***REMOVED***
             </Text>
-          </Text>
+          </View>
           <TextInput
             onChangeText={text => setMessageTextInput(text)***REMOVED***
             style={[
@@ -245,37 +267,46 @@ function ContactUsScreen ({
                 paddingBottom: 20,
                 paddingHorizontal: 20,
                 justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                marginBottom: 10 * scaleMultiplier
+                alignItems: 'flex-start'
               ***REMOVED***
             ]***REMOVED***
             multiline
           />
         </View>
-        {/* <KeyboardAvoidingView
-          behavior='padding'
-          // style={{ width: '100%', position: 'absolute', bottom: 0 ***REMOVED******REMOVED***
-        > */***REMOVED***
         <WahaButton
-          type={emailError ? 'inactive' : 'filled'***REMOVED***
-          color={emailError ? colors.geyser : colors.apple***REMOVED***
+          type={
+            emailError ||
+            emailTextInput === null ||
+            messageTextInput.length > 500
+              ? 'inactive'
+              : 'filled'
+          ***REMOVED***
+          color={
+            emailError ||
+            emailTextInput === null ||
+            messageTextInput.length > 500
+              ? colors.geyser
+              : colors.apple
+          ***REMOVED***
           useDefaultFont={false***REMOVED***
-          label={isSubmitting ? '' : 'Submit'***REMOVED***
+          label={
+            isSubmitting ? '' : translations.contact_us.submit_button_label
+          ***REMOVED***
           width={Dimensions.get('window').width / 3***REMOVED***
           onPress={() => {
             setIsSubmitting(true)
             db.collection('feedback')
               .add({
                 language: activeGroup.language,
-                contactEmail: 'trent@waha.app',
+                contactEmail: activeDatabase.contactEmail,
                 email: emailTextInput,
                 message: messageTextInput
               ***REMOVED***)
               .then(() => {
                 setIsSubmitting(false)
                 Alert.alert(
-                  'Message sent successfully.',
-                  "Thanks for contacting us! We'll get back to you as soon as we can.",
+                  translations.contact_us.popups.submitted_successfully_title,
+                  translations.contact_us.popups.submitted_successfully_message,
                   [
                     {
                       text: translations.general.ok,
@@ -287,9 +318,10 @@ function ContactUsScreen ({
                 )
               ***REMOVED***)
               .catch(() => {
+                setIsSubmitting(false)
                 Alert.alert(
-                  'There was an error sending your message.',
-                  'Please check your internet connection and try again.',
+                  translations.contact_us.popups.submit_error_title,
+                  translations.contact_us.popups.submit_error_message,
                   [
                     {
                       text: translations.general.ok,
@@ -301,10 +333,7 @@ function ContactUsScreen ({
           ***REMOVED******REMOVED***
           style={{
             height: 68 * scaleMultiplier,
-            alignSelf: 'flex-end'
-            // marginBottom: 30 * scaleMultiplier
-            // position: 'absolute',
-            // bottom: 0
+            alignSelf: isRTL ? 'flex-start' : 'flex-end'
           ***REMOVED******REMOVED***
           extraComponent={
             isSubmitting ? (
@@ -314,8 +343,6 @@ function ContactUsScreen ({
             ) : null
           ***REMOVED***
         />
-        {/* </KeyboardAvoidingView> */***REMOVED***
-        {/* </ScrollView> */***REMOVED***
       </ScrollView>
     </SafeAreaView>
   )
@@ -327,13 +354,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: colors.aquaHaze
-  ***REMOVED***,
-  formItemContainer: {
-    width: '100%',
-    height: 100 * scaleMultiplier,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-    backgroundColor: 'green'
   ***REMOVED***
 ***REMOVED***)
 
