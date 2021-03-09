@@ -230,7 +230,7 @@ function WahaDrawer ({
         />
         <DrawerItem
           icon='email'
-          label={translations.general.feedback***REMOVED***
+          label={translations.contact_us.header***REMOVED***
           onPress={
             () =>
               // openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
