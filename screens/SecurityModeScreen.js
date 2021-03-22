@@ -49,28 +49,20 @@ function SecurityModeScreen ({
   setSecurityEnabled,
   setTimeoutDuration
 ***REMOVED***) {
-  /** Keeps track of whether the change timeout modal is visible. */
-  const [showChangeTimeoutModal, setShowChangeTimeoutModal] = useState(false)
-
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
-    setOptions(getNavOptions())
-  ***REMOVED***, [])
-
-  /**
-   * Returns the navigation options for this screen.
-   * @return {Object***REMOVED*** - The navigation options.
-   */
-  function getNavOptions () {
-    return {
+    setOptions({
       headerRight: isRTL
         ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>,
       headerLeft: isRTL
         ? () => <View></View>
         : () => <BackButton onPress={() => goBack()***REMOVED*** />
-    ***REMOVED***
-  ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***, [])
+
+  /** Keeps track of whether the change timeout modal is visible. */
+  const [showChangeTimeoutModal, setShowChangeTimeoutModal] = useState(false)
 
   /**
    * Converts milliseconds into a label that says how long the security timeout is.
