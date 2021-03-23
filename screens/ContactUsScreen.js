@@ -109,8 +109,10 @@ function ContactUsScreen ({
       .then(() => {
         setIsSubmitting(false)
         Alert.alert(
-          translations.contact_us.popups.submitted_successfully_title,
-          translations.contact_us.popups.submitted_successfully_message,
+          translations.contact_us &&
+            translations.contact_us.popups.submitted_successfully_title,
+          translations.contact_us &&
+            translations.contact_us.popups.submitted_successfully_message,
           [
             {
               text: translations.general.ok,
@@ -124,8 +126,10 @@ function ContactUsScreen ({
       .catch(() => {
         setIsSubmitting(false)
         Alert.alert(
-          translations.contact_us.popups.submit_error_title,
-          translations.contact_us.popups.submit_error_message,
+          translations.contact_us &&
+            translations.contact_us.popups.submit_error_title,
+          translations.contact_us &&
+            translations.contact_us.popups.submit_error_message,
           [
             {
               text: translations.general.ok,
@@ -176,7 +180,7 @@ function ContactUsScreen ({
             ]***REMOVED***
           >
             {leftAsterisk***REMOVED***
-            {translations.contact_us.email_label***REMOVED***
+            {translations.contact_us && translations.contact_us.email_label***REMOVED***
             {rightAsterisk***REMOVED***
           </Text>
           <View
@@ -241,7 +245,7 @@ function ContactUsScreen ({
               ]***REMOVED***
             >
               {leftAsterisk***REMOVED***
-              {translations.contact_us.message_label***REMOVED***
+              {translations.contact_us && translations.contact_us.message_label***REMOVED***
               {rightAsterisk***REMOVED***
             </Text>
             <Text
@@ -269,10 +273,13 @@ function ContactUsScreen ({
                 colors.shark
               ),
               styles.textInputContainer,
-              { height: 200 * scaleMultiplier ***REMOVED***
+              { height: 200 * scaleMultiplier, textAlignVertical: 'top' ***REMOVED***
             ]***REMOVED***
             multiline
-            placeholder={translations.contact_us.message_placeholder***REMOVED***
+            placeholder={
+              translations.contact_us &&
+              translations.contact_us.message_placeholder
+            ***REMOVED***
             placeholderTextColor={colors.chateau***REMOVED***
           />
         </View>
@@ -303,7 +310,8 @@ function ContactUsScreen ({
               { marginHorizontal: 10 ***REMOVED***
             ]***REMOVED***
           >
-            {translations.contact_us.bug_checkmark_label***REMOVED***
+            {translations.contact_us &&
+              translations.contact_us.bug_checkmark_label***REMOVED***
           </Text>
         </View>
         {/* Reproduction steps input area. */***REMOVED***
@@ -321,7 +329,8 @@ function ContactUsScreen ({
                 { marginVertical: 10 * scaleMultiplier ***REMOVED***
               ]***REMOVED***
             >
-              {translations.contact_us.reproduce_label***REMOVED***
+              {translations.contact_us &&
+                translations.contact_us.reproduce_label***REMOVED***
             </Text>
             <TextInput
               onChangeText={text => setReproductionStepsTextInput(text)***REMOVED***
@@ -334,7 +343,7 @@ function ContactUsScreen ({
                   colors.shark
                 ),
                 styles.textInputContainer,
-                { height: 200 * scaleMultiplier ***REMOVED***
+                { height: 200 * scaleMultiplier, textAlignVertical: 'top' ***REMOVED***
               ]***REMOVED***
               multiline
             />
@@ -359,14 +368,18 @@ function ContactUsScreen ({
           ***REMOVED***
           useDefaultFont={false***REMOVED***
           label={
-            isSubmitting ? '' : translations.contact_us.submit_button_label
+            isSubmitting
+              ? ''
+              : translations.contact_us &&
+                translations.contact_us.submit_button_label
           ***REMOVED***
           width={Dimensions.get('window').width / 3***REMOVED***
           onPress={submit***REMOVED***
           style={{
             height: 68 * scaleMultiplier,
             alignSelf: isRTL ? 'flex-start' : 'flex-end',
-            marginVertical: 10 * scaleMultiplier
+            marginTop: 10 * scaleMultiplier,
+            marginBottom: 20 * scaleMultiplier
           ***REMOVED******REMOVED***
           extraComponent={
             // If we're in the middle of submitting, change the submit button to show an activity indicator.

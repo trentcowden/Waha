@@ -533,7 +533,6 @@ function PlayScreen ({
       ***REMOVED*** else if (chapter === 'story') {
         lockPortrait(() => {***REMOVED***)
         setSeekPosition(0)
-        swipeToScripture()
         if (storySource) {
           loadMedia('audio', storySource)
         ***REMOVED***
