@@ -42,7 +42,7 @@
     "web": {
       "config": {
         "firebase": {
-          "apiKey": "***REMOVED***",
+          "apiKey": "AIzaSyDTKOeIHXR1QTgqJJOfo6xuEkwd7K6WsPM",
           "authDomain": "waha-app-db.firebaseapp.com",
           "databaseURL": "https://waha-app-db.firebaseio.com",
           "projectId": "waha-app-db",
