@@ -1,25 +1,25 @@
 import * as WebBrowser from 'expo-web-browser'
-import React, { useState ***REMOVED*** from 'react'
-import { Alert, ScrollView, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import React, { useState } from 'react'
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
-import { connect ***REMOVED*** from 'react-redux'
+import { connect } from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import DrawerItem from '../components/list-items/DrawerItem'
 import WahaButton from '../components/standard/WahaButton'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier } from '../constants'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import {
   setHasFetchedLanguageData,
   updateLanguageCoreFiles
-***REMOVED*** from '../redux/actions/databaseActions'
-import { setIsInstallingLanguageInstance ***REMOVED*** from '../redux/actions/isInstallingLanguageInstanceActions'
-import { storeDownloads ***REMOVED*** from '../redux/actions/storedDownloadsActions'
+} from '../redux/actions/databaseActions'
+import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont, StandardTypography } from '../styles/typography'
 import Separator from './standard/Separator'
 
 function mapStateToProps (state) {
@@ -31,8 +31,8 @@ function mapStateToProps (state) {
     font: getLanguageFont(activeGroupSelector(state).language),
     isConnected: state.network.isConnected,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function mapDispatchToProps (dispatch) {
   return {
@@ -42,12 +42,12 @@ function mapDispatchToProps (dispatch) {
     storeDownloads: downloads => dispatch(storeDownloads(downloads)),
     setHasFetchedLanguageData: hasFetchedLanguageData =>
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData))
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function WahaDrawer ({
   // Props passed from navigation.
-  navigation: { navigate ***REMOVED***,
+  navigation: { navigate },
   // Props passed from redux.
   primaryColor,
   isRTL,
@@ -60,7 +60,7 @@ function WahaDrawer ({
   setIsInstallingLanguageInstance,
   storeDownloads,
   setHasFetchedLanguageData
-***REMOVED***) {
+}) {
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
   //+ FUNCTIONS
@@ -69,8 +69,8 @@ function WahaDrawer ({
   async function openBrowser (url) {
     await WebBrowser.openBrowserAsync(url, {
       dismissButtonStyle: 'close'
-    ***REMOVED***)
-  ***REMOVED***
+    })
+  }
 
   function onUpdatePress () {
     // Replace our downloads object with an empty array.
@@ -84,46 +84,46 @@ function WahaDrawer ({
 
     // Update the language core files.
     updateLanguageCoreFiles()
-  ***REMOVED***
+  }
 
   //+ RENDER
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: primaryColor ***REMOVED***]***REMOVED***
-      forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' ***REMOVED******REMOVED***
+      style={[styles.container, { backgroundColor: primaryColor }]}
+      forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' }}
     >
-      <View style={styles.drawerHeaderContainer***REMOVED***>
-        <View style={styles.groupIconContainer***REMOVED***>
+      <View style={styles.drawerHeaderContainer}>
+        <View style={styles.groupIconContainer}>
           <GroupAvatar
-            style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
-            emoji={activeGroup.emoji***REMOVED***
-            size={120***REMOVED***
-            onPress={() => setShowEditGroupModal(true)***REMOVED***
+            style={{ backgroundColor: colors.athens }}
+            emoji={activeGroup.emoji}
+            size={120}
+            onPress={() => setShowEditGroupModal(true)}
           />
         </View>
         <Text
           style={StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h2',
             'Black',
             'center',
             colors.white
-          )***REMOVED***
-          numberOfLines={2***REMOVED***
+          )}
+          numberOfLines={2}
         >
-          {activeGroup.name***REMOVED***
+          {activeGroup.name}
         </Text>
       </View>
       <ScrollView
-        bounces={false***REMOVED***
-        style={{ backgroundColor: colors.white, flex: 1 ***REMOVED******REMOVED***
+        bounces={false}
+        style={{ backgroundColor: colors.white, flex: 1 }}
       >
-        {/* Show an update button if we have any core files to update. */***REMOVED***
+        {/* Show an update button if we have any core files to update. */}
         {languageCoreFilesToUpdate.length !== 0 ? (
           <WahaButton
-            type={isConnected ? 'filled' : 'inactive'***REMOVED***
-            color={isConnected ? colors.apple : colors.geyser***REMOVED***
+            type={isConnected ? 'filled' : 'inactive'}
+            color={isConnected ? colors.apple : colors.geyser}
             onPress={() => {
               Alert.alert(
                 translations.general.popups.download_update_title,
@@ -131,40 +131,40 @@ function WahaDrawer ({
                 [
                   {
                     text: translations.general.cancel,
-                    onPress: () => {***REMOVED***
-                  ***REMOVED***,
+                    onPress: () => {}
+                  },
                   {
                     text: translations.general.ok,
                     onPress: onUpdatePress
-                  ***REMOVED***
+                  }
                 ]
               )
-            ***REMOVED******REMOVED***
-            label={translations.general.download_update_button_label***REMOVED***
+            }}
+            label={translations.general.download_update_button_label}
             extraComponent={
               isConnected ? (
                 <View
                   style={{
                     width: 50 * scaleMultiplier,
                     alignItems: 'center'
-                  ***REMOVED******REMOVED***
+                  }}
                 >
                   <Icon
                     name='error-filled'
-                    size={30 * scaleMultiplier***REMOVED***
-                    color={colors.white***REMOVED***
+                    size={30 * scaleMultiplier}
+                    color={colors.white}
                   />
                 </View>
               ) : (
-                <View style={{ width: 50 * scaleMultiplier ***REMOVED******REMOVED***>
+                <View style={{ width: 50 * scaleMultiplier }}>
                   <Icon
                     name='cloud-slash'
-                    size={30 * scaleMultiplier***REMOVED***
-                    color={colors.chateau***REMOVED***
+                    size={30 * scaleMultiplier}
+                    color={colors.chateau}
                   />
                 </View>
               )
-            ***REMOVED***
+            }
             style={{
               marginHorizontal: 5,
               marginTop: 5,
@@ -173,42 +173,42 @@ function WahaDrawer ({
               flexDirection: isRTL ? 'row' : 'row-reverse',
               justifyContent: 'flex-end',
               paddingHorizontal: 5
-            ***REMOVED******REMOVED***
+            }}
             textStyle={[
-              { paddingHorizontal: 10 ***REMOVED***,
+              { paddingHorizontal: 10 },
               StandardTypography(
-                { font, isRTL ***REMOVED***,
+                { font, isRTL },
                 'h3',
                 'Bold',
                 'center',
                 isConnected ? colors.white : colors.chateau
               )
-            ]***REMOVED***
+            ]}
           />
-        ) : null***REMOVED***
-        <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
+        ) : null}
+        <View style={{ width: '100%', height: 5 }} />
         <DrawerItem
           icon='group'
-          label={translations.groups.header***REMOVED***
-          onPress={() => navigate('Groups')***REMOVED***
+          label={translations.groups.header}
+          onPress={() => navigate('Groups')}
         />
         <DrawerItem
           icon='security'
-          label={translations.security.header***REMOVED***
-          onPress={() => navigate('SecurityMode')***REMOVED***
+          label={translations.security.header}
+          onPress={() => navigate('SecurityMode')}
         />
         <DrawerItem
           icon='boat'
-          label={translations.mobilization_tools.header***REMOVED***
-          onPress={() => navigate('MobilizationTools')***REMOVED***
+          label={translations.mobilization_tools.header}
+          onPress={() => navigate('MobilizationTools')}
         />
-        <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** />
+        <View style={{ width: '100%', height: 5 }} />
         <Separator />
-        {/* <View style={{ width: '100%', height: 5 ***REMOVED******REMOVED*** /> */***REMOVED***
+        {/* <View style={{ width: '100%', height: 5 }} /> */}
         <Text
           style={[
             StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'p',
               'Regular',
               'left',
@@ -218,62 +218,62 @@ function WahaDrawer ({
               marginHorizontal: 20,
               marginTop: 20 * scaleMultiplier,
               marginBottom: 15 * scaleMultiplier
-            ***REMOVED***
-          ]***REMOVED***
+            }
+          ]}
         >
-          {translations.general.other***REMOVED***
+          {translations.general.other}
         </Text>
         <DrawerItem
           icon='storage'
-          label={translations.storage.header***REMOVED***
-          onPress={() => navigate('Storage')***REMOVED***
+          label={translations.storage.header}
+          onPress={() => navigate('Storage')}
         />
         <DrawerItem
           icon='email'
-          label={translations.contact_us && translations.contact_us.header***REMOVED***
+          label={translations.contact_us && translations.contact_us.header}
           onPress={
             () =>
               // openBrowser('https://coda.io/form/Waha-Bug-Report_dyWvuvL6WTx')
               navigate('ContactUs')
             // New "contact us form" testing
             // openBrowser(
-            //   `https://coda.io/form/Contact-Us_dOsPhfw4nDB?Language=${activeGroup.language***REMOVED***`
+            //   `https://coda.io/form/Contact-Us_dOsPhfw4nDB?Language=${activeGroup.language}`
             // )
-          ***REMOVED***
+          }
         />
         <DrawerItem
           icon='info'
-          onPress={() => navigate('Information')***REMOVED***
-          label={translations.general.information***REMOVED***
+          onPress={() => navigate('Information')}
+          label={translations.general.information}
         />
       </ScrollView>
       <AddEditGroupModal
-        isVisible={showEditGroupModal***REMOVED***
-        hideModal={() => setShowEditGroupModal(false)***REMOVED***
+        isVisible={showEditGroupModal}
+        hideModal={() => setShowEditGroupModal(false)}
         type='EditGroup'
-        group={activeGroup***REMOVED***
+        group={activeGroup}
       />
     </SafeAreaView>
   )
-***REMOVED***
+}
 
 //+ REDUX
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  ***REMOVED***,
+  },
   drawerHeaderContainer: {
     width: '100%',
     height: 225 * scaleMultiplier,
     justifyContent: 'center',
     alignContent: 'center',
     paddingHorizontal: 35
-  ***REMOVED***,
+  },
   groupIconContainer: {
     alignItems: 'center',
     marginVertical: 10
-  ***REMOVED***,
+  },
   pencilIconContainer: {
     alignSelf: 'flex-end',
     position: 'absolute',
@@ -281,13 +281,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 10,
     height: '100%'
-  ***REMOVED***,
+  },
   smallDrawerItemsContainer: {
     width: '100%',
     justifyContent: 'space-between',
     alignSelf: 'flex-end'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 //+ REDUX
 

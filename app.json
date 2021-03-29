@@ -12,10 +12,10 @@
       "image": "./assets/icons/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#E63946"
-    ***REMOVED***,
+    },
     "updates": {
       "enabled": false
-    ***REMOVED***,
+    },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "requireFullScreen": true,
@@ -24,7 +24,7 @@
       "supportsTablet": true,
       "buildNumber": "1.1.2",
       "appStoreUrl": "https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294"
-    ***REMOVED***,
+    },
     "android": {
       "package": "com.kingdomstrategies.waha",
       "googleServicesFile": "./firebase/google-services.json",
@@ -33,10 +33,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/adaptive_icon_foreground.png",
         "backgroundColor": "#E63946"
-      ***REMOVED***,
+      },
       "playStoreUrl": "https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha",
       "permissions": []
-    ***REMOVED***,
+    },
     "githubUrl": "https://github.com/trentcowden/Waha",
     "icon": "./assets/icons/waha_icon.png",
     "web": {
@@ -50,8 +50,8 @@
           "messagingSenderId": "831723165603",
           "appId": "1:831723165603:web:21a474da50b2d0511bec16",
           "measurementId": "G-6SYY2T8DX1"
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+        }
+      }
+    }
+  }
+}

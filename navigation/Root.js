@@ -1,7 +1,7 @@
 import React from 'react'
-import { connect ***REMOVED*** from 'react-redux'
-import { groupNames ***REMOVED*** from '../constants'
-import { changeActiveGroup, createGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import { connect } from 'react-redux'
+import { groupNames } from '../constants'
+import { changeActiveGroup, createGroup } from '../redux/actions/groupsActions'
 import LoadingScreen from '../screens/LoadingScreen'
 import MainDrawer from './MainDrawer'
 import Onboarding from './Onboarding'
@@ -16,25 +16,25 @@ function mapStateToProps (state) {
       activeGroup: state.activeGroup,
       groups: state.groups,
       database: state.database
-    ***REMOVED***
+    }
   else
     return {
       hasOnboarded: state.database.hasOnboarded,
       hasInstalledFirstLanguageInstance:
         state.database.hasInstalledFirstLanguageInstance,
       isInstallingLanguageInstance: state.isInstallingLanguageInstance
-    ***REMOVED***
-***REMOVED***
+    }
+}
 
 function mapDispatchToProps (dispatch) {
   return {
     changeActiveGroup: name => {
       dispatch(changeActiveGroup(name))
-    ***REMOVED***,
+    },
     createGroup: (groupName, language, emoji) =>
       dispatch(createGroup(groupName, language, emoji))
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * This component renders a navigator conditionally based on state. It's the first thing rendered in App.js.
@@ -49,7 +49,7 @@ function Root ({
   database = null,
   changeActiveGroup,
   createGroup
-***REMOVED***) {
+}) {
   // Below are some failsafes to keep the app functioning in case of group errors.
   if (activeGroup) {
     // If somehow, every group got deleted, create a new group in one of the installed languages so that the app can still function.
@@ -58,15 +58,15 @@ function Root ({
       Object.keys(database).forEach(key => {
         if (key.length === 2) {
           languageID = key
-        ***REMOVED***
-      ***REMOVED***)
+        }
+      })
       createGroup(groupNames[languageID], languageID, 'default')
       changeActiveGroup(groupNames[languageID])
       // If somehow, we switch to a group that doesn't exist, fall back to the first group in the groups redux array so that the app can still function.
-    ***REMOVED*** else if (!groups.some(group => activeGroup === group.name)) {
+    } else if (!groups.some(group => activeGroup === group.name)) {
       changeActiveGroup(groups[0].name)
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   /*
   Conditionally render the navigator based on the state of the 3 redux variables above. There's 3 possible options:
@@ -80,14 +80,14 @@ function Root ({
     hasOnboarded
   ) {
     return <MainDrawer />
-  ***REMOVED*** else if (
+  } else if (
     !hasInstalledFirstLanguageInstance ||
     (hasInstalledFirstLanguageInstance && !hasOnboarded)
   ) {
     return <Onboarding />
-  ***REMOVED*** else {
+  } else {
     return <LoadingScreen />
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root)

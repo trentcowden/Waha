@@ -1,27 +1,27 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+} from '../../redux/reducers/activeGroup'
+import { colors } from '../../styles/colors'
+import { getLanguageFont, StandardTypography } from '../../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * A pressable item used in Waha's navigation drawer.
- * @param {function***REMOVED*** props.onPress - The function to call when the user presses the drawer item.
- * @param {string***REMOVED*** props.icon - The name of the icon to display on the drawer item.
- * @param {string***REMOVED*** props.label - The label to display on the drawer item.
+ * @param {function} props.onPress - The function to call when the user presses the drawer item.
+ * @param {string} props.icon - The name of the icon to display on the drawer item.
+ * @param {string} props.label - The label to display on the drawer item.
  */
 function DrawerItem ({
   // Props passed from a parent component.
@@ -32,35 +32,35 @@ function DrawerItem ({
   isRTL,
   font,
   activeGroup
-***REMOVED***) {
+}) {
   return (
     <TouchableOpacity
       style={[
         styles.drawerItemContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
-      ]***REMOVED***
-      onPress={onPress***REMOVED***
+        { flexDirection: isRTL ? 'row-reverse' : 'row' }
+      ]}
+      onPress={onPress}
     >
-      <View style={styles.iconContainer***REMOVED***>
-        <Icon name={icon***REMOVED*** size={30 * scaleMultiplier***REMOVED*** color={colors.tuna***REMOVED*** />
+      <View style={styles.iconContainer}>
+        <Icon name={icon} size={30 * scaleMultiplier} color={colors.tuna} />
       </View>
       <Text
         style={[
           StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h3',
             'Bold',
             'left',
             colors.shark
           ),
-          { paddingHorizontal: 10 ***REMOVED***
-        ]***REMOVED***
+          { paddingHorizontal: 10 }
+        ]}
       >
-        {label***REMOVED***
+        {label}
       </Text>
     </TouchableOpacity>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   drawerItemContainer: {
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center'
-  ***REMOVED***,
+  },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     width: 50 * scaleMultiplier
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(DrawerItem)

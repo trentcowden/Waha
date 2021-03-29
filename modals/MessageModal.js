@@ -1,22 +1,22 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont, StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 // modal variant that shows some information
 function MessageModal ({
@@ -33,26 +33,26 @@ function MessageModal ({
   font,
   activeGroup,
   isRTL
-***REMOVED***) {
+}) {
   var cancelButton = cancelText ? (
     <TouchableOpacity
       style={{
         marginVertical: 15
         // marginBottom: 40 * scaleMultiplier,
         // marginTop: 80 * scaleMultiplier
-      ***REMOVED******REMOVED***
-      onPress={cancelOnPress***REMOVED***
+      }}
+      onPress={cancelOnPress}
     >
       <Text
         style={StandardTypography(
-          { font, isRTL ***REMOVED***,
+          { font, isRTL },
           'h2',
           'Bold',
           'left',
           colors.red
-        )***REMOVED***
+        )}
       >
-        {cancelText***REMOVED***
+        {cancelText}
       </Text>
     </TouchableOpacity>
   ) : null
@@ -61,44 +61,44 @@ function MessageModal ({
 
   return (
     <Modal
-      isVisible={isVisible***REMOVED***
-      hasBackdrop={true***REMOVED***
-      onBackdropPress={hideModal***REMOVED***
-      backdropOpacity={0.3***REMOVED***
-      style={{ justifyContent: 'flex-end', flex: 1, margin: 0 ***REMOVED******REMOVED***
-      onSwipeComplete={hideModal***REMOVED***
-      swipeDirection={['down']***REMOVED***
-      propagateSwipe={true***REMOVED***
+      isVisible={isVisible}
+      hasBackdrop={true}
+      onBackdropPress={hideModal}
+      backdropOpacity={0.3}
+      style={{ justifyContent: 'flex-end', flex: 1, margin: 0 }}
+      onSwipeComplete={hideModal}
+      swipeDirection={['down']}
+      propagateSwipe={true}
     >
-      <View style={styles.contentContainer***REMOVED***>
-        {children***REMOVED***
+      <View style={styles.contentContainer}>
+        {children}
         <Text
           style={[
             StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h2',
               'Black',
               'center',
               colors.shark
             ),
-            { marginVertical: 10 ***REMOVED***
-          ]***REMOVED***
+            { marginVertical: 10 }
+          ]}
         >
-          {title***REMOVED***
+          {title}
         </Text>
         <Text
           style={[
             StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h4',
               'Bold',
               'center',
               colors.shark
             ),
-            { paddingHorizontal: 20 ***REMOVED***
-          ]***REMOVED***
+            { paddingHorizontal: 20 }
+          ]}
         >
-          {body***REMOVED***
+          {body}
         </Text>
 
         <TouchableOpacity
@@ -108,26 +108,26 @@ function MessageModal ({
             height: 80 * scaleMultiplier,
             justifyContent: 'center'
             // backgroundColor: 'blue'
-          ***REMOVED******REMOVED***
-          onPress={confirmOnPress***REMOVED***
+          }}
+          onPress={confirmOnPress}
         >
           <Text
             style={StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h2',
               'Bold',
               'center',
               colors.apple
-            )***REMOVED***
+            )}
           >
-            {confirmText***REMOVED***
+            {confirmText}
           </Text>
         </TouchableOpacity>
-        {cancelButton***REMOVED***
+        {cancelButton}
       </View>
     </Modal>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 10
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(MessageModal)

@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React, { useEffect, useState ***REMOVED*** from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Clipboard,
   SafeAreaView,
@@ -7,159 +7,159 @@ import {
   Text,
   TouchableOpacity,
   View
-***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
+} from 'react-native'
+import { connect } from 'react-redux'
 import BackButton from '../components/standard/BackButton'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { appVersion ***REMOVED*** from '../modeSwitch'
+import { scaleMultiplier } from '../constants'
+import { appVersion } from '../modeSwitch'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont, StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     translations: activeDatabaseSelector(state).translations
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function InformationScreen ({
-  navigation: { setOptions, goBack ***REMOVED***,
+  navigation: { setOptions, goBack },
   // Props passed from redux.
   isRTL,
   font,
   translations
-***REMOVED***) {
+}) {
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
 
   function getNavOptions () {
     return {
       headerRight: isRTL
-        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
-        : () => {***REMOVED***,
+        ? () => <BackButton onPress={() => goBack()} />
+        : () => {},
       headerLeft: isRTL
-        ? () => {***REMOVED***
-        : () => <BackButton onPress={() => goBack()***REMOVED*** />
-    ***REMOVED***
-  ***REMOVED***
+        ? () => {}
+        : () => <BackButton onPress={() => goBack()} />
+    }
+  }
 
   useEffect(() => {
     setOptions(getNavOptions())
-  ***REMOVED***, [])
+  }, [])
 
   async function openBrowser (url) {
-    await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' ***REMOVED***)
-  ***REMOVED***
+    await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' })
+  }
 
   return (
-    <SafeAreaView style={styles.screen***REMOVED***>
+    <SafeAreaView style={styles.screen}>
       <TouchableOpacity
         style={[
           styles.informationItem,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row'
-          ***REMOVED***
-        ]***REMOVED***
-        onPress={() => openBrowser('https://waha.app/privacy-policy/')***REMOVED***
+          }
+        ]}
+        onPress={() => openBrowser('https://waha.app/privacy-policy/')}
       >
         <Text
           style={StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h3',
             'Bold',
             'left',
             colors.shark
-          )***REMOVED***
+          )}
         >
-          {translations.general.privacy***REMOVED***
+          {translations.general.privacy}
         </Text>
-        <Icon name='launch' color={colors.tuna***REMOVED*** size={25 * scaleMultiplier***REMOVED*** />
+        <Icon name='launch' color={colors.tuna} size={25 * scaleMultiplier} />
       </TouchableOpacity>
       <TouchableOpacity
         style={[
           styles.informationItem,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row'
-          ***REMOVED***
-        ]***REMOVED***
+          }
+        ]}
         onPress={() =>
           openBrowser('https://kingdomstrategies.givingfuel.com/general-giving')
-        ***REMOVED***
+        }
       >
         <Text
           style={StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h3',
             'Bold',
             'left',
             colors.shark
-          )***REMOVED***
+          )}
         >
-          {translations.general.donate_to_waha***REMOVED***
+          {translations.general.donate_to_waha}
         </Text>
-        <Icon name='launch' color={colors.tuna***REMOVED*** size={25 * scaleMultiplier***REMOVED*** />
+        <Icon name='launch' color={colors.tuna} size={25 * scaleMultiplier} />
       </TouchableOpacity>
       <TouchableOpacity
         style={[
           styles.informationItem,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row'
-          ***REMOVED***
-        ]***REMOVED***
+          }
+        ]}
         onPress={() => {
           setShowSnackbar(true)
           setTimeout(() => setShowSnackbar(false), 2000)
           Clipboard.setString(appVersion)
-        ***REMOVED******REMOVED***
+        }}
       >
         <View>
           <Text
             style={StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h3',
               'Bold',
               'left',
               colors.shark
-            )***REMOVED***
+            )}
           >
-            {translations.general.version***REMOVED***
+            {translations.general.version}
           </Text>
           <Text
             style={StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h4',
               'Bold',
               'left',
               colors.chateau
-            )***REMOVED***
+            )}
           >
-            {appVersion***REMOVED***
+            {appVersion}
           </Text>
         </View>
         <Icon
           name='clipboard'
-          color={colors.tuna***REMOVED***
-          size={25 * scaleMultiplier***REMOVED***
+          color={colors.tuna}
+          size={25 * scaleMultiplier}
         />
       </TouchableOpacity>
-      <View style={{ flex: 1, justifyContent: 'flex-end' ***REMOVED******REMOVED***>
+      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View
           style={{
             flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'center',
             alignItems: 'center',
             marginVertical: 3
-          ***REMOVED******REMOVED***
+          }}
         >
           <Text
             style={[
               StandardTypography(
-                { font, isRTL ***REMOVED***,
+                { font, isRTL },
                 'd',
                 'Regular',
                 'center',
@@ -167,16 +167,16 @@ function InformationScreen ({
               ),
               {
                 marginHorizontal: 2
-              ***REMOVED***
-            ]***REMOVED***
+              }
+            ]}
           >
             Made with
           </Text>
-          <Icon name='heart' size={15***REMOVED*** color={colors.geyser***REMOVED*** />
+          <Icon name='heart' size={15} color={colors.geyser} />
           <Text
             style={[
               StandardTypography(
-                { font, isRTL ***REMOVED***,
+                { font, isRTL },
                 'd',
                 'Regular',
                 'center',
@@ -184,8 +184,8 @@ function InformationScreen ({
               ),
               {
                 marginHorizontal: 2
-              ***REMOVED***
-            ]***REMOVED***
+              }
+            ]}
           >
             by the Waha team
           </Text>
@@ -193,7 +193,7 @@ function InformationScreen ({
       </View>
     </SafeAreaView>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   screen: {
@@ -201,14 +201,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: colors.aquaHaze
-  ***REMOVED***,
+  },
   informationItem: {
     width: '100%',
     height: 60 * scaleMultiplier,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(InformationScreen)

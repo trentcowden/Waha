@@ -1,25 +1,25 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
-import { colors ***REMOVED*** from '../styles/colors'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../constants'
+import { removeDownload } from '../redux/actions/downloadActions'
+import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
     isConnected: state.network.isConnected,
     downloads: state.downloads
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function mapDispatchToProps (dispatch) {
   return {
     removeDownload: lessonID => {
       dispatch(removeDownload(lessonID))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}
 
 // renders the icon on the right side of lesson item that shows the download
 //  status
@@ -35,7 +35,7 @@ function DownloadStatusIndicator ({
   isConnected,
   downloads,
   removeDownload
-***REMOVED***) {
+}) {
   //+ RENDER
 
   // HERE'S WHAT IS GOING ON
@@ -71,8 +71,8 @@ function DownloadStatusIndicator ({
           ? downloads[lessonID + 'v'].progress * 100
           : null
         break
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   // if lesson isn't only video
   return lessonType !== 'q' && lessonType !== '' ? (
@@ -80,39 +80,39 @@ function DownloadStatusIndicator ({
     isDownloaded ? (
       // if lesson is downloaded, show check
       <TouchableOpacity
-        onPress={showDeleteModal***REMOVED***
-        style={styles.downloadButtonContainer***REMOVED***
+        onPress={showDeleteModal}
+        style={styles.downloadButtonContainer}
       >
         <Icon
           name='cloud-check'
-          color={colors.chateau***REMOVED***
-          size={22 * scaleMultiplier***REMOVED***
+          color={colors.chateau}
+          size={22 * scaleMultiplier}
         />
       </TouchableOpacity>
     ) : isConnected ? (
       isDownloading ? (
         // if connected and currently downloading, show progress
         <TouchableOpacity
-          style={styles.downloadButtonContainer***REMOVED***
+          style={styles.downloadButtonContainer}
           onPress={() => {
             if (downloads[lessonID]) {
               downloads[lessonID].resumable.pauseAsync()
               removeDownload(lessonID)
-            ***REMOVED***
+            }
             if (downloads[lessonID + 'v']) {
               downloads[lessonID + 'v'].resumable.pauseAsync()
               removeDownload(lessonID + 'v')
-            ***REMOVED***
-          ***REMOVED******REMOVED***
+            }
+          }}
         >
           <AnimatedCircularProgress
-            size={22 * scaleMultiplier***REMOVED***
-            width={4 * scaleMultiplier***REMOVED***
-            fill={getDownloadPercentage()***REMOVED***
-            tintColor={colors.oslo***REMOVED***
-            rotation={0***REMOVED***
-            backgroundColor={colors.white***REMOVED***
-            padding={2***REMOVED***
+            size={22 * scaleMultiplier}
+            width={4 * scaleMultiplier}
+            fill={getDownloadPercentage()}
+            tintColor={colors.oslo}
+            rotation={0}
+            backgroundColor={colors.white}
+            padding={2}
           >
             {() => (
               <View
@@ -120,37 +120,37 @@ function DownloadStatusIndicator ({
                   width: 5 * scaleMultiplier,
                   height: 5 * scaleMultiplier,
                   backgroundColor: colors.shark
-                ***REMOVED******REMOVED***
+                }}
               />
-            )***REMOVED***
+            )}
           </AnimatedCircularProgress>
         </TouchableOpacity>
       ) : (
         // if not downloaded, not downloading, and connected, show download icon
         <TouchableOpacity
-          onPress={showSaveModal***REMOVED***
-          style={styles.downloadButtonContainer***REMOVED***
+          onPress={showSaveModal}
+          style={styles.downloadButtonContainer}
         >
           <Icon
             name='cloud-download'
-            color={isDownloaded ? colors.chateau : colors.tuna***REMOVED***
-            size={22 * scaleMultiplier***REMOVED***
+            color={isDownloaded ? colors.chateau : colors.tuna}
+            size={22 * scaleMultiplier}
           />
         </TouchableOpacity>
       )
     ) : (
       // if not downloaded and not connected, show slash
-      <View style={styles.downloadButtonContainer***REMOVED***>
+      <View style={styles.downloadButtonContainer}>
         <Icon
           name='cloud-slash'
-          color={colors.tuna***REMOVED***
-          size={22 * scaleMultiplier***REMOVED***
+          color={colors.tuna}
+          size={22 * scaleMultiplier}
         />
       </View>
     )
   ) : // if no audio source, show nothing
   null
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(
   mapStateToProps,

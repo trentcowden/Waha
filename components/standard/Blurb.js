@@ -1,20 +1,20 @@
 import React from 'react'
-import { Text, View ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { Text, View } from 'react-native'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+} from '../../redux/reducers/activeGroup'
+import { colors } from '../../styles/colors'
+import { getLanguageFont, StandardTypography } from '../../styles/typography'
 
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     isRTL: activeDatabaseSelector(state).isRTL
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function Blurb ({
   // Props passed from a parent component.
@@ -22,22 +22,22 @@ function Blurb ({
   // Props passed from redux.
   font,
   isRTL
-***REMOVED***) {
+}) {
   return (
-    <View style={{ width: '100%', padding: 20 * scaleMultiplier ***REMOVED******REMOVED***>
+    <View style={{ width: '100%', padding: 20 * scaleMultiplier }}>
       <Text
         style={StandardTypography(
-          { font, isRTL ***REMOVED***,
+          { font, isRTL },
           'p',
           'Regular',
           'center',
           colors.shark
-        )***REMOVED***
+        )}
       >
-        {text***REMOVED***
+        {text}
       </Text>
     </View>
   )
-***REMOVED***
+}
 
 export default connect(mapStateToProps)(Blurb)

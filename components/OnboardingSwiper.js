@@ -1,4 +1,4 @@
-import React, { useState ***REMOVED*** from 'react'
+import React, { useState } from 'react'
 import {
   Dimensions,
   Image,
@@ -6,26 +6,26 @@ import {
   StyleSheet,
   Text,
   View
-***REMOVED*** from 'react-native'
+} from 'react-native'
 import PagerView from 'react-native-pager-view'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { activeGroupSelector ***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../constants'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
 import {
   getLanguageFont,
   StandardTypography,
   SystemTypography
-***REMOVED*** from '../styles/typography'
+} from '../styles/typography'
 import WahaButton from './standard/WahaButton'
 
 function mapStateToProps (state) {
   return activeGroupSelector(state)
     ? {
         font: getLanguageFont(activeGroupSelector(state).language)
-      ***REMOVED***
-    : {***REMOVED***
-***REMOVED***
+      }
+    : {}
+}
 
 function OnboardingSwiper ({
   // Props passed from a parent component.
@@ -39,7 +39,7 @@ function OnboardingSwiper ({
   useDefaultFont,
   // Props passed from redux.
   font = null
-***REMOVED***) {
+}) {
   const [onboardingPage, setOnboardingPage] = useState(1)
   const [pagerRef, setPagerRef] = useState()
   var dots = []
@@ -64,19 +64,19 @@ function OnboardingSwiper ({
               index === onboardingPage
                 ? 5 * scaleMultiplier
                 : 4 * scaleMultiplier
-          ***REMOVED***
-        ]***REMOVED***
-        key={index***REMOVED***
+          }
+        ]}
+        key={index}
       />
     )
-  ***REMOVED***)
+  })
 
   var pages = []
   titles.forEach((title, index) => {
     pages.push(
-      <View style={{ flexDirection: 'row', flex: 1 ***REMOVED******REMOVED*** key={index***REMOVED***>
-        <View style={styles.page***REMOVED***>
-          <Image style={styles.image***REMOVED*** source={sources[index]***REMOVED*** />
+      <View style={{ flexDirection: 'row', flex: 1 }} key={index}>
+        <View style={styles.page}>
+          <Image style={styles.image} source={sources[index]} />
           <View>
             <Text
               style={[
@@ -89,16 +89,16 @@ function OnboardingSwiper ({
                       colors.shark
                     )
                   : StandardTypography(
-                      { font, isRTL ***REMOVED***,
+                      { font, isRTL },
                       'h2',
                       'Bold',
                       'center',
                       colors.shark
                     ),
-                { marginVertical: 10 ***REMOVED***
-              ]***REMOVED***
+                { marginVertical: 10 }
+              ]}
             >
-              {titles[index]***REMOVED***
+              {titles[index]}
             </Text>
             <Text
               style={
@@ -111,46 +111,46 @@ function OnboardingSwiper ({
                       colors.chateau
                     )
                   : StandardTypography(
-                      { font, isRTL ***REMOVED***,
+                      { font, isRTL },
                       'h3',
                       'Regular',
                       'center',
                       colors.chateau
                     )
-              ***REMOVED***
+              }
             >
-              {messages[index]***REMOVED***
+              {messages[index]}
             </Text>
           </View>
         </View>
 
-        {/* <View style={{***REMOVED******REMOVED***>
+        {/* <View style={{}}>
           {index === titles.length - 1 ? (
-            <TouchableOpacity onPress={onFinish***REMOVED***>
-              <Icon name='check' size={50***REMOVED*** color={colors.tuna***REMOVED*** />
+            <TouchableOpacity onPress={onFinish}>
+              <Icon name='check' size={50} color={colors.tuna} />
             </TouchableOpacity>
-          ) : null***REMOVED***
-        </View> */***REMOVED***
+          ) : null}
+        </View> */}
       </View>
     )
-  ***REMOVED***)
+  })
 
   return (
-    <SafeAreaView style={{ flex: 1 ***REMOVED******REMOVED***>
+    <SafeAreaView style={{ flex: 1 }}>
       {/* <TouchableOpacity
-        style={{ position: 'absolute', marginTop: 20, marginLeft: 10 ***REMOVED******REMOVED***
-        onPress={onFinish***REMOVED***
+        style={{ position: 'absolute', marginTop: 20, marginLeft: 10 }}
+        onPress={onFinish}
       >
-        <Icon name='cancel' color={colors.oslo***REMOVED*** size={40 * scaleMultiplier***REMOVED*** />
-      </TouchableOpacity> */***REMOVED***
+        <Icon name='cancel' color={colors.oslo} size={40 * scaleMultiplier} />
+      </TouchableOpacity> */}
       <PagerView
-        ref={ref => (ref ? setPagerRef(ref) : null)***REMOVED***
+        ref={ref => (ref ? setPagerRef(ref) : null)}
         // showPageIndicator
-        style={styles.pager***REMOVED***
-        initialPage={isRTL ? pages.length - 1 : 0***REMOVED***
-        onPageSelected={stuff => setOnboardingPage(stuff.nativeEvent.position)***REMOVED***
+        style={styles.pager}
+        initialPage={isRTL ? pages.length - 1 : 0}
+        onPageSelected={stuff => setOnboardingPage(stuff.nativeEvent.position)}
       >
-        {isRTL ? pages.reverse() : pages***REMOVED***
+        {isRTL ? pages.reverse() : pages}
       </PagerView>
       <View
         style={{
@@ -162,7 +162,7 @@ function OnboardingSwiper ({
           justifyContent: 'center',
           paddingHorizontal: 20,
           marginBottom: 20
-        ***REMOVED******REMOVED***
+        }}
       >
         <WahaButton
           type='filled'
@@ -174,7 +174,7 @@ function OnboardingSwiper ({
               : onboardingPage === pages.length - 1
               ? colors.apple
               : colors.blue
-          ***REMOVED***
+          }
           onPress={
             isRTL
               ? onboardingPage === 0
@@ -183,7 +183,7 @@ function OnboardingSwiper ({
               : onboardingPage === pages.length - 1
               ? onFinish
               : () => pagerRef.setPage(onboardingPage + 1)
-          ***REMOVED***
+          }
           label={
             isRTL
               ? onboardingPage === 0
@@ -192,15 +192,15 @@ function OnboardingSwiper ({
               : onboardingPage === pages.length - 1
               ? startTranslation
               : nextTranslation
-          ***REMOVED***
+          }
           style={{
             width: Dimensions.get('window').width - 40,
             marginHorizontal: 20,
             height: 68 * scaleMultiplier
-          ***REMOVED******REMOVED***
+          }}
         />
-        <View style={{ flexDirection: 'row', alignItems: 'center' ***REMOVED******REMOVED***>
-          {dots***REMOVED***
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {dots}
         </View>
 
         {/* <Animated.View
@@ -209,18 +209,18 @@ function OnboardingSwiper ({
             width: '100%',
             alignItems: isRTL ? 'flex-start' : 'flex-end',
             opacity: checkmarkOpacity
-          ***REMOVED******REMOVED***
+          }}
         >
-          {/* <TouchableOpacity onPress={onFinish***REMOVED***> */***REMOVED***
-        {/* <TouchableOpacity onPress={onFinish***REMOVED***>
-          <Icon name='check' size={50***REMOVED*** color={colors.tuna***REMOVED*** />
-        </TouchableOpacity> */***REMOVED***
-        {/* </Animated.View> */***REMOVED***
+          {/* <TouchableOpacity onPress={onFinish}> */}
+        {/* <TouchableOpacity onPress={onFinish}>
+          <Icon name='check' size={50} color={colors.tuna} />
+        </TouchableOpacity> */}
+        {/* </Animated.View> */}
       </View>
-      {/* <ViewPager ref={ref => (ref ? console.log(ref.setPage) : null)***REMOVED*** /> */***REMOVED***
+      {/* <ViewPager ref={ref => (ref ? console.log(ref.setPage) : null)} /> */}
     </SafeAreaView>
   )
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -231,21 +231,21 @@ const styles = StyleSheet.create({
     height:
       Dimensions.get('window').width * 0.6 * scaleMultiplier * scaleMultiplier,
     borderRadius: 20
-  ***REMOVED***,
+  },
   pager: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  ***REMOVED***,
+  },
   page: {
     justifyContent: 'space-around',
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20 * scaleMultiplier
-  ***REMOVED***,
+  },
   dot: {
     marginHorizontal: 10
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(OnboardingSwiper)

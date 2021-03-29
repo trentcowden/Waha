@@ -5,45 +5,45 @@ import {
   Text,
   TouchableOpacity,
   View
-***REMOVED*** from 'react-native'
+} from 'react-native'
 import Modal from 'react-native-modal'
-import { connect ***REMOVED*** from 'react-redux'
+import { connect } from 'react-redux'
 import HomeworkItem from '../components/list-items/HomeworkItem'
 import WahaItemDescription from '../components/standard/standard/WahaItemDescription'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier } from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont } from '../styles/typography'
 
 // modal variant that shows some information
 function HomeworkModal (props) {
   function renderHomeworkItem (homeworkList) {
     return (
       <HomeworkItem
-        title={homeworkList.item.title***REMOVED***
-        description={homeworkList.item.description***REMOVED***
+        title={homeworkList.item.title}
+        description={homeworkList.item.description}
       />
     )
-  ***REMOVED***
+  }
   //+ RENDER
   return (
     <Modal
-      isVisible={props.isVisible***REMOVED***
-      style={{ justifyContent: 'space-between', flex: 1, margin: 0 ***REMOVED******REMOVED***
+      isVisible={props.isVisible}
+      style={{ justifyContent: 'space-between', flex: 1, margin: 0 }}
     >
-      <View style={styles.contentContainer***REMOVED***>
+      <View style={styles.contentContainer}>
         <View
           style={{
             width: '100%',
             flex: 1,
             alignItems: 'center',
             marginTop: 30
-          ***REMOVED******REMOVED***
+          }}
         >
-          <Icon name='list' size={60 * scaleMultiplier***REMOVED*** color={colors.tuna***REMOVED*** />
+          <Icon name='list' size={60 * scaleMultiplier} color={colors.tuna} />
           <Text
             style={{
               color: colors.shark,
@@ -51,17 +51,17 @@ function HomeworkModal (props) {
               fontSize: 36 * scaleMultiplier,
               textAlign: 'center',
               marginBottom: 10
-            ***REMOVED******REMOVED***
+            }}
           >
             Homework
           </Text>
           <WahaItemDescription text='blah blah blah blah blah blah blah blah blah blah blah blah blah blah ' />
           <FlatList
-            data={props.homework***REMOVED***
-            style={{ width: '100%', paddingHorizontal: 20 ***REMOVED******REMOVED***
-            renderItem={renderHomeworkItem***REMOVED***
-            keyExtractor={item => item.title***REMOVED***
-            persistentScrollbar={true***REMOVED***
+            data={props.homework}
+            style={{ width: '100%', paddingHorizontal: 20 }}
+            renderItem={renderHomeworkItem}
+            keyExtractor={item => item.title}
+            persistentScrollbar={true}
           />
         </View>
         <TouchableOpacity
@@ -71,8 +71,8 @@ function HomeworkModal (props) {
             height: 80 * scaleMultiplier,
             justifyContent: 'center'
             // backgroundColor: 'blue'
-          ***REMOVED******REMOVED***
-          onPress={props.hideModal***REMOVED***
+          }}
+          onPress={props.hideModal}
         >
           <Text
             style={{
@@ -80,15 +80,15 @@ function HomeworkModal (props) {
               fontSize: 24 * scaleMultiplier,
               color: colors.red,
               textAlign: 'center'
-            ***REMOVED******REMOVED***
+            }}
           >
-            {props.translations.general.close***REMOVED***
+            {props.translations.general.close}
           </Text>
         </TouchableOpacity>
       </View>
     </Modal>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -96,15 +96,15 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     translations: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export default connect(mapStateToProps)(HomeworkModal)

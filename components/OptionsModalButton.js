@@ -1,21 +1,21 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont, StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 // button rendered on the options modal component
 function OptionsModalButton ({
@@ -26,27 +26,27 @@ function OptionsModalButton ({
   font,
   isRTL,
   activeGroup
-***REMOVED***) {
+}) {
   return (
-    <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={onPress***REMOVED***>
+    <TouchableOpacity style={styles.modalButtonStyle} onPress={onPress}>
       <Text
         style={[
           style,
           StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h3',
             'Regular',
             'center',
             colors.shark
           )
-        ]***REMOVED***
+        ]}
       >
-        {title***REMOVED***
+        {title}
       </Text>
-      {children***REMOVED***
+      {children}
     </TouchableOpacity>
   )
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomColor: colors.athens,
     alignItems: 'center'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(OptionsModalButton)

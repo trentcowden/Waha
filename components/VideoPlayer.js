@@ -1,5 +1,5 @@
-import { Video ***REMOVED*** from 'expo-av'
-import React, { useState ***REMOVED*** from 'react'
+import { Video } from 'expo-av'
+import React, { useState } from 'react'
 import {
   Dimensions,
   Platform,
@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View
-***REMOVED*** from 'react-native'
-import { lockLandscape, lockPortrait, scaleMultiplier ***REMOVED*** from '../constants'
-import { colors ***REMOVED*** from '../styles/colors'
+} from 'react-native'
+import { lockLandscape, lockPortrait, scaleMultiplier } from '../constants'
+import { colors } from '../styles/colors'
 
 function VideoPlayer ({
   // Props passed from a parent component.
@@ -25,7 +25,7 @@ function VideoPlayer ({
   changeCompleteStatus,
   setFullScreenStatus,
   fullscreenStatus
-***REMOVED***) {
+}) {
   //+ STATE
 
   const [showVideoControls, setShowVideoControls] = useState(false)
@@ -37,9 +37,9 @@ function VideoPlayer ({
         if (!showVideoControls) {
           setShowVideoControls(true)
           setTimeout(() => setShowVideoControls(false), 2000)
-        ***REMOVED***
-      ***REMOVED******REMOVED***
-      style={{ width: '100%' ***REMOVED******REMOVED***
+        }
+      }}
+      style={{ width: '100%' }}
     >
       <View
         style={{
@@ -50,28 +50,28 @@ function VideoPlayer ({
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: colors.shark
-        ***REMOVED******REMOVED***
+        }}
       >
         <Video
           ref={ref => {
             setVideo(ref)
             setVideo(ref)
-          ***REMOVED******REMOVED***
-          rate={1.0***REMOVED***
-          volume={1.0***REMOVED***
-          isMuted={false***REMOVED***
-          resizeMode={Video.RESIZE_MODE_CONTAIN***REMOVED***
+          }}
+          rate={1.0}
+          volume={1.0}
+          isMuted={false}
+          resizeMode={Video.RESIZE_MODE_CONTAIN}
           shouldPlay
           // onLoad={() => {
           //   console.log('loaded')
           //   setIsMediaLoaded(true)
-          // ***REMOVED******REMOVED***
+          // }}
           style={{
             width: Dimensions.get('window').width,
             // height: Dimensions.get('window').width - 80
             height: (Dimensions.get('window').width * 9) / 16
             // flex: 1
-          ***REMOVED******REMOVED***
+          }}
           onPlaybackStatusUpdate={status => {
             // match up so there's a single source of truth between
             //  waha controls and full screen native video controls
@@ -80,12 +80,12 @@ function VideoPlayer ({
             ) {
               if (status.isPlaying) setIsMediaPlaying(true)
               else if (!status.isPlaying) setIsMediaPlaying(false)
-            ***REMOVED***
+            }
 
             if (status.isLoaded && !isMediaLoaded) {
               console.log('loaded')
               setIsMediaLoaded(true)
-            ***REMOVED***
+            }
 
             // lock portrait and exit full screen once the video finishes
             if (
@@ -102,16 +102,16 @@ function VideoPlayer ({
               //       ScreenOrientation.OrientationLock.PORTRAIT
               //     ).then(() => {
               //       video.dismissFullscreenPlayer()
-              //     ***REMOVED***)
-              //   ***REMOVED*** else {
+              //     })
+              //   } else {
               //     ScreenOrientation.lockAsync(
               //       ScreenOrientation.OrientationLock.PORTRAIT_UP
               //     ).then(() => {
               //       video.dismissFullscreenPlayer()
-              //     ***REMOVED***)
-              //   ***REMOVED***
-              // ***REMOVED***)
-            ***REMOVED***
+              //     })
+              //   }
+              // })
+            }
 
             if (status.didJustFinish && lessonType !== 'v')
               setTimeout(() => changeChapter('application'), 500)
@@ -121,24 +121,24 @@ function VideoPlayer ({
               !isComplete
             ) {
               setTimeout(() => changeCompleteStatus(), 1000)
-            ***REMOVED***
-          ***REMOVED******REMOVED***
-          onLoadStart={() => setIsMediaLoaded(false)***REMOVED***
-          onLoad={() => setIsMediaLoaded(true)***REMOVED***
-          onFullscreenUpdate={({ fullscreenUpdate, status ***REMOVED***) => {
+            }
+          }}
+          onLoadStart={() => setIsMediaLoaded(false)}
+          onLoad={() => setIsMediaLoaded(true)}
+          onFullscreenUpdate={({ fullscreenUpdate, status }) => {
             if (Platform.OS === 'android') {
               switch (fullscreenUpdate) {
                 // lock video to landscape whenever you enter full screen
                 case Video.FULLSCREEN_UPDATE_PLAYER_WILL_PRESENT:
                 case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
-                  lockLandscape(() => {***REMOVED***)
+                  lockLandscape(() => {})
                   // ScreenOrientation.lockAsync(
                   //   ScreenOrientation.OrientationLock.LANDSCAPE
                   // )
                   break
                 // lock video to portrait when we exit full screen
                 case Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS:
-                  lockPortrait(() => {***REMOVED***)
+                  lockPortrait(() => {})
                   // ScreenOrientation.supportsOrientationLockAsync(
                   //   ScreenOrientation.OrientationLock.PORTRAIT
                   // ).then(isSupported => {
@@ -146,15 +146,15 @@ function VideoPlayer ({
                   //     ScreenOrientation.lockAsync(
                   //       ScreenOrientation.OrientationLock.PORTRAIT
                   //     )
-                  //   ***REMOVED*** else {
+                  //   } else {
                   //     ScreenOrientation.lockAsync(
                   //       ScreenOrientation.OrientationLock.PORTRAIT_UP
                   //     )
-                  //   ***REMOVED***
-                  // ***REMOVED***)
+                  //   }
+                  // })
                   break
                 case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
-                  lockPortrait(() => {***REMOVED***)
+                  lockPortrait(() => {})
                   // ScreenOrientation.supportsOrientationLockAsync(
                   //   ScreenOrientation.OrientationLock.PORTRAIT
                   // ).then(isSupported => {
@@ -162,12 +162,12 @@ function VideoPlayer ({
                   //     ScreenOrientation.lockAsync(
                   //       ScreenOrientation.OrientationLock.PORTRAIT
                   //     )
-                  //   ***REMOVED*** else {
+                  //   } else {
                   //     ScreenOrientation.lockAsync(
                   //       ScreenOrientation.OrientationLock.PORTRAIT_UP
                   //     )
-                  //   ***REMOVED***
-                  // ***REMOVED***)
+                  //   }
+                  // })
                   video.playAsync()
                   setIsMediaPlaying(true)
                   break
@@ -179,25 +179,25 @@ function VideoPlayer ({
                 //       ScreenOrientation.lockAsync(
                 //         ScreenOrientation.OrientationLock.PORTRAIT
                 //       )
-                //     ***REMOVED*** else {
+                //     } else {
                 //       ScreenOrientation.lockAsync(
                 //         ScreenOrientation.OrientationLock.PORTRAIT_UP
                 //       )
-                //     ***REMOVED***
-                //   ***REMOVED***)
+                //     }
+                //   })
                 //   break
-              ***REMOVED***
-            ***REMOVED*** else {
+              }
+            } else {
               if (
                 fullscreenUpdate === Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS
               ) {
                 setIsMediaPlaying(false)
-              ***REMOVED***
-            ***REMOVED***
+              }
+            }
             setFullScreenStatus(fullscreenUpdate)
-          ***REMOVED******REMOVED***
+          }}
         />
-        {/* display a video icon placeholder when we're loading */***REMOVED***
+        {/* display a video icon placeholder when we're loading */}
         {isMediaLoaded ? null : (
           <View
             style={{
@@ -205,16 +205,16 @@ function VideoPlayer ({
               width: '100%',
               position: 'absolute',
               alignItems: 'center'
-            ***REMOVED******REMOVED***
+            }}
           >
             <Icon
               name='video'
-              size={100 * scaleMultiplier***REMOVED***
-              color={colors.oslo***REMOVED***
+              size={100 * scaleMultiplier}
+              color={colors.oslo}
             />
           </View>
-        )***REMOVED***
-        {/* video controls overlay */***REMOVED***
+        )}
+        {/* video controls overlay */}
         {showVideoControls ? (
           <View
             style={{
@@ -224,28 +224,28 @@ function VideoPlayer ({
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: colors.shark + '70'
-            ***REMOVED******REMOVED***
+            }}
           >
             <TouchableOpacity
-              style={{***REMOVED******REMOVED***
+              style={{}}
               onPress={() => {
                 video.presentFullscreenPlayer()
                 // navigateToFullscreen()
-              ***REMOVED******REMOVED***
+              }}
             >
               <Icon
                 name='fullscreen-enter'
-                size={100 * scaleMultiplier***REMOVED***
-                color={colors.white***REMOVED***
+                size={100 * scaleMultiplier}
+                color={colors.white}
               />
             </TouchableOpacity>
           </View>
-        ) : null***REMOVED***
-        {/* </View> */***REMOVED***
+        ) : null}
+        {/* </View> */}
       </View>
     </TouchableWithoutFeedback>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   topPortion: {
@@ -253,12 +253,12 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
-  ***REMOVED***,
+  },
   topImage: {
     resizeMode: 'contain',
     height: 170 * scaleMultiplier,
     alignSelf: 'center'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default VideoPlayer

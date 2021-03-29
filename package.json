@@ -6,7 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject"
-  ***REMOVED***,
+  },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/hooks": "^2.6.0",
@@ -62,11 +62,11 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0"
-  ***REMOVED***,
+  },
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "babel-preset-expo": "8.3.0",
     "better-docs": "^2.3.2"
-  ***REMOVED***,
+  },
   "private": true
-***REMOVED***
+}

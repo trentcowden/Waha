@@ -1,8 +1,8 @@
 import Slider from '@react-native-community/slider'
 import React from 'react'
-import { StyleSheet, View ***REMOVED*** from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
-import { colors ***REMOVED*** from '../styles/colors'
+import { colors } from '../styles/colors'
 // scrubber component rendered on play screen
 function Scrubber ({
   // Props passed from a parent component.
@@ -11,30 +11,30 @@ function Scrubber ({
   onValueChange,
   maximumValue,
   seekPosition
-***REMOVED***) {
+}) {
   //+ RENDER
 
   return (
-    <View style={styles.scrubberContainer***REMOVED***>
-      <View style={styles.scrubber***REMOVED***>
+    <View style={styles.scrubberContainer}>
+      <View style={styles.scrubber}>
         <Slider
-          value={value***REMOVED***
-          onSlidingComplete={value => onSlidingComplete(value)***REMOVED***
-          onValueChange={onValueChange***REMOVED***
-          minimumValue={0***REMOVED***
-          maximumValue={maximumValue***REMOVED***
-          step={100***REMOVED***
-          minimumTrackTintColor={colors.tuna***REMOVED***
-          thumbTintColor={colors.tuna***REMOVED***
+          value={value}
+          onSlidingComplete={value => onSlidingComplete(value)}
+          onValueChange={onValueChange}
+          minimumValue={0}
+          maximumValue={maximumValue}
+          step={100}
+          minimumTrackTintColor={colors.tuna}
+          thumbTintColor={colors.tuna}
         />
       </View>
-      <View style={styles.timeInfo***REMOVED***>
-        <TimeDisplay time={seekPosition***REMOVED*** max={maximumValue***REMOVED*** />
-        <TimeDisplay time={maximumValue***REMOVED*** max={maximumValue***REMOVED*** />
+      <View style={styles.timeInfo}>
+        <TimeDisplay time={seekPosition} max={maximumValue} />
+        <TimeDisplay time={maximumValue} max={maximumValue} />
       </View>
     </View>
   )
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -46,15 +46,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginTop: 10
-  ***REMOVED***,
+  },
   scrubber: {
     width: '100%'
-  ***REMOVED***,
+  },
   timeInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default Scrubber

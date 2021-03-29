@@ -1,5 +1,5 @@
 // import SvgUri from 'expo-svg-uri'
-import React, { useEffect, useState ***REMOVED*** from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Animated,
   Dimensions,
@@ -8,17 +8,17 @@ import {
   Text,
   TouchableHighlight,
   View
-***REMOVED*** from 'react-native'
+} from 'react-native'
 import Carousel from 'react-native-snap-carousel'
-import { connect ***REMOVED*** from 'react-redux'
+import { connect } from 'react-redux'
 import SwipeBar from '../components/SwipeBar'
-import { scaleMultiplier ***REMOVED*** from '../constants'
+import { scaleMultiplier } from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont, StandardTypography } from '../styles/typography'
 import SVG from './SVG'
 
 function mapStateToProps (state) {
@@ -28,8 +28,8 @@ function mapStateToProps (state) {
     font: getLanguageFont(activeGroupSelector(state).language),
     translations: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function AlbumArtSwiper ({
   // Props passed from a parent component.
@@ -46,7 +46,7 @@ function AlbumArtSwiper ({
   font,
   translations,
   isRTL
-***REMOVED***) {
+}) {
   // keeps track of whether we're in the middle pane or not
   const [isMiddle, setIsMiddle] = useState(true)
 
@@ -58,38 +58,38 @@ function AlbumArtSwiper ({
   // const onViewRef = useRef(info => {
   //   if (info.viewableItems.some(item => item.index === 0)) setIsMiddle(true)
   //   else setIsMiddle(false)
-  // ***REMOVED***)
-  // const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 ***REMOVED***)
+  // })
+  // const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 })
 
   // data for album art flatlist
   const albumArtData = [
     {
       key: '0',
       type: 'text'
-    ***REMOVED***,
+    },
     {
       key: '1',
       type: 'image',
       svgName: iconName
-    ***REMOVED***,
+    },
     {
       key: '2',
       type: 'text'
-    ***REMOVED***
+    }
   ]
 
   useEffect(() => {
     if (Dimensions.get('window').width >= 600) {
       setLayoutWidth(240)
       setMarginWidth(200)
-    ***REMOVED***
-  ***REMOVED***, [])
+    }
+  }, [])
 
   function getTextData (key) {
     if (key === '2') {
       if (thisLesson.scripture) return thisLesson.scripture
       else return null
-    ***REMOVED*** else {
+    } else {
       if (thisLesson.fellowshipType) {
         var combinedQuestionList = activeDatabase.questions[
           thisLesson.fellowshipType
@@ -98,15 +98,15 @@ function AlbumArtSwiper ({
           .concat(activeDatabase.questions[thisLesson.applicationType])
         var updatedQuestionArray = []
         combinedQuestionList.forEach((question, index) => {
-          var temp = {***REMOVED***
+          var temp = {}
           temp['header'] =
             translations.play.question_header + ' ' + (index + 1).toString()
           temp['text'] = question + '\n'
           updatedQuestionArray.push(temp)
-        ***REMOVED***)
+        })
         return updatedQuestionArray
-      ***REMOVED*** else return null
-    ***REMOVED***
+      } else return null
+    }
 
     return thisLesson.fellowshipType
       ? // render questions on the first pane and scripture on the last
@@ -116,11 +116,11 @@ function AlbumArtSwiper ({
             .concat(activeDatabase.questions[thisLesson.applicationType])
             // add newline after each question for spacing
             .map(question => {
-              return { ...question, text: question.text + '\n' ***REMOVED***
-            ***REMOVED***)
+              return { ...question, text: question.text + '\n' }
+            })
         : thisLesson.scripture
       : []
-  ***REMOVED***
+  }
 
   //+ ANIMATION STUFF
 
@@ -141,12 +141,12 @@ function AlbumArtSwiper ({
           toValue: 0,
           duration: 250,
           useNativeDriver: true
-        ***REMOVED***),
+        }),
         Animated.timing(sideScrollBarOpacity, {
           toValue: 1,
           duration: 1000,
           useNativeDriver: true
-        ***REMOVED***)
+        })
       ]).start()
     else {
       Animated.sequence([
@@ -154,18 +154,18 @@ function AlbumArtSwiper ({
           toValue: 0,
           duration: 250,
           useNativeDriver: true
-        ***REMOVED***),
+        }),
         Animated.timing(middleScrollBarOpacity, {
           toValue: 1,
           duration: 1000,
           useNativeDriver: true
-        ***REMOVED***)
+        })
       ]).start()
-    ***REMOVED***
-  ***REMOVED***, [isMiddle])
+    }
+  }, [isMiddle])
 
   //- render either text or album art
-  function renderAlbumArtItem ({ item ***REMOVED***) {
+  function renderAlbumArtItem ({ item }) {
     // for text panes
     if (item.type === 'text') {
       return (
@@ -175,60 +175,60 @@ function AlbumArtSwiper ({
             {
               width: Dimensions.get('window').width - marginWidth,
               height: Dimensions.get('window').width - marginWidth
-            ***REMOVED***
-          ]***REMOVED***
+            }
+          ]}
         >
           <SwipeBar
-            isMiddle={false***REMOVED***
+            isMiddle={false}
             side='left'
-            opacity={sideScrollBarOpacity***REMOVED***
+            opacity={sideScrollBarOpacity}
           />
           <SwipeBar
-            isMiddle={false***REMOVED***
+            isMiddle={false}
             side='right'
-            opacity={sideScrollBarOpacity***REMOVED***
+            opacity={sideScrollBarOpacity}
           />
           <FlatList
-            data={getTextData(item.key)***REMOVED***
-            renderItem={renderTextContent***REMOVED***
-            initialNumToRender={3***REMOVED***
-            keyExtractor={item => item.header***REMOVED***
-            showsVerticalScrollIndicator={false***REMOVED***
-            ListHeaderComponent={() => <View style={{ height: 10 ***REMOVED******REMOVED*** />***REMOVED***
+            data={getTextData(item.key)}
+            renderItem={renderTextContent}
+            initialNumToRender={3}
+            keyExtractor={item => item.header}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={() => <View style={{ height: 10 }} />}
             ListFooterComponent={
               item.key === '2'
                 ? () => (
-                    <View style={{ paddingHorizontal: 10, marginBottom: 10 ***REMOVED******REMOVED***>
+                    <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                       <Text
                         style={StandardTypography(
-                          { font, isRTL ***REMOVED***,
+                          { font, isRTL },
                           'd',
                           'Regular',
                           'center',
                           colors.chateau
-                        )***REMOVED***
+                        )}
                       >
-                        {translations.play.copyright_for_text + '\n'***REMOVED***
+                        {translations.play.copyright_for_text + '\n'}
                       </Text>
                       <Text
                         style={StandardTypography(
-                          { font, isRTL ***REMOVED***,
+                          { font, isRTL },
                           'd',
                           'Regular',
                           'center',
                           colors.chateau
-                        )***REMOVED***
+                        )}
                       >
-                        {translations.play.copyright_for_audio***REMOVED***
+                        {translations.play.copyright_for_audio}
                       </Text>
                     </View>
                   )
                 : null
-            ***REMOVED***
+            }
           />
         </View>
       )
-    ***REMOVED*** else {
+    } else {
       return (
         <View
           style={[
@@ -236,18 +236,18 @@ function AlbumArtSwiper ({
             {
               width: Dimensions.get('window').width - marginWidth,
               height: Dimensions.get('window').width - marginWidth
-            ***REMOVED***
-          ]***REMOVED***
+            }
+          ]}
         >
           <SwipeBar
-            isMiddle={true***REMOVED***
+            isMiddle={true}
             side='left'
-            opacity={middleScrollBarOpacity***REMOVED***
+            opacity={middleScrollBarOpacity}
           />
           <SwipeBar
-            isMiddle={true***REMOVED***
+            isMiddle={true}
             side='right'
-            opacity={middleScrollBarOpacity***REMOVED***
+            opacity={middleScrollBarOpacity}
           />
           <View
             style={{
@@ -256,7 +256,7 @@ function AlbumArtSwiper ({
               height: '100%',
               justifyContent: 'center',
               alignItems: 'center'
-            ***REMOVED******REMOVED***
+            }}
           >
             <TouchableHighlight
               style={{
@@ -264,28 +264,28 @@ function AlbumArtSwiper ({
                 height: '100%',
                 justifyContent: 'center',
                 alignItems: 'center'
-              ***REMOVED******REMOVED***
-              onPress={playHandler***REMOVED***
-              underlayColor={colors.white + '00'***REMOVED***
-              activeOpacity={1***REMOVED***
+              }}
+              onPress={playHandler}
+              underlayColor={colors.white + '00'}
+              activeOpacity={1}
             >
               <SVG
-                name={item.svgName***REMOVED***
-                width={Dimensions.get('window').width - marginWidth***REMOVED***
-                height={Dimensions.get('window').width - marginWidth***REMOVED***
+                name={item.svgName}
+                width={Dimensions.get('window').width - marginWidth}
+                height={Dimensions.get('window').width - marginWidth}
                 color='#1D1E20'
               />
               {/* <SvgUri
                 source={{
                   uri:
                     ''
-                ***REMOVED******REMOVED***
-                width={Dimensions.get('window').width - marginWidth***REMOVED***
-                height={Dimensions.get('window').width - marginWidth***REMOVED***
-                // fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
+                }}
+                width={Dimensions.get('window').width - marginWidth}
+                height={Dimensions.get('window').width - marginWidth}
+                // fill={fullyCompleted ? colors.chateau : colors.shark}
                 fill='#1D1E20'
                 fillAll
-              /> */***REMOVED***
+              /> */}
             </TouchableHighlight>
           </View>
           <Animated.View
@@ -297,78 +297,78 @@ function AlbumArtSwiper ({
                   scale: playOpacity.interpolate({
                     inputRange: [0, 1],
                     outputRange: [2, 1]
-                  ***REMOVED***)
-                ***REMOVED***
+                  })
+                }
               ],
               zIndex: animationZIndex
-            ***REMOVED******REMOVED***
+            }}
           >
             <Icon
-              name={isMediaPlaying ? 'play' : 'pause'***REMOVED***
-              size={100 * scaleMultiplier***REMOVED***
-              color={colors.white***REMOVED***
+              name={isMediaPlaying ? 'play' : 'pause'}
+              size={100 * scaleMultiplier}
+              color={colors.white}
             />
           </Animated.View>
         </View>
       )
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
   // renders the questions/scripture text content
   function renderTextContent (textList) {
     return (
-      <View style={{ paddingHorizontal: 20 ***REMOVED******REMOVED***>
+      <View style={{ paddingHorizontal: 20 }}>
         <Text
           style={StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h3',
             'Bold',
             'left',
             colors.shark
-          )***REMOVED***
+          )}
         >
-          {textList.item.header***REMOVED***
+          {textList.item.header}
         </Text>
         <Text
           style={StandardTypography(
-            { font, isRTL ***REMOVED***,
+            { font, isRTL },
             'h3',
             'Regular',
             'left',
             colors.shark
-          )***REMOVED***
+          )}
         >
-          {textList.item.text***REMOVED***
+          {textList.item.text}
         </Text>
       </View>
     )
-  ***REMOVED***
+  }
   return (
     <View
       style={{
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
-      ***REMOVED******REMOVED***
+      }}
     >
       <Carousel
-        data={albumArtData***REMOVED***
-        renderItem={renderAlbumArtItem***REMOVED***
-        ref={ref => setAlbumArtSwiperRef(ref)***REMOVED***
-        itemWidth={Dimensions.get('window').width - marginWidth***REMOVED***
-        sliderWidth={Dimensions.get('window').width***REMOVED***
-        itemHeight={Dimensions.get('window').width - marginWidth***REMOVED***
-        sliderHeight={Dimensions.get('window').width***REMOVED***
-        firstItem={1***REMOVED***
-        removeClippedSubviews={false***REMOVED***
+        data={albumArtData}
+        renderItem={renderAlbumArtItem}
+        ref={ref => setAlbumArtSwiperRef(ref)}
+        itemWidth={Dimensions.get('window').width - marginWidth}
+        sliderWidth={Dimensions.get('window').width}
+        itemHeight={Dimensions.get('window').width - marginWidth}
+        sliderHeight={Dimensions.get('window').width}
+        firstItem={1}
+        removeClippedSubviews={false}
         lockScrollWhileSnapping
         onBeforeSnapToItem={slideIndex => {
           if (slideIndex === 1) setIsMiddle(true)
           else setIsMiddle(false)
-        ***REMOVED******REMOVED***
+        }}
       />
     </View>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   albumArtContainer: {
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     borderColor: colors.chateau,
     justifyContent: 'center',
     alignItems: 'center'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(AlbumArtSwiper)

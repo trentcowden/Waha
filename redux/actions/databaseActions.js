@@ -22,71 +22,71 @@ export const INCREMENT_GLOBAL_GROUP_COUNTER = 'INCREMENT_GLOBAL_GROUP_COUNTER'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
 import i18n from 'i18n-js'
-import { groupNames ***REMOVED*** from '../../constants'
-import { logInstallLanguage ***REMOVED*** from '../../LogEventFunctions'
-import { changeActiveGroup ***REMOVED*** from './activeGroupActions'
-import { createGroup ***REMOVED*** from './groupsActions'
-import { setIsInstallingLanguageInstance ***REMOVED*** from './isInstallingLanguageInstanceActions'
-import { storeDownloads ***REMOVED*** from './storedDownloadsActions'
+import { groupNames } from '../../constants'
+import { logInstallLanguage } from '../../LogEventFunctions'
+import { changeActiveGroup } from './activeGroupActions'
+import { createGroup } from './groupsActions'
+import { setIsInstallingLanguageInstance } from './isInstallingLanguageInstanceActions'
+import { storeDownloads } from './storedDownloadsActions'
 
 /**
  * Increments the global group counter redux variable by 1.
  * @export
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @return {Object} - Object to send to the reducer.
  */
 export function incrementGlobalGroupCounter () {
   return {
     type: INCREMENT_GLOBAL_GROUP_COUNTER
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Stores the langauge data for a language instance in redux. This includes the display name, the bible ID, whether this language is RTL, the primary color of this language instance, the list of core files to download, the questions for every question set, and all the app translations.
  * @export
- * @param {Object***REMOVED*** languageData - All the data for a language.
- * @param {string***REMOVED*** languageaInstanceID - The ID of the language instance that we're storing data for.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {Object} languageData - All the data for a language.
+ * @param {string} languageaInstanceID - The ID of the language instance that we're storing data for.
+ * @return {Object} - Object to send to the reducer.
  */
 export function storeLanguageData (languageData, languageInstanceID) {
   return {
     type: STORE_LANGUAGE_DATA,
     languageData,
     languageInstanceID
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Stores all the sets for a language instance. The sets are stored as individual objects in Firestore but are combined before getting to this action. Then, they are stored as the "sets" key in the language data object.
  * @export
- * @param {Object[]***REMOVED*** languageSets - An array of all the sets to store in redux.
- * @param {string***REMOVED*** languageInstanceID - The ID of the language instance that we're storing data for.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {Object[]} languageSets - An array of all the sets to store in redux.
+ * @param {string} languageInstanceID - The ID of the language instance that we're storing data for.
+ * @return {Object} - Object to send to the reducer.
  */
 export function storeLanguageSets (languageSets, languageInstanceID) {
   return {
     type: STORE_LANGUAGE_SETS,
     languageSets,
     languageInstanceID
-  ***REMOVED***
-***REMOVED***
+  }
+}
 /**
  * Sets whether the user has completed the initial onboarding or not.
  * @export
- * @param {boolean***REMOVED*** hasOnboarded - Whether the user has onboarded.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {boolean} hasOnboarded - Whether the user has onboarded.
+ * @return {Object} - Object to send to the reducer.
  */
 export function setHasOnboarded (hasOnboarded) {
   return {
     type: SET_HAS_ONBOARDED,
     hasOnboarded
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Sets whether the user has installed their first language instance or not.
  * @export
- * @param {boolean***REMOVED*** hasInstalledFirstLanguageInstance - Whether the user has installed their first language instance.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {boolean} hasInstalledFirstLanguageInstance - Whether the user has installed their first language instance.
+ * @return {Object} - Object to send to the reducer.
  */
 export function setHasInstalledFirstLanguageInstance (
   hasInstalledFirstLanguageInstance
@@ -94,27 +94,27 @@ export function setHasInstalledFirstLanguageInstance (
   return {
     type: SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE,
     hasInstalledFirstLanguageInstance
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Sets whether the app has fetched the necessary Firebase data for a language instance install.
  * @export
- * @param {boolean***REMOVED*** hasFetchedLanguageData
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {boolean} hasFetchedLanguageData
+ * @return {Object} - Object to send to the reducer.
  */
 export function setHasFetchedLanguageData (hasFetchedLanguageData) {
   return {
     type: SET_HAS_FETCHED_LANGUAGE_DATA,
     hasFetchedLanguageData
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Sets the progress of downloading the core files for a language.
  * @export
- * @param {number***REMOVED*** languageCoreFilesDownloadProgress - The number of core files that have been downloaded.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {number} languageCoreFilesDownloadProgress - The number of core files that have been downloaded.
+ * @return {Object} - Object to send to the reducer.
  */
 export function setLanguageCoreFilesDownloadProgress (
   languageCoreFilesDownloadProgress
@@ -122,14 +122,14 @@ export function setLanguageCoreFilesDownloadProgress (
   return {
     type: SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS,
     languageCoreFilesDownloadProgress
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Sets the total number of language core files to download. Used in tandem with languageCoreFilesDownloadProgress to calculate the progress through the downloads.
  * @export
- * @param {number***REMOVED*** totalLanguageCoreFilesToDownload - The number of core files to download.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {number} totalLanguageCoreFilesToDownload - The number of core files to download.
+ * @return {Object} - Object to send to the reducer.
  */
 export function setTotalLanguageCoreFilesToDownload (
   totalLanguageCoreFilesToDownload
@@ -137,55 +137,55 @@ export function setTotalLanguageCoreFilesToDownload (
   return {
     type: SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD,
     totalLanguageCoreFilesToDownload
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Deletes all of the redux data for a language instance. This includes language data and language sets.
  * @export
- * @param {string***REMOVED*** languageInstanceID - The ID of the language instance to delete.
- * @return {Object***REMOVED*** - Object to send to the reducer.
+ * @param {string} languageInstanceID - The ID of the language instance to delete.
+ * @return {Object} - Object to send to the reducer.
  */
 export function deleteLanguageData (languageInstanceID) {
   return {
     type: DELETE_LANGUAGE_DATA,
     languageInstanceID
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export function storeLanguageCoreFileCreatedTime (fileName, timeCreated) {
   return {
     type: STORE_LANGUAGE_CORE_FILE_CREATED_TIME,
     fileName,
     timeCreated
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export function addLanguageCoreFileToUpdate (fileName) {
   // console.log('STORING FILES TO UPDATE ACTION FIRING\n')
   return {
     type: ADD_LANGUAGE_CORE_FILE_TO_UPDATE,
     fileName
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export function clearLanguageCoreFilesToUpdate () {
   return {
     type: CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export function storeActingLanguageID (languageID) {
   return {
     type: STORE_ACTING_LANGUAGE_ID,
     languageID: languageID
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 /**
  * Downloads all the core files for a single language instance and does a whole bunch of stuff once they're done downloading. The core files include the header image, the dummy story mp3, and every question set mp3.
  * @export
- * @param {string***REMOVED*** language - The ID for the language instance that we're downloading the core files for.
+ * @param {string} language - The ID for the language instance that we're downloading the core files for.
  */
 export function downloadLanguageCoreFiles (language) {
   return async (dispatch, getState) => {
@@ -221,27 +221,27 @@ export function downloadLanguageCoreFiles (language) {
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
 
       // PRODUCTION URL
-      var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+      var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
       // TEST URL
-      // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+      // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
       // Set the local storage path to download to and the name of the file. The format is simple: FileSystem/languageID-fileName.extension.
 
       // For when file name includes "v1".
       var localPath = `${
         FileSystem.documentDirectory
-      ***REMOVED***${language***REMOVED***-${fileName.slice(0, -3)***REMOVED***.${fileExtension***REMOVED***`
+      }${language}-${fileName.slice(0, -3)}.${fileExtension}`
 
       // For when file name DOESN'T includes "v1".
-      // var localPath = `${FileSystem.documentDirectory***REMOVED***${language***REMOVED***-${fileName***REMOVED***.${fileExtension***REMOVED***`
+      // var localPath = `${FileSystem.documentDirectory}${language}-${fileName}.${fileExtension}`
 
       // Create the download object. Uses url and localPath from above, an empty parameters object, and an empty callback function.
       download = FileSystem.createDownloadResumable(
         url,
         localPath,
-        {***REMOVED***,
-        () => {***REMOVED***
+        {},
+        () => {}
       )
 
       // Add this download to the filesToDownload object.
@@ -256,7 +256,7 @@ export function downloadLanguageCoreFiles (language) {
           dispatch(
             storeLanguageCoreFileCreatedTime(
               // For when file name includes "v1".
-              `${language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`,
+              `${language}-${fileName.slice(0, -3)}`,
               metadata.timeCreated
               // For when file name DOESN'T includes "v1".
               // language + '-' + fileName,
@@ -264,7 +264,7 @@ export function downloadLanguageCoreFiles (language) {
             )
           )
         )
-    ***REMOVED***)
+    })
 
     // 2. Store out download resumables array in redux.
     dispatch(storeDownloads(filesToDownload))
@@ -273,7 +273,7 @@ export function downloadLanguageCoreFiles (language) {
 
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
-     * @param {Object***REMOVED*** resumable - The download resumable object.
+     * @param {Object} resumable - The download resumable object.
      */
     function downloadFile (resumable) {
       return resumable
@@ -283,9 +283,9 @@ export function downloadLanguageCoreFiles (language) {
           if (status) {
             totalDownloaded += 1
             dispatch(setLanguageCoreFilesDownloadProgress(totalDownloaded))
-          ***REMOVED***
-        ***REMOVED***)
-    ***REMOVED***
+          }
+        })
+    }
 
     // Create an array of all of our download resumable objects. This is what allows us to execute some code once all the downloads finish using Promise.all.
     const downloadFunctions = filesToDownload.map(resumable =>
@@ -316,7 +316,7 @@ export function downloadLanguageCoreFiles (language) {
                 getState().groups.length + 1
               )
             )
-          ***REMOVED***
+          }
 
           // Change the active group to the new group we just created.
           dispatch(changeActiveGroup(groupNames[language]))
@@ -341,11 +341,11 @@ export function downloadLanguageCoreFiles (language) {
 
           // Set the setTotalLanguageCoreFilesToDownload to the number of files to download for this language. I think this is only here to avoid divide-by-zero erros but I'm not sure. I'm just too scared to delete it.
           dispatch(setTotalLanguageCoreFilesToDownload(1))
-        ***REMOVED***
-      ***REMOVED***)
-      .catch(error => {***REMOVED***)
-  ***REMOVED***
-***REMOVED***
+        }
+      })
+      .catch(error => {})
+  }
+}
 
 /**
  * Very similar to downloadLanguageCoreFiles, but with a few key differences. This function is used to update core files in an already-installed language instance instead of downloading core files for a new one. We download any files stored in languageCoreFilesToUpdate instead of every core file for a language instance. Note: there's no language parameter as this function can update core files for multiple language instances at the same time if need be.
@@ -387,20 +387,20 @@ export function updateLanguageCoreFiles () {
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
 
       // PRODUCTION URL
-      var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${languageID***REMOVED***%2Fother%2F${shortenedFileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+      var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${languageID}%2Fother%2F${shortenedFileName}.${fileExtension}?alt=media`
 
       // TEST URL
-      // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${languageID***REMOVED***%2Fother%2F${shortenedFileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
+      // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${languageID}%2Fother%2F${shortenedFileName}.${fileExtension}?alt=media`
 
       // Set the local storage path to download to and the name of the file. The format is simple: "FileSystem/languageID-localFileName.extension".
-      var localPath = `${FileSystem.documentDirectory***REMOVED***${fileName***REMOVED***.${fileExtension***REMOVED***`
+      var localPath = `${FileSystem.documentDirectory}${fileName}.${fileExtension}`
 
       // Create the download object. Uses url and localPath from above, an empty parameters object, and an empty callback function.
       download = FileSystem.createDownloadResumable(
         url,
         localPath,
-        {***REMOVED***,
-        () => {***REMOVED***
+        {},
+        () => {}
       )
 
       // Add this download resumable to the filesToDownload object.
@@ -416,7 +416,7 @@ export function updateLanguageCoreFiles () {
             storeLanguageCoreFileCreatedTime(fileName, metadata.timeCreated)
           )
         )
-    ***REMOVED***)
+    })
 
     // 2. Store out download resumables array in redux.
     dispatch(storeDownloads(filesToDownload))
@@ -425,7 +425,7 @@ export function updateLanguageCoreFiles () {
 
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
-     * @param {Object***REMOVED*** resumable - The download resumable object.
+     * @param {Object} resumable - The download resumable object.
      */
     function downloadFile (resumable) {
       return resumable
@@ -435,9 +435,9 @@ export function updateLanguageCoreFiles () {
           if (status) {
             totalDownloaded += 1
             dispatch(setLanguageCoreFilesDownloadProgress(totalDownloaded))
-          ***REMOVED***
-        ***REMOVED***)
-    ***REMOVED***
+          }
+        })
+    }
 
     // Create an array of all of our download resumable objects. This is what allows us to execute some code once all the downloads finish using Promise.all.
     const downloadFunctions = filesToDownload.map(resumable =>
@@ -465,7 +465,7 @@ export function updateLanguageCoreFiles () {
 
         // I think this is only here to avoid divide-by-zero erros but I'm not sure. I'm just too scared to delete it.
         dispatch(setTotalLanguageCoreFilesToDownload(1))
-      ***REMOVED***
-    ***REMOVED***)
-  ***REMOVED***
-***REMOVED***
+      }
+    })
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState ***REMOVED*** from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Alert,
   Animated,
@@ -6,17 +6,17 @@ import {
   Text,
   TouchableOpacity,
   View
-***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { getLessonInfo, scaleMultiplier ***REMOVED*** from '../../constants'
-import { changeActiveGroup ***REMOVED*** from '../../redux/actions/activeGroupActions'
-import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
+} from 'react-native'
+import { connect } from 'react-redux'
+import { getLessonInfo, scaleMultiplier } from '../../constants'
+import { changeActiveGroup } from '../../redux/actions/activeGroupActions'
+import { deleteGroup } from '../../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+} from '../../redux/reducers/activeGroup'
+import { colors } from '../../styles/colors'
+import { getLanguageFont, StandardTypography } from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 
 function mapStateToProps (state) {
@@ -28,25 +28,25 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
     translations: activeDatabaseSelector(state).translations
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function mapDispatchToProps (dispatch) {
   return {
     deleteGroup: name => {
       dispatch(deleteGroup(name))
-    ***REMOVED***,
+    },
     changeActiveGroup: name => {
       dispatch(changeActiveGroup(name))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}
 
 /**
  * A pressable item used on the Group screen to display a group in the groups section list. It shows the name of the group, the icon, whether it's active or not, and the current bookmark, and allows for editing and deleting.
- * @param {Object***REMOVED*** thisGroup - The object for the group that we're displaying in this component.
- * @param {boolean***REMOVED*** isEditing - Whether we're in "editing" mode or not.
- * @param {Function***REMOVED*** openEditModal - A function that opens the modal that allows us to edit the information for a group.
+ * @param {Object} thisGroup - The object for the group that we're displaying in this component.
+ * @param {boolean} isEditing - Whether we're in "editing" mode or not.
+ * @param {Function} openEditModal - A function that opens the modal that allows us to edit the information for a group.
  */
 function GroupItem ({
   // Props passed from a parent component.
@@ -63,7 +63,7 @@ function GroupItem ({
   translations,
   deleteGroup,
   changeActiveGroup
-***REMOVED***) {
+}) {
   /** Keeps track of whether this group is the last group in a language instance. */
   const [
     isLastGroupInLanguageInstance,
@@ -82,7 +82,7 @@ function GroupItem ({
         isRTL ? 24 * scaleMultiplier + 20 : -24 * scaleMultiplier - 20
       )
     )
-  ***REMOVED***, [isRTL])
+  }, [isRTL])
 
   // const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
 
@@ -95,14 +95,14 @@ function GroupItem ({
       groups.filter(group => group.language === thisGroup.language).length === 1
     ) {
       setIsLastGroupInLanguageInstance(true)
-    ***REMOVED*** else {
+    } else {
       setIsLastGroupInLanguageInstance(false)
-    ***REMOVED***
-  ***REMOVED***, [isEditing, groups])
+    }
+  }, [isEditing, groups])
 
   /**
    * Gets the bookmark for this group and returns it in a nicely formatted string.
-   * @return {string***REMOVED*** - The bookmarked lesson.
+   * @return {string} - The bookmarked lesson.
    */
   function getBookmarkLesson () {
     // If for some reason no group got passed, return an empty string.
@@ -125,12 +125,12 @@ function GroupItem ({
 
       // If everything is good, return the bookmark lesson. Otherwise, return an empty string.
       return bookmarkLesson && bookmarkSet
-        ? `${getLessonInfo('subtitle', bookmarkLesson.id)***REMOVED*** ${
+        ? `${getLessonInfo('subtitle', bookmarkLesson.id)} ${
             bookmarkLesson.title
-          ***REMOVED***`
+          }`
         : ''
-    ***REMOVED*** else return ''
-  ***REMOVED***
+    } else return ''
+  }
 
   // Determine what to render for the delete button. This button shows up next to groups in editing mode and if that group is able to be deleted. Exceptions are that you can't delete the active group and that you can't delete a group that's the last in a language instance.
   var deleteButton
@@ -143,11 +143,11 @@ function GroupItem ({
     deleteButton = (
       <Animated.View
         style={{
-          transform: [{ translateX: leftIconXPos ***REMOVED***]
-        ***REMOVED******REMOVED***
+          transform: [{ translateX: leftIconXPos }]
+        }}
       >
         <TouchableOpacity
-          style={styles.minusButtonContainer***REMOVED***
+          style={styles.minusButtonContainer}
           onPress={() => {
             Alert.alert(
               translations.groups.popups.delete_group_title,
@@ -155,25 +155,25 @@ function GroupItem ({
               [
                 {
                   text: translations.general.cancel,
-                  onPress: () => {***REMOVED***
-                ***REMOVED***,
+                  onPress: () => {}
+                },
                 {
                   text: translations.general.ok,
                   onPress: () => deleteGroup(thisGroup.name)
-                ***REMOVED***
+                }
               ]
             )
-          ***REMOVED******REMOVED***
+          }}
         >
           <Icon
             name='minus-filled'
-            size={24 * scaleMultiplier***REMOVED***
-            color={colors.red***REMOVED***
+            size={24 * scaleMultiplier}
+            color={colors.red}
           />
         </TouchableOpacity>
       </Animated.View>
     )
-  ***REMOVED*** else if (
+  } else if (
     // isEditing &&
     activeGroup.name === thisGroup.name
   ) {
@@ -182,14 +182,14 @@ function GroupItem ({
         style={[
           styles.minusButtonContainer,
           {
-            transform: [{ translateX: leftIconXPos ***REMOVED***]
-          ***REMOVED***
-        ]***REMOVED***
+            transform: [{ translateX: leftIconXPos }]
+          }
+        ]}
       >
-        <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color={colors.blue***REMOVED*** />
+        <Icon name='check' size={24 * scaleMultiplier} color={colors.blue} />
       </Animated.View>
     )
-  ***REMOVED*** else if (
+  } else if (
     // isEditing &&
     isLastGroupInLanguageInstance
   ) {
@@ -198,47 +198,47 @@ function GroupItem ({
         style={{
           // Make the width such that the group avatar/text doesn't change position in editing mode. This width makes up for the padding that is lost in editing mode.
           width: 20
-        ***REMOVED******REMOVED***
+        }}
       />
     )
-  ***REMOVED***
+  }
 
   useEffect(() => {
     if (isEditing) {
       Animated.spring(leftIconXPos, {
         toValue: 0
-      ***REMOVED***).start()
-    ***REMOVED*** else if (!isEditing) {
+      }).start()
+    } else if (!isEditing) {
       Animated.spring(leftIconXPos, {
         toValue: isRTL ? 24 * scaleMultiplier + 20 : -24 * scaleMultiplier - 20
-      ***REMOVED***).start()
-    ***REMOVED***
-  ***REMOVED***, [isEditing])
+      }).start()
+    }
+  }, [isEditing])
 
   // Determine what to render for the 'right' button. This button highlights the active group with a blue checkmark while in regular mode and switches to a right arrow for all groups while in edit mode.
   var rightButton
 
   if (isEditing) {
     rightButton = (
-      <View style={styles.iconContainer***REMOVED*** onPress={() => {***REMOVED******REMOVED***>
+      <View style={styles.iconContainer} onPress={() => {}}>
         <Icon
-          name={isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-          size={36 * scaleMultiplier***REMOVED***
-          color={colors.chateau***REMOVED***
+          name={isRTL ? 'arrow-left' : 'arrow-right'}
+          size={36 * scaleMultiplier}
+          color={colors.chateau}
         />
       </View>
     )
-  ***REMOVED*** else if (activeGroup.name === thisGroup.name) {
+  } else if (activeGroup.name === thisGroup.name) {
     rightButton = (
-      <View style={styles.iconContainer***REMOVED***>
-        <Icon name='check' size={24 * scaleMultiplier***REMOVED*** color={colors.blue***REMOVED*** />
+      <View style={styles.iconContainer}>
+        <Icon name='check' size={24 * scaleMultiplier} color={colors.blue} />
       </View>
     )
-  ***REMOVED*** else {
+  } else {
     rightButton = (
-      <View style={[styles.iconContainer, { width: 24 * scaleMultiplier ***REMOVED***]***REMOVED*** />
+      <View style={[styles.iconContainer, { width: 24 * scaleMultiplier }]} />
     )
-  ***REMOVED***
+  }
 
   return (
     <View
@@ -246,26 +246,26 @@ function GroupItem ({
         styles.groupItemContainer,
         {
           flexDirection: isRTL ? 'row-reverse' : 'row'
-        ***REMOVED***
-      ]***REMOVED***
+        }
+      ]}
     >
-      {deleteButton***REMOVED***
+      {deleteButton}
       <TouchableOpacity
         style={[
           styles.touchableAreaContainer,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row'
             // paddingLeft: isEditing ? 0 : 20
-          ***REMOVED***
-        ]***REMOVED***
+          }
+        ]}
         onPress={
           // Tapping on a group while not in edit mode switches the active group; in edit mode, it opens the edit group modal.
           isEditing
             ? () => openEditModal()
             : () => {
                 changeActiveGroup(thisGroup.name)
-              ***REMOVED***
-        ***REMOVED***
+              }
+        }
       >
         <Animated.View
           style={{
@@ -273,14 +273,14 @@ function GroupItem ({
               isLastGroupInLanguageInstance &&
               activeGroup.name !== thisGroup.name
                 ? []
-                : [{ translateX: leftIconXPos ***REMOVED***]
-          ***REMOVED******REMOVED***
+                : [{ translateX: leftIconXPos }]
+          }}
         >
           <GroupAvatar
-            style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
-            size={50 * scaleMultiplier***REMOVED***
-            emoji={thisGroup.emoji***REMOVED***
-            isActive={activeGroup.name === thisGroup.name***REMOVED***
+            style={{ backgroundColor: colors.athens }}
+            size={50 * scaleMultiplier}
+            emoji={thisGroup.emoji}
+            isActive={activeGroup.name === thisGroup.name}
           />
         </Animated.View>
         <Animated.View
@@ -293,9 +293,9 @@ function GroupItem ({
                 isLastGroupInLanguageInstance &&
                 activeGroup.name !== thisGroup.name
                   ? []
-                  : [{ translateX: leftIconXPos ***REMOVED***]
-            ***REMOVED***
-          ]***REMOVED***
+                  : [{ translateX: leftIconXPos }]
+            }
+          ]}
         >
           <Text
             style={StandardTypography(
@@ -303,15 +303,15 @@ function GroupItem ({
                 // Always display the group name in the group's language's font, not the active group's font.
                 font: getLanguageFont(thisGroup.language),
                 isRTL: isRTL
-              ***REMOVED***,
+              },
               'h3',
               'Black',
               'left',
               colors.shark
-            )***REMOVED***
-            numberOfLines={1***REMOVED***
+            )}
+            numberOfLines={1}
           >
-            {thisGroup.name***REMOVED***
+            {thisGroup.name}
           </Text>
           {getBookmarkLesson() === '' ? null : (
             <Text
@@ -321,24 +321,24 @@ function GroupItem ({
                     // Similarly, display the bookmark text in the group's language's font, not the active group's language's font.
                     font: getLanguageFont(thisGroup.language),
                     isRTL: isRTL
-                  ***REMOVED***,
+                  },
                   'd',
                   'Regular',
                   'left',
                   colors.chateau
                 )
-              ]***REMOVED***
-              numberOfLines={1***REMOVED***
+              ]}
+              numberOfLines={1}
             >
-              {getBookmarkLesson()***REMOVED***
+              {getBookmarkLesson()}
             </Text>
-          )***REMOVED***
+          )}
         </Animated.View>
-        {rightButton***REMOVED***
+        {rightButton}
       </TouchableOpacity>
     </View>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   groupItemContainer: {
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.white
-  ***REMOVED***,
+  },
   touchableAreaContainer: {
     flex: 1,
     height: '100%',
@@ -355,24 +355,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 20
-  ***REMOVED***,
+  },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%'
-  ***REMOVED***,
+  },
   minusButtonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
     paddingHorizontal: 20
-  ***REMOVED***,
+  },
   groupTextContainer: {
     flex: 1,
     height: '100%',
     justifyContent: 'center',
     flexWrap: 'nowrap'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupItem)

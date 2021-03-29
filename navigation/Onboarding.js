@@ -1,7 +1,7 @@
-import { NavigationContainer ***REMOVED*** from '@react-navigation/native'
-import { createStackNavigator ***REMOVED*** from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { getSystemIsRTL ***REMOVED*** from '../constants'
+import { getSystemIsRTL } from '../constants'
 import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
@@ -21,23 +21,23 @@ function Onboarding () {
           gestureDirection: getSystemIsRTL()
             ? 'horizontal-inverted'
             : 'horizontal'
-        ***REMOVED******REMOVED***
+        }}
       >
         <Stack.Screen
           name='InitialLanguageInstanceInstall'
-          component={LanguageInstanceInstallScreen***REMOVED***
+          component={LanguageInstanceInstallScreen}
         />
         <Stack.Screen
           name='WahaOnboardingSlides'
-          component={WahaOnboardingSlidesScreen***REMOVED***
+          component={WahaOnboardingSlidesScreen}
           options={{
             gestureEnabled: false
-          ***REMOVED******REMOVED***
+          }}
         />
-        <Stack.Screen name='Loading' component={LoadingScreen***REMOVED*** />
+        <Stack.Screen name='Loading' component={LoadingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
-***REMOVED***
+}
 
 export default Onboarding

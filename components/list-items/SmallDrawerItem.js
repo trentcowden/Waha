@@ -1,12 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+} from '../../redux/reducers/activeGroup'
+import { colors } from '../../styles/colors'
+import { getLanguageFont, StandardTypography } from '../../styles/typography'
 
 function SmallDrawerItem ({
   // Props passed from a parent component.s
@@ -16,31 +16,31 @@ function SmallDrawerItem ({
   isRTL,
   font,
   activeGroup
-***REMOVED***) {
+}) {
   //+ RENDER
 
   return (
     <TouchableOpacity
       style={[
         styles.smallDrawerItemContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
-      ]***REMOVED***
-      onPress={onPress***REMOVED***
+        { flexDirection: isRTL ? 'row-reverse' : 'row' }
+      ]}
+      onPress={onPress}
     >
       <Text
         style={StandardTypography(
-          { font, isRTL ***REMOVED***,
+          { font, isRTL },
           'h3',
           'Bold',
           'left',
           colors.chateau
-        )***REMOVED***
+        )}
       >
-        {label***REMOVED***
+        {label}
       </Text>
     </TouchableOpacity>
   )
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -49,15 +49,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     // aspectRatio: 8,
     marginVertical: 5
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 export default connect(mapStateToProps)(SmallDrawerItem)

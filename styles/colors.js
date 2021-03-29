@@ -37,7 +37,7 @@ export const colors = {
 
   // Used for neutral action buttons/highlights.
   blue: '#2D9CDB'
-***REMOVED***
+}
 
 // The colors used for each piano key in the PianoApp component.
 export const keyColors = {
@@ -53,4 +53,4 @@ export const keyColors = {
   9: '#bfef45',
   10: '#dcbeff',
   11: '#9A6324'
-***REMOVED***
+}

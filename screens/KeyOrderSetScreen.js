@@ -1,4 +1,4 @@
-import React, { useEffect, useState ***REMOVED*** from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Alert,
   Dimensions,
@@ -6,20 +6,20 @@ import {
   StyleSheet,
   Text,
   View
-***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
+} from 'react-native'
+import { connect } from 'react-redux'
 import KeyLabelGroup from '../components/piano-stuff/KeyLabelGroup'
 import Piano from '../components/piano-stuff/Piano'
 import BackButton from '../components/standard/BackButton'
 import WahaButton from '../components/standard/WahaButton'
-import { logEnableSecurityMode ***REMOVED*** from '../LogEventFunctions'
-import { setCode, setSecurityEnabled ***REMOVED*** from '../redux/actions/securityActions'
+import { logEnableSecurityMode } from '../LogEventFunctions'
+import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
+import { getLanguageFont, StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -28,24 +28,24 @@ function mapStateToProps (state) {
     security: state.security,
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function mapDispatchToProps (dispatch) {
   return {
     setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
     setCode: code => dispatch(setCode(code))
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function KeyOrderSetScreen ({
   // Props passed from navigation.
-  navigation: { setOptions, navigate, goBack ***REMOVED***,
+  navigation: { setOptions, navigate, goBack },
   route: {
     name: routeName,
     // Props passed from previous screen.
-    params: { keyOrder ***REMOVED*** = { keyOrder: null ***REMOVED***
-  ***REMOVED***,
+    params: { keyOrder } = { keyOrder: null }
+  },
   // Props passed from redux.
   translations,
   font,
@@ -54,7 +54,7 @@ function KeyOrderSetScreen ({
   activeGroup,
   setSecurityEnabled,
   setCode
-***REMOVED***) {
+}) {
   const [localKeyOrder, setLocalKeyOrder] = useState('')
   const [instructionText, setInstructionText] = useState('')
   //+ CONSTRUCTOR
@@ -73,9 +73,9 @@ function KeyOrderSetScreen ({
       case 'KeyOrderChange_Confirm':
         setInstructionText(translations.security.confirm_new_key_order_label)
         break
-    ***REMOVED***
+    }
     setOptions(getNavOptions())
-  ***REMOVED***, [])
+  }, [])
 
   useEffect(() => {
     if (localKeyOrder.length === 12) {
@@ -83,7 +83,7 @@ function KeyOrderSetScreen ({
         case 'KeyOrderSet_Initial':
           navigate('KeyOrderSet_Confirm', {
             keyOrder: localKeyOrder
-          ***REMOVED***)
+          })
           setLocalKeyOrder('')
           break
         case 'KeyOrderSet_Confirm':
@@ -91,7 +91,7 @@ function KeyOrderSetScreen ({
             Alert.alert(
               translations.security.popups.key_order_set_confirmation_title,
               translations.security.popups.key_order_set_confirmation_message,
-              [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+              [{ text: translations.general.ok, onPress: () => {} }]
             )
             // Log the enabling of Security Mode in Firebase analytics.
             logEnableSecurityMode(activeGroup.id)
@@ -101,19 +101,19 @@ function KeyOrderSetScreen ({
             goBack()
             goBack()
             goBack()
-          ***REMOVED*** else {
+          } else {
             Alert.alert(
               translations.security.popups.no_match_title,
               translations.security.popups.no_match_message,
-              [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+              [{ text: translations.general.ok, onPress: () => {} }]
             )
             goBack()
-          ***REMOVED***
+          }
           break
         case 'KeyOrderChange_Initial':
           navigate('KeyOrderChange_Confirm', {
             keyOrder: localKeyOrder
-          ***REMOVED***)
+          })
           setLocalKeyOrder('')
           break
         case 'KeyOrderChange_Confirm':
@@ -121,24 +121,24 @@ function KeyOrderSetScreen ({
             Alert.alert(
               translations.security.popups.key_order_set_confirmation_title,
               translations.security.popups.key_order_set_confirmation_message,
-              [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+              [{ text: translations.general.ok, onPress: () => {} }]
             )
             setSecurityEnabled(true)
             setCode(localKeyOrder)
             goBack()
             goBack()
-          ***REMOVED*** else {
+          } else {
             Alert.alert(
               translations.security.popups.no_match_title,
               translations.security.popups.no_match_message,
-              [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
+              [{ text: translations.general.ok, onPress: () => {} }]
             )
             goBack()
-          ***REMOVED***
+          }
           break
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***, [localKeyOrder])
+      }
+    }
+  }, [localKeyOrder])
 
   function getNavOptions () {
     return {
@@ -152,7 +152,7 @@ function KeyOrderSetScreen ({
                 goBack()
 
                 if (routeName === 'KeyOrderSet_Initial') goBack()
-              ***REMOVED******REMOVED***
+              }}
             />
           )
         : () => <View></View>,
@@ -164,44 +164,44 @@ function KeyOrderSetScreen ({
                 goBack()
 
                 if (routeName === 'KeyOrderSet_Initial') goBack()
-              ***REMOVED******REMOVED***
+              }}
             />
           )
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   //+ RENDER
 
   return (
-    <SafeAreaView style={styles.screen***REMOVED***>
-      <View style={{ width: '100%', alignItems: 'center' ***REMOVED******REMOVED***>
-        <View style={{ width: '100%', paddingHorizontal: 20 ***REMOVED******REMOVED***>
+    <SafeAreaView style={styles.screen}>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%', paddingHorizontal: 20 }}>
           <Text
             style={StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h2',
               'Bold',
               'center',
               colors.shark
-            )***REMOVED***
+            )}
           >
-            {instructionText***REMOVED***
+            {instructionText}
           </Text>
         </View>
-        <KeyLabelGroup keyOrder={localKeyOrder***REMOVED*** />
+        <KeyLabelGroup keyOrder={localKeyOrder} />
         <WahaButton
           type='outline'
-          onPress={() => setLocalKeyOrder('')***REMOVED***
-          color={colors.red***REMOVED***
-          label={translations.security.clear_button_label***REMOVED***
-          width={Dimensions.get('window').width / 3***REMOVED***
-          style={{ marginVertical: 0 ***REMOVED******REMOVED***
+          onPress={() => setLocalKeyOrder('')}
+          color={colors.red}
+          label={translations.security.clear_button_label}
+          width={Dimensions.get('window').width / 3}
+          style={{ marginVertical: 0 }}
         />
       </View>
-      <Piano setPattern={setLocalKeyOrder***REMOVED*** />
+      <Piano setPattern={setLocalKeyOrder} />
     </SafeAreaView>
   )
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'space-around'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(KeyOrderSetScreen)

@@ -1,18 +1,18 @@
 // import SvgUri from 'expo-svg-uri'
-import React, { useEffect, useState ***REMOVED*** from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { AnimatedCircularProgress ***REMOVED*** from 'react-native-circular-progress'
-import { connect ***REMOVED*** from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { connect } from 'react-redux'
 import Icon from '../../assets/fonts/icon_font_config'
-import { getSetInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../../constants'
+import { getSetInfo, itemHeights, scaleMultiplier } from '../../constants'
 import MessageModal from '../../modals/MessageModal'
-import { addSet ***REMOVED*** from '../../redux/actions/groupsActions'
+import { addSet } from '../../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-***REMOVED*** from '../../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../../styles/colors'
-import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
+} from '../../redux/reducers/activeGroup'
+import { colors } from '../../styles/colors'
+import { getLanguageFont, StandardTypography } from '../../styles/typography'
 import SVG from '../SVG.js'
 
 function mapStateToProps (state) {
@@ -23,22 +23,22 @@ function mapStateToProps (state) {
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state),
     translations: activeDatabaseSelector(state).translations
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function mapDispatchToProps (dispatch) {
   return {
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}
 
 /**
  * A component that displays a set. Used on a variety of screens and displayed in a variety of ways depending on the mode prop.
- * @param {Object***REMOVED*** thisSet - The object for the set to display.
- * @param {string***REMOVED*** screen - The screen that the SetItem is used on. The set item is rendered slightly different on all the different screens it's used in. The options are: 1) Sets, 2) Lessons, 3) AddSet, and 4) SetInfo. The varieties used on each screen are described below.
- * @param {Function***REMOVED*** onSetSelect - A function to fire when the set item is pressed. Can be null to make the item non-pressable.
+ * @param {Object} thisSet - The object for the set to display.
+ * @param {string} screen - The screen that the SetItem is used on. The set item is rendered slightly different on all the different screens it's used in. The options are: 1) Sets, 2) Lessons, 3) AddSet, and 4) SetInfo. The varieties used on each screen are described below.
+ * @param {Function} onSetSelect - A function to fire when the set item is pressed. Can be null to make the item non-pressable.
  */
 function SetItem ({
   // Props passed from a parent component.
@@ -53,7 +53,7 @@ function SetItem ({
   activeGroup,
   translations,
   addSet
-***REMOVED***) {
+}) {
   /** Stores the dynamic primary icon portion of the SetItem component. This contains a unique SVG that represents the set and changes between modes. */
   const [primaryIcon, setPrimaryIcon] = useState()
 
@@ -78,14 +78,14 @@ function SetItem ({
         updateThisSetProgress()
         // Primary icon for the SetItem on the Sets screen is a circular progress bar with the set's SVG inside.
         setPrimaryIcon(
-          <View style={styles.primaryIconContainer***REMOVED***>
+          <View style={styles.primaryIconContainer}>
             <AnimatedCircularProgress
-              size={78 * scaleMultiplier***REMOVED***
-              width={7 * scaleMultiplier***REMOVED***
-              fill={thisSetProgress * 100***REMOVED***
-              tintColor={fullyCompleted ? primaryColor + '50' : primaryColor***REMOVED***
-              rotation={0***REMOVED***
-              backgroundColor={colors.white***REMOVED***
+              size={78 * scaleMultiplier}
+              width={7 * scaleMultiplier}
+              fill={thisSetProgress * 100}
+              tintColor={fullyCompleted ? primaryColor + '50' : primaryColor}
+              rotation={0}
+              backgroundColor={colors.white}
             >
               {() => (
                 <View
@@ -93,31 +93,31 @@ function SetItem ({
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center'
-                  ***REMOVED******REMOVED***
+                  }}
                 >
                   <SVG
-                    name={thisSet.iconName***REMOVED***
-                    width={70 * scaleMultiplier***REMOVED***
-                    height={70 * scaleMultiplier***REMOVED***
-                    color={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
+                    name={thisSet.iconName}
+                    width={70 * scaleMultiplier}
+                    height={70 * scaleMultiplier}
+                    color={fullyCompleted ? colors.chateau : colors.shark}
                   />
                 </View>
-              )***REMOVED***
+              )}
             </AnimatedCircularProgress>
           </View>
         )
         // Secondary icon for the SetItem on the Sets screen is a checkmark if the set is fully completed, a orange marker if this set is the bookmarked set, or nothing.
         setSecondaryIcon(
           fullyCompleted ? (
-            <View style={styles.secondaryIconContainer***REMOVED***>
+            <View style={styles.secondaryIconContainer}>
               <Icon
                 name='check-outline'
-                size={30 * scaleMultiplier***REMOVED***
-                color={colors.chateau***REMOVED***
+                size={30 * scaleMultiplier}
+                color={colors.chateau}
               />
             </View>
           ) : (
-            <View style={styles.secondaryIconContainer***REMOVED***>
+            <View style={styles.secondaryIconContainer}>
               <Icon
                 name={
                   thisSet.id === activeGroup.setBookmark
@@ -125,9 +125,9 @@ function SetItem ({
                       ? 'triangle-left'
                       : 'triangle-right'
                     : null
-                ***REMOVED***
-                size={30 * scaleMultiplier***REMOVED***
-                color={primaryColor***REMOVED***
+                }
+                size={30 * scaleMultiplier}
+                color={primaryColor}
               />
             </View>
           )
@@ -137,14 +137,14 @@ function SetItem ({
         updateThisSetProgress()
         // Primary icon for the SetItem on the Lessons screen is the same as on the Sets screen: a circular progress bar with the set's SVG inside.
         setPrimaryIcon(
-          <View style={styles.primaryIconContainer***REMOVED***>
+          <View style={styles.primaryIconContainer}>
             <AnimatedCircularProgress
-              size={78 * scaleMultiplier***REMOVED***
-              width={7 * scaleMultiplier***REMOVED***
-              fill={thisSetProgress * 100***REMOVED***
-              tintColor={fullyCompleted ? primaryColor + '50' : primaryColor***REMOVED***
-              rotation={0***REMOVED***
-              backgroundColor={colors.white***REMOVED***
+              size={78 * scaleMultiplier}
+              width={7 * scaleMultiplier}
+              fill={thisSetProgress * 100}
+              tintColor={fullyCompleted ? primaryColor + '50' : primaryColor}
+              rotation={0}
+              backgroundColor={colors.white}
             >
               {() => (
                 <View
@@ -152,21 +152,21 @@ function SetItem ({
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center'
-                  ***REMOVED******REMOVED***
+                  }}
                 >
                   <SVG
-                    name={thisSet.iconName***REMOVED***
-                    width={70 * scaleMultiplier***REMOVED***
-                    height={70 * scaleMultiplier***REMOVED***
-                    color={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
+                    name={thisSet.iconName}
+                    width={70 * scaleMultiplier}
+                    height={70 * scaleMultiplier}
+                    color={fullyCompleted ? colors.chateau : colors.shark}
                   />
                 </View>
-              )***REMOVED***
+              )}
             </AnimatedCircularProgress>
           </View>
         )
         // There is no secondary icon for the SetItem on the Lessons screen.
-        setSecondaryIcon(<View style={styles.secondaryIconContainer***REMOVED*** />)
+        setSecondaryIcon(<View style={styles.secondaryIconContainer} />)
         break
       case 'AddSet':
         // Primary icon for the SetItem on the AddSet screen is a slightly altered version of the set's SVG without any progress shown.
@@ -180,24 +180,24 @@ function SetItem ({
                 overflow: 'hidden',
                 borderWidth: 7,
                 borderColor: colors.tuna
-              ***REMOVED***
-            ]***REMOVED***
+              }
+            ]}
           >
             <SVG
-              name={thisSet.iconName***REMOVED***
-              width={80 * scaleMultiplier***REMOVED***
-              height={80 * scaleMultiplier***REMOVED***
-              color={colors.tuna***REMOVED***
+              name={thisSet.iconName}
+              width={80 * scaleMultiplier}
+              height={80 * scaleMultiplier}
+              color={colors.tuna}
             />
           </View>
         )
         // Secondary icon for the SetItem on the AddSet screen is a small sideways arrow inviting the user to click on the item to open up a new screen in order to add it.
         setSecondaryIcon(
-          <View style={styles.secondaryIconContainer***REMOVED***>
+          <View style={styles.secondaryIconContainer}>
             <Icon
-              name={isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
-              size={30 * scaleMultiplier***REMOVED***
-              color={primaryColor***REMOVED***
+              name={isRTL ? 'arrow-left' : 'arrow-right'}
+              size={30 * scaleMultiplier}
+              color={primaryColor}
             />
           </View>
         )
@@ -214,22 +214,22 @@ function SetItem ({
                 overflow: 'hidden',
                 borderWidth: 7,
                 borderColor: colors.tuna
-              ***REMOVED***
-            ]***REMOVED***
+              }
+            ]}
           >
             <SVG
-              name={thisSet.iconName***REMOVED***
-              width={80 * scaleMultiplier***REMOVED***
-              height={80 * scaleMultiplier***REMOVED***
-              color={colors.tuna***REMOVED***
+              name={thisSet.iconName}
+              width={80 * scaleMultiplier}
+              height={80 * scaleMultiplier}
+              color={colors.tuna}
             />
           </View>
         )
         // There is no secondary icon for the SetItem on the SetInfo modal screen.
-        setSecondaryIcon(<View style={styles.secondaryIconContainer***REMOVED*** />)
+        setSecondaryIcon(<View style={styles.secondaryIconContainer} />)
         break
-    ***REMOVED***
-  ***REMOVED***, [thisSetProgress, fullyCompleted, activeGroup])
+    }
+  }, [thisSetProgress, fullyCompleted, activeGroup])
 
   /**
    * Updates the thisSetProgress state.
@@ -239,7 +239,7 @@ function SetItem ({
       activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].progress
         .length / thisSet.lessons.length
     )
-  ***REMOVED***
+  }
 
   /** useEffect function that updates whenever this set's progress changes and handles the changes appropriately. */
   useEffect(() => {
@@ -281,9 +281,9 @@ function SetItem ({
             )[0]
         )
         setShowUnlockModal(true)
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***, [thisSetProgress])
+      }
+    }
+  }, [thisSetProgress])
 
   return (
     <TouchableOpacity
@@ -292,26 +292,26 @@ function SetItem ({
         {
           flexDirection: isRTL ? 'row-reverse' : 'row',
           height: itemHeights[font].SetItem
-        ***REMOVED***
-      ]***REMOVED***
-      onPress={onSetSelect***REMOVED***
+        }
+      ]}
+      onPress={onSetSelect}
       // Disable the touch feedback if there's no onSetSelect function.
-      activeOpacity={onSetSelect ? 0.2 : 1***REMOVED***
+      activeOpacity={onSetSelect ? 0.2 : 1}
     >
-      {primaryIcon***REMOVED***
+      {primaryIcon}
       <View
         style={[
           styles.textContainer,
           {
             marginRight: isRTL ? 20 : 0,
             marginLeft: isRTL ? 0 : 20
-          ***REMOVED***
-        ]***REMOVED***
+          }
+        ]}
       >
         <Text
           style={[
             StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'd',
               'Regular',
               'left',
@@ -320,16 +320,16 @@ function SetItem ({
             {
               textAlignVertical: 'center',
               flexWrap: 'wrap'
-            ***REMOVED***
-          ]***REMOVED***
-          numberOfLines={1***REMOVED***
+            }
+          ]}
+          numberOfLines={1}
         >
-          {thisSet.subtitle***REMOVED***
+          {thisSet.subtitle}
         </Text>
         <Text
           style={[
             StandardTypography(
-              { font, isRTL ***REMOVED***,
+              { font, isRTL },
               'h3',
               'Black',
               'left',
@@ -338,35 +338,35 @@ function SetItem ({
             {
               textAlignVertical: 'center',
               flexWrap: 'wrap'
-            ***REMOVED***
-          ]***REMOVED***
-          numberOfLines={2***REMOVED***
+            }
+          ]}
+          numberOfLines={2}
         >
-          {thisSet.title***REMOVED***
+          {thisSet.title}
         </Text>
       </View>
-      {secondaryIcon***REMOVED***
-      {/* Modals */***REMOVED***
+      {secondaryIcon}
+      {/* Modals */}
       <MessageModal
-        isVisible={showUnlockModal***REMOVED***
-        hideModal={() => setShowUnlockModal(false)***REMOVED***
-        title={translations.general.popups.new_story_set_unlocked_title***REMOVED***
-        body={translations.general.popups.new_story_set_unlocked_message***REMOVED***
-        confirmText={translations.general.got_it***REMOVED***
-        confirmOnPress={() => setShowUnlockModal(false)***REMOVED***
+        isVisible={showUnlockModal}
+        hideModal={() => setShowUnlockModal(false)}
+        title={translations.general.popups.new_story_set_unlocked_title}
+        body={translations.general.popups.new_story_set_unlocked_message}
+        confirmText={translations.general.got_it}
+        confirmOnPress={() => setShowUnlockModal(false)}
       >
         <Image
-          source={require('../../assets/gifs/new_set.gif')***REMOVED***
+          source={require('../../assets/gifs/new_set.gif')}
           style={{
             height: 200 * scaleMultiplier,
             margin: 20,
             resizeMode: 'contain'
-          ***REMOVED******REMOVED***
+          }}
         />
       </MessageModal>
     </TouchableOpacity>
   )
-***REMOVED***
+}
 
 const styles = StyleSheet.create({
   setItemContainer: {
@@ -376,35 +376,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20
-  ***REMOVED***,
+  },
   primaryIconContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     width: 80 * scaleMultiplier,
     height: 80 * scaleMultiplier
-  ***REMOVED***,
+  },
   secondaryIconContainer: {
     justifyContent: 'center',
     width: 30 * scaleMultiplier,
     height: 30 * scaleMultiplier
-  ***REMOVED***,
+  },
   textContainer: {
     flex: 1,
     justifyContent: 'center',
     flexDirection: 'column'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetItem)
 
 /* <SvgUri
 source={{
   uri: ''
-***REMOVED******REMOVED***
-width={70 * scaleMultiplier***REMOVED***
-height={70 * scaleMultiplier***REMOVED***
-// fill={fullyCompleted ? colors.chateau : colors.shark***REMOVED***
-fill={colors.chateau***REMOVED***
+}}
+width={70 * scaleMultiplier}
+height={70 * scaleMultiplier}
+// fill={fullyCompleted ? colors.chateau : colors.shark}
+fill={colors.chateau}
 fillAll
 />  */

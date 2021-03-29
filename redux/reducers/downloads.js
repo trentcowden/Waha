@@ -1,16 +1,16 @@
 import {
   ADD_UPDATE_DOWNLOAD,
   REMOVE_DOWNLOAD
-***REMOVED*** from '../actions/downloadActions'
+} from '../actions/downloadActions'
 
 /**
  * The downloads reducer stores the progress for any active lesson downloads. Downloads that happen during the initial install of a language are NOT stored here. They are handled by the database.js reducer and the databaseActions.js. This is only for downloading lesson scripture audio files or lesson video files. This state NOT is persisted across app restarts, so all downloads are cancelled if the user quits the app.
- * @param {Object***REMOVED*** action - Parameters passed from groupActions.js functions.
- * @param {Object***REMOVED*** downloads - (state) All of the currently active downloads. Each key is the ID of the lesson that is downloading so that multiple lesson downloads can be stored at once.
- * @param {number***REMOVED*** downloads[lessonID].progress - The progress of this lesson's download from 0 to 1.
- * @param {Object***REMOVED*** downloads[lessonID].resumable - The resumable object for this lesson's download saved from the expo download object. This is stored so that we can "cancel" the download later. In this case, cancelling means pausing the download and never resuming it since expo doesn't have a cancel download function.
+ * @param {Object} action - Parameters passed from groupActions.js functions.
+ * @param {Object} downloads - (state) All of the currently active downloads. Each key is the ID of the lesson that is downloading so that multiple lesson downloads can be stored at once.
+ * @param {number} downloads[lessonID].progress - The progress of this lesson's download from 0 to 1.
+ * @param {Object} downloads[lessonID].resumable - The resumable object for this lesson's download saved from the expo download object. This is stored so that we can "cancel" the download later. In this case, cancelling means pausing the download and never resuming it since expo doesn't have a cancel download function.
  */
-export function downloads (state = {***REMOVED***, params) {
+export function downloads (state = {}, params) {
   switch (params.type) {
     /**
      * Adds or updates the progress for a download in the downloads state. The reason these are grouped into one is because the functionality is the same. If the lesson ID is found in the object, it replaces it (updates it). If it's not, it adds it.
@@ -21,8 +21,8 @@ export function downloads (state = {***REMOVED***, params) {
         [params.lessonID]: {
           progress: params.progress,
           resumable: params.resumable
-        ***REMOVED***
-      ***REMOVED***
+        }
+      }
     case REMOVE_DOWNLOAD:
       // get the key of the download we want to delete
       var idToDelete = params.lessonID
@@ -33,8 +33,8 @@ export function downloads (state = {***REMOVED***, params) {
         .reduce((result, current) => {
           result[current] = state[current]
           return result
-        ***REMOVED***, {***REMOVED***)
+        }, {})
     default:
       return state
-  ***REMOVED***
-***REMOVED***
+  }
+}

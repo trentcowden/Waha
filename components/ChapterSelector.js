@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, View ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { activeDatabaseSelector ***REMOVED*** from '../redux/reducers/activeGroup'
+import { StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
+import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import ChapterButton from './ChapterButton'
 import ChapterSeparator from './ChapterSeparator'
 
@@ -10,8 +10,8 @@ function mapStateToProps (state) {
     primaryColor: activeDatabaseSelector(state).primaryColor,
     downloads: state.downloads,
     isConnected: state.network.isConnected
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function ChapterSelector ({
   // Props passed from a parent component.
@@ -24,7 +24,7 @@ function ChapterSelector ({
   primaryColor,
   downloads,
   isConnected
-***REMOVED***) {
+}) {
   // order of chapters is
   //  1. fellowship
   //  2. story
@@ -48,17 +48,17 @@ function ChapterSelector ({
         if (lessonType === 'qav' || lessonType === 'qv') return 4
         else return 3
         break
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   return (
-    <View style={styles.chapterSelectContainer***REMOVED***>
+    <View style={styles.chapterSelectContainer}>
       <ChapterButton
         name='fellowship'
-        mode={activeChapter === 'fellowship' ? 'active' : 'inactive'***REMOVED***
-        number={1***REMOVED***
-        activeNumber={getActiveNumber()***REMOVED***
-        onPress={onPress***REMOVED***
+        mode={activeChapter === 'fellowship' ? 'active' : 'inactive'}
+        number={1}
+        activeNumber={getActiveNumber()}
+        onPress={onPress}
       />
       <ChapterSeparator />
       <ChapterButton
@@ -73,17 +73,17 @@ function ChapterSelector ({
             : activeChapter === 'story'
             ? 'active'
             : 'inactive'
-        ***REMOVED***
-        number={2***REMOVED***
-        activeNumber={getActiveNumber()***REMOVED***
-        onPress={onPress***REMOVED***
+        }
+        number={2}
+        activeNumber={getActiveNumber()}
+        onPress={onPress}
         downloadProgress={
           downloads[lessonID] ? downloads[lessonID].progress : null
-        ***REMOVED***
+        }
       />
       {lessonType === 'qav' || lessonType === 'qv' ? (
         <ChapterSeparator />
-      ) : null***REMOVED***
+      ) : null}
       {lessonType === 'qav' || lessonType === 'qv' ? (
         <ChapterButton
           name='training'
@@ -96,28 +96,28 @@ function ChapterSelector ({
               : activeChapter === 'training'
               ? 'active'
               : 'inactive'
-          ***REMOVED***
-          number={3***REMOVED***
-          activeNumber={getActiveNumber()***REMOVED***
-          onPress={onPress***REMOVED***
+          }
+          number={3}
+          activeNumber={getActiveNumber()}
+          onPress={onPress}
           downloadProgress={
             downloads[lessonID + 'v']
               ? downloads[lessonID + 'v'].progress
               : null
-          ***REMOVED***
+          }
         />
-      ) : null***REMOVED***
+      ) : null}
       <ChapterSeparator />
       <ChapterButton
         name='application'
-        mode={activeChapter === 'application' ? 'active' : 'inactive'***REMOVED***
-        number={lessonType === 'qav' || lessonType === 'qv' ? 4 : 3***REMOVED***
-        activeNumber={getActiveNumber()***REMOVED***
-        onPress={onPress***REMOVED***
+        mode={activeChapter === 'application' ? 'active' : 'inactive'}
+        number={lessonType === 'qav' || lessonType === 'qv' ? 4 : 3}
+        activeNumber={getActiveNumber()}
+        onPress={onPress}
       />
     </View>
   )
-***REMOVED***
+}
 
 // STYLES
 
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   chapterSelectContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(ChapterSelector)

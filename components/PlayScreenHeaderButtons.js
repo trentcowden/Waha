@@ -1,15 +1,15 @@
 import React from 'react'
-import { Platform, StyleSheet, TouchableOpacity, View ***REMOVED*** from 'react-native'
-import { connect ***REMOVED*** from 'react-redux'
-import { scaleMultiplier ***REMOVED*** from '../constants'
-import { activeDatabaseSelector ***REMOVED*** from '../redux/reducers/activeGroup'
-import { colors ***REMOVED*** from '../styles/colors'
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { connect } from 'react-redux'
+import { scaleMultiplier } from '../constants'
+import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
 function PlayScreenHeaderButtons ({
   // Props passed from a parent component.
@@ -18,7 +18,7 @@ function PlayScreenHeaderButtons ({
   completeCondition,
   // Props passed from redux.
   isRTL
-***REMOVED***) {
+}) {
   //+ RENDER
 
   return (
@@ -28,29 +28,29 @@ function PlayScreenHeaderButtons ({
         {
           flexDirection: isRTL ? 'row-reverse' : 'row',
           marginHorizonal: 5
-        ***REMOVED***
-      ]***REMOVED***
+        }
+      ]}
     >
-      <TouchableOpacity onPress={shareOnPress***REMOVED***>
+      <TouchableOpacity onPress={shareOnPress}>
         <Icon
-          name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'***REMOVED***
-          size={32 * scaleMultiplier***REMOVED***
-          color={colors.oslo***REMOVED***
+          name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
+          size={32 * scaleMultiplier}
+          color={colors.oslo}
         />
       </TouchableOpacity>
       <TouchableOpacity
-        style={{ marginHorizontal: 5 ***REMOVED******REMOVED***
-        onPress={completeOnPress***REMOVED***
+        style={{ marginHorizontal: 5 }}
+        onPress={completeOnPress}
       >
         <Icon
-          name={completeCondition ? 'check-filled' : 'check-outline'***REMOVED***
-          size={35 * scaleMultiplier***REMOVED***
-          color={colors.oslo***REMOVED***
+          name={completeCondition ? 'check-filled' : 'check-outline'}
+          size={35 * scaleMultiplier}
+          color={colors.oslo}
         />
       </TouchableOpacity>
     </View>
   )
-***REMOVED***
+}
 
 //+ STYLES
 
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   headerButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end'
-  ***REMOVED***
-***REMOVED***)
+  }
+})
 
 export default connect(mapStateToProps)(PlayScreenHeaderButtons)
