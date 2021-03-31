@@ -1,30 +1,30 @@
 import NetInfo from '@react-native-community/netinfo'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createDrawerNavigator ***REMOVED*** from '@react-navigation/drawer'
 import {
   getFocusedRouteNameFromRoute,
   NavigationContainer
-} from '@react-navigation/native'
+***REMOVED*** from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect ***REMOVED*** from 'react'
+import { connect ***REMOVED*** from 'react-redux'
 import WahaDrawer from '../components/WahaDrawer'
-import { scaleMultiplier } from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import db from '../firebase/db'
-import { appVersion } from '../modeSwitch'
+import { appVersion ***REMOVED*** from '../modeSwitch'
 import {
   addLanguageCoreFileToUpdate,
   clearLanguageCoreFilesToUpdate,
   storeLanguageCoreFileCreatedTime,
   storeLanguageData,
   storeLanguageSets
-} from '../redux/actions/databaseActions'
-import { changeActiveGroup, deleteGroup } from '../redux/actions/groupsActions'
-import { updateConnectionStatus } from '../redux/actions/networkActions'
+***REMOVED*** from '../redux/actions/databaseActions'
+import { changeActiveGroup, deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import { updateConnectionStatus ***REMOVED*** from '../redux/actions/networkActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
+***REMOVED*** from '../redux/reducers/activeGroup'
 import MainStack from './MainStack'
 
 // Create the drawer navigator.
@@ -47,35 +47,35 @@ function mapStateToProps (state) {
     installedLanguageInstances: Object.keys(state.database).filter(
       key => key.length === 2
     )
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     updateConnectionStatus: status => {
       dispatch(updateConnectionStatus(status))
-    },
+    ***REMOVED***,
     storeLanguageData: (data, language) => {
       dispatch(storeLanguageData(data, language))
-    },
+    ***REMOVED***,
     storeLanguageSets: (sets, language) => {
       dispatch(storeLanguageSets(sets, language))
-    },
+    ***REMOVED***,
     addLanguageCoreFileToUpdate: fileName => {
       dispatch(addLanguageCoreFileToUpdate(fileName))
-    },
+    ***REMOVED***,
     changeActiveGroup: name => {
       dispatch(changeActiveGroup(name))
-    },
+    ***REMOVED***,
     deleteGroup: name => {
       dispatch(deleteGroup(name))
-    },
+    ***REMOVED***,
     storeLanguageCoreFileCreatedTime: (fileName, timeCreated) =>
       dispatch(storeLanguageCoreFileCreatedTime(fileName, timeCreated)),
     clearLanguageCoreFilesToUpdate: () =>
       dispatch(clearLanguageCoreFilesToUpdate())
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 /**
  * This component renders a drawer navigator that contains Waha's navigation drawer. It's placed around the MainStack navigator. It also contains a ton of logic related to things that happen globally in the background, such as updating the connection status and retrieving updates from Firestore.
@@ -103,41 +103,41 @@ function MainDrawer ({
   deleteGroup,
   storeLanguageCoreFileCreatedTime,
   clearLanguageCoreFilesToUpdate
-}) {
+***REMOVED***) {
   /**
    * Determines whether a screen should be able to access the navigation drawer via gesture. Should only return true on the SetsTabs navigator because this is the only spot we should be able to swipe to open the drawer.
-   * @param {string} route - The route passed from the navigation component.
-   * @return {boolean} - Whether gestures should be enabled or not.
+   * @param {string***REMOVED*** route - The route passed from the navigation component.
+   * @return {boolean***REMOVED*** - Whether gestures should be enabled or not.
    */
   function getGestureEnabled (route) {
     const routeName = getFocusedRouteNameFromRoute(route) ?? 'SetsTabs'
     if (routeName === 'SetsTabs') return true
     else return false
-  }
+  ***REMOVED***
 
   useEffect(() => {
     // Add a listener for connection status and update the redux state accordingly.
     const netInfoUnsubscribe = NetInfo.addEventListener(state => {
       updateConnectionStatus(state.isConnected)
-    })
+    ***REMOVED***)
 
     return function cleanup () {
       // Cancel our connection status listener.
       netInfoUnsubscribe()
-    }
-  }, [])
+    ***REMOVED***
+  ***REMOVED***, [])
 
   // (TEMP) Create the language core files to update redux variable for users who are updating from a previous version.
   if (!languageCoreFilesToUpdate) {
     clearLanguageCoreFilesToUpdate()
-  }
+  ***REMOVED***
 
   // (TEMP) Check to makes sure that users who update have the language core file created times.
   if (!languageCoreFilesCreatedTimes) {
     installedLanguageInstances.forEach(language => {
       database[language].files.forEach(fileName => {
         var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
-        var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+        var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
         // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
         firebase
           .storage()
@@ -146,16 +146,16 @@ function MainDrawer ({
           .then(metadata =>
             storeLanguageCoreFileCreatedTime(
               // For when file name includes "v1".
-              `${language}-${fileName.slice(0, -3)}`,
+              `${language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`,
               metadata.timeCreated
               // For when file name DOESN'T includes "v1".
               // language + '-' + fileName,
               // metadata.timeCreated
             )
           )
-      })
-    })
-  }
+      ***REMOVED***)
+    ***REMOVED***)
+  ***REMOVED***
 
   // Check for database updates for other installed languages besides the active one.
   useEffect(() => {
@@ -178,12 +178,12 @@ function MainDrawer ({
 
                 // Store our language info in redux.
                 storeLanguageData(doc.data(), key)
-              }
-            }
-          })
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***)
           .catch(error => {
             console.log('Error retrieving data from Firestore.')
-          })
+          ***REMOVED***)
 
         // Fetch data from the Story Sets Firestore collection. Get all Story Sets of the current language.
         db.collection('sets')
@@ -199,19 +199,19 @@ function MainDrawer ({
                   sets.push({
                     id: doc.id,
                     ...doc.data()
-                  })
-                })
+                  ***REMOVED***)
+                ***REMOVED***)
                 /// ...and write all of them to redux.
                 storeLanguageSets(sets, key)
-              }
-            }
-          })
+              ***REMOVED***
+            ***REMOVED***
+          ***REMOVED***)
           .catch(error => {
             console.log('Error retrieving data from Firestore.')
-          })
-      }
-    })
-  }, [])
+          ***REMOVED***)
+      ***REMOVED***
+    ***REMOVED***)
+  ***REMOVED***, [])
 
   // Check for database updates for the active language. This function gets triggered whenever a user downloads a new lesson and whenever the active group changes.
   useEffect(() => {
@@ -240,42 +240,42 @@ function MainDrawer ({
 
               // PRODUCTION FIREBASE URL
               // Always have this uncommented when it's time to build a new version.
-              var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+              var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
 
               // TEST FIREBASE URL
               // Use this for test Firebase storage.
-              // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+              // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${activeGroup.language***REMOVED***%2Fother%2F${fileName***REMOVED***.${fileExtension***REMOVED***?alt=media`
 
               // Check the timeCreated of this core file in Firebase storage.
               firebase
                 .storage()
                 .refFromURL(url)
                 .getMetadata()
-                .then(({ timeCreated }) => {
+                .then(({ timeCreated ***REMOVED***) => {
                   // If the created time of this core file has already been stored previously AND the created time of the core file in Firebase is different from the created time that's stored in redux...
                   if (
                     languageCoreFilesCreatedTimes[
-                      `${activeGroup.language}-${fileName.slice(0, -3)}`
+                      `${activeGroup.language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`
                     ] &&
                     timeCreated !==
                       languageCoreFilesCreatedTimes[
-                        `${activeGroup.language}-${fileName.slice(0, -3)}`
+                        `${activeGroup.language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`
                       ]
                   ) {
                     // Add the core file to our redux array of files to update, assuming that it hasn't already been added.
                     if (
                       !languageCoreFilesToUpdate.includes(
-                        `${activeGroup.language}-${fileName.slice(0, -3)}`
+                        `${activeGroup.language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`
                       )
                     ) {
-                      console.log(`${fileName} needs to be replaced.\n`)
+                      console.log(`${fileName***REMOVED*** needs to be replaced.\n`)
                       addLanguageCoreFileToUpdate(
-                        `${activeGroup.language}-${fileName.slice(0, -3)}`
+                        `${activeGroup.language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`
                       )
-                    }
-                  }
-                })
-            })
+                    ***REMOVED***
+                  ***REMOVED***
+                ***REMOVED***)
+            ***REMOVED***)
 
             // Read the contents of Waha's file directory to check which core files are downloaded.
             FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
@@ -288,33 +288,33 @@ function MainDrawer ({
                   // If it isn't downloaded...
                   if (
                     !contents.includes(
-                      `${activeGroup.language}-${fileName.slice(
+                      `${activeGroup.language***REMOVED***-${fileName.slice(
                         0,
                         -3
-                      )}.${fileExtension}`
+                      )***REMOVED***.${fileExtension***REMOVED***`
                     )
                   ) {
                     // Add the core file to our redux array of files to download, assuming that it hasn't already been added.
                     if (
                       !languageCoreFilesToUpdate.includes(
-                        `${activeGroup.language}-${fileName.slice(0, -3)}`
+                        `${activeGroup.language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`
                       )
                     ) {
-                      console.log(`${fileName} needs to be added.\n`)
+                      console.log(`${fileName***REMOVED*** needs to be added.\n`)
                       addLanguageCoreFileToUpdate(
-                        `${activeGroup.language}-${fileName.slice(0, -3)}`
+                        `${activeGroup.language***REMOVED***-${fileName.slice(0, -3)***REMOVED***`
                       )
-                    }
-                  }
-                })
-              }
+                    ***REMOVED***
+                  ***REMOVED***
+                ***REMOVED***)
+              ***REMOVED***
             )
-          }
-        }
-      })
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***)
       .catch(error => {
         console.log('Error retrieving data from Firestore.')
-      })
+      ***REMOVED***)
 
     // Fetch data from the Story Sets Firestore collection. Get all Story Sets of the current language.
     db.collection('sets')
@@ -330,39 +330,39 @@ function MainDrawer ({
               sets.push({
                 id: doc.id,
                 ...doc.data()
-              })
-            })
+              ***REMOVED***)
+            ***REMOVED***)
             /// ...and write all of them to redux.
             storeLanguageSets(sets, activeGroup.language)
-          }
-        }
-      })
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***)
       .catch(error => {
         console.log('Error retrieving data from Firestore.')
-      })
-  }, [Object.keys(downloads).length, activeGroup])
+      ***REMOVED***)
+  ***REMOVED***, [Object.keys(downloads).length, activeGroup])
 
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerPosition={isRTL ? 'right' : 'left'}
+        drawerPosition={isRTL ? 'right' : 'left'***REMOVED***
         drawerType='back'
-        drawerContent={props => <WahaDrawer {...props} />}
+        drawerContent={props => <WahaDrawer {...props***REMOVED*** />***REMOVED***
         drawerStyle={{
           width: '80%'
-        }}
-        edgeWidth={75 * scaleMultiplier}
+        ***REMOVED******REMOVED***
+        edgeWidth={75 * scaleMultiplier***REMOVED***
       >
         <Drawer.Screen
-          options={({ route }) => ({
+          options={({ route ***REMOVED***) => ({
             gestureEnabled: getGestureEnabled(route)
-          })}
+          ***REMOVED***)***REMOVED***
           name='MainStack'
-          component={MainStack}
+          component={MainStack***REMOVED***
         />
       </Drawer.Navigator>
     </NavigationContainer>
   )
-}
+***REMOVED***
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainDrawer)

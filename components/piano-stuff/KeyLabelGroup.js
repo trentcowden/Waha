@@ -1,13 +1,13 @@
 import React from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
-import { scaleMultiplier } from '../../constants'
+import { Dimensions, StyleSheet, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../../redux/reducers/activeGroup'
-import { colors, keyColors } from '../../styles/colors'
-import { getLanguageFont } from '../../styles/typography'
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors, keyColors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../../styles/typography'
 import KeyLabel from './KeyLabel'
 
 function mapStateToProps (state) {
@@ -16,8 +16,8 @@ function mapStateToProps (state) {
     security: state.security,
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function KeyLabelGroup ({
   // Props passed from a parent component.s
@@ -27,52 +27,52 @@ function KeyLabelGroup ({
   security,
   isRTL,
   activeGroup
-}) {
+***REMOVED***) {
   var keyLabel1 = keyOrder[1] ? (
     <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(0, 2).replace(/^0/, '')]}
-      number={keyOrder.substr(0, 2).replace(/^0/, '')}
-      style={{ alignSelf: null, marginBottom: 0 }}
+      backgroundColor={keyColors[keyOrder.substr(0, 2).replace(/^0/, '')]***REMOVED***
+      number={keyOrder.substr(0, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
     />
   ) : null
 
   var keyLabel2 = keyOrder[3] ? (
     <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(2, 2).replace(/^0/, '')]}
-      number={keyOrder.substr(2, 2).replace(/^0/, '')}
-      style={{ alignSelf: null, marginBottom: 0 }}
+      backgroundColor={keyColors[keyOrder.substr(2, 2).replace(/^0/, '')]***REMOVED***
+      number={keyOrder.substr(2, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
     />
   ) : null
 
   var keyLabel3 = keyOrder[5] ? (
     <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(4, 2).replace(/^0/, '')]}
-      number={keyOrder.substr(4, 2).replace(/^0/, '')}
-      style={{ alignSelf: null, marginBottom: 0 }}
+      backgroundColor={keyColors[keyOrder.substr(4, 2).replace(/^0/, '')]***REMOVED***
+      number={keyOrder.substr(4, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
     />
   ) : null
 
   var keyLabel4 = keyOrder[7] ? (
     <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(6, 2).replace(/^0/, '')]}
-      number={keyOrder.substr(6, 2).replace(/^0/, '')}
-      style={{ alignSelf: null, marginBottom: 0 }}
+      backgroundColor={keyColors[keyOrder.substr(6, 2).replace(/^0/, '')]***REMOVED***
+      number={keyOrder.substr(6, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
     />
   ) : null
 
   var keyLabel5 = keyOrder[9] ? (
     <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(8, 2).replace(/^0/, '')]}
-      number={keyOrder.substr(8, 2).replace(/^0/, '')}
-      style={{ alignSelf: null, marginBottom: 0 }}
+      backgroundColor={keyColors[keyOrder.substr(8, 2).replace(/^0/, '')]***REMOVED***
+      number={keyOrder.substr(8, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
     />
   ) : null
 
   var keyLabel6 = keyOrder[11] ? (
     <KeyLabel
-      backgroundColor={keyColors[keyOrder.substr(10, 2).replace(/^0/, '')]}
-      number={keyOrder.substr(10, 2).replace(/^0/, '')}
-      style={{ alignSelf: null, marginBottom: 0 }}
+      backgroundColor={keyColors[keyOrder.substr(10, 2).replace(/^0/, '')]***REMOVED***
+      number={keyOrder.substr(10, 2).replace(/^0/, '')***REMOVED***
+      style={{ alignSelf: null, marginBottom: 0 ***REMOVED******REMOVED***
     />
   ) : null
 
@@ -84,17 +84,17 @@ function KeyLabelGroup ({
         justifyContent: 'center',
         padding: 20,
         flexDirection: isRTL ? 'row-reverse' : 'row'
-      }}
+      ***REMOVED******REMOVED***
     >
-      <View style={styles.keyPlaceholder}>{keyLabel1}</View>
-      <View style={styles.keyPlaceholder}>{keyLabel2}</View>
-      <View style={styles.keyPlaceholder}>{keyLabel3}</View>
-      <View style={styles.keyPlaceholder}>{keyLabel4}</View>
-      <View style={styles.keyPlaceholder}>{keyLabel5}</View>
-      <View style={styles.keyPlaceholder}>{keyLabel6}</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel1***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel2***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel3***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel4***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel5***REMOVED***</View>
+      <View style={styles.keyPlaceholder***REMOVED***>{keyLabel6***REMOVED***</View>
     </View>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps)(KeyLabelGroup)

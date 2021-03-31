@@ -1,6 +1,6 @@
-import { useBackHandler } from '@react-native-community/hooks'
-import { Audio } from 'expo-av'
-import React, { useEffect, useState } from 'react'
+import { useBackHandler ***REMOVED*** from '@react-native-community/hooks'
+import { Audio ***REMOVED*** from 'expo-av'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Dimensions,
   Image,
@@ -10,18 +10,18 @@ import {
   StyleSheet,
   Text,
   View
-} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { connect } from 'react-redux'
+***REMOVED*** from 'react-native'
+import { TouchableOpacity ***REMOVED*** from 'react-native-gesture-handler'
+import { connect ***REMOVED*** from 'react-redux'
 import Piano from '../components/piano-stuff/Piano'
-import { scaleMultiplier } from '../constants'
-import { setIsMuted, setIsTimedOut } from '../redux/actions/securityActions'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { setIsMuted, setIsTimedOut ***REMOVED*** from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -30,23 +30,23 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     translations: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     setIsMuted: toSet => {
       dispatch(setIsMuted(toSet))
-    },
+    ***REMOVED***,
     setIsTimedOut: toSet => {
       dispatch(setIsTimedOut(toSet))
-    }
-  }
-}
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 function PianoAppScreen ({
   // Props passed from navigation.
-  navigation: { canGoBack, goBack, reset },
+  navigation: { canGoBack, goBack, reset ***REMOVED***,
   // Props passed from redux.
   security,
   font,
@@ -55,7 +55,7 @@ function PianoAppScreen ({
   isRTL,
   setIsMuted,
   setIsTimedOut
-}) {
+***REMOVED***) {
   //+ STATE
 
   const [pattern, setPattern] = useState('')
@@ -75,28 +75,28 @@ function PianoAppScreen ({
             require('../assets/securityMode/unlock_security_mode_sound.mp3')
           )
           .then(() => note.playAsync())
-      }
+      ***REMOVED***
       setIsTimedOut(false)
       if (canGoBack()) {
         if (Platform.OS === 'ios') goBack()
         goBack()
-      } else
+      ***REMOVED*** else
         reset({
           index: 0,
-          routes: [{ name: 'SetsTabs' }]
-        })
-    }
-  }, [pattern])
+          routes: [{ name: 'SetsTabs' ***REMOVED***]
+        ***REMOVED***)
+    ***REMOVED***
+  ***REMOVED***, [pattern])
 
   // disable back button on this screen
   useBackHandler(() => {
     return true
-  })
+  ***REMOVED***)
 
   //+ RENDER
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={styles.screen***REMOVED***>
       <View
         style={{
           height: '25%',
@@ -104,30 +104,30 @@ function PianoAppScreen ({
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row'
-        }}
+        ***REMOVED******REMOVED***
       >
         <Image
-          source={require('../assets/icons/waha_icon.png')}
+          source={require('../assets/icons/waha_icon.png')***REMOVED***
           style={{
             resizeMode: 'contain',
             width: 50,
             height: 50,
             borderRadius: 10
-          }}
+          ***REMOVED******REMOVED***
         />
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              { font, isRTL ***REMOVED***,
               'h1',
               'Bold',
               'center',
               colors.shark
             ),
-            { paddingHorizontal: 10 }
-          ]}
+            { paddingHorizontal: 10 ***REMOVED***
+          ]***REMOVED***
         >
-          {translations.security.game_screen_title}
+          {translations.security.game_screen_title***REMOVED***
         </Text>
       </View>
       <View>
@@ -136,7 +136,7 @@ function PianoAppScreen ({
             flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'center',
             alignItems: 'center'
-          }}
+          ***REMOVED******REMOVED***
         >
           <TouchableOpacity
             onPress={
@@ -146,17 +146,17 @@ function PianoAppScreen ({
                     setTimeout(() => setCountdown('2'), 1000)
                     setTimeout(() => setCountdown('1'), 2000)
                     setTimeout(() => setCountdown('!'), 3000)
-                  }
+                  ***REMOVED***
                 : () => {
                     setCountdown('')
-                  }
+                  ***REMOVED***
               // security.isMuted
               //   ? () => setIsMuted(false)
               //   : () => setIsMuted(true)
-            }
+            ***REMOVED***
             style={{
               margin: 20
-            }}
+            ***REMOVED******REMOVED***
           >
             <View
               style={{
@@ -168,33 +168,33 @@ function PianoAppScreen ({
                 borderColor: colors.tuna,
                 justifyContent: 'center',
                 alignItems: 'center'
-              }}
+              ***REMOVED******REMOVED***
             >
               <Text
                 style={StandardTypography(
-                  { font, isRTL },
+                  { font, isRTL ***REMOVED***,
                   'h2',
                   'Regular',
                   'center',
                   colors.white
-                )}
+                )***REMOVED***
               >
-                {countdown}
+                {countdown***REMOVED***
               </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={
               isPlaying ? () => setIsPlaying(false) : () => setIsPlaying(true)
-            }
+            ***REMOVED***
             style={{
               margin: 20
-            }}
+            ***REMOVED******REMOVED***
           >
             <Icon
-              name={isPlaying ? 'pause' : 'play'}
-              size={60 * scaleMultiplier}
-              color={colors.tuna}
+              name={isPlaying ? 'pause' : 'play'***REMOVED***
+              size={60 * scaleMultiplier***REMOVED***
+              color={colors.tuna***REMOVED***
             />
           </TouchableOpacity>
         </View>
@@ -205,10 +205,10 @@ function PianoAppScreen ({
               width: Dimensions.get('window').width,
               height: 60 * scaleMultiplier,
               borderRadius: 10
-            }}
-            source={require('../assets/securityMode/piano.png')}
+            ***REMOVED******REMOVED***
+            source={require('../assets/securityMode/piano.png')***REMOVED***
           />
-          <Piano setPattern={setPattern} isMuted={security.isMuted} />
+          <Piano setPattern={setPattern***REMOVED*** isMuted={security.isMuted***REMOVED*** />
         </View>
         <View
           style={{
@@ -216,37 +216,37 @@ function PianoAppScreen ({
             flexDirection: isRTL ? 'row-reverse' : 'row',
             justifyContent: 'space-between',
             alignItems: 'center'
-          }}
+          ***REMOVED******REMOVED***
         >
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => {***REMOVED******REMOVED***
             style={{
               margin: 20
-            }}
+            ***REMOVED******REMOVED***
           >
-            <Icon name={'settings'} size={50} color={colors.tuna} />
+            <Icon name={'settings'***REMOVED*** size={50***REMOVED*** color={colors.tuna***REMOVED*** />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={
               security.isMuted
                 ? () => setIsMuted(false)
                 : () => setIsMuted(true)
-            }
+            ***REMOVED***
             style={{
               margin: 20
-            }}
+            ***REMOVED******REMOVED***
           >
             <Icon
-              name={security.isMuted ? 'volume-off' : 'volume'}
-              size={50}
-              color={colors.tuna}
+              name={security.isMuted ? 'volume-off' : 'volume'***REMOVED***
+              size={50***REMOVED***
+              color={colors.tuna***REMOVED***
             />
           </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.aquaHaze,
     alignItems: 'center',
     justifyContent: 'space-around'
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(PianoAppScreen)

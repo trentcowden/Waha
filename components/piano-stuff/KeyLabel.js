@@ -1,27 +1,27 @@
 import React from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import { colors } from '../../styles/colors'
-import { StandardTypography } from '../../styles/typography'
+import { Dimensions, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { StandardTypography ***REMOVED*** from '../../styles/typography'
 
-function KeyLabel ({ backgroundColor, style, number }) {
+function KeyLabel ({ backgroundColor, style, number ***REMOVED***) {
   // RENDER
 
   return (
-    <View style={[styles.circle, { backgroundColor: backgroundColor }, style]}>
+    <View style={[styles.circle, { backgroundColor: backgroundColor ***REMOVED***, style]***REMOVED***>
       <Text
         style={StandardTypography(
-          { font: 'Roboto' },
+          { font: 'Roboto' ***REMOVED***,
           'h2',
           'Bold',
           'center',
           colors.shark
-        )}
+        )***REMOVED***
       >
-        {number}
+        {number***REMOVED***
       </Text>
     </View>
   )
-}
+***REMOVED***
 
 // STYLES
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     zIndex: 3,
     marginBottom: 10
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default KeyLabel

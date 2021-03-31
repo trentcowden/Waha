@@ -1,8 +1,8 @@
-import { AsyncStorage } from 'react-native'
-import { applyMiddleware, createStore } from 'redux'
-import { persistReducer, persistStore } from 'redux-persist'
+import { AsyncStorage ***REMOVED*** from 'react-native'
+import { applyMiddleware, createStore ***REMOVED*** from 'redux'
+import { persistReducer, persistStore ***REMOVED*** from 'redux-persist'
 import thunkMiddleware from 'redux-thunk'
-import { reduxMode } from '../modeSwitch'
+import { reduxMode ***REMOVED*** from '../modeSwitch'
 import rootReducer from './combiner'
 
 // Blacklist contains the reducers that we DON'T want to persist across app restarts. These are set based on which mode we're in. Note: test mode is only for testing. Always make sure reduxMode is set to prod mode before building.
@@ -24,7 +24,8 @@ const blacklist =
         'downloads',
         'isInstallingLanguageInstance',
         'mtUnlockAttempts',
-        'storedDownloads'
+        'storedDownloads',
+        'areMobilizationToolsUnlocked'
       ]
 
 // Congif object for the persisted reducer.
@@ -32,7 +33,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   blacklist: blacklist
-}
+***REMOVED***
 
 // Create the persisted reducer using our config file and the combined reducer taken from ./combiner.js which is all of our reducers combined into one.
 const persistedReducer = persistReducer(persistConfig, rootReducer)

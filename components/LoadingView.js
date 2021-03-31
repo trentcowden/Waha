@@ -1,8 +1,8 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View ***REMOVED*** from 'react-native'
 
-function LoadingView ({}) {
+function LoadingView ({***REMOVED***) {
   return <View></View>
-}
+***REMOVED***
 
 export default LoadingView

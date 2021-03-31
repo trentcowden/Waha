@@ -1,21 +1,21 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   FlatList,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
-} from 'react-native'
-import { connect } from 'react-redux'
+***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
-import { getSetInfo, scaleMultiplier } from '../constants'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -28,17 +28,17 @@ function mapStateToProps (state) {
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 /**
  * Screen that shows the list of currently added story sets of a specific category. Used three times for the three different set tabs.
  */
 function SetsScreen ({
   // Props passed from navigation.
-  navigation: { navigate },
+  navigation: { navigate ***REMOVED***,
   // Props passed from the navigation route.
-  route: { name: category },
+  route: { name: category ***REMOVED***,
   // Props passed from redux.
   activeDatabase,
   isRTL,
@@ -48,7 +48,7 @@ function SetsScreen ({
   languageCoreFilesCreatedTimes,
   globalGroupCounter,
   languageCoreFilesToUpdate
-}) {
+***REMOVED***) {
   /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
 
@@ -65,14 +65,14 @@ function SetsScreen ({
         translations.sets.add_foundational_story_set_button_label
       )
       setSetCategory('foundational')
-    } else if (category === 'Topical') {
+    ***REMOVED*** else if (category === 'Topical') {
       setAddNewSetLabel(translations.sets.add_topical_set_button_label)
       setSetCategory('topical')
-    } else {
+    ***REMOVED*** else {
       setAddNewSetLabel(translations.sets.add_mobilization_tool_button_label)
       setSetCategory('mobilization tools')
-    }
-  }, [activeGroup, translations])
+    ***REMOVED***
+  ***REMOVED***, [activeGroup, translations])
 
   /** useEffect function that sets the downloaded files state. It's also used to log some various information to the console for testing. */
   useEffect(() => {
@@ -81,7 +81,7 @@ function SetsScreen ({
         // console.log('Files:')
         // console.log(contents)
         setDownloadedFiles(contents)
-      }
+      ***REMOVED***
     )
     // Below are some logs for testing.
 
@@ -93,24 +93,24 @@ function SetsScreen ({
     // console.log(
     //   `Languages in DB: ${Object.keys(database).filter(
     //     key => key.length === 2
-    //   )}`
+    //   )***REMOVED***`
     // )
 
     // Log the language core files to update to the console.
-    // console.log(`Language core files to update: ${languageCoreFilesToUpdate}\n`)
+    // console.log(`Language core files to update: ${languageCoreFilesToUpdate***REMOVED***\n`)
 
     // Log the language core file created times to the console.
     // console.log(
     //   `Language core files created times: ${JSON.stringify(
     //     languageCoreFilesCreatedTimes
-    //   )}\n`
+    //   )***REMOVED***\n`
     // )
-  }, [])
+  ***REMOVED***, [])
 
   /**
    * Goes through a set and verifies that all of the necessary question set mp3s have been downloaded for that set. This gets passed through the filter function below.
-   * @param {Object} set - The object for the set that we're checking.
-   * @return {boolean} - Whether every necessary file has been downloaded for the set.
+   * @param {Object***REMOVED*** set - The object for the set that we're checking.
+   * @return {boolean***REMOVED*** - Whether every necessary file has been downloaded for the set.
    */
   function filterForDownloadedQuestionSets (set) {
     // Create an array to store the necessary question set mp3s for this set.
@@ -122,12 +122,12 @@ function SetsScreen ({
       if (lesson.fellowshipType) {
         if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
           requiredQuestionSets.push(lesson.fellowshipType)
-        }
+        ***REMOVED***
         if (!requiredQuestionSets.includes(lesson.applicationType)) {
           requiredQuestionSets.push(lesson.applicationType)
-        }
-      }
-    })
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***)
 
     // If every required file is present, return true. Otherwise, return false.
     if (
@@ -139,11 +139,11 @@ function SetsScreen ({
     )
       return true
     else return false
-  }
+  ***REMOVED***
 
   /**
    * Gets an array of sets to display to populate the sets FlatList below. The sets to display vary depending on the category.
-   * @return {Object[]} - An array of sets.
+   * @return {Object[]***REMOVED*** - An array of sets.
    */
   function getSetData () {
     // If we're displaying Foundational sets...
@@ -185,22 +185,22 @@ function SetsScreen ({
                 )[0]
               )
             )
-          })
+          ***REMOVED***)
       )
-  }
+  ***REMOVED***
 
   // A button that goes at the bottom of each list of sets that allows the user to add a new set.
   var addSetButton = (
     <TouchableOpacity
       style={[
         styles.addSetButtonContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' }
-      ]}
+        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
+      ]***REMOVED***
       onPress={() =>
         navigate('AddSet', {
           category: setCategory
-        })
-      }
+        ***REMOVED***)
+      ***REMOVED***
     >
       <View
         style={{
@@ -209,13 +209,13 @@ function SetsScreen ({
           alignItems: 'center',
           width: 80 * scaleMultiplier,
           height: 80 * scaleMultiplier
-        }}
+        ***REMOVED******REMOVED***
       >
         <Icon
           name='plus'
-          size={60 * scaleMultiplier}
-          color={colors.chateau}
-          style={styles.addNewSetIcon}
+          size={60 * scaleMultiplier***REMOVED***
+          color={colors.chateau***REMOVED***
+          style={styles.addNewSetIcon***REMOVED***
         />
       </View>
       <View
@@ -225,18 +225,18 @@ function SetsScreen ({
           flexDirection: 'column',
           marginRight: isRTL ? 20 : 0,
           marginLeft: isRTL ? 0 : 20
-        }}
+        ***REMOVED******REMOVED***
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'p',
             'Regular',
             'left',
             colors.chateau
-          )}
+          )***REMOVED***
         >
-          {addNewSetLabel}
+          {addNewSetLabel***REMOVED***
         </Text>
       </View>
     </TouchableOpacity>
@@ -244,41 +244,41 @@ function SetsScreen ({
 
   /**
    * Renders a setItem component.
-   * @param {Object} set - The object of the set to render.
-   * @return {Component} - The setItem component.
+   * @param {Object***REMOVED*** set - The object of the set to render.
+   * @return {Component***REMOVED*** - The setItem component.
    */
   function renderSetItem (set) {
     return (
       <SetItem
-        thisSet={set}
+        thisSet={set***REMOVED***
         screen='Sets'
         onSetSelect={() =>
           navigate('Lessons', {
             thisSet: set
-          })
-        }
+          ***REMOVED***)
+        ***REMOVED***
       />
     )
-  }
+  ***REMOVED***
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen***REMOVED***>
       <FlatList
-        data={getSetData()}
-        renderItem={({ item }) => renderSetItem(item)}
+        data={getSetData()***REMOVED***
+        renderItem={({ item ***REMOVED***) => renderSetItem(item)***REMOVED***
         // Re-render the FlatList whenever the active group changes.
-        extraData={activeGroup}
-        ListFooterComponent={addSetButton}
+        extraData={activeGroup***REMOVED***
+        ListFooterComponent={addSetButton***REMOVED***
       />
     </View>
   )
-}
+***REMOVED***
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.porcelain
-  },
+  ***REMOVED***,
   addSetButtonContainer: {
     width: '100%',
     height: 80 * scaleMultiplier,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     padding: 20
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps)(SetsScreen)

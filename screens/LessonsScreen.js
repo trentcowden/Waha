@@ -1,26 +1,26 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, StyleSheet, View } from 'react-native'
-import { SwipeListView } from 'react-native-swipe-list-view'
-import { connect } from 'react-redux'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import { Dimensions, Image, StyleSheet, View ***REMOVED*** from 'react-native'
+import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
+import { connect ***REMOVED*** from 'react-redux'
 import LessonItem from '../components/list-items/LessonItem'
 import LessonSwipeBackdrop from '../components/list-items/LessonSwipeBackdrop'
 import SetItem from '../components/list-items/SetItem'
 import OptionsModalButton from '../components/OptionsModalButton'
 import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import BackButton from '../components/standard/BackButton'
-import { getLessonInfo, itemHeights, scaleMultiplier } from '../constants'
+import { getLessonInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
-import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
-import { toggleComplete } from '../redux/actions/groupsActions'
+import { downloadMedia, removeDownload ***REMOVED*** from '../redux/actions/downloadActions'
+import { toggleComplete ***REMOVED*** from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -30,30 +30,30 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     translations: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     downloadMedia: (type, lessonID, source) => {
       dispatch(downloadMedia(type, lessonID, source))
-    },
+    ***REMOVED***,
     toggleComplete: (groupName, set, lessonIndex) => {
       dispatch(toggleComplete(groupName, set, lessonIndex))
-    },
+    ***REMOVED***,
     removeDownload: lessonID => {
       dispatch(removeDownload(lessonID))
-    }
-  }
-}
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 function LessonsScreen ({
   // Props passed from navigation.
-  navigation: { goBack, setOptions, navigate },
+  navigation: { goBack, setOptions, navigate ***REMOVED***,
   route: {
     // Props passed from previous screen.
-    params: { thisSet }
-  },
+    params: { thisSet ***REMOVED***
+  ***REMOVED***,
   // Props passed from redux.
   downloads,
   isRTL,
@@ -64,15 +64,15 @@ function LessonsScreen ({
   downloadMedia,
   toggleComplete,
   removeDownload
-}) {
+***REMOVED***) {
   //+ STATE
 
   // keeps track of which lessons are downloaded
-  const [downloadsInFileSystem, setDownloadsInFileSystem] = useState({})
+  const [downloadsInFileSystem, setDownloadsInFileSystem] = useState({***REMOVED***)
 
   // keeps track of the lesson to download/delete/toggle complete when modals
   //  are up
-  const [activeLessonInModal, setActiveLessonInModal] = useState({})
+  const [activeLessonInModal, setActiveLessonInModal] = useState({***REMOVED***)
 
   // modal states
   const [showDownloadLessonModal, setShowDownloadLessonModal] = useState(false)
@@ -92,25 +92,25 @@ function LessonsScreen ({
     return {
       headerTitle: () => <ScreenHeaderImage />,
       headerRight: isRTL
-        ? () => <BackButton onPress={() => goBack()} />
-        : () => {},
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
+        : () => {***REMOVED***,
       headerLeft: isRTL
-        ? () => {}
-        : () => <BackButton onPress={() => goBack()} />
-    }
-  }
+        ? () => {***REMOVED***
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />
+    ***REMOVED***
+  ***REMOVED***
 
   //+ CONSTRUCTOR
 
   useEffect(() => {
     setOptions(getNavOptions())
-  }, [])
+  ***REMOVED***, [])
 
   //+ FUNCTIONS
 
   //- checks which lessons and lesson videos are downloaded and stores in state
   useEffect(() => {
-    var whichLessonsDownloaded = {}
+    var whichLessonsDownloaded = {***REMOVED***
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
       .then(contents => {
         thisSet.lessons.forEach(lesson => {
@@ -118,14 +118,14 @@ function LessonsScreen ({
             whichLessonsDownloaded[lesson.id] = true
           if (contents.includes(lesson.id + 'v.mp4')) {
             whichLessonsDownloaded[lesson.id + 'v'] = true
-          }
-        })
+          ***REMOVED***
+        ***REMOVED***)
         return whichLessonsDownloaded
-      })
+      ***REMOVED***)
       .then(whichLessonsDownloaded => {
         setDownloadsInFileSystem(whichLessonsDownloaded)
-      })
-  }, [downloads])
+      ***REMOVED***)
+  ***REMOVED***, [downloads])
 
   //- whenever progress or bookmarks update, update the progress and bookmarks for this set
   useEffect(() => {
@@ -135,7 +135,7 @@ function LessonsScreen ({
     setThisSetBookmark(
       activeGroup.addedSets.filter(set => set.id === thisSet.id)[0].bookmark
     )
-  }, [activeGroup.addedSets, activeGroup.setBookmark])
+  ***REMOVED***, [activeGroup.addedSets, activeGroup.setBookmark])
 
   //- gets the type of a lesson in string form
   //! note: not stored in db for ssot purposes
@@ -148,14 +148,14 @@ function LessonsScreen ({
     lessonType += lesson.hasVideo ? 'v' : ''
 
     return lessonType
-  }
+  ***REMOVED***
 
   //- hides all the modals
   function hideModals () {
     setShowDownloadLessonModal(false)
     setShowDeleteLessonModal(false)
     setShowShareModal(false)
-  }
+  ***REMOVED***
 
   //+ LESSON-TYPE-BASED FUNCTIONS
   //+ NOTE: for these functions, what is returned depends on the type of the
@@ -182,8 +182,8 @@ function LessonsScreen ({
         if (downloadsInFileSystem[lesson.id + 'v']) return true
         else return false
         break
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   //- determines if a lesson is downloading based on its type
   function getIsLessonDownloading (lesson) {
@@ -202,8 +202,8 @@ function LessonsScreen ({
         if (downloads[lesson.id + 'v']) return true
         else return false
         break
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   //- downloads a lesson's scripture mp3 via modal press based on its type
   function downloadLessonFromModal () {
@@ -236,9 +236,9 @@ function LessonsScreen ({
           getLessonInfo('videoSource', activeLessonInModal.id)
         )
         break
-    }
+    ***REMOVED***
     hideModals()
-  }
+  ***REMOVED***
 
   //- deletes a lesson's chapter 2 mp3 via modal press based on its type
   function deleteLessonFromModal () {
@@ -263,12 +263,12 @@ function LessonsScreen ({
           FileSystem.documentDirectory + activeLessonInModal.id + 'v.mp4'
         )
         break
-    }
+    ***REMOVED***
 
     removeDownload(activeLessonInModal.id)
     removeDownload(activeLessonInModal.id + 'v')
     hideModals()
-  }
+  ***REMOVED***
 
   //+ LESSON SWIPE FUNCTIONS
 
@@ -280,7 +280,7 @@ function LessonsScreen ({
         lesson => getLessonInfo('index', lesson.id) === parseInt(data)
       )[0]
     )
-  }
+  ***REMOVED***
 
   function checkForFullyComplete () {
     if (
@@ -292,8 +292,8 @@ function LessonsScreen ({
       //   activeGroup.language
       // )
       setShowSetCompleteModal(true)
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   //- marks a lesson as complete from a swipe and closes the row
   function markLessonAsCompleteFromSwipe (data) {
@@ -302,15 +302,15 @@ function LessonsScreen ({
 
       // check if we just fully completed the set
       checkForFullyComplete()
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   //+ RENDER
 
-  function renderLessonItem ({ item }) {
+  function renderLessonItem ({ item ***REMOVED***) {
     return (
       <LessonItem
-        thisLesson={item}
+        thisLesson={item***REMOVED***
         onLessonSelect={() =>
           navigate('Play', {
             thisLesson: item,
@@ -319,26 +319,26 @@ function LessonsScreen ({
             isDownloaded: getIsLessonDownloaded(item),
             isDownloading: getIsLessonDownloading(item),
             lessonType: getLessonType(item)
-          })
-        }
-        isBookmark={getLessonInfo('index', item.id) === thisSetBookmark}
-        isDownloaded={getIsLessonDownloaded(item)}
-        isDownloading={getIsLessonDownloading(item)}
-        lessonType={getLessonType(item)}
-        isComplete={thisSetProgress.includes(getLessonInfo('index', item.id))}
-        setActiveLessonInModal={() => setActiveLessonInModal(item)}
-        setShowDownloadLessonModal={() => setShowDownloadLessonModal(true)}
-        setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)}
+          ***REMOVED***)
+        ***REMOVED***
+        isBookmark={getLessonInfo('index', item.id) === thisSetBookmark***REMOVED***
+        isDownloaded={getIsLessonDownloaded(item)***REMOVED***
+        isDownloading={getIsLessonDownloading(item)***REMOVED***
+        lessonType={getLessonType(item)***REMOVED***
+        isComplete={thisSetProgress.includes(getLessonInfo('index', item.id))***REMOVED***
+        setActiveLessonInModal={() => setActiveLessonInModal(item)***REMOVED***
+        setShowDownloadLessonModal={() => setShowDownloadLessonModal(true)***REMOVED***
+        setShowDeleteLessonModal={() => setShowDeleteLessonModal(true)***REMOVED***
       />
     )
-  }
+  ***REMOVED***
 
   function renderLessonSwipeBackdrop (data, rowMap) {
     return (
       <LessonSwipeBackdrop
         isComplete={thisSetProgress.includes(
           getLessonInfo('index', data.item.id)
-        )}
+        )***REMOVED***
         toggleComplete={() => {
           toggleComplete(
             activeGroup.name,
@@ -347,114 +347,114 @@ function LessonsScreen ({
           )
           checkForFullyComplete()
           rowMap[getLessonInfo('index', data.item.id)].closeRow()
-        }}
+        ***REMOVED******REMOVED***
         showShareModal={() => {
           setShowShareModal(true)
           rowMap[getLessonInfo('index', data.item.id)].closeRow()
-        }}
+        ***REMOVED******REMOVED***
       />
     )
-  }
+  ***REMOVED***
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen***REMOVED***>
       <View
         style={[
           styles.studySetItemContainer,
           {
             height: itemHeights[font].SetItem
-          }
-        ]}
+          ***REMOVED***
+        ]***REMOVED***
       >
-        <SetItem thisSet={thisSet} screen='Lessons' />
+        <SetItem thisSet={thisSet***REMOVED*** screen='Lessons' />
       </View>
       <SwipeListView
-        data={thisSet.lessons}
-        renderItem={renderLessonItem}
-        ListFooterComponent={() => <View style={{ height: 30 }} />}
-        keyExtractor={item => getLessonInfo('index', item.id).toString()}
-        renderHiddenItem={renderLessonSwipeBackdrop}
-        leftOpenValue={50}
-        rightOpenValue={-50}
+        data={thisSet.lessons***REMOVED***
+        renderItem={renderLessonItem***REMOVED***
+        ListFooterComponent={() => <View style={{ height: 30 ***REMOVED******REMOVED*** />***REMOVED***
+        keyExtractor={item => getLessonInfo('index', item.id).toString()***REMOVED***
+        renderHiddenItem={renderLessonSwipeBackdrop***REMOVED***
+        leftOpenValue={50***REMOVED***
+        rightOpenValue={-50***REMOVED***
         //! these are different on platform because the activation is causing a
         //!   crash on android phones
         leftActivationValue={
           Platform.OS === 'ios' ? Dimensions.get('screen').width / 2 - 10 : 1000
-        }
+        ***REMOVED***
         rightActivationValue={
           Platform.OS === 'ios'
             ? -Dimensions.get('screen').width / 2 + 10
             : -1000
-        }
-        stopLeftSwipe={Dimensions.get('screen').width / 2}
-        stopRightSwipe={-Dimensions.get('screen').width / 2}
+        ***REMOVED***
+        stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
+        stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
         onLeftActionStatusChange={
           isRTL
             ? data => setShowShareModal(true)
             : data => {
                 markLessonAsCompleteFromSwipe(data)
-              }
-        }
+              ***REMOVED***
+        ***REMOVED***
         onRightActionStatusChange={
           isRTL
             ? data => markLessonAsCompleteFromSwipe(data)
             : data => setShowShareModal(true)
-        }
-        swipeGestureBegan={data => onLessonSwipeBegin(data)}
+        ***REMOVED***
+        swipeGestureBegan={data => onLessonSwipeBegin(data)***REMOVED***
       />
 
-      {/* MODALS */}
+      {/* MODALS */***REMOVED***
       <OptionsModal
-        isVisible={showDownloadLessonModal}
-        hideModal={hideModals}
-        closeText={translations.general.cancel}
+        isVisible={showDownloadLessonModal***REMOVED***
+        hideModal={hideModals***REMOVED***
+        closeText={translations.general.cancel***REMOVED***
       >
         <OptionsModalButton
-          title={translations.lessons.popups.download_lesson_button_label}
-          onPress={downloadLessonFromModal}
+          title={translations.lessons.popups.download_lesson_button_label***REMOVED***
+          onPress={downloadLessonFromModal***REMOVED***
         />
       </OptionsModal>
       <OptionsModal
-        isVisible={showDeleteLessonModal}
-        hideModal={hideModals}
-        closeText={translations.general.cancel}
+        isVisible={showDeleteLessonModal***REMOVED***
+        hideModal={hideModals***REMOVED***
+        closeText={translations.general.cancel***REMOVED***
       >
         <OptionsModalButton
-          title={translations.lessons.popups.delete_lesson_button_label}
-          onPress={deleteLessonFromModal}
+          title={translations.lessons.popups.delete_lesson_button_label***REMOVED***
+          onPress={deleteLessonFromModal***REMOVED***
         />
       </OptionsModal>
       <ShareModal
-        isVisible={showShareModal}
-        hideModal={hideModals}
-        closeText={translations.general.close}
-        lesson={activeLessonInModal}
-        lessonType={getLessonType(activeLessonInModal)}
-        set={thisSet}
+        isVisible={showShareModal***REMOVED***
+        hideModal={hideModals***REMOVED***
+        closeText={translations.general.close***REMOVED***
+        lesson={activeLessonInModal***REMOVED***
+        lessonType={getLessonType(activeLessonInModal)***REMOVED***
+        set={thisSet***REMOVED***
       />
       <MessageModal
-        isVisible={showSetCompleteModal}
-        hideModal={() => setShowSetCompleteModal(false)}
-        title={translations.general.popups.set_complete_title}
-        body={translations.general.popups.set_complete_message}
-        confirmText={translations.general.got_it}
+        isVisible={showSetCompleteModal***REMOVED***
+        hideModal={() => setShowSetCompleteModal(false)***REMOVED***
+        title={translations.general.popups.set_complete_title***REMOVED***
+        body={translations.general.popups.set_complete_message***REMOVED***
+        confirmText={translations.general.got_it***REMOVED***
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
-        }}
+        ***REMOVED******REMOVED***
       >
         <Image
-          source={require('../assets/gifs/set_complete.gif')}
+          source={require('../assets/gifs/set_complete.gif')***REMOVED***
           style={{
             height: 200 * scaleMultiplier,
             margin: 20,
             // padding: 20,
             resizeMode: 'contain'
-          }}
+          ***REMOVED******REMOVED***
         />
       </MessageModal>
     </View>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -463,19 +463,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: colors.aquaHaze
-  },
+  ***REMOVED***,
   studySetItemContainer: {
     width: '100%',
     height: 100 * scaleMultiplier
     // aspectRatio: 4
-  },
+  ***REMOVED***,
   headerImage: {
     resizeMode: 'contain',
     width: 150,
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center'
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonsScreen)

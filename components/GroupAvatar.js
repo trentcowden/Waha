@@ -1,8 +1,8 @@
 import React from 'react'
-import { Image, TouchableOpacity, View } from 'react-native'
-import { groupIconSources } from '../assets/groupIcons/_groupIcons'
-import { scaleMultiplier } from '../constants'
-import { colors } from '../styles/colors'
+import { Image, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { groupIconSources ***REMOVED*** from '../assets/groupIcons/_groupIcons'
+import { scaleMultiplier ***REMOVED*** from '../constants'
+import { colors ***REMOVED*** from '../styles/colors'
 
 // component for a group's avatar
 function GroupAvatar ({
@@ -11,7 +11,7 @@ function GroupAvatar ({
   size,
   onPress = null,
   isActive = false
-}) {
+***REMOVED***) {
   //+ RENDER
 
   // renders the emoji in a group icon
@@ -21,8 +21,8 @@ function GroupAvatar ({
     emoji === 'default' ? (
       <Icon
         name='group'
-        size={(size / 1.7) * scaleMultiplier}
-        color={colors.tuna}
+        size={(size / 1.7) * scaleMultiplier***REMOVED***
+        color={colors.tuna***REMOVED***
       />
     ) : (
       <View
@@ -31,14 +31,14 @@ function GroupAvatar ({
           height: size * 0.65 * scaleMultiplier,
           justifyContent: 'center',
           alignItems: 'center'
-        }}
+        ***REMOVED******REMOVED***
       >
         <Image
           style={{
             width: size * 0.65 * scaleMultiplier,
             height: size * 0.65 * scaleMultiplier
-          }}
-          source={groupIconSources[emoji]}
+          ***REMOVED******REMOVED***
+          source={groupIconSources[emoji]***REMOVED***
         />
       </View>
     )
@@ -58,11 +58,11 @@ function GroupAvatar ({
           borderRadius: (size * scaleMultiplier) / 2 + 5,
           alignItems: 'center',
           justifyContent: 'center'
-        }
-      ]}
-      onPress={onPress}
+        ***REMOVED***
+      ]***REMOVED***
+      onPress={onPress***REMOVED***
     >
-      {emoji}
+      {emoji***REMOVED***
     </TouchableOpacity>
   ) : (
     <View
@@ -76,13 +76,13 @@ function GroupAvatar ({
           borderRadius: (size * scaleMultiplier) / 2 + 5,
           alignItems: 'center',
           justifyContent: 'center'
-        }
-      ]}
-      onPress={onPress}
+        ***REMOVED***
+      ]***REMOVED***
+      onPress={onPress***REMOVED***
     >
-      {emoji}
+      {emoji***REMOVED***
     </View>
   )
-}
+***REMOVED***
 
 export default GroupAvatar

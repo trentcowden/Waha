@@ -1,9 +1,9 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
 import Icon from '../../assets/fonts/icon_font_config'
-import { getSystemIsRTL, scaleMultiplier } from '../../constants'
-import { colors } from '../../styles/colors'
-import { SystemTypography } from '../../styles/typography'
+import { getSystemIsRTL, scaleMultiplier ***REMOVED*** from '../../constants'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { SystemTypography ***REMOVED*** from '../../styles/typography'
 
 function LanguageItem ({
   // Props passed from a parent component.
@@ -14,23 +14,23 @@ function LanguageItem ({
   onPress,
   isSelected,
   playAudio
-}) {
+***REMOVED***) {
   // FUNCTIONS
   var iconComponent = isSelected ? (
-    <View style={{ marginHorizontal: 20 }}>
-      <Icon name='check' size={30} color={colors.apple} />
+    <View style={{ marginHorizontal: 20 ***REMOVED******REMOVED***>
+      <Icon name='check' size={30***REMOVED*** color={colors.apple***REMOVED*** />
     </View>
   ) : (
     <TouchableOpacity
-      onPress={playAudio}
+      onPress={playAudio***REMOVED***
       style={{
         height: '100%',
         width: 70,
         justifyContent: 'center',
         alignItems: 'center'
-      }}
+      ***REMOVED******REMOVED***
     >
-      <Icon name='volume' size={30} color={colors.tuna} />
+      <Icon name='volume' size={30***REMOVED*** color={colors.tuna***REMOVED*** />
     </TouchableOpacity>
   )
 
@@ -44,9 +44,9 @@ function LanguageItem ({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: isSelected ? '#BFE5AF' : colors.white
-      }}
+      ***REMOVED******REMOVED***
     >
-      {iconComponent}
+      {iconComponent***REMOVED***
       <TouchableOpacity
         style={{
           flex: 1,
@@ -54,14 +54,14 @@ function LanguageItem ({
           alignItems: 'center',
           justifyContent: 'space-around',
           flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
-        }}
-        onPress={onPress}
+        ***REMOVED******REMOVED***
+        onPress={onPress***REMOVED***
       >
         <View
           style={{
             justifyContent: 'center',
             flex: 1
-          }}
+          ***REMOVED******REMOVED***
         >
           <Text
             style={SystemTypography(
@@ -71,9 +71,9 @@ function LanguageItem ({
               'left',
               colors.shark,
               font
-            )}
+            )***REMOVED***
           >
-            {nativeName}
+            {nativeName***REMOVED***
           </Text>
           <Text
             style={SystemTypography(
@@ -82,21 +82,21 @@ function LanguageItem ({
               'Regular',
               'left',
               colors.shark
-            )}
+            )***REMOVED***
           >
-            {localeName}
+            {localeName***REMOVED***
           </Text>
         </View>
         <Image
-          style={styles.headerImage}
+          style={styles.headerImage***REMOVED***
           source={{
             uri: logoSource
-          }}
+          ***REMOVED******REMOVED***
         />
       </TouchableOpacity>
     </View>
   )
-}
+***REMOVED***
 
 // STYLES
 
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier,
     marginHorizontal: 20
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default LanguageItem

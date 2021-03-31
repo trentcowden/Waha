@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo'
 import * as FileSystem from 'expo-file-system'
 import i18n from 'i18n-js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Dimensions,
   Image,
@@ -9,28 +9,28 @@ import {
   Text,
   TouchableOpacity,
   View
-} from 'react-native'
-import { connect } from 'react-redux'
-import { scaleMultiplier } from '../constants'
+***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import {
   deleteLanguageData,
   setHasFetchedLanguageData,
   setHasOnboarded,
   setLanguageCoreFilesDownloadProgress,
   setTotalLanguageCoreFilesToDownload
-} from '../redux/actions/databaseActions'
-import { deleteGroup } from '../redux/actions/groupsActions'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { SystemTypography } from '../styles/typography'
+***REMOVED*** from '../redux/actions/databaseActions'
+import { deleteGroup ***REMOVED*** from '../redux/actions/groupsActions'
+import { setIsInstallingLanguageInstance ***REMOVED*** from '../redux/actions/isInstallingLanguageInstanceActions'
+import { activeGroupSelector ***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { SystemTypography ***REMOVED*** from '../styles/typography'
 import ar from '../translations/ar.json'
 import en from '../translations/en.json'
 
 i18n.translations = {
   en,
   ar
-}
+***REMOVED***
 
 function mapStateToProps (state) {
   var activeGroup = state.activeGroup
@@ -49,34 +49,34 @@ function mapStateToProps (state) {
     actingLanguageID: state.database.actingLanguageID,
     activeGroup: activeGroupSelector(state),
     groups: state.groups
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     setIsInstallingLanguageInstance: status => {
       dispatch(setIsInstallingLanguageInstance(status))
-    },
+    ***REMOVED***,
     setHasOnboarded: status => {
       dispatch(setHasOnboarded(status))
-    },
+    ***REMOVED***,
     setTotalLanguageCoreFilesToDownload: totalLanguageCoreFilesToDownload => {
       dispatch(
         setTotalLanguageCoreFilesToDownload(totalLanguageCoreFilesToDownload)
       )
-    },
+    ***REMOVED***,
     setLanguageCoreFilesDownloadProgress: progress => {
       dispatch(setLanguageCoreFilesDownloadProgress(progress))
-    },
+    ***REMOVED***,
     setHasFetchedLanguageData: hasFetchedLanguageData => {
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData))
-    },
+    ***REMOVED***,
     deleteLanguageData: language => {
       dispatch(deleteLanguageData(language))
-    },
+    ***REMOVED***,
     deleteGroup: groupName => dispatch(deleteGroup(groupName))
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function LoadingScreen ({
   navigation,
@@ -97,18 +97,18 @@ function LoadingScreen ({
   setHasFetchedLanguageData,
   deleteLanguageData,
   deleteGroup
-}) {
+***REMOVED***) {
   const [isConnected, setIsConnected] = useState(true)
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected)
-    })
+    ***REMOVED***)
 
     return function cleanup () {
       unsubscribe()
-    }
-  }, [])
+    ***REMOVED***
+  ***REMOVED***, [])
 
   function cancelDownloads () {
     setLanguageCoreFilesDownloadProgress(0)
@@ -121,12 +121,12 @@ function LoadingScreen ({
       setHasOnboarded(false)
       navigation.reset({
         index: 0,
-        routes: [{ name: 'InitialLanguageInstanceInstall' }]
-      })
-    }
+        routes: [{ name: 'InitialLanguageInstanceInstall' ***REMOVED***]
+      ***REMOVED***)
+    ***REMOVED***
     storedDownloads.forEach(download => {
       download.pauseAsync().catch(() => console.log('Error pausing a download'))
-    })
+    ***REMOVED***)
 
     console.log(actingLanguageID)
 
@@ -140,19 +140,19 @@ function LoadingScreen ({
       groups.forEach(group => {
         if (group.language === actingLanguageID) {
           deleteGroup(group.name)
-        }
-      })
+        ***REMOVED***
+      ***REMOVED***)
       deleteLanguageData(actingLanguageID)
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
         contents => {
           for (const item of contents) {
             if (item.slice(0, 2) === actingLanguageID) {
               FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-            }
-          }
-        }
+            ***REMOVED***
+          ***REMOVED***
+        ***REMOVED***
       )
-    }
+    ***REMOVED***
 
     // if (condition that distinguishes updating from downloading is downloading AND language isn't the active group AND language isn't the only language installed)
     //  delete the language from the db and remove all files
@@ -161,8 +161,8 @@ function LoadingScreen ({
     // groups.map(group => {
     //   if (group.language === languageID) {
     //     deleteGroup(group.name)
-    //   }
-    // })
+    //   ***REMOVED***
+    // ***REMOVED***)
 
     // // delete all downloaded files for this language
     // FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
@@ -171,31 +171,31 @@ function LoadingScreen ({
     //       if (item.slice(0, 2) === languageID) {
     //         FileSystem.deleteAsync(FileSystem.documentDirectory + item)
     //         removeDownload(item.slice(0, 5))
-    //       }
-    //     }
-    //   }
+    //       ***REMOVED***
+    //     ***REMOVED***
+    //   ***REMOVED***
     // )
 
     // // delete section of database for this language
     // deleteLanguageData(languageID)
-  }
+  ***REMOVED***
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen***REMOVED***>
       <View
         style={{
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: 40 * scaleMultiplier
-        }}
+        ***REMOVED******REMOVED***
       >
         <Image
           style={{
             width: Dimensions.get('window').width / 2,
             height: Dimensions.get('window').width / 2
-          }}
-          source={require('../assets/gifs/waha_loading.gif')}
+          ***REMOVED******REMOVED***
+          source={require('../assets/gifs/waha_loading.gif')***REMOVED***
           resizeMode='contain'
         />
         <View
@@ -208,7 +208,7 @@ function LoadingScreen ({
             justifyContent: 'center',
             borderWidth: 2,
             borderColor: colors.porcelain
-          }}
+          ***REMOVED******REMOVED***
         >
           {languageCoreFilesDownloadProgress ? (
             <View
@@ -217,9 +217,9 @@ function LoadingScreen ({
                 height: '100%',
                 flex: languageCoreFilesDownloadProgress,
                 borderRadius: 20
-              }}
+              ***REMOVED******REMOVED***
             />
-          ) : null}
+          ) : null***REMOVED***
           {languageCoreFilesDownloadProgress ? (
             <View
               style={{
@@ -228,9 +228,9 @@ function LoadingScreen ({
                 flex:
                   totalLanguageCoreFilesToDownload -
                   languageCoreFilesDownloadProgress
-              }}
+              ***REMOVED******REMOVED***
             />
-          ) : null}
+          ) : null***REMOVED***
         </View>
         <View
           style={{
@@ -239,15 +239,15 @@ function LoadingScreen ({
             paddingHorizontal: 20,
             justifyContent: 'center',
             flexDirection: 'row'
-          }}
+          ***REMOVED******REMOVED***
         >
           {isConnected ? null : (
             <Text
-              style={SystemTypography(false, 'h4', '', 'center', colors.shark)}
+              style={SystemTypography(false, 'h4', '', 'center', colors.shark)***REMOVED***
             >
-              {i18n.t('lostConnection')}
+              {i18n.t('lostConnection')***REMOVED***
             </Text>
-          )}
+          )***REMOVED***
         </View>
       </View>
       <View
@@ -256,7 +256,7 @@ function LoadingScreen ({
           justifyContent: 'center',
           flexDirection: 'row',
           alignItems: 'center'
-        }}
+        ***REMOVED******REMOVED***
       >
         <View
           style={{
@@ -265,25 +265,25 @@ function LoadingScreen ({
             marginVertical: 20,
             justifyContent: 'center',
             alignItems: 'center'
-          }}
+          ***REMOVED******REMOVED***
         >
           {hasFetchedLanguageData ? (
             <TouchableOpacity
-              onPress={cancelDownloads}
+              onPress={cancelDownloads***REMOVED***
               style={{
                 justifyContent: 'center',
                 alignItems: 'center'
-              }}
+              ***REMOVED******REMOVED***
             >
-              <Icon name='cancel' color={colors.shark} size={50} />
-              <Text>{i18n.t('cancel')}</Text>
+              <Icon name='cancel' color={colors.shark***REMOVED*** size={50***REMOVED*** />
+              <Text>{i18n.t('cancel')***REMOVED***</Text>
             </TouchableOpacity>
-          ) : null}
+          ) : null***REMOVED***
         </View>
       </View>
     </View>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -293,12 +293,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F1FAEE'
-  },
+  ***REMOVED***,
   progressBarContainer: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center'
-  },
+  ***REMOVED***,
   button: {
     width: 200,
     height: 50,
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.aquaHaze,
     borderRadius: 10
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen)

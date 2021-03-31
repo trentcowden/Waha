@@ -1,16 +1,16 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { connect } from 'react-redux'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { Text, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { activeGroupSelector ***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function TimeDisplay ({
   // Props passed from a parent component.
@@ -20,7 +20,7 @@ function TimeDisplay ({
   // Props passed from redux.
   font,
   activeGroup
-}) {
+***REMOVED***) {
   //function to convert a time in milliseconds to a
   //nicely formatted string (for the scrubber)
   function msToTime (duration) {
@@ -34,7 +34,7 @@ function TimeDisplay ({
         seconds = seconds < 10 ? '0' + seconds : seconds
 
         return hours + ':' + minutes + ':' + seconds
-      } else {
+      ***REMOVED*** else {
         var seconds = Math.floor((duration / 1000) % 60)
         var minutes = Math.floor((duration / (1000 * 60)) % 60)
 
@@ -42,29 +42,29 @@ function TimeDisplay ({
         seconds = seconds < 10 ? '0' + seconds : seconds
 
         return minutes + ':' + seconds
-      }
-    } else if (duration > max) {
+      ***REMOVED***
+    ***REMOVED*** else if (duration > max) {
       return msToTime(max)
-    } else {
+    ***REMOVED*** else {
       return '00:00'
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   return (
-    <View styles={style}>
+    <View styles={style***REMOVED***>
       <Text
         style={StandardTypography(
-          { font: 'Roboto' },
+          { font: 'Roboto' ***REMOVED***,
           'd',
           'Regular',
           'center',
           colors.shark
-        )}
+        )***REMOVED***
       >
-        {msToTime(time)}
+        {msToTime(time)***REMOVED***
       </Text>
     </View>
   )
-}
+***REMOVED***
 
 export default connect(mapStateToProps)(TimeDisplay)
