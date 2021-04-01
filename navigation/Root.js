@@ -31,10 +31,8 @@ function mapDispatchToProps (dispatch) {
     changeActiveGroup: name => {
       dispatch(changeActiveGroup(name))
     ***REMOVED***,
-    createGroup: (groupName, language, emoji, areMobilizationToolsUnlocked) =>
-      dispatch(
-        createGroup(groupName, language, emoji, areMobilizationToolsUnlocked)
-      )
+    createGroup: (groupName, language, emoji) =>
+      dispatch(createGroup(groupName, language, emoji))
   ***REMOVED***
 ***REMOVED***
 
@@ -62,7 +60,7 @@ function Root ({
           languageID = key
         ***REMOVED***
       ***REMOVED***)
-      createGroup(groupNames[languageID], languageID, 'default', false)
+      createGroup(groupNames[languageID], languageID, 'default')
       changeActiveGroup(groupNames[languageID])
       // If somehow, we switch to a group that doesn't exist, fall back to the first group in the groups redux array so that the app can still function.
     ***REMOVED*** else if (!groups.some(group => activeGroup === group.name)) {
