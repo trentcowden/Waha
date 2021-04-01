@@ -8,6 +8,7 @@ import MessageModal from '../modals/MessageModal'
 import { setAreMobilizationToolsUnlocked ***REMOVED*** from '../redux/actions/areMobilizationToolsUnlockedActions'
 import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import { setMTUnlockAttempts ***REMOVED*** from '../redux/actions/mtUnlockAttemptsActions'
+import { setShowMTTabAddedSnackbar ***REMOVED*** from '../redux/actions/popupsActions'
 import { setMTUnlockTimeout ***REMOVED*** from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
@@ -41,6 +42,9 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
+    ***REMOVED***,
+    setShowMTTabAddedSnackbar: toSet => {
+      dispatch(setShowMTTabAddedSnackbar(toSet))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -62,7 +66,8 @@ function MobilizationToolsUnlockScreen ({
   setAreMobilizationToolsUnlocked,
   setMTUnlockTimeout,
   setMTUnlockAttempts,
-  addSet
+  addSet,
+  setShowMTTabAddedSnackbar
 ***REMOVED***) {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -108,35 +113,38 @@ function MobilizationToolsUnlockScreen ({
   function checkPasscode (fullPasscode) {
     if (fullPasscode === '281820') {
       Keyboard.dismiss()
-      // setUnlockSuccessModal(true)
-
-      Object.keys(database).forEach(key => {
-        // Go through each language.
-        if (key.length === 2) {
-          // If the language has MT content...
-          if (checkForMTContent(key)) {
-            // Get the first 2 MT Sets.
-            var mobToolsSet1 = database[key].sets.filter(set =>
-              /[a-z]{2***REMOVED***.3.1/.test(set.id)
-            )[0]
-
-            var mobToolsSet2 = database[key].sets.filter(set =>
-              /[a-z]{2***REMOVED***.3.2/.test(set.id)
-            )[0]
-
-            // Add the 2 MT Sets to every group in the language.
-            groups
-              .filter(group => group.language === key)
-              .forEach(group => {
-                addSet(group.name, group.id, mobToolsSet1)
-                addSet(group.name, group.id, mobToolsSet2)
-              ***REMOVED***)
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***)
-
-      navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
       setAreMobilizationToolsUnlocked(true)
+      // setUnlockSuccessModal(true)
+      navigate('MTUnlockSuccessful')
+
+      // Object.keys(database).forEach(key => {
+      //   // Go through each language.
+      //   if (key.length === 2) {
+      //     // If the language has MT content...
+      //     if (checkForMTContent(key)) {
+      //       // Get the first 2 MT Sets.
+      //       var mobToolsSet1 = database[key].sets.filter(set =>
+      //         /[a-z]{2***REMOVED***.3.1/.test(set.id)
+      //       )[0]
+
+      //       var mobToolsSet2 = database[key].sets.filter(set =>
+      //         /[a-z]{2***REMOVED***.3.2/.test(set.id)
+      //       )[0]
+
+      //       // Add the 2 MT Sets to every group in the language.
+      //       groups
+      //         .filter(group => group.language === key)
+      //         .forEach(group => {
+      //           addSet(group.name, group.id, mobToolsSet1)
+      //           addSet(group.name, group.id, mobToolsSet2)
+      //         ***REMOVED***)
+      //     ***REMOVED***
+      //   ***REMOVED***
+      // ***REMOVED***)
+
+      // setShowMTTabAddedSnackbar(true)
+      // setTimeout(() => setShowMTTabAddedSnackbar(false), 3000)
+      // navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
     ***REMOVED*** else {
       setMTUnlockAttempts(mtUnlockAttempts + 1)
       // Make the input component "shake" when they enter in a wrong code.
@@ -248,14 +256,14 @@ function MobilizationToolsUnlockScreen ({
         isVisible={unlockSuccessModal***REMOVED***
         hideModal={() => {
           setUnlockSuccessModal(false)
-          goBack()
+          navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
         ***REMOVED******REMOVED***
-        title={translations.passcode.popups.unlock_successful_title***REMOVED***
-        body={translations.passcode.popups.unlock_successful_message***REMOVED***
-        confirmText={translations.general.got_it***REMOVED***
+        title='Mobilization Tools unlocked successfully!'
+        body=''
+        confirmText='Check it out'
         confirmOnPress={() => {
           setUnlockSuccessModal(false)
-          goBack()
+          navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
         ***REMOVED******REMOVED***
       >
         <Image

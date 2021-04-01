@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View
 ***REMOVED*** from 'react-native'
+import SnackBar from 'react-native-snackbar-component'
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
@@ -27,8 +28,13 @@ function mapStateToProps (state) {
     // For testing.
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
+    showMTTabAddedSnackbar: state.popups.showMTTabAddedSnackbar
   ***REMOVED***
+***REMOVED***
+
+function mapDispatchToProps (dispatch) {
+  return {***REMOVED***
 ***REMOVED***
 
 /**
@@ -47,7 +53,8 @@ function SetsScreen ({
   font,
   languageCoreFilesCreatedTimes,
   globalGroupCounter,
-  languageCoreFilesToUpdate
+  languageCoreFilesToUpdate,
+  showMTTabAddedSnackbar
 ***REMOVED***) {
   /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
@@ -57,6 +64,9 @@ function SetsScreen ({
 
   /** Keeps track of all of the files the user has downloaded to the user's device. This is used to verify that all the required question set mp3s are downloaded for the sets that have been added. */
   const [downloadedFiles, setDownloadedFiles] = useState([])
+
+  /** Whether the snackbar that pops up upon unlocking the mobilization tools is visible or not.  */
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
   /** useEffect function that sets the setCategory state and the addNewSetLabel state based off the category (which is passed via the route name declared in SetTabs.js). Updates whenever the activeGroup changes. */
   useEffect(() => {
@@ -190,7 +200,7 @@ function SetsScreen ({
   ***REMOVED***
 
   // A button that goes at the bottom of each list of sets that allows the user to add a new set.
-  const addSetButton = (
+  const renderAddSetButton = () => (
     <TouchableOpacity
       style={[
         styles.addSetButtonContainer,
@@ -242,6 +252,23 @@ function SetsScreen ({
     </TouchableOpacity>
   )
 
+  const renderNoMTButton = () => (
+    <View style={{ width: '100%', height: 80 * scaleMultiplier, padding: 20 ***REMOVED******REMOVED***>
+      <Text
+        style={StandardTypography(
+          { font, isRTL ***REMOVED***,
+          'p',
+          'Regular',
+          'center',
+          colors.chateau
+        )***REMOVED***
+      >
+        {translations.mobilization_tools.no_mobilization_tools_content_text***REMOVED***
+        {/* Content currently not available for this language */***REMOVED***
+      </Text>
+    </View>
+  )
+
   /**
    * Renders a setItem component.
    * @param {Object***REMOVED*** set - The object of the set to render.
@@ -251,11 +278,7 @@ function SetsScreen ({
     <SetItem
       thisSet={set***REMOVED***
       screen='Sets'
-      onSetSelect={() =>
-        navigate('Lessons', {
-          thisSet: set
-        ***REMOVED***)
-      ***REMOVED***
+      onSetSelect={() => navigate('Lessons', { thisSet: set ***REMOVED***)***REMOVED***
     />
   )
 
@@ -266,7 +289,24 @@ function SetsScreen ({
         renderItem={({ item ***REMOVED***) => renderSetItem(item)***REMOVED***
         // Re-render the FlatList whenever the active group changes.
         extraData={activeGroup***REMOVED***
-        ListFooterComponent={addSetButton***REMOVED***
+        ListFooterComponent={
+          // If we're in the Mobilization Tab AND this language doesn't have any MT content, display a "No MT Content" component. Otherwise, show the add Stor Set button.
+          category === 'MobilizationTools' &&
+          !activeDatabase.sets.some(set => /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id))
+            ? renderNoMTButton
+            : renderAddSetButton
+        ***REMOVED***
+      />
+      <SnackBar
+        visible={showMTTabAddedSnackbar***REMOVED***
+        textMessage='Mobilization tab added!'
+        messageStyle={{
+          color: colors.white,
+          fontSize: 24 * scaleMultiplier,
+          fontFamily: font + '-Black',
+          textAlign: 'center'
+        ***REMOVED******REMOVED***
+        backgroundColor={colors.apple***REMOVED***
       />
     </View>
   )
@@ -287,4 +327,4 @@ const styles = StyleSheet.create({
   ***REMOVED***
 ***REMOVED***)
 
-export default connect(mapStateToProps)(SetsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SetsScreen)

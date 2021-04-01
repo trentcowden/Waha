@@ -79,12 +79,12 @@ function WahaButton ({
       return (
         <TouchableOpacity
           style={[
-            {
-              width: width
-            ***REMOVED***,
+            { width: width ***REMOVED***,
             styles.buttonContainer,
             {
               backgroundColor: color
+              // borderBottomWidth: 4,
+              // borderColor: 'green'
             ***REMOVED***,
             style
           ]***REMOVED***
