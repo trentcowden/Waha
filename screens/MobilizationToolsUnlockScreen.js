@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { Alert, Image, Keyboard, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import { Alert, Image, Keyboard, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
-import { connect } from 'react-redux'
+import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/standard/BackButton'
-import { scaleMultiplier } from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
-import { setAreMobilizationToolsUnlocked } from '../redux/actions/areMobilizationToolsUnlockedActions'
-import { setMTUnlockAttempts } from '../redux/actions/mtUnlockAttemptsActions'
-import { setMTUnlockTimeout } from '../redux/actions/securityActions'
+import { setAreMobilizationToolsUnlocked ***REMOVED*** from '../redux/actions/areMobilizationToolsUnlockedActions'
+import { setMTUnlockAttempts ***REMOVED*** from '../redux/actions/mtUnlockAttemptsActions'
+import { setMTUnlockTimeout ***REMOVED*** from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -22,29 +22,29 @@ function mapStateToProps (state) {
     font: getLanguageFont(activeGroupSelector(state).language),
     security: state.security,
     mtUnlockAttempts: state.mtUnlockAttempts
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     setAreMobilizationToolsUnlocked: toSet => {
       dispatch(setAreMobilizationToolsUnlocked(toSet))
-    },
+    ***REMOVED***,
     setMTUnlockTimeout: time => {
       dispatch(setMTUnlockTimeout(time))
-    },
+    ***REMOVED***,
     setMTUnlockAttempts: numAttempts => {
       dispatch(setMTUnlockAttempts(numAttempts))
-    }
-  }
-}
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 /**
  * Screen that shows a simple passcode entry and allows the user to unlock the Mobilization Tools.
  */
 function MobilizationToolsUnlockScreen ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack },
+  navigation: { setOptions, goBack ***REMOVED***,
   // Props passed from redux.
   isRTL,
   translations,
@@ -54,18 +54,18 @@ function MobilizationToolsUnlockScreen ({
   setAreMobilizationToolsUnlocked,
   setMTUnlockTimeout,
   setMTUnlockAttempts
-}) {
+***REMOVED***) {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions({
       headerRight: isRTL
-        ? () => <BackButton onPress={() => goBack()} />
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => goBack()} />
-    })
-  }, [])
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />
+    ***REMOVED***)
+  ***REMOVED***, [])
 
   /** Keeps track of the user input of the passcode entry area. */
   const [passcode, setPasscode] = useState('')
@@ -83,8 +83,8 @@ function MobilizationToolsUnlockScreen ({
     if (mtUnlockAttempts === 5) {
       setMTUnlockAttempts(0)
       setMTUnlockTimeout(Date.now() + 1800000)
-    }
-  }, [mtUnlockAttempts])
+    ***REMOVED***
+  ***REMOVED***, [mtUnlockAttempts])
 
   /**
    * Checks if the passcode the user enters is correct. If it is, show the success modal. If not, add one to the attempts tracker and show an alert that the code is incorrect.
@@ -94,7 +94,7 @@ function MobilizationToolsUnlockScreen ({
       Keyboard.dismiss()
       setUnlockSuccessModal(true)
       setAreMobilizationToolsUnlocked(true)
-    } else {
+    ***REMOVED*** else {
       setMTUnlockAttempts(mtUnlockAttempts + 1)
       // Make the input component "shake" when they enter in a wrong code.
       pinRef.shake().then(() => setPasscode(''))
@@ -104,16 +104,16 @@ function MobilizationToolsUnlockScreen ({
         [
           {
             text: translations.general.ok,
-            onPress: () => {}
-          }
+            onPress: () => {***REMOVED***
+          ***REMOVED***
         ]
       )
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   /**
    * Gets a string of the amount of attempts the user has left OR, if they're already locked out, the time they have left until they can attempt again.
-   * @return {string} - The text to display.
+   * @return {string***REMOVED*** - The text to display.
    */
   function getTimeoutText () {
     if (Date.now() - security.mtUnlockTimeout < 0)
@@ -129,14 +129,14 @@ function MobilizationToolsUnlockScreen ({
     else if (mtUnlockAttempts === 4)
       return translations.passcode.one_attempt_remaining_label
     else return ''
-  }
+  ***REMOVED***
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen***REMOVED***>
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'h3',
             'Regular',
             'center',
@@ -146,21 +146,21 @@ function MobilizationToolsUnlockScreen ({
             marginTop: 50 * scaleMultiplier,
             marginBottom: 30 * scaleMultiplier,
             paddingHorizontal: 20
-          }
-        ]}
+          ***REMOVED***
+        ]***REMOVED***
       >
-        {translations.passcode.enter_passcode_text}
+        {translations.passcode.enter_passcode_text***REMOVED***
       </Text>
       <SmoothPinCodeInput
-        ref={ref => setPinRef(ref)}
-        value={passcode}
-        codeLength={6}
-        autoFocus={true}
-        restrictToNumbers={true}
+        ref={ref => setPinRef(ref)***REMOVED***
+        value={passcode***REMOVED***
+        codeLength={6***REMOVED***
+        autoFocus={true***REMOVED***
+        restrictToNumbers={true***REMOVED***
         animationFocused=''
-        onTextChange={passcode => setPasscode(passcode)}
-        onFulfill={fullPasscode => checkPasscode(fullPasscode)}
-        onBackspace={() => {}}
+        onTextChange={passcode => setPasscode(passcode)***REMOVED***
+        onFulfill={fullPasscode => checkPasscode(fullPasscode)***REMOVED***
+        onBackspace={() => {***REMOVED******REMOVED***
         // Disable entry if the user is locked out.
         editable={
           security.mtUnlockTimeout
@@ -168,25 +168,25 @@ function MobilizationToolsUnlockScreen ({
               ? true
               : false
             : true
-        }
-        cellSize={50 * scaleMultiplier}
+        ***REMOVED***
+        cellSize={50 * scaleMultiplier***REMOVED***
         cellStyle={{
           borderRadius: 25,
           borderColor: colors.chateau,
           borderWidth: 2,
           marginLeft: 3,
           marginRight: 3
-        }}
+        ***REMOVED******REMOVED***
         cellStyleFocused={{
           borderColor: colors.shark,
           borderRadius: 25,
           borderWidth: 2
-        }}
+        ***REMOVED******REMOVED***
       />
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'h3',
             'Regular',
             'center',
@@ -195,46 +195,46 @@ function MobilizationToolsUnlockScreen ({
           {
             marginTop: 30 * scaleMultiplier,
             paddingHorizontal: 20
-          }
-        ]}
+          ***REMOVED***
+        ]***REMOVED***
       >
-        {getTimeoutText()}
+        {getTimeoutText()***REMOVED***
       </Text>
-      {/* Modals */}
+      {/* Modals */***REMOVED***
       <MessageModal
-        isVisible={unlockSuccessModal}
+        isVisible={unlockSuccessModal***REMOVED***
         hideModal={() => {
           setUnlockSuccessModal(false)
           goBack()
-        }}
-        title={translations.passcode.popups.unlock_successful_title}
-        body={translations.passcode.popups.unlock_successful_message}
-        confirmText={translations.general.got_it}
+        ***REMOVED******REMOVED***
+        title={translations.passcode.popups.unlock_successful_title***REMOVED***
+        body={translations.passcode.popups.unlock_successful_message***REMOVED***
+        confirmText={translations.general.got_it***REMOVED***
         confirmOnPress={() => {
           setUnlockSuccessModal(false)
           goBack()
-        }}
+        ***REMOVED******REMOVED***
       >
         <Image
-          source={require('../assets/gifs/unlock_mob_tools.gif')}
+          source={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
           style={{
             height: 200 * scaleMultiplier,
             margin: 20,
             resizeMode: 'contain'
-          }}
+          ***REMOVED******REMOVED***
         />
       </MessageModal>
     </View>
   )
-}
+***REMOVED***
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.white,
     alignItems: 'center'
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(
   mapStateToProps,

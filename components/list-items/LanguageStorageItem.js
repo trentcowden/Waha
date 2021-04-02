@@ -1,14 +1,14 @@
 import * as FileSystem from 'expo-file-system'
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
-import { scaleMultiplier } from '../../constants'
+import { Image, StyleSheet, Text, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../../redux/reducers/activeGroup'
-import { colors } from '../../styles/colors'
-import { getLanguageFont, StandardTypography } from '../../styles/typography'
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import Separator from '../standard/Separator'
 import WahaButton from '../standard/WahaButton'
 
@@ -18,8 +18,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     translations: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function LanguageStorageItem ({
   // Props passed from a parent component.
@@ -32,31 +32,31 @@ function LanguageStorageItem ({
   isRTL,
   translations,
   activeGroup
-}) {
+***REMOVED***) {
   return (
-    <View style={styles.storageContainer}>
+    <View style={styles.storageContainer***REMOVED***>
       <View
         style={[
           styles.languageHeaderContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+          { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        ]***REMOVED***
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'h3',
             'Regular',
             'left',
             colors.chateau
-          )}
+          )***REMOVED***
         >
-          {languageName + ' ' + translations.storage.downloads_label}
+          {languageName + ' ' + translations.storage.downloads_label***REMOVED***
         </Text>
         <Image
-          style={styles.languageLogo}
+          style={styles.languageLogo***REMOVED***
           source={{
             uri: FileSystem.documentDirectory + languageID + '-header.png'
-          }}
+          ***REMOVED******REMOVED***
         />
       </View>
       <Separator />
@@ -65,26 +65,26 @@ function LanguageStorageItem ({
           styles.itemContainer,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row'
-          }
-        ]}
+          ***REMOVED***
+        ]***REMOVED***
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'h3',
             'Bold',
             'left',
             colors.tuna
-          )}
+          )***REMOVED***
         >
           {megabytes >= 0
             ? megabytes + ' ' + translations.storage.megabyte_label
-            : translations.storage.megabyte_label}
+            : translations.storage.megabyte_label***REMOVED***
         </Text>
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              { font, isRTL ***REMOVED***,
               'h3',
               'Regular',
               'left',
@@ -93,30 +93,30 @@ function LanguageStorageItem ({
             {
               flex: 1,
               paddingHorizontal: 20
-            }
-          ]}
+            ***REMOVED***
+          ]***REMOVED***
         >
-          {translations.storage.storage_used_label}
+          {translations.storage.storage_used_label***REMOVED***
         </Text>
         <WahaButton
           type='outline'
-          color={colors.red}
-          label={translations.storage.clear_button_label}
-          width={92 * scaleMultiplier}
-          onPress={clearDownloads}
-          style={{ height: 45 * scaleMultiplier }}
-          textStyle={{ fontFamily: font + '-Regular' }}
+          color={colors.red***REMOVED***
+          label={translations.storage.clear_button_label***REMOVED***
+          width={92 * scaleMultiplier***REMOVED***
+          onPress={clearDownloads***REMOVED***
+          style={{ height: 45 * scaleMultiplier ***REMOVED******REMOVED***
+          textStyle={{ fontFamily: font + '-Regular' ***REMOVED******REMOVED***
         />
       </View>
       <Separator />
     </View>
   )
-}
+***REMOVED***
 
 const styles = StyleSheet.create({
   storageContainer: {
     width: '100%'
-  },
+  ***REMOVED***,
   itemContainer: {
     width: '100%',
     height: 80 * scaleMultiplier,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     justifyContent: 'space-between'
-  },
+  ***REMOVED***,
   languageHeaderContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -134,12 +134,12 @@ const styles = StyleSheet.create({
     // aspectRatio: 8.7,
     backgroundColor: colors.aquaHaze,
     paddingHorizontal: 20
-  },
+  ***REMOVED***,
   languageLogo: {
     resizeMode: 'contain',
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier
-  },
+  ***REMOVED***,
   storageContainerFlatList: {
     height: 55 * scaleMultiplier,
     borderLeftWidth: 2,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps)(LanguageStorageItem)

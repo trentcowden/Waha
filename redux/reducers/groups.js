@@ -1,4 +1,4 @@
-import { getSetInfo } from '../../constants'
+import { getSetInfo ***REMOVED*** from '../../constants'
 import {
   ADD_SET,
   CREATE_GROUP,
@@ -7,23 +7,23 @@ import {
   RESET_PROGRESS,
   SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB,
   UPDATE_PROGRESS
-} from '../actions/groupsActions'
+***REMOVED*** from '../actions/groupsActions'
 
 /**
  * The groups redux reducer stores all the information related to groups. This state is persisted across app restarts.
- * @param {Object} params - Parameters passed from groupActions.js functions.
- * @param {Object[]} groups - (state) Stores all the created groups in an array.
- * @param {string} groups[].name - The name of the group.
- * @param {number} groups[].id - The unique ID for the group.
- * @param {string} groups[].language - The language ID associated with the group.
- * @param {string} groups[].emoji - The name of the emoji used for this group's avatar. Called 'default' by default.
- * @param {string} groups[].recentCoreOrTool - The ID of the most recent foundational or mobilization tools set that has completed a lesson. Note: the name is outdated.
- * @param {string} groups[].setBookmark - The ID of the bookmarked set for this group.
- * @param {boolean} groups[].shouldShowMobilizationToolsTab - Whether the mobilization tools tab should show on the story sets screen.
- * @param {Object[]} groups[].addedSets - An array of sets that have been 'added' to this group. The first 2 foundational sets are added automatically upon creating a new group.
- * @param {string} groups[].addedSet[].id - The ID of the added set.
- * @param {number[]} groups[].addedSet[].progress - Stores the progress for this particular set. Each element is a number for the index of the lesson that has been completed. A set with 0 completed lessons would have an empty progress array.
- * @param {number} groups[].addedSet[].bookmark - The index
+ * @param {Object***REMOVED*** params - Parameters passed from groupActions.js functions.
+ * @param {Object[]***REMOVED*** groups - (state) Stores all the created groups in an array.
+ * @param {string***REMOVED*** groups[].name - The name of the group.
+ * @param {number***REMOVED*** groups[].id - The unique ID for the group.
+ * @param {string***REMOVED*** groups[].language - The language ID associated with the group.
+ * @param {string***REMOVED*** groups[].emoji - The name of the emoji used for this group's avatar. Called 'default' by default.
+ * @param {string***REMOVED*** groups[].recentCoreOrTool - The ID of the most recent foundational or mobilization tools set that has completed a lesson. Note: the name is outdated.
+ * @param {string***REMOVED*** groups[].setBookmark - The ID of the bookmarked set for this group.
+ * @param {boolean***REMOVED*** groups[].shouldShowMobilizationToolsTab - Whether the mobilization tools tab should show on the story sets screen.
+ * @param {Object[]***REMOVED*** groups[].addedSets - An array of sets that have been 'added' to this group. The first 2 foundational sets are added automatically upon creating a new group.
+ * @param {string***REMOVED*** groups[].addedSet[].id - The ID of the added set.
+ * @param {number[]***REMOVED*** groups[].addedSet[].progress - Stores the progress for this particular set. Each element is a number for the index of the lesson that has been completed. A set with 0 completed lessons would have an empty progress array.
+ * @param {number***REMOVED*** groups[].addedSet[].bookmark - The index
  */
 export function groups (state = [], params) {
   switch (params.type) {
@@ -47,15 +47,15 @@ export function groups (state = [], params) {
               id: params.language + '.1.1',
               progress: [],
               bookmark: 1
-            },
+            ***REMOVED***,
             {
               id: params.language + '.1.2',
               progress: [],
               bookmark: 1
-            }
+            ***REMOVED***
           ],
           shouldShowMobilizationToolsTab: false
-        }
+        ***REMOVED***
       ]
     case EDIT_GROUP:
       return state.map(group => {
@@ -65,10 +65,10 @@ export function groups (state = [], params) {
             // Only allowable changes are to the group name and the emoji.
             name: params.newGroupName,
             emoji: params.emoji
-          }
-        }
+          ***REMOVED***
+        ***REMOVED***
         return group
-      })
+      ***REMOVED***)
     case DELETE_GROUP:
       return state.filter(group => group.name != params.groupName)
     /**
@@ -139,7 +139,7 @@ export function groups (state = [], params) {
                   // (including the one we're marking)
                   do {
                     lessonBookmark += 1
-                  } while (
+                  ***REMOVED*** while (
                     set.progress.includes(lessonBookmark) &&
                     lessonBookmark !== params.lessonIndex
                   )
@@ -151,9 +151,9 @@ export function groups (state = [], params) {
                     progress: set.progress.filter(
                       index => index !== params.lessonIndex
                     )
-                  }
+                  ***REMOVED***
                   // otherwise, mark it as complete and set the bookmark
-                } else {
+                ***REMOVED*** else {
                   // if we've completed everything in a set
                   if (set.progress.length + 1 === params.setLength) {
                     // if core or toolkit, set to next in that category
@@ -169,16 +169,16 @@ export function groups (state = [], params) {
 
                       recentCoreOrTool = setBookmark
                       // if topical, set to recentCoreOrTool
-                    } else {
+                    ***REMOVED*** else {
                       setBookmark = recentCoreOrTool
-                    }
-                  }
+                    ***REMOVED***
+                  ***REMOVED***
 
                   // increment the bookmark until we get to 1 that's incomplete
                   // (including the one we're marking)
                   do {
                     lessonBookmark += 1
-                  } while (
+                  ***REMOVED*** while (
                     set.progress.includes(lessonBookmark) ||
                     lessonBookmark === params.lessonIndex
                   )
@@ -188,23 +188,23 @@ export function groups (state = [], params) {
                     ...set,
                     bookmark: lessonBookmark,
                     progress: [...set.progress, params.lessonIndex]
-                  }
-                }
+                  ***REMOVED***
+                ***REMOVED***
                 // return the rest of the sets that we don't care about changing
-              } else {
+              ***REMOVED*** else {
                 return set
-              }
-            }),
+              ***REMOVED***
+            ***REMOVED***),
 
             //+ MOST RECENT CORE OR TOOLKIT SET
             recentCoreOrTool: recentCoreOrTool,
 
             //+ SET BOOKMARK
             setBookmark: setBookmark
-          }
-        }
+          ***REMOVED***
+        ***REMOVED***
         return group
-      })
+      ***REMOVED***)
     /**
      * DEPECRATED. Resets the progress for a group.
      */
@@ -215,12 +215,12 @@ export function groups (state = [], params) {
             ...group,
             setBookmark: group.language + '.1.1',
             addedSets: group.addedSets.map(set => {
-              return { ...set, progress: [], bookmark: 1 }
-            })
-          }
-        }
+              return { ...set, progress: [], bookmark: 1 ***REMOVED***
+            ***REMOVED***)
+          ***REMOVED***
+        ***REMOVED***
         return group
-      })
+      ***REMOVED***)
     case ADD_SET:
       return state.map(group => {
         if (group.name === params.groupName) {
@@ -233,23 +233,23 @@ export function groups (state = [], params) {
                 id: params.set.id,
                 progress: [],
                 bookmark: 1
-              }
+              ***REMOVED***
             ]
-          }
-        }
+          ***REMOVED***
+        ***REMOVED***
         return group
-      })
+      ***REMOVED***)
     case SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB:
       return state.map(group => {
         if (group.name === params.groupName) {
           return {
             ...group,
             shouldShowMobilizationToolsTab: params.toSet
-          }
-        }
+          ***REMOVED***
+        ***REMOVED***
         return group
-      })
+      ***REMOVED***)
     default:
       return state
-  }
-}
+  ***REMOVED***
+***REMOVED***

@@ -1,4 +1,4 @@
-import { createIconSet } from 'react-native-vector-icons'
+import { createIconSet ***REMOVED*** from 'react-native-vector-icons'
 
 /**
  * This file creates and export the icon font used in Waha making it accessible from any component in the app.
@@ -100,7 +100,7 @@ const glyphMap = {
   'video-off': '\ue959',
   'volume': '\ue95c',
   'volume-off': '\ue95b'
-}
+***REMOVED***
 
 // Create and export the icon font using creatIconSet function from the icon package, the icon font .ttf file, and the glpyh map above.
 export default Icon = createIconSet(

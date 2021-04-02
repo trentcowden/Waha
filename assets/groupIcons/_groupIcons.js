@@ -222,4 +222,4 @@ export const groupIconSources = {
   turtle: require('./turtle.png'),
   'umbrella-with-rain-drops': require('./umbrella-with-rain-drops.png'),
   'video-game': require('./video-game.png')
-}
+***REMOVED***

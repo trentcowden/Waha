@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ***REMOVED*** from 'react'
 import {
   Alert,
   Dimensions,
@@ -9,25 +9,25 @@ import {
   TextInput,
   TouchableOpacity,
   View
-} from 'react-native'
-import { connect } from 'react-redux'
-import { groupIcons, groupIconSources } from '../assets/groupIcons/_groupIcons'
+***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { groupIcons, groupIconSources ***REMOVED*** from '../assets/groupIcons/_groupIcons'
 import GroupAvatar from '../components/GroupAvatar'
-import { scaleMultiplier } from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import ModalScreen from '../modals/ModalScreen'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
+import { changeActiveGroup ***REMOVED*** from '../redux/actions/activeGroupActions'
+import { incrementGlobalGroupCounter ***REMOVED*** from '../redux/actions/databaseActions'
 import {
   createGroup,
   editGroup,
   resetProgress
-} from '../redux/actions/groupsActions'
+***REMOVED*** from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -37,8 +37,8 @@ function mapStateToProps (state) {
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state),
     globalGroupCounter: state.database.globalGroupCounter
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
@@ -49,10 +49,10 @@ function mapDispatchToProps (dispatch) {
     changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName)),
     resetProgress: name => {
       dispatch(resetProgress(name))
-    },
+    ***REMOVED***,
     incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter())
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function AddEditGroupModal ({
   // Props passed from a parent component.
@@ -74,7 +74,7 @@ function AddEditGroupModal ({
   deleteGroup,
   resetProgress,
   incrementGlobalGroupCounter
-}) {
+***REMOVED***) {
   //+ STATE
 
   // keeps track of the group name text input value
@@ -98,12 +98,12 @@ function AddEditGroupModal ({
           Alert.alert(
             translations.add_edit_group.popups.duplicate_group_name_title,
             translations.add_edit_group.popups.duplicate_group_name_message,
-            [{ text: translations.general.ok, onPress: () => {} }]
+            [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           isDuplicate = true
-        }
-      })
-    } else {
+        ***REMOVED***
+      ***REMOVED***)
+    ***REMOVED*** else {
       groups.forEach(storedGroup => {
         if (
           storedGroup.name === groupNameInput &&
@@ -112,26 +112,26 @@ function AddEditGroupModal ({
           Alert.alert(
             translations.add_edit_group.popups.duplicate_group_name_title,
             translations.add_edit_group.popups.duplicate_group_name_message,
-            [{ text: translations.general.ok, onPress: () => {} }]
+            [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
           )
           isDuplicate = true
-        }
-      })
-    }
+        ***REMOVED***
+      ***REMOVED***)
+    ***REMOVED***
     return isDuplicate
-  }
+  ***REMOVED***
 
   function checkForBlank () {
     if (groupNameInput === '') {
       Alert.alert(
         translations.add_edit_group.popups.blank_group_name_title,
         translations.add_edit_group.popups.blank_group_name_message,
-        [{ text: translations.general.ok, onPress: () => {} }]
+        [{ text: translations.general.ok, onPress: () => {***REMOVED*** ***REMOVED***]
       )
       return true
-    }
+    ***REMOVED***
     return false
-  }
+  ***REMOVED***
 
   // adds a group to redux if it passes all error checking
   function createGroupHandler () {
@@ -150,7 +150,7 @@ function AddEditGroupModal ({
     incrementGlobalGroupCounter()
 
     hideModal()
-  }
+  ***REMOVED***
 
   // edits a group and sets it as active
   function editGroupHandler () {
@@ -159,74 +159,74 @@ function AddEditGroupModal ({
     if (group.name === activeGroup.name) changeActiveGroup(groupNameInput)
     editGroup(group.name, groupNameInput, emojiInput)
     hideModal()
-  }
+  ***REMOVED***
 
   //+ RENDER
 
   return (
     <ModalScreen
-      isVisible={isVisible}
-      hideModal={hideModal}
+      isVisible={isVisible***REMOVED***
+      hideModal={hideModal***REMOVED***
       topRightComponent={
         <TouchableOpacity
-          onPress={type === 'AddGroup' ? createGroupHandler : editGroupHandler}
+          onPress={type === 'AddGroup' ? createGroupHandler : editGroupHandler***REMOVED***
           style={{
             width: 45 * scaleMultiplier,
             height: 45 * scaleMultiplier
-          }}
+          ***REMOVED******REMOVED***
         >
-          <Icon name='check' size={40 * scaleMultiplier} color={colors.oslo} />
+          <Icon name='check' size={40 * scaleMultiplier***REMOVED*** color={colors.oslo***REMOVED*** />
         </TouchableOpacity>
-      }
+      ***REMOVED***
       onCancelPress={() => {
         setGroupNameInput('')
         setEmojiInput('default')
-      }}
+      ***REMOVED******REMOVED***
       onModalWillShow={
         type === 'AddGroup'
           ? () => {
               setGroupNameInput('')
               setEmojiInput('default')
-            }
+            ***REMOVED***
           : () => {
               setGroupNameInput(group.name)
               setEmojiInput(group.emoji)
-            }
-      }
+            ***REMOVED***
+      ***REMOVED***
       title={
         type === 'AddGroup'
           ? translations.add_edit_group.header_add
           : translations.add_edit_group.header_edit
-      }
+      ***REMOVED***
     >
-      <View style={styles.photoContainer}>
+      <View style={styles.photoContainer***REMOVED***>
         <GroupAvatar
-          style={{ backgroundColor: colors.athens }}
-          emoji={emojiInput}
-          size={120}
+          style={{ backgroundColor: colors.athens ***REMOVED******REMOVED***
+          emoji={emojiInput***REMOVED***
+          size={120***REMOVED***
         />
       </View>
       <View
         style={{
           marginHorizontal: 20
-        }}
+        ***REMOVED******REMOVED***
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'p',
             'Regular',
             'left',
             colors.chateau
-          )}
+          )***REMOVED***
         >
-          {translations.add_edit_group.group_name_form_label}
+          {translations.add_edit_group.group_name_form_label***REMOVED***
         </Text>
         <TextInput
           style={[
             styles.addNewGroupContainer,
             StandardTypography(
-              { font, isRTL },
+              { font, isRTL ***REMOVED***,
               'h3',
               'Regular',
               'left',
@@ -235,22 +235,22 @@ function AddEditGroupModal ({
             // {
             //   textAlign: isRTL ? 'right' : 'left',
             //   fontFamily: font + '-Regular'
-            // }
-          ]}
-          onChangeText={text => setGroupNameInput(text)}
-          value={groupNameInput}
+            // ***REMOVED***
+          ]***REMOVED***
+          onChangeText={text => setGroupNameInput(text)***REMOVED***
+          value={groupNameInput***REMOVED***
           autoCapitalize='words'
-          autoCorrect={false}
-          placeholder={translations.add_edit_group.group_name_form_placeholder}
-          placeholderTextColor={colors.chateau}
-          maxLength={50}
+          autoCorrect={false***REMOVED***
+          placeholder={translations.add_edit_group.group_name_form_placeholder***REMOVED***
+          placeholderTextColor={colors.chateau***REMOVED***
+          maxLength={50***REMOVED***
           returnKeyType='done'
         />
       </View>
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            { font, isRTL ***REMOVED***,
             'p',
             'Regular',
             'left',
@@ -260,10 +260,10 @@ function AddEditGroupModal ({
             marginHorizontal: 20,
             marginTop: 20 * scaleMultiplier,
             marginBottom: 5
-          }
-        ]}
+          ***REMOVED***
+        ]***REMOVED***
       >
-        {translations.add_edit_group.icon_form_label}
+        {translations.add_edit_group.icon_form_label***REMOVED***
       </Text>
       <View
         style={{
@@ -279,12 +279,12 @@ function AddEditGroupModal ({
           marginHorizontal: 20,
           borderColor: colors.athens,
           marginBottom: 20
-        }}
+        ***REMOVED******REMOVED***
       >
         <FlatList
-          data={groupIcons}
+          data={groupIcons***REMOVED***
           nestedScrollEnabled
-          renderItem={({ item }) => (
+          renderItem={({ item ***REMOVED***) => (
             <TouchableOpacity
               style={{
                 width: 50 * scaleMultiplier,
@@ -296,27 +296,27 @@ function AddEditGroupModal ({
                 borderColor: item === emojiInput ? colors.blue : null,
                 borderRadius: 10,
                 backgroundColor: item === emojiInput ? colors.blue + '38' : null
-              }}
-              onPress={() => setEmojiInput(item)}
+              ***REMOVED******REMOVED***
+              onPress={() => setEmojiInput(item)***REMOVED***
             >
               <Image
                 style={{
                   width: 40 * scaleMultiplier,
                   height: 40 * scaleMultiplier
-                }}
-                source={groupIconSources[item]}
+                ***REMOVED******REMOVED***
+                source={groupIconSources[item]***REMOVED***
               />
             </TouchableOpacity>
-          )}
-          keyExtractor={item => item}
+          )***REMOVED***
+          keyExtractor={item => item***REMOVED***
           numColumns={Math.floor(
             (Dimensions.get('window').width - 50) / (50 * scaleMultiplier)
-          )}
+          )***REMOVED***
         />
       </View>
     </ModalScreen>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -325,20 +325,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     justifyContent: 'space-between'
-  },
+  ***REMOVED***,
   photoContainer: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 20 * scaleMultiplier
-  },
+  ***REMOVED***,
   addNewGroupContainer: {
     borderBottomColor: colors.athens,
     borderBottomWidth: 2,
     height: 50 * scaleMultiplier,
     fontSize: 18 * scaleMultiplier
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEditGroupModal)
 
@@ -353,23 +353,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(AddEditGroupModal)
 //           permissionResponse => {
 //             if (permissionResponse.status === 'granted') {
 //               openImageLibraryHandler()
-//             }
-//           }
+//             ***REMOVED***
+//           ***REMOVED***
 //         )
-//       } else {
+//       ***REMOVED*** else {
 //         permissionGranted = true
-//       }
-//     }
+//       ***REMOVED***
+//     ***REMOVED***
 //   )
 //   if (permissionGranted) {
-//     ImagePicker.launchImageLibraryAsync({}).then(returnObject => {
+//     ImagePicker.launchImageLibraryAsync({***REMOVED***).then(returnObject => {
 //       if (returnObject.cancelled !== true) {
 //         setAvatarSource(returnObject.uri)
-//       }
+//       ***REMOVED***
 //       setShowImagePickerModal(false)
-//     })
-//   }
-// }
+//     ***REMOVED***)
+//   ***REMOVED***
+// ***REMOVED***
 
 // opens camera  after checking for permission, then set the avatarSource state
 // to the uri of the picture the user takes
@@ -380,18 +380,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(AddEditGroupModal)
 //       ImagePicker.requestCameraPermissionsAsync().then(permissionResponse => {
 //         if (permissionResponse.status === 'granted') {
 //           openCameraHandler()
-//         }
-//       })
-//     } else {
+//         ***REMOVED***
+//       ***REMOVED***)
+//     ***REMOVED*** else {
 //       permissionGranted = true
-//     }
-//   })
+//     ***REMOVED***
+//   ***REMOVED***)
 //   if (permissionGranted) {
-//     ImagePicker.launchCameraAsync({}).then(returnObject => {
+//     ImagePicker.launchCameraAsync({***REMOVED***).then(returnObject => {
 //       if (returnObject.cancelled !== true) {
 //         setAvatarSource(returnObject.uri)
-//       }
+//       ***REMOVED***
 //       setShowImagePickerModal(false)
-//     })
-//   }
-// }
+//     ***REMOVED***)
+//   ***REMOVED***
+// ***REMOVED***

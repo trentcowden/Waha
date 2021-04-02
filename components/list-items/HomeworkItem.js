@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ***REMOVED*** from 'react'
 import {
   Platform,
   Share,
@@ -6,15 +6,15 @@ import {
   Text,
   TouchableOpacity,
   View
-} from 'react-native'
-import { connect } from 'react-redux'
-import { colors } from '../../styles/colors'
-import { scaleMultiplier } from '../constants'
+***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { getLanguageFont } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 // renders a simple touchable item within the main navigation drawer
 function HomeworkItem (props) {
@@ -26,10 +26,10 @@ function HomeworkItem (props) {
         flexDirection: props.isRTL ? 'row-reverse' : 'row',
         width: '100%',
         marginBottom: 10
-      }}
+      ***REMOVED******REMOVED***
     >
       <TouchableOpacity
-        onPress={() => setIsChecked(old => !old)}
+        onPress={() => setIsChecked(old => !old)***REMOVED***
         style={{
           width: 30 * scaleMultiplier,
           height: 30 * scaleMultiplier,
@@ -37,53 +37,53 @@ function HomeworkItem (props) {
           borderColor: colors.tuna,
           borderRadius: 5,
           backgroundColor: isChecked ? colors.blue : null
-        }}
+        ***REMOVED******REMOVED***
       >
         {isChecked ? (
-          <Icon name='check' size={30 * scaleMultiplier} color={colors.white} />
-        ) : null}
+          <Icon name='check' size={30 * scaleMultiplier***REMOVED*** color={colors.white***REMOVED*** />
+        ) : null***REMOVED***
       </TouchableOpacity>
-      <View style={{ flex: 1, marginHorizontal: 20 }}>
+      <View style={{ flex: 1, marginHorizontal: 20 ***REMOVED******REMOVED***>
         <Text
           style={{
             fontSize: 16 * scaleMultiplier,
             color: colors.shark,
             fontFamily: props.font + '-Black',
             marginVertical: 5
-          }}
+          ***REMOVED******REMOVED***
         >
-          {props.title}
+          {props.title***REMOVED***
         </Text>
         <Text
           style={{
             fontSize: 14 * scaleMultiplier,
             color: colors.tuna,
             fontFamily: props.font + '-Regular'
-          }}
+          ***REMOVED******REMOVED***
         >
-          {props.description}
+          {props.description***REMOVED***
         </Text>
       </View>
       <TouchableOpacity
         onPress={() =>
           Share.share({
             message: props.title + '\n' + props.description
-          })
-        }
+          ***REMOVED***)
+        ***REMOVED***
       >
         <Icon
-          name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
-          size={35 * scaleMultiplier}
-          color={colors.apple}
+          name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'***REMOVED***
+          size={35 * scaleMultiplier***REMOVED***
+          color={colors.apple***REMOVED***
         />
       </TouchableOpacity>
     </View>
   )
-}
+***REMOVED***
 
 // STYLES
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({***REMOVED***)
 
 //+ REDUX
 
@@ -92,7 +92,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 export default connect(mapStateToProps)(HomeworkItem)

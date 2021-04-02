@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   Alert,
   Animated,
@@ -8,18 +8,18 @@ import {
   Text,
   TouchableOpacity,
   View
-} from 'react-native'
-import { connect } from 'react-redux'
-import { scaleMultiplier } from '../../constants'
-import { deleteLanguageData } from '../../redux/actions/databaseActions'
-import { removeDownload } from '../../redux/actions/downloadActions'
-import { deleteGroup } from '../../redux/actions/groupsActions'
+***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
+import { deleteLanguageData ***REMOVED*** from '../../redux/actions/databaseActions'
+import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
+import { deleteGroup ***REMOVED*** from '../../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../../redux/reducers/activeGroup'
-import { colors } from '../../styles/colors'
-import { getLanguageFont, StandardTypography } from '../../styles/typography'
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -30,28 +30,28 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     translations: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     deleteGroup: name => {
       dispatch(deleteGroup(name))
-    },
+    ***REMOVED***,
     deleteLanguageData: language => {
       dispatch(deleteLanguageData(language))
-    },
+    ***REMOVED***,
     removeDownload: lessonID => {
       dispatch(removeDownload(lessonID))
-    }
-  }
-}
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 /**
  * The header for the groups section list used on the Groups screen. Displays the name of the language and the language instance's logo.
- * @param {string} languageName - The name of the language.
- * @param {string} languageID - The ID for the language instance.
- * @param {boolean} isEditing - Whether the Groups screen is in editing mode or not.
+ * @param {string***REMOVED*** languageName - The name of the language.
+ * @param {string***REMOVED*** languageID - The ID for the language instance.
+ * @param {boolean***REMOVED*** isEditing - Whether the Groups screen is in editing mode or not.
  */
 function GroupListHeader ({
   // Props passed from a parent component.
@@ -69,7 +69,7 @@ function GroupListHeader ({
   deleteGroup,
   deleteLanguageData,
   removeDownload
-}) {
+***REMOVED***) {
   const [leftIconXPos, setLeftIconXPos] = useState(
     new Animated.Value(
       isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
@@ -82,19 +82,19 @@ function GroupListHeader ({
         isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
       )
     )
-  }, [isRTL])
+  ***REMOVED***, [isRTL])
 
   useEffect(() => {
     if (isEditing) {
       Animated.spring(leftIconXPos, {
         toValue: 0
-      }).start()
-    } else if (!isEditing) {
+      ***REMOVED***).start()
+    ***REMOVED*** else if (!isEditing) {
       Animated.spring(leftIconXPos, {
         toValue: isRTL ? 25 * scaleMultiplier + 20 : -25 * scaleMultiplier - 20
-      }).start()
-    }
-  }, [isEditing])
+      ***REMOVED***).start()
+    ***REMOVED***
+  ***REMOVED***, [isEditing])
 
   /**
    * Deletes an entire language instance. This involves deleting every group, every downloaded file, and all data stored in redux for a language instance. Triggered by pressing the trash can icon next to the langauge's name in editing mode.
@@ -104,8 +104,8 @@ function GroupListHeader ({
     groups.map(group => {
       if (group.language === languageID) {
         deleteGroup(group.name)
-      }
-    })
+      ***REMOVED***
+    ***REMOVED***)
 
     // Delete all downloaded files for this language instance.
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
@@ -114,14 +114,14 @@ function GroupListHeader ({
           if (item.slice(0, 2) === languageID) {
             FileSystem.deleteAsync(FileSystem.documentDirectory + item)
             removeDownload(item.slice(0, 5))
-          }
-        }
-      }
+          ***REMOVED***
+        ***REMOVED***
+      ***REMOVED***
     )
 
     // Delete redux data for this language instance.
     deleteLanguageData(languageID)
-  }
+  ***REMOVED***
 
   // Determine what to render for the trash button. This button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
   var trashButton
@@ -134,7 +134,7 @@ function GroupListHeader ({
           justifyContent: 'center',
           alignItems: 'center',
           width: 24 * scaleMultiplier
-        }}
+        ***REMOVED******REMOVED***
         onPress={() =>
           Alert.alert(
             translations.groups.popups.delete_language_title,
@@ -142,27 +142,27 @@ function GroupListHeader ({
             [
               {
                 text: translations.general.cancel,
-                onPress: () => {}
-              },
+                onPress: () => {***REMOVED***
+              ***REMOVED***,
               {
                 text: translations.general.ok,
                 onPress: deleteLanguageInstance
-              }
+              ***REMOVED***
             ]
           )
-        }
+        ***REMOVED***
       >
-        <Icon name='trash' size={25 * scaleMultiplier} color={colors.red} />
+        <Icon name='trash' size={25 * scaleMultiplier***REMOVED*** color={colors.red***REMOVED*** />
       </TouchableOpacity>
     )
     // For the language instance that contains the active group, render an empty view for this button so the styling lines up.
-  } else if (activeGroup.language === languageID) {
-    trashButton = <View style={{ height: '100%', width: 20 }} />
+  ***REMOVED*** else if (activeGroup.language === languageID) {
+    trashButton = <View style={{ height: '100%', width: 20 ***REMOVED******REMOVED*** />
     // trashButton = null
-  }
+  ***REMOVED***
   // else {
   //   trashButton = null
-  // }
+  // ***REMOVED***
 
   return (
     <View
@@ -170,27 +170,27 @@ function GroupListHeader ({
         styles.groupListHeaderContainer,
         {
           flexDirection: isRTL ? 'row-reverse' : 'row'
-        }
-      ]}
+        ***REMOVED***
+      ]***REMOVED***
     >
       <Animated.View
         style={{
           transform:
             activeGroup.language === languageID
               ? []
-              : [{ translateX: leftIconXPos }],
+              : [{ translateX: leftIconXPos ***REMOVED***],
           flexDirection: isRTL ? 'row-reverse' : 'row',
           flex: 1
-        }}
+        ***REMOVED******REMOVED***
       >
-        {trashButton}
+        {trashButton***REMOVED***
         <Text
           style={[
             StandardTypography(
               {
                 font: getLanguageFont(languageID),
                 isRTL: isRTL
-              },
+              ***REMOVED***,
               'h3',
               'Regular',
               'left',
@@ -200,21 +200,21 @@ function GroupListHeader ({
               flex: 1
               // marginLeft: isRTL ? 0 : isEditing ? 0 : 20,
               // marginRight: isRTL ? (isEditing ? 0 : 20) : 0
-            }
-          ]}
+            ***REMOVED***
+          ]***REMOVED***
         >
-          {languageName}
+          {languageName***REMOVED***
         </Text>
       </Animated.View>
       <Image
-        style={styles.languageLogoImage}
+        style={styles.languageLogoImage***REMOVED***
         source={{
           uri: FileSystem.documentDirectory + languageID + '-header.png'
-        }}
+        ***REMOVED******REMOVED***
       />
     </View>
   )
-}
+***REMOVED***
 
 const styles = StyleSheet.create({
   groupListHeaderContainer: {
@@ -222,13 +222,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40 * scaleMultiplier,
     backgroundColor: colors.aquaHaze
-  },
+  ***REMOVED***,
   languageLogoImage: {
     resizeMode: 'contain',
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier,
     marginHorizontal: 20
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupListHeader)

@@ -1,21 +1,21 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect, useState } from 'react'
-import { FlatList, LogBox, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import { FlatList, LogBox, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import TagGroup from 'react-native-tag-group'
-import { connect } from 'react-redux'
+import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
 import BackButton from '../components/standard/BackButton'
 import Separator from '../components/standard/Separator'
-import { getSetInfo, scaleMultiplier } from '../constants'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import SetInfoModal from '../modals/SetInfoModal'
-import { addSet } from '../redux/actions/groupsActions'
+import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
@@ -27,28 +27,28 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     addSet: (groupName, setID) => {
       dispatch(addSet(groupName, setID))
-    }
-  }
-}
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 /**
  * Component for the add set screen, which shows a list of available story sets to add in a specific category.
- * @param {*} props
+ * @param {****REMOVED*** props
  */
 function AddSetScreen ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack },
+  navigation: { setOptions, goBack ***REMOVED***,
   route: {
     // Props passed from previous screen.
-    params: { category }
-  },
+    params: { category ***REMOVED***
+  ***REMOVED***,
   // Props passed from redux.
   font,
   translations,
@@ -57,7 +57,7 @@ function AddSetScreen ({
   activeGroup,
   primaryColor,
   addSet
-}) {
+***REMOVED***) {
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -73,7 +73,7 @@ function AddSetScreen ({
   const [refresh, setRefresh] = useState(false)
 
   const [showSetInfoModal, setShowSetInfoModal] = useState(false)
-  const [setInModal, setSetInModal] = useState({})
+  const [setInModal, setSetInModal] = useState({***REMOVED***)
 
   const [downloadedFiles, setDownloadedFiles] = useState([])
 
@@ -91,37 +91,37 @@ function AddSetScreen ({
             topicalSet.tags.forEach(tag => {
               if (!tempTags.some(tempTag => tempTag === tag)) {
                 tempTags = [...tempTags, tag]
-              }
-            })
-          })
+              ***REMOVED***
+            ***REMOVED***)
+          ***REMOVED***)
         setTags(tempTags)
         break
       case 'mobilization tools':
         setHeaderTitle(translations.add_set.header_mt)
         break
-    }
-  }, [])
+    ***REMOVED***
+  ***REMOVED***, [])
 
   useEffect(() => {
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
       contents => {
         setDownloadedFiles(contents)
-      }
+      ***REMOVED***
     )
 
     return function cleanup () {
       setShowSnackbar(false)
-    }
-  }, [])
+    ***REMOVED***
+  ***REMOVED***, [])
 
   useEffect(() => {
     setOptions(getNavOptions())
-  }, [headerTitle])
+  ***REMOVED***, [headerTitle])
 
   /**
    * Goes through a set and verifies that all of the necessary question set mp3s have been downloaded for that set. This gets passed through the filter function below.
-   * @param {Object} set - The object for the set that we're checking.
-   * @return {boolean} - Whether every necessary file has been downloaded for the set.
+   * @param {Object***REMOVED*** set - The object for the set that we're checking.
+   * @return {boolean***REMOVED*** - Whether every necessary file has been downloaded for the set.
    */
   function filterForDownloadedQuestionSets (set) {
     // Create an array to store the necessary question set mp3s for this set.
@@ -133,12 +133,12 @@ function AddSetScreen ({
       if (lesson.fellowshipType) {
         if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
           requiredQuestionSets.push(lesson.fellowshipType)
-        }
+        ***REMOVED***
         if (!requiredQuestionSets.includes(lesson.applicationType)) {
           requiredQuestionSets.push(lesson.applicationType)
-        }
-      }
-    })
+        ***REMOVED***
+      ***REMOVED***
+    ***REMOVED***)
 
     // If every required file is present, return true. Otherwise, return false.
     if (
@@ -150,41 +150,41 @@ function AddSetScreen ({
     )
       return true
     else return false
-  }
+  ***REMOVED***
 
   // useEffect(() => {
   //   if (tagSelectRef) {
   //     tagSelectRef.select(0)
-  //   }
-  // }, [tagSelectRef])
+  //   ***REMOVED***
+  // ***REMOVED***, [tagSelectRef])
 
   function getNavOptions () {
     return {
       title: headerTitle,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => goBack()} />,
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />,
       headerRight: isRTL
-        ? () => <BackButton onPress={() => goBack()} />
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   // var activeTags = []
   // if (tagSelectRef.itemsSelected !== null) {
   //   con  sole.log(tagSelectRef.itemsSelected)
-  // }
+  // ***REMOVED***
 
   var tagSelectComponent = (
     <TagGroup
-      source={tags}
+      source={tags***REMOVED***
       singleChoiceMode
-      onSelectedTagChange={selected => setActiveTag(selected)}
+      onSelectedTagChange={selected => setActiveTag(selected)***REMOVED***
       style={{
         paddingHorizontal: 10,
         paddingTop: 10,
         paddingBottom: 2
-      }}
+      ***REMOVED******REMOVED***
       tagStyle={{
         borderRadius: 30,
         borderColor: colors.oslo,
@@ -192,18 +192,18 @@ function AddSetScreen ({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20 * scaleMultiplier
-      }}
-      textStyle={{ color: colors.oslo, fontFamily: font + '-Regular' }}
+      ***REMOVED******REMOVED***
+      textStyle={{ color: colors.oslo, fontFamily: font + '-Regular' ***REMOVED******REMOVED***
       activeTagStyle={{
         borderRadius: 20,
         // make primary color
         backgroundColor: primaryColor,
         borderColor: primaryColor
-      }}
+      ***REMOVED******REMOVED***
       activeTextStyle={{
         color: colors.white,
         fontFamily: font + '-Regular'
-      }}
+      ***REMOVED******REMOVED***
     />
   )
 
@@ -211,21 +211,21 @@ function AddSetScreen ({
   function renderStudySetItem (setList) {
     return (
       <SetItem
-        thisSet={setList.item}
+        thisSet={setList.item***REMOVED***
         screen='AddSet'
         onSetSelect={() => {
           setSetInModal(setList.item)
           setShowSetInfoModal(true)
-        }}
+        ***REMOVED******REMOVED***
       />
     )
-  }
+  ***REMOVED***
 
   return (
-    <View style={styles.screen}>
-      {category === 'topical' ? tagSelectComponent : null}
+    <View style={styles.screen***REMOVED***>
+      {category === 'topical' ? tagSelectComponent : null***REMOVED***
       <FlatList
-        style={{ flex: 1 }}
+        style={{ flex: 1 ***REMOVED******REMOVED***
         data={
           category === 'topical'
             ? activeDatabase.sets
@@ -241,7 +241,7 @@ function AddSetScreen ({
                     activeTag.includes(translations.add_set.all_tag_label)
                     ? true
                     : topicalAddedSet.tags.some(tag => activeTag.includes(tag))
-                })
+                ***REMOVED***)
                 .filter(filterForDownloadedQuestionSets)
                 .sort((a, b) => {
                   if (
@@ -250,10 +250,10 @@ function AddSetScreen ({
                     0
                   ) {
                     return -1
-                  } else {
+                  ***REMOVED*** else {
                     return 1
-                  }
-                })
+                  ***REMOVED***
+                ***REMOVED***)
             : activeDatabase.sets
                 .filter(set => getSetInfo('category', set.id) === category)
                 .filter(
@@ -270,62 +270,62 @@ function AddSetScreen ({
                     0
                   ) {
                     return -1
-                  } else {
+                  ***REMOVED*** else {
                     return 1
-                  }
-                })
-        }
-        ItemSeparatorComponent={() => <Separator />}
-        ListFooterComponent={() => <Separator />}
-        ListHeaderComponent={() => <Separator />}
-        renderItem={renderStudySetItem}
+                  ***REMOVED***
+                ***REMOVED***)
+        ***REMOVED***
+        ItemSeparatorComponent={() => <Separator />***REMOVED***
+        ListFooterComponent={() => <Separator />***REMOVED***
+        ListHeaderComponent={() => <Separator />***REMOVED***
+        renderItem={renderStudySetItem***REMOVED***
         ListEmptyComponent={
-          <View style={{ width: '100%', marginVertical: 20 }}>
+          <View style={{ width: '100%', marginVertical: 20 ***REMOVED******REMOVED***>
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                { font, isRTL ***REMOVED***,
                 'p',
                 'Regular',
                 'center',
                 colors.chateau
-              )}
+              )***REMOVED***
             >
-              {translations.add_set.no_more_sets_text}
+              {translations.add_set.no_more_sets_text***REMOVED***
             </Text>
           </View>
-        }
+        ***REMOVED***
       />
-      {/* Modals */}
+      {/* Modals */***REMOVED***
       <SnackBar
-        visible={showSnackbar}
-        textMessage={translations.add_set.set_added_message}
+        visible={showSnackbar***REMOVED***
+        textMessage={translations.add_set.set_added_message***REMOVED***
         messageStyle={{
           color: colors.white,
           fontSize: 24 * scaleMultiplier,
           fontFamily: font + '-Black',
           textAlign: 'center'
-        }}
-        backgroundColor={colors.apple}
+        ***REMOVED******REMOVED***
+        backgroundColor={colors.apple***REMOVED***
       />
       <SetInfoModal
-        isVisible={showSetInfoModal}
-        hideModal={() => setShowSetInfoModal(false)}
-        category={category}
-        thisSet={setInModal}
+        isVisible={showSetInfoModal***REMOVED***
+        hideModal={() => setShowSetInfoModal(false)***REMOVED***
+        category={category***REMOVED***
+        thisSet={setInModal***REMOVED***
         showSnackbar={() => {
           setShowSnackbar(true)
           setTimeout(() => setShowSnackbar(false), 2000)
-        }}
+        ***REMOVED******REMOVED***
       />
     </View>
   )
-}
+***REMOVED***
 
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: colors.white,
     flex: 1
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddSetScreen)

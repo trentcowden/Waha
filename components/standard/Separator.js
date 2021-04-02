@@ -1,8 +1,8 @@
 import React from 'react'
-import { View } from 'react-native'
-import { colors } from '../../styles/colors'
+import { View ***REMOVED*** from 'react-native'
+import { colors ***REMOVED*** from '../../styles/colors'
 
-function Separator ({}) {
+function Separator ({***REMOVED***) {
   return (
     <View
       style={{
@@ -10,9 +10,9 @@ function Separator ({}) {
         height: 2,
         backgroundColor: colors.athens
         // backgroundColor: 'blue'
-      }}
+      ***REMOVED******REMOVED***
     />
   )
-}
+***REMOVED***
 
 export default Separator

@@ -6,10 +6,10 @@ import * as FileSystem from 'expo-file-system'
 /**
  * Adds or updates the progress for a download in the downloads state.
  * @export
- * @param {number} progress - The progress of the lesson's download to update.
- * @param {Object} resumable - The resumable object of the download in case we want to cancel it.
- * @param {string} lessonID - The ID of the lessson to add or update the download for. If we're adding, we add a new key to the downloads object. If we're updating, we update the progress for the existing lesson's key.
- * @return {Object} - Object to send to the reducer.
+ * @param {number***REMOVED*** progress - The progress of the lesson's download to update.
+ * @param {Object***REMOVED*** resumable - The resumable object of the download in case we want to cancel it.
+ * @param {string***REMOVED*** lessonID - The ID of the lessson to add or update the download for. If we're adding, we add a new key to the downloads object. If we're updating, we update the progress for the existing lesson's key.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
  */
 export function addUpdateDownload (progress, resumable, lessonID) {
   return {
@@ -17,29 +17,29 @@ export function addUpdateDownload (progress, resumable, lessonID) {
     progress,
     resumable,
     lessonID
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 /**
  * Removes a download from the downloads object.
  * @export
- * @param {string} lessonID - The ID of the lesson whose download we want to remove from the downloads state.
- * @return {Object} - Object to send to the reducer.
+ * @param {string***REMOVED*** lessonID - The ID of the lesson whose download we want to remove from the downloads state.
+ * @return {Object***REMOVED*** - Object to send to the reducer.
  */
 export function removeDownload (lessonID) {
   return {
     type: REMOVE_DOWNLOAD,
     lessonID
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 /**
  * Downloads the scripture mp3 for a lesson or the video for a lesson. This is a thunk function, so it dispatches other actions, in this case addUpdateDownload() above.
  * @export
- * @param {string} type - The type of media to download. The two options are 'audio' or 'video'.
- * @param {string} lessonID - The ID of the lesson to start downloading the scripture mp3 for.
- * @param {string} source - The firebase URI for the file to download.
- * @return {Object} - Thunk object that allows us to get the state and dispatch actions.
+ * @param {string***REMOVED*** type - The type of media to download. The two options are 'audio' or 'video'.
+ * @param {string***REMOVED*** lessonID - The ID of the lesson to start downloading the scripture mp3 for.
+ * @param {string***REMOVED*** source - The firebase URI for the file to download.
+ * @return {Object***REMOVED*** - Thunk object that allows us to get the state and dispatch actions.
  */
 export function downloadMedia (type, lessonID, source) {
   var counter = 0
@@ -51,13 +51,13 @@ export function downloadMedia (type, lessonID, source) {
   if (type === 'video') {
     videoModifier = 'v'
     fileEnd = 'v.mp4'
-  } else {
+  ***REMOVED*** else {
     fileEnd = '.mp3'
-  }
+  ***REMOVED***
 
   return dispatch => {
     // Callback function for updating the progress of a download.
-    function callback ({ totalBytesWritten, totalBytesExpectedToWrite }) {
+    function callback ({ totalBytesWritten, totalBytesExpectedToWrite ***REMOVED***) {
       // Calculate the progress of the download.
       progress = totalBytesWritten / totalBytesExpectedToWrite
 
@@ -71,7 +71,7 @@ export function downloadMedia (type, lessonID, source) {
           )
         )
         // A simple way to only update the progress every 10 calls to the callback function. This helps with performance, especially when downloading multiple files at the same time.
-      } else if (counter % 20 == 0) {
+      ***REMOVED*** else if (counter % 20 == 0) {
         dispatch(
           addUpdateDownload(
             progress,
@@ -79,15 +79,15 @@ export function downloadMedia (type, lessonID, source) {
             lessonID + videoModifier
           )
         )
-      }
+      ***REMOVED***
       counter += 1
-    }
+    ***REMOVED***
 
     // Create our download object.
     const downloadResumable = FileSystem.createDownloadResumable(
       source,
       FileSystem.documentDirectory + lessonID + fileEnd,
-      {},
+      {***REMOVED***,
       callback
     )
 
@@ -97,6 +97,6 @@ export function downloadMedia (type, lessonID, source) {
     // Download the file.
     downloadResumable.downloadAsync().catch(error => {
       console.log(error)
-    })
-  }
-}
+    ***REMOVED***)
+  ***REMOVED***
+***REMOVED***

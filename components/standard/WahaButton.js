@@ -1,17 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
-import { scaleMultiplier } from '../../constants'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { scaleMultiplier ***REMOVED*** from '../../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../../redux/reducers/activeGroup'
-import { colors } from '../../styles/colors'
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
 import {
   getLanguageFont,
   StandardTypography,
   SystemTypography
-} from '../../styles/typography'
+***REMOVED*** from '../../styles/typography'
 
 function mapStateToProps (state) {
   return activeGroupSelector(state)
@@ -19,17 +19,17 @@ function mapStateToProps (state) {
         font: getLanguageFont(activeGroupSelector(state).language),
         isRTL: activeDatabaseSelector(state).isRTL,
         activeGroup: activeGroupSelector(state)
-      }
-    : {}
-}
+      ***REMOVED***
+    : {***REMOVED***
+***REMOVED***
 
 function WahaButton ({
   // Props passed from a parent component.s
   type,
   color,
   label,
-  style = {},
-  textStyle = {},
+  style = {***REMOVED***,
+  textStyle = {***REMOVED***,
   width = null,
   onPress,
   useDefaultFont = false,
@@ -38,40 +38,40 @@ function WahaButton ({
   font = null,
   isRTL = null,
   activeGroup = null
-}) {
+***REMOVED***) {
   switch (type) {
     case 'outline':
       return (
         <TouchableOpacity
           style={[
-            { width: width },
+            { width: width ***REMOVED***,
             styles.buttonContainer,
             {
               borderWidth: 2,
               borderColor: color
-            },
+            ***REMOVED***,
             style
-          ]}
-          onPress={onPress}
+          ]***REMOVED***
+          onPress={onPress***REMOVED***
         >
           <Text
             style={[
               useDefaultFont
                 ? SystemTypography(false, 'h3', 'Bold', 'center', color)
                 : StandardTypography(
-                    { font, isRTL },
+                    { font, isRTL ***REMOVED***,
                     'h3',
                     'Bold',
                     'center',
                     color
                   ),
-              { fontWeight: font ? null : 'bold' },
+              { fontWeight: font ? null : 'bold' ***REMOVED***,
               textStyle
-            ]}
+            ]***REMOVED***
           >
-            {label}
+            {label***REMOVED***
           </Text>
-          {extraComponent}
+          {extraComponent***REMOVED***
         </TouchableOpacity>
       )
       break
@@ -81,33 +81,33 @@ function WahaButton ({
           style={[
             {
               width: width
-            },
+            ***REMOVED***,
             styles.buttonContainer,
             {
               backgroundColor: color
-            },
+            ***REMOVED***,
             style
-          ]}
-          onPress={onPress}
+          ]***REMOVED***
+          onPress={onPress***REMOVED***
         >
           <Text
             style={[
               useDefaultFont
                 ? SystemTypography(false, 'h3', 'Bold', 'center', colors.white)
                 : StandardTypography(
-                    { font, isRTL },
+                    { font, isRTL ***REMOVED***,
                     'h3',
                     'Bold',
                     'center',
                     colors.white
                   ),
-              { fontWeight: font ? null : 'bold' },
+              { fontWeight: font ? null : 'bold' ***REMOVED***,
               textStyle
-            ]}
+            ]***REMOVED***
           >
-            {label}
+            {label***REMOVED***
           </Text>
-          {extraComponent}
+          {extraComponent***REMOVED***
         </TouchableOpacity>
       )
       break
@@ -119,9 +119,9 @@ function WahaButton ({
             {
               width: width,
               backgroundColor: color
-            },
+            ***REMOVED***,
             style
-          ]}
+          ]***REMOVED***
         >
           <Text
             style={[
@@ -134,23 +134,23 @@ function WahaButton ({
                     colors.chateau
                   )
                 : StandardTypography(
-                    { font, isRTL },
+                    { font, isRTL ***REMOVED***,
                     'h3',
                     'Bold',
                     'center',
                     colors.chateau
                   ),
               textStyle
-            ]}
+            ]***REMOVED***
           >
-            {label}
+            {label***REMOVED***
           </Text>
-          {extraComponent}
+          {extraComponent***REMOVED***
         </View>
       )
       break
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row'
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps)(WahaButton)

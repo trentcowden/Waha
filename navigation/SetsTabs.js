@@ -1,14 +1,14 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createMaterialTopTabNavigator ***REMOVED*** from '@react-navigation/material-top-tabs'
 import React from 'react'
-import { connect } from 'react-redux'
-import { getSetInfo, scaleMultiplier } from '../constants'
+import { connect ***REMOVED*** from 'react-redux'
+import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
+***REMOVED*** from '../redux/reducers/activeGroup'
 import SetsScreen from '../screens/SetsScreen'
-import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont ***REMOVED*** from '../styles/typography'
 
 // Create the top tab navigator.
 const Tab = createMaterialTopTabNavigator()
@@ -21,8 +21,8 @@ function mapStateToProps (state) {
     primaryColor: activeDatabaseSelector(state).primaryColor,
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 /**
  * This component renders the tab navigator that is used to display the 3 differnet Story Set tabs.
@@ -35,15 +35,15 @@ function SetsTabs ({
   font,
   primaryColor,
   isRTL
-}) {
+***REMOVED***) {
   // Only dispaly the Mobilization Tools screen if the Mobilization Tools tab has been enabled for this group from the Mobilization Tools screen.
   var MobilizationToolsScreen = activeGroup.shouldShowMobilizationToolsTab ? (
     <Tab.Screen
       name='MobilizationTools'
-      component={SetsScreen}
+      component={SetsScreen***REMOVED***
       options={{
         title: translations.sets.mobilization_tools_sets_tab_label
-      }}
+      ***REMOVED******REMOVED***
     />
   ) : null
 
@@ -51,10 +51,10 @@ function SetsTabs ({
   var FoundationalScreen = (
     <Tab.Screen
       name='Foundational'
-      component={SetsScreen}
+      component={SetsScreen***REMOVED***
       options={{
         title: translations.sets.foundational_story_sets_tab_label
-      }}
+      ***REMOVED******REMOVED***
     />
   )
 
@@ -62,16 +62,16 @@ function SetsTabs ({
   var TopicalScreen = (
     <Tab.Screen
       name='Topical'
-      component={SetsScreen}
+      component={SetsScreen***REMOVED***
       options={{
         title: translations.sets.topical_sets_tab_label
-      }}
+      ***REMOVED******REMOVED***
     />
   )
 
   /**
    * Gets the tab that contains the current set bookmark. This is to that we can default to displaying the most relevant tab when the user opens the app.
-   * @return {string} - The tab for the bookmarked set.
+   * @return {string***REMOVED*** - The tab for the bookmarked set.
    */
   function getBookmarkedTab () {
     // Get the category of the bookmarked set.
@@ -94,36 +94,36 @@ function SetsTabs ({
         break
       default:
         return 'Foundational'
-    }
-  }
+    ***REMOVED***
+  ***REMOVED***
 
   return (
     <Tab.Navigator
       // Set the initial route based on the category of the bookmarked set.
-      initialRouteName={getBookmarkedTab()}
-      swipeEnabled={true}
+      initialRouteName={getBookmarkedTab()***REMOVED***
+      swipeEnabled={true***REMOVED***
       tabBarOptions={{
         style: {
           backgroundColor: colors.aquaHaze
-        },
+        ***REMOVED***,
         labelStyle: {
           fontSize: 14 * scaleMultiplier,
           fontFamily: font + '-Bold',
           textTransform: 'none'
-        },
+        ***REMOVED***,
         activeTintColor: primaryColor,
         inactiveTintColor: colors.chateau,
         indicatorStyle: {
           backgroundColor: primaryColor
-        }
-      }}
+        ***REMOVED***
+      ***REMOVED******REMOVED***
     >
-      {/* The components are declared above but rendered below like this because the tabs need to be in reverse order if the active group's language is RTL. */}
-      {isRTL ? MobilizationToolsScreen : FoundationalScreen}
-      {TopicalScreen}
-      {isRTL ? FoundationalScreen : MobilizationToolsScreen}
+      {/* The components are declared above but rendered below like this because the tabs need to be in reverse order if the active group's language is RTL. */***REMOVED***
+      {isRTL ? MobilizationToolsScreen : FoundationalScreen***REMOVED***
+      {TopicalScreen***REMOVED***
+      {isRTL ? FoundationalScreen : MobilizationToolsScreen***REMOVED***
     </Tab.Navigator>
   )
-}
+***REMOVED***
 
 export default connect(mapStateToProps)(SetsTabs)

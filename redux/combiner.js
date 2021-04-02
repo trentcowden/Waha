@@ -1,14 +1,14 @@
-import { combineReducers } from 'redux'
-import { activeGroup } from './reducers/activeGroup'
-import { areMobilizationToolsUnlocked } from './reducers/areMobilizationToolsUnlocked'
-import { database } from './reducers/database'
-import { downloads } from './reducers/downloads'
-import { groups } from './reducers/groups'
-import { isInstallingLanguageInstance } from './reducers/isInstallingLanguageInstance'
-import { mtUnlockAttempts } from './reducers/mtUnlockAttempts'
-import { network } from './reducers/network'
-import { security } from './reducers/security'
-import { storedDownloads } from './reducers/storedDownloads'
+import { combineReducers ***REMOVED*** from 'redux'
+import { activeGroup ***REMOVED*** from './reducers/activeGroup'
+import { areMobilizationToolsUnlocked ***REMOVED*** from './reducers/areMobilizationToolsUnlocked'
+import { database ***REMOVED*** from './reducers/database'
+import { downloads ***REMOVED*** from './reducers/downloads'
+import { groups ***REMOVED*** from './reducers/groups'
+import { isInstallingLanguageInstance ***REMOVED*** from './reducers/isInstallingLanguageInstance'
+import { mtUnlockAttempts ***REMOVED*** from './reducers/mtUnlockAttempts'
+import { network ***REMOVED*** from './reducers/network'
+import { security ***REMOVED*** from './reducers/security'
+import { storedDownloads ***REMOVED*** from './reducers/storedDownloads'
 
 /**
  * Combines all the different reducers together using the combineReducers redux function.
@@ -24,4 +24,4 @@ export default rootReducer = combineReducers({
   security,
   mtUnlockAttempts,
   storedDownloads
-})
+***REMOVED***)

@@ -8,4 +8,4 @@ export const languageT2S = {
   ar: require('./ga.mp3'),
   te: require('./en.mp3'),
   tt: require('./en.mp3')
-}
+***REMOVED***

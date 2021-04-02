@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
-import { connect } from 'react-redux'
+import React, { useEffect, useState ***REMOVED*** from 'react'
+import { ScrollView, StyleSheet, Switch, Text, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
 import BackButton from '../components/standard/BackButton'
 import Blurb from '../components/standard/Blurb'
 import Hero from '../components/standard/Hero'
 import Separator from '../components/standard/Separator'
 import WahaItem from '../components/standard/WahaItem'
-import { scaleMultiplier } from '../constants'
+import { scaleMultiplier ***REMOVED*** from '../constants'
 import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
 import {
   setSecurityEnabled,
   setTimeoutDuration
-} from '../redux/actions/securityActions'
+***REMOVED*** from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+***REMOVED*** from '../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -25,22 +25,22 @@ function mapStateToProps (state) {
     translations: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
     security: state.security
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
     setTimeoutDuration: ms => dispatch(setTimeoutDuration(ms))
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 /**
  * A screen that displays the configuration options for security mode. Allows for turning it on/off, changing the timeout, and updating your key code.
  */
 function SecurityModeScreen ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack, navigate },
+  navigation: { setOptions, goBack, navigate ***REMOVED***,
   // Props passed from redux.
   isRTL,
   translations,
@@ -48,25 +48,25 @@ function SecurityModeScreen ({
   security,
   setSecurityEnabled,
   setTimeoutDuration
-}) {
+***REMOVED***) {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions({
       headerRight: isRTL
-        ? () => <BackButton onPress={() => goBack()} />
+        ? () => <BackButton onPress={() => goBack()***REMOVED*** />
         : () => <View></View>,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <BackButton onPress={() => goBack()} />
-    })
-  }, [])
+        : () => <BackButton onPress={() => goBack()***REMOVED*** />
+    ***REMOVED***)
+  ***REMOVED***, [])
 
   /** Keeps track of whether the change timeout modal is visible. */
   const [showChangeTimeoutModal, setShowChangeTimeoutModal] = useState(false)
 
   /**
    * Converts milliseconds into a label that says how long the security timeout is.
-   * @return {string} - The label to display next to the timeout button that says how long the current security timeout is.
+   * @return {string***REMOVED*** - The label to display next to the timeout button that says how long the current security timeout is.
    */
   function getTimeoutText () {
     if (security.timeoutDuration === 60000)
@@ -81,51 +81,51 @@ function SecurityModeScreen ({
       return translations.security.one_hour_label
     else if (security.timeoutDuration === 0)
       return translations.security.instant_label
-  }
+  ***REMOVED***
 
   // Determines what to render for the security controls. If the user has already gone through the security onboarding (i.e. has created a code), then we show the controls. Otherwise, hide them.
   var securityControls = security.code ? (
-    <View style={{ width: '100%' }}>
-      {/* Control item one allows the user to change the security mode timeout. */}
+    <View style={{ width: '100%' ***REMOVED******REMOVED***>
+      {/* Control item one allows the user to change the security mode timeout. */***REMOVED***
       <Separator />
       <WahaItem
-        title={translations.security.change_timeout_button_label}
-        onPress={() => setShowChangeTimeoutModal(true)}
+        title={translations.security.change_timeout_button_label***REMOVED***
+        onPress={() => setShowChangeTimeoutModal(true)***REMOVED***
       >
         <View
           style={{
             flexDirection: isRTL ? 'row-reverse' : 'row',
             alignItems: 'center'
-          }}
+          ***REMOVED******REMOVED***
         >
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              { font, isRTL ***REMOVED***,
               'h4',
               'Regular',
               'left',
               colors.chateau
-            )}
+            )***REMOVED***
           >
-            {getTimeoutText()}
+            {getTimeoutText()***REMOVED***
           </Text>
           <Icon
-            name={isRTL ? 'arrow-left' : 'arrow-right'}
-            color={colors.tuna}
-            size={50 * scaleMultiplier}
+            name={isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+            color={colors.tuna***REMOVED***
+            size={50 * scaleMultiplier***REMOVED***
           />
         </View>
       </WahaItem>
-      {/* Control item two allows the user to update their passcode. */}
+      {/* Control item two allows the user to update their passcode. */***REMOVED***
       <Separator />
       <WahaItem
-        title={translations.security.change_key_order_button_label}
-        onPress={() => navigate('KeyOrderChange_Initial')}
+        title={translations.security.change_key_order_button_label***REMOVED***
+        onPress={() => navigate('KeyOrderChange_Initial')***REMOVED***
       >
         <Icon
-          name={isRTL ? 'arrow-left' : 'arrow-right'}
-          color={colors.tuna}
-          size={50 * scaleMultiplier}
+          name={isRTL ? 'arrow-left' : 'arrow-right'***REMOVED***
+          color={colors.tuna***REMOVED***
+          size={50 * scaleMultiplier***REMOVED***
         />
       </WahaItem>
       <Separator />
@@ -133,41 +133,41 @@ function SecurityModeScreen ({
   ) : null
 
   return (
-    <View style={styles.screen}>
-      <ScrollView bounces={false}>
-        <Hero source={require('../assets/gifs/piano_unlock.gif')} />
-        <Blurb text={translations.security.security_mode_description_text} />
+    <View style={styles.screen***REMOVED***>
+      <ScrollView bounces={false***REMOVED***>
+        <Hero source={require('../assets/gifs/piano_unlock.gif')***REMOVED*** />
+        <Blurb text={translations.security.security_mode_description_text***REMOVED*** />
         <Separator />
-        <WahaItem title={translations.security.security_mode_picker_label}>
+        <WahaItem title={translations.security.security_mode_picker_label***REMOVED***>
           <Switch
-            trackColor={{ false: colors.chateau, true: colors.apple }}
-            thumbColor={colors.white}
-            ios_backgroundColor={colors.chateau}
+            trackColor={{ false: colors.chateau, true: colors.apple ***REMOVED******REMOVED***
+            thumbColor={colors.white***REMOVED***
+            ios_backgroundColor={colors.chateau***REMOVED***
             onValueChange={() => {
               // If we have never enabled security mode before (meaning we have never set a code), then navigate to the security onboarding slides. Otherwise, toggle security mode on or off.
               if (security.code) {
                 if (security.securityEnabled) {
                   setSecurityEnabled(false)
-                } else setSecurityEnabled(true)
-              } else {
+                ***REMOVED*** else setSecurityEnabled(true)
+              ***REMOVED*** else {
                 navigate('SecurityOnboardingSlides')
-              }
-            }}
-            value={security.securityEnabled}
+              ***REMOVED***
+            ***REMOVED******REMOVED***
+            value={security.securityEnabled***REMOVED***
           />
         </WahaItem>
         <Separator />
-        <View style={{ height: 20 * scaleMultiplier }} />
-        {securityControls}
+        <View style={{ height: 20 * scaleMultiplier ***REMOVED******REMOVED*** />
+        {securityControls***REMOVED***
       </ScrollView>
-      {/* Modals */}
+      {/* Modals */***REMOVED***
       <SecurityTimeoutPickerModal
-        isVisible={showChangeTimeoutModal}
-        hideModal={() => setShowChangeTimeoutModal(false)}
+        isVisible={showChangeTimeoutModal***REMOVED***
+        hideModal={() => setShowChangeTimeoutModal(false)***REMOVED***
       />
     </View>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.aquaHaze
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SecurityModeScreen)

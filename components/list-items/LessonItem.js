@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
-import { getLessonInfo, itemHeights, scaleMultiplier } from '../../constants'
-import { removeDownload } from '../../redux/actions/downloadActions'
+import React, { useEffect ***REMOVED*** from 'react'
+import { StyleSheet, Text, TouchableOpacity, View ***REMOVED*** from 'react-native'
+import { connect ***REMOVED*** from 'react-redux'
+import { getLessonInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../../constants'
+import { removeDownload ***REMOVED*** from '../../redux/actions/downloadActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
-} from '../../redux/reducers/activeGroup'
-import { colors } from '../../styles/colors'
-import { getLanguageFont, StandardTypography } from '../../styles/typography'
+***REMOVED*** from '../../redux/reducers/activeGroup'
+import { colors ***REMOVED*** from '../../styles/colors'
+import { getLanguageFont, StandardTypography ***REMOVED*** from '../../styles/typography'
 import DownloadStatusIndicator from '../DownloadStatusIndicator'
 
 function mapStateToProps (state) {
@@ -20,16 +20,16 @@ function mapStateToProps (state) {
     translations: activeDatabaseSelector(state).translations,
     isConnected: state.network.isConnected,
     font: getLanguageFont(activeGroupSelector(state).language)
-  }
-}
+  ***REMOVED***
+***REMOVED***
 
 function mapDispatchToProps (dispatch) {
   return {
     removeDownload: lessonID => {
       dispatch(removeDownload(lessonID))
-    }
-  }
-}
+    ***REMOVED***
+  ***REMOVED***
+***REMOVED***
 
 function LessonItem ({
   // Props passed from a parent component.
@@ -52,7 +52,7 @@ function LessonItem ({
   isConnected,
   font,
   removeDownload
-}) {
+***REMOVED***) {
   //+ CONSTRUCTOR
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function LessonItem ({
         ) {
           removeDownload(thisLesson.id)
           removeDownload(thisLesson.id + 'v')
-        }
+        ***REMOVED***
         break
       case 'qv':
       case 'v':
@@ -83,8 +83,8 @@ function LessonItem ({
         )
           removeDownload(thisLesson.id + 'v')
         break
-    }
-  }, [downloads])
+    ***REMOVED***
+  ***REMOVED***, [downloads])
 
   //+ FUNCTIONS
 
@@ -92,11 +92,11 @@ function LessonItem ({
   function showSaveModal () {
     setActiveLessonInModal.call()
     setShowDownloadLessonModal.call()
-  }
+  ***REMOVED***
   function showDeleteModal () {
     setActiveLessonInModal.call()
     setShowDeleteLessonModal.call()
-  }
+  ***REMOVED***
 
   //+ RENDER
 
@@ -107,19 +107,19 @@ function LessonItem ({
         {
           flexDirection: isRTL ? 'row-reverse' : 'row',
           height: itemHeights[font].LessonItem
-        }
-      ]}
+        ***REMOVED***
+      ]***REMOVED***
     >
-      {/* main touchable area */}
+      {/* main touchable area */***REMOVED***
       <TouchableOpacity
         style={[
           styles.progressAndTitle,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
-        onPress={onLessonSelect}
+          { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
+        ]***REMOVED***
+        onPress={onLessonSelect***REMOVED***
       >
-        {/* complete status indicator */}
-        <View style={styles.completeStatusContainer}>
+        {/* complete status indicator */***REMOVED***
+        <View style={styles.completeStatusContainer***REMOVED***>
           <Icon
             name={
               isComplete
@@ -129,13 +129,13 @@ function LessonItem ({
                   ? 'triangle-left'
                   : 'triangle-right'
                 : null
-            }
-            size={24 * scaleMultiplier}
-            color={isComplete ? colors.chateau : primaryColor}
+            ***REMOVED***
+            size={24 * scaleMultiplier***REMOVED***
+            color={isComplete ? colors.chateau : primaryColor***REMOVED***
           />
         </View>
 
-        {/* title and subtitle */}
+        {/* title and subtitle */***REMOVED***
         <View
           style={{
             flexDirection: 'column',
@@ -143,46 +143,46 @@ function LessonItem ({
             flex: 1,
             marginLeft: isRTL ? (thisLesson.hasAudio ? 0 : 20) : 20,
             marginRight: isRTL ? 20 : thisLesson.hasAudio ? 0 : 20
-          }}
+          ***REMOVED******REMOVED***
         >
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              { font, isRTL ***REMOVED***,
               'h4',
               'Bold',
               'left',
               isComplete ? colors.chateau : colors.shark
-            )}
-            numberOfLines={2}
+            )***REMOVED***
+            numberOfLines={2***REMOVED***
           >
-            {thisLesson.title}
+            {thisLesson.title***REMOVED***
           </Text>
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              { font, isRTL ***REMOVED***,
               'd',
               'Regular',
               'left',
               colors.chateau
-            )}
-            numberOfLines={1}
+            )***REMOVED***
+            numberOfLines={1***REMOVED***
           >
-            {getLessonInfo('subtitle', thisLesson.id)}
+            {getLessonInfo('subtitle', thisLesson.id)***REMOVED***
           </Text>
         </View>
       </TouchableOpacity>
-      {/* cloud icon/download indicator */}
+      {/* cloud icon/download indicator */***REMOVED***
       <DownloadStatusIndicator
-        isDownloaded={isDownloaded}
-        isDownloading={isDownloading}
-        showDeleteModal={showDeleteModal}
-        showSaveModal={showSaveModal}
-        lessonID={thisLesson.id}
-        lessonType={lessonType}
+        isDownloaded={isDownloaded***REMOVED***
+        isDownloading={isDownloading***REMOVED***
+        showDeleteModal={showDeleteModal***REMOVED***
+        showSaveModal={showSaveModal***REMOVED***
+        lessonID={thisLesson.id***REMOVED***
+        lessonType={lessonType***REMOVED***
       />
     </View>
   )
-}
+***REMOVED***
 
 //+ STYLES
 
@@ -195,17 +195,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20
     // paddingVertical: 5
-  },
+  ***REMOVED***,
   progressAndTitle: {
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignContent: 'center',
     flex: 1
-  },
+  ***REMOVED***,
   completeStatusContainer: {
     justifyContent: 'center',
     width: 24 * scaleMultiplier
-  }
-})
+  ***REMOVED***
+***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonItem)
