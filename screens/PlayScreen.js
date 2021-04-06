@@ -729,19 +729,20 @@ const PlayScreen = ({
         ]***REMOVED***
         marqueeDelay={2000***REMOVED***
         bounceSpeed={300***REMOVED***
+        isRTL={isRTL***REMOVED***
       >
         {thisLesson.title***REMOVED***
         {/* Suuuuuuuuuuuuuuuper long lesson title is slightly too long */***REMOVED***
       </TextTicker>
       <LinearGradient
-        colors={[colors.porcelain, colors.porcelain + '00']***REMOVED***
+        colors={[colors.white, colors.white + '00']***REMOVED***
         start={[0, 1]***REMOVED***
         end={[1, 1]***REMOVED***
         style={styles.leftGradient***REMOVED***
       />
       <View style={styles.leftGradientFiller***REMOVED*** />
       <LinearGradient
-        colors={[colors.porcelain, colors.porcelain + '00']***REMOVED***
+        colors={[colors.white, colors.white + '00']***REMOVED***
         start={[1, 0]***REMOVED***
         end={[0, 0]***REMOVED***
         style={styles.rightGradient***REMOVED***
@@ -917,14 +918,14 @@ const styles = StyleSheet.create({
     right: 0,
     width: 10,
     height: '100%',
-    backgroundColor: colors.porcelain
+    backgroundColor: colors.white
   ***REMOVED***,
   leftGradientFiller: {
     position: 'absolute',
     left: 0,
     width: 10,
     height: '100%',
-    backgroundColor: colors.porcelain
+    backgroundColor: colors.white
   ***REMOVED***
 ***REMOVED***)
 
