@@ -31,7 +31,7 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-function LessonItem ({
+const LessonItem = ({
   // Props passed from a parent component.
   thisLesson,
   onLessonSelect,
@@ -52,7 +52,7 @@ function LessonItem ({
   isConnected,
   font,
   removeDownload
-***REMOVED***) {
+***REMOVED***) => {
   //+ CONSTRUCTOR
 
   useEffect(() => {

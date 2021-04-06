@@ -12,13 +12,13 @@ function mapStateToProps (state) {
 ***REMOVED***
 
 // simple back button that is shown in almost every screen's header
-function BackButton ({
+const BackButton = ({
   // Props passed from a parent component.
   onPress,
   color,
   // Props passed from redux.
   isRTL
-***REMOVED***) {
+***REMOVED***) => {
   //+ RENDER
 
   return (
