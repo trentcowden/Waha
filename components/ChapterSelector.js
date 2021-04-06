@@ -13,7 +13,7 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function ChapterSelector ({
+const ChapterSelector = ({
   // Props passed from a parent component.
   activeChapter,
   lessonID,
@@ -24,7 +24,7 @@ function ChapterSelector ({
   primaryColor,
   downloads,
   isConnected
-***REMOVED***) {
+***REMOVED***) => {
   // order of chapters is
   //  1. fellowship
   //  2. story

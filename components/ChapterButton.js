@@ -20,7 +20,7 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function ChapterButton ({
+const ChapterButton = ({
   // Props passed from a parent component.
   name,
   mode,
@@ -34,7 +34,7 @@ function ChapterButton ({
   primaryColor,
   translations,
   isRTL
-***REMOVED***) {
+***REMOVED***) => {
   // styles for the different modes
 
   const buttonStyles = {

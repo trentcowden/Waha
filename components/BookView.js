@@ -17,7 +17,7 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function BookView ({
+const BookView = ({
   // Props passed from a parent component.
   thisLesson,
   titleSection,
@@ -25,7 +25,7 @@ function BookView ({
   font,
   activeGroup,
   isRTL
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <View
       style={{

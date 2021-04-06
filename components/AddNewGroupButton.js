@@ -24,7 +24,7 @@ function mapStateToProps (state) {
  * @param {Function***REMOVED*** setLanguageID - Sets the languageID state variable on the Groups screen.
  * @param {Function***REMOVED*** setShowAddGroupModal - Shows the add group modal.
  */
-function AddNewGroupButton ({
+const AddNewGroupButton = ({
   // Props passed from a parent component.
   section,
   setLanguageID,
@@ -33,7 +33,7 @@ function AddNewGroupButton ({
   isRTL,
   font,
   translations
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <View>
       <TouchableOpacity

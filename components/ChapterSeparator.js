@@ -9,10 +9,10 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function ChapterSeparator ({
+const ChapterSeparator = ({
   // Props passed from redux.
   primaryColor
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <View
       style={{
