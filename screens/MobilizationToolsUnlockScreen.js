@@ -1,4 +1,4 @@
-import React, { useEffect, useState ***REMOVED*** from 'react'
+import React, { useEffect, useRef, useState ***REMOVED*** from 'react'
 import { Alert, Image, Keyboard, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect ***REMOVED*** from 'react-redux'
@@ -42,7 +42,7 @@ function mapDispatchToProps (dispatch) {
 /**
  * Screen that shows a simple passcode entry and allows the user to unlock the Mobilization Tools.
  */
-function MobilizationToolsUnlockScreen ({
+const MobilizationToolsUnlockScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, goBack ***REMOVED***,
   // Props passed from redux.
@@ -54,7 +54,7 @@ function MobilizationToolsUnlockScreen ({
   setAreMobilizationToolsUnlocked,
   setMTUnlockTimeout,
   setMTUnlockAttempts
-***REMOVED***) {
+***REMOVED***) => {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions({
@@ -65,13 +65,13 @@ function MobilizationToolsUnlockScreen ({
         ? () => <View></View>
         : () => <BackButton onPress={() => goBack()***REMOVED*** />
     ***REMOVED***)
-  ***REMOVED***, [])
+  ***REMOVED***)
 
   /** Keeps track of the user input of the passcode entry area. */
   const [passcode, setPasscode] = useState('')
 
   /** A reference to the passcode entry component. */
-  const [pinRef, setPinRef] = useState()
+  const pinRef = useRef()
 
   /** Keeps track of whether the unlock success modal is visible. */
   const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
@@ -97,7 +97,7 @@ function MobilizationToolsUnlockScreen ({
     ***REMOVED*** else {
       setMTUnlockAttempts(mtUnlockAttempts + 1)
       // Make the input component "shake" when they enter in a wrong code.
-      pinRef.shake().then(() => setPasscode(''))
+      pinRef.current.shake().then(() => setPasscode(''))
       Alert.alert(
         translations.passcode.popups.unlock_unsucessful_title,
         translations.passcode.popups.unlock_unsucessful_message,
@@ -152,7 +152,7 @@ function MobilizationToolsUnlockScreen ({
         {translations.passcode.enter_passcode_text***REMOVED***
       </Text>
       <SmoothPinCodeInput
-        ref={ref => setPinRef(ref)***REMOVED***
+        ref={pinRef***REMOVED***
         value={passcode***REMOVED***
         codeLength={6***REMOVED***
         autoFocus={true***REMOVED***

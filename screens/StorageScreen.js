@@ -38,7 +38,7 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-function StorageScreen ({
+const StorageScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, goBack ***REMOVED***,
   isRTL,
@@ -47,7 +47,7 @@ function StorageScreen ({
   font,
   activeGroup,
   removeDownload
-***REMOVED***) {
+***REMOVED***) => {
   //+ STATE
 
   // keeps track of storage size of each language's downloaded chapter 2s
@@ -61,7 +61,7 @@ function StorageScreen ({
   useEffect(() => {
     setOptions(getNavOptions())
     getAllStorageUsed()
-  ***REMOVED***, [])
+  ***REMOVED***)
 
   //+ NAV OPTIONS
 

@@ -47,7 +47,7 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-function LessonsScreen ({
+const LessonsScreen = ({
   // Props passed from navigation.
   navigation: { goBack, setOptions, navigate ***REMOVED***,
   route: {
@@ -64,7 +64,7 @@ function LessonsScreen ({
   downloadMedia,
   toggleComplete,
   removeDownload
-***REMOVED***) {
+***REMOVED***) => {
   //+ STATE
 
   // keeps track of which lessons are downloaded
@@ -104,7 +104,7 @@ function LessonsScreen ({
 
   useEffect(() => {
     setOptions(getNavOptions())
-  ***REMOVED***, [])
+  ***REMOVED***)
 
   //+ FUNCTIONS
 

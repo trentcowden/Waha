@@ -19,21 +19,21 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function SecurityOnboardingSlidesScreen ({
+const SecurityOnboardingSlidesScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, navigate, goBack ***REMOVED***,
   translations,
   font,
   isRTL,
   activeGroup
-***REMOVED***) {
+***REMOVED***) => {
   //+ STATE
 
   //+ CONSTRUCTOR
 
   useEffect(() => {
     setOptions(getNavOptions())
-  ***REMOVED***, [])
+  ***REMOVED***)
 
   //+ NAV OPTIONS
   function getNavOptions () {
