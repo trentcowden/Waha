@@ -4,10 +4,10 @@ import { scaleMultiplier ***REMOVED*** from '../../constants'
 import { colors ***REMOVED*** from '../../styles/colors'
 import Separator from '../standard/Separator'
 
-function Hero ({
+const Hero = ({
   // Props passed from a parent component.
   source
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <View style={{ width: '100%' ***REMOVED******REMOVED***>
       <Separator />

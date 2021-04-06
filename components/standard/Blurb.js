@@ -16,13 +16,13 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function Blurb ({
+const Blurb = ({
   // Props passed from a parent component.
   text,
   // Props passed from redux.
   font,
   isRTL
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <View style={{ width: '100%', padding: 20 * scaleMultiplier ***REMOVED******REMOVED***>
       <Text

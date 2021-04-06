@@ -22,7 +22,7 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function ModalScreen ({
+const ModalScreen = ({
   // Props passed from a parent component.
   isVisible,
   hideModal,
@@ -38,7 +38,7 @@ function ModalScreen ({
   activeGroup,
   translations,
   font
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <View>
       <Modal

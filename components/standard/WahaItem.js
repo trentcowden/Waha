@@ -17,7 +17,7 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function WahaItem ({
+const WahaItem = ({
   // Props passed from a parent component.s
   onPress,
   style = {***REMOVED***,
@@ -27,7 +27,7 @@ function WahaItem ({
   font,
   isRTL,
   activeGroup
-***REMOVED***) {
+***REMOVED***) => {
   return onPress ? (
     <TouchableOpacity
       style={[
