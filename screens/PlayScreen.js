@@ -715,8 +715,6 @@ const PlayScreen = ({
     ***REMOVED*** else return false
   ***REMOVED***
 
-  //+ RENDER
-
   /** The title section at the top of the screen. Only hidden on audio book lessons to make more room for the book viewer. */
   var titleSection = (
     <View style={styles.titleContainer***REMOVED***>
@@ -736,7 +734,6 @@ const PlayScreen = ({
         isRTL={isRTL***REMOVED***
       >
         {thisLesson.title***REMOVED***
-        {/* Suuuuuuuuuuuuuuuper long lesson title is slightly too long */***REMOVED***
       </TextTicker>
       <LinearGradient
         colors={[titleBackgroundColor, titleBackgroundColor + '00']***REMOVED***
@@ -948,9 +945,3 @@ const styles = StyleSheet.create({
 ***REMOVED***)
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayScreen)
-
-/* <HomeworkModal
-        isVisible={showHomeworkModal***REMOVED***
-        hideModal={() => setShowHomeworkModal(false)***REMOVED***
-        homework={thisLesson.homework***REMOVED***
-/> */
