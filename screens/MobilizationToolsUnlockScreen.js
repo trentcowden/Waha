@@ -6,7 +6,9 @@ import BackButton from '../components/standard/BackButton'
 import { scaleMultiplier ***REMOVED*** from '../constants'
 import MessageModal from '../modals/MessageModal'
 import { setAreMobilizationToolsUnlocked ***REMOVED*** from '../redux/actions/areMobilizationToolsUnlockedActions'
+import { addSet ***REMOVED*** from '../redux/actions/groupsActions'
 import { setMTUnlockAttempts ***REMOVED*** from '../redux/actions/mtUnlockAttemptsActions'
+import { setShowMTTabAddedSnackbar ***REMOVED*** from '../redux/actions/popupsActions'
 import { setMTUnlockTimeout ***REMOVED*** from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
@@ -21,7 +23,9 @@ function mapStateToProps (state) {
     translations: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
     security: state.security,
-    mtUnlockAttempts: state.mtUnlockAttempts
+    mtUnlockAttempts: state.mtUnlockAttempts,
+    groups: state.groups,
+    database: state.database
   ***REMOVED***
 ***REMOVED***
 
@@ -35,6 +39,12 @@ function mapDispatchToProps (dispatch) {
     ***REMOVED***,
     setMTUnlockAttempts: numAttempts => {
       dispatch(setMTUnlockAttempts(numAttempts))
+    ***REMOVED***,
+    addSet: (groupName, groupID, set) => {
+      dispatch(addSet(groupName, groupID, set))
+    ***REMOVED***,
+    setShowMTTabAddedSnackbar: toSet => {
+      dispatch(setShowMTTabAddedSnackbar(toSet))
     ***REMOVED***
   ***REMOVED***
 ***REMOVED***
@@ -44,16 +54,20 @@ function mapDispatchToProps (dispatch) {
  */
 const MobilizationToolsUnlockScreen = ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack ***REMOVED***,
+  navigation: { navigate, setOptions, goBack ***REMOVED***,
   // Props passed from redux.
   isRTL,
   translations,
   font,
   security,
   mtUnlockAttempts,
+  groups,
+  database,
   setAreMobilizationToolsUnlocked,
   setMTUnlockTimeout,
-  setMTUnlockAttempts
+  setMTUnlockAttempts,
+  addSet,
+  setShowMTTabAddedSnackbar
 ***REMOVED***) => {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -86,14 +100,51 @@ const MobilizationToolsUnlockScreen = ({
     ***REMOVED***
   ***REMOVED***, [mtUnlockAttempts])
 
+  function checkForMTContent (languageID) {
+    var hasMTContent = database[languageID].sets.some(set => {
+      return /[a-z]{2***REMOVED***.3.[0-9]+/.test(set.id)
+    ***REMOVED***)
+    return hasMTContent
+  ***REMOVED***
+
   /**
    * Checks if the passcode the user enters is correct. If it is, show the success modal. If not, add one to the attempts tracker and show an alert that the code is incorrect.
    */
   function checkPasscode (fullPasscode) {
     if (fullPasscode === '281820') {
       Keyboard.dismiss()
-      setUnlockSuccessModal(true)
       setAreMobilizationToolsUnlocked(true)
+      // setUnlockSuccessModal(true)
+      navigate('MTUnlockSuccessful')
+
+      // Object.keys(database).forEach(key => {
+      //   // Go through each language.
+      //   if (key.length === 2) {
+      //     // If the language has MT content...
+      //     if (checkForMTContent(key)) {
+      //       // Get the first 2 MT Sets.
+      //       var mobToolsSet1 = database[key].sets.filter(set =>
+      //         /[a-z]{2***REMOVED***.3.1/.test(set.id)
+      //       )[0]
+
+      //       var mobToolsSet2 = database[key].sets.filter(set =>
+      //         /[a-z]{2***REMOVED***.3.2/.test(set.id)
+      //       )[0]
+
+      //       // Add the 2 MT Sets to every group in the language.
+      //       groups
+      //         .filter(group => group.language === key)
+      //         .forEach(group => {
+      //           addSet(group.name, group.id, mobToolsSet1)
+      //           addSet(group.name, group.id, mobToolsSet2)
+      //         ***REMOVED***)
+      //     ***REMOVED***
+      //   ***REMOVED***
+      // ***REMOVED***)
+
+      // setShowMTTabAddedSnackbar(true)
+      // setTimeout(() => setShowMTTabAddedSnackbar(false), 3000)
+      // navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
     ***REMOVED*** else {
       setMTUnlockAttempts(mtUnlockAttempts + 1)
       // Make the input component "shake" when they enter in a wrong code.
@@ -205,14 +256,14 @@ const MobilizationToolsUnlockScreen = ({
         isVisible={unlockSuccessModal***REMOVED***
         hideModal={() => {
           setUnlockSuccessModal(false)
-          goBack()
+          navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
         ***REMOVED******REMOVED***
-        title={translations.passcode.popups.unlock_successful_title***REMOVED***
-        body={translations.passcode.popups.unlock_successful_message***REMOVED***
-        confirmText={translations.general.got_it***REMOVED***
+        title='Mobilization Tools unlocked successfully!'
+        body=''
+        confirmText='Check it out'
         confirmOnPress={() => {
           setUnlockSuccessModal(false)
-          goBack()
+          navigate('SetsTabs', { screen: 'MobilizationTools' ***REMOVED***)
         ***REMOVED******REMOVED***
       >
         <Image
