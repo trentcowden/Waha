@@ -12,7 +12,7 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function TimeDisplay ({
+const TimeDisplay = ({
   // Props passed from a parent component.
   max,
   time,
@@ -20,7 +20,7 @@ function TimeDisplay ({
   // Props passed from redux.
   font,
   activeGroup
-***REMOVED***) {
+***REMOVED***) => {
   //function to convert a time in milliseconds to a
   //nicely formatted string (for the scrubber)
   function msToTime (duration) {
