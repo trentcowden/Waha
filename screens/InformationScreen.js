@@ -27,13 +27,13 @@ function mapStateToProps (state) {
   ***REMOVED***
 ***REMOVED***
 
-function InformationScreen ({
+const InformationScreen = ({
   navigation: { setOptions, goBack ***REMOVED***,
   // Props passed from redux.
   isRTL,
   font,
   translations
-***REMOVED***) {
+***REMOVED***) => {
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -50,7 +50,7 @@ function InformationScreen ({
 
   useEffect(() => {
     setOptions(getNavOptions())
-  ***REMOVED***, [])
+  ***REMOVED***)
 
   async function openBrowser (url) {
     await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' ***REMOVED***)

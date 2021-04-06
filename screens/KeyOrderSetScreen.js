@@ -38,7 +38,7 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-function KeyOrderSetScreen ({
+const KeyOrderSetScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, navigate, goBack ***REMOVED***,
   route: {
@@ -54,7 +54,7 @@ function KeyOrderSetScreen ({
   activeGroup,
   setSecurityEnabled,
   setCode
-***REMOVED***) {
+***REMOVED***) => {
   const [localKeyOrder, setLocalKeyOrder] = useState('')
   const [instructionText, setInstructionText] = useState('')
   //+ CONSTRUCTOR
@@ -75,7 +75,7 @@ function KeyOrderSetScreen ({
         break
     ***REMOVED***
     setOptions(getNavOptions())
-  ***REMOVED***, [])
+  ***REMOVED***)
 
   useEffect(() => {
     if (localKeyOrder.length === 12) {

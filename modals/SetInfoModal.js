@@ -39,12 +39,17 @@ function mapDispatchToProps (dispatch) {
   ***REMOVED***
 ***REMOVED***
 
-/** A modal screen that displays the various lessons in a set and their scripture references. */
-function SetInfoModal ({
+/**
+ * A modal that displays the various lessons in a set and their scripture references. Uses <ModalScreen /> under the hood.
+ * @param {boolean***REMOVED*** isVisible - Whether the modal is visible.
+ * @param {Function***REMOVED*** hideModal - Function to hide the modal.
+ * @param {Object***REMOVED*** thisSet - The object for the set we're displaying the information about.
+ * @param {boolean***REMOVED*** showSnackbar - Whether to show the "Set Added!" Snackbar component or not.
+ */
+const SetInfoModal = ({
   // Props passed from a parent component.
   isVisible,
   hideModal,
-  category,
   thisSet,
   showSnackbar,
   // Props passed from redux.
@@ -55,38 +60,44 @@ function SetInfoModal ({
   translations,
   font,
   addSet
-***REMOVED***) {
-  //+ FUNCTIONS
+***REMOVED***) => {
+  /** Renders a item with the information for a lesson. */
+  const renderLessonInfoItem = lesson => {
+    // If lesson has scripture, format the list of scripture to be a string with the scripture addresses separated by commas.
+    if (lesson.scripture) {
+      var scriptureList = lesson.scripture[0].header
 
-  function renderLessonInfoItem (item) {
-    if (item.scripture) {
-      var scriptureList = item.scripture[0].header
-      item.scripture.forEach((chunk, index) => {
-        if (index !== 0) scriptureList += ', ' + chunk.header
+      lesson.scripture.forEach((passage, index) => {
+        if (index !== 0) scriptureList += ', ' + passage.header
       ***REMOVED***)
+    ***REMOVED***
 
-      return (
-        // These are touchable because scrolling a FlatList within a modal only works when the items are touchable. Weird, but necessary.
-        <TouchableOpacity
-          style={{
-            marginVertical: 10 * scaleMultiplier,
-            justifyContent: 'center',
-            paddingHorizontal: 40,
-            width: Dimensions.get('window').width
-          ***REMOVED******REMOVED***
-          activeOpacity={1***REMOVED***
+    return (
+      // These use <TouchableOpacity /> instead of <View /> because scrolling a FlatList within a modal only works when the items are touchable. Wack.
+      <TouchableOpacity
+        style={{
+          marginVertical: 10 * scaleMultiplier,
+          justifyContent: 'center',
+          paddingHorizontal: 40,
+          width: Dimensions.get('window').width
+        ***REMOVED******REMOVED***
+        // This disables the touchable feedback so it appears like a <View />.
+        activeOpacity={1***REMOVED***
+      >
+        <Text
+          style={StandardTypography(
+            { font, isRTL ***REMOVED***,
+            'h4',
+            'Bold',
+            'left',
+            colors.shark
+          )***REMOVED***
         >
-          <Text
-            style={StandardTypography(
-              { font, isRTL ***REMOVED***,
-              'h4',
-              'Bold',
-              'left',
-              colors.shark
-            )***REMOVED***
-          >
-            {item.title***REMOVED***
-          </Text>
+          {lesson.title***REMOVED***
+        </Text>
+
+        {/* Display list of scripture below the title if this lesson has scripture (not all of them do). */***REMOVED***
+        {lesson.scripture && (
           <Text
             style={StandardTypography(
               { font, isRTL ***REMOVED***,
@@ -98,31 +109,9 @@ function SetInfoModal ({
           >
             {scriptureList***REMOVED***
           </Text>
-        </TouchableOpacity>
-      )
-    ***REMOVED*** else
-      return (
-        <TouchableOpacity
-          style={{
-            marginVertical: 10 * scaleMultiplier,
-            justifyContent: 'center',
-            paddingHorizontal: 40,
-            width: Dimensions.get('window').width
-          ***REMOVED******REMOVED***
-        >
-          <Text
-            style={StandardTypography(
-              { font, isRTL ***REMOVED***,
-              'h4',
-              'Bold',
-              'left',
-              colors.shark
-            )***REMOVED***
-          >
-            {item.title***REMOVED***
-          </Text>
-        </TouchableOpacity>
-      )
+        )***REMOVED***
+      </TouchableOpacity>
+    )
   ***REMOVED***
 
   return (
@@ -131,7 +120,7 @@ function SetInfoModal ({
       hideModal={hideModal***REMOVED***
       isVisible={isVisible***REMOVED***
     >
-      <View style={styles.studySetItemContainer***REMOVED***>
+      <View style={styles.setItemContainer***REMOVED***>
         <SetItem thisSet={thisSet***REMOVED*** screen='SetInfo' />
       </View>
       <WahaButton
@@ -156,7 +145,6 @@ function SetInfoModal ({
       <View style={{ flex: 1 ***REMOVED******REMOVED***>
         <FlatList
           keyExtractor={item => item.id***REMOVED***
-          // nestedScrollEnabled
           data={thisSet.lessons***REMOVED***
           renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
           contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
@@ -174,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingTop: 10
   ***REMOVED***,
-  studySetItemContainer: {
+  setItemContainer: {
     width: '100%',
     height: 100 * scaleMultiplier
   ***REMOVED***
