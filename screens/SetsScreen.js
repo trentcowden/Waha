@@ -2,15 +2,17 @@ import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState ***REMOVED*** from 'react'
 import {
   FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 ***REMOVED*** from 'react-native'
-import SnackBar from 'react-native-snackbar-component'
 import { connect ***REMOVED*** from 'react-redux'
 import SetItem from '../components/list-items/SetItem'
-import { getSetInfo, scaleMultiplier ***REMOVED*** from '../constants'
+import { getSetInfo, itemHeights, scaleMultiplier ***REMOVED*** from '../constants'
+import MessageModal from '../modals/MessageModal'
+import { setShowMTTabAddedSnackbar ***REMOVED*** from '../redux/actions/popupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -34,7 +36,11 @@ function mapStateToProps (state) {
 ***REMOVED***
 
 function mapDispatchToProps (dispatch) {
-  return {***REMOVED***
+  return {
+    setShowMTTabAddedSnackbar: toSet => {
+      dispatch(setShowMTTabAddedSnackbar(toSet))
+    ***REMOVED***
+  ***REMOVED***
 ***REMOVED***
 
 /**
@@ -54,7 +60,8 @@ const SetsScreen = ({
   languageCoreFilesCreatedTimes,
   globalGroupCounter,
   languageCoreFilesToUpdate,
-  showMTTabAddedSnackbar
+  showMTTabAddedSnackbar,
+  setShowMTTabAddedSnackbar
 ***REMOVED***) => {
   /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
@@ -156,7 +163,7 @@ const SetsScreen = ({
    * @return {Object[]***REMOVED*** - An array of sets.
    */
   function getSetData () {
-    // If we're displaying Foundational sets...
+    // If we're displaying Foundational Story Sets...
     if (category === 'Foundational')
       return (
         activeDatabase.sets
@@ -166,10 +173,35 @@ const SetsScreen = ({
           .filter(set =>
             activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
           )
-          // 3. Filter for sets that have all necessary files downloaded.
-          .filter(filterForDownloadedQuestionSets)
       )
-    // If we're displaying Topical or Mobilization Tools sets...
+    // If we're displaying Topical Story Sets...
+    else if (category === 'Topical') {
+      return (
+        activeDatabase.sets
+          // 1. Filter for either Topical or Mobilization Tools sets from the array of all sets depending on the category we want to display.
+          .filter(set => getSetInfo('category', set.id) === setCategory)
+          // 2. Filter for sets that have been added to this group.
+          .filter(set =>
+            activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+          )
+          // 3. For these sets, we want to sort based on the order they were added, not in the default order (which is order of index).
+          .sort((a, b) => {
+            return (
+              activeGroup.addedSets.indexOf(
+                activeGroup.addedSets.filter(
+                  addedSet => addedSet.id === a.id
+                )[0]
+              ) -
+              activeGroup.addedSets.indexOf(
+                activeGroup.addedSets.filter(
+                  addedSet => addedSet.id === b.id
+                )[0]
+              )
+            )
+          ***REMOVED***)
+      )
+    ***REMOVED***
+    // If we're displaying Mobilization Tools Sets...
     else
       return (
         activeDatabase.sets
@@ -283,8 +315,12 @@ const SetsScreen = ({
       <FlatList
         data={getSetData()***REMOVED***
         renderItem={({ item ***REMOVED***) => renderSetItem(item)***REMOVED***
-        // Re-render the FlatList whenever the active group changes.
-        extraData={activeGroup***REMOVED***
+        // For performance optimization.
+        getItemLayout={(data, index) => ({
+          length: itemHeights[font].SetItem,
+          offset: itemHeights[font].SetItem * index,
+          index
+        ***REMOVED***)***REMOVED***
         ListFooterComponent={
           // If we're in the Mobilization Tab AND this language doesn't have any MT content, display a "No MT Content" component. Otherwise, show the add Stor Set button.
           category === 'MobilizationTools' &&
@@ -293,7 +329,7 @@ const SetsScreen = ({
             : renderAddSetButton
         ***REMOVED***
       />
-      <SnackBar
+      {/* <SnackBar
         visible={showMTTabAddedSnackbar***REMOVED***
         textMessage='Mobilization tab added!'
         messageStyle={{
@@ -303,7 +339,24 @@ const SetsScreen = ({
           textAlign: 'center'
         ***REMOVED******REMOVED***
         backgroundColor={colors.apple***REMOVED***
-      />
+      /> */***REMOVED***
+      <MessageModal
+        isVisible={showMTTabAddedSnackbar***REMOVED***
+        hideModal={() => setShowMTTabAddedSnackbar(false)***REMOVED***
+        title='Mobilization Tools unlocked successfully!'
+        body=''
+        confirmText='Check it out'
+        confirmOnPress={() => setShowMTTabAddedSnackbar(false)***REMOVED***
+      >
+        <Image
+          source={require('../assets/gifs/unlock_mob_tools.gif')***REMOVED***
+          style={{
+            height: 200 * scaleMultiplier,
+            margin: 20,
+            resizeMode: 'contain'
+          ***REMOVED******REMOVED***
+        />
+      </MessageModal>
     </View>
   )
 ***REMOVED***

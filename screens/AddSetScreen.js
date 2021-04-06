@@ -172,7 +172,6 @@ const AddSetScreen = ({
   ***REMOVED***
 
   function getSetData () {
-    console.log(`${Date.now()***REMOVED*** Calling expensive function again.`)
     if (category === 'topical')
       return (
         activeDatabase.sets
