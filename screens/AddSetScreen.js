@@ -115,14 +115,14 @@ const AddSetScreen = ({
         setDownloadedFiles(contents)
       ***REMOVED***
     )
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   /** useEffect function that hides the Snackbar if we leave the screen before it auto-dismisses. */
   useEffect(() => {
     return function cleanup () {
       setShowSnackbar(false)
     ***REMOVED***
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -172,6 +172,7 @@ const AddSetScreen = ({
   ***REMOVED***
 
   function getSetData () {
+    console.log(`${Date.now()***REMOVED*** Calling expensive function again.`)
     if (category === 'topical')
       return (
         activeDatabase.sets
