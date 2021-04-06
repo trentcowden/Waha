@@ -3,15 +3,16 @@ import React from 'react'
 import { StyleSheet, View ***REMOVED*** from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
 import { colors ***REMOVED*** from '../styles/colors'
+
 // scrubber component rendered on play screen
-function Scrubber ({
+const Scrubber = ({
   // Props passed from a parent component.
   value,
   onSlidingComplete,
   onValueChange,
   maximumValue,
   seekPosition
-***REMOVED***) {
+***REMOVED***) => {
   //+ RENDER
 
   return (

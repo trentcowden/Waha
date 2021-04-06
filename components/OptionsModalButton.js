@@ -18,7 +18,7 @@ function mapStateToProps (state) {
 ***REMOVED***
 
 // button rendered on the options modal component
-function OptionsModalButton ({
+const OptionsModalButton = ({
   onPress,
   style,
   title,
@@ -26,7 +26,7 @@ function OptionsModalButton ({
   font,
   isRTL,
   activeGroup
-***REMOVED***) {
+***REMOVED***) => {
   return (
     <TouchableOpacity style={styles.modalButtonStyle***REMOVED*** onPress={onPress***REMOVED***>
       <Text

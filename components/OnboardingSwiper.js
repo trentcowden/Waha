@@ -1,4 +1,4 @@
-import React, { useState ***REMOVED*** from 'react'
+import React, { useRef, useState ***REMOVED*** from 'react'
 import {
   Dimensions,
   Image,
@@ -27,7 +27,7 @@ function mapStateToProps (state) {
     : {***REMOVED***
 ***REMOVED***
 
-function OnboardingSwiper ({
+const OnboardingSwiper = ({
   // Props passed from a parent component.
   isRTL,
   sources,
@@ -39,9 +39,9 @@ function OnboardingSwiper ({
   useDefaultFont,
   // Props passed from redux.
   font = null
-***REMOVED***) {
+***REMOVED***) => {
   const [onboardingPage, setOnboardingPage] = useState(1)
-  const [pagerRef, setPagerRef] = useState()
+  const pagerRef = useRef()
   var dots = []
 
   titles.forEach((title, index) => {
@@ -144,7 +144,7 @@ function OnboardingSwiper ({
         <Icon name='cancel' color={colors.oslo***REMOVED*** size={40 * scaleMultiplier***REMOVED*** />
       </TouchableOpacity> */***REMOVED***
       <PagerView
-        ref={ref => (ref ? setPagerRef(ref) : null)***REMOVED***
+        ref={pagerRef***REMOVED***
         // showPageIndicator
         style={styles.pager***REMOVED***
         initialPage={isRTL ? pages.length - 1 : 0***REMOVED***
@@ -179,10 +179,10 @@ function OnboardingSwiper ({
             isRTL
               ? onboardingPage === 0
                 ? onFinish
-                : () => pagerRef.setPage(onboardingPage - 1)
+                : () => pagerRef.current.setPage(onboardingPage - 1)
               : onboardingPage === pages.length - 1
               ? onFinish
-              : () => pagerRef.setPage(onboardingPage + 1)
+              : () => pagerRef.current.setPage(onboardingPage + 1)
           ***REMOVED***
           label={
             isRTL
