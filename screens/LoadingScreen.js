@@ -108,7 +108,7 @@ const LoadingScreen = ({
     return function cleanup () {
       unsubscribe()
     ***REMOVED***
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   function cancelDownloads () {
     setLanguageCoreFilesDownloadProgress(0)

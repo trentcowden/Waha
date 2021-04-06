@@ -58,7 +58,7 @@ const MobilizationToolsScreen = ({
         ? () => <View></View>
         : () => <BackButton onPress={() => goBack()***REMOVED*** />
     ***REMOVED***)
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   /** Keeps track of whether the how MTs work modal is visible. */
   const [showHowMTsWorkModal, setShowHowMTsWorkModal] = useState(false)

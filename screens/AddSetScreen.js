@@ -106,7 +106,7 @@ const AddSetScreen = ({
         setHeaderTitle(translations.add_set.header_mt)
         break
     ***REMOVED***
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   /** useEffect function that checks what files are downloaded to local storage. */
   useEffect(() => {

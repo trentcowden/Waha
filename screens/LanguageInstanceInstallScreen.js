@@ -128,7 +128,7 @@ const LanguageInstanceInstallScreen = ({
           ***REMOVED***
         : null
     )
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   /** useEffect function sets the isConnected state with the status of the user's internet connection. */
   useEffect(() => {
@@ -139,7 +139,7 @@ const LanguageInstanceInstallScreen = ({
     return function cleanup () {
       unsubscribe()
     ***REMOVED***
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   /**
    * Plays the text-to-speech audio file for a language.

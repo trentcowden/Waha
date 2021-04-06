@@ -75,7 +75,7 @@ const KeyOrderSetScreen = ({
         break
     ***REMOVED***
     setOptions(getNavOptions())
-  ***REMOVED***)
+  ***REMOVED***, [])
 
   useEffect(() => {
     if (localKeyOrder.length === 12) {
