@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect, useState ***REMOVED*** from 'react'
+import React, { useCallback, useEffect, useState ***REMOVED*** from 'react'
 import { Dimensions, Image, StyleSheet, View ***REMOVED*** from 'react-native'
 import { SwipeListView ***REMOVED*** from 'react-native-swipe-list-view'
 import { connect ***REMOVED*** from 'react-redux'
@@ -108,7 +108,7 @@ const LessonsScreen = ({
 
   //+ FUNCTIONS
 
-  //- checks which lessons and lesson videos are downloaded and stores in state
+  // - checks which lessons and lesson videos are downloaded and stores in state
   useEffect(() => {
     var whichLessonsDownloaded = {***REMOVED***
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
@@ -274,13 +274,13 @@ const LessonsScreen = ({
 
   //- sets activeLessonInModal to whatever lesson we're swiping so we can
   //-   share/mark it as complete
-  function onLessonSwipeBegin (data) {
+  const onLessonSwipeBegin = useCallback(data => {
     setActiveLessonInModal(
       thisSet.lessons.filter(
         lesson => getLessonInfo('index', lesson.id) === parseInt(data)
       )[0]
     )
-  ***REMOVED***
+  ***REMOVED***, [])
 
   function checkForFullyComplete () {
     if (
@@ -305,9 +305,52 @@ const LessonsScreen = ({
     ***REMOVED***
   ***REMOVED***
 
-  //+ RENDER
+  const renderLessonSwipeBackdrop = (data, rowMap) => (
+    <LessonSwipeBackdrop
+      isComplete={thisSetProgress.includes(
+        getLessonInfo('index', data.item.id)
+      )***REMOVED***
+      toggleComplete={() => {
+        toggleComplete(
+          activeGroup.name,
+          thisSet,
+          getLessonInfo('index', data.item.id)
+        )
+        checkForFullyComplete()
+        rowMap[getLessonInfo('index', data.item.id)].closeRow()
+      ***REMOVED******REMOVED***
+      showShareModal={() => {
+        setShowShareModal(true)
+        rowMap[getLessonInfo('index', data.item.id)].closeRow()
+      ***REMOVED******REMOVED***
+    />
+  )
 
-  function renderLessonItem ({ item ***REMOVED***) {
+  const keyExtractor = useCallback(
+    item => getLessonInfo('index', item.id).toString(),
+    []
+  )
+
+  const onLeftActionStatusChange = useCallback(data => {
+    if (isRTL) setShowShareModal(true)
+    else markLessonAsCompleteFromSwipe(data)
+  ***REMOVED***, [])
+
+  const onRightActionStatusChange = useCallback(data => {
+    if (isRTL) markLessonAsCompleteFromSwipe(data)
+    else setShowShareModal(true)
+  ***REMOVED***, [])
+
+  const getItemLayout = useCallback(
+    (data, index) => ({
+      length: itemHeights[font].LessonItem,
+      offset: itemHeights[font].LessonItem * index,
+      index
+    ***REMOVED***),
+    []
+  )
+
+  const renderLessonItem = ({ item ***REMOVED***) => {
     return (
       <LessonItem
         thisLesson={item***REMOVED***
@@ -333,29 +376,6 @@ const LessonsScreen = ({
     )
   ***REMOVED***
 
-  function renderLessonSwipeBackdrop (data, rowMap) {
-    return (
-      <LessonSwipeBackdrop
-        isComplete={thisSetProgress.includes(
-          getLessonInfo('index', data.item.id)
-        )***REMOVED***
-        toggleComplete={() => {
-          toggleComplete(
-            activeGroup.name,
-            thisSet,
-            getLessonInfo('index', data.item.id)
-          )
-          checkForFullyComplete()
-          rowMap[getLessonInfo('index', data.item.id)].closeRow()
-        ***REMOVED******REMOVED***
-        showShareModal={() => {
-          setShowShareModal(true)
-          rowMap[getLessonInfo('index', data.item.id)].closeRow()
-        ***REMOVED******REMOVED***
-      />
-    )
-  ***REMOVED***
-
   return (
     <View style={styles.screen***REMOVED***>
       <View
@@ -372,12 +392,12 @@ const LessonsScreen = ({
         data={thisSet.lessons***REMOVED***
         renderItem={renderLessonItem***REMOVED***
         ListFooterComponent={() => <View style={{ height: 30 ***REMOVED******REMOVED*** />***REMOVED***
-        keyExtractor={item => getLessonInfo('index', item.id).toString()***REMOVED***
+        keyExtractor={keyExtractor***REMOVED***
         renderHiddenItem={renderLessonSwipeBackdrop***REMOVED***
         leftOpenValue={50***REMOVED***
         rightOpenValue={-50***REMOVED***
-        //! these are different on platform because the activation is causing a
-        //!   crash on android phones
+        // ! these are different on platform because the activation is causing a
+        // !   crash on android phones
         leftActivationValue={
           Platform.OS === 'ios' ? Dimensions.get('screen').width / 2 - 10 : 1000
         ***REMOVED***
@@ -388,19 +408,9 @@ const LessonsScreen = ({
         ***REMOVED***
         stopLeftSwipe={Dimensions.get('screen').width / 2***REMOVED***
         stopRightSwipe={-Dimensions.get('screen').width / 2***REMOVED***
-        onLeftActionStatusChange={
-          isRTL
-            ? data => setShowShareModal(true)
-            : data => {
-                markLessonAsCompleteFromSwipe(data)
-              ***REMOVED***
-        ***REMOVED***
-        onRightActionStatusChange={
-          isRTL
-            ? data => markLessonAsCompleteFromSwipe(data)
-            : data => setShowShareModal(true)
-        ***REMOVED***
-        swipeGestureBegan={data => onLessonSwipeBegin(data)***REMOVED***
+        onLeftActionStatusChange={onLeftActionStatusChange***REMOVED***
+        onRightActionStatusChange={onRightActionStatusChange***REMOVED***
+        swipeGestureBegan={onLessonSwipeBegin***REMOVED***
       />
 
       {/* MODALS */***REMOVED***
