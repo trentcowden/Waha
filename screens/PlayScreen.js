@@ -832,7 +832,6 @@ const PlayScreen = ({
               />
             ) : null***REMOVED***
             <Scrubber
-              value={seekPosition***REMOVED***
               onSlidingComplete={playFromLocation***REMOVED***
               onValueChange={() => (shouldThumbUpdate.current = false)***REMOVED***
               maximumValue={mediaLength***REMOVED***

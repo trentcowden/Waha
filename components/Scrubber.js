@@ -7,19 +7,18 @@ import { colors ***REMOVED*** from '../styles/colors'
 // scrubber component rendered on play screen
 const Scrubber = ({
   // Props passed from a parent component.
-  value,
   onSlidingComplete,
   onValueChange,
   maximumValue,
   seekPosition
 ***REMOVED***) => {
-  //+ RENDER
+  console.log(`${Date.now()***REMOVED*** Scrubber re-rendering.`)
 
   return (
     <View style={styles.scrubberContainer***REMOVED***>
       <View style={styles.scrubber***REMOVED***>
         <Slider
-          value={value***REMOVED***
+          value={seekPosition***REMOVED***
           onSlidingComplete={value => onSlidingComplete(value)***REMOVED***
           onValueChange={onValueChange***REMOVED***
           minimumValue={0***REMOVED***
@@ -57,5 +56,12 @@ const styles = StyleSheet.create({
     width: '100%'
   ***REMOVED***
 ***REMOVED***)
+
+const areEqual = (prevProps, nextProps) => {
+  return (
+    prevProps.seekPosition === nextProps.seekPosition &&
+    prevProps.maximumValue === nextProps.maximumValue
+  )
+***REMOVED***
 
 export default Scrubber
