@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useCallback, useEffect, useMemo, useState ***REMOVED*** from 'react'
+import React, { useEffect, useMemo, useState ***REMOVED*** from 'react'
 import {
   FlatList,
   Image,
@@ -240,77 +240,69 @@ const SetsScreen = ({
   ***REMOVED***
 
   // A button that goes at the bottom of each list of sets that allows the user to add a new set.
-  const renderAddSetButton = useCallback(
-    () => (
-      <TouchableOpacity
-        style={[
-          styles.addSetButtonContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
-        ]***REMOVED***
-        onPress={() => navigate('AddSet', { category: category ***REMOVED***)***REMOVED***
-      >
-        <View
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 80 * scaleMultiplier,
-            height: 80 * scaleMultiplier
-          ***REMOVED******REMOVED***
-        >
-          <Icon
-            name='plus'
-            size={60 * scaleMultiplier***REMOVED***
-            color={colors.chateau***REMOVED***
-            style={styles.addNewSetIcon***REMOVED***
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            flexDirection: 'column',
-            marginRight: isRTL ? 20 : 0,
-            marginLeft: isRTL ? 0 : 20
-          ***REMOVED******REMOVED***
-        >
-          <Text
-            style={StandardTypography(
-              { font, isRTL ***REMOVED***,
-              'p',
-              'Regular',
-              'left',
-              colors.chateau
-            )***REMOVED***
-          >
-            {addNewSetLabel***REMOVED***
-          </Text>
-        </View>
-      </TouchableOpacity>
-    ),
-    []
-  )
-
-  const renderNoMTButton = useCallback(
-    () => (
+  const renderAddSetButton = () => (
+    <TouchableOpacity
+      style={[
+        styles.addSetButtonContainer,
+        { flexDirection: isRTL ? 'row-reverse' : 'row' ***REMOVED***
+      ]***REMOVED***
+      onPress={() => navigate('AddSet', { category: category ***REMOVED***)***REMOVED***
+    >
       <View
-        style={{ width: '100%', height: 80 * scaleMultiplier, padding: 20 ***REMOVED******REMOVED***
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: 80 * scaleMultiplier,
+          height: 80 * scaleMultiplier
+        ***REMOVED******REMOVED***
+      >
+        <Icon
+          name='plus'
+          size={60 * scaleMultiplier***REMOVED***
+          color={colors.chateau***REMOVED***
+          style={styles.addNewSetIcon***REMOVED***
+        />
+      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          flexDirection: 'column',
+          marginRight: isRTL ? 20 : 0,
+          marginLeft: isRTL ? 0 : 20
+        ***REMOVED******REMOVED***
       >
         <Text
           style={StandardTypography(
             { font, isRTL ***REMOVED***,
             'p',
             'Regular',
-            'center',
+            'left',
             colors.chateau
           )***REMOVED***
         >
-          {translations.mobilization_tools.no_mobilization_tools_content_text***REMOVED***
-          {/* Content currently not available for this language */***REMOVED***
+          {addNewSetLabel***REMOVED***
         </Text>
       </View>
-    ),
-    []
+    </TouchableOpacity>
+  )
+
+  const renderNoMTButton = () => (
+    <View style={{ width: '100%', height: 80 * scaleMultiplier, padding: 20 ***REMOVED******REMOVED***>
+      <Text
+        style={StandardTypography(
+          { font, isRTL ***REMOVED***,
+          'p',
+          'Regular',
+          'center',
+          colors.chateau
+        )***REMOVED***
+      >
+        {translations.mobilization_tools.no_mobilization_tools_content_text***REMOVED***
+        {/* Content currently not available for this language */***REMOVED***
+      </Text>
+    </View>
   )
 
   /**
@@ -318,26 +310,21 @@ const SetsScreen = ({
    * @param {Object***REMOVED*** set - The object of the set to render.
    * @return {Component***REMOVED*** - The setItem component.
    */
-  const renderSetItem = useCallback(({ item ***REMOVED***) => {
-    return (
-      <SetItem
-        thisSet={item***REMOVED***
-        screen='Sets'
-        onSetSelect={() => navigate('Lessons', { thisSet: item ***REMOVED***)***REMOVED***
-      />
-    )
-  ***REMOVED***, [])
-
-  const getItemLayout = useCallback(
-    (data, index) => ({
-      length: itemHeights[font].SetItem,
-      offset: itemHeights[font].SetItem * index,
-      index
-    ***REMOVED***),
-    []
+  const renderSetItem = ({ item ***REMOVED***) => (
+    <SetItem
+      thisSet={item***REMOVED***
+      screen='Sets'
+      onSetSelect={() => navigate('Lessons', { thisSet: item ***REMOVED***)***REMOVED***
+    />
   )
 
-  const keyExtractor = useCallback(item => item.id, [])
+  const getItemLayout = (data, index) => ({
+    length: itemHeights[font].SetItem,
+    offset: itemHeights[font].SetItem * index,
+    index
+  ***REMOVED***)
+
+  const keyExtractor = item => item.id
 
   return (
     <View style={styles.screen***REMOVED***>

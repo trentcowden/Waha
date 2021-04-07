@@ -62,12 +62,12 @@ const SetInfoModal = ({
   addSet
 ***REMOVED***) => {
   /** Renders a item with the information for a lesson. */
-  const renderLessonInfoItem = lesson => {
+  const renderLessonInfoItem = ({ item ***REMOVED***) => {
     // If lesson has scripture, format the list of scripture to be a string with the scripture addresses separated by commas.
-    if (lesson.scripture) {
-      var scriptureList = lesson.scripture[0].header
+    if (item.scripture) {
+      var scriptureList = item.scripture[0].header
 
-      lesson.scripture.forEach((passage, index) => {
+      item.scripture.forEach((passage, index) => {
         if (index !== 0) scriptureList += ', ' + passage.header
       ***REMOVED***)
     ***REMOVED***
@@ -93,11 +93,11 @@ const SetInfoModal = ({
             colors.shark
           )***REMOVED***
         >
-          {lesson.title***REMOVED***
+          {item.title***REMOVED***
         </Text>
 
         {/* Display list of scripture below the title if this lesson has scripture (not all of them do). */***REMOVED***
-        {lesson.scripture && (
+        {item.scripture && (
           <Text
             style={StandardTypography(
               { font, isRTL ***REMOVED***,
@@ -113,6 +113,8 @@ const SetInfoModal = ({
       </TouchableOpacity>
     )
   ***REMOVED***
+
+  const keyExtractor = item => item.id
 
   return (
     <ModalScreen
@@ -144,9 +146,9 @@ const SetInfoModal = ({
       />
       <View style={{ flex: 1 ***REMOVED******REMOVED***>
         <FlatList
-          keyExtractor={item => item.id***REMOVED***
+          keyExtractor={keyExtractor***REMOVED***
           data={thisSet.lessons***REMOVED***
-          renderItem={({ item ***REMOVED***) => renderLessonInfoItem(item)***REMOVED***
+          renderItem={renderLessonInfoItem***REMOVED***
           contentContainerStyle={{ flexGrow: 1 ***REMOVED******REMOVED***
         />
       </View>

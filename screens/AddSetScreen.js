@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useCallback, useEffect, useMemo, useState ***REMOVED*** from 'react'
+import React, { useEffect, useMemo, useState ***REMOVED*** from 'react'
 import { FlatList, LogBox, StyleSheet, Text, View ***REMOVED*** from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import TagGroup from 'react-native-tag-group'
@@ -265,18 +265,16 @@ const AddSetScreen = ({
   )
 
   /** Renders a <SetItem /> for the list of sets available to add. */
-  const renderSetItem = useCallback(({ item ***REMOVED***) => {
-    return (
-      <SetItem
-        thisSet={item***REMOVED***
-        screen='AddSet'
-        onSetSelect={() => {
-          setSetInModal(item)
-          setShowSetInfoModal(true)
-        ***REMOVED******REMOVED***
-      />
-    )
-  ***REMOVED***, [])
+  const renderSetItem = ({ item ***REMOVED***) => (
+    <SetItem
+      thisSet={item***REMOVED***
+      screen='AddSet'
+      onSetSelect={() => {
+        setSetInModal(item)
+        setShowSetInfoModal(true)
+      ***REMOVED******REMOVED***
+    />
+  )
 
   return (
     <View style={styles.screen***REMOVED***>
