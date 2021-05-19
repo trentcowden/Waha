@@ -22,11 +22,13 @@ import {
 import { addSet, deleteGroup } from '../redux/actions/groupsActions'
 import { updateConnectionStatus } from '../redux/actions/networkActions'
 import {
-  activeDatabaseSelector,
-  activeGroupSelector
+    activeDatabaseSelector,
+    activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import MainStack from './MainStack'
 import WahaDrawer from './WahaDrawer'
+import { Database } from '../dataAccess/online/database'
+import { Files } from '../dataAccess/online/files'
 
 // Create the drawer navigator.
 const Drawer = createDrawerNavigator()
@@ -142,15 +144,13 @@ const MainDrawer = ({
 
   // (TEMP) Check to makes sure that users who update have the language core file created times.
   if (!languageCoreFilesCreatedTimes) {
-    installedLanguageInstances.forEach(language => {
+      var url = 'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o'
+      var files = new Files(url)
+      installedLanguageInstances.forEach(language => {
       database[language].files.forEach(fileName => {
         var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
-        var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
-        // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
-        firebase
-          .storage()
-          .refFromURL(url)
-          .getMetadata()
+          // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
+        files.fetchLanguageFileMetadata(language, fileName, fileExtension)
           .then(metadata =>
             storeLanguageCoreFileCreatedTime(
               // For when file name includes "v1".
@@ -177,15 +177,14 @@ const MainDrawer = ({
 
   /** useEffect function that checks for database updates for other installed languages besides the active one. */
   useEffect(() => {
+    var remoteDatabase = new Database(db)
     Object.keys(database).forEach(key => {
       if (key.length === 2 && key !== activeGroup.language) {
         // Whether the app should write the new Firestore changes to redux or not. The only reason that it wouldn't is if the app version is behind the database version.
         var shouldWrite = false
 
         // Fetch data from the languages Firestore collection.
-        db.collection('languages')
-          .doc(key)
-          .get()
+        remoteDatabase.getLanguage(key)
           .then(async doc => {
             // If we get some legitimate data back...
             if (doc.exists && doc.data()) {
@@ -204,9 +203,7 @@ const MainDrawer = ({
           })
 
         // Fetch data from the Story Sets Firestore collection. Get all Story Sets of the current language.
-        db.collection('sets')
-          .where('languageID', '==', key)
-          .get()
+        remoteDatabase.getSetsForLanguage(key)
           .then(querySnapshot => {
             // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
             if (!querySnapshot.empty) {
@@ -235,11 +232,9 @@ const MainDrawer = ({
   useEffect(() => {
     // Whether the app should write the new Firestore changes to redux or not. The only reason that it wouldn't is if the app version is behind the database version.
     var shouldWrite = false
-
+    var remoteDatabase = new Database(db)
     // Fetch data from the languages Firestore collection.
-    db.collection('languages')
-      .doc(activeGroup.language)
-      .get()
+    remoteDatabase.getLanguage(activeGroup.language)
       .then(async doc => {
         // If we get some legitimate data back...
         if (doc.exists && doc.data()) {
@@ -258,17 +253,14 @@ const MainDrawer = ({
 
               // PRODUCTION FIREBASE URL
               // Always have this uncommented when it's time to build a new version.
-              var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+              var url = 'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o'
 
               // TEST FIREBASE URL
               // Use this for test Firebase storage.
-              // var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
-
+              // var url = 'https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o'
+              var files = new Files(url)
               // Check the timeCreated of this core file in Firebase storage.
-              firebase
-                .storage()
-                .refFromURL(url)
-                .getMetadata()
+              files.fetchLanguageFileMetadata(activeGroup.language, fileName, fileExtension)
                 .then(({ timeCreated }) => {
                   // If the created time of this core file has already been stored previously AND the created time of the core file in Firebase is different from the created time that's stored in redux...
                   if (
@@ -335,9 +327,8 @@ const MainDrawer = ({
       })
 
     // Fetch data from the Story Sets Firestore collection. Get all Story Sets of the current language.
-    db.collection('sets')
-      .where('languageID', '==', activeGroup.language)
-      .get()
+    var remoteDatabase = new Database(db)
+    remoteDatabase.getSetsForLanguage(activeGroup.language)
       .then(querySnapshot => {
         // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
         if (!querySnapshot.empty) {

@@ -260,7 +260,7 @@ export function downloadLanguageCoreFiles (language) {
 
       // TEST URL
       // var url = 'https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o'
-      files = new Files(url)
+      var files = new Files(url)
 
       // Set the local storage path to download to and the name of the file. The format is simple: FileSystem/languageID-fileName.extension.
 

@@ -1,6 +1,6 @@
 // abstract API for reading (and optionally writing) structured data
 
-class Database {
+export class Database {
   constructor(db) {
     this.db = db
   }
@@ -18,13 +18,13 @@ class Database {
 
   getSetsForLanguage(key) {
     // Promise<querySnapshot>
-    return db.collection('sets')
+    return this.db.collection('sets')
              .where('languageID', '==', key)
              .get()
   }
 
   submitFeedback(feedbackRecord) {
-    return db.collection('feedback')
+    return this.db.collection('feedback')
              .add(feedbackRecord)
   }
 }
