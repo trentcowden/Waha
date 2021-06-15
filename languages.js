@@ -22,6 +22,7 @@ export const languages = [
         wahaID: 'en',
         i18nName: 'english',
         brandName: 'Discovering God',
+        versions: null,
         logoSource:
           'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media'
       }
@@ -38,25 +39,40 @@ export const languages = [
         wahaID: 'ga',
         i18nName: 'gulf_arabic',
         brandName: 'طريق الواحة',
+        versions: null,
         logoSource:
           'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media'
       }
     ]
+  },
+  {
+    i18nName: 'hindi',
+    languageCode: 'hi',
+    font: 'Roboto',
+    isRTL: false,
+    data: [
+      {
+        nativeName: 'हिन्दी',
+        i18nName: 'hindi',
+        wahaID: 'hi',
+        font: 'Roboto',
+        versions: [
+          {
+            wahaID: 'hi',
+            brandName: 'परमेश्वर को खोजना',
+            note: 'Recommended for Hindi backgrounds',
+            logoSource:
+              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media'
+          },
+          {
+            wahaID: 'hc',
+            brandName: 'परमेश्वर को खोजना',
+            note: 'Recommended for Muslim backgrounds',
+            logoSource:
+              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media'
+          }
+        ]
+      }
+    ]
   }
-  // {
-  //   i18nName: 'hindi',
-  //   languageCode: 'hi',
-  //   font: 'Roboto',
-  //   isRTL: false,
-  //   data: [
-  //     {
-  //       nativeName: 'हिन्दी',
-  //       wahaID: 'hi',
-  //       i18nName: 'hindi',
-  //       brandName: 'परमेश्वर को खोजना',
-  //       logoSource:
-  //         'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media'
-  //     }
-  //   ]
-  // }
 ]

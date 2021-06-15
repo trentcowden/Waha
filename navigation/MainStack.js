@@ -17,7 +17,7 @@ import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import InformationScreen from '../screens/InformationScreen'
-import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
+import LanguageSelectScreen from '../screens/LanguageSelectScreen'
 import LessonsScreen from '../screens/LessonsScreen'
 import MobilizationToolsScreen from '../screens/MobilizationToolsScreen'
 import MobilizationToolsUnlockScreen from '../screens/MobilizationToolsUnlockScreen'
@@ -282,11 +282,34 @@ const MainStack = ({
         }}
       />
       <Stack.Screen
-        name='SubsequentlLanguageInstanceInstall'
-        component={LanguageInstanceInstallScreen}
+        name='SubsequentLanguageSelect'
+        component={LanguageSelectScreen}
         options={{
           headerStyle: {
             backgroundColor: colors.white
+          },
+          // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
+          headerTitleStyle: SystemTypography(
+            true,
+            '',
+            'Bold',
+            'center',
+            colors.shark
+          ),
+          headerRight: isRTL
+            ? () => <WahaBackButton onPress={() => goBack()} />
+            : () => {},
+          headerLeft: isRTL
+            ? () => {}
+            : () => <WahaBackButton onPress={() => goBack()} />
+        }}
+      />
+      <Stack.Screen
+        name='SubsequentLanguageVersionSelect'
+        component={LanguageSelectScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: colors.porcelain
           },
           // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
           headerTitleStyle: SystemTypography(

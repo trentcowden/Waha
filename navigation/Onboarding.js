@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
+import LanguageSelectScreen from '../screens/LanguageSelectScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
 
@@ -27,8 +27,12 @@ const Onboarding = () => {
         }}
       >
         <Stack.Screen
-          name='InitialLanguageInstanceInstall'
-          component={LanguageInstanceInstallScreen}
+          name='InitialLanguageSelect'
+          component={LanguageSelectScreen}
+        />
+        <Stack.Screen
+          name='InitialLanguageVersionSelect'
+          component={LanguageSelectScreen}
         />
         <Stack.Screen
           name='WahaOnboardingSlides'

@@ -1,3 +1,4 @@
+import { useBackHandler } from '@react-native-community/hooks'
 import LottieView from 'lottie-react-native'
 import React, { useRef, useState } from 'react'
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native'
@@ -73,6 +74,10 @@ const WahaOnboardingSlidesScreen = ({
   /** Keeps track of the user's group name input and emoji selection. */
   const [groupNameInput, setGroupNameInput] = useState('')
   const [emojiInput, setEmojiInput] = useState('default')
+
+  useBackHandler(() => {
+    return true
+  })
 
   /** Edits a group and sets it as the active group. */
   const editGroupAndFinish = () => {

@@ -8,5 +8,8 @@
   "hindi": "Hindi",
   "ok": "OK",
   "select_language": "Please select your language. ",
-  "welcome": "Hello and welcome!"
+  "welcome": "Hello and welcome!",
+  "multiple_versions": "This language has multiple versions.",
+  "select_version": "Select a version that works for you.",
+  "continue": "Continue"
 }

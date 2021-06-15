@@ -6,7 +6,7 @@ import { colors } from '../styles/colors'
 import { SystemTypography } from '../styles/typography'
 
 /**
- * A pressable item used to display a language instance on the LanguageInstanceInstallScreen.
+ * A pressable item used to display a language instance on the LanguageSelectScreen.
  * @param {string} nativeName - The name of the langauge in its native script, e.g. Español.
  * @param {string} localeName - The name of the language in the current phone language, e.g. Spanish.
  * @param {string} font - The font to display the text in. Either the font for the system language or the font from the active language. See typography.js for more info.
@@ -20,16 +20,23 @@ const LanguageItem = ({
   nativeName,
   localeName,
   font,
-
   logoSource,
   onPress,
   isSelected,
-  playAudio
+  playAudio,
+  versions = null
 }) => (
   <View
     style={[
       styles.languageItemContainer,
-      { backgroundColor: isSelected ? '#BFE5AF' : colors.white }
+      {
+        backgroundColor: isSelected ? '#BFE5AF' : colors.white,
+        height:
+          versions !== null
+            ? 80 * scaleMultiplier +
+              (versions.length - 1) * 20 * scaleMultiplier
+            : 80 * scaleMultiplier
+      }
     ]}
   >
     {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
@@ -70,14 +77,25 @@ const LanguageItem = ({
           {localeName}
         </Text>
       </View>
-      <Image style={styles.headerImage} source={{ uri: logoSource }} />
+      <View>
+        {versions !== null ? (
+          versions.map((version, index) => (
+            <Image
+              key={index}
+              style={styles.headerImage}
+              source={{ uri: version.logoSource }}
+            />
+          ))
+        ) : (
+          <Image style={styles.headerImage} source={{ uri: logoSource }} />
+        )}
+      </View>
     </TouchableOpacity>
   </View>
 )
 
 const styles = StyleSheet.create({
   languageItemContainer: {
-    height: 80 * scaleMultiplier,
     width: '100%',
     flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
@@ -96,6 +114,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     resizeMode: 'contain',
+    marginVertical: 10,
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier,
     marginHorizontal: 20

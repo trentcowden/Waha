@@ -1,3 +1,4 @@
+import { useBackHandler } from '@react-native-community/hooks'
 import NetInfo from '@react-native-community/netinfo'
 import * as FileSystem from 'expo-file-system'
 import i18n from 'i18n-js'
@@ -136,6 +137,10 @@ const LoadingScreen = ({
     }
   }, [])
 
+  useBackHandler(() => {
+    return true
+  })
+
   /** Cancels the language core files downloads, does a few cleanup actions, and sends the user back to the language instance install screen. */
   const cancelDownloads = () => {
     // Set the core files download progress to 0.
@@ -158,7 +163,7 @@ const LoadingScreen = ({
       setHasOnboarded(false)
       navigation.reset({
         index: 0,
-        routes: [{ name: 'InitialLanguageInstanceInstall' }]
+        routes: [{ name: 'InitialLanguageSelect' }]
       })
     }
 

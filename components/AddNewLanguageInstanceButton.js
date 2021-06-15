@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
@@ -35,8 +35,24 @@ const AddNewLanguageInstanceButton = ({
   installedLanguageInstances,
   t
 }) => {
+  const [numberOfLanguages, setNumberOfLanguages] = useState(0)
+
+  useEffect(() => {
+    setNumberOfLanguages(getNumberOfLanguages())
+  }, [])
+
+  const getNumberOfLanguages = () => {
+    var numLanguages = 0
+    languages.forEach(languageFamily => {
+      languageFamily.data.forEach(language => {
+        if (language.versions === null) numLanguages += 1
+        else numLanguages += language.versions.length
+      })
+    })
+    return numLanguages
+  }
   return (
-    installedLanguageInstances.length !== languages.length && (
+    installedLanguageInstances.length !== numberOfLanguages && (
       <TouchableOpacity
         style={[
           styles.addNewLanguageButtonContainer,
@@ -46,7 +62,7 @@ const AddNewLanguageInstanceButton = ({
         ]}
         onPress={() => {
           // Navigate to the LanguageInstanceInstall screen so that the user can install another language instance.
-          navigate('SubsequentlLanguageInstanceInstall', {
+          navigate('SubsequentLanguageSelect', {
             // Send over the currently installed language instances so that we can filter those out from the options.
             installedLanguageInstances: languageAndGroupData
           })

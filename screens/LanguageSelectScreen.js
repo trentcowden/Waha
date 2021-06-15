@@ -8,6 +8,7 @@ import {
   Alert,
   Animated,
   Dimensions,
+  FlatList,
   SafeAreaView,
   SectionList,
   StyleSheet,
@@ -18,6 +19,7 @@ import {
 import { connect } from 'react-redux'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
+import LanguageVersionItem from '../components/LanguageVersionItem'
 import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { getSystemIsRTL, groupNames, scaleMultiplier } from '../constants'
@@ -88,19 +90,20 @@ function mapDispatchToProps (dispatch) {
 
 /**
  * A screen that displays a list of language instances to install. This appears as the first screen the user sees when they open the app for the first time, as well as later if they want to install another language instance.
- * @param {string} routeName - The name of the screen variant. In this case, can either be "InitialLanguageInstanceInstall" or "SubsequentLanguageInstanceInstall" since this screen component is used twice.
+ * @param {string} routeName - The name of the screen variant. In this case, can either be "InitialLanguageSelect" or "SubsequentLanguageInstanceInstall" since this screen component is used twice.
  * @param {Object[]} installedLanguageInstances - (Optional) An array of languages instances that are currently installed. Defaults to null since there aren't any installed language instances when the user opens the app for the first time. This variable is only relevant when the user is installing a subsequent language instance.
  * @param {string} installedLanguageInstances[].languageID - The ID of the language.
  * @param {string} installedLanguageInstances[].languageName - The name of the language.
  */
-const LanguageInstanceInstallScreen = ({
+const LanguageSelectScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, goBack, reset, navigate },
   route: {
     name: routeName,
     // Props passed from previous screen.
-    params: { installedLanguageInstances } = {
-      installedLanguageInstances: null
+    params: { installedLanguageInstances, languageWithVersions } = {
+      installedLanguageInstances: null,
+      languageWithVersions: null
     }
   },
   // Props passed from redux.
@@ -120,6 +123,46 @@ const LanguageInstanceInstallScreen = ({
   changeActiveGroup,
   setRecentActiveGroup
 }) => {
+  const routeConfig = {
+    InitialLanguageSelect: {
+      shouldShowHeaderTitle: false,
+      backgroundColor: colors.aquaHaze,
+      heading1: i18n.t('welcome'),
+      heading2: i18n.t('select_language'),
+      shouldShowSearchBar: true,
+      shouldGoToOnboarding: true,
+      contentToShow: 'languages'
+    },
+    SubsequentLanguageSelect: {
+      shouldShowHeaderTitle: true,
+      backgroundColor: colors.white,
+      heading1: null,
+      heading2: null,
+      shouldShowTopMessages: false,
+      shouldShowSearchBar: true,
+      shouldGoToOnboarding: false,
+      contentToShow: 'languages'
+    },
+    InitialLanguageVersionSelect: {
+      shouldShowHeaderTitle: false,
+      backgroundColor: colors.porcelain,
+      heading1: i18n.t('multiple_versions'),
+      heading2: i18n.t('select_version'),
+      shouldShowSearchBar: false,
+      shouldGoToOnboarding: true,
+      contentToShow: 'versions'
+    },
+    SubsequentLanguageVersionSelect: {
+      shouldShowHeaderTitle: true,
+      backgroundColor: colors.porcelain,
+      heading1: i18n.t('multiple_versions'),
+      heading2: i18n.t('select_version'),
+      shouldShowSearchBar: false,
+      shouldGoToOnboarding: false,
+      contentToShow: 'versions'
+    }
+  }
+
   // Set the i18n locale to the locale of the user's phone.
   i18n.locale = Localization.locale
 
@@ -152,7 +195,7 @@ const LanguageInstanceInstallScreen = ({
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions(
-      routeName === 'SubsequentlLanguageInstanceInstall'
+      routeConfig[routeName].shouldShowHeaderTitle
         ? {
             headerTitle: i18n.t('add_language')
           }
@@ -173,11 +216,11 @@ const LanguageInstanceInstallScreen = ({
 
   /**
    * Plays the text-to-speech audio file for a language.
-   * @param {string} languageID - The ID of the language to play.
+   * @param {string} soundName - The ID of the language to play.
    */
-  const playAudio = async languageID => {
+  const playAudio = async soundName => {
     audio.unloadAsync()
-    await audio.loadAsync(languageT2S[languageID]).then(() => {
+    await audio.loadAsync(languageT2S[soundName]).then(() => {
       audio.playAsync()
     })
   }
@@ -233,63 +276,76 @@ const LanguageInstanceInstallScreen = ({
 
   /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to nagivate to the onboarding slides too. */
   const onStartPress = () => {
-    fetchFirebaseData(selectedLanguage)
-      .then(() => {
-        // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
-        setHasFetchedLanguageData(true)
+    if (selectedLanguage.versions !== null) {
+      if (routeName.includes('Initial'))
+        navigate('InitialLanguageVersionSelect', {
+          languageWithVersions: selectedLanguage
+        })
+      else
+        navigate('SubsequentLanguageVersionSelect', {
+          languageWithVersions: selectedLanguage,
+          installedLanguageInstances: installedLanguageInstances
+        })
+    } else
+      fetchFirebaseData(selectedLanguage.wahaID)
+        .then(() => {
+          // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
+          setHasFetchedLanguageData(true)
 
-        // If we're adding a subsequent language instance, then we need to store the active group's language
-        if (activeGroup) setRecentActiveGroup(activeGroup.name)
+          // If we're adding a subsequent language instance, then we need to store the active group's language
+          if (activeGroup) setRecentActiveGroup(activeGroup.name)
 
-        // Start downloading the core files for this language.
-        downloadLanguageCoreFiles(selectedLanguage)
+          // Start downloading the core files for this language.
+          downloadLanguageCoreFiles(selectedLanguage.wahaID)
 
-        // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
-        if (
-          !groups.some(group => group.name === groupNames[selectedLanguage])
-        ) {
-          incrementGlobalGroupCounter()
+          // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
+          if (
+            !groups.some(
+              group => group.name === groupNames[selectedLanguage.wahaID]
+            )
+          ) {
+            incrementGlobalGroupCounter()
 
-          createGroup(
-            groupNames[selectedLanguage],
-            selectedLanguage,
-            'default',
-            database.globalGroupCounter,
-            groups.length + 1
+            createGroup(
+              groupNames[selectedLanguage.wahaID],
+              selectedLanguage.wahaID,
+              'default',
+              database.globalGroupCounter,
+              groups.length + 1
+            )
+          }
+
+          // Change the active group to the new group we just created.
+          changeActiveGroup(groupNames[selectedLanguage.wahaID])
+
+          // Set the local isFetchingFirebaseData state to false.
+          setIsFetchingFirebaseData(false)
+
+          // Navigate to the onboarding slides if this is the first language instance install.
+          if (routeConfig[routeName].shouldGoToOnboarding) {
+            navigate('WahaOnboardingSlides', {
+              selectedLanguage: selectedLanguage.wahaID
+            })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+
+          // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
+          setIsFetchingFirebaseData(false)
+          deleteLanguageData(selectedLanguage.wahaID)
+
+          Alert.alert(
+            i18n.t('fetch_error_title'),
+            i18n.t('fetch_error_message'),
+            [
+              {
+                text: i18n.t('ok'),
+                onPress: () => {}
+              }
+            ]
           )
-        }
-
-        // Change the active group to the new group we just created.
-        changeActiveGroup(groupNames[selectedLanguage])
-
-        // Set the local isFetchingFirebaseData state to false.
-        setIsFetchingFirebaseData(false)
-
-        // Navigate to the onboarding slides if this is the first language instance install.
-        if (routeName === 'InitialLanguageInstanceInstall') {
-          navigate('WahaOnboardingSlides', {
-            selectedLanguage: selectedLanguage
-          })
-        }
-      })
-      .catch(error => {
-        console.log(error)
-
-        // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
-        setIsFetchingFirebaseData(false)
-        deleteLanguageData(selectedLanguage)
-
-        Alert.alert(
-          i18n.t('fetch_error_title'),
-          i18n.t('fetch_error_message'),
-          [
-            {
-              text: i18n.t('ok'),
-              onPress: () => {}
-            }
-          ]
-        )
-      })
+        })
   }
 
   /**
@@ -316,19 +372,32 @@ const LanguageInstanceInstallScreen = ({
       else
         return {
           ...languageFamily,
-          data: languageFamily.data.filter(
-            language =>
-              language.nativeName
-                .toLowerCase()
-                .includes(searchTextInput.toLowerCase()) ||
-              i18n
-                .t(language.i18nName)
-                .toLowerCase()
-                .includes(searchTextInput.toLowerCase()) ||
-              language.brandName
-                .toLowerCase()
-                .includes(searchTextInput.toLowerCase())
-          )
+          data: languageFamily.data.filter(language => {
+            if (language.versions !== null)
+              return (
+                language.nativeName
+                  .toLowerCase()
+                  .includes(searchTextInput.toLowerCase()) ||
+                language.versions.some(language =>
+                  language.brandName
+                    .toLowerCase()
+                    .includes(searchTextInput.toLowerCase())
+                )
+              )
+            else
+              return (
+                language.nativeName
+                  .toLowerCase()
+                  .includes(searchTextInput.toLowerCase()) ||
+                i18n
+                  .t(language.i18nName)
+                  .toLowerCase()
+                  .includes(searchTextInput.toLowerCase()) ||
+                language.brandName
+                  .toLowerCase()
+                  .includes(searchTextInput.toLowerCase())
+              )
+          })
         }
     }
 
@@ -336,6 +405,14 @@ const LanguageInstanceInstallScreen = ({
     const filterInstalledLanguages = languageFamily => ({
       ...languageFamily,
       data: languageFamily.data.filter(language => {
+        if (language.versions !== null) {
+          return !language.versions.every(version =>
+            installedLanguageInstances.some(
+              installedLanguage =>
+                installedLanguage.languageID === version.wahaID
+            )
+          )
+        }
         if (
           installedLanguageInstances.some(
             installedLanguage =>
@@ -359,7 +436,7 @@ const LanguageInstanceInstallScreen = ({
     var sections
 
     // Only difference between Initial and Subsequent language instance installs is that in subsequent, we want to filter out installed languages.
-    if (routeName === 'InitialLanguageInstanceInstall')
+    if (routeName === 'InitialLanguageSelect')
       sections = languages
         .sort(sortByLocale)
         .map(filterBySearch)
@@ -376,6 +453,18 @@ const LanguageInstanceInstallScreen = ({
 
     // Finally, return the sorted and filtered array of languages.
     return sections
+  }
+
+  const getLanguageVersions = language => {
+    return installedLanguageInstances
+      ? language.versions.filter(
+          version =>
+            !installedLanguageInstances.some(
+              installedLanguage =>
+                installedLanguage.languageID === version.wahaID
+            )
+        )
+      : language.versions
   }
 
   /**
@@ -396,10 +485,11 @@ const LanguageInstanceInstallScreen = ({
             toValue: 0
           }).start()
         }
-        setSelectedLanguage(language.wahaID)
+        setSelectedLanguage(language)
       }}
-      isSelected={selectedLanguage === language.wahaID ? true : false}
+      isSelected={selectedLanguage.wahaID === language.wahaID ? true : false}
       playAudio={() => playAudio(language.wahaID)}
+      versions={language.versions}
     />
   )
 
@@ -414,10 +504,7 @@ const LanguageInstanceInstallScreen = ({
       style={[
         styles.languageHeaderContainer,
         {
-          backgroundColor:
-            routeName === 'InitialLanguageInstanceInstall'
-              ? colors.aquaHaze
-              : colors.white
+          backgroundColor: routeConfig[routeName].backgroundColor
         }
       ]}
     >
@@ -429,19 +516,36 @@ const LanguageInstanceInstallScreen = ({
     </View>
   )
 
+  const renderLanguageVersionItem = ({ item }) => (
+    <LanguageVersionItem
+      wahaID={item.wahaID}
+      logoSource={item.logoSource}
+      brandName={item.brandName}
+      note={item.note}
+      isSelected={selectedLanguage.wahaID === item.wahaID ? true : false}
+      onPress={() => {
+        if (!selectedLanguage) {
+          Animated.spring(buttonYPos, {
+            toValue: 0
+          }).start()
+        }
+        setSelectedLanguage(item)
+      }}
+      playAudio={playAudio}
+      font={item.font}
+    />
+  )
+
   return (
     <SafeAreaView
       style={[
         styles.screen,
         {
-          backgroundColor:
-            routeName === 'InitialLanguageInstanceInstall'
-              ? colors.aquaHaze
-              : colors.white
+          backgroundColor: routeConfig[routeName].backgroundColor
         }
       ]}
     >
-      {routeName === 'InitialLanguageInstanceInstall' && (
+      {routeConfig[routeName].heading1 !== null && (
         <View style={styles.headerTextContainer}>
           <Text
             style={[
@@ -449,7 +553,7 @@ const LanguageInstanceInstallScreen = ({
               { fontSize: 28 * scaleMultiplier }
             ]}
           >
-            {i18n.t('welcome')}
+            {routeConfig[routeName].heading1}
           </Text>
           <View style={{ height: 5 }} />
           <Text
@@ -461,58 +565,78 @@ const LanguageInstanceInstallScreen = ({
               colors.shark
             )}
           >
-            {i18n.t('select_language')}
+            {routeConfig[routeName].heading2}
           </Text>
         </View>
       )}
-      <View
-        style={[
-          styles.searchBarContainer,
-          {
-            width: Dimensions.get('window').width - 40,
-            maxWidth: 500
-          }
-        ]}
-      >
-        <View style={styles.searchIconContainer}>
-          <Icon
-            name='search'
-            size={25 * scaleMultiplier}
-            color={colors.chateau}
-          />
-        </View>
-        <TextInput
+      {routeConfig[routeName].shouldShowSearchBar && (
+        <View
           style={[
-            SystemTypography(false, 'h3', 'Regular', 'left', colors.shark),
+            styles.searchBarContainer,
             {
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center'
+              width: Dimensions.get('window').width - 40,
+              maxWidth: 500
             }
           ]}
-          onChangeText={text => setSearchTextInput(text)}
-          autoCorrect={false}
-          autoCapitalize='none'
-          placeholder='Search'
-          placeholderTextColor={colors.chateau}
-        />
-      </View>
+        >
+          <View style={styles.searchIconContainer}>
+            <Icon
+              name='search'
+              size={25 * scaleMultiplier}
+              color={colors.chateau}
+            />
+          </View>
+          <TextInput
+            style={[
+              SystemTypography(false, 'h3', 'Regular', 'left', colors.shark),
+              {
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }
+            ]}
+            onChangeText={text => setSearchTextInput(text)}
+            autoCorrect={false}
+            autoCapitalize='none'
+            placeholder='Search'
+            placeholderTextColor={colors.chateau}
+          />
+        </View>
+      )}
       <View style={styles.languageListContainer}>
-        <SectionList
-          style={{ height: '100%' }}
-          sections={getLanguageData()}
-          ItemSeparatorComponent={() => <WahaSeparator />}
-          SectionSeparatorComponent={() => <WahaSeparator />}
-          keyExtractor={item => item.wahaID}
-          renderItem={({ item, section }) => renderLanguageItem(item, section)}
-          renderSectionHeader={({ section }) => renderLanguageHeader(section)}
-          renderSectionFooter={() => (
-            <View style={{ height: 20 * scaleMultiplier, width: '100%' }} />
-          )}
-          ListFooterComponent={() => (
-            <View style={{ width: '100%', height: 100 * scaleMultiplier }} />
-          )}
-        />
+        {routeConfig[routeName].contentToShow === 'languages' ? (
+          <SectionList
+            style={{ height: '100%' }}
+            sections={getLanguageData()}
+            ItemSeparatorComponent={() => <WahaSeparator />}
+            SectionSeparatorComponent={() => <WahaSeparator />}
+            keyExtractor={item => item.wahaID}
+            renderItem={({ item, section }) =>
+              renderLanguageItem(item, section)
+            }
+            renderSectionHeader={({ section }) => renderLanguageHeader(section)}
+            renderSectionFooter={() => (
+              <View style={{ height: 20 * scaleMultiplier, width: '100%' }} />
+            )}
+            ListFooterComponent={() => (
+              <View style={{ width: '100%', height: 100 * scaleMultiplier }} />
+            )}
+          />
+        ) : (
+          <FlatList
+            style={{
+              height: '100%',
+              width: '100%',
+              paddingVertical: 20 * scaleMultiplier
+            }}
+            keyExtractor={item => item.wahaID}
+            data={getLanguageVersions(languageWithVersions)}
+            renderItem={renderLanguageVersionItem}
+            ItemSeparatorComponent={() => (
+              <View style={{ height: 20 * scaleMultiplier }} />
+            )}
+          />
+        )}
       </View>
       <Animated.View
         style={[
@@ -525,13 +649,7 @@ const LanguageInstanceInstallScreen = ({
           color={isConnected ? colors.apple : colors.geyser}
           onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
           label={
-            isConnected
-              ? isFetchingFirebaseData
-                ? ''
-                : routeName === 'InitialLanguageInstanceInstall'
-                ? 'Continue'
-                : i18n.t('add_language') + ' '
-              : ''
+            !isConnected || isFetchingFirebaseData ? '' : i18n.t('continue')
           }
           style={{
             width: Dimensions.get('window').width - 40,
@@ -610,4 +728,4 @@ const styles = StyleSheet.create({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LanguageInstanceInstallScreen)
+)(LanguageSelectScreen)

@@ -144,7 +144,16 @@ export const getSystemFont = () => {
 export const getLanguageFont = languageID => {
   var languageFont
   languages.forEach(languageFamily => {
-    if (languageFamily.data.some(language => language.wahaID === languageID))
+    if (
+      languageFamily.data.some(language => language.wahaID === languageID) ||
+      languageFamily.data.some(language => {
+        if (language.versions !== null)
+          return language.versions.some(
+            version => version.wahaID === languageID
+          )
+        else return false
+      })
+    )
       languageFont = languageFamily.font
   })
   return languageFont
