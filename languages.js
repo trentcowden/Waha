@@ -62,14 +62,16 @@ export const languages = [
             brandName: 'परमेश्वर को खोजना',
             note: 'Recommended for Hindi backgrounds',
             logoSource:
-              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media'
+              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
+            versions: null
           },
           {
             wahaID: 'hc',
             brandName: 'परमेश्वर को खोजना',
             note: 'Recommended for Muslim backgrounds',
             logoSource:
-              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media'
+              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
+            versions: null
           }
         ]
       }

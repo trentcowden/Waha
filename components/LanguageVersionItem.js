@@ -42,38 +42,50 @@ const LanguageVersionItem = ({
         <TouchableOpacity
           onPress={playAudio}
           style={{
-            marginHorizontal: 5,
             justifyContent: 'center',
             alignItems: 'center'
           }}
         >
           <Icon name='volume' size={30} color={colors.tuna} />
         </TouchableOpacity>
+        <View style={{ width: 10 }} />
         <Text
-          style={SystemTypography(
-            false,
-            'h2',
-            'Bold',
-            'left',
-            colors.shark,
-            font
-          )}
+          style={[
+            SystemTypography(false, 'h2', 'Bold', 'left', colors.shark, font),
+            {
+              flex: 1
+            }
+          ]}
         >
           {brandName}
         </Text>
       </View>
       <View style={styles.noteContainer}>
-        <View style={{ marginHorizontal: 5 }}>
+        <View>
           <Icon name='info' size={30} color={colors.tuna} />
         </View>
+        <View style={{ width: 10 }} />
         <Text
-          style={SystemTypography(false, 'h4', 'Regular', 'left', colors.shark)}
+          style={[
+            SystemTypography(false, 'h4', 'Regular', 'left', colors.shark),
+            {
+              flex: 1
+            }
+          ]}
         >
           {note}
         </Text>
       </View>
     </View>
-    {isSelected ? <Icon name='check' size={30} color={colors.apple} /> : null}
+    <View
+      style={{
+        width: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      {isSelected ? <Icon name='check' size={30} color={colors.apple} /> : null}
+    </View>
   </TouchableOpacity>
 )
 

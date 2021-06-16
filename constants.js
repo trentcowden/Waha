@@ -90,7 +90,7 @@ export const groupNames = {
  * @return {boolean} - Whether the current system is RTL.
  */
 export const getSystemIsRTL = () => {
-  systemIsRTL = false
+  var systemIsRTL = false
   languages.forEach(languageFamily => {
     if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
       systemIsRTL = languageFamily.isRTL

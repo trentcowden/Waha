@@ -277,11 +277,11 @@ const LanguageSelectScreen = ({
   /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to nagivate to the onboarding slides too. */
   const onStartPress = () => {
     if (selectedLanguage.versions !== null) {
-      if (routeName.includes('Initial'))
+      if (routeName === 'InitialLanguageSelect')
         navigate('InitialLanguageVersionSelect', {
           languageWithVersions: selectedLanguage
         })
-      else
+      else if (routeName === 'SubsequentLanguageSelect')
         navigate('SubsequentLanguageVersionSelect', {
           languageWithVersions: selectedLanguage,
           installedLanguageInstances: installedLanguageInstances
@@ -691,7 +691,7 @@ const styles = StyleSheet.create({
   languageHeaderContainer: {
     height: 40 * scaleMultiplier,
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     paddingHorizontal: 20
   },
