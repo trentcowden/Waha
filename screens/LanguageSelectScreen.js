@@ -123,51 +123,61 @@ const LanguageSelectScreen = ({
   changeActiveGroup,
   setRecentActiveGroup
 }) => {
-  const routeConfig = {
-    InitialLanguageSelect: {
-      shouldShowHeaderTitle: false,
-      backgroundColor: colors.aquaHaze,
-      heading1: i18n.t('welcome'),
-      heading2: i18n.t('select_language'),
-      shouldShowSearchBar: true,
-      shouldGoToOnboarding: true,
-      contentToShow: 'languages'
-    },
-    SubsequentLanguageSelect: {
-      shouldShowHeaderTitle: true,
-      backgroundColor: colors.white,
-      heading1: null,
-      heading2: null,
-      shouldShowTopMessages: false,
-      shouldShowSearchBar: true,
-      shouldGoToOnboarding: false,
-      contentToShow: 'languages'
-    },
-    InitialLanguageVersionSelect: {
-      shouldShowHeaderTitle: false,
-      backgroundColor: colors.porcelain,
-      heading1: i18n.t('multiple_versions'),
-      heading2: i18n.t('select_version'),
-      shouldShowSearchBar: false,
-      shouldGoToOnboarding: true,
-      contentToShow: 'versions'
-    },
-    SubsequentLanguageVersionSelect: {
-      shouldShowHeaderTitle: true,
-      backgroundColor: colors.porcelain,
-      heading1: i18n.t('multiple_versions'),
-      heading2: i18n.t('select_version'),
-      shouldShowSearchBar: false,
-      shouldGoToOnboarding: false,
-      contentToShow: 'versions'
-    }
-  }
-
   // Set the i18n locale to the locale of the user's phone.
   i18n.locale = Localization.locale
 
   // Setting fallbacks to true means that if the user's phone language isn't in i18n, it defaults to English.
   i18n.fallbacks = true
+
+  const getRouteConfigs = () => {
+    return {
+      InitialLanguageSelect: {
+        shouldShowHeaderTitle: false,
+        backgroundColor: colors.aquaHaze,
+        heading1: i18n.t('welcome'),
+        heading2: i18n.t('select_language'),
+        shouldShowSearchBar: true,
+        shouldGoToOnboarding: true,
+        contentToShow: 'languages'
+      },
+      SubsequentLanguageSelect: {
+        shouldShowHeaderTitle: true,
+        backgroundColor: colors.white,
+        heading1: null,
+        heading2: null,
+        shouldShowTopMessages: false,
+        shouldShowSearchBar: true,
+        shouldGoToOnboarding: false,
+        contentToShow: 'languages'
+      },
+      InitialLanguageVersionSelect: {
+        shouldShowHeaderTitle: false,
+        backgroundColor: colors.porcelain,
+        heading1: i18n.t('multiple_versions'),
+        heading2: i18n.t('select_version'),
+        shouldShowSearchBar: false,
+        shouldGoToOnboarding: true,
+        contentToShow: 'versions'
+      },
+      SubsequentLanguageVersionSelect: {
+        shouldShowHeaderTitle: true,
+        backgroundColor: colors.porcelain,
+        heading1: i18n.t('multiple_versions'),
+        heading2: i18n.t('select_version'),
+        shouldShowSearchBar: false,
+        shouldGoToOnboarding: false,
+        contentToShow: 'versions'
+      }
+    }
+  }
+
+  const [routeConfig, setRouteConfig] = useState(getRouteConfigs())
+
+  useEffect(() => {
+    setRouteConfig(getRouteConfigs())
+  }, [i18n.locale, routeName])
+
+  const [isRTL, setIsRTL] = useState(getSystemIsRTL())
 
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState('')
@@ -504,7 +514,8 @@ const LanguageSelectScreen = ({
       style={[
         styles.languageHeaderContainer,
         {
-          backgroundColor: routeConfig[routeName].backgroundColor
+          backgroundColor: routeConfig[routeName].backgroundColor,
+          flexDirection: isRTL ? 'row-reverse' : 'row'
         }
       ]}
     >
@@ -575,7 +586,8 @@ const LanguageSelectScreen = ({
             styles.searchBarContainer,
             {
               width: Dimensions.get('window').width - 40,
-              maxWidth: 500
+              maxWidth: 500,
+              flexDirection: isRTL ? 'row-reverse' : 'row'
             }
           ]}
         >
@@ -691,7 +703,6 @@ const styles = StyleSheet.create({
   languageHeaderContainer: {
     height: 40 * scaleMultiplier,
     width: '100%',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     paddingHorizontal: 20
   },
@@ -702,7 +713,6 @@ const styles = StyleSheet.create({
     height: 50 * scaleMultiplier,
     backgroundColor: colors.athens,
     paddingHorizontal: 5,
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'flex-start',

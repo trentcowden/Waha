@@ -30,7 +30,8 @@ const LanguageVersionItem = ({
     style={[
       styles.languageVersionItemContainer,
       {
-        backgroundColor: isSelected ? '#BFE5AF' : colors.white
+        backgroundColor: isSelected ? '#BFE5AF' : colors.white,
+        flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
         // height: 200 * scaleMultiplier
       }
     ]}
@@ -38,7 +39,14 @@ const LanguageVersionItem = ({
   >
     <View style={styles.mainAreaContainer}>
       <Image style={styles.headerImage} source={{ uri: logoSource }} />
-      <View style={styles.brandNameContainer}>
+      <View
+        style={[
+          styles.brandNameContainer,
+          {
+            flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
+          }
+        ]}
+      >
         <TouchableOpacity
           onPress={playAudio}
           style={{
@@ -60,7 +68,14 @@ const LanguageVersionItem = ({
           {brandName}
         </Text>
       </View>
-      <View style={styles.noteContainer}>
+      <View
+        style={[
+          styles.noteContainer,
+          {
+            flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
+          }
+        ]}
+      >
         <View>
           <Icon name='info' size={30} color={colors.tuna} />
         </View>
@@ -79,7 +94,9 @@ const LanguageVersionItem = ({
     </View>
     <View
       style={{
-        width: 30,
+        position: 'absolute',
+        right: getSystemIsRTL() ? 10 : null,
+        left: getSystemIsRTL() ? null : 10,
         alignItems: 'center',
         justifyContent: 'center'
       }}
@@ -92,7 +109,6 @@ const LanguageVersionItem = ({
 const styles = StyleSheet.create({
   languageVersionItemContainer: {
     width: Dimensions.get('window').width - 40,
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
@@ -102,18 +118,15 @@ const styles = StyleSheet.create({
   },
   mainAreaContainer: {
     flex: 1,
-    height: '100%',
-    alignItems: getSystemIsRTL() ? 'flex-end' : 'flex-start'
+    height: '100%'
   },
   brandNameContainer: {
     width: '100%',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     marginVertical: 5 * scaleMultiplier
   },
   noteContainer: {
     width: '100%',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     alignItems: 'center',
     marginVertical: 5 * scaleMultiplier
   },

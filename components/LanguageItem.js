@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { getSystemIsRTL, scaleMultiplier } from '../constants'
@@ -25,79 +25,96 @@ const LanguageItem = ({
   isSelected,
   playAudio,
   versions = null
-}) => (
-  <View
-    style={[
-      styles.languageItemContainer,
-      {
-        backgroundColor: isSelected ? '#BFE5AF' : colors.white,
-        height:
-          versions !== null
-            ? 80 * scaleMultiplier +
-              (versions.length - 1) * 20 * scaleMultiplier
-            : 80 * scaleMultiplier
-      }
-    ]}
-  >
-    {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
-    {isSelected ? (
-      <View style={{ marginHorizontal: 20 }}>
-        <Icon name='check' size={30} color={colors.apple} />
-      </View>
-    ) : (
+}) => {
+  const [isRTL, setIsRTL] = useState(getSystemIsRTL())
+  return (
+    <View
+      style={[
+        styles.languageItemContainer,
+        {
+          backgroundColor: isSelected ? '#BFE5AF' : colors.white,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          height:
+            versions !== null
+              ? 80 * scaleMultiplier +
+                (versions.length - 1) * 20 * scaleMultiplier
+              : 80 * scaleMultiplier
+        }
+      ]}
+    >
+      {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
+      {isSelected ? (
+        <View style={{ marginHorizontal: 20 }}>
+          <Icon name='check' size={30} color={colors.apple} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          onPress={playAudio}
+          style={{
+            height: '100%',
+            width: 70,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Icon name='volume' size={30} color={colors.tuna} />
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
-        onPress={playAudio}
-        style={{
-          height: '100%',
-          width: 70,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
+        style={[
+          styles.touchableAreaContainer,
+          {
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }
+        ]}
+        onPress={onPress}
       >
-        <Icon name='volume' size={30} color={colors.tuna} />
-      </TouchableOpacity>
-    )}
-    <TouchableOpacity style={styles.touchableAreaContainer} onPress={onPress}>
-      <View style={styles.namesContainer}>
-        <Text
-          style={SystemTypography(
-            false,
-            'h3',
-            'Bold',
-            'left',
-            colors.shark,
-            font
+        <View style={styles.namesContainer}>
+          <Text
+            style={SystemTypography(
+              false,
+              'h3',
+              'Bold',
+              'left',
+              colors.shark,
+              font
+            )}
+          >
+            {nativeName}
+          </Text>
+          <Text
+            style={SystemTypography(
+              false,
+              'p',
+              'Regular',
+              'left',
+              colors.shark
+            )}
+          >
+            {localeName}
+          </Text>
+        </View>
+        <View>
+          {versions !== null ? (
+            versions.map((version, index) => (
+              <Image
+                key={index}
+                style={styles.headerImage}
+                source={{ uri: version.logoSource }}
+              />
+            ))
+          ) : (
+            <Image style={styles.headerImage} source={{ uri: logoSource }} />
           )}
-        >
-          {nativeName}
-        </Text>
-        <Text
-          style={SystemTypography(false, 'p', 'Regular', 'left', colors.shark)}
-        >
-          {localeName}
-        </Text>
-      </View>
-      <View>
-        {versions !== null ? (
-          versions.map((version, index) => (
-            <Image
-              key={index}
-              style={styles.headerImage}
-              source={{ uri: version.logoSource }}
-            />
-          ))
-        ) : (
-          <Image style={styles.headerImage} source={{ uri: logoSource }} />
-        )}
-      </View>
-    </TouchableOpacity>
-  </View>
-)
+        </View>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   languageItemContainer: {
     width: '100%',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
@@ -105,8 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
+    justifyContent: 'space-around'
   },
   namesContainer: {
     justifyContent: 'center',

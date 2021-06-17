@@ -9,5 +9,7 @@
   "ok": "حسناً",
   "select_language": "فضلاً اختر لغتك",
   "welcome": "أهلاً ومرحباً",
-  "continue": "استمرp"
+  "multiple_versions": "لهذه اللغة إصدارات عديدة.",
+  "select_version": "قم باختيار الإصدار الذي يناسبك.",
+  "continue": "استمر"
 }
