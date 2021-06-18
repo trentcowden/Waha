@@ -95,8 +95,8 @@ const LanguageVersionItem = ({
     <View
       style={{
         position: 'absolute',
-        right: getSystemIsRTL() ? 10 : null,
-        left: getSystemIsRTL() ? null : 10,
+        right: getSystemIsRTL() ? null : 10,
+        left: getSystemIsRTL() ? 10 : null,
         alignItems: 'center',
         justifyContent: 'center'
       }}
