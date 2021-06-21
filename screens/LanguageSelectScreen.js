@@ -14,6 +14,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -551,11 +552,27 @@ const LanguageSelectScreen = ({
     <SafeAreaView
       style={[
         styles.screen,
-        {
-          backgroundColor: routeConfig[routeName].backgroundColor
-        }
+        { backgroundColor: routeConfig[routeName].backgroundColor }
       ]}
     >
+      {routeName === 'InitialLanguageVersionSelect' && (
+        <View style={{ width: '100%' }}>
+          <TouchableOpacity
+            style={{
+              alignSelf: getSystemIsRTL() ? 'flex-end' : 'flex-start',
+              width: 100,
+              alignItems: getSystemIsRTL() ? 'flex-end' : 'flex-start'
+            }}
+            onPress={() => goBack()}
+          >
+            <Icon
+              name={getSystemIsRTL() ? 'arrow-right' : 'arrow-left'}
+              size={45 * scaleMultiplier}
+              color={colors.oslo}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
       {routeConfig[routeName].heading1 !== null && (
         <View style={styles.headerTextContainer}>
           <Text
