@@ -331,8 +331,6 @@ const SetsScreen = ({
         thisSet={item}
         mode={setItemModes.SETS_SCREEN}
         onSetSelect={() => {
-          console.log(areMobilizationToolsUnlocked)
-          console.log(showTrailerHighlights)
           if (
             areMobilizationToolsUnlocked &&
             showTrailerHighlights &&
