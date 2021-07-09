@@ -1,7 +1,14 @@
 // import SvgUri from 'expo-svg-uri'
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { connect } from 'react-redux'
+import WahaSeparator from '../components/WahaSeparator'
 import { gutterSize, scaleMultiplier } from '../constants'
 import {
   activeDatabaseSelector,
@@ -9,7 +16,6 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getLanguageFont, StandardTypography } from '../styles/typography'
-
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
@@ -101,11 +107,11 @@ const LessonTextContent = ({
   layouts,
   onScroll,
   sectionOffsets,
+  setShowCopyrightsModal,
   // Props passed from redux.
   activeGroup,
   activeDatabase,
   font,
-
   t,
   isRTL
 }) => {
@@ -237,6 +243,46 @@ const LessonTextContent = ({
               </View>
             )
           )}
+          <WahaSeparator />
+          <TouchableOpacity
+            onPress={() => setShowCopyrightsModal(true)}
+            style={{
+              width: '100%',
+              paddingVertical: 10 * scaleMultiplier,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingHorizontal: gutterSize
+            }}
+          >
+            <Text
+              style={StandardTypography(
+                { font, isRTL },
+                'h3',
+                'Bold',
+                'left',
+                colors.oslo
+              )}
+            >
+              {t.general && t.general.copyrighted_material}
+            </Text>
+            <View
+              style={
+                {
+                  // paddingHorizontal: 20,
+                  // paddingVertical: 10 * scaleMultiplier
+                }
+              }
+            >
+              <Icon
+                name={isRTL ? 'arrow-left' : 'arrow-right'}
+                size={40 * scaleMultiplier}
+                color={colors.oslo}
+              />
+            </View>
+          </TouchableOpacity>
+          <WahaSeparator />
+          <View style={{ height: 25 }} />
         </View>
       ) : (
         <View style={{ paddingTop: 20 * scaleMultiplier }}>

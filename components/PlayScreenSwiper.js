@@ -54,6 +54,7 @@ const PlayScreenSwiper = ({
   sectionOffsets,
   markLessonAsComplete,
   isThisLessonComplete,
+  setShowCopyrightsModal,
   // Props passed from redux.
   activeGroup,
   activeDatabase,
@@ -132,6 +133,7 @@ const PlayScreenSwiper = ({
             sectionTitleYTransform={sectionHeaderYTransform}
             markLessonAsComplete={markLessonAsComplete}
             isThisLessonComplete={isThisLessonComplete}
+            setShowCopyrightsModal={setShowCopyrightsModal}
           />
         </View>
       ) : (

@@ -48,11 +48,11 @@ const LessonTextViewer = ({
   sectionTitleYTransform = null,
   markLessonAsComplete,
   isThisLessonComplete,
+  setShowCopyrightsModal = null,
   // Props passed from redux.
   activeGroup,
   activeDatabase,
   font,
-
   t,
   isRTL
 }) => {
@@ -169,6 +169,7 @@ const LessonTextViewer = ({
         layouts={layouts}
         onScroll={onScroll}
         sectionOffsets={sectionOffsets}
+        setShowCopyrightsModal={setShowCopyrightsModal}
       />
       <LinearGradient
         colors={[colors.white, colors.white + '00']}
