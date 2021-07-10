@@ -2,12 +2,17 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { chapters, gutterSize, isTablet, lessonTypes } from '../constants'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+} from '../redux/reducers/activeGroup'
+import { colors } from '../styles/colors'
 import ChapterButton from './ChapterButton'
-
 function mapStateToProps (state) {
   return {
-    primaryColor: activeDatabaseSelector(state).primaryColor
+    primaryColor: activeDatabaseSelector(state).primaryColor,
+    isDark: state.settings.isDarkModeEnabled,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -29,10 +34,15 @@ const ChapterSelector = ({
   lessonType,
   lessonID,
   // Props passed from redux.
-  primaryColor
+  primaryColor,
+  isDark,
+  activeGroup
 }) => (
   <View
-    style={[styles.chapterSelectorContainer, { borderColor: primaryColor }]}
+    style={[
+      styles.chapterSelectorContainer,
+      { borderColor: colors(isDark, activeGroup.language).accent }
+    ]}
   >
     <ChapterButton
       chapter={chapters.FELLOWSHIP}

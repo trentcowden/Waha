@@ -15,6 +15,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -25,7 +26,7 @@ function mapStateToProps (state) {
   A simple set of 3 components to display different parts of the lesson text.
 */
 
-const HeaderBig = ({ text, font, isRTL, onLayout }) => (
+const HeaderBig = ({ text, font, isRTL, onLayout, isDark }) => (
   <View
     style={{
       marginBottom: 10 * scaleMultiplier,
@@ -35,7 +36,13 @@ const HeaderBig = ({ text, font, isRTL, onLayout }) => (
   >
     <Text
       style={[
-        StandardTypography({ font, isRTL }, 'h2', 'Black', 'left', colors.tuna)
+        StandardTypography(
+          { font, isRTL },
+          'h2',
+          'Black',
+          'left',
+          colors(isDark).icons
+        )
       ]}
     >
       {text}
@@ -43,7 +50,7 @@ const HeaderBig = ({ text, font, isRTL, onLayout }) => (
   </View>
 )
 
-const HeaderSmall = ({ text, font, isRTL, isTablet }) => (
+const HeaderSmall = ({ text, font, isRTL, isTablet, isDark }) => (
   <View>
     <Text
       style={[
@@ -52,7 +59,7 @@ const HeaderSmall = ({ text, font, isRTL, isTablet }) => (
           'h3',
           'Regular',
           'left',
-          colors.chateau
+          colors(isDark).disabled
         ),
         { paddingHorizontal: gutterSize, marginVertical: 5 * scaleMultiplier }
       ]}
@@ -62,7 +69,7 @@ const HeaderSmall = ({ text, font, isRTL, isTablet }) => (
   </View>
 )
 
-const StandardText = ({ text, font, isRTL, isTablet }) => (
+const StandardText = ({ text, font, isRTL, isTablet, isDark }) => (
   <View>
     <Text
       style={[
@@ -71,7 +78,7 @@ const StandardText = ({ text, font, isRTL, isTablet }) => (
           'h3',
           'Regular',
           'left',
-          colors.shark
+          colors(isDark).text
         ),
         {
           zIndex: 0,
@@ -105,7 +112,7 @@ const LessonTextContent = ({
   activeGroup,
   activeDatabase,
   font,
-
+  isDark,
   t,
   isRTL
 }) => {
@@ -180,11 +187,13 @@ const LessonTextContent = ({
                   }
                   font={font}
                   isRTL={isRTL}
+                  isDark={isDark}
                 />
                 <StandardText
                   text={question + '\n'}
                   font={font}
                   isRTL={isRTL}
+                  isDark={isDark}
                 />
               </View>
             )
@@ -201,11 +210,13 @@ const LessonTextContent = ({
                 text={scriptureChunk.header}
                 font={font}
                 isRTL={isRTL}
+                isDark={isDark}
               />
               <StandardText
                 text={scriptureChunk.text}
                 font={font}
                 isRTL={isRTL}
+                isDark={isDark}
               />
             </View>
           ))}
@@ -217,6 +228,7 @@ const LessonTextContent = ({
             font={font}
             isRTL={isRTL}
             text={t.play && t.play.application}
+            isDark={isDark}
           />
           {/* Application questions. */}
           {activeDatabase.questions[thisLesson.applicationType].map(
@@ -228,11 +240,13 @@ const LessonTextContent = ({
                   }
                   font={font}
                   isRTL={isRTL}
+                  isDark={isDark}
                 />
                 <StandardText
                   text={question + '\n'}
                   font={font}
                   isRTL={isRTL}
+                  isDark={isDark}
                 />
               </View>
             )
@@ -240,13 +254,19 @@ const LessonTextContent = ({
         </View>
       ) : (
         <View style={{ paddingTop: 20 * scaleMultiplier }}>
-          <HeaderSmall text={thisLesson.title} font={font} isRTL={isRTL} />
+          <HeaderSmall
+            text={thisLesson.title}
+            font={font}
+            isRTL={isRTL}
+            isDark={isDark}
+          />
           {thisLesson.text.split('\n').map((paragraph, index) => (
             <StandardText
               key={index}
               font={font}
               isRTL={isRTL}
               text={paragraph + '\n'}
+              isDark={isDark}
             />
           ))}
         </View>

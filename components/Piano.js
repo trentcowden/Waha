@@ -6,7 +6,7 @@ import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
-import { colors, keyColors } from '../styles/colors'
+import { keyColors } from '../styles/colors'
 import { getLanguageFont } from '../styles/typography'
 import PianoKeyLabel from './PianoKeyLabel'
 
@@ -14,6 +14,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)
   }
@@ -46,6 +47,7 @@ const Piano = ({
   isMuted = false,
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
 
   activeGroup
@@ -215,10 +217,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: colors.shark,
+    borderColor: '#000000',
     borderWidth: 2,
     zIndex: 0,
-    color: colors.white,
+    color: '#ffffff',
     borderBottomWidth: 5
   },
   blackKeysContainer: {
@@ -237,10 +239,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: colors.shark,
+    borderColor: '#000000',
     borderWidth: 2,
     zIndex: 1,
-    backgroundColor: colors.shark
+    backgroundColor: '#000000'
   }
 })
 

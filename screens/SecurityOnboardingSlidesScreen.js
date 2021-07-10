@@ -19,6 +19,7 @@ function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
   }
@@ -36,6 +37,7 @@ const SecurityOnboardingSlidesScreen = ({
   font,
 
   isRTL,
+  isDark,
   activeGroup
 }) => {
   /** The ref for the pager view. Used to manually swipe pages. */
@@ -67,6 +69,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
+            backgroundColor: colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -91,6 +95,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
+            backgroundColor: colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -115,6 +121,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
+            backgroundColor: colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -139,6 +147,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
+            backgroundColor: colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -157,7 +167,7 @@ const SecurityOnboardingSlidesScreen = ({
   ]
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
       <PagerView
         ref={pagerRef}
         style={styles.pager}
@@ -192,7 +202,7 @@ const SecurityOnboardingSlidesScreen = ({
                 'h4',
                 'Bold',
                 'center',
-                colors.shark
+                colors(isDark).text
               )}
             >
               {t.general && t.general.skip}
@@ -213,7 +223,7 @@ const SecurityOnboardingSlidesScreen = ({
               : () => pagerRef.current.setPage(activePage + 1)
           }
           type='filled'
-          color={colors.apple}
+          color={colors(isDark).success}
           style={{
             // Make the continue button twice as big as the skip button.
             flex: 2
@@ -227,7 +237,6 @@ const SecurityOnboardingSlidesScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.aquaHaze,
     flexDirection: 'column',
     justifyContent: 'center'
   },
@@ -240,11 +249,9 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: colors.athens,
     aspectRatio: 1,
     overflow: 'hidden',
-    justifyContent: 'center',
-    backgroundColor: colors.white
+    justifyContent: 'center'
   },
   image: {
     resizeMode: 'contain',

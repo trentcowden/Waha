@@ -17,6 +17,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     groups: state.groups,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     activeGroup: activeGroupSelector(state)
@@ -55,6 +56,7 @@ const GroupItemMT = ({
   // Props passed from redux.
   database,
   isRTL,
+  isDark,
   groups,
   font,
 
@@ -68,13 +70,11 @@ const GroupItemMT = ({
       style={[
         styles.groupListItemContainer,
         {
+          backgroundColor: colors(isDark).bg4,
           flexDirection: isRTL ? 'row-reverse' : 'row',
           borderLeftWidth: isRTL ? 0 : 5,
           borderRightWidth: isRTL ? 5 : 0,
-          borderColor:
-            database[
-              groups.filter(item => item.name === thisGroup.name)[0].language
-            ].primaryColor
+          borderColor: colors(isDark, thisGroup.language).accent
         }
       ]}
     >
@@ -84,7 +84,7 @@ const GroupItemMT = ({
         }}
       >
         <GroupAvatar
-          style={{ backgroundColor: colors.athens }}
+          style={{ backgroundColor: colors(isDark).bg2 }}
           size={50 * scaleMultiplier}
           emoji={thisGroup.emoji}
           isActive={activeGroup.name === thisGroup.name}
@@ -100,7 +100,7 @@ const GroupItemMT = ({
             'h3',
             'Regular',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {thisGroup.name}
@@ -108,9 +108,12 @@ const GroupItemMT = ({
       </View>
       <View style={{ marginHorizontal: 20 }}>
         <Switch
-          trackColor={{ false: colors.chateau, true: colors.apple }}
-          thumbColor={colors.white}
-          ios_backgroundColor={colors.chateau}
+          trackColor={{
+            false: colors(isDark).disabled,
+            true: colors(isDark).success
+          }}
+          thumbColor={colors(isDark).bg4}
+          ios_backgroundColor={colors(isDark).disabled}
           onValueChange={() => {
             // Toggle the visibility of the Mobilization Tools tab for this group on or off.
             editGroup(
@@ -134,8 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white
+    alignItems: 'center'
   },
   groupNameContainer: {
     flex: 1,

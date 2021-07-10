@@ -12,6 +12,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL
   }
@@ -26,7 +27,7 @@ const WahaBlurb = ({
   text,
   // Props passed from redux.
   font,
-
+  isDark,
   isRTL
 }) => (
   <View
@@ -42,7 +43,7 @@ const WahaBlurb = ({
         'p',
         'Regular',
         'center',
-        colors.shark
+        colors(isDark).text
       )}
     >
       {text}

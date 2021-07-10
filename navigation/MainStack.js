@@ -43,6 +43,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     security: state.security,
@@ -72,6 +73,7 @@ const MainStack = ({
   copilotEvents,
   // Props passed from redux.
   isRTL,
+  isDark,
   t,
   font,
   activeDatabase,
@@ -168,7 +170,7 @@ const MainStack = ({
         component={SetsTabs}
         options={{
           headerStyle: {
-            backgroundColor: colors.aquaHaze,
+            backgroundColor: colors(isDark).bg3,
             // Remove the header shadow on Android.
             elevation: 0
           },
@@ -178,7 +180,7 @@ const MainStack = ({
             : () => (
                 <View style={{ paddingHorizontal: 10 }}>
                   <GroupAvatar
-                    style={{ backgroundColor: colors.white, zIndex: 0 }}
+                    style={{ backgroundColor: colors(isDark).bg4, zIndex: 0 }}
                     emoji={activeGroup.emoji}
                     size={35}
                     onPress={() => toggleDrawer()}
@@ -206,7 +208,7 @@ const MainStack = ({
                           width: 13 * scaleMultiplier,
                           height: 13 * scaleMultiplier,
                           borderRadius: 6.5 * scaleMultiplier,
-                          backgroundColor: colors.apple,
+                          backgroundColor: colors(isDark).success,
                           alignSelf: 'flex-end',
                           zIndex: 100
                         }}
@@ -220,7 +222,7 @@ const MainStack = ({
             ? () => (
                 <View style={{ paddingHorizontal: 10 }}>
                   <GroupAvatar
-                    style={{ backgroundColor: colors.white }}
+                    style={{ backgroundColor: colors(isDark).bg4 }}
                     emoji={activeGroup.emoji}
                     size={35}
                     onPress={() => toggleDrawer()}
@@ -240,7 +242,7 @@ const MainStack = ({
                           width: 13 * scaleMultiplier,
                           height: 13 * scaleMultiplier,
                           borderRadius: 6.5 * scaleMultiplier,
-                          backgroundColor: colors.apple,
+                          backgroundColor: colors(isDark).success,
                           alignSelf: 'flex-end',
                           zIndex: 100
                         }}
@@ -258,7 +260,7 @@ const MainStack = ({
         component={LessonsScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleAlign: 'center'
         }}
@@ -268,11 +270,11 @@ const MainStack = ({
         component={PlayScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.white,
+            backgroundColor: colors(isDark).bg4,
             elevation: 0
           },
           headerTitleStyle: {
-            color: colors.chateau,
+            color: colors(isDark).disabled,
             fontFamily: 'Roboto-Bold'
           },
           // Disable gestures on this screen because there are already horizontally-swipable elements on it.
@@ -285,7 +287,7 @@ const MainStack = ({
         options={{
           headerTitle: t.groups && t.groups.groups_and_languages,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           }
         }}
       />
@@ -295,8 +297,11 @@ const MainStack = ({
         options={{
           title: '',
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
+          },
+          headerStyle: {
+            backgroundColor: colors(isDark).bg4
           }
         }}
       />
@@ -305,7 +310,7 @@ const MainStack = ({
         component={LanguageInstanceInstallScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.white
+            backgroundColor: colors(isDark).bg4
           },
           // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
           headerTitleStyle: SystemTypography(
@@ -313,7 +318,7 @@ const MainStack = ({
             '',
             'Bold',
             'center',
-            colors.shark
+            colors(isDark).text
           ),
           headerRight: isRTL
             ? () => <WahaBackButton onPress={() => goBack()} />
@@ -329,10 +334,10 @@ const MainStack = ({
         options={{
           headerTitle: t.storage && t.storage.storage,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -344,10 +349,10 @@ const MainStack = ({
           headerTitle:
             t.mobilization_tools && t.mobilization_tools.mobilization_tools,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -359,10 +364,10 @@ const MainStack = ({
           headerTitle:
             t.mobilization_tools && t.mobilization_tools.mobilization_tools,
           headerStyle: {
-            backgroundColor: colors.white
+            backgroundColor: colors(isDark).bg4
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -373,10 +378,10 @@ const MainStack = ({
         options={{
           headerTitle: t.security && t.security.security,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -387,10 +392,10 @@ const MainStack = ({
         options={{
           headerTitle: t.security && t.security.security,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -400,10 +405,10 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.white
+            backgroundColor: colors(isDark).bg4
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -413,10 +418,10 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.white
+            backgroundColor: colors(isDark).bg4
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -426,10 +431,10 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.white
+            backgroundColor: colors(isDark).bg4
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -439,10 +444,10 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors.white
+            backgroundColor: colors(isDark).bg4
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -472,10 +477,10 @@ const MainStack = ({
         options={{
           headerTitle: t.information && t.information.information,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}
@@ -486,10 +491,10 @@ const MainStack = ({
         options={{
           headerTitle: t.contact_us && t.contact_us.contact_us,
           headerStyle: {
-            backgroundColor: colors.aquaHaze
+            backgroundColor: colors(isDark).bg3
           },
           headerTitleStyle: {
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: font + '-Bold'
           }
         }}

@@ -29,13 +29,13 @@ const LanguageItem = ({
   <View
     style={[
       styles.languageItemContainer,
-      { backgroundColor: isSelected ? '#BFE5AF' : colors.white }
+      { backgroundColor: isSelected ? '#BFE5AF' : colors(isDark).bg4 }
     ]}
   >
     {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
     {isSelected ? (
       <View style={{ marginHorizontal: 20 }}>
-        <Icon name='check' size={30} color={colors.apple} />
+        <Icon name='check' size={30} color={colors(isDark).success} />
       </View>
     ) : (
       <TouchableOpacity
@@ -47,7 +47,7 @@ const LanguageItem = ({
           alignItems: 'center'
         }}
       >
-        <Icon name='volume' size={30} color={colors.tuna} />
+        <Icon name='volume' size={30} color={colors(isDark).icons} />
       </TouchableOpacity>
     )}
     <TouchableOpacity style={styles.touchableAreaContainer} onPress={onPress}>
@@ -58,14 +58,20 @@ const LanguageItem = ({
             'h3',
             'Bold',
             'left',
-            colors.shark,
+            colors(isDark).text,
             font
           )}
         >
           {nativeName}
         </Text>
         <Text
-          style={SystemTypography(false, 'p', 'Regular', 'left', colors.shark)}
+          style={SystemTypography(
+            false,
+            'p',
+            'Regular',
+            'left',
+            colors(isDark).text
+          )}
         >
           {localeName}
         </Text>

@@ -43,6 +43,7 @@ const StorageScreen = ({
   navigation: { setOptions, goBack },
   // Props passed from redux.
   isRTL,
+  isDark,
   database,
   t,
   font
@@ -199,7 +200,9 @@ const StorageScreen = ({
   )
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+    >
       <FlatList
         style={{ flex: 1 }}
         data={getInstalledLanguageInstances()}
@@ -214,7 +217,7 @@ const StorageScreen = ({
       />
       <WahaButton
         type='filled'
-        color={colors.red}
+        color={colors(isDark).error}
         label={`${t.storage &&
           t.storage
             .clear_all_downloaded_lessons} (${totalStorage} ${t.storage &&
@@ -246,8 +249,7 @@ const StorageScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: colors.aquaHaze
+    flex: 1
   }
 })
 

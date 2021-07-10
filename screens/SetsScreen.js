@@ -33,6 +33,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     // For testing.
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
@@ -66,6 +67,7 @@ const SetsScreen = ({
   // Props passed from redux.
   activeDatabase,
   isRTL,
+  isDark,
   activeGroup,
   t,
   font,
@@ -261,7 +263,7 @@ const SetsScreen = ({
         <Icon
           name='plus'
           size={60 * scaleMultiplier}
-          color={colors.chateau}
+          color={colors(isDark).disabled}
           style={styles.addNewSetIcon}
         />
       </View>
@@ -280,7 +282,7 @@ const SetsScreen = ({
             'p',
             'Regular',
             'left',
-            colors.chateau
+            colors(isDark).disabled
           )}
         >
           {addNewSetLabel}
@@ -298,7 +300,7 @@ const SetsScreen = ({
           'p',
           'Regular',
           'center',
-          colors.chateau
+          colors(isDark).disabled
         )}
       >
         {t.sets && t.sets.no_mobilization_tools_content}
@@ -358,7 +360,7 @@ const SetsScreen = ({
   })
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).bg1 }]}>
       <FlatList
         data={setData}
         renderItem={renderSetItem}
@@ -399,8 +401,7 @@ const SetsScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: colors.porcelain
+    flex: 1
   },
   addSetButtonContainer: {
     width: '100%',

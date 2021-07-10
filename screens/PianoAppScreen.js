@@ -27,6 +27,7 @@ function mapStateToProps (state) {
   return {
     security: state.security,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
@@ -58,6 +59,7 @@ const PianoAppScreen = ({
   activeGroup,
   t,
   isRTL,
+  isDark,
   setIsMuted,
   setIsTimedOut
 }) => {
@@ -111,7 +113,9 @@ const PianoAppScreen = ({
   useBackHandler(() => true)
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+    >
       <View style={styles.titleContainer}>
         <Image
           source={require('../assets/icons/waha_icon.png')}
@@ -129,7 +133,7 @@ const PianoAppScreen = ({
               'h1',
               'Bold',
               'center',
-              colors.shark
+              colors(isDark).text
             ),
             { paddingHorizontal: 10 }
           ]}
@@ -161,14 +165,22 @@ const PianoAppScreen = ({
               margin: 20
             }}
           >
-            <View style={styles.recordButton}>
+            <View
+              style={[
+                styles.recordButton,
+                {
+                  backgroundColor: colors(isDark).error,
+                  borderColor: colors(isDark).icons
+                }
+              ]}
+            >
               <Text
                 style={StandardTypography(
                   { font, isRTL },
                   'h2',
                   'Regular',
                   'center',
-                  colors.white
+                  colors(isDark).textOnColor
                 )}
               >
                 {countdown}
@@ -186,7 +198,7 @@ const PianoAppScreen = ({
             <Icon
               name={isPlaying ? 'pause' : 'play'}
               size={60 * scaleMultiplier}
-              color={colors.tuna}
+              color={colors(isDark).icons}
             />
           </TouchableOpacity>
         </View>
@@ -214,7 +226,7 @@ const PianoAppScreen = ({
               margin: 20
             }}
           >
-            <Icon name={'settings'} size={50} color={colors.tuna} />
+            <Icon name={'settings'} size={50} color={colors(isDark).icons} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={
@@ -229,7 +241,7 @@ const PianoAppScreen = ({
             <Icon
               name={security.isMuted ? 'volume-off' : 'volume'}
               size={50}
-              color={colors.tuna}
+              color={colors(isDark).icons}
             />
           </TouchableOpacity>
         </View>
@@ -241,7 +253,6 @@ const PianoAppScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.aquaHaze,
     alignItems: 'center',
     justifyContent: 'space-around'
   },
@@ -257,12 +268,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   recordButton: {
-    backgroundColor: colors.red,
     width: 50 * scaleMultiplier,
     height: 50 * scaleMultiplier,
     borderRadius: (50 * scaleMultiplier) / 2,
     borderWidth: 2,
-    borderColor: colors.tuna,
     justifyContent: 'center',
     alignItems: 'center'
   },

@@ -12,6 +12,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations
   }
@@ -26,6 +27,7 @@ const GroupsScreenEditButton = ({
   isEditing,
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
 
   t
@@ -39,7 +41,7 @@ const GroupsScreenEditButton = ({
             'h3',
             isEditing ? 'Bold' : 'Regular',
             'center',
-            isEditing ? colors.white : colors.blue
+            isEditing ? colors(isDark).textOnColor : colors(isDark).highlight
           ),
           {
             // Underline the text for this button if we're in editing mode. This is standard for header buttons in material design.

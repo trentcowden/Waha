@@ -18,7 +18,7 @@ const ChapterSeparator = ({
       style={{
         height: '100%',
         width: 2,
-        backgroundColor: primaryColor
+        backgroundColor: colors(isDark, activeGroup.language).accent
       }}
     />
   )

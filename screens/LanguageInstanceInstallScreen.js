@@ -433,13 +433,19 @@ const LanguageInstanceInstallScreen = ({
         {
           backgroundColor:
             routeName === 'InitialLanguageInstanceInstall'
-              ? colors.aquaHaze
-              : colors.white
+              ? colors(isDark).bg3
+              : colors(isDark).bg4
         }
       ]}
     >
       <Text
-        style={SystemTypography(false, 'h3', 'Regular', 'left', colors.chateau)}
+        style={SystemTypography(
+          false,
+          'h3',
+          'Regular',
+          'left',
+          colors(isDark).disabled
+        )}
       >
         {i18n.t(languageFamily.i18nName)}
       </Text>
@@ -453,8 +459,8 @@ const LanguageInstanceInstallScreen = ({
         {
           backgroundColor:
             routeName === 'InitialLanguageInstanceInstall'
-              ? colors.aquaHaze
-              : colors.white
+              ? colors(isDark).bg3
+              : colors(isDark).bg4
         }
       ]}
     >
@@ -462,7 +468,13 @@ const LanguageInstanceInstallScreen = ({
         <View style={styles.headerTextContainer}>
           <Text
             style={[
-              SystemTypography(false, 'h2', 'Bold', 'center', colors.shark),
+              SystemTypography(
+                false,
+                'h2',
+                'Bold',
+                'center',
+                colors(isDark).text
+              ),
               { fontSize: 28 * scaleMultiplier }
             ]}
           >
@@ -475,7 +487,7 @@ const LanguageInstanceInstallScreen = ({
               'h3',
               'Regular',
               'center',
-              colors.shark
+              colors(isDark).text
             )}
           >
             {i18n.t('select_language')}
@@ -487,7 +499,9 @@ const LanguageInstanceInstallScreen = ({
           styles.searchBarContainer,
           {
             width: Dimensions.get('window').width - 40,
-            maxWidth: 500
+            maxWidth: 500,
+            borderColor: colors(isDark).bg1,
+            backgroundColor: colors(isDark).bg2
           }
         ]}
       >
@@ -495,12 +509,18 @@ const LanguageInstanceInstallScreen = ({
           <Icon
             name='search'
             size={25 * scaleMultiplier}
-            color={colors.chateau}
+            color={colors(isDark).disabled}
           />
         </View>
         <TextInput
           style={[
-            SystemTypography(false, 'h3', 'Regular', 'left', colors.shark),
+            SystemTypography(
+              false,
+              'h3',
+              'Regular',
+              'left',
+              colors(isDark).text
+            ),
             {
               flex: 1,
               justifyContent: 'center',
@@ -511,7 +531,7 @@ const LanguageInstanceInstallScreen = ({
           autoCorrect={false}
           autoCapitalize='none'
           placeholder='Search'
-          placeholderTextColor={colors.chateau}
+          placeholderTextColor={colors(isDark).disabled}
         />
       </View>
       <View style={styles.languageListContainer}>
@@ -539,7 +559,7 @@ const LanguageInstanceInstallScreen = ({
       >
         <WahaButton
           type={isConnected ? 'filled' : 'inactive'}
-          color={isConnected ? colors.apple : colors.porcelain}
+          color={isConnected ? colors(isDark).success : colors(isDark).bg1}
           onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
           label={
             isConnected
@@ -559,10 +579,14 @@ const LanguageInstanceInstallScreen = ({
           extraComponent={
             isConnected ? (
               isFetchingFirebaseData ? (
-                <ActivityIndicator color={colors.white} />
+                <ActivityIndicator color={colors(isDark).bg4} />
               ) : null
             ) : (
-              <Icon name='cloud-slash' size={40} color={colors.chateau} />
+              <Icon
+                name='cloud-slash'
+                size={40}
+                color={colors(isDark).disabled}
+              />
             )
           }
         />
@@ -597,9 +621,7 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: colors.porcelain,
     height: 50 * scaleMultiplier,
-    backgroundColor: colors.athens,
     paddingHorizontal: 5,
     flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     paddingTop: 5,

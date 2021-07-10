@@ -31,6 +31,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     isConnected: state.network.isConnected,
     t: activeDatabaseSelector(state).translations,
     primaryColor: activeDatabaseSelector(state).primaryColor
@@ -43,6 +44,7 @@ const ContactUsScreen = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  isDark,
   font,
   isConnected,
   t,
@@ -142,7 +144,13 @@ const ContactUsScreen = ({
   var asteriskComponent = isRTL ? (
     <Text
       style={[
-        StandardTypography({ font, isRTL }, 'h3', 'Bold', 'left', colors.red)
+        StandardTypography(
+          { font, isRTL },
+          'h3',
+          'Bold',
+          'left',
+          colors(isDark).error
+        )
       ]}
     >
       {'* '}
@@ -150,7 +158,13 @@ const ContactUsScreen = ({
   ) : (
     <Text
       style={[
-        StandardTypography({ font, isRTL }, 'h3', 'Bold', 'left', colors.red)
+        StandardTypography(
+          { font, isRTL },
+          'h3',
+          'Bold',
+          'left',
+          colors(isDark).error
+        )
       ]}
     >
       {' *'}
@@ -160,7 +174,9 @@ const ContactUsScreen = ({
   var rightAsterisk = isRTL ? null : asteriskComponent
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+    >
       <ScrollView bounces={false} style={styles.scrollViewContainer}>
         <View style={{ width: '100%', height: 20 * scaleMultiplier }} />
         {/* Email input area. */}
@@ -172,7 +188,7 @@ const ContactUsScreen = ({
                 'h3',
                 'Bold',
                 'left',
-                colors.shark
+                colors(isDark).text
               ),
               { marginVertical: 10 }
             ]}
@@ -199,20 +215,26 @@ const ContactUsScreen = ({
                   'h3',
                   'Regular',
                   'left',
-                  colors.shark
+                  colors(isDark).text
                 ),
                 styles.textInputContainer,
-                { paddingTop: 0, paddingBottom: 0 }
+                {
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  backgroundColor: colors(isDark).bg1
+                }
               ]}
               keyboardType='email-address'
               placeholder='name@email.com'
-              placeholderTextColor={colors.chateau}
+              placeholderTextColor={colors(isDark).disabled}
             />
             {emailError !== null ? (
               <View style={styles.emailStatusIconContainer}>
                 <Icon
                   name={emailError ? 'cancel' : 'check'}
-                  color={emailError ? colors.red : colors.apple}
+                  color={
+                    emailError ? colors(isDark).error : colors(isDark).success
+                  }
                   size={
                     emailError ? 45 * scaleMultiplier : 40 * scaleMultiplier
                   }
@@ -237,7 +259,7 @@ const ContactUsScreen = ({
                   'h3',
                   'Bold',
                   'left',
-                  colors.shark
+                  colors(isDark).text
                 ),
                 { marginVertical: 10 * scaleMultiplier }
               ]}
@@ -253,7 +275,9 @@ const ContactUsScreen = ({
                   'h4',
                   'regular',
                   'left',
-                  messageTextInput.length > 1000 ? colors.red : colors.chateau
+                  messageTextInput.length > 1000
+                    ? colors(isDark).error
+                    : colors(isDark).disabled
                 )
               ]}
             >
@@ -268,14 +292,18 @@ const ContactUsScreen = ({
                 'h3',
                 'Regular',
                 'left',
-                colors.shark
+                colors(isDark).text
               ),
               styles.textInputContainer,
-              { height: 200 * scaleMultiplier, textAlignVertical: 'top' }
+              {
+                height: 200 * scaleMultiplier,
+                textAlignVertical: 'top',
+                backgroundColor: colors(isDark).bg1
+              }
             ]}
             multiline
             placeholder={t.contact_us && t.contact_us.message_placeholder}
-            placeholderTextColor={colors.chateau}
+            placeholderTextColor={colors(isDark).disabled}
           />
         </View>
         {/* Bug checkmark input area. */}
@@ -287,10 +315,13 @@ const ContactUsScreen = ({
         >
           <TouchableOpacity
             onPress={() => setIsBugChecked(old => !old)}
-            style={styles.checkIconContainer}
+            style={[
+              styles.checkIconContainer,
+              { backgroundColor: colors(isDark).bg1 }
+            ]}
           >
             {isBugChecked ? (
-              <Icon name='check' size={25} color={colors.tuna} />
+              <Icon name='check' size={25} color={colors(isDark).icons} />
             ) : null}
           </TouchableOpacity>
           <Text
@@ -300,7 +331,7 @@ const ContactUsScreen = ({
                 'h3',
                 'Regular',
                 'left',
-                colors.shark
+                colors(isDark).text
               ),
               { marginHorizontal: 10 }
             ]}
@@ -318,7 +349,7 @@ const ContactUsScreen = ({
                   'h3',
                   'Bold',
                   'left',
-                  colors.shark
+                  colors(isDark).text
                 ),
                 { marginVertical: 10 * scaleMultiplier }
               ]}
@@ -333,10 +364,14 @@ const ContactUsScreen = ({
                   'h3',
                   'Regular',
                   'left',
-                  colors.shark
+                  colors(isDark).text
                 ),
                 styles.textInputContainer,
-                { height: 200 * scaleMultiplier, textAlignVertical: 'top' }
+                {
+                  height: 200 * scaleMultiplier,
+                  textAlignVertical: 'top',
+                  backgroundColor: colors(isDark).bg1
+                }
               ]}
               multiline
             />
@@ -358,8 +393,8 @@ const ContactUsScreen = ({
             emailTextInput === null ||
             !isConnected ||
             messageTextInput.length > 1000
-              ? colors.porcelain
-              : colors.apple
+              ? colors(isDark).bg1
+              : colors(isDark).success
           }
           useDefaultFont={false}
           label={isSubmitting || !isConnected ? '' : t.general.submit}
@@ -376,11 +411,15 @@ const ContactUsScreen = ({
               // If we're in the middle of submitting, change the submit button to show an activity indicator.
               isSubmitting ? (
                 <View>
-                  <ActivityIndicator color={colors.white} />
+                  <ActivityIndicator color={colors(isDark).bg4} />
                 </View>
               ) : null
             ) : (
-              <Icon name='cloud-slash' size={40} color={colors.chateau} />
+              <Icon
+                name='cloud-slash'
+                size={40}
+                color={colors(isDark).disabled}
+              />
             )
           }
         />
@@ -393,8 +432,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: colors.aquaHaze
+    alignItems: 'center'
   },
   scrollViewContainer: {
     width: '100%',
@@ -410,7 +448,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     height: 60 * scaleMultiplier,
-    backgroundColor: colors.porcelain,
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 20,
@@ -433,7 +470,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: colors.porcelain,
     justifyContent: 'center',
     alignItems: 'center'
   }

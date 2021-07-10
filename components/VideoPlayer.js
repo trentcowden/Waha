@@ -134,7 +134,7 @@ const VideoPlayer = ({
         style={{
           flex: 1,
           aspectRatio: 14 / 9,
-          backgroundColor: colors.shark,
+          backgroundColor: colors(isDark).text,
           overflow: 'hidden'
         }}
       >
@@ -186,7 +186,7 @@ const VideoPlayer = ({
               <Icon
                 name='fullscreen-enter'
                 size={100 * scaleMultiplier}
-                color={colors.white}
+                color={colors(isDark).bg4}
               />
             </TouchableOpacity>
           </View>
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.shark + '60'
+    backgroundColor: '#00000060'
   }
 })
 

@@ -43,10 +43,14 @@ const HomeworkModal = props => {
             marginTop: 30
           }}
         >
-          <Icon name='list' size={60 * scaleMultiplier} color={colors.tuna} />
+          <Icon
+            name='list'
+            size={60 * scaleMultiplier}
+            color={colors(isDark).icons}
+          />
           <Text
             style={{
-              color: colors.shark,
+              color: colors(isDark).text,
               fontFamily: props.font + '-Black',
               fontSize: 36 * scaleMultiplier,
               textAlign: 'center',
@@ -78,7 +82,7 @@ const HomeworkModal = props => {
             style={{
               fontFamily: props.font + '-Bold',
               fontSize: 24 * scaleMultiplier,
-              color: colors.red,
+              color: colors(isDark).error,
               textAlign: 'center'
             }}
           >
@@ -92,7 +96,7 @@ const HomeworkModal = props => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors(isDark).textOnColor,
     flex: 1,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10
@@ -102,6 +106,7 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)

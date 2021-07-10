@@ -8,7 +8,7 @@ import { colors } from '../styles/colors'
  */
 const SplashScreen = ({}) => {
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).brand }]}>
       <Image
         source={require('../assets/icons/splash.png')}
         style={{
@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.waha
+    alignItems: 'center'
   }
 })
 

@@ -90,7 +90,7 @@
 //     >
 //       <Icon
 //         name={isRTL ? 'arrow-left' : 'arrow-right'}
-//         color={colors.tuna}
+//         color={colors(isDark).icons}
 //         size={50 * scaleMultiplier}
 //       />
 //     </WahaItem>
@@ -103,7 +103,7 @@
 //           'h2',
 //           'Black',
 //           'left',
-//           colors.shark
+//           colors(isDark).text
 //         )}
 //       >
 //         {t.mobilization_tools && t.mobilization_tools.mobilization_tools_status_label}
@@ -166,7 +166,7 @@
 //           'p',
 //           'Regular',
 //           'center',
-//           colors.chateau
+//           colors(isDark).disabled
 //         )}
 //       >
 //         {t.mobilization_tools && t.mobilization_tools.no_mobilization_tools_content_text}
@@ -204,6 +204,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     database: state.database
   }
@@ -218,6 +219,7 @@ const GroupListHeaderMT = ({
   languageID,
   // Props passed from redux.
   isRTL,
+  isDark,
   t,
   font,
 
@@ -237,7 +239,7 @@ const GroupListHeaderMT = ({
             'h3',
             'Bold',
             'left',
-            colors.chateau,
+            colors(isDark).disabled,
             getLanguageFont(languageID)
           )}
         >
@@ -262,7 +264,7 @@ const styles = StyleSheet.create({
     height: 55 * scaleMultiplier,
     paddingHorizontal: 20,
     justifyContent: 'space-between',
-    backgroundColor: colors.aquaHaze
+    backgroundColor: colors(isDark).bg3
   },
   languageLogo: {
     resizeMode: 'contain',
@@ -279,6 +281,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     groups: state.groups,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     activeGroup: activeGroupSelector(state)
@@ -306,6 +309,7 @@ const GroupItemMT = ({
   // Props passed from redux.
   database,
   isRTL,
+  isDark,
   groups,
   font,
 
@@ -329,7 +333,7 @@ const GroupItemMT = ({
         }}
       >
         <GroupAvatar
-          style={{ backgroundColor: colors.athens }}
+          style={{ backgroundColor: colors(isDark).bg2 }}
           size={50 * scaleMultiplier}
           emoji={thisGroup.emoji}
           isActive={activeGroup.name === thisGroup.name}
@@ -345,7 +349,7 @@ const GroupItemMT = ({
             'h3',
             'Bold',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {thisGroup.name}
@@ -353,9 +357,12 @@ const GroupItemMT = ({
       </View>
       <View style={{ marginHorizontal: 20 }}>
         <Switch
-          trackColor={{ false: colors.chateau, true: colors.apple }}
+          trackColor={{
+            false: colors(isDark).disabled,
+            true: colors(isDark).success
+          }}
           thumbColor={colors.white}
-          ios_backgroundColor={colors.chateau}
+          ios_backgroundColor={colors(isDark).disabled}
           onValueChange={() => {
             // Toggle the visibility of the Mobilization Tools tab for this group on or off.
             setShouldShowMobilizationToolsTab(

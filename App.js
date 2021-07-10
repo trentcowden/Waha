@@ -9,7 +9,6 @@ import { PersistGate } from 'redux-persist/lib/integration/react'
 import { isTablet, lockPortrait } from './constants'
 import Root from './navigation/Root'
 import { persistor, store } from './redux/store'
-import { colors } from './styles/colors'
 
 import('./ReactotronConfig').then(() => {})
 
@@ -90,10 +89,7 @@ export default function App () {
         {/* The persist gate allows the redux data to persist across restarts. */}
         <PersistGate loading={<View></View>} persistor={persistor}>
           {/* Set a few settings related to the status bar. */}
-          <StatusBar
-            backgroundColor={colors.aquaHaze}
-            barStyle='dark-content'
-          />
+          <StatusBar backgroundColor='#F3F7F9' barStyle='dark-content' />
           <Root />
         </PersistGate>
       </Provider>

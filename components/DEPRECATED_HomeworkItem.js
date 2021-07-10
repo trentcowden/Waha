@@ -34,9 +34,9 @@ const HomeworkItem = props => {
           width: 30 * scaleMultiplier,
           height: 30 * scaleMultiplier,
           borderWidth: isChecked ? 0 : 2,
-          borderColor: colors.tuna,
+          borderColor: colors(isDark).icons,
           borderRadius: 5,
-          backgroundColor: isChecked ? colors.blue : null
+          backgroundColor: isChecked ? colors(isDark).highlight : null
         }}
       >
         {isChecked ? (
@@ -47,7 +47,7 @@ const HomeworkItem = props => {
         <Text
           style={{
             fontSize: 16 * scaleMultiplier,
-            color: colors.shark,
+            color: colors(isDark).text,
             fontFamily: props.font + '-Black',
             marginVertical: 5
           }}
@@ -57,7 +57,7 @@ const HomeworkItem = props => {
         <Text
           style={{
             fontSize: 14 * scaleMultiplier,
-            color: colors.tuna,
+            color: colors(isDark).icons,
             fontFamily: props.font + '-Regular'
           }}
         >
@@ -74,7 +74,7 @@ const HomeworkItem = props => {
         <Icon
           name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
           size={35 * scaleMultiplier}
-          color={colors.apple}
+          color={colors(isDark).success}
         />
       </TouchableOpacity>
     </View>
@@ -91,6 +91,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)
   }

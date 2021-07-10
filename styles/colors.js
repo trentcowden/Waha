@@ -16,7 +16,7 @@ export const colors = (isDark, languageID = null) => {
             }
           })
         } else {
-          if (language.wahaID === langaugeID) {
+          if (language.wahaID === languageID) {
             accentColor = isDark ? language.colorDark : language.colorLight
           }
         }
@@ -27,7 +27,8 @@ export const colors = (isDark, languageID = null) => {
     return {
       // Light (default) mode colors.
       accent: accentColor,
-      text: '#353E42',
+      brand: '#E63946',
+      text: '#333B3F',
       textOnColor: '#FFFFFF',
       icons: '#4E5A60',
       disabled: '#95A0A6',
@@ -46,6 +47,7 @@ export const colors = (isDark, languageID = null) => {
     return {
       // Dark mode colors.
       accent: accentColor,
+      brand: '#E63946',
       text: '#EFF4F6',
       textOnColor: '#282E31',
       icons: '#BFC9CD',

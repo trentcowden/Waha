@@ -13,7 +13,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
-
+    isDark: state.settings.isDarkModeEnabled,
     isRTL: activeDatabaseSelector(state).isRTL
   }
 }
@@ -33,7 +33,7 @@ const OptionsModal = ({
   children,
   // Props passed from redux.
   font,
-
+  isDark,
   isRTL
 }) => (
   <Modal
@@ -48,15 +48,28 @@ const OptionsModal = ({
     useNativeDriver
   >
     <View style={{ alignItems: 'center' }}>
-      <View style={styles.childrenContainer}>{children}</View>
-      <TouchableOpacity onPress={hideModal} style={styles.closeButtonContainer}>
+      <View
+        style={[
+          styles.childrenContainer,
+          { backgroundColor: colors(isDark).bg4 }
+        ]}
+      >
+        {children}
+      </View>
+      <TouchableOpacity
+        onPress={hideModal}
+        style={[
+          styles.closeButtonContainer,
+          { backgroundColor: colors(isDark).bg4 }
+        ]}
+      >
         <Text
           style={StandardTypography(
             { font, isRTL },
             'h3',
             'Bold',
             'center',
-            colors.red
+            colors(isDark).error
           )}
         >
           {closeText}
@@ -70,7 +83,6 @@ const styles = StyleSheet.create({
   childrenContainer: {
     width: '100%',
     maxWidth: 500,
-    backgroundColor: colors.white,
     borderRadius: 20,
     marginVertical: 10
   },
@@ -79,7 +91,6 @@ const styles = StyleSheet.create({
     maxWidth: 500,
     height: 70 * scaleMultiplier,
     justifyContent: 'center',
-    backgroundColor: colors.white,
     borderRadius: 20
   }
 })

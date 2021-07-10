@@ -26,6 +26,7 @@ function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     security: state.security,
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
@@ -58,6 +59,7 @@ const PianoPasscodeSetScreen = ({
   font,
   security,
   isRTL,
+  isDark,
   activeGroup,
   setSecurityEnabled,
   setCode,
@@ -176,7 +178,9 @@ const PianoPasscodeSetScreen = ({
   }, [localPasscode])
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}
+    >
       <View style={styles.topContainer}>
         <View style={styles.instructionTextContainer}>
           <Text
@@ -185,7 +189,7 @@ const PianoPasscodeSetScreen = ({
               'h2',
               'Bold',
               'center',
-              colors.shark
+              colors(isDark).text
             )}
           >
             {instructionText[routeName]}
@@ -195,7 +199,7 @@ const PianoPasscodeSetScreen = ({
         <WahaButton
           type='outline'
           onPress={() => setLocalPasscode('')}
-          color={colors.red}
+          color={colors(isDark).error}
           label={t.general && t.general.clear}
           width={Dimensions.get('window').width / 3}
           style={{ marginVertical: 0 }}
@@ -209,7 +213,6 @@ const PianoPasscodeSetScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'space-around'
   },

@@ -30,6 +30,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     groups: state.groups
   }
@@ -44,6 +45,7 @@ const MobilizationToolsScreen = ({
   // Props passed from redux.
   database,
   isRTL,
+  isDark,
   t,
   font,
 
@@ -100,7 +102,7 @@ const MobilizationToolsScreen = ({
           style={{
             borderRadius: 15,
             // borderWidth: 1.5,
-            // backgroundColor: colors.porcelain,
+            // backgroundColor: colors(isDark).bg1,
             overflow: 'hidden'
           }}
           onPress={() => {
@@ -125,9 +127,9 @@ const MobilizationToolsScreen = ({
               flexDirection: 'column',
               // height: '100%',
               // width: '100%',
-              backgroundColor: colors.porcelain,
+              backgroundColor: colors(isDark).bg1,
               borderBottomWidth: 4,
-              borderBottomColor: colors.porcelainShadow
+              borderBottomColor: colors(isDark).bg1Shadow
             }}
           >
             <Text
@@ -136,7 +138,7 @@ const MobilizationToolsScreen = ({
                 'h4',
                 'Regular',
                 'center',
-                colors.shark
+                colors(isDark).text
               )}
             >
               {t.mobilization_tools && t.mobilization_tools.unlock_code}
@@ -147,7 +149,7 @@ const MobilizationToolsScreen = ({
                 'h1',
                 'Bold',
                 'center',
-                colors.shark
+                colors(isDark).text
               )}
             >
               2 8 1 8 2 0
@@ -174,7 +176,7 @@ const MobilizationToolsScreen = ({
         >
           <Icon
             name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
-            color={colors.tuna}
+            color={colors(isDark).icons}
             size={30 * scaleMultiplier}
           />
         </TouchableOpacity>
@@ -183,7 +185,7 @@ const MobilizationToolsScreen = ({
   )
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
       {!areMobilizationToolsUnlocked && topComponents}
       {areMobilizationToolsUnlocked ? (
         <FlatList
@@ -208,7 +210,7 @@ const MobilizationToolsScreen = ({
                     'h2',
                     'Bold',
                     'left',
-                    colors.shark
+                    colors(isDark).text
                   ),
                   {
                     paddingHorizontal: 20,
@@ -239,7 +241,7 @@ const MobilizationToolsScreen = ({
           >
             <Icon
               name={isRTL ? 'arrow-left' : 'arrow-right'}
-              color={colors.tuna}
+              color={colors(isDark).icons}
               size={50 * scaleMultiplier}
             />
           </WahaItem>
@@ -250,12 +252,12 @@ const MobilizationToolsScreen = ({
         visible={showSnackbar}
         textMessage={t.general && t.general.copied_to_clipboard}
         messageStyle={{
-          color: colors.white,
+          color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: font + '-Black',
           textAlign: 'center'
         }}
-        backgroundColor={colors.apple}
+        backgroundColor={colors(isDark).success}
       />
     </View>
   )
@@ -264,7 +266,6 @@ const MobilizationToolsScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.aquaHaze,
     alignItems: 'center'
   }
 })

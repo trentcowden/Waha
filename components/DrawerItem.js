@@ -13,6 +13,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)
   }
@@ -31,6 +32,7 @@ const DrawerItem = ({
   label,
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
 
   activeGroup
@@ -43,11 +45,21 @@ const DrawerItem = ({
     onPress={onPress}
   >
     <View style={styles.iconContainer}>
-      <Icon name={icon} size={30 * scaleMultiplier} color={colors.tuna} />
+      <Icon
+        name={icon}
+        size={30 * scaleMultiplier}
+        color={colors(isDark).icons}
+      />
     </View>
     <Text
       style={[
-        StandardTypography({ font, isRTL }, 'h3', 'Bold', 'left', colors.shark),
+        StandardTypography(
+          { font, isRTL },
+          'h3',
+          'Bold',
+          'left',
+          colors(isDark).text
+        ),
         { paddingHorizontal: 10 }
       ]}
       // numberOfLines={1}

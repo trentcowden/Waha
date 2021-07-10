@@ -21,6 +21,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -490,7 +491,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 2.5,
-    backgroundColor: colors.chateau
+    backgroundColor: colors(isDark).disabled
   },
   bottomFadeArea: {
     position: 'absolute',

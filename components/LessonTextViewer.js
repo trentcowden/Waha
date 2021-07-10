@@ -17,6 +17,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -52,7 +53,7 @@ const LessonTextViewer = ({
   activeGroup,
   activeDatabase,
   font,
-
+  isDark,
   t,
   isRTL
 }) => {
@@ -171,7 +172,7 @@ const LessonTextViewer = ({
         sectionOffsets={sectionOffsets}
       />
       <LinearGradient
-        colors={[colors.white, colors.white + '00']}
+        colors={[colors(isDark).bg4, colors(isDark).bg4 + '00']}
         start={[1, 1]}
         end={[1, 0]}
         style={styles.bottomFadeArea}

@@ -7,7 +7,8 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -23,7 +24,8 @@ const TimeDisplay = ({
   time,
   side,
   // Props passed from redux.
-  font
+  font,
+  isDark
 }) => {
   /**
    * Converts a time in milliseconds to a nicely formatted time in the format HH:MM:SS.
@@ -67,7 +69,7 @@ const TimeDisplay = ({
           'd',
           'Regular',
           'center',
-          side === 'left' ? colors.shark : colors.chateau
+          side === 'left' ? colors(isDark).text : colors(isDark).disabled
         )}
       >
         {convertTime(time)}

@@ -14,6 +14,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations
   }
@@ -32,6 +33,7 @@ const AddNewGroupButton = ({
   setShowAddGroupModal,
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
 
   t
@@ -41,7 +43,10 @@ const AddNewGroupButton = ({
       <TouchableOpacity
         style={[
           styles.touchableAreaContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
+          {
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            backgroundColor: colors(isDark).bg4
+          }
         ]}
         onPress={() => {
           // When adding a new group, set the languageID so that we can pass that to the CreateGroup function when we actually do create the group.
@@ -55,7 +60,7 @@ const AddNewGroupButton = ({
           <Icon
             name='group-add'
             size={40 * scaleMultiplier}
-            color={colors.chateau}
+            color={colors(isDark).disabled}
           />
         </View>
         <Text
@@ -64,7 +69,7 @@ const AddNewGroupButton = ({
             'h3',
             'Bold',
             'left',
-            colors.blue
+            colors(isDark).highlight
           )}
         >
           {t.groups && t.groups.new_group}
@@ -81,8 +86,7 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white
+    alignItems: 'center'
   },
   iconContainer: {
     width: 55 * scaleMultiplier,

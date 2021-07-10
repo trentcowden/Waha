@@ -15,6 +15,7 @@ import WahaSeparator from './WahaSeparator'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations
@@ -38,6 +39,7 @@ const LanguageStorageItem = ({
   font,
 
   isRTL,
+  isDark,
   t
 }) => {
   return (
@@ -45,7 +47,10 @@ const LanguageStorageItem = ({
       <View
         style={[
           styles.languageStorageHeaderContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
+          {
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            backgroundColor: colors(isDark).bg3
+          }
         ]}
       >
         <Text
@@ -54,7 +59,7 @@ const LanguageStorageItem = ({
             'h3',
             'Regular',
             'left',
-            colors.chateau
+            colors(isDark).disabled
           )}
         >
           {languageName}
@@ -70,7 +75,10 @@ const LanguageStorageItem = ({
       <View
         style={[
           styles.mainAreaContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
+          {
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            backgroundColor: colors(isDark).bg4
+          }
         ]}
       >
         <Text
@@ -79,7 +87,7 @@ const LanguageStorageItem = ({
             'h3',
             'Bold',
             'left',
-            colors.tuna
+            colors(isDark).icons
           )}
         >
           {`${megabytes} ${t.storage && t.storage.megabyte}`}
@@ -91,7 +99,7 @@ const LanguageStorageItem = ({
               'h3',
               'Regular',
               'left',
-              colors.tuna
+              colors(isDark).icons
             ),
             {
               flex: 1,
@@ -103,7 +111,7 @@ const LanguageStorageItem = ({
         </Text>
         <WahaButton
           type='outline'
-          color={colors.red}
+          color={colors(isDark).error}
           label={t.general && t.general.clear}
           width={92 * scaleMultiplier}
           onPress={clearDownloads}
@@ -125,7 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     height: 40 * scaleMultiplier,
-    backgroundColor: colors.aquaHaze,
     paddingHorizontal: 20
   },
   languageLogo: {
@@ -136,7 +143,6 @@ const styles = StyleSheet.create({
   mainAreaContainer: {
     width: '100%',
     height: 80 * scaleMultiplier,
-    backgroundColor: colors.white,
     alignItems: 'center',
     paddingHorizontal: 20,
     justifyContent: 'space-between'

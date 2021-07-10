@@ -15,7 +15,8 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -36,6 +37,7 @@ const PlayScreenTitle = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  isDark,
   font
 }) => {
   return (
@@ -55,7 +57,7 @@ const PlayScreenTitle = ({
             'h3',
             'Black',
             'center',
-            colors.shark
+            colors(isDark).text
           ),
           {
             fontSize: 21 * scaleMultiplier
@@ -115,20 +117,6 @@ const styles = StyleSheet.create({
     width: 15,
     height: '100%',
     marginHorizontal: 10
-  },
-  rightGradientFiller: {
-    position: 'absolute',
-    right: 0,
-    width: 10,
-    height: '100%',
-    backgroundColor: colors.white
-  },
-  leftGradientFiller: {
-    position: 'absolute',
-    left: 0,
-    width: 10,
-    height: '100%',
-    backgroundColor: colors.white
   }
 })
 

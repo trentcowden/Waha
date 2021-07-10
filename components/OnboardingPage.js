@@ -33,9 +33,15 @@ const OnboardingPage = ({
   children,
   // Props passed from redux.
   isRTL,
+  isDark,
   font
 }) => (
-  <View style={styles.onboardingPageContainer}>
+  <View
+    style={[
+      styles.onboardingPageContainer,
+      { backgroundColor: colors(isDark).bg3 }
+    ]}
+  >
     <View style={styles.textContainer}>
       <Text
         style={[
@@ -44,7 +50,7 @@ const OnboardingPage = ({
             'h2',
             'Bold',
             'center',
-            colors.shark
+            colors(isDark).text
           ),
           { fontSize: 24 * scaleMultiplier }
         ]}
@@ -58,7 +64,7 @@ const OnboardingPage = ({
           'h3',
           'Regular',
           'center',
-          colors.chateau
+          colors(isDark).disabled
         )}
       >
         {message}
@@ -74,8 +80,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.aquaHaze
+    alignItems: 'center'
   },
   textContainer: {
     justifyContent: 'space-around',

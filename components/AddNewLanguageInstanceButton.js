@@ -13,6 +13,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     t: activeDatabaseSelector(state).translations,
     installedLanguageInstances: Object.keys(state.database).filter(
       key => key.length === 2
@@ -31,6 +32,7 @@ const AddNewLanguageInstanceButton = ({
   languageAndGroupData,
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
   installedLanguageInstances,
   t
@@ -56,7 +58,7 @@ const AddNewLanguageInstanceButton = ({
           <Icon
             name='language-add'
             size={40 * scaleMultiplier}
-            color={colors.chateau}
+            color={colors(isDark).disabled}
           />
         </View>
         <Text
@@ -65,7 +67,7 @@ const AddNewLanguageInstanceButton = ({
             'h3',
             'Bold',
             'left',
-            colors.chateau
+            colors(isDark).disabled
           )}
         >
           {t.groups && t.groups.add_language}

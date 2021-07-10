@@ -13,6 +13,7 @@ import PianoKeyLabel from './PianoKeyLabel'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     security: state.security,
     isRTL: activeDatabaseSelector(state).isRTL,
@@ -32,6 +33,7 @@ const PianoPasscodeDisplay = ({
 
   security,
   isRTL,
+  isDark,
   activeGroup
 }) => (
   <View
@@ -43,7 +45,9 @@ const PianoPasscodeDisplay = ({
       flexDirection: isRTL ? 'row-reverse' : 'row'
     }}
   >
-    <View style={styles.keyPlaceholder}>
+    <View
+      style={[styles.keyPlaceholder, { backgroundColor: colors(isDark).bg4 }]}
+    >
       {passcode[1] && (
         <PianoKeyLabel
           backgroundColor={keyColors[passcode.substr(0, 2).replace(/^0/, '')]}
@@ -52,7 +56,9 @@ const PianoPasscodeDisplay = ({
         />
       )}
     </View>
-    <View style={styles.keyPlaceholder}>
+    <View
+      style={[styles.keyPlaceholder, { backgroundColor: colors(isDark).bg4 }]}
+    >
       {passcode[3] && (
         <PianoKeyLabel
           backgroundColor={keyColors[passcode.substr(2, 2).replace(/^0/, '')]}
@@ -61,7 +67,9 @@ const PianoPasscodeDisplay = ({
         />
       )}
     </View>
-    <View style={styles.keyPlaceholder}>
+    <View
+      style={[styles.keyPlaceholder, { backgroundColor: colors(isDark).bg4 }]}
+    >
       {passcode[5] && (
         <PianoKeyLabel
           backgroundColor={keyColors[passcode.substr(4, 2).replace(/^0/, '')]}
@@ -70,7 +78,9 @@ const PianoPasscodeDisplay = ({
         />
       )}
     </View>
-    <View style={styles.keyPlaceholder}>
+    <View
+      style={[styles.keyPlaceholder, { backgroundColor: colors(isDark).bg4 }]}
+    >
       {passcode[7] && (
         <PianoKeyLabel
           backgroundColor={keyColors[passcode.substr(6, 2).replace(/^0/, '')]}
@@ -79,7 +89,9 @@ const PianoPasscodeDisplay = ({
         />
       )}
     </View>
-    <View style={styles.keyPlaceholder}>
+    <View
+      style={[styles.keyPlaceholder, { backgroundColor: colors(isDark).bg4 }]}
+    >
       {passcode[9] && (
         <PianoKeyLabel
           backgroundColor={keyColors[passcode.substr(8, 2).replace(/^0/, '')]}
@@ -88,7 +100,9 @@ const PianoPasscodeDisplay = ({
         />
       )}
     </View>
-    <View style={styles.keyPlaceholder}>
+    <View
+      style={[styles.keyPlaceholder, { backgroundColor: colors(isDark).bg4 }]}
+    >
       {passcode[11] && (
         <PianoKeyLabel
           backgroundColor={keyColors[passcode.substr(10, 2).replace(/^0/, '')]}
@@ -105,7 +119,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 12 + 12,
     height: Dimensions.get('window').width / 12 + 12,
     borderRadius: Dimensions.get('window').width / 24 + 6,
-    backgroundColor: colors.white,
     margin: 5 * scaleMultiplier,
     justifyContent: 'center',
     alignItems: 'center',

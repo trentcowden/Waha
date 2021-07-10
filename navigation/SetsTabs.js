@@ -19,6 +19,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     primaryColor: activeDatabaseSelector(state).primaryColor,
     activeGroup: activeGroupSelector(state),
@@ -39,6 +40,7 @@ const SetsTabs = ({
 
   primaryColor,
   isRTL,
+  isDark,
   areMobilizationToolsUnlocked
 }) => {
   // Only dispaly the Mobilization Tools tab if the Mobilization Tools have been unlocked.
@@ -98,17 +100,17 @@ const SetsTabs = ({
       initialLayout={{ width: Dimensions.get('window').width }}
       tabBarOptions={{
         style: {
-          backgroundColor: colors.aquaHaze
+          backgroundColor: colors(isDark).bg3
         },
         labelStyle: {
           fontSize: 14 * scaleMultiplier,
           fontFamily: font + '-Bold',
           textTransform: 'none'
         },
-        activeTintColor: primaryColor,
-        inactiveTintColor: colors.chateau,
+        activeTintColor: colors(isDark, activeGroup.language).accent,
+        inactiveTintColor: colors(isDark).disabled,
         indicatorStyle: {
-          backgroundColor: primaryColor
+          backgroundColor: colors(isDark, activeGroup.language).accent
         }
       }}
     >

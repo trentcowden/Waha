@@ -1,9 +1,16 @@
 import LottieView from 'lottie-react-native'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import WahaSeparator from './WahaSeparator'
+
+function mapStateToProps (state) {
+  return {
+    isDark: state.settings.isDarkModeEnabled
+  }
+}
 
 /**
  * A component that displays a full-width image. Used to display gifs on the Mobilization Tools and Security Mode screens.
@@ -11,13 +18,15 @@ import WahaSeparator from './WahaSeparator'
  */
 const WahaHero = ({
   // Props passed from a parent component.
-  source
+  source,
+  // Props passed from redux.
+  isDark
 }) => {
   return (
     <View
       style={{
         width: '100%',
-        backgroundColor: colors.white,
+        backgroundColor: colors(isDark).bg4,
         alignItems: 'center'
       }}
     >
@@ -44,4 +53,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default WahaHero
+export default connect(mapStateToProps)(WahaHero)

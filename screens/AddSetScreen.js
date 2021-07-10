@@ -22,6 +22,7 @@ LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL,
@@ -55,6 +56,7 @@ const AddSetScreen = ({
 
   t,
   isRTL,
+  isDark,
   activeDatabase,
   activeGroup,
   primaryColor,
@@ -252,31 +254,34 @@ const AddSetScreen = ({
   )
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}>
       {category === 'Topical' && (
         <TagGroup
           source={tags}
           singleChoiceMode
           onSelectedTagChange={selected => setSelectedTag(selected)}
           style={styles.tagGroupContainer}
-          tagStyle={styles.tagContainer}
+          tagStyle={[
+            styles.tagContainer,
+            { borderColor: colors(isDark).disabled }
+          ]}
           textStyle={StandardTypography(
             { font, isRTL },
             'p',
             'Regular',
             'center',
-            colors.chateau
+            colors(isDark).disabled
           )}
           activeTagStyle={{
-            backgroundColor: primaryColor,
-            borderColor: primaryColor
+            backgroundColor: colors(isDark, activeGroup.language).accent,
+            borderColor: colors(isDark, activeGroup.language).accent
           }}
           activeTextStyle={StandardTypography(
             { font, isRTL },
             'p',
             'Regular',
             'center',
-            colors.white
+            colors(isDark).bg4
           )}
         />
       )}
@@ -304,7 +309,7 @@ const AddSetScreen = ({
                 'p',
                 'Regular',
                 'center',
-                colors.chateau
+                colors(isDark).disabled
               )}
             >
               {t.sets && t.sets.no_more_sets}
@@ -317,12 +322,12 @@ const AddSetScreen = ({
         visible={showSnackbar}
         textMessage={t.sets && t.sets.set_added}
         messageStyle={{
-          color: colors.white,
+          color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: font + '-Black',
           textAlign: 'center'
         }}
-        backgroundColor={colors.apple}
+        backgroundColor={colors(isDark).success}
       />
       <SetInfoModal
         isVisible={showSetInfoModal}
@@ -339,7 +344,6 @@ const AddSetScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: colors.white,
     flex: 1
   },
   tagGroupContainer: {
@@ -349,7 +353,6 @@ const styles = StyleSheet.create({
   },
   tagContainer: {
     borderRadius: 30,
-    borderColor: colors.chateau,
     height: 35 * scaleMultiplier,
     justifyContent: 'center',
     alignItems: 'center',

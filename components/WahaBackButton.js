@@ -7,7 +7,8 @@ import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: activeDatabaseSelector(state).isRTL,
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -21,7 +22,8 @@ const WahaBackButton = ({
   onPress,
   color = null,
   // Props passed from redux.
-  isRTL
+  isRTL,
+  isDark
 }) => (
   <TouchableOpacity
     style={[
@@ -33,7 +35,7 @@ const WahaBackButton = ({
     <Icon
       name={isRTL ? 'arrow-right' : 'arrow-left'}
       size={45 * scaleMultiplier}
-      color={color ? color : colors.tuna}
+      color={color ? color : colors(isDark).icons}
     />
   </TouchableOpacity>
 )

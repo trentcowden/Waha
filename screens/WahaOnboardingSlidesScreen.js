@@ -65,6 +65,7 @@ const WahaOnboardingSlidesScreen = ({
   // Props passed from redux.
   t,
   isRTL,
+  isDark,
   font,
 
   setHasOnboarded,
@@ -126,6 +127,7 @@ const WahaOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -136,7 +138,7 @@ const WahaOnboardingSlidesScreen = ({
         ]}
       >
         <LottieView
-          style={styles.image}
+          style={[styles.image, { backgroundColor: colors(isDark).bg4 }]}
           autoPlay
           loop
           resizeMode='cover'
@@ -153,6 +155,7 @@ const WahaOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -163,7 +166,7 @@ const WahaOnboardingSlidesScreen = ({
         ]}
       >
         <LottieView
-          style={styles.image}
+          style={[styles.image, { backgroundColor: colors(isDark).bg4 }]}
           autoPlay
           loop
           resizeMode='cover'
@@ -180,6 +183,7 @@ const WahaOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
+            borderColor: colors(isDark).bg2,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -190,7 +194,7 @@ const WahaOnboardingSlidesScreen = ({
         ]}
       >
         <LottieView
-          style={styles.image}
+          style={[styles.image, { backgroundColor: colors(isDark).bg4 }]}
           autoPlay
           loop
           resizeMode='cover'
@@ -213,7 +217,9 @@ const WahaOnboardingSlidesScreen = ({
   ]
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+    >
       <PagerView
         ref={pagerRef}
         style={styles.pager}
@@ -255,7 +261,7 @@ const WahaOnboardingSlidesScreen = ({
                 'h4',
                 'Bold',
                 'center',
-                colors.shark
+                colors(isDark).text
               )}
             >
               {t.general && t.general.skip}
@@ -276,7 +282,7 @@ const WahaOnboardingSlidesScreen = ({
               : () => pagerRef.current.setPage(activePage + 1)
           }
           type='filled'
-          color={colors.apple}
+          color={colors(isDark).success}
           style={{
             // Make the continue button twice as big as the skip button.
             flex: 2
@@ -290,7 +296,6 @@ const WahaOnboardingSlidesScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.aquaHaze,
     justifyContent: 'center'
   },
   pager: {
@@ -302,7 +307,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     borderWidth: 2,
-    borderColor: colors.athens,
     aspectRatio: 1,
     overflow: 'hidden',
     justifyContent: 'center',
@@ -310,8 +314,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
-    backgroundColor: colors.white
+    height: '100%'
   },
   bottomControlsContainer: {
     alignItems: 'center',

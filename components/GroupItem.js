@@ -27,6 +27,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     primaryColor: activeDatabaseSelector(state).primaryColor,
     t: activeDatabaseSelector(state).translations
   }
@@ -64,6 +65,7 @@ const GroupItem = ({
   database,
   activeDatabase,
   isRTL,
+  isDark,
   groups,
   activeGroup,
   font,
@@ -190,7 +192,7 @@ const GroupItem = ({
             <Icon
               name='minus-filled'
               size={24 * scaleMultiplier}
-              color={colors.red}
+              color={colors(isDark).error}
             />
           </TouchableOpacity>
         </Animated.View>
@@ -205,7 +207,11 @@ const GroupItem = ({
             }
           ]}
         >
-          <Icon name='check' size={24 * scaleMultiplier} color={colors.blue} />
+          <Icon
+            name='check'
+            size={24 * scaleMultiplier}
+            color={colors(isDark).highlight}
+          />
         </Animated.View>
       )
     else if (isLastGroupInLanguageInstance)
@@ -225,14 +231,18 @@ const GroupItem = ({
           <Icon
             name={isRTL ? 'arrow-left' : 'arrow-right'}
             size={36 * scaleMultiplier}
-            color={colors.chateau}
+            color={colors(isDark).disabled}
           />
         </View>
       )
     else if (activeGroup.name === thisGroup.name)
       setRightIcon(
         <View style={styles.iconContainer}>
-          <Icon name='check' size={24 * scaleMultiplier} color={colors.blue} />
+          <Icon
+            name='check'
+            size={24 * scaleMultiplier}
+            color={colors(isDark).highlight}
+          />
         </View>
       )
     else
@@ -246,16 +256,11 @@ const GroupItem = ({
       style={[
         styles.groupItemContainer,
         {
+          backgroundColor: colors(isDark).bg4,
           flexDirection: isRTL ? 'row-reverse' : 'row',
           borderLeftWidth: isRTL ? 0 : 5,
           borderRightWidth: isRTL ? 5 : 0,
-          borderColor:
-            groups.filter(item => item.name === thisGroup.name).length !== 0
-              ? database[
-                  groups.filter(item => item.name === thisGroup.name)[0]
-                    .language
-                ].primaryColor
-              : null
+          borderColor: colors(isDark, thisGroup.language).accent
         }
       ]}
     >
@@ -282,7 +287,7 @@ const GroupItem = ({
           }}
         >
           <GroupAvatar
-            style={{ backgroundColor: colors.athens }}
+            style={{ backgroundColor: colors(isDark).bg2 }}
             size={50 * scaleMultiplier}
             emoji={thisGroup.emoji}
             isActive={activeGroup.name === thisGroup.name}
@@ -306,7 +311,7 @@ const GroupItem = ({
                 'h3',
                 'Black',
                 'left',
-                colors.shark
+                colors(isDark).text
               )}
               numberOfLines={1}
             >
@@ -324,7 +329,7 @@ const GroupItem = ({
                     'd',
                     'Regular',
                     'left',
-                    colors.chateau
+                    colors(isDark).disabled
                   )
                 ]}
                 numberOfLines={1}
@@ -345,8 +350,7 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.white
+    alignItems: 'center'
   },
   touchableAreaContainer: {
     flex: 1,

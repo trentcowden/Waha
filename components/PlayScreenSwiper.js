@@ -20,6 +20,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -58,7 +59,7 @@ const PlayScreenSwiper = ({
   activeGroup,
   activeDatabase,
   font,
-
+  isDark,
   t,
   isRTL
 }) => {
@@ -84,10 +85,13 @@ const PlayScreenSwiper = ({
         width: '100%',
         height: '100%',
         // Background is set here because of some strange issues with the video player flashing during the transition to/from the Training chapter.
-        backgroundColor: colors.white
+        backgroundColor: colors(isDark).bg4
       }}
     >
-      <PlayScreenTitle text={thisLesson.title} backgroundColor={colors.white} />
+      <PlayScreenTitle
+        text={thisLesson.title}
+        backgroundColor={colors(isDark).bg4}
+      />
       <AlbumArt
         iconName={iconName}
         playHandler={playHandler}
@@ -116,7 +120,7 @@ const PlayScreenSwiper = ({
                 'h2',
                 'Black',
                 'left',
-                colors.shark
+                colors(isDark).text
               )}
             >
               {sectionTitleText}

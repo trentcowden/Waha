@@ -23,6 +23,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations
   }
@@ -45,6 +46,7 @@ const EmojiViewer = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  isDark,
   font,
 
   t
@@ -58,8 +60,9 @@ const EmojiViewer = ({
         styles.emojiContainer,
         {
           borderWidth: item === emojiInput ? 2 : 0,
-          borderColor: item === emojiInput ? colors.blue : null,
-          backgroundColor: item === emojiInput ? colors.blue + '38' : null
+          borderColor: item === emojiInput ? colors(isDark).highlight : null,
+          backgroundColor:
+            item === emojiInput ? colors(isDark).highlight + '38' : null
         }
       ]}
       onPress={() => setEmojiInput(item)}
@@ -82,7 +85,7 @@ const EmojiViewer = ({
             'p',
             'Regular',
             'left',
-            colors.chateau
+            colors(isDark).disabled
           ),
           { marginTop: 20 * scaleMultiplier }
         ]}
@@ -90,7 +93,13 @@ const EmojiViewer = ({
         {t.groups && t.groups.avatar}
       </Text>
       <View
-        style={styles.emojiListContainer}
+        style={[
+          styles.emojiListContainer,
+          {
+            borderColor: colors(isDark).bg2,
+            backgroundColor: colors(isDark).bg4
+          }
+        ]}
         onLayout={({ nativeEvent }) =>
           setEmojiViewerWidth(nativeEvent.layout.width)
         }
@@ -132,11 +141,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: colors.athens,
     marginBottom: 20,
     flex: 1,
-    marginTop: 5,
-    backgroundColor: colors.white
+    marginTop: 5
   }
 })
 

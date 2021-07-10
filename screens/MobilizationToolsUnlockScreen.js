@@ -22,6 +22,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     security: state.security,
     mtUnlockAttempts: state.mtUnlockAttempts,
@@ -58,6 +59,7 @@ const MobilizationToolsUnlockScreen = ({
   navigation: { navigate, setOptions, goBack },
   // Props passed from redux.
   isRTL,
+  isDark,
   t,
   font,
   activeGroup,
@@ -92,7 +94,7 @@ const MobilizationToolsUnlockScreen = ({
   /** Keeps track of whether the unlock success modal is visible. */
   const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
 
-  const [pinInputColor, setPinInputColor] = useState(colors.chateau)
+  const [pinInputColor, setPinInputColor] = useState(colors(isDark).disabled)
 
   /**
    * useEffect function that updates every time the passcode input changes. If the user gets to 5 attempts without unlocking successfully, the app will lock them out from attempting to unlock again for 30 minutes.
@@ -127,8 +129,8 @@ const MobilizationToolsUnlockScreen = ({
       setMTUnlockAttempts(mtUnlockAttempts + 1)
 
       // Turn the pin input red for a second to further indicate that the passcode entered was incorrect.
-      setPinInputColor(colors.red)
-      setTimeout(() => setPinInputColor(colors.chateau), 500)
+      setPinInputColor(colors(isDark).error)
+      setTimeout(() => setPinInputColor(colors(isDark).disabled), 500)
 
       // Make the pin input "shake" when they enter in a wrong code.
       pinRef.current.shake().then(() => {
@@ -156,7 +158,7 @@ const MobilizationToolsUnlockScreen = ({
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}>
       <Text
         style={[
           StandardTypography(
@@ -164,7 +166,7 @@ const MobilizationToolsUnlockScreen = ({
             'h3',
             'Regular',
             'center',
-            colors.shark
+            colors(isDark).text
           ),
           {
             marginTop: 50 * scaleMultiplier,
@@ -202,7 +204,7 @@ const MobilizationToolsUnlockScreen = ({
           marginRight: 3
         }}
         cellStyleFocused={{
-          borderColor: colors.shark,
+          borderColor: colors(isDark).text,
           borderRadius: 25,
           borderWidth: 2
         }}
@@ -214,7 +216,7 @@ const MobilizationToolsUnlockScreen = ({
             'h3',
             'Regular',
             'center',
-            colors.red
+            colors(isDark).error
           ),
           {
             marginTop: 30 * scaleMultiplier,
@@ -231,7 +233,6 @@ const MobilizationToolsUnlockScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.white,
     alignItems: 'center'
   }
 })

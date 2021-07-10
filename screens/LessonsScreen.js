@@ -38,6 +38,7 @@ function mapStateToProps (state) {
   return {
     downloads: state.downloads,
     isRTL: activeDatabaseSelector(state).isRTL,
+    isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
@@ -79,6 +80,7 @@ const LessonsScreen = ({
   // Props passed from redux.
   downloads,
   isRTL,
+  isDark,
   activeDatabase,
   activeGroup,
   t,
@@ -403,7 +405,7 @@ const LessonsScreen = ({
   }
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
       <View style={{ height: itemHeights[font].SetItem, width: '100%' }}>
         <SetItem
           thisSet={thisSet}
@@ -511,8 +513,7 @@ const LessonsScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: 'column',
-    backgroundColor: colors.aquaHaze
+    flexDirection: 'column'
   }
 })
 
