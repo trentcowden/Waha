@@ -68,11 +68,11 @@ const DrawerDownloadUpdateButton = ({
       style={[
         styles.innerContainer,
         {
-          backgroundColor: isConnected ? colors.apple : colors.geyser,
+          backgroundColor: isConnected ? colors.apple : colors.porcelain,
           flexDirection: isRTL ? 'row' : 'row-reverse',
           borderBottomColor: isConnected
             ? colors.appleShadow
-            : colors.geyserShadow
+            : colors.porcelainShadow
         }
       ]}
     >

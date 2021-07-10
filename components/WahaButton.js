@@ -61,7 +61,7 @@ const WahaButton = ({
     else if (color === colors.red) setShadowColor(colors.redShadow)
     else if (color === colors.blue) setShadowColor(colors.blueShadow)
     else if (color === colors.chateau) setShadowColor(colors.chateauShadow)
-    else if (color === colors.geyser) setShadowColor(colors.geyserShadow)
+    else if (color === colors.porcelain) setShadowColor(colors.porcelainShadow)
     else if (color === colors.waha) setShadowColor(colors.wahaShadow)
   }, [color])
 

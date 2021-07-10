@@ -539,7 +539,7 @@ const LanguageInstanceInstallScreen = ({
       >
         <WahaButton
           type={isConnected ? 'filled' : 'inactive'}
-          color={isConnected ? colors.apple : colors.geyser}
+          color={isConnected ? colors.apple : colors.porcelain}
           onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
           label={
             isConnected

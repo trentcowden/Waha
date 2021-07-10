@@ -358,7 +358,7 @@ const ContactUsScreen = ({
             emailTextInput === null ||
             !isConnected ||
             messageTextInput.length > 1000
-              ? colors.geyser
+              ? colors.porcelain
               : colors.apple
           }
           useDefaultFont={false}

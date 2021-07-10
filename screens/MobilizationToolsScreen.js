@@ -127,7 +127,7 @@ const MobilizationToolsScreen = ({
               // width: '100%',
               backgroundColor: colors.porcelain,
               borderBottomWidth: 4,
-              borderBottomColor: colors.geyser
+              borderBottomColor: colors.porcelainShadow
             }}
           >
             <Text

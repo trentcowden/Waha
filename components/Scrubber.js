@@ -37,7 +37,7 @@ const Scrubber = ({
         maximumValue={mediaLength}
         step={100}
         minimumTrackTintColor={colors.tuna}
-        maximumTrackTintColor={colors.geyser}
+        maximumTrackTintColor={colors.athens}
         thumbTintColor={colors.tuna}
       />
     </View>

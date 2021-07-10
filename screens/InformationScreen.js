@@ -221,14 +221,14 @@ const InformationScreen = ({
                 'd',
                 'Regular',
                 'center',
-                colors.geyser
+                colors.porcelain
               ),
               { marginHorizontal: 2 }
             ]}
           >
             Made with
           </Text>
-          <Icon name='heart' size={15} color={colors.geyser} />
+          <Icon name='heart' size={15} color={colors.porcelain} />
           <Text
             style={[
               StandardTypography(
@@ -236,7 +236,7 @@ const InformationScreen = ({
                 'd',
                 'Regular',
                 'center',
-                colors.geyser
+                colors.porcelain
               ),
               { marginHorizontal: 2 }
             ]}

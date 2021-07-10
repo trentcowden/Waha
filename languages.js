@@ -22,6 +22,8 @@ export const languages = [
         wahaID: 'en',
         i18nName: 'english',
         brandName: 'Discovering God',
+        colorLight: '#E74D3D',
+        colorDark: '#EA8E84',
         logoSource:
           'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media'
       }
@@ -38,6 +40,8 @@ export const languages = [
         wahaID: 'ga',
         i18nName: 'gulf_arabic',
         brandName: 'طريق الواحة',
+        colorLight: '#DAA520',
+        colorDark: '#DBBA69',
         logoSource:
           'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media'
       }
