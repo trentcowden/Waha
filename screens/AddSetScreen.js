@@ -265,7 +265,7 @@ const AddSetScreen = ({
             'p',
             'Regular',
             'center',
-            colors.oslo
+            colors.chateau
           )}
           activeTagStyle={{
             backgroundColor: primaryColor,
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   },
   tagContainer: {
     borderRadius: 30,
-    borderColor: colors.oslo,
+    borderColor: colors.chateau,
     height: 35 * scaleMultiplier,
     justifyContent: 'center',
     alignItems: 'center',

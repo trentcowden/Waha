@@ -93,7 +93,7 @@ const ModalScreen = ({
             <Icon
               name='cancel'
               size={45 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors.tuna}
             />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>

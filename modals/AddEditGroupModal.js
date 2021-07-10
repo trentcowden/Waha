@@ -227,7 +227,7 @@ const AddEditGroupModal = ({
             <Icon
               name='check'
               size={40 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors.tuna}
             />
           </TouchableOpacity>
         )

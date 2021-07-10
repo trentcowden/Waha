@@ -33,7 +33,7 @@ const WahaBackButton = ({
     <Icon
       name={isRTL ? 'arrow-right' : 'arrow-left'}
       size={45 * scaleMultiplier}
-      color={color ? color : colors.oslo}
+      color={color ? color : colors.tuna}
     />
   </TouchableOpacity>
 )

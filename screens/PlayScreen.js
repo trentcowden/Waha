@@ -288,7 +288,7 @@ const PlayScreen = ({
             <Icon
               name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
               size={32 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors.tuna}
             />
           </TouchableOpacity>
         ),
@@ -301,7 +301,7 @@ const PlayScreen = ({
             <Icon
               name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
               size={32 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors.tuna}
             />
           </TouchableOpacity>
         )

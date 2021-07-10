@@ -52,7 +52,7 @@ const HeaderSmall = ({ text, font, isRTL, isTablet }) => (
           'h3',
           'Regular',
           'left',
-          colors.oslo
+          colors.chateau
         ),
         { paddingHorizontal: gutterSize, marginVertical: 5 * scaleMultiplier }
       ]}
