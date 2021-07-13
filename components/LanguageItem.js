@@ -20,7 +20,7 @@ const LanguageItem = ({
   nativeName,
   localeName,
   font,
-
+  isDark,
   logoSource,
   onPress,
   isSelected,
@@ -29,7 +29,11 @@ const LanguageItem = ({
   <View
     style={[
       styles.languageItemContainer,
-      { backgroundColor: isSelected ? '#BFE5AF' : colors(isDark).bg4 }
+      {
+        backgroundColor: isSelected
+          ? colors(isDark).success + '40'
+          : colors(isDark).bg4
+      }
     ]}
   >
     {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}

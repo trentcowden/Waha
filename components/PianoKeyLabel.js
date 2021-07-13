@@ -32,8 +32,9 @@ const PianoKeyLabel = ({
           'h2',
           'Bold',
           'center',
-          colors(isDark).text
+          colors(isDark).textOnColor
         )}
+        adjustsFontSizeToFit
       >
         {number}
       </Text>
@@ -50,7 +51,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'flex-end',
     zIndex: 3,
-    marginBottom: 10
+    marginBottom: 10,
+    padding: 5
   }
 })
 

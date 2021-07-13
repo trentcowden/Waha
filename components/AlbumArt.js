@@ -75,7 +75,7 @@ const AlbumArt = ({
         name={iconName}
         width='100%'
         height='100%'
-        color={colors(isDark).text}
+        color={colors(isDark).icons}
       />
     </TouchableHighlight>
     <Animated.View

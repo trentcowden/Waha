@@ -100,7 +100,12 @@ const WahaDrawer = ({
       <View style={styles.drawerHeaderContainer}>
         <TouchableOpacity
           onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
-          style={{ position: 'absolute', top: 0, left: 10 }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: isRTL ? null : 10,
+            right: isRTL ? 10 : null
+          }}
         >
           <Icon
             name={isDark ? 'sun' : 'moon'}

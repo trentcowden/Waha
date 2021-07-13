@@ -143,7 +143,7 @@ const SetItem = ({
                     color={
                       progressPercentage === 1
                         ? colors(isDark).disabled
-                        : colors(isDark).text
+                        : colors(isDark).icons
                     }
                   />
                 </View>
@@ -209,7 +209,7 @@ const SetItem = ({
                     color={
                       progressPercentage === 1
                         ? colors(isDark).disabled
-                        : colors(isDark).text
+                        : colors(isDark).icons
                     }
                   />
                 </View>
@@ -369,9 +369,10 @@ const SetItem = ({
               'd',
               'Regular',
               'left',
-              progressPercentage === 1
-                ? colors(isDark).disabled
-                : colors(isDark).text
+              // progressPercentage === 1
+              // ?
+              colors(isDark).icons
+              // : colors(isDark).text
             ),
             {
               textAlignVertical: 'center',

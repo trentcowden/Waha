@@ -54,28 +54,32 @@ const EmojiViewer = ({
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)
 
   /** Renders an emoji for the emoji select <FlatList />. */
-  const renderEmoji = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.emojiContainer,
-        {
-          borderWidth: item === emojiInput ? 2 : 0,
-          borderColor: item === emojiInput ? colors(isDark).highlight : null,
-          backgroundColor:
-            item === emojiInput ? colors(isDark).highlight + '38' : null
-        }
-      ]}
-      onPress={() => setEmojiInput(item)}
-    >
-      <Image
-        style={{
-          width: 40 * scaleMultiplier,
-          height: 40 * scaleMultiplier
-        }}
-        source={groupIconSources[item]}
-      />
-    </TouchableOpacity>
-  )
+  const renderEmoji = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.emojiContainer,
+          {
+            borderWidth: item === emojiInput ? 2 : 0,
+            borderColor: item === emojiInput ? colors(isDark).highlight : null,
+            backgroundColor:
+              item === emojiInput ? colors(isDark).highlight + '38' : null
+          }
+        ]}
+        onPress={() => setEmojiInput(item)}
+      >
+        <Image
+          style={{
+            width: 40 * scaleMultiplier,
+            height: 40 * scaleMultiplier,
+            tintColor:
+              item === 'default' && isDark ? colors(isDark).icons : null
+          }}
+          source={groupIconSources[item]}
+        />
+      </TouchableOpacity>
+    )
+  }
   return (
     <View style={styles.emojiViewerContainer}>
       <Text

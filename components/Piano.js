@@ -6,7 +6,7 @@ import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
-import { keyColors } from '../styles/colors'
+import { colors, keyColors } from '../styles/colors'
 import { getLanguageFont } from '../styles/typography'
 import PianoKeyLabel from './PianoKeyLabel'
 
@@ -78,11 +78,14 @@ const Piano = ({
   }
 
   const extraWhiteKeyStyles = {
-    height: Dimensions.get('window').height / 2.5
+    height: Dimensions.get('window').height / 2.5,
+    backgroundColor: isDark ? colors(isDark).text : colors(isDark).bg4,
+    borderColor: colors(isDark).text
   }
 
   const extraBlackKeyStyles = {
-    height: Dimensions.get('window').height / 4
+    height: Dimensions.get('window').height / 4,
+    backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).text
   }
 
   return (
@@ -217,10 +220,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: '#000000',
     borderWidth: 2,
     zIndex: 0,
-    color: '#ffffff',
     borderBottomWidth: 5
   },
   blackKeysContainer: {
@@ -239,10 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: '#000000',
-    borderWidth: 2,
-    zIndex: 1,
-    backgroundColor: '#000000'
+    zIndex: 1
   }
 })
 

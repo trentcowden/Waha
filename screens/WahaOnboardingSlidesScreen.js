@@ -24,7 +24,8 @@ function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -67,7 +68,6 @@ const WahaOnboardingSlidesScreen = ({
   isRTL,
   isDark,
   font,
-
   setHasOnboarded,
   editGroup,
   changeActiveGroup

@@ -221,7 +221,9 @@ const ContactUsScreen = ({
                 {
                   paddingTop: 0,
                   paddingBottom: 0,
-                  backgroundColor: colors(isDark).bg1
+                  backgroundColor: colors(isDark).bg4,
+                  borderColor: colors(isDark).bg2,
+                  borderWidth: 2
                 }
               ]}
               keyboardType='email-address'
@@ -298,7 +300,9 @@ const ContactUsScreen = ({
               {
                 height: 200 * scaleMultiplier,
                 textAlignVertical: 'top',
-                backgroundColor: colors(isDark).bg1
+                backgroundColor: colors(isDark).bg4,
+                borderColor: colors(isDark).bg2,
+                borderWidth: 2
               }
             ]}
             multiline
@@ -317,7 +321,11 @@ const ContactUsScreen = ({
             onPress={() => setIsBugChecked(old => !old)}
             style={[
               styles.checkIconContainer,
-              { backgroundColor: colors(isDark).bg1 }
+              {
+                backgroundColor: colors(isDark).bg4,
+                borderColor: colors(isDark).bg2,
+                borderWidth: 2
+              }
             ]}
           >
             {isBugChecked ? (
@@ -370,7 +378,9 @@ const ContactUsScreen = ({
                 {
                   height: 200 * scaleMultiplier,
                   textAlignVertical: 'top',
-                  backgroundColor: colors(isDark).bg1
+                  backgroundColor: colors(isDark).bg4,
+                  borderColor: colors(isDark).bg2,
+                  borderWidth: 2
                 }
               ]}
               multiline

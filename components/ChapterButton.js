@@ -66,7 +66,7 @@ const ChapterButton = ({
   /** Keeps track of the icon name, button style, text style, and icon color for the chapter button. Updates whenever the mode changes. */
   const [iconName, setIconName] = useState('')
   const [extraButtonStyle, setExtraButtonStyle] = useState({
-    borderColor: colors(isDark).bg1,
+    borderColor: colors(isDark).bg3,
     backgroundColor: colors(isDark).bg2
   })
   const [textStyle, setTextStyle] = useState({
@@ -184,7 +184,7 @@ const ChapterButton = ({
         break
       case chapterButtonModes.INCOMPLETE:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg1,
+          borderColor: colors(isDark).bg3,
           backgroundColor: colors(isDark).bg2
         })
         setTextStyle({
@@ -209,7 +209,7 @@ const ChapterButton = ({
         break
       case chapterButtonModes.COMPLETE:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg1,
+          borderColor: colors(isDark).bg3,
           backgroundColor: colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark, activeGroup.language).accent })
@@ -218,7 +218,7 @@ const ChapterButton = ({
         break
       case chapterButtonModes.DOWNLOADING:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg1,
+          borderColor: colors(isDark).bg3,
           backgroundColor: colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark).disabled })
@@ -227,7 +227,7 @@ const ChapterButton = ({
         break
       case chapterButtonModes.DISABLED:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg1,
+          borderColor: colors(isDark).bg3,
           backgroundColor: colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark).disabled })

@@ -950,6 +950,7 @@ const PlayScreen = ({
               fullscreenStatus={fullscreenStatus}
               activeChapter={activeChapter}
               isMediaLoaded={isMediaLoaded}
+              isDark={isDark}
             />
           </Animated.View>
         )}

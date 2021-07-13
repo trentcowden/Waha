@@ -263,7 +263,10 @@ const AddSetScreen = ({
           style={styles.tagGroupContainer}
           tagStyle={[
             styles.tagContainer,
-            { borderColor: colors(isDark).disabled }
+            {
+              borderColor: colors(isDark).disabled,
+              backgroundColor: colors(isDark).bg4
+            }
           ]}
           textStyle={StandardTypography(
             { font, isRTL },

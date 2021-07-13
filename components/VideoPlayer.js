@@ -31,7 +31,8 @@ const VideoPlayer = ({
   setIsMediaPlaying,
   fullscreenStatus,
   activeChapter,
-  isMediaLoaded
+  isMediaLoaded,
+  isDark
 }) => {
   /** Keeps track of whether to show the overlayed video controls or not. */
   const [shouldShowVideoControls, setShouldShowVideoControls] = useState(false)
@@ -134,7 +135,7 @@ const VideoPlayer = ({
         style={{
           flex: 1,
           aspectRatio: 14 / 9,
-          backgroundColor: colors(isDark).text,
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).text,
           overflow: 'hidden'
         }}
       >

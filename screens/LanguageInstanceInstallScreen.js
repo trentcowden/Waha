@@ -15,6 +15,7 @@ import {
   TextInput,
   View
 } from 'react-native'
+import { useColorScheme } from 'react-native-appearance'
 import { connect } from 'react-redux'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
@@ -35,6 +36,7 @@ import {
 } from '../redux/actions/databaseActions'
 import { createGroup, deleteGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -54,7 +56,8 @@ function mapStateToProps (state) {
   return {
     groups: state.groups,
     database: state.database,
-    activeGroup: activeGroup
+    activeGroup: activeGroup,
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -98,7 +101,8 @@ function mapDispatchToProps (dispatch) {
     },
     setRecentActiveGroup: groupName => {
       dispatch(setRecentActiveGroup(groupName))
-    }
+    },
+    setIsDarkModeEnabled: toSet => dispatch(setIsDarkModeEnabled(toSet))
   }
 }
 
@@ -123,6 +127,7 @@ const LanguageInstanceInstallScreen = ({
   groups,
   database,
   activeGroup,
+  isDark,
   downloadLanguageCoreFiles,
   storeLanguageData,
   setIsInstallingLanguageInstance,
@@ -134,7 +139,8 @@ const LanguageInstanceInstallScreen = ({
   incrementGlobalGroupCounter,
   createGroup,
   changeActiveGroup,
-  setRecentActiveGroup
+  setRecentActiveGroup,
+  setIsDarkModeEnabled
 }) => {
   // Set the i18n locale to the locale of the user's phone.
   i18n.locale = Localization.locale
@@ -174,6 +180,16 @@ const LanguageInstanceInstallScreen = ({
           }
         : null
     )
+  }, [])
+
+  const colorScheme = useColorScheme()
+
+  useEffect(() => {
+    if (routeName === 'InitialLanguageInstanceInstall') {
+      console.log(colorScheme)
+      if (colorScheme === 'dark') setIsDarkModeEnabled(true)
+      else setIsDarkModeEnabled(false)
+    }
   }, [])
 
   /** useEffect function sets the isConnected state with the status of the user's internet connection. */
@@ -417,6 +433,7 @@ const LanguageInstanceInstallScreen = ({
       }}
       isSelected={selectedLanguage === language.wahaID ? true : false}
       playAudio={() => playAudio(language.wahaID)}
+      isDark={isDark}
     />
   )
 

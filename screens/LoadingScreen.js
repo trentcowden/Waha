@@ -59,7 +59,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     recentActiveGroup: state.database.recentActiveGroup,
     font: font,
-
+    isDark: state.settings.isDarkModeEnabled,
     isRTL: isRTL,
     t: translations
   }

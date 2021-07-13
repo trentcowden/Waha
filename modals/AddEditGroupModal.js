@@ -261,7 +261,7 @@ const AddEditGroupModal = ({
     >
       <View style={styles.groupAvatarContainer}>
         <GroupAvatar
-          style={{ backgroundColor: colors(isDark).bg2 }}
+          style={{ backgroundColor: colors(isDark).bg1 }}
           emoji={emojiInput}
           size={120}
         />

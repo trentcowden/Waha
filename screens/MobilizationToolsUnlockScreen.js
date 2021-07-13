@@ -184,6 +184,13 @@ const MobilizationToolsUnlockScreen = ({
         autoFocus={true}
         restrictToNumbers={true}
         animationFocused=''
+        textStyle={StandardTypography(
+          { font, isRTL },
+          'h2',
+          'Regular',
+          'center',
+          colors(isDark).text
+        )}
         onTextChange={passcode => setPasscode(passcode)}
         onFulfill={fullPasscode => checkPasscode(fullPasscode)}
         onBackspace={() => {}}
@@ -204,7 +211,7 @@ const MobilizationToolsUnlockScreen = ({
           marginRight: 3
         }}
         cellStyleFocused={{
-          borderColor: colors(isDark).text,
+          borderColor: colors(isDark, activeGroup.language).accent,
           borderRadius: 25,
           borderWidth: 2
         }}

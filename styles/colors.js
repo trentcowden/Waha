@@ -28,7 +28,7 @@ export const colors = (isDark, languageID = null) => {
       // Light (default) mode colors.
       accent: accentColor,
       brand: '#E63946',
-      text: '#333B3F',
+      text: '#2D3336',
       textOnColor: '#FFFFFF',
       icons: '#4E5A60',
       disabled: '#95A0A6',
@@ -41,7 +41,8 @@ export const colors = (isDark, languageID = null) => {
       error: '#FF0800',
       errorShadow: '#DB0700',
       highlight: '#2D9CDB',
-      highlightShadow: '#2986BB'
+      highlightShadow: '#2986BB',
+      bg1Shadow: '#D1D8DB'
     }
   else
     return {
@@ -50,18 +51,23 @@ export const colors = (isDark, languageID = null) => {
       brand: '#E63946',
       text: '#EFF4F6',
       textOnColor: '#282E31',
-      icons: '#BFC9CD',
-      disabled: '#9DA5AA',
-      bg1: '#464E52',
-      bg2: '#424A4E',
-      bg3: '#394043',
-      bg4: '#282E31',
+      icons: '#D4DDE1',
+      disabled: '#B0B9BF',
+      bg1: '#24292C',
+      bg2: '#2E3538',
+      bg3: '#30383B',
+      bg4: '#363E42',
+      // bg1: '#464E52',
+      // bg2: '#424A4E',
+      // bg3: '#394043',
+      // bg4: '#282E31',
       success: '#9BC988',
       successShadow: '#769769',
       error: '#FB7F8E',
       errorShadow: '#CA6874',
       highlight: '#91C8E7',
-      highlightShadow: '#6A95AD'
+      highlightShadow: '#6A95AD',
+      bg1Shadow: '#1B1F21'
     }
 }
 
