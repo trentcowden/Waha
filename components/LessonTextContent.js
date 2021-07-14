@@ -8,7 +8,6 @@ import {
   View
 } from 'react-native'
 import { connect } from 'react-redux'
-import WahaSeparator from '../components/WahaSeparator'
 import { gutterSize, scaleMultiplier } from '../constants'
 import {
   activeDatabaseSelector,
@@ -215,6 +214,47 @@ const LessonTextContent = ({
               />
             </View>
           ))}
+          {/* <WahaSeparator /> */}
+          <TouchableOpacity
+            onPress={() => setShowCopyrightsModal(true)}
+            style={{
+              width: '100%',
+              paddingVertical: 10 * scaleMultiplier,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              paddingHorizontal: gutterSize,
+              marginTop: -20 * scaleMultiplier,
+              marginBottom: 20 * scaleMultiplier
+            }}
+          >
+            <Text
+              style={StandardTypography(
+                { font, isRTL },
+                'h4',
+                'Regular',
+                'left',
+                colors.chateau
+              )}
+            >
+              {t.general && t.general.view_copyright}
+            </Text>
+            {/* <View
+              style={
+                {
+                  // paddingHorizontal: 20,
+                  // paddingVertical: 10 * scaleMultiplier
+                }
+              }
+            >
+              <Icon
+                name='info'
+                size={25 * scaleMultiplier}
+                color={colors.chateau}
+              />
+            </View> */}
+          </TouchableOpacity>
+          {/* <WahaSeparator /> */}
           {/* Header for application section. */}
           <HeaderBig
             onLayout={({ nativeEvent }) =>
@@ -243,45 +283,6 @@ const LessonTextContent = ({
               </View>
             )
           )}
-          <WahaSeparator />
-          <TouchableOpacity
-            onPress={() => setShowCopyrightsModal(true)}
-            style={{
-              width: '100%',
-              paddingVertical: 10 * scaleMultiplier,
-              flexDirection: isRTL ? 'row-reverse' : 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: gutterSize
-            }}
-          >
-            <Text
-              style={StandardTypography(
-                { font, isRTL },
-                'h3',
-                'Bold',
-                'left',
-                colors.oslo
-              )}
-            >
-              {t.general && t.general.copyrighted_material}
-            </Text>
-            <View
-              style={
-                {
-                  // paddingHorizontal: 20,
-                  // paddingVertical: 10 * scaleMultiplier
-                }
-              }
-            >
-              <Icon
-                name={isRTL ? 'arrow-left' : 'arrow-right'}
-                size={40 * scaleMultiplier}
-                color={colors.oslo}
-              />
-            </View>
-          </TouchableOpacity>
-          <WahaSeparator />
           <View style={{ height: 25 }} />
         </View>
       ) : (

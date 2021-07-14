@@ -230,7 +230,7 @@ const InformationScreen = ({
             colors.shark
           )}
         >
-          {t.general && t.general.copyrighted_material}
+          {t.general && t.general.view_copyright}
         </Text>
         <Icon
           name={isRTL ? 'arrow-left' : 'arrow-right'}

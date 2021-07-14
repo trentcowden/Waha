@@ -40,7 +40,7 @@ const CopyrightsModal = ({
 }) => {
   return (
     <ModalScreen
-      title={t.general && t.general.copyrighted_material}
+      title={t.general && t.general.view_copyright}
       hideModal={hideModal}
       isVisible={isVisible}
     >
