@@ -25,8 +25,10 @@ export const languages = [
         colorLight: '#E74D3D',
         colorDark: '#EA8E84',
         versions: null,
-        logoSource:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media'
+        logoSourceLight:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+        logoSourceDark:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
       }
     ]
   },
@@ -44,8 +46,10 @@ export const languages = [
         colorLight: '#DAA520',
         colorDark: '#DBBA69',
         versions: null,
-        logoSource:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media'
+        logoSourceLight:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media',
+        logoSourceDark:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
       }
     ]
   }

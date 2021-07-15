@@ -422,7 +422,8 @@ const LanguageInstanceInstallScreen = ({
       nativeName={language.nativeName}
       localeName={i18n.t(language.i18nName)}
       font={languageFamily.font}
-      logoSource={language.logoSource}
+      logoSourceLight={language.logoSourceLight}
+      logoSourceDark={language.logoSourceDark}
       onPress={() => {
         if (!selectedLanguage) {
           Animated.spring(buttonYPos, {

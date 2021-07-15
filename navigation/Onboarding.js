@@ -1,17 +1,26 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
+import { View } from 'react-native'
+import { connect } from 'react-redux'
 import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
+import { colors } from '../styles/colors'
 
 // Create the stack navigator.
 const Stack = createStackNavigator()
 
+function mapStateToProps (state) {
+  return {
+    isDark: state.settings.isDarkModeEnabled
+  }
+}
+
 /**
  * This component renders the stack navigator used for the initial onboarding screens. This navigator is the first thing the user sees when they open the app for the first time. It contains the language instance install screen, the onboarindg slides screen, and the loading screen.
  */
-const Onboarding = () => {
+const Onboarding = ({ isDark }) => {
   return (
     <View
       style={{
@@ -47,4 +56,4 @@ const Onboarding = () => {
   )
 }
 
-export default Onboarding
+export default connect(mapStateToProps)(Onboarding)

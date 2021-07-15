@@ -65,7 +65,7 @@ const OnboardingPage = ({
           'h3',
           'Regular',
           'center',
-          colors(isDark).disabled
+          colors(isDark).secondaryText
         )}
       >
         {message}
