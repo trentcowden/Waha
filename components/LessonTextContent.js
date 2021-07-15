@@ -59,7 +59,7 @@ const HeaderSmall = ({ text, font, isRTL, isTablet, isDark }) => (
           'h3',
           'Regular',
           'left',
-          colors(isDark).secondaryText
+          colors(isDark).disabled
         ),
         { paddingHorizontal: gutterSize, marginVertical: 5 * scaleMultiplier }
       ]}

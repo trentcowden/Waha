@@ -13,30 +13,37 @@ const Stack = createStackNavigator()
  */
 const Onboarding = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          // Use fade screen transition for this navigator since we won't necessarily know if a language is RTL or LTR on the first screen.
-          cardStyleInterpolator: ({ current }) => ({
-            cardStyle: {
-              opacity: current.progress
-            }
-          })
-        }}
-      >
-        <Stack.Screen
-          name='InitialLanguageInstanceInstall'
-          component={LanguageInstanceInstallScreen}
-        />
-        <Stack.Screen
-          name='WahaOnboardingSlides'
-          component={WahaOnboardingSlidesScreen}
-        />
-        <Stack.Screen name='Loading' component={LoadingScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+      }}
+    >
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: false,
+            // Use fade screen transition for this navigator since we won't necessarily know if a language is RTL or LTR on the first screen.
+            cardStyleInterpolator: ({ current }) => ({
+              cardStyle: {
+                opacity: current.progress
+              }
+            })
+          }}
+        >
+          <Stack.Screen
+            name='InitialLanguageInstanceInstall'
+            component={LanguageInstanceInstallScreen}
+          />
+          <Stack.Screen
+            name='WahaOnboardingSlides'
+            component={WahaOnboardingSlidesScreen}
+          />
+          <Stack.Screen name='Loading' component={LoadingScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   )
 }
 

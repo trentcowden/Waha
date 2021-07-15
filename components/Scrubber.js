@@ -47,7 +47,9 @@ const Scrubber = ({
         step={100}
         minimumTrackTintColor={colors(isDark).icons}
         maximumTrackTintColor={
-          isDark ? colors(isDark).disabled : colors(isDark).bg2
+          Platform.OS === 'ios' && !isDark
+            ? colors(isDark).bg1
+            : colors(isDark).disabled
         }
         thumbTintColor={colors(isDark).icons}
       />

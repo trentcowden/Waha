@@ -94,7 +94,9 @@ const MobilizationToolsUnlockScreen = ({
   /** Keeps track of whether the unlock success modal is visible. */
   const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
 
-  const [pinInputColor, setPinInputColor] = useState(colors(isDark).disabled)
+  const [pinInputColor, setPinInputColor] = useState(
+    isDark ? colors(isDark).bg4 : colors(isDark).bg1
+  )
 
   /**
    * useEffect function that updates every time the passcode input changes. If the user gets to 5 attempts without unlocking successfully, the app will lock them out from attempting to unlock again for 30 minutes.
@@ -209,6 +211,7 @@ const MobilizationToolsUnlockScreen = ({
         }
         cellSize={50 * scaleMultiplier}
         cellStyle={{
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg3,
           borderRadius: 25,
           borderColor: pinInputColor,
           borderWidth: 2,

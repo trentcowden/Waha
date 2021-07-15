@@ -209,7 +209,9 @@ const GroupListHeader = ({
       <Image
         style={styles.languageLogoImage}
         source={{
-          uri: FileSystem.documentDirectory + languageID + '-header.png'
+          uri: isDark
+            ? FileSystem.documentDirectory + languageID + '-header-dark.png'
+            : FileSystem.documentDirectory + languageID + '-header.png'
         }}
       />
     </View>

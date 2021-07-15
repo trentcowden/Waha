@@ -80,7 +80,9 @@ const Piano = ({
   const extraWhiteKeyStyles = {
     height: Dimensions.get('window').height / 2.5,
     backgroundColor: isDark ? colors(isDark).text : colors(isDark).bg4,
-    borderColor: colors(isDark).text
+    borderColor: colors(isDark).text,
+    borderWidth: isDark ? 0 : 2,
+    borderBottomWidth: isDark ? 0 : 5
   }
 
   const extraBlackKeyStyles = {
@@ -220,9 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderWidth: 2,
-    zIndex: 0,
-    borderBottomWidth: 5
+    zIndex: 0
   },
   blackKeysContainer: {
     flexDirection: 'row',

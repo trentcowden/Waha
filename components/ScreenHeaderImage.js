@@ -28,7 +28,11 @@ const ScreenHeaderImage = ({
       // backgroundColor: isDark ? colors(isDark).icons : null,
     }}
     source={{
-      uri: FileSystem.documentDirectory + activeGroup.language + '-header.png'
+      uri: isDark
+        ? FileSystem.documentDirectory +
+          activeGroup.language +
+          '-header-dark.png'
+        : FileSystem.documentDirectory + activeGroup.language + '-header.png'
     }}
   />
 )

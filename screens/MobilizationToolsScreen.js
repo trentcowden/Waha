@@ -127,7 +127,7 @@ const MobilizationToolsScreen = ({
               flexDirection: 'column',
               // height: '100%',
               // width: '100%',
-              backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
+              backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
               borderBottomWidth: 4,
               borderBottomColor: isDark
                 ? colors(isDark).bg2

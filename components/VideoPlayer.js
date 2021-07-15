@@ -135,7 +135,7 @@ const VideoPlayer = ({
         style={{
           flex: 1,
           aspectRatio: 14 / 9,
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).text,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).text,
           overflow: 'hidden'
         }}
       >
