@@ -33,6 +33,7 @@ import {
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
 import { logCompleteLesson } from '../LogEventFunctions'
+import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
@@ -204,6 +205,7 @@ const PlayScreen = ({
   const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] = useState(
     false
   )
+  const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
 
   /** Keeps track of whether the audio and video files for this lesson are downloaded. */
   const [isAudioDownloaded, setIsAudioDownloaded] = useState(
@@ -927,6 +929,7 @@ const PlayScreen = ({
               sectionOffsets={sectionOffsets}
               markLessonAsComplete={markLessonAsComplete}
               isThisLessonComplete={isThisLessonComplete}
+              setShowCopyrightsModal={setShowCopyrightsModal}
             />
           </Animated.View>
         )}
@@ -1042,6 +1045,10 @@ const PlayScreen = ({
           source={require('../assets/lotties/new_set_unlocked.json')}
         />
       </MessageModal>
+      <CopyrightsModal
+        isVisible={showCopyrightsModal}
+        hideModal={() => setShowCopyrightsModal(false)}
+      />
     </View>
   )
 }

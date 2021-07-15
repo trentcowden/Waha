@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { logShareApp } from '../LogEventFunctions'
+import CopyrightsModal from '../modals/CopyrightsModal'
 import { appVersion } from '../modeSwitch'
 import {
   activeDatabaseSelector,
@@ -47,6 +48,8 @@ const InformationScreen = ({
 }) => {
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
+
+  const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -230,6 +233,30 @@ const InformationScreen = ({
           size={25 * scaleMultiplier}
         />
       </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.informationItem,
+          { flexDirection: isRTL ? 'row-reverse' : 'row' }
+        ]}
+        onPress={() => setShowCopyrightsModal(true)}
+      >
+        <Text
+          style={StandardTypography(
+            { font, isRTL },
+            'h3',
+            'Bold',
+            'left',
+            colors.shark
+          )}
+        >
+          {t.general && t.general.view_copyright}
+        </Text>
+        <Icon
+          name={isRTL ? 'arrow-left' : 'arrow-right'}
+          color={colors.tuna}
+          size={25 * scaleMultiplier}
+        />
+      </TouchableOpacity>
       {/* Cheeky little easter egg :) */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View style={styles.easterEggContainer}>
@@ -274,6 +301,10 @@ const InformationScreen = ({
           textAlign: 'center'
         }}
         backgroundColor={colors(isDark).success}
+      />
+      <CopyrightsModal
+        isVisible={showCopyrightsModal}
+        hideModal={() => setShowCopyrightsModal(false)}
       />
     </SafeAreaView>
   )

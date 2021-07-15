@@ -49,6 +49,7 @@ const LessonTextViewer = ({
   sectionTitleYTransform = null,
   markLessonAsComplete,
   isThisLessonComplete,
+  setShowCopyrightsModal = null,
   // Props passed from redux.
   activeGroup,
   activeDatabase,
@@ -170,6 +171,7 @@ const LessonTextViewer = ({
         layouts={layouts}
         onScroll={onScroll}
         sectionOffsets={sectionOffsets}
+        setShowCopyrightsModal={setShowCopyrightsModal}
       />
       <LinearGradient
         colors={

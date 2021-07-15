@@ -1,6 +1,12 @@
 // import SvgUri from 'expo-svg-uri'
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { connect } from 'react-redux'
 import { gutterSize, scaleMultiplier } from '../constants'
 import {
@@ -9,7 +15,6 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getLanguageFont, StandardTypography } from '../styles/typography'
-
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
@@ -108,6 +113,7 @@ const LessonTextContent = ({
   layouts,
   onScroll,
   sectionOffsets,
+  setShowCopyrightsModal,
   // Props passed from redux.
   activeGroup,
   activeDatabase,
@@ -220,6 +226,47 @@ const LessonTextContent = ({
               />
             </View>
           ))}
+          {/* <WahaSeparator /> */}
+          <TouchableOpacity
+            onPress={() => setShowCopyrightsModal(true)}
+            style={{
+              width: '100%',
+              paddingVertical: 10 * scaleMultiplier,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              paddingHorizontal: gutterSize,
+              marginTop: -20 * scaleMultiplier,
+              marginBottom: 20 * scaleMultiplier
+            }}
+          >
+            <Text
+              style={StandardTypography(
+                { font, isRTL },
+                'h4',
+                'Regular',
+                'left',
+                colors.chateau
+              )}
+            >
+              {t.general && t.general.view_copyright}
+            </Text>
+            {/* <View
+              style={
+                {
+                  // paddingHorizontal: 20,
+                  // paddingVertical: 10 * scaleMultiplier
+                }
+              }
+            >
+              <Icon
+                name='info'
+                size={25 * scaleMultiplier}
+                color={colors.chateau}
+              />
+            </View> */}
+          </TouchableOpacity>
+          {/* <WahaSeparator /> */}
           {/* Header for application section. */}
           <HeaderBig
             onLayout={({ nativeEvent }) =>
@@ -251,6 +298,7 @@ const LessonTextContent = ({
               </View>
             )
           )}
+          <View style={{ height: 25 }} />
         </View>
       ) : (
         <View style={{ paddingTop: 20 * scaleMultiplier }}>
