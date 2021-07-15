@@ -1,11 +1,5 @@
 import React, { useState } from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { connect } from 'react-redux'
 import DrawerDownloadUpdateButton from '../components/DrawerDownloadUpdateButton'
@@ -98,21 +92,6 @@ const WahaDrawer = ({
       forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' }}
     >
       <View style={styles.drawerHeaderContainer}>
-        <TouchableOpacity
-          onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: isRTL ? null : 10,
-            right: isRTL ? 10 : null
-          }}
-        >
-          <Icon
-            name={isDark ? 'sun' : 'moon'}
-            size={30 * scaleMultiplier}
-            color={colors(isDark).bg4}
-          />
-        </TouchableOpacity>
         <View style={styles.groupIconContainer}>
           <GroupAvatar
             style={{ backgroundColor: colors(isDark).bg2 }}
@@ -136,7 +115,10 @@ const WahaDrawer = ({
       </View>
       <ScrollView
         bounces={false}
-        style={{ backgroundColor: colors(isDark).bg4, flex: 1 }}
+        style={{
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+          flex: 1
+        }}
       >
         {/* Show an update button if we have any core files to update. */}
         {languageCoreFilesToUpdate.length !== 0 && (
@@ -169,7 +151,7 @@ const WahaDrawer = ({
               'p',
               'Regular',
               'left',
-              colors(isDark).disabled
+              colors(isDark).secondaryText
             ),
             {
               marginHorizontal: 20,
@@ -189,6 +171,11 @@ const WahaDrawer = ({
           icon='email'
           label={t.contact_us && t.contact_us.contact_us}
           onPress={() => navigate('ContactUs')}
+        />
+        <DrawerItem
+          icon={isDark ? 'sun' : 'moon'}
+          onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
+          label={isDark ? t.general.light_mode : t.general.dark_mode}
         />
         <DrawerItem
           icon='info'

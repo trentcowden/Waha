@@ -256,7 +256,7 @@ const GroupItem = ({
       style={[
         styles.groupItemContainer,
         {
-          backgroundColor: colors(isDark).bg4,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           flexDirection: isRTL ? 'row-reverse' : 'row',
           borderLeftWidth: isRTL ? 0 : 5,
           borderRightWidth: isRTL ? 5 : 0,
@@ -287,7 +287,9 @@ const GroupItem = ({
           }}
         >
           <GroupAvatar
-            style={{ backgroundColor: colors(isDark).bg2 }}
+            style={{
+              backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2
+            }}
             size={50 * scaleMultiplier}
             emoji={thisGroup.emoji}
             isActive={activeGroup.name === thisGroup.name}
@@ -329,7 +331,7 @@ const GroupItem = ({
                     'd',
                     'Regular',
                     'left',
-                    colors(isDark).disabled
+                    colors(isDark).secondaryText
                   )
                 ]}
                 numberOfLines={1}

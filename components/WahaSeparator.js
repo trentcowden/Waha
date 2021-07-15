@@ -21,7 +21,7 @@ const WahaSeparator = ({ isDark }) => (
     style={{
       width: '100%',
       height: 2,
-      backgroundColor: colors(isDark).bg2
+      backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2
     }}
   />
 )

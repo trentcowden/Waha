@@ -218,7 +218,10 @@ const WahaOnboardingSlidesScreen = ({
 
   return (
     <SafeAreaView
-      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
     >
       <PagerView
         ref={pagerRef}

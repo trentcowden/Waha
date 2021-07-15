@@ -254,7 +254,12 @@ const AddSetScreen = ({
   )
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
+      ]}
+    >
       {category === 'Topical' && (
         <TagGroup
           source={tags}
@@ -264,8 +269,10 @@ const AddSetScreen = ({
           tagStyle={[
             styles.tagContainer,
             {
-              borderColor: colors(isDark).disabled,
-              backgroundColor: colors(isDark).bg4
+              borderColor: isDark
+                ? colors(isDark).bg4
+                : colors(isDark).disabled,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
             }
           ]}
           textStyle={StandardTypography(
@@ -273,7 +280,7 @@ const AddSetScreen = ({
             'p',
             'Regular',
             'center',
-            colors(isDark).disabled
+            colors(isDark).secondaryText
           )}
           activeTagStyle={{
             backgroundColor: colors(isDark, activeGroup.language).accent,
@@ -312,7 +319,7 @@ const AddSetScreen = ({
                 'p',
                 'Regular',
                 'center',
-                colors(isDark).disabled
+                colors(isDark).secondaryText
               )}
             >
               {t.sets && t.sets.no_more_sets}

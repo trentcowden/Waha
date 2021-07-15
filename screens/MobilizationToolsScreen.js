@@ -127,9 +127,11 @@ const MobilizationToolsScreen = ({
               flexDirection: 'column',
               // height: '100%',
               // width: '100%',
-              backgroundColor: colors(isDark).bg1,
+              backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
               borderBottomWidth: 4,
-              borderBottomColor: colors(isDark).bg1Shadow
+              borderBottomColor: isDark
+                ? colors(isDark).bg2
+                : colors(isDark).bg1Shadow
             }}
           >
             <Text
@@ -185,7 +187,12 @@ const MobilizationToolsScreen = ({
   )
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       {!areMobilizationToolsUnlocked && topComponents}
       {areMobilizationToolsUnlocked ? (
         <FlatList

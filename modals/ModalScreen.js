@@ -81,7 +81,7 @@ const ModalScreen = ({
       <View
         style={[
           styles.contentContainer,
-          { backgroundColor: colors(isDark).bg3 }
+          { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
         ]}
       >
         <View

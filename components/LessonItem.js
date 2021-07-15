@@ -149,7 +149,7 @@ const LessonItem = ({
       style={[
         styles.lessonItemContainer,
         {
-          backgroundColor: colors(isDark).bg3,
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
           flexDirection: isRTL ? 'row-reverse' : 'row',
           paddingVertical: isInInfoMode ? (isTablet ? 20 : 10) : 0,
           paddingLeft: 20,
@@ -246,7 +246,9 @@ const LessonItem = ({
                 'd',
                 'Regular',
                 'left',
-                colors(isDark).disabled
+                isComplete
+                  ? colors(isDark).disabled
+                  : colors(isDark).secondaryText
               ),
               {
                 // fontSize: 13 * scaleMultiplier,
@@ -302,7 +304,7 @@ const LessonItem = ({
                 'd',
                 'Regular',
                 'left',
-                colors(isDark).disabled
+                colors(isDark).secondaryText
               )}
               // numberOfLines={2}
             >

@@ -3,7 +3,7 @@ import { Audio } from 'expo-av'
 import * as Font from 'expo-font'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import React, { useEffect, useState } from 'react'
-import { StatusBar, View } from 'react-native'
+import { View } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 import { isTablet, lockPortrait } from './constants'
@@ -89,7 +89,6 @@ export default function App () {
         {/* The persist gate allows the redux data to persist across restarts. */}
         <PersistGate loading={<View></View>} persistor={persistor}>
           {/* Set a few settings related to the status bar. */}
-          <StatusBar backgroundColor='#F3F7F9' barStyle='dark-content' />
           <Root />
         </PersistGate>
       </Provider>

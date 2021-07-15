@@ -26,7 +26,7 @@ const WahaHero = ({
     <View
       style={{
         width: '100%',
-        backgroundColor: colors(isDark).bg4,
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         alignItems: 'center'
       }}
     >

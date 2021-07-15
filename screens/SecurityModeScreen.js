@@ -87,7 +87,12 @@ const SecurityModeScreen = ({
   }
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       {/* Inside a ScrollView in case a user's phone can't fit all of the controls on their screen. */}
       <ScrollView bounces={false}>
         <WahaHero source={require('../assets/lotties/security_mode.json')} />
@@ -99,7 +104,7 @@ const SecurityModeScreen = ({
               false: colors(isDark).disabled,
               true: colors(isDark).success
             }}
-            thumbColor={colors(isDark).bg4}
+            thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
             ios_backgroundColor={colors(isDark).disabled}
             onValueChange={() => {
               // If we have never enabled security mode before (meaning we have never set a code), then navigate to the security onboarding slides. Otherwise, toggle security mode on or off.
@@ -134,7 +139,7 @@ const SecurityModeScreen = ({
                     'h4',
                     'Regular',
                     'left',
-                    colors(isDark).disabled
+                    colors(isDark).secondaryText
                   )}
                 >
                   {getTimeoutText()}

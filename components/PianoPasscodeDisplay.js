@@ -37,8 +37,8 @@ const PianoPasscodeDisplay = ({
   activeGroup
 }) => {
   const extraKeyPlaceholderStyles = {
-    backgroundColor: colors(isDark).bg4,
-    borderColor: colors(isDark).text
+    backgroundColor: colors(isDark).bg2,
+    borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
   }
 
   return (

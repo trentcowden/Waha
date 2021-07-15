@@ -161,6 +161,10 @@ const MainStack = ({
           horizontal: 50 * scaleMultiplier,
           vertical: 135
         },
+        headerStyle: {
+          elevation: 0,
+          shadowColor: 'transparent'
+        },
         headerTitleAlign: 'center'
       }}
       mode='card'
@@ -171,8 +175,9 @@ const MainStack = ({
         options={{
           headerStyle: {
             backgroundColor: colors(isDark).bg3,
-            // Remove the header shadow on Android.
-            elevation: 0
+            // Remove the header shadow.
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitle: () => <ScreenHeaderImage />,
           headerLeft: isRTL
@@ -260,7 +265,9 @@ const MainStack = ({
         component={LessonsScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleAlign: 'center'
         }}
@@ -270,12 +277,9 @@ const MainStack = ({
         component={PlayScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg4,
-            elevation: 0
-          },
-          headerTitleStyle: {
-            color: colors(isDark).disabled,
-            fontFamily: 'Roboto-Bold'
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           // Disable gestures on this screen because there are already horizontally-swipable elements on it.
           gestureEnabled: false
@@ -287,7 +291,8 @@ const MainStack = ({
         options={{
           headerTitle: t.groups && t.groups.groups_and_languages,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            elevation: 0,
+            shadowColor: 'transparent'
           }
         }}
       />
@@ -301,7 +306,9 @@ const MainStack = ({
             fontFamily: font + '-Bold'
           },
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           }
         }}
       />
@@ -310,7 +317,9 @@ const MainStack = ({
         component={LanguageInstanceInstallScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
           headerTitleStyle: SystemTypography(
@@ -334,7 +343,9 @@ const MainStack = ({
         options={{
           headerTitle: t.storage && t.storage.storage,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -349,7 +360,9 @@ const MainStack = ({
           headerTitle:
             t.mobilization_tools && t.mobilization_tools.mobilization_tools,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -364,7 +377,9 @@ const MainStack = ({
           headerTitle:
             t.mobilization_tools && t.mobilization_tools.mobilization_tools,
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -378,7 +393,9 @@ const MainStack = ({
         options={{
           headerTitle: t.security && t.security.security,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -392,7 +409,9 @@ const MainStack = ({
         options={{
           headerTitle: t.security && t.security.security,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -405,7 +424,9 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -418,7 +439,9 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -431,7 +454,9 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -444,7 +469,9 @@ const MainStack = ({
         component={PianoPasscodeSetScreen}
         options={{
           headerStyle: {
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -477,7 +504,9 @@ const MainStack = ({
         options={{
           headerTitle: t.information && t.information.information,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,
@@ -491,7 +520,9 @@ const MainStack = ({
         options={{
           headerTitle: t.contact_us && t.contact_us.contact_us,
           headerStyle: {
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+            elevation: 0,
+            shadowColor: 'transparent'
           },
           headerTitleStyle: {
             color: colors(isDark).text,

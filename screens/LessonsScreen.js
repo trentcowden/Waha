@@ -405,7 +405,12 @@ const LessonsScreen = ({
   }
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <View style={{ height: itemHeights[font].SetItem, width: '100%' }}>
         <SetItem
           thisSet={thisSet}

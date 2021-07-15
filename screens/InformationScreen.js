@@ -69,7 +69,10 @@ const InformationScreen = ({
 
   return (
     <SafeAreaView
-      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
     >
       <TouchableOpacity
         style={[
@@ -215,7 +218,7 @@ const InformationScreen = ({
               'h4',
               'Bold',
               'left',
-              colors(isDark).disabled
+              colors(isDark).secondaryText
             )}
           >
             {appVersion}

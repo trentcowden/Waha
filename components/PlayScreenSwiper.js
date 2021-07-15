@@ -85,7 +85,7 @@ const PlayScreenSwiper = ({
         width: '100%',
         height: '100%',
         // Background is set here because of some strange issues with the video player flashing during the transition to/from the Training chapter.
-        backgroundColor: colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
       }}
     >
       <PlayScreenTitle
@@ -120,7 +120,7 @@ const PlayScreenSwiper = ({
                 'h2',
                 'Black',
                 'left',
-                colors(isDark).text
+                colors(isDark).icons
               )}
             >
               {sectionTitleText}

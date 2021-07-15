@@ -279,10 +279,10 @@ const SetsScreen = ({
         <Text
           style={StandardTypography(
             { font, isRTL },
-            'p',
-            'Regular',
+            'h4',
+            'Bold',
             'left',
-            colors(isDark).disabled
+            colors(isDark).secondaryText
           )}
         >
           {addNewSetLabel}
@@ -300,7 +300,7 @@ const SetsScreen = ({
           'p',
           'Regular',
           'center',
-          colors(isDark).disabled
+          colors(isDark).secondaryText
         )}
       >
         {t.sets && t.sets.no_mobilization_tools_content}
@@ -360,7 +360,12 @@ const SetsScreen = ({
   })
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg1 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg1 }
+      ]}
+    >
       <FlatList
         data={setData}
         renderItem={renderSetItem}

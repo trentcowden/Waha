@@ -73,7 +73,7 @@ const EmojiViewer = ({
             width: 40 * scaleMultiplier,
             height: 40 * scaleMultiplier,
             tintColor:
-              item === 'default' && isDark ? colors(isDark).icons : null
+              item === 'default' && isDark ? colors(isDark).icons : undefined
           }}
           source={groupIconSources[item]}
         />
@@ -89,7 +89,7 @@ const EmojiViewer = ({
             'p',
             'Regular',
             'left',
-            colors(isDark).disabled
+            colors(isDark).secondaryText
           ),
           { marginTop: 20 * scaleMultiplier }
         ]}
@@ -100,8 +100,8 @@ const EmojiViewer = ({
         style={[
           styles.emojiListContainer,
           {
-            borderColor: colors(isDark).bg2,
-            backgroundColor: colors(isDark).bg4
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
           }
         ]}
         onLayout={({ nativeEvent }) =>

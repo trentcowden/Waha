@@ -45,7 +45,7 @@ const WahaItem = ({
         styles.wahaItemContainer,
         {
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
         },
         style
       ]}
@@ -70,7 +70,7 @@ const WahaItem = ({
         styles.wahaItemContainer,
         {
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
         },
         style
       ]}

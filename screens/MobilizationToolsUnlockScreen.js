@@ -158,7 +158,12 @@ const MobilizationToolsUnlockScreen = ({
   }
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
+      ]}
+    >
       <Text
         style={[
           StandardTypography(

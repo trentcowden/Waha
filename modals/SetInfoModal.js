@@ -110,7 +110,7 @@ const SetInfoModal = ({
               'p',
               'Regular',
               'left',
-              colors(isDark).disabled
+              colors(isDark).secondaryText
             )}
           >
             {scriptureList}

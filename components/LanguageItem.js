@@ -32,6 +32,8 @@ const LanguageItem = ({
       {
         backgroundColor: isSelected
           ? colors(isDark).success + '40'
+          : isDark
+          ? colors(isDark).bg2
           : colors(isDark).bg4
       }
     ]}

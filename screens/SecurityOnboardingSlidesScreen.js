@@ -69,8 +69,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
-            backgroundColor: colors(isDark).bg4,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -95,8 +95,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
-            backgroundColor: colors(isDark).bg4,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -121,8 +121,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
-            backgroundColor: colors(isDark).bg4,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -147,8 +147,8 @@ const SecurityOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
-            backgroundColor: colors(isDark).bg4,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -167,7 +167,12 @@ const SecurityOnboardingSlidesScreen = ({
   ]
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <PagerView
         ref={pagerRef}
         style={styles.pager}

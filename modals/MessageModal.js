@@ -56,7 +56,10 @@ const MessageModal = ({
     propagateSwipe={true}
   >
     <View
-      style={[styles.contentContainer, { backgroundColor: colors(isDark).bg4 }]}
+      style={[
+        styles.contentContainer,
+        { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
+      ]}
     >
       {children}
       <Text

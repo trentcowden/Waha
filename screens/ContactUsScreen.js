@@ -175,7 +175,10 @@ const ContactUsScreen = ({
 
   return (
     <SafeAreaView
-      style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
     >
       <ScrollView bounces={false} style={styles.scrollViewContainer}>
         <View style={{ width: '100%', height: 20 * scaleMultiplier }} />
@@ -221,8 +224,10 @@ const ContactUsScreen = ({
                 {
                   paddingTop: 0,
                   paddingBottom: 0,
-                  backgroundColor: colors(isDark).bg4,
-                  borderColor: colors(isDark).bg2,
+                  backgroundColor: isDark
+                    ? colors(isDark).bg2
+                    : colors(isDark).bg4,
+                  borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
                   borderWidth: 2
                 }
               ]}
@@ -300,8 +305,10 @@ const ContactUsScreen = ({
               {
                 height: 200 * scaleMultiplier,
                 textAlignVertical: 'top',
-                backgroundColor: colors(isDark).bg4,
-                borderColor: colors(isDark).bg2,
+                backgroundColor: isDark
+                  ? colors(isDark).bg2
+                  : colors(isDark).bg4,
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
                 borderWidth: 2
               }
             ]}
@@ -322,8 +329,10 @@ const ContactUsScreen = ({
             style={[
               styles.checkIconContainer,
               {
-                backgroundColor: colors(isDark).bg4,
-                borderColor: colors(isDark).bg2,
+                backgroundColor: isDark
+                  ? colors(isDark).bg2
+                  : colors(isDark).bg4,
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
                 borderWidth: 2
               }
             ]}
@@ -378,8 +387,10 @@ const ContactUsScreen = ({
                 {
                   height: 200 * scaleMultiplier,
                   textAlignVertical: 'top',
-                  backgroundColor: colors(isDark).bg4,
-                  borderColor: colors(isDark).bg2,
+                  backgroundColor: isDark
+                    ? colors(isDark).bg2
+                    : colors(isDark).bg4,
+                  borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
                   borderWidth: 2
                 }
               ]}
@@ -403,7 +414,9 @@ const ContactUsScreen = ({
             emailTextInput === null ||
             !isConnected ||
             messageTextInput.length > 1000
-              ? colors(isDark).bg1
+              ? isDark
+                ? colors(isDark).bg4
+                : colors(isDark).bg1
               : colors(isDark).success
           }
           useDefaultFont={false}

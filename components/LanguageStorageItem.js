@@ -49,7 +49,7 @@ const LanguageStorageItem = ({
           styles.languageStorageHeaderContainer,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row',
-            backgroundColor: colors(isDark).bg3
+            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
           }
         ]}
       >
@@ -59,7 +59,7 @@ const LanguageStorageItem = ({
             'h3',
             'Regular',
             'left',
-            colors(isDark).disabled
+            colors(isDark).secondaryText
           )}
         >
           {languageName}
@@ -77,7 +77,7 @@ const LanguageStorageItem = ({
           styles.mainAreaContainer,
           {
             flexDirection: isRTL ? 'row-reverse' : 'row',
-            backgroundColor: colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
           }
         ]}
       >

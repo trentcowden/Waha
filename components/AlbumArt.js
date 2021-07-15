@@ -55,7 +55,9 @@ const AlbumArt = ({
     style={[
       styles.albumArtContainer,
       {
-        backgroundColor: colors(isDark).bg2,
+        backgroundColor: isDark ? colors(isDark).icons : colors(isDark).bg2,
+        // borderWidth: isDark ? 5 : 0,
+        borderColor: colors(isDark).icons,
         maxWidth: isTablet
           ? Dimensions.get('window').width * 0.7
           : Dimensions.get('window').width - gutterSize * 2,
@@ -75,7 +77,7 @@ const AlbumArt = ({
         name={iconName}
         width='100%'
         height='100%'
-        color={colors(isDark).icons}
+        color={isDark ? colors(isDark).bg4 : colors(isDark).icons}
       />
     </TouchableHighlight>
     <Animated.View
@@ -96,7 +98,7 @@ const AlbumArt = ({
       <Icon
         name={isMediaPlaying ? 'play' : 'pause'}
         size={100 * scaleMultiplier}
-        color={colors(isDark).bg4}
+        color={isDark ? colors(isDark).text : colors(isDark).bg4}
       />
     </Animated.View>
   </View>

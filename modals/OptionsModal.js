@@ -51,30 +51,39 @@ const OptionsModal = ({
       <View
         style={[
           styles.childrenContainer,
-          { backgroundColor: colors(isDark).bg4 }
+          { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
         ]}
       >
         {children}
       </View>
-      <TouchableOpacity
-        onPress={hideModal}
+      <View
         style={[
           styles.closeButtonContainer,
-          { backgroundColor: colors(isDark).bg4 }
+          { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
         ]}
       >
-        <Text
-          style={StandardTypography(
-            { font, isRTL },
-            'h3',
-            'Bold',
-            'center',
-            colors(isDark).error
-          )}
+        <TouchableOpacity
+          onPress={hideModal}
+          style={[
+            styles.closeButtonContainer,
+            {
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
+          ]}
         >
-          {closeText}
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={StandardTypography(
+              { font, isRTL },
+              'h3',
+              'Bold',
+              'center',
+              colors(isDark).error
+            )}
+          >
+            {closeText}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   </Modal>
 )

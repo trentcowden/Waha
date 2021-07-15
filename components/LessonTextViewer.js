@@ -172,7 +172,11 @@ const LessonTextViewer = ({
         sectionOffsets={sectionOffsets}
       />
       <LinearGradient
-        colors={[colors(isDark).bg4, colors(isDark).bg4 + '00']}
+        colors={
+          isDark
+            ? [colors(isDark).bg1, colors(isDark).bg1 + '00']
+            : [colors(isDark).bg4, colors(isDark).bg4 + '00']
+        }
         start={[1, 1]}
         end={[1, 0]}
         style={styles.bottomFadeArea}

@@ -261,7 +261,9 @@ const AddEditGroupModal = ({
     >
       <View style={styles.groupAvatarContainer}>
         <GroupAvatar
-          style={{ backgroundColor: colors(isDark).bg1 }}
+          style={{
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg1
+          }}
           emoji={emojiInput}
           size={120}
         />
@@ -277,8 +279,8 @@ const AddEditGroupModal = ({
             styles.shouldShowMTTabInputContainer,
             {
               flexDirection: isRTL ? 'row-reverse' : 'row',
-              borderColor: colors(isDark).bg2,
-              backgroundColor: colors(isDark).bg4
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
             }
           ]}
         >
@@ -298,7 +300,7 @@ const AddEditGroupModal = ({
               false: colors(isDark).disabled,
               true: colors(isDark).success
             }}
-            thumbColor={colors(isDark).bg4}
+            thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
             ios_backgroundColor={colors(isDark).disabled}
             onValueChange={() => setShouldShowMTTabInput(current => !current)}
             value={shouldShowMTTabInput}

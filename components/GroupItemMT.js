@@ -70,7 +70,7 @@ const GroupItemMT = ({
       style={[
         styles.groupListItemContainer,
         {
-          backgroundColor: colors(isDark).bg4,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           flexDirection: isRTL ? 'row-reverse' : 'row',
           borderLeftWidth: isRTL ? 0 : 5,
           borderRightWidth: isRTL ? 5 : 0,
@@ -84,7 +84,9 @@ const GroupItemMT = ({
         }}
       >
         <GroupAvatar
-          style={{ backgroundColor: colors(isDark).bg2 }}
+          style={{
+            backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2
+          }}
           size={50 * scaleMultiplier}
           emoji={thisGroup.emoji}
           isActive={activeGroup.name === thisGroup.name}
@@ -112,7 +114,7 @@ const GroupItemMT = ({
             false: colors(isDark).disabled,
             true: colors(isDark).success
           }}
-          thumbColor={colors(isDark).bg4}
+          thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
           ios_backgroundColor={colors(isDark).disabled}
           onValueChange={() => {
             // Toggle the visibility of the Mobilization Tools tab for this group on or off.

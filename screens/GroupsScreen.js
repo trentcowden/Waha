@@ -57,7 +57,11 @@ const GroupsScreen = ({
         // Switch the background color of the header in editing mode to reflect that we're in a non-standard screen view.
         backgroundColor: isEditing
           ? colors(isDark).highlight
-          : colors(isDark).bg3
+          : isDark
+          ? colors(isDark).bg1
+          : colors(isDark).bg3,
+        elevation: 0,
+        shadowColor: 'transparent'
       },
       headerTitleStyle: {
         // Update the header text color to go with the background color changes.
@@ -171,7 +175,12 @@ const GroupsScreen = ({
   )
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <SectionList
         sections={getLanguageAndGroupData()}
         renderItem={({ item }) => renderGroupItem(item)}

@@ -69,7 +69,7 @@ const TimeDisplay = ({
           'd',
           'Regular',
           'center',
-          side === 'left' ? colors(isDark).text : colors(isDark).disabled
+          side === 'left' ? colors(isDark).text : colors(isDark).secondaryText
         )}
       >
         {convertTime(time)}

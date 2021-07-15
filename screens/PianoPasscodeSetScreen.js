@@ -179,7 +179,10 @@ const PianoPasscodeSetScreen = ({
 
   return (
     <SafeAreaView
-      style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
+      ]}
     >
       <View style={styles.topContainer}>
         <View style={styles.instructionTextContainer}>

@@ -169,7 +169,7 @@ const GroupListHeader = ({
         styles.groupListHeaderContainer,
         {
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: colors(isDark).bg3
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
         }
       ]}
     >
@@ -198,7 +198,7 @@ const GroupListHeader = ({
               'h3',
               'Regular',
               'left',
-              colors(isDark).disabled
+              colors(isDark).secondaryText
             ),
             { flex: 1 }
           ]}

@@ -67,7 +67,7 @@ const AddNewLanguageInstanceButton = ({
             'h3',
             'Bold',
             'left',
-            colors(isDark).disabled
+            colors(isDark).secondaryText
           )}
         >
           {t.groups && t.groups.add_language}

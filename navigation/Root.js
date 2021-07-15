@@ -1,4 +1,6 @@
+import { StatusBar } from 'expo-status-bar'
 import React from 'react'
+import { View } from 'react-native'
 import { connect } from 'react-redux'
 import { groupNames } from '../constants'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
@@ -16,14 +18,16 @@ function mapStateToProps (state) {
       isInstallingLanguageInstance: state.isInstallingLanguageInstance,
       activeGroup: state.activeGroup,
       groups: state.groups,
-      database: state.database
+      database: state.database,
+      isDark: state.settings.isDarkModeEnabled
     }
   else
     return {
       hasOnboarded: state.database.hasOnboarded,
       hasInstalledFirstLanguageInstance:
         state.database.hasInstalledFirstLanguageInstance,
-      isInstallingLanguageInstance: state.isInstallingLanguageInstance
+      isInstallingLanguageInstance: state.isInstallingLanguageInstance,
+      isDark: state.settings.isDarkModeEnabled
     }
 }
 
@@ -61,6 +65,7 @@ const Root = ({
   hasOnboarded,
   hasInstalledFirstLanguageInstance,
   isInstallingLanguageInstance,
+  isDark,
   activeGroup = null,
   groups = null,
   database = null,
@@ -96,14 +101,29 @@ const Root = ({
     !isInstallingLanguageInstance &&
     hasOnboarded
   ) {
-    return <MainDrawer />
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <MainDrawer />
+      </View>
+    )
   } else if (
     !hasInstalledFirstLanguageInstance ||
     (hasInstalledFirstLanguageInstance && !hasOnboarded)
   ) {
-    return <Onboarding />
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <Onboarding />
+      </View>
+    )
   } else {
-    return <LoadingScreen />
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <LoadingScreen />
+      </View>
+    )
   }
 }
 

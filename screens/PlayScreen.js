@@ -264,7 +264,7 @@ const PlayScreen = ({
             <Icon
               name='check-outline'
               size={20}
-              color={colors(isDark).disabled}
+              color={colors(isDark).secondaryText}
             />
           )}
         </View>
@@ -275,7 +275,7 @@ const PlayScreen = ({
               'h3',
               'Bold',
               'center',
-              colors(isDark).disabled
+              colors(isDark).secondaryText
             ),
             { marginHorizontal: 2 }
           ]}
@@ -892,7 +892,12 @@ const PlayScreen = ({
   */
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg4 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
+      ]}
+    >
       <View style={styles.middleAreaContainer}>
         {lessonType !== lessonTypes.VIDEO_ONLY && (
           <Animated.View

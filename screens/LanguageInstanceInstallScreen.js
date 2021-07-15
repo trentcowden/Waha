@@ -448,10 +448,7 @@ const LanguageInstanceInstallScreen = ({
       style={[
         styles.languageHeaderContainer,
         {
-          backgroundColor:
-            routeName === 'InitialLanguageInstanceInstall'
-              ? colors(isDark).bg3
-              : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
         }
       ]}
     >
@@ -461,7 +458,7 @@ const LanguageInstanceInstallScreen = ({
           'h3',
           'Regular',
           'left',
-          colors(isDark).disabled
+          colors(isDark).secondaryText
         )}
       >
         {i18n.t(languageFamily.i18nName)}
@@ -474,10 +471,7 @@ const LanguageInstanceInstallScreen = ({
       style={[
         styles.screen,
         {
-          backgroundColor:
-            routeName === 'InitialLanguageInstanceInstall'
-              ? colors(isDark).bg3
-              : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
         }
       ]}
     >
@@ -517,8 +511,8 @@ const LanguageInstanceInstallScreen = ({
           {
             width: Dimensions.get('window').width - 40,
             maxWidth: 500,
-            borderColor: colors(isDark).bg1,
-            backgroundColor: colors(isDark).bg2
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
           }
         ]}
       >
@@ -548,7 +542,7 @@ const LanguageInstanceInstallScreen = ({
           autoCorrect={false}
           autoCapitalize='none'
           placeholder='Search'
-          placeholderTextColor={colors(isDark).disabled}
+          placeholderTextColor={colors(isDark).secondaryText}
         />
       </View>
       <View style={styles.languageListContainer}>
@@ -576,7 +570,13 @@ const LanguageInstanceInstallScreen = ({
       >
         <WahaButton
           type={isConnected ? 'filled' : 'inactive'}
-          color={isConnected ? colors(isDark).success : colors(isDark).bg1}
+          color={
+            isConnected
+              ? colors(isDark).success
+              : isDark
+              ? colors(isDark).bg4
+              : colors(isDark).bg1
+          }
           onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
           label={
             isConnected

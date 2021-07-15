@@ -184,8 +184,8 @@ const ChapterButton = ({
         break
       case chapterButtonModes.INCOMPLETE:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg3,
-          backgroundColor: colors(isDark).bg2
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
         setTextStyle({
           color: isDark
@@ -209,8 +209,8 @@ const ChapterButton = ({
         break
       case chapterButtonModes.COMPLETE:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg3,
-          backgroundColor: colors(isDark).bg2
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark, activeGroup.language).accent })
         setIconColor(colors(isDark, activeGroup.language).accent)
@@ -218,8 +218,8 @@ const ChapterButton = ({
         break
       case chapterButtonModes.DOWNLOADING:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg3,
-          backgroundColor: colors(isDark).bg2
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg3,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark).disabled })
         setIconName(null)
@@ -227,8 +227,8 @@ const ChapterButton = ({
         break
       case chapterButtonModes.DISABLED:
         setExtraButtonStyle({
-          borderColor: colors(isDark).bg3,
-          backgroundColor: colors(isDark).bg2
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg3,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark).disabled })
         setIconName('cloud-slash')
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 3,
     paddingHorizontal: 3
     // borderTopWidth: 2,
     // borderBottomWidth: 2

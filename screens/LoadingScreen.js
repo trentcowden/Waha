@@ -191,7 +191,12 @@ const LoadingScreen = ({
   }
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).bg3 }]}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <View
         style={{
           flex: 1,
@@ -219,7 +224,10 @@ const LoadingScreen = ({
         <View
           style={[
             styles.progressBarContainer,
-            { borderColor: colors(isDark).bg1 }
+            {
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
           ]}
         >
           {languageCoreFilesDownloadProgress ? (
@@ -238,7 +246,9 @@ const LoadingScreen = ({
               style={[
                 styles.progressToGo,
                 {
-                  backgroundColor: colors(isDark).bg2,
+                  backgroundColor: isDark
+                    ? colors(isDark).bg2
+                    : colors(isDark).bg4,
                   flex:
                     totalLanguageCoreFilesToDownload -
                     languageCoreFilesDownloadProgress

@@ -50,7 +50,7 @@ const GroupNameTextInput = ({
           'p',
           'Regular',
           'left',
-          colors(isDark).disabled
+          colors(isDark).secondaryText
         )}
       >
         {t.groups && t.groups.group_name}
@@ -67,8 +67,8 @@ const GroupNameTextInput = ({
           style={[
             styles.groupNameTextInputContainer,
             {
-              backgroundColor: colors(isDark).bg4,
-              borderColor: colors(isDark).bg2
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
             },
             StandardTypography(
               { font, isRTL },

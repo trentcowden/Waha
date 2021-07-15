@@ -133,7 +133,12 @@ const SetItem = ({
                   style={{
                     flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    backgroundColor: isDark
+                      ? progressPercentage === 1
+                        ? colors(isDark).disabled
+                        : colors(isDark).icons
+                      : null
                   }}
                 >
                   <SVG
@@ -142,7 +147,11 @@ const SetItem = ({
                     height={70 * scaleMultiplier}
                     color={
                       progressPercentage === 1
-                        ? colors(isDark).disabled
+                        ? isDark
+                          ? colors(isDark).bg4
+                          : colors(isDark).disabled
+                        : isDark
+                        ? colors(isDark).bg4
                         : colors(isDark).icons
                     }
                   />
@@ -199,7 +208,12 @@ const SetItem = ({
                   style={{
                     flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    backgroundColor: isDark
+                      ? progressPercentage === 1
+                        ? colors(isDark).disabled
+                        : colors(isDark).icons
+                      : null
                   }}
                 >
                   <SVG
@@ -208,7 +222,11 @@ const SetItem = ({
                     height={70 * scaleMultiplier}
                     color={
                       progressPercentage === 1
-                        ? colors(isDark).disabled
+                        ? isDark
+                          ? colors(isDark).bg4
+                          : colors(isDark).disabled
+                        : isDark
+                        ? colors(isDark).bg4
                         : colors(isDark).icons
                     }
                   />
@@ -275,11 +293,13 @@ const SetItem = ({
             style={[
               styles.primaryIconContainer,
               {
-                backgroundColor: colors(isDark).bg4,
+                backgroundColor: isDark
+                  ? colors(isDark).icons
+                  : colors(isDark).bg4,
                 borderRadius: 14,
                 overflow: 'hidden',
                 borderWidth: 7,
-                borderColor: colors(isDark).icons
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
               }
             ]}
           >
@@ -287,7 +307,7 @@ const SetItem = ({
               name={thisSet.iconName}
               width={80 * scaleMultiplier}
               height={80 * scaleMultiplier}
-              color={colors(isDark).icons}
+              color={isDark ? colors(isDark).bg4 : colors(isDark).icons}
             />
           </View>
         )
@@ -309,11 +329,13 @@ const SetItem = ({
             style={[
               styles.primaryIconContainer,
               {
-                backgroundColor: colors(isDark).bg4,
+                backgroundColor: isDark
+                  ? colors(isDark).icons
+                  : colors(isDark).bg4,
                 borderRadius: 14,
                 overflow: 'hidden',
                 borderWidth: 7,
-                borderColor: colors(isDark).icons
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
               }
             ]}
           >
@@ -321,7 +343,7 @@ const SetItem = ({
               name={thisSet.iconName}
               width={80 * scaleMultiplier}
               height={80 * scaleMultiplier}
-              color={colors(isDark).icons}
+              color={isDark ? colors(isDark).bg4 : colors(isDark).icons}
             />
           </View>
         )
@@ -369,10 +391,9 @@ const SetItem = ({
               'd',
               'Regular',
               'left',
-              // progressPercentage === 1
-              // ?
-              colors(isDark).icons
-              // : colors(isDark).text
+              progressPercentage === 1
+                ? colors(isDark).disabled
+                : colors(isDark).icons
             ),
             {
               textAlignVertical: 'center',

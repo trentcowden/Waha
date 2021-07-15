@@ -70,6 +70,7 @@ const WahaButton = ({
       setShadowColor(colors(isDark).bg1)
     else if (color === colors(isDark).bg1)
       setShadowColor(colors(isDark).bg1Shadow)
+    else if (color === colors(isDark).bg4) setShadowColor(colors(isDark).bg2)
   }, [color])
 
   // Main container styles.
