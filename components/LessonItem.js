@@ -304,7 +304,9 @@ const LessonItem = ({
                 'd',
                 'Regular',
                 'left',
-                colors(isDark).secondaryText
+                isComplete
+                  ? colors(isDark).disabled
+                  : colors(isDark).secondaryText
               )}
               // numberOfLines={2}
             >

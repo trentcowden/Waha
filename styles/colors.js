@@ -54,7 +54,7 @@ export const colors = (isDark, languageID = null) => {
       secondaryText: '#B1BBC3',
       textOnColor: '#24292C',
       icons: '#D4DDE1',
-      disabled: '#9099A0',
+      disabled: '#8C969D',
       bg1: '#24292C',
       bg2: '#2E3538',
       bg3: '#30383B',
