@@ -29,7 +29,7 @@
       "package": "com.kingdomstrategies.waha",
       "googleServicesFile": "./firebase/google-services.json",
       "icon": "./assets/icons/adaptive_icon_foreground.png",
-      "versionCode": 24,
+      "versionCode": 26,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/adaptive_icon_foreground.png",
         "backgroundColor": "#E63946"
