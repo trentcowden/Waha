@@ -124,7 +124,10 @@ const Root = ({
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBarRN barStyle={isDark ? 'light-content' : 'dark-content'} />
+        <StatusBarRN
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={isDark ? colors(isDark).bg1 : colors(isDark).bg3}
+        />
         <LoadingScreen />
       </View>
     )

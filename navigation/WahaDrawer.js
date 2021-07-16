@@ -168,14 +168,14 @@ const WahaDrawer = ({
           onPress={() => navigate('Storage')}
         />
         <DrawerItem
-          icon='email'
-          label={t.contact_us && t.contact_us.contact_us}
-          onPress={() => navigate('ContactUs')}
-        />
-        <DrawerItem
           icon={isDark ? 'sun' : 'moon'}
           onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
           label={isDark ? t.general.light_mode : t.general.dark_mode}
+        />
+        <DrawerItem
+          icon='email'
+          label={t.contact_us && t.contact_us.contact_us}
+          onPress={() => navigate('ContactUs')}
         />
         <DrawerItem
           icon='info'
