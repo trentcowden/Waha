@@ -13,7 +13,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
-
+    isDark: state.settings.isDarkModeEnabled,
     isRTL: activeDatabaseSelector(state).isRTL
   }
 }
@@ -33,7 +33,7 @@ const OptionsModal = ({
   children,
   // Props passed from redux.
   font,
-
+  isDark,
   isRTL
 }) => (
   <Modal
@@ -48,20 +48,42 @@ const OptionsModal = ({
     useNativeDriver
   >
     <View style={{ alignItems: 'center' }}>
-      <View style={styles.childrenContainer}>{children}</View>
-      <TouchableOpacity onPress={hideModal} style={styles.closeButtonContainer}>
-        <Text
-          style={StandardTypography(
-            { font, isRTL },
-            'h3',
-            'Bold',
-            'center',
-            colors.red
-          )}
+      <View
+        style={[
+          styles.childrenContainer,
+          { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
+        ]}
+      >
+        {children}
+      </View>
+      <View
+        style={[
+          styles.closeButtonContainer,
+          { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
+        ]}
+      >
+        <TouchableOpacity
+          onPress={hideModal}
+          style={[
+            styles.closeButtonContainer,
+            {
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
+          ]}
         >
-          {closeText}
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={StandardTypography(
+              { font, isRTL },
+              'h3',
+              'Bold',
+              'center',
+              colors(isDark).error
+            )}
+          >
+            {closeText}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   </Modal>
 )
@@ -70,7 +92,6 @@ const styles = StyleSheet.create({
   childrenContainer: {
     width: '100%',
     maxWidth: 500,
-    backgroundColor: colors.white,
     borderRadius: 20,
     marginVertical: 10
   },
@@ -79,7 +100,6 @@ const styles = StyleSheet.create({
     maxWidth: 500,
     height: 70 * scaleMultiplier,
     justifyContent: 'center',
-    backgroundColor: colors.white,
     borderRadius: 20
   }
 })

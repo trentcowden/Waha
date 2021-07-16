@@ -23,6 +23,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations
   }
@@ -45,6 +46,7 @@ const EmojiViewer = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  isDark,
   font,
 
   t
@@ -52,27 +54,32 @@ const EmojiViewer = ({
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)
 
   /** Renders an emoji for the emoji select <FlatList />. */
-  const renderEmoji = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.emojiContainer,
-        {
-          borderWidth: item === emojiInput ? 2 : 0,
-          borderColor: item === emojiInput ? colors.blue : null,
-          backgroundColor: item === emojiInput ? colors.blue + '38' : null
-        }
-      ]}
-      onPress={() => setEmojiInput(item)}
-    >
-      <Image
-        style={{
-          width: 40 * scaleMultiplier,
-          height: 40 * scaleMultiplier
-        }}
-        source={groupIconSources[item]}
-      />
-    </TouchableOpacity>
-  )
+  const renderEmoji = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.emojiContainer,
+          {
+            borderWidth: item === emojiInput ? 2 : 0,
+            borderColor: item === emojiInput ? colors(isDark).highlight : null,
+            backgroundColor:
+              item === emojiInput ? colors(isDark).highlight + '38' : null
+          }
+        ]}
+        onPress={() => setEmojiInput(item)}
+      >
+        <Image
+          style={{
+            width: 40 * scaleMultiplier,
+            height: 40 * scaleMultiplier,
+            tintColor:
+              item === 'default' && isDark ? colors(isDark).icons : undefined
+          }}
+          source={groupIconSources[item]}
+        />
+      </TouchableOpacity>
+    )
+  }
   return (
     <View style={styles.emojiViewerContainer}>
       <Text
@@ -82,7 +89,7 @@ const EmojiViewer = ({
             'p',
             'Regular',
             'left',
-            colors.chateau
+            colors(isDark).secondaryText
           ),
           { marginTop: 20 * scaleMultiplier }
         ]}
@@ -90,7 +97,13 @@ const EmojiViewer = ({
         {t.groups && t.groups.avatar}
       </Text>
       <View
-        style={styles.emojiListContainer}
+        style={[
+          styles.emojiListContainer,
+          {
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          }
+        ]}
         onLayout={({ nativeEvent }) =>
           setEmojiViewerWidth(nativeEvent.layout.width)
         }
@@ -132,11 +145,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: colors.athens,
     marginBottom: 20,
     flex: 1,
-    marginTop: 5,
-    backgroundColor: colors.white
+    marginTop: 5
   }
 })
 

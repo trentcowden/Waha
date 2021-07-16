@@ -25,6 +25,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     showPasscodeSetSnackbar: state.popups.showPasscodeSetSnackbar,
     security: state.security
   }
@@ -45,6 +46,7 @@ const SecurityModeScreen = ({
   navigation: { setOptions, goBack, navigate },
   // Props passed from redux.
   isRTL,
+  isDark,
   t,
   font,
   showPasscodeSetSnackbar,
@@ -85,7 +87,12 @@ const SecurityModeScreen = ({
   }
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       {/* Inside a ScrollView in case a user's phone can't fit all of the controls on their screen. */}
       <ScrollView bounces={false}>
         <WahaHero source={require('../assets/lotties/security_mode.json')} />
@@ -93,9 +100,12 @@ const SecurityModeScreen = ({
         <WahaSeparator />
         <WahaItem title={t.security && t.security.security_mode}>
           <Switch
-            trackColor={{ false: colors.chateau, true: colors.apple }}
-            thumbColor={colors.white}
-            ios_backgroundColor={colors.chateau}
+            trackColor={{
+              false: colors(isDark).disabled,
+              true: colors(isDark).success
+            }}
+            thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
+            ios_backgroundColor={colors(isDark).disabled}
             onValueChange={() => {
               // If we have never enabled security mode before (meaning we have never set a code), then navigate to the security onboarding slides. Otherwise, toggle security mode on or off.
               if (security.code)
@@ -129,14 +139,14 @@ const SecurityModeScreen = ({
                     'h4',
                     'Regular',
                     'left',
-                    colors.chateau
+                    colors(isDark).secondaryText
                   )}
                 >
                   {getTimeoutText()}
                 </Text>
                 <Icon
                   name={isRTL ? 'arrow-left' : 'arrow-right'}
-                  color={colors.tuna}
+                  color={colors(isDark).icons}
                   size={50 * scaleMultiplier}
                 />
               </View>
@@ -149,7 +159,7 @@ const SecurityModeScreen = ({
             >
               <Icon
                 name={isRTL ? 'arrow-left' : 'arrow-right'}
-                color={colors.tuna}
+                color={colors(isDark).icons}
                 size={50 * scaleMultiplier}
               />
             </WahaItem>
@@ -166,12 +176,12 @@ const SecurityModeScreen = ({
         visible={showPasscodeSetSnackbar}
         textMessage={t.security && t.security.passcode_confirmation_title}
         messageStyle={{
-          color: colors.white,
+          color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: font + '-Black',
           textAlign: 'center'
         }}
-        backgroundColor={colors.apple}
+        backgroundColor={colors(isDark).success}
       />
     </View>
   )
@@ -179,8 +189,7 @@ const SecurityModeScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: colors.aquaHaze
+    flex: 1
   }
 })
 

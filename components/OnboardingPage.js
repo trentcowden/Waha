@@ -12,7 +12,8 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -33,9 +34,15 @@ const OnboardingPage = ({
   children,
   // Props passed from redux.
   isRTL,
+  isDark,
   font
 }) => (
-  <View style={styles.onboardingPageContainer}>
+  <View
+    style={[
+      styles.onboardingPageContainer,
+      { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+    ]}
+  >
     <View style={styles.textContainer}>
       <Text
         style={[
@@ -44,7 +51,7 @@ const OnboardingPage = ({
             'h2',
             'Bold',
             'center',
-            colors.shark
+            colors(isDark).text
           ),
           { fontSize: 24 * scaleMultiplier }
         ]}
@@ -58,7 +65,7 @@ const OnboardingPage = ({
           'h3',
           'Regular',
           'center',
-          colors.chateau
+          colors(isDark).secondaryText
         )}
       >
         {message}
@@ -74,8 +81,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.aquaHaze
+    alignItems: 'center'
   },
   textContainer: {
     justifyContent: 'space-around',

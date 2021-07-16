@@ -7,12 +7,17 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { isTablet, scaleMultiplier } from '../constants'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    primaryColor: activeDatabaseSelector(state).primaryColor
+    primaryColor: activeDatabaseSelector(state).primaryColor,
+    isDark: state.settings.isDarkModeEnabled,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -32,7 +37,9 @@ const PlaybackControls = ({
   mediaProgress,
   playFromLocation,
   // Props passed from redux.
-  primaryColor
+  primaryColor,
+  isDark,
+  activeGroup
 }) => (
   <View style={styles.playbackControlsContainer}>
     <TouchableOpacity
@@ -43,7 +50,7 @@ const PlaybackControls = ({
       <Icon
         name='skip-back-5'
         size={isTablet ? 89 * scaleMultiplier : 69 * scaleMultiplier}
-        color={colors.tuna}
+        color={colors(isDark).icons}
       />
     </TouchableOpacity>
     {isMediaLoaded ? (
@@ -60,7 +67,7 @@ const PlaybackControls = ({
         <Icon
           name={isMediaPlaying ? 'pause' : 'play'}
           size={isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier}
-          color={primaryColor}
+          color={colors(isDark, activeGroup.language).accent}
         />
       </TouchableOpacity>
     ) : (
@@ -74,7 +81,7 @@ const PlaybackControls = ({
           }
         ]}
       >
-        <ActivityIndicator size='large' color={colors.shark} />
+        <ActivityIndicator size='large' color={colors(isDark).text} />
       </View>
     )}
     <TouchableOpacity
@@ -85,7 +92,7 @@ const PlaybackControls = ({
       <Icon
         name='skip-forward-5'
         size={isTablet ? 89 * scaleMultiplier : 69 * scaleMultiplier}
-        color={colors.tuna}
+        color={colors(isDark).icons}
       />
     </TouchableOpacity>
   </View>

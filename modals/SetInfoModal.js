@@ -27,7 +27,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -56,6 +57,7 @@ const SetInfoModal = ({
   downloads,
   activeDatabase,
   isRTL,
+  isDark,
   activeGroup,
   t,
   font,
@@ -94,7 +96,7 @@ const SetInfoModal = ({
             'h4',
             'Bold',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {item.title}
@@ -108,7 +110,7 @@ const SetInfoModal = ({
               'p',
               'Regular',
               'left',
-              colors.chateau
+              colors(isDark).secondaryText
             )}
           >
             {scriptureList}
@@ -129,7 +131,7 @@ const SetInfoModal = ({
       </View>
       <WahaButton
         type='filled'
-        color={colors.apple}
+        color={colors(isDark).success}
         onPress={() => {
           addSet(activeGroup.name, activeGroup.id, thisSet)
           showSnackbar()
@@ -140,7 +142,7 @@ const SetInfoModal = ({
         extraComponent={
           <Icon
             style={{ marginHorizontal: 10 }}
-            color={colors.white}
+            color={colors(isDark).bg4}
             size={36 * scaleMultiplier}
             name='playlist-add'
           />
@@ -158,11 +160,6 @@ const SetInfoModal = ({
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.white,
-    paddingTop: 10
-  },
   setItemContainer: {
     width: '100%',
     height: 100 * scaleMultiplier

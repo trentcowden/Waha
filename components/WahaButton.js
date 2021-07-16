@@ -17,11 +17,13 @@ function mapStateToProps (state) {
   return activeGroupSelector(state)
     ? {
         font: getLanguageFont(activeGroupSelector(state).language),
-
+        isDark: state.settings.isDarkModeEnabled,
         isRTL: activeDatabaseSelector(state).isRTL,
         activeGroup: activeGroupSelector(state)
       }
-    : {}
+    : {
+        isDark: state.settings.isDarkModeEnabled
+      }
 }
 
 /**
@@ -50,19 +52,25 @@ const WahaButton = ({
   // Props passed from redux.
   font = null,
   isRTL = null,
-  activeGroup = null
+  activeGroup = null,
+  isDark
 }) => {
   /** Keeps track of the color of the bottom border (shadow) of the button. */
   const [shadowColor, setShadowColor] = useState()
 
   /** useEffect function that sets the shadow color state based on the color prop. */
   useEffect(() => {
-    if (color === colors.apple) setShadowColor(colors.appleShadow)
-    else if (color === colors.red) setShadowColor(colors.redShadow)
-    else if (color === colors.blue) setShadowColor(colors.blueShadow)
-    else if (color === colors.chateau) setShadowColor(colors.chateauShadow)
-    else if (color === colors.geyser) setShadowColor(colors.geyserShadow)
-    else if (color === colors.waha) setShadowColor(colors.wahaShadow)
+    if (color === colors(isDark).success)
+      setShadowColor(colors(isDark).successShadow)
+    else if (color === colors(isDark).error)
+      setShadowColor(colors(isDark).errorShadow)
+    else if (color === colors(isDark).highlight)
+      setShadowColor(colors(isDark).highlightShadow)
+    else if (color === colors(isDark).disabled)
+      setShadowColor(colors(isDark).bg1)
+    else if (color === colors(isDark).bg1)
+      setShadowColor(colors(isDark).bg1Shadow)
+    else if (color === colors(isDark).bg4) setShadowColor(colors(isDark).bg2)
   }, [color])
 
   // Main container styles.
@@ -128,8 +136,8 @@ const WahaButton = ({
 
   // Specific styles for the labels for the different types of buttons.
   const outlineLabelStyle = [labelStyle, { color: color }]
-  const filledLabelStyle = [labelStyle, { color: colors.white }]
-  const inactiveLabelStyle = [labelStyle, { color: colors.chateau }]
+  const filledLabelStyle = [labelStyle, { color: colors(isDark).textOnColor }]
+  const inactiveLabelStyle = [labelStyle, { color: colors(isDark).disabled }]
 
   switch (type) {
     case 'outline':

@@ -17,6 +17,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -48,11 +49,12 @@ const LessonTextViewer = ({
   sectionTitleYTransform = null,
   markLessonAsComplete,
   isThisLessonComplete,
+  setShowCopyrightsModal = null,
   // Props passed from redux.
   activeGroup,
   activeDatabase,
   font,
-
+  isDark,
   t,
   isRTL
 }) => {
@@ -169,9 +171,14 @@ const LessonTextViewer = ({
         layouts={layouts}
         onScroll={onScroll}
         sectionOffsets={sectionOffsets}
+        setShowCopyrightsModal={setShowCopyrightsModal}
       />
       <LinearGradient
-        colors={[colors.white, colors.white + '00']}
+        colors={
+          isDark
+            ? [colors(isDark).bg1, colors(isDark).bg1 + '00']
+            : [colors(isDark).bg4, colors(isDark).bg4 + '00']
+        }
         start={[1, 1]}
         end={[1, 0]}
         style={styles.bottomFadeArea}

@@ -30,6 +30,7 @@ function mapStateToProps (state) {
 const OnboardingSwiper = ({
   // Props passed from a parent component.
   isRTL,
+  isDark,
   sources,
   titles,
   messages,
@@ -51,7 +52,9 @@ const OnboardingSwiper = ({
           styles.dot,
           {
             backgroundColor:
-              index === onboardingPage ? colors.tuna : colors.chateau,
+              index === onboardingPage
+                ? colors(isDark).icons
+                : colors(isDark).disabled,
             width:
               index === onboardingPage
                 ? 10 * scaleMultiplier
@@ -86,14 +89,14 @@ const OnboardingSwiper = ({
                       'h2',
                       'Bold',
                       'center',
-                      colors.shark
+                      colors(isDark).text
                     )
                   : StandardTypography(
                       { font, isRTL },
                       'h2',
                       'Bold',
                       'center',
-                      colors.shark
+                      colors(isDark).text
                     ),
                 { marginVertical: 10 }
               ]}
@@ -108,14 +111,14 @@ const OnboardingSwiper = ({
                       'h3',
                       'Regular',
                       'center',
-                      colors.chateau
+                      colors(isDark).disabled
                     )
                   : StandardTypography(
                       { font, isRTL },
                       'h3',
                       'Regular',
                       'center',
-                      colors.chateau
+                      colors(isDark).disabled
                     )
               }
             >
@@ -127,7 +130,7 @@ const OnboardingSwiper = ({
         {/* <View style={{}}>
           {index === titles.length - 1 ? (
             <TouchableOpacity onPress={onFinish}>
-              <Icon name='check' size={50} color={colors.tuna} />
+              <Icon name='check' size={50} color={colors(isDark).icons} />
             </TouchableOpacity>
           ) : null}
         </View> */}
@@ -169,11 +172,11 @@ const OnboardingSwiper = ({
           color={
             isRTL
               ? onboardingPage === 0
-                ? colors.apple
-                : colors.blue
+                ? colors(isDark).success
+                : colors(isDark).highlight
               : onboardingPage === pages.length - 1
-              ? colors.apple
-              : colors.blue
+              ? colors(isDark).success
+              : colors(isDark).highlight
           }
           onPress={
             isRTL
@@ -213,7 +216,7 @@ const OnboardingSwiper = ({
         >
           {/* <TouchableOpacity onPress={onFinish}> */}
         {/* <TouchableOpacity onPress={onFinish}>
-          <Icon name='check' size={50} color={colors.tuna} />
+          <Icon name='check' size={50} color={colors(isDark).icons} />
         </TouchableOpacity> */}
         {/* </Animated.View> */}
       </View>

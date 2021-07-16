@@ -1,8 +1,19 @@
 import React from 'react'
 import { Image, TouchableOpacity, View } from 'react-native'
+import { connect } from 'react-redux'
 import { groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
+
+function mapStateToProps (state) {
+  return {
+    isDark: state.settings.isDarkModeEnabled
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {}
+}
 
 /**
  * Component to display a group's avatar (emoji) in a little circle.
@@ -17,7 +28,8 @@ const GroupAvatar = ({
   emoji,
   size,
   onPress = null,
-  isActive = false
+  isActive = false,
+  isDark
 }) => {
   // The component for the emoji itself. We have to have conditional logic here because the default group emoji is an icon but the rest are all images.
   const emojiComponent =
@@ -25,7 +37,7 @@ const GroupAvatar = ({
       <Icon
         name='group'
         size={(size / 1.7) * scaleMultiplier}
-        color={colors.tuna}
+        color={colors(isDark).icons}
       />
     ) : (
       <View
@@ -48,7 +60,7 @@ const GroupAvatar = ({
 
   // Style object for the group avatar container. We define it here instead of in a StyleSheet object because most of it requires information from props.
   const groupAvatarContainerStyle = {
-    borderColor: isActive ? colors.blue : null,
+    borderColor: isActive ? colors(isDark).highlight : null,
     borderWidth: isActive ? 2 : null,
     borderRadius: (size * scaleMultiplier) / 2 + 5,
     width: size * scaleMultiplier + 5,
@@ -72,4 +84,4 @@ const GroupAvatar = ({
   )
 }
 
-export default GroupAvatar
+export default connect(mapStateToProps, mapDispatchToProps)(GroupAvatar)

@@ -19,6 +19,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor,
@@ -55,6 +56,7 @@ const ChapterButton = ({
   primaryColor,
   t,
   isRTL,
+  isDark,
   downloads,
   isConnected
 }) => {
@@ -64,11 +66,15 @@ const ChapterButton = ({
   /** Keeps track of the icon name, button style, text style, and icon color for the chapter button. Updates whenever the mode changes. */
   const [iconName, setIconName] = useState('')
   const [extraButtonStyle, setExtraButtonStyle] = useState({
-    borderColor: colors.porcelain,
-    backgroundColor: colors.athens
+    borderColor: colors(isDark).bg3,
+    backgroundColor: colors(isDark).bg2
   })
-  const [textStyle, setTextStyle] = useState({ color: primaryColor })
-  const [iconColor, setIconColor] = useState(primaryColor)
+  const [textStyle, setTextStyle] = useState({
+    color: colors(isDark, activeGroup.language).accent
+  })
+  const [iconColor, setIconColor] = useState(
+    colors(isDark, activeGroup.language).accent
+  )
 
   /** Keeps track of the download progress for the piece of media associated with the chapter button's chapter. */
   const [downloadProgress, setDownloadProgress] = useState(0)
@@ -88,7 +94,7 @@ const ChapterButton = ({
     'p',
     'Bold',
     'center',
-    primaryColor
+    colors(isDark, activeGroup.language).accent
   )
 
   // Whenever the active chapter or the user's internet connection status changes, get the most updated mode.
@@ -161,11 +167,11 @@ const ChapterButton = ({
     switch (mode) {
       case chapterButtonModes.ACTIVE:
         setExtraButtonStyle({
-          backgroundColor: primaryColor,
-          borderColor: primaryColor
+          backgroundColor: colors(isDark, activeGroup.language).accent,
+          borderColor: colors(isDark, activeGroup.language).accent
         })
-        setTextStyle({ color: colors.white })
-        setIconColor(colors.white)
+        setTextStyle({ color: colors(isDark).textOnColor })
+        setIconColor(colors(isDark).bg4)
         // Slight adjustment if the lesson contains a training chapter since that will make the Application need the '4' label instead of '3'.
         if (lessonType.includes('Video') && chapter === chapters.APPLICATION)
           setIconName('number-4-filled')
@@ -178,11 +184,19 @@ const ChapterButton = ({
         break
       case chapterButtonModes.INCOMPLETE:
         setExtraButtonStyle({
-          borderColor: colors.porcelain,
-          backgroundColor: colors.athens
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
-        setTextStyle({ color: primaryColor })
-        setIconColor(primaryColor)
+        setTextStyle({
+          color: isDark
+            ? colors(isDark).icons
+            : colors(isDark, activeGroup.language).accent
+        })
+        setIconColor(
+          isDark
+            ? colors(isDark).icons
+            : colors(isDark, activeGroup.language).accent
+        )
         // Slight adjustment if the lesson contains a training chapter since that will make the Application need the '4' label instead of '3'. Another adjustment is that if the chapter is behind the active chapter, the icon is a check mark to show that it's been completed.
         if (lessonType.includes('Video') && chapter === chapters.APPLICATION)
           setIconName('number-4-filled')
@@ -195,30 +209,30 @@ const ChapterButton = ({
         break
       case chapterButtonModes.COMPLETE:
         setExtraButtonStyle({
-          borderColor: colors.porcelain,
-          backgroundColor: colors.athens
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
-        setTextStyle({ color: primaryColor })
-        setIconColor(primaryColor)
+        setTextStyle({ color: colors(isDark, activeGroup.language).accent })
+        setIconColor(colors(isDark, activeGroup.language).accent)
         setIconName('check-filled')
         break
       case chapterButtonModes.DOWNLOADING:
         setExtraButtonStyle({
-          borderColor: colors.porcelain,
-          backgroundColor: colors.athens
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
-        setTextStyle({ color: colors.chateau })
+        setTextStyle({ color: colors(isDark).disabled })
         setIconName(null)
         setIconColor(null)
         break
       case chapterButtonModes.DISABLED:
         setExtraButtonStyle({
-          borderColor: colors.porcelain,
-          backgroundColor: colors.athens
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
-        setTextStyle({ color: colors.chateau })
+        setTextStyle({ color: colors(isDark).disabled })
         setIconName('cloud-slash')
-        setIconColor(colors.chateau)
+        setIconColor(colors(isDark).disabled)
         break
     }
   }
@@ -261,9 +275,9 @@ const ChapterButton = ({
             size={22 * scaleMultiplier}
             width={4}
             fill={downloadProgress}
-            tintColor={primaryColor}
+            tintColor={colors(isDark, activeGroup.language).accent}
             rotation={0}
-            backgroundColor={colors.white}
+            backgroundColor={colors(isDark).bg4}
             padding={4}
           />
         ) : (
@@ -289,7 +303,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 3,
     paddingHorizontal: 3
     // borderTopWidth: 2,
     // borderBottomWidth: 2

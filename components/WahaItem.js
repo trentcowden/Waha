@@ -12,6 +12,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
@@ -35,13 +36,17 @@ const WahaItem = ({
   font,
 
   isRTL,
+  isDark,
   activeGroup
 }) =>
   onPress ? (
     <TouchableOpacity
       style={[
         styles.wahaItemContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' },
+        {
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        },
         style
       ]}
       onPress={onPress}
@@ -52,7 +57,7 @@ const WahaItem = ({
           'h3',
           'Bold',
           'left',
-          colors.shark
+          colors(isDark).text
         )}
       >
         {title}
@@ -63,7 +68,10 @@ const WahaItem = ({
     <View
       style={[
         styles.wahaItemContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' },
+        {
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        },
         style
       ]}
     >
@@ -73,7 +81,7 @@ const WahaItem = ({
           'h3',
           'Bold',
           'left',
-          colors.shark
+          colors(isDark).text
         )}
       >
         {title}
@@ -86,7 +94,6 @@ const styles = StyleSheet.create({
   wahaItemContainer: {
     width: '100%',
     height: 80 * scaleMultiplier,
-    backgroundColor: colors.white,
     alignItems: 'center',
     paddingHorizontal: 20,
     justifyContent: 'space-between'

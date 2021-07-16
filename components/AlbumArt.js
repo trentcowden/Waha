@@ -21,6 +21,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -46,7 +47,7 @@ const AlbumArt = ({
   activeGroup,
   activeDatabase,
   font,
-
+  isDark,
   t,
   isRTL
 }) => (
@@ -54,6 +55,9 @@ const AlbumArt = ({
     style={[
       styles.albumArtContainer,
       {
+        backgroundColor: isDark ? colors(isDark).icons : colors(isDark).bg2,
+        // borderWidth: isDark ? 5 : 0,
+        borderColor: colors(isDark).icons,
         maxWidth: isTablet
           ? Dimensions.get('window').width * 0.7
           : Dimensions.get('window').width - gutterSize * 2,
@@ -66,10 +70,15 @@ const AlbumArt = ({
     <TouchableHighlight
       style={styles.touchableContainer}
       onPress={playHandler}
-      underlayColor={colors.white + '00'}
+      underlayColor={colors(isDark).bg4 + '00'}
       activeOpacity={1}
     >
-      <SVG name={iconName} width='100%' height='100%' color='#1D1E20' />
+      <SVG
+        name={iconName}
+        width='100%'
+        height='100%'
+        color={isDark ? colors(isDark).bg4 : colors(isDark).icons}
+      />
     </TouchableHighlight>
     <Animated.View
       style={{
@@ -89,7 +98,7 @@ const AlbumArt = ({
       <Icon
         name={isMediaPlaying ? 'play' : 'pause'}
         size={100 * scaleMultiplier}
-        color={colors.white}
+        color={isDark ? colors(isDark).text : colors(isDark).bg4}
       />
     </Animated.View>
   </View>
@@ -99,7 +108,6 @@ const styles = StyleSheet.create({
   albumArtContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.athens,
     borderRadius: 20,
     overflow: 'hidden',
     flex: 1,

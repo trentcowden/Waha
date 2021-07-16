@@ -23,6 +23,7 @@ function mapStateToProps (state) {
     t: activeDatabaseSelector(state).translations,
     isConnected: state.network.isConnected,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     groups: state.groups,
     activeGroup: activeGroupSelector(state)
@@ -38,6 +39,7 @@ const GroupsScreen = ({
   // Props passed from redux.
   database,
   isRTL,
+  isDark,
   t,
   isConnected,
   font,
@@ -53,17 +55,23 @@ const GroupsScreen = ({
     setOptions({
       headerStyle: {
         // Switch the background color of the header in editing mode to reflect that we're in a non-standard screen view.
-        backgroundColor: isEditing ? colors.blue : colors.aquaHaze
+        backgroundColor: isEditing
+          ? colors(isDark).highlight
+          : isDark
+          ? colors(isDark).bg1
+          : colors(isDark).bg3,
+        elevation: 0,
+        shadowColor: 'transparent'
       },
       headerTitleStyle: {
         // Update the header text color to go with the background color changes.
-        color: isEditing ? colors.white : colors.shark,
+        color: isEditing ? colors(isDark).textOnColor : colors(isDark).text,
         fontFamily: font + '-Bold'
       },
       headerRight: isRTL
         ? () => (
             <WahaBackButton
-              color={isEditing ? colors.white : null}
+              color={isEditing ? colors(isDark).bg4 : null}
               onPress={() => goBack()}
             />
           )
@@ -82,7 +90,7 @@ const GroupsScreen = ({
           )
         : () => (
             <WahaBackButton
-              color={isEditing ? colors.white : null}
+              color={isEditing ? colors(isDark).bg4 : null}
               onPress={() => goBack()}
             />
           )
@@ -167,7 +175,12 @@ const GroupsScreen = ({
   )
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <SectionList
         sections={getLanguageAndGroupData()}
         renderItem={({ item }) => renderGroupItem(item)}
@@ -212,8 +225,7 @@ const GroupsScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: colors.aquaHaze
+    flex: 1
   }
 })
 

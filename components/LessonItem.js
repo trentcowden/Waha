@@ -28,6 +28,7 @@ function mapStateToProps (state) {
     t: activeDatabaseSelector(state).translations,
     isConnected: state.network.isConnected,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     showTrailerHighlights: state.persistedPopups.showTrailerHighlights
   }
@@ -73,6 +74,7 @@ const LessonItem = ({
   // Props passed from redux.
   primaryColor,
   isRTL,
+  isDark,
   activeGroup,
   downloads,
   t,
@@ -147,6 +149,7 @@ const LessonItem = ({
       style={[
         styles.lessonItemContainer,
         {
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
           flexDirection: isRTL ? 'row-reverse' : 'row',
           paddingVertical: isInInfoMode ? (isTablet ? 20 : 10) : 0,
           paddingLeft: 20,
@@ -199,7 +202,11 @@ const LessonItem = ({
                 : null
             }
             size={24 * scaleMultiplier}
-            color={isComplete ? colors.chateau : primaryColor}
+            color={
+              isComplete
+                ? colors(isDark).disabled
+                : colors(isDark, activeGroup.language).accent
+            }
           />
         </View>
         <View
@@ -219,7 +226,7 @@ const LessonItem = ({
                 'h4',
                 'Bold',
                 'left',
-                isComplete ? colors.chateau : colors.shark
+                isComplete ? colors(isDark).disabled : colors(isDark).text
               ),
               {
                 // flex: 1
@@ -239,7 +246,9 @@ const LessonItem = ({
                 'd',
                 'Regular',
                 'left',
-                colors.chateau
+                isComplete
+                  ? colors(isDark).disabled
+                  : colors(isDark).secondaryText
               ),
               {
                 // fontSize: 13 * scaleMultiplier,
@@ -257,7 +266,7 @@ const LessonItem = ({
                   'd',
                   'Regular',
                   'left',
-                  colors.tuna
+                  colors(isDark).icons
                 ),
                 {
                   fontSize: 13 * scaleMultiplier
@@ -271,16 +280,20 @@ const LessonItem = ({
           {isInInfoMode && (
             <View style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}>
               {/* {lessonType.includes('Audio') && (
-                <Icon name='volume' size={20} color={colors.chateau} />
+                <Icon name='volume' size={20} color={colors(isDark).disabled} />
               )}
               {lessonType.includes('Questions') && (
-                <Icon name='help' size={20} color={colors.chateau} />
+                <Icon name='help' size={20} color={colors(isDark).disabled} />
               )} */}
               {lessonType.includes('Video') && (
-                <Icon name='video' size={20} color={colors.chateau} />
+                <Icon name='video' size={20} color={colors(isDark).disabled} />
               )}
               {lessonType.includes('BookText') && (
-                <Icon name='description' size={20} color={colors.chateau} />
+                <Icon
+                  name='description'
+                  size={20}
+                  color={colors(isDark).disabled}
+                />
               )}
             </View>
           )}
@@ -291,7 +304,9 @@ const LessonItem = ({
                 'd',
                 'Regular',
                 'left',
-                colors.chateau
+                isComplete
+                  ? colors(isDark).disabled
+                  : colors(isDark).secondaryText
               )}
               // numberOfLines={2}
             >
@@ -319,7 +334,7 @@ const LessonItem = ({
                 colorFilters={[
                   {
                     keypath: 'hand 2',
-                    color: primaryColor
+                    color: colors(isDark, activeGroup.language).accent
                   }
                 ]}
                 resizeMode='cover'
@@ -351,7 +366,6 @@ const LessonItem = ({
 
 const styles = StyleSheet.create({
   lessonItemContainer: {
-    backgroundColor: colors.aquaHaze,
     flex: 1,
     alignItems: 'center'
   },

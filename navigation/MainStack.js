@@ -43,6 +43,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     security: state.security,
@@ -72,6 +73,7 @@ const MainStack = ({
   copilotEvents,
   // Props passed from redux.
   isRTL,
+  isDark,
   t,
   font,
   activeDatabase,
@@ -149,352 +151,404 @@ const MainStack = ({
   })
 
   return (
-    <Stack.Navigator
-      // Set the initial screen based on whether security is enabled or not. If it is, our initial screen should be the pianp app. Otherwise, it should be the SetsTabs.
-      initialRouteName={security.securityEnabled ? 'PianoApp' : 'SetsTabs'}
-      screenOptions={{
-        // The drawer must open from the opposite side if the active group's language is RTL.
-        gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
-        gestureResponseDistance: {
-          horizontal: 50 * scaleMultiplier,
-          vertical: 135
-        },
-        headerTitleAlign: 'center'
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
       }}
-      mode='card'
     >
-      <Stack.Screen
-        name='SetsTabs'
-        component={SetsTabs}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.aquaHaze,
-            // Remove the header shadow on Android.
-            elevation: 0
+      <Stack.Navigator
+        // Set the initial screen based on whether security is enabled or not. If it is, our initial screen should be the pianp app. Otherwise, it should be the SetsTabs.
+        initialRouteName={security.securityEnabled ? 'PianoApp' : 'SetsTabs'}
+        screenOptions={{
+          // The drawer must open from the opposite side if the active group's language is RTL.
+          gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
+          gestureResponseDistance: {
+            horizontal: 50 * scaleMultiplier,
+            vertical: 135
           },
-          headerTitle: () => <ScreenHeaderImage />,
-          headerLeft: isRTL
-            ? () => <TestModeDisplay />
-            : () => (
-                <View style={{ paddingHorizontal: 10 }}>
-                  <GroupAvatar
-                    style={{ backgroundColor: colors.white, zIndex: 0 }}
-                    emoji={activeGroup.emoji}
-                    size={35}
-                    onPress={() => toggleDrawer()}
-                    isActive={true}
-                  />
-                  {languageCoreFilesToUpdate.length !== 0 ? (
-                    // <View
-                    //   style={{
-                    //     width: '100%',
-                    //     height: 12,
-                    //     position: 'absolute',
-                    //     alignSelf: 'flex-start'
-                    //   }}
-                    // >
-                    <View
-                      style={{
-                        zIndex: 100,
-                        position: 'absolute',
-                        alignSelf: 'flex-end',
-                        paddingHorizontal: 10
-                      }}
-                    >
+          // headerStyle: {
+          //   elevation: 0,
+          //   shadowColor: 'transparent'
+          // },
+          headerTitleAlign: 'center',
+          cardStyle: {
+            opacity: 1
+          }
+          // cardOverlay: () => (
+          //   <View
+          //     style={{
+          //       flex: 1,
+          //       backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+          //     }}
+          //   />
+          // )
+        }}
+        mode='card'
+      >
+        <Stack.Screen
+          name='SetsTabs'
+          component={SetsTabs}
+          options={{
+            headerStyle: {
+              backgroundColor: colors(isDark).bg3,
+              // Remove the header shadow.
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitle: () => <ScreenHeaderImage />,
+            headerLeft: isRTL
+              ? () => <TestModeDisplay />
+              : () => (
+                  <View style={{ paddingHorizontal: 10 }}>
+                    <GroupAvatar
+                      style={{ backgroundColor: colors(isDark).bg4, zIndex: 0 }}
+                      emoji={activeGroup.emoji}
+                      size={35}
+                      onPress={() => toggleDrawer()}
+                      isActive={true}
+                    />
+                    {languageCoreFilesToUpdate.length !== 0 ? (
+                      // <View
+                      //   style={{
+                      //     width: '100%',
+                      //     height: 12,
+                      //     position: 'absolute',
+                      //     alignSelf: 'flex-start'
+                      //   }}
+                      // >
                       <View
                         style={{
-                          width: 13 * scaleMultiplier,
-                          height: 13 * scaleMultiplier,
-                          borderRadius: 6.5 * scaleMultiplier,
-                          backgroundColor: colors.apple,
+                          zIndex: 100,
+                          position: 'absolute',
                           alignSelf: 'flex-end',
-                          zIndex: 100
+                          paddingHorizontal: 10
                         }}
-                      />
-                      <View style={{ width: 5 }} />
-                    </View>
-                  ) : null}
-                </View>
-              ),
-          headerRight: isRTL
-            ? () => (
-                <View style={{ paddingHorizontal: 10 }}>
-                  <GroupAvatar
-                    style={{ backgroundColor: colors.white }}
-                    emoji={activeGroup.emoji}
-                    size={35}
-                    onPress={() => toggleDrawer()}
-                    isActive={true}
-                  />
-                  {languageCoreFilesToUpdate.length !== 0 && (
-                    <View
-                      style={{
-                        zIndex: 100,
-                        position: 'absolute',
-                        alignSelf: 'flex-start',
-                        paddingHorizontal: 10
-                      }}
-                    >
+                      >
+                        <View
+                          style={{
+                            width: 13 * scaleMultiplier,
+                            height: 13 * scaleMultiplier,
+                            borderRadius: 6.5 * scaleMultiplier,
+                            backgroundColor: colors(isDark).success,
+                            alignSelf: 'flex-end',
+                            zIndex: 100
+                          }}
+                        />
+                        <View style={{ width: 5 }} />
+                      </View>
+                    ) : null}
+                  </View>
+                ),
+            headerRight: isRTL
+              ? () => (
+                  <View style={{ paddingHorizontal: 10 }}>
+                    <GroupAvatar
+                      style={{ backgroundColor: colors(isDark).bg4 }}
+                      emoji={activeGroup.emoji}
+                      size={35}
+                      onPress={() => toggleDrawer()}
+                      isActive={true}
+                    />
+                    {languageCoreFilesToUpdate.length !== 0 && (
                       <View
                         style={{
-                          width: 13 * scaleMultiplier,
-                          height: 13 * scaleMultiplier,
-                          borderRadius: 6.5 * scaleMultiplier,
-                          backgroundColor: colors.apple,
-                          alignSelf: 'flex-end',
-                          zIndex: 100
+                          zIndex: 100,
+                          position: 'absolute',
+                          alignSelf: 'flex-start',
+                          paddingHorizontal: 10
                         }}
-                      />
-                      <View style={{ width: 5 }} />
-                    </View>
-                  )}
-                </View>
-              )
-            : () => <TestModeDisplay />
-        }}
-      />
-      <Stack.Screen
-        name='Lessons'
-        component={LessonsScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-      <Stack.Screen
-        name='Play'
-        component={PlayScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.white,
-            elevation: 0
-          },
-          headerTitleStyle: {
-            color: colors.chateau,
-            fontFamily: 'Roboto-Bold'
-          },
-          // Disable gestures on this screen because there are already horizontally-swipable elements on it.
-          gestureEnabled: false
-        }}
-      />
-      <Stack.Screen
-        name='Groups'
-        component={GroupsScreen}
-        options={{
-          headerTitle: t.groups && t.groups.groups_and_languages,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          }
-        }}
-      />
-      <Stack.Screen
-        name='AddSet'
-        component={AddSetScreen}
-        options={{
-          title: '',
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='SubsequentlLanguageInstanceInstall'
-        component={LanguageInstanceInstallScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.white
-          },
-          // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
-          headerTitleStyle: SystemTypography(
-            true,
-            '',
-            'Bold',
-            'center',
-            colors.shark
-          ),
-          headerRight: isRTL
-            ? () => <WahaBackButton onPress={() => goBack()} />
-            : () => {},
-          headerLeft: isRTL
-            ? () => {}
-            : () => <WahaBackButton onPress={() => goBack()} />
-        }}
-      />
-      <Stack.Screen
-        name='Storage'
-        component={StorageScreen}
-        options={{
-          headerTitle: t.storage && t.storage.storage,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='MobilizationTools'
-        component={MobilizationToolsScreen}
-        options={{
-          headerTitle:
-            t.mobilization_tools && t.mobilization_tools.mobilization_tools,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='MobilizationToolsUnlock'
-        component={MobilizationToolsUnlockScreen}
-        options={{
-          headerTitle:
-            t.mobilization_tools && t.mobilization_tools.mobilization_tools,
-          headerStyle: {
-            backgroundColor: colors.white
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='SecurityMode'
-        component={SecurityModeScreen}
-        options={{
-          headerTitle: t.security && t.security.security,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='SecurityOnboardingSlides'
-        component={SecurityOnboardingSlidesScreen}
-        options={{
-          headerTitle: t.security && t.security.security,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='PianoPasscodeSet'
-        component={PianoPasscodeSetScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.white
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='PianoPasscodeSetConfirm'
-        component={PianoPasscodeSetScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.white
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='PianoPasscodeChange'
-        component={PianoPasscodeSetScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.white
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='PianoPasscodeChangeConfirm'
-        component={PianoPasscodeSetScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: colors.white
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='PianoApp'
-        component={PianoAppScreen}
-        options={{
-          gestureEnabled: false,
-          headerShown: false,
-          // Set the transition out of the piano screen to be a fade instead of a swipe.
-          cardStyleInterpolator: forFade
-        }}
-      />
-      <Stack.Screen
-        name='Splash'
-        component={SplashScreen}
-        options={{
-          gestureEnabled: false,
-          headerShown: false,
-          animationEnabled: false
-        }}
-      />
-      <Stack.Screen
-        name='Information'
-        component={InformationScreen}
-        options={{
-          headerTitle: t.information && t.information.information,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-      <Stack.Screen
-        name='ContactUs'
-        component={ContactUsScreen}
-        options={{
-          headerTitle: t.contact_us && t.contact_us.contact_us,
-          headerStyle: {
-            backgroundColor: colors.aquaHaze
-          },
-          headerTitleStyle: {
-            color: colors.shark,
-            fontFamily: font + '-Bold'
-          }
-        }}
-      />
-    </Stack.Navigator>
+                      >
+                        <View
+                          style={{
+                            width: 13 * scaleMultiplier,
+                            height: 13 * scaleMultiplier,
+                            borderRadius: 6.5 * scaleMultiplier,
+                            backgroundColor: colors(isDark).success,
+                            alignSelf: 'flex-end',
+                            zIndex: 100
+                          }}
+                        />
+                        <View style={{ width: 5 }} />
+                      </View>
+                    )}
+                  </View>
+                )
+              : () => <TestModeDisplay />
+          }}
+        />
+        <Stack.Screen
+          name='Lessons'
+          component={LessonsScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleAlign: 'center'
+          }}
+        />
+        <Stack.Screen
+          name='Play'
+          component={PlayScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            // Disable gestures on this screen because there are already horizontally-swipable elements on it.
+            gestureEnabled: false
+          }}
+        />
+        <Stack.Screen
+          name='Groups'
+          component={GroupsScreen}
+          options={{
+            headerTitle: t.groups && t.groups.groups_and_languages,
+            headerStyle: {
+              elevation: 0,
+              shadowColor: 'transparent'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='AddSet'
+          component={AddSetScreen}
+          options={{
+            title: '',
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            },
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='SubsequentlLanguageInstanceInstall'
+          component={LanguageInstanceInstallScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
+            headerTitleStyle: SystemTypography(
+              true,
+              '',
+              'Bold',
+              'center',
+              colors(isDark).text
+            ),
+            headerRight: isRTL
+              ? () => <WahaBackButton onPress={() => goBack()} />
+              : () => {},
+            headerLeft: isRTL
+              ? () => {}
+              : () => <WahaBackButton onPress={() => goBack()} />
+          }}
+        />
+        <Stack.Screen
+          name='Storage'
+          component={StorageScreen}
+          options={{
+            headerTitle: t.storage && t.storage.storage,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='MobilizationTools'
+          component={MobilizationToolsScreen}
+          options={{
+            headerTitle:
+              t.mobilization_tools && t.mobilization_tools.mobilization_tools,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='MobilizationToolsUnlock'
+          component={MobilizationToolsUnlockScreen}
+          options={{
+            headerTitle:
+              t.mobilization_tools && t.mobilization_tools.mobilization_tools,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='SecurityMode'
+          component={SecurityModeScreen}
+          options={{
+            headerTitle: t.security && t.security.security,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='SecurityOnboardingSlides'
+          component={SecurityOnboardingSlidesScreen}
+          options={{
+            headerTitle: t.security && t.security.security,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='PianoPasscodeSet'
+          component={PianoPasscodeSetScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='PianoPasscodeSetConfirm'
+          component={PianoPasscodeSetScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='PianoPasscodeChange'
+          component={PianoPasscodeSetScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='PianoPasscodeChangeConfirm'
+          component={PianoPasscodeSetScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='PianoApp'
+          component={PianoAppScreen}
+          options={{
+            gestureEnabled: false,
+            headerShown: false,
+            // Set the transition out of the piano screen to be a fade instead of a swipe.
+            cardStyleInterpolator: forFade
+          }}
+        />
+        <Stack.Screen
+          name='Splash'
+          component={SplashScreen}
+          options={{
+            gestureEnabled: false,
+            headerShown: false,
+            animationEnabled: false
+          }}
+        />
+        <Stack.Screen
+          name='Information'
+          component={InformationScreen}
+          options={{
+            headerTitle: t.information && t.information.information,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+        <Stack.Screen
+          name='ContactUs'
+          component={ContactUsScreen}
+          options={{
+            headerTitle: t.contact_us && t.contact_us.contact_us,
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent'
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold'
+            }
+          }}
+        />
+      </Stack.Navigator>
+    </View>
   )
 }
 

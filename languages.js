@@ -22,8 +22,13 @@ export const languages = [
         wahaID: 'en',
         i18nName: 'english',
         brandName: 'Discovering God',
-        logoSource:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media'
+        colorLight: '#E74D3D',
+        colorDark: '#EA8E84',
+        versions: null,
+        logoSourceLight:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+        logoSourceDark:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
       }
     ]
   },
@@ -38,8 +43,13 @@ export const languages = [
         wahaID: 'ga',
         i18nName: 'gulf_arabic',
         brandName: 'طريق الواحة',
-        logoSource:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media'
+        colorLight: '#DAA520',
+        colorDark: '#DBBA69',
+        versions: null,
+        logoSourceLight:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media',
+        logoSourceDark:
+          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
       }
     ]
   }

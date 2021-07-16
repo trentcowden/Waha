@@ -9,7 +9,8 @@ import { colors } from '../styles/colors'
 function mapStateToProps (state) {
   return {
     isConnected: state.network.isConnected,
-    downloads: state.downloads
+    downloads: state.downloads,
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -41,6 +42,7 @@ const DownloadStatusIndicator = ({
   // Props passed from redux.
   isConnected,
   downloads,
+  isDark,
   removeDownload
 }) => {
   /** Keeps track of the percentage of the download for this lesson if it's currently downloading. */
@@ -87,7 +89,7 @@ const DownloadStatusIndicator = ({
       >
         <Icon
           name='cloud-check'
-          color={colors.chateau}
+          color={colors(isDark).disabled}
           size={22 * scaleMultiplier}
         />
       </TouchableOpacity>
@@ -112,9 +114,9 @@ const DownloadStatusIndicator = ({
           size={22 * scaleMultiplier}
           width={4 * scaleMultiplier}
           fill={downloadPercentage}
-          tintColor={colors.oslo}
+          tintColor={colors(isDark).icons}
           rotation={0}
-          backgroundColor={colors.white}
+          backgroundColor={colors(isDark).bg4}
           padding={2}
         >
           {() => (
@@ -122,7 +124,7 @@ const DownloadStatusIndicator = ({
               style={{
                 width: 5 * scaleMultiplier,
                 height: 5 * scaleMultiplier,
-                backgroundColor: colors.shark
+                backgroundColor: colors(isDark).text
               }}
             />
           )}
@@ -138,7 +140,9 @@ const DownloadStatusIndicator = ({
       >
         <Icon
           name='cloud-download'
-          color={isFullyDownloaded ? colors.chateau : colors.tuna}
+          color={
+            isFullyDownloaded ? colors(isDark).disabled : colors(isDark).icons
+          }
           size={22 * scaleMultiplier}
         />
       </TouchableOpacity>
@@ -149,7 +153,7 @@ const DownloadStatusIndicator = ({
       <View style={styles.downloadStatusIndicatorContainer}>
         <Icon
           name='cloud-slash'
-          color={colors.tuna}
+          color={colors(isDark).icons}
           size={22 * scaleMultiplier}
         />
       </View>

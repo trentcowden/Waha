@@ -7,7 +7,8 @@ import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: activeDatabaseSelector(state).isRTL,
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -23,7 +24,8 @@ const LessonSwipeBackdrop = ({
   toggleComplete,
   showShareModal,
   // Props passed from redux.
-  isRTL
+  isRTL,
+  isDark
 }) => (
   <View
     style={[
@@ -37,14 +39,14 @@ const LessonSwipeBackdrop = ({
         style={[
           styles.buttonContainer,
           {
-            backgroundColor: colors.chateau,
+            backgroundColor: colors(isDark).disabled,
             alignItems: isRTL ? 'flex-end' : 'flex-start'
           }
         ]}
         onPress={toggleComplete}
       >
         <View style={styles.iconContainer}>
-          <Icon name='cancel-filled' size={20} color={colors.white} />
+          <Icon name='cancel-filled' size={20} color={colors(isDark).bg4} />
         </View>
       </TouchableOpacity>
     ) : (
@@ -52,14 +54,14 @@ const LessonSwipeBackdrop = ({
         style={[
           styles.buttonContainer,
           {
-            backgroundColor: colors.apple,
+            backgroundColor: colors(isDark).success,
             alignItems: isRTL ? 'flex-end' : 'flex-start'
           }
         ]}
         onPress={toggleComplete}
       >
         <View style={styles.iconContainer}>
-          <Icon name='check-filled' size={20} color={colors.white} />
+          <Icon name='check-filled' size={20} color={colors(isDark).bg4} />
         </View>
       </TouchableOpacity>
     )}
@@ -67,7 +69,7 @@ const LessonSwipeBackdrop = ({
       style={[
         styles.buttonContainer,
         {
-          backgroundColor: colors.blue,
+          backgroundColor: colors(isDark).highlight,
           alignItems: isRTL ? 'flex-start' : 'flex-end'
         }
       ]}
@@ -77,7 +79,7 @@ const LessonSwipeBackdrop = ({
         <Icon
           name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
           size={20}
-          color={colors.white}
+          color={colors(isDark).bg4}
         />
       </View>
     </TouchableOpacity>

@@ -13,6 +13,7 @@ import {
   updateLanguageCoreFiles
 } from '../redux/actions/databaseActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import {
   activeDatabaseSelector,
@@ -28,7 +29,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
-
+    isDark: state.settings.isDarkModeEnabled,
     isConnected: state.network.isConnected,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
   }
@@ -41,7 +42,8 @@ function mapDispatchToProps (dispatch) {
       dispatch(setIsInstallingLanguageInstance(toSet)),
     storeDownloads: downloads => dispatch(storeDownloads(downloads)),
     setHasFetchedLanguageData: hasFetchedLanguageData =>
-      dispatch(setHasFetchedLanguageData(hasFetchedLanguageData))
+      dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
+    setIsDarkModeEnabled: toSet => dispatch(setIsDarkModeEnabled(toSet))
   }
 }
 
@@ -54,16 +56,17 @@ const WahaDrawer = ({
   // Props passed from redux.
   primaryColor,
   isRTL,
+  isDark,
   activeGroup,
   t,
   font,
-
   isConnected,
   languageCoreFilesToUpdate,
   updateLanguageCoreFiles,
   setIsInstallingLanguageInstance,
   storeDownloads,
-  setHasFetchedLanguageData
+  setHasFetchedLanguageData,
+  setIsDarkModeEnabled
 }) => {
   /** Keeps track of whether the edit group modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
@@ -82,13 +85,16 @@ const WahaDrawer = ({
 
   return (
     <SafeAreaView
-      style={[styles.wahaDrawerContainer, { backgroundColor: primaryColor }]}
+      style={[
+        styles.wahaDrawerContainer,
+        { backgroundColor: colors(isDark, activeGroup.language).accent }
+      ]}
       forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' }}
     >
       <View style={styles.drawerHeaderContainer}>
         <View style={styles.groupIconContainer}>
           <GroupAvatar
-            style={{ backgroundColor: colors.athens }}
+            style={{ backgroundColor: colors(isDark).bg2 }}
             emoji={activeGroup.emoji}
             size={120}
             onPress={() => setShowEditGroupModal(true)}
@@ -100,7 +106,7 @@ const WahaDrawer = ({
             'h2',
             'Black',
             'center',
-            colors.white
+            colors(isDark).bg4
           )}
           numberOfLines={2}
         >
@@ -109,7 +115,10 @@ const WahaDrawer = ({
       </View>
       <ScrollView
         bounces={false}
-        style={{ backgroundColor: colors.white, flex: 1 }}
+        style={{
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+          flex: 1
+        }}
       >
         {/* Show an update button if we have any core files to update. */}
         {languageCoreFilesToUpdate.length !== 0 && (
@@ -142,7 +151,7 @@ const WahaDrawer = ({
               'p',
               'Regular',
               'left',
-              colors.chateau
+              colors(isDark).secondaryText
             ),
             {
               marginHorizontal: 20,
@@ -157,6 +166,11 @@ const WahaDrawer = ({
           icon='storage'
           label={t.storage && t.storage.storage}
           onPress={() => navigate('Storage')}
+        />
+        <DrawerItem
+          icon={isDark ? 'sun' : 'moon'}
+          onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
+          label={isDark ? t.general.light_mode : t.general.dark_mode}
         />
         <DrawerItem
           icon='email'

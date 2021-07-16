@@ -15,6 +15,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -55,7 +56,7 @@ const LessonTextSectionHeader = ({
           'h2',
           'Black',
           'left',
-          colors.shark
+          colors(isDark).text
         )}
       >
         {sectionTitleText}
@@ -97,7 +98,7 @@ const LessonTextSectionHeader = ({
 const styles = StyleSheet.create({
   sectionHeaderContainer: {
     width: '100%',
-    // backgroundColor: colors.blue,
+    // backgroundColor: colors(isDark).highlight,
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
     paddingHorizontal: gutterSize,

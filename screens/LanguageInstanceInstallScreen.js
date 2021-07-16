@@ -15,6 +15,7 @@ import {
   TextInput,
   View
 } from 'react-native'
+import { useColorScheme } from 'react-native-appearance'
 import { connect } from 'react-redux'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
@@ -35,6 +36,7 @@ import {
 } from '../redux/actions/databaseActions'
 import { createGroup, deleteGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -54,7 +56,8 @@ function mapStateToProps (state) {
   return {
     groups: state.groups,
     database: state.database,
-    activeGroup: activeGroup
+    activeGroup: activeGroup,
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -98,7 +101,8 @@ function mapDispatchToProps (dispatch) {
     },
     setRecentActiveGroup: groupName => {
       dispatch(setRecentActiveGroup(groupName))
-    }
+    },
+    setIsDarkModeEnabled: toSet => dispatch(setIsDarkModeEnabled(toSet))
   }
 }
 
@@ -123,6 +127,7 @@ const LanguageInstanceInstallScreen = ({
   groups,
   database,
   activeGroup,
+  isDark,
   downloadLanguageCoreFiles,
   storeLanguageData,
   setIsInstallingLanguageInstance,
@@ -134,7 +139,8 @@ const LanguageInstanceInstallScreen = ({
   incrementGlobalGroupCounter,
   createGroup,
   changeActiveGroup,
-  setRecentActiveGroup
+  setRecentActiveGroup,
+  setIsDarkModeEnabled
 }) => {
   // Set the i18n locale to the locale of the user's phone.
   i18n.locale = Localization.locale
@@ -174,6 +180,16 @@ const LanguageInstanceInstallScreen = ({
           }
         : null
     )
+  }, [])
+
+  const colorScheme = useColorScheme()
+
+  useEffect(() => {
+    if (routeName === 'InitialLanguageInstanceInstall') {
+      console.log(colorScheme)
+      if (colorScheme === 'dark') setIsDarkModeEnabled(true)
+      else setIsDarkModeEnabled(false)
+    }
   }, [])
 
   /** useEffect function sets the isConnected state with the status of the user's internet connection. */
@@ -406,7 +422,8 @@ const LanguageInstanceInstallScreen = ({
       nativeName={language.nativeName}
       localeName={i18n.t(language.i18nName)}
       font={languageFamily.font}
-      logoSource={language.logoSource}
+      logoSourceLight={language.logoSourceLight}
+      logoSourceDark={language.logoSourceDark}
       onPress={() => {
         if (!selectedLanguage) {
           Animated.spring(buttonYPos, {
@@ -417,6 +434,7 @@ const LanguageInstanceInstallScreen = ({
       }}
       isSelected={selectedLanguage === language.wahaID ? true : false}
       playAudio={() => playAudio(language.wahaID)}
+      isDark={isDark}
     />
   )
 
@@ -431,15 +449,18 @@ const LanguageInstanceInstallScreen = ({
       style={[
         styles.languageHeaderContainer,
         {
-          backgroundColor:
-            routeName === 'InitialLanguageInstanceInstall'
-              ? colors.aquaHaze
-              : colors.white
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
         }
       ]}
     >
       <Text
-        style={SystemTypography(false, 'h3', 'Regular', 'left', colors.chateau)}
+        style={SystemTypography(
+          false,
+          'h3',
+          'Regular',
+          'left',
+          colors(isDark).secondaryText
+        )}
       >
         {i18n.t(languageFamily.i18nName)}
       </Text>
@@ -451,10 +472,7 @@ const LanguageInstanceInstallScreen = ({
       style={[
         styles.screen,
         {
-          backgroundColor:
-            routeName === 'InitialLanguageInstanceInstall'
-              ? colors.aquaHaze
-              : colors.white
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
         }
       ]}
     >
@@ -462,7 +480,13 @@ const LanguageInstanceInstallScreen = ({
         <View style={styles.headerTextContainer}>
           <Text
             style={[
-              SystemTypography(false, 'h2', 'Bold', 'center', colors.shark),
+              SystemTypography(
+                false,
+                'h2',
+                'Bold',
+                'center',
+                colors(isDark).text
+              ),
               { fontSize: 28 * scaleMultiplier }
             ]}
           >
@@ -475,7 +499,7 @@ const LanguageInstanceInstallScreen = ({
               'h3',
               'Regular',
               'center',
-              colors.shark
+              colors(isDark).text
             )}
           >
             {i18n.t('select_language')}
@@ -487,7 +511,9 @@ const LanguageInstanceInstallScreen = ({
           styles.searchBarContainer,
           {
             width: Dimensions.get('window').width - 40,
-            maxWidth: 500
+            maxWidth: 500,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
           }
         ]}
       >
@@ -495,12 +521,18 @@ const LanguageInstanceInstallScreen = ({
           <Icon
             name='search'
             size={25 * scaleMultiplier}
-            color={colors.chateau}
+            color={colors(isDark).disabled}
           />
         </View>
         <TextInput
           style={[
-            SystemTypography(false, 'h3', 'Regular', 'left', colors.shark),
+            SystemTypography(
+              false,
+              'h3',
+              'Regular',
+              'left',
+              colors(isDark).text
+            ),
             {
               flex: 1,
               justifyContent: 'center',
@@ -511,7 +543,7 @@ const LanguageInstanceInstallScreen = ({
           autoCorrect={false}
           autoCapitalize='none'
           placeholder='Search'
-          placeholderTextColor={colors.chateau}
+          placeholderTextColor={colors(isDark).secondaryText}
         />
       </View>
       <View style={styles.languageListContainer}>
@@ -539,7 +571,13 @@ const LanguageInstanceInstallScreen = ({
       >
         <WahaButton
           type={isConnected ? 'filled' : 'inactive'}
-          color={isConnected ? colors.apple : colors.geyser}
+          color={
+            isConnected
+              ? colors(isDark).success
+              : isDark
+              ? colors(isDark).bg4
+              : colors(isDark).bg1
+          }
           onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
           label={
             isConnected
@@ -559,10 +597,14 @@ const LanguageInstanceInstallScreen = ({
           extraComponent={
             isConnected ? (
               isFetchingFirebaseData ? (
-                <ActivityIndicator color={colors.white} />
+                <ActivityIndicator color={colors(isDark).bg4} />
               ) : null
             ) : (
-              <Icon name='cloud-slash' size={40} color={colors.chateau} />
+              <Icon
+                name='cloud-slash'
+                size={40}
+                color={colors(isDark).disabled}
+              />
             )
           }
         />
@@ -597,9 +639,7 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: colors.porcelain,
     height: 50 * scaleMultiplier,
-    backgroundColor: colors.athens,
     paddingHorizontal: 5,
     flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
     paddingTop: 5,

@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { logShareApp } from '../LogEventFunctions'
+import CopyrightsModal from '../modals/CopyrightsModal'
 import { appVersion } from '../modeSwitch'
 import {
   activeDatabaseSelector,
@@ -27,6 +28,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations
   }
@@ -39,12 +41,15 @@ const InformationScreen = ({
   navigation: { setOptions, goBack },
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
   activeGroup,
   t
 }) => {
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
+
+  const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -66,7 +71,12 @@ const InformationScreen = ({
     await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' })
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <TouchableOpacity
         style={[
           styles.informationItem,
@@ -80,12 +90,16 @@ const InformationScreen = ({
             'h3',
             'Bold',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {t.information && t.information.privacy_policy}
         </Text>
-        <Icon name='launch' color={colors.tuna} size={25 * scaleMultiplier} />
+        <Icon
+          name='launch'
+          color={colors(isDark).icons}
+          size={25 * scaleMultiplier}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={[
@@ -102,12 +116,16 @@ const InformationScreen = ({
             'h3',
             'Bold',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {t.information && t.information.donate_to_waha}
         </Text>
-        <Icon name='launch' color={colors.tuna} size={25 * scaleMultiplier} />
+        <Icon
+          name='launch'
+          color={colors(isDark).icons}
+          size={25 * scaleMultiplier}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={[
@@ -132,12 +150,16 @@ const InformationScreen = ({
             'h3',
             'Bold',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {t.information && t.information.rate_waha}
         </Text>
-        <Icon name='launch' color={colors.tuna} size={25 * scaleMultiplier} />
+        <Icon
+          name='launch'
+          color={colors(isDark).icons}
+          size={25 * scaleMultiplier}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={[
@@ -159,14 +181,14 @@ const InformationScreen = ({
             'h3',
             'Bold',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
         >
           {t.general && t.general.share_app}
         </Text>
         <Icon
           name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
-          color={colors.tuna}
+          color={colors(isDark).icons}
           size={25 * scaleMultiplier}
         />
       </TouchableOpacity>
@@ -188,7 +210,7 @@ const InformationScreen = ({
               'h3',
               'Bold',
               'left',
-              colors.shark
+              colors(isDark).text
             )}
           >
             {t.general && t.general.version}
@@ -199,7 +221,7 @@ const InformationScreen = ({
               'h4',
               'Bold',
               'left',
-              colors.chateau
+              colors(isDark).secondaryText
             )}
           >
             {appVersion}
@@ -207,10 +229,36 @@ const InformationScreen = ({
         </View>
         <Icon
           name='clipboard'
-          color={colors.tuna}
+          color={colors(isDark).icons}
           size={25 * scaleMultiplier}
         />
       </TouchableOpacity>
+      {t.general.copyrights !== '' && (
+        <TouchableOpacity
+          style={[
+            styles.informationItem,
+            { flexDirection: isRTL ? 'row-reverse' : 'row' }
+          ]}
+          onPress={() => setShowCopyrightsModal(true)}
+        >
+          <Text
+            style={StandardTypography(
+              { font, isRTL },
+              'h3',
+              'Bold',
+              'left',
+              colors(isDark).text
+            )}
+          >
+            {t.general && t.general.view_copyright}
+          </Text>
+          <Icon
+            name={isRTL ? 'arrow-left' : 'arrow-right'}
+            color={colors(isDark).icons}
+            size={25 * scaleMultiplier}
+          />
+        </TouchableOpacity>
+      )}
       {/* Cheeky little easter egg :) */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View style={styles.easterEggContainer}>
@@ -221,14 +269,14 @@ const InformationScreen = ({
                 'd',
                 'Regular',
                 'center',
-                colors.geyser
+                colors(isDark).bg1
               ),
               { marginHorizontal: 2 }
             ]}
           >
             Made with
           </Text>
-          <Icon name='heart' size={15} color={colors.geyser} />
+          <Icon name='heart' size={15} color={colors(isDark).bg1} />
           <Text
             style={[
               StandardTypography(
@@ -236,7 +284,7 @@ const InformationScreen = ({
                 'd',
                 'Regular',
                 'center',
-                colors.geyser
+                colors(isDark).bg1
               ),
               { marginHorizontal: 2 }
             ]}
@@ -249,12 +297,16 @@ const InformationScreen = ({
         visible={showSnackbar}
         textMessage={t.general && t.general.copied_to_clipboard}
         messageStyle={{
-          color: colors.white,
+          color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: font + '-Black',
           textAlign: 'center'
         }}
-        backgroundColor={colors.apple}
+        backgroundColor={colors(isDark).success}
+      />
+      <CopyrightsModal
+        isVisible={showCopyrightsModal}
+        hideModal={() => setShowCopyrightsModal(false)}
       />
     </SafeAreaView>
   )
@@ -264,8 +316,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: colors.aquaHaze
+    alignItems: 'center'
   },
   informationItem: {
     width: '100%',

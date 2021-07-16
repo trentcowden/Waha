@@ -15,6 +15,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL
@@ -73,7 +74,7 @@ const FloatingSectionLabel = ({
     <Icon
       name={isRTL ? 'triangle-left' : 'triangle-right'}
       size={25 * scaleMultiplier}
-      color={colors.tuna}
+      color={colors(isDark).icons}
     />
   </View>
 )
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
   },
   sectionTextContainer: {
     justifyContent: 'center',
-    backgroundColor: colors.tuna,
+    backgroundColor: colors(isDark).icons,
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 3

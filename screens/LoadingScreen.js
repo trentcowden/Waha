@@ -59,7 +59,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     recentActiveGroup: state.database.recentActiveGroup,
     font: font,
-
+    isDark: state.settings.isDarkModeEnabled,
     isRTL: isRTL,
     t: translations
   }
@@ -112,6 +112,7 @@ const LoadingScreen = ({
   font,
 
   isRTL,
+  isDark,
   t,
   setIsInstallingLanguageInstance,
   setHasOnboarded,
@@ -190,7 +191,12 @@ const LoadingScreen = ({
   }
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+      ]}
+    >
       <View
         style={{
           flex: 1,
@@ -208,19 +214,30 @@ const LoadingScreen = ({
           colorFilters={[
             {
               keypath: '*',
-              color: colors.waha
+              color: colors(isDark).brand
             }
           ]}
           autoPlay
           loop
           source={require('../assets/lotties/loading.json')}
         />
-        <View style={styles.progressBarContainer}>
+        <View
+          style={[
+            styles.progressBarContainer,
+            {
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
+          ]}
+        >
           {languageCoreFilesDownloadProgress ? (
             <View
               style={[
                 styles.progress,
-                { flex: languageCoreFilesDownloadProgress }
+                {
+                  flex: languageCoreFilesDownloadProgress,
+                  backgroundColor: colors(isDark).brand
+                }
               ]}
             />
           ) : null}
@@ -229,6 +246,9 @@ const LoadingScreen = ({
               style={[
                 styles.progressToGo,
                 {
+                  backgroundColor: isDark
+                    ? colors(isDark).bg2
+                    : colors(isDark).bg4,
                   flex:
                     totalLanguageCoreFilesToDownload -
                     languageCoreFilesDownloadProgress
@@ -239,7 +259,7 @@ const LoadingScreen = ({
         </View>
         <View style={styles.noConnectionContainer}>
           {!isConnected && (
-            <Icon name='cloud-slash' color={colors.tuna} size={30} />
+            <Icon name='cloud-slash' color={colors(isDark).icons} size={30} />
           )}
         </View>
       </View>
@@ -253,14 +273,14 @@ const LoadingScreen = ({
               alignItems: 'center'
             }}
           >
-            <Icon name='cancel' color={colors.tuna} size={50} />
+            <Icon name='cancel' color={colors(isDark).icons} size={50} />
             <Text
               style={StandardTypography(
                 { font, isRTL },
                 'h4',
                 'Bold',
                 'center',
-                colors.tuna
+                colors(isDark).icons
               )}
             >
               {t.general && t.general.cancel}
@@ -276,8 +296,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.aquaHaze
+    alignItems: 'center'
   },
   progressBarContainer: {
     width: Dimensions.get('window').width - 60,
@@ -286,16 +305,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     overflow: 'hidden',
     justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: colors.porcelain
+    borderWidth: 2
   },
   progress: {
-    backgroundColor: colors.waha,
     height: '100%',
     borderRadius: 20
   },
   progressToGo: {
-    backgroundColor: colors.athens,
     height: '100%'
   },
   noConnectionContainer: {

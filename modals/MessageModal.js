@@ -13,6 +13,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL
@@ -40,7 +41,7 @@ const MessageModal = ({
   children,
   // Props passed from redux.
   font,
-
+  isDark,
   activeGroup,
   isRTL
 }) => (
@@ -54,7 +55,12 @@ const MessageModal = ({
     swipeDirection={['down']}
     propagateSwipe={true}
   >
-    <View style={styles.contentContainer}>
+    <View
+      style={[
+        styles.contentContainer,
+        { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
+      ]}
+    >
       {children}
       <Text
         style={[
@@ -63,7 +69,7 @@ const MessageModal = ({
             'h2',
             'Black',
             'center',
-            colors.shark
+            colors(isDark).text
           ),
           { marginVertical: 10 }
         ]}
@@ -76,7 +82,7 @@ const MessageModal = ({
           'h4',
           'Bold',
           'center',
-          colors.shark
+          colors(isDark).text
         )}
       >
         {message}
@@ -88,7 +94,7 @@ const MessageModal = ({
             'h2',
             'Bold',
             'center',
-            colors.apple
+            colors(isDark).success
           )}
         >
           {confirmText}
@@ -101,7 +107,6 @@ const MessageModal = ({
 const styles = StyleSheet.create({
   modalContainer: { justifyContent: 'flex-end', flex: 1, margin: 0 },
   contentContainer: {
-    backgroundColor: colors.white,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     justifyContent: 'center',

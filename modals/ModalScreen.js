@@ -18,7 +18,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -45,6 +46,7 @@ const ModalScreen = ({
   downloads,
   activeDatabase,
   isRTL,
+  isDark,
   activeGroup,
   t,
   font
@@ -76,7 +78,12 @@ const ModalScreen = ({
       }}
       onModalWillShow={onModalWillShow}
     >
-      <View style={styles.contentContainer}>
+      <View
+        style={[
+          styles.contentContainer,
+          { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
+        ]}
+      >
         <View
           style={[
             styles.headerContainer,
@@ -93,7 +100,7 @@ const ModalScreen = ({
             <Icon
               name='cancel'
               size={45 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors(isDark).icons}
             />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
@@ -103,7 +110,7 @@ const ModalScreen = ({
                 'h3',
                 'Bold',
                 'center',
-                colors.shark
+                colors(isDark).text
               )}
             >
               {title}
@@ -119,7 +126,6 @@ const ModalScreen = ({
 
 const styles = StyleSheet.create({
   contentContainer: {
-    backgroundColor: colors.aquaHaze,
     flex: 1,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,

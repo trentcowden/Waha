@@ -11,6 +11,7 @@ import { network } from './reducers/network'
 import { persistedPopups } from './reducers/persistedPopups'
 import { popups } from './reducers/popups'
 import { security } from './reducers/security'
+import { settings } from './reducers/settings'
 import { storedDownloads } from './reducers/storedDownloads'
 
 /**
@@ -29,5 +30,6 @@ export default rootReducer = combineReducers({
   storedDownloads,
   popups,
   persistedPopups,
-  deviceInfo
+  deviceInfo,
+  settings
 })

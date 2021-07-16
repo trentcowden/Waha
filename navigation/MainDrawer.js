@@ -102,6 +102,7 @@ function mapDispatchToProps (dispatch) {
 const MainDrawer = ({
   // Props passed from redux.
   isRTL,
+  isDark,
   database,
   activeDatabase,
   isConnected,

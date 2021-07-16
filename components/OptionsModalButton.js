@@ -12,6 +12,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state)
   }
@@ -33,6 +34,7 @@ const OptionsModalButton = ({
   font,
 
   isRTL,
+  isDark,
   activeGroup
 }) => (
   <TouchableOpacity
@@ -45,7 +47,7 @@ const OptionsModalButton = ({
         'h3',
         'Regular',
         'center',
-        colors.shark
+        colors(isDark).text
       )}
     >
       {label}

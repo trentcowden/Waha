@@ -33,6 +33,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state),
     globalGroupCounter: state.database.globalGroupCounter,
@@ -100,6 +101,7 @@ const AddEditGroupModal = ({
   // Props passed from redux.
   groups,
   isRTL,
+  isDark,
   t,
   font,
   activeGroup,
@@ -227,7 +229,7 @@ const AddEditGroupModal = ({
             <Icon
               name='check'
               size={40 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors(isDark).icons}
             />
           </TouchableOpacity>
         )
@@ -259,7 +261,9 @@ const AddEditGroupModal = ({
     >
       <View style={styles.groupAvatarContainer}>
         <GroupAvatar
-          style={{ backgroundColor: colors.athens }}
+          style={{
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg1
+          }}
           emoji={emojiInput}
           size={120}
         />
@@ -273,7 +277,11 @@ const AddEditGroupModal = ({
         <View
           style={[
             styles.shouldShowMTTabInputContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
+            {
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
           ]}
         >
           <Text
@@ -282,15 +290,18 @@ const AddEditGroupModal = ({
               'h3',
               'Regular',
               'left',
-              colors.shark
+              colors(isDark).text
             )}
           >
             {t.mobilization_tools && t.mobilization_tools.show_mobilization_tab}
           </Text>
           <Switch
-            trackColor={{ false: colors.chateau, true: colors.apple }}
-            thumbColor={colors.white}
-            ios_backgroundColor={colors.chateau}
+            trackColor={{
+              false: colors(isDark).disabled,
+              true: colors(isDark).success
+            }}
+            thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
+            ios_backgroundColor={colors(isDark).disabled}
             onValueChange={() => setShouldShowMTTabInput(current => !current)}
             value={shouldShowMTTabInput}
             disabled={areMobilizationToolsUnlocked ? false : true}
@@ -318,8 +329,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 2,
     borderRadius: 10,
-    borderColor: colors.athens,
-    backgroundColor: colors.white,
     marginTop: 20 * scaleMultiplier
   }
 })

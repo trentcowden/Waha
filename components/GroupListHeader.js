@@ -29,7 +29,8 @@ function mapStateToProps (state) {
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -60,6 +61,7 @@ const GroupListHeader = ({
   isEditing,
   // Props passed from redux.
   isRTL,
+  isDark,
   database,
   activeDatabase,
   groups,
@@ -150,7 +152,11 @@ const GroupListHeader = ({
           )
         }
       >
-        <Icon name='trash' size={25 * scaleMultiplier} color={colors.red} />
+        <Icon
+          name='trash'
+          size={25 * scaleMultiplier}
+          color={colors(isDark).error}
+        />
       </TouchableOpacity>
     )
   // For the language instance that contains the active group, render an empty view for this button so the layout still lines up.
@@ -161,7 +167,10 @@ const GroupListHeader = ({
     <View
       style={[
         styles.groupListHeaderContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' }
+        {
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        }
       ]}
     >
       <Animated.View
@@ -189,7 +198,7 @@ const GroupListHeader = ({
               'h3',
               'Regular',
               'left',
-              colors.chateau
+              colors(isDark).secondaryText
             ),
             { flex: 1 }
           ]}
@@ -200,7 +209,9 @@ const GroupListHeader = ({
       <Image
         style={styles.languageLogoImage}
         source={{
-          uri: FileSystem.documentDirectory + languageID + '-header.png'
+          uri: isDark
+            ? FileSystem.documentDirectory + languageID + '-header-dark.png'
+            : FileSystem.documentDirectory + languageID + '-header.png'
         }}
       />
     </View>
@@ -211,8 +222,7 @@ const styles = StyleSheet.create({
   groupListHeaderContainer: {
     alignItems: 'center',
     // width: '100%',
-    height: 40 * scaleMultiplier,
-    backgroundColor: colors.aquaHaze
+    height: 40 * scaleMultiplier
   },
   languageLogoImage: {
     resizeMode: 'contain',

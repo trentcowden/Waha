@@ -16,6 +16,7 @@ function mapStateToProps (state) {
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     isConnected: state.network.isConnected,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
@@ -38,6 +39,7 @@ const DrawerDownloadUpdateButton = ({
   activeDatabase,
   t,
   isRTL,
+  isDark,
   font,
 
   isConnected,
@@ -68,11 +70,13 @@ const DrawerDownloadUpdateButton = ({
       style={[
         styles.innerContainer,
         {
-          backgroundColor: isConnected ? colors.apple : colors.geyser,
+          backgroundColor: isConnected
+            ? colors(isDark).success
+            : colors(isDark).bg1,
           flexDirection: isRTL ? 'row' : 'row-reverse',
           borderBottomColor: isConnected
-            ? colors.appleShadow
-            : colors.geyserShadow
+            ? colors(isDark).successShadow
+            : colors(isDark).bg1Shadow
         }
       ]}
     >
@@ -84,7 +88,7 @@ const DrawerDownloadUpdateButton = ({
             'h3',
             'Bold',
             'center',
-            isConnected ? colors.white : colors.chateau
+            isConnected ? colors(isDark).textOnColor : colors(isDark).disabled
           )
         ]}
       >
@@ -95,7 +99,7 @@ const DrawerDownloadUpdateButton = ({
           <Icon
             name='error-filled'
             size={30 * scaleMultiplier}
-            color={colors.white}
+            color={colors(isDark).bg4}
           />
         </View>
       ) : (
@@ -103,7 +107,7 @@ const DrawerDownloadUpdateButton = ({
           <Icon
             name='cloud-slash'
             size={30 * scaleMultiplier}
-            color={colors.chateau}
+            color={colors(isDark).disabled}
           />
         </View>
       )}

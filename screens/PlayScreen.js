@@ -33,6 +33,7 @@ import {
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
 import { logCompleteLesson } from '../LogEventFunctions'
+import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
@@ -54,6 +55,7 @@ function mapStateToProps (state) {
     primaryColor: activeDatabaseSelector(state).primaryColor,
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     isConnected: state.network.isConnected
   }
@@ -124,6 +126,7 @@ const PlayScreen = ({
   downloads,
   primaryColor,
   isRTL,
+  isDark,
   font,
   isConnected,
   toggleComplete,
@@ -202,6 +205,7 @@ const PlayScreen = ({
   const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] = useState(
     false
   )
+  const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
 
   /** Keeps track of whether the audio and video files for this lesson are downloaded. */
   const [isAudioDownloaded, setIsAudioDownloaded] = useState(
@@ -259,7 +263,11 @@ const PlayScreen = ({
       >
         <View>
           {isThisLessonComplete.current && (
-            <Icon name='check-outline' size={20} color={colors.chateau} />
+            <Icon
+              name='check-outline'
+              size={20}
+              color={colors(isDark).secondaryText}
+            />
           )}
         </View>
         <Text
@@ -269,7 +277,7 @@ const PlayScreen = ({
               'h3',
               'Bold',
               'center',
-              colors.chateau
+              colors(isDark).secondaryText
             ),
             { marginHorizontal: 2 }
           ]}
@@ -288,7 +296,7 @@ const PlayScreen = ({
             <Icon
               name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
               size={32 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors(isDark).icons}
             />
           </TouchableOpacity>
         ),
@@ -301,7 +309,7 @@ const PlayScreen = ({
             <Icon
               name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
               size={32 * scaleMultiplier}
-              color={colors.oslo}
+              color={colors(isDark).icons}
             />
           </TouchableOpacity>
         )
@@ -886,7 +894,12 @@ const PlayScreen = ({
   */
 
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.screen,
+        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
+      ]}
+    >
       <View style={styles.middleAreaContainer}>
         {lessonType !== lessonTypes.VIDEO_ONLY && (
           <Animated.View
@@ -916,6 +929,7 @@ const PlayScreen = ({
               sectionOffsets={sectionOffsets}
               markLessonAsComplete={markLessonAsComplete}
               isThisLessonComplete={isThisLessonComplete}
+              setShowCopyrightsModal={setShowCopyrightsModal}
             />
           </Animated.View>
         )}
@@ -944,6 +958,7 @@ const PlayScreen = ({
               fullscreenStatus={fullscreenStatus}
               activeChapter={activeChapter}
               isMediaLoaded={isMediaLoaded}
+              isDark={isDark}
             />
           </Animated.View>
         )}
@@ -1030,6 +1045,10 @@ const PlayScreen = ({
           source={require('../assets/lotties/new_set_unlocked.json')}
         />
       </MessageModal>
+      <CopyrightsModal
+        isVisible={showCopyrightsModal}
+        hideModal={() => setShowCopyrightsModal(false)}
+      />
     </View>
   )
 }
@@ -1039,8 +1058,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     height: '100%',
-    width: '100%',
-    backgroundColor: colors.white
+    width: '100%'
   },
   middleAreaContainer: {
     width: '100%',

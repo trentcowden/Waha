@@ -14,6 +14,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)
   }
@@ -46,6 +47,7 @@ const Piano = ({
   isMuted = false,
   // Props passed from redux.
   isRTL,
+  isDark,
   font,
 
   activeGroup
@@ -76,11 +78,16 @@ const Piano = ({
   }
 
   const extraWhiteKeyStyles = {
-    height: Dimensions.get('window').height / 2.5
+    height: Dimensions.get('window').height / 2.5,
+    backgroundColor: isDark ? colors(isDark).text : colors(isDark).bg4,
+    borderColor: colors(isDark).text,
+    borderWidth: isDark ? 0 : 2,
+    borderBottomWidth: isDark ? 0 : 5
   }
 
   const extraBlackKeyStyles = {
-    height: Dimensions.get('window').height / 4
+    height: Dimensions.get('window').height / 4,
+    backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).text
   }
 
   return (
@@ -215,11 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: colors.shark,
-    borderWidth: 2,
-    zIndex: 0,
-    color: colors.white,
-    borderBottomWidth: 5
+    zIndex: 0
   },
   blackKeysContainer: {
     flexDirection: 'row',
@@ -237,10 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    borderColor: colors.shark,
-    borderWidth: 2,
-    zIndex: 1,
-    backgroundColor: colors.shark
+    zIndex: 1
   }
 })
 

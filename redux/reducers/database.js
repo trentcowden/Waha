@@ -84,7 +84,7 @@ export function database (
           displayName: params.languageData.displayName,
           bibleID: params.languageData.bibleID,
           isRTL: params.languageData.isRTL,
-          primaryColor: params.languageData.primaryColor,
+          // primaryColor: params.languageData.primaryColor,
           files: params.languageData.files,
           questions: params.languageData.questions,
           translations: params.languageData.translations,

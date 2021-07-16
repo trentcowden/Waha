@@ -13,6 +13,7 @@ import PianoKeyLabel from './PianoKeyLabel'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     security: state.security,
     isRTL: activeDatabaseSelector(state).isRTL,
@@ -32,80 +33,89 @@ const PianoPasscodeDisplay = ({
 
   security,
   isRTL,
+  isDark,
   activeGroup
-}) => (
-  <View
-    style={{
-      width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      padding: 20,
-      flexDirection: isRTL ? 'row-reverse' : 'row'
-    }}
-  >
-    <View style={styles.keyPlaceholder}>
-      {passcode[1] && (
-        <PianoKeyLabel
-          backgroundColor={keyColors[passcode.substr(0, 2).replace(/^0/, '')]}
-          number={passcode.substr(0, 2).replace(/^0/, '')}
-          style={{ alignSelf: null, marginBottom: 0 }}
-        />
-      )}
+}) => {
+  const extraKeyPlaceholderStyles = {
+    backgroundColor: colors(isDark).bg2,
+    borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
+  }
+
+  return (
+    <View
+      style={{
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 20,
+        flexDirection: isRTL ? 'row-reverse' : 'row'
+      }}
+    >
+      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+        {passcode[1] && (
+          <PianoKeyLabel
+            backgroundColor={keyColors[passcode.substr(0, 2).replace(/^0/, '')]}
+            number={passcode.substr(0, 2).replace(/^0/, '')}
+            style={{ alignSelf: null, marginBottom: 0 }}
+          />
+        )}
+      </View>
+      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+        {passcode[3] && (
+          <PianoKeyLabel
+            backgroundColor={keyColors[passcode.substr(2, 2).replace(/^0/, '')]}
+            number={passcode.substr(2, 2).replace(/^0/, '')}
+            style={{ alignSelf: null, marginBottom: 0 }}
+          />
+        )}
+      </View>
+      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+        {passcode[5] && (
+          <PianoKeyLabel
+            backgroundColor={keyColors[passcode.substr(4, 2).replace(/^0/, '')]}
+            number={passcode.substr(4, 2).replace(/^0/, '')}
+            style={{ alignSelf: null, marginBottom: 0 }}
+          />
+        )}
+      </View>
+      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+        {passcode[7] && (
+          <PianoKeyLabel
+            backgroundColor={keyColors[passcode.substr(6, 2).replace(/^0/, '')]}
+            number={passcode.substr(6, 2).replace(/^0/, '')}
+            style={{ alignSelf: null, marginBottom: 0 }}
+          />
+        )}
+      </View>
+      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+        {passcode[9] && (
+          <PianoKeyLabel
+            backgroundColor={keyColors[passcode.substr(8, 2).replace(/^0/, '')]}
+            number={passcode.substr(8, 2).replace(/^0/, '')}
+            style={{ alignSelf: null, marginBottom: 0 }}
+          />
+        )}
+      </View>
+      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+        {passcode[11] && (
+          <PianoKeyLabel
+            backgroundColor={
+              keyColors[passcode.substr(10, 2).replace(/^0/, '')]
+            }
+            number={passcode.substr(10, 2).replace(/^0/, '')}
+            style={{ alignSelf: null, marginBottom: 0 }}
+          />
+        )}
+      </View>
     </View>
-    <View style={styles.keyPlaceholder}>
-      {passcode[3] && (
-        <PianoKeyLabel
-          backgroundColor={keyColors[passcode.substr(2, 2).replace(/^0/, '')]}
-          number={passcode.substr(2, 2).replace(/^0/, '')}
-          style={{ alignSelf: null, marginBottom: 0 }}
-        />
-      )}
-    </View>
-    <View style={styles.keyPlaceholder}>
-      {passcode[5] && (
-        <PianoKeyLabel
-          backgroundColor={keyColors[passcode.substr(4, 2).replace(/^0/, '')]}
-          number={passcode.substr(4, 2).replace(/^0/, '')}
-          style={{ alignSelf: null, marginBottom: 0 }}
-        />
-      )}
-    </View>
-    <View style={styles.keyPlaceholder}>
-      {passcode[7] && (
-        <PianoKeyLabel
-          backgroundColor={keyColors[passcode.substr(6, 2).replace(/^0/, '')]}
-          number={passcode.substr(6, 2).replace(/^0/, '')}
-          style={{ alignSelf: null, marginBottom: 0 }}
-        />
-      )}
-    </View>
-    <View style={styles.keyPlaceholder}>
-      {passcode[9] && (
-        <PianoKeyLabel
-          backgroundColor={keyColors[passcode.substr(8, 2).replace(/^0/, '')]}
-          number={passcode.substr(8, 2).replace(/^0/, '')}
-          style={{ alignSelf: null, marginBottom: 0 }}
-        />
-      )}
-    </View>
-    <View style={styles.keyPlaceholder}>
-      {passcode[11] && (
-        <PianoKeyLabel
-          backgroundColor={keyColors[passcode.substr(10, 2).replace(/^0/, '')]}
-          number={passcode.substr(10, 2).replace(/^0/, '')}
-          style={{ alignSelf: null, marginBottom: 0 }}
-        />
-      )}
-    </View>
-  </View>
-)
+  )
+}
 
 const styles = StyleSheet.create({
   keyPlaceholder: {
     width: Dimensions.get('window').width / 12 + 12,
     height: Dimensions.get('window').width / 12 + 12,
     borderRadius: Dimensions.get('window').width / 24 + 6,
-    backgroundColor: colors.white,
     margin: 5 * scaleMultiplier,
     justifyContent: 'center',
     alignItems: 'center',

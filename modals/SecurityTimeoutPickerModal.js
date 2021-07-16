@@ -39,6 +39,7 @@ const SecurityTimeoutPickerModal = ({
   t,
   security,
   isRTL,
+  isDark,
   setSecurityEnabled,
   setTimeoutDuration
 }) => {
@@ -65,7 +66,7 @@ const SecurityTimeoutPickerModal = ({
         {security.timeoutDuration === 0 ? (
           <Icon
             name='check'
-            color={colors.apple}
+            color={colors(isDark).success}
             size={30 * scaleMultiplier}
             style={checkIconStyle}
           />
@@ -82,7 +83,7 @@ const SecurityTimeoutPickerModal = ({
         {security.timeoutDuration === 60000 ? (
           <Icon
             name='check'
-            color={colors.apple}
+            color={colors(isDark).success}
             size={30 * scaleMultiplier}
             style={checkIconStyle}
           />
@@ -99,7 +100,7 @@ const SecurityTimeoutPickerModal = ({
         {security.timeoutDuration === 300000 ? (
           <Icon
             name='check'
-            color={colors.apple}
+            color={colors(isDark).success}
             size={30 * scaleMultiplier}
             style={checkIconStyle}
           />
@@ -116,7 +117,7 @@ const SecurityTimeoutPickerModal = ({
         {security.timeoutDuration === 900000 ? (
           <Icon
             name='check'
-            color={colors.apple}
+            color={colors(isDark).success}
             size={30 * scaleMultiplier}
             style={checkIconStyle}
           />
@@ -133,7 +134,7 @@ const SecurityTimeoutPickerModal = ({
         {security.timeoutDuration === 3600000 ? (
           <Icon
             name='check'
-            color={colors.apple}
+            color={colors(isDark).success}
             size={30 * scaleMultiplier}
             style={checkIconStyle}
           />

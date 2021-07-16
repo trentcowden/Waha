@@ -11,6 +11,7 @@ import { getLanguageFont, StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL
   }
@@ -40,7 +41,7 @@ const BookView = ({
           'h3',
           'Regular',
           'left',
-          colors.shark
+          colors(isDark).text
         ),
         // Margin here instead of padding on the whole container because padding makes the scroll bar cover up the text.
         { marginHorizontal: 10 }

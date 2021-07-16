@@ -15,6 +15,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations
   }
@@ -37,6 +38,7 @@ const GroupNameTextInput = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  isDark,
   font,
   t
 }) => {
@@ -48,7 +50,7 @@ const GroupNameTextInput = ({
           'p',
           'Regular',
           'left',
-          colors.chateau
+          colors(isDark).secondaryText
         )}
       >
         {t.groups && t.groups.group_name}
@@ -64,12 +66,16 @@ const GroupNameTextInput = ({
           ref={groupNameInputRef}
           style={[
             styles.groupNameTextInputContainer,
+            {
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
+            },
             StandardTypography(
               { font, isRTL },
               'h3',
               'Regular',
               'left',
-              colors.shark
+              colors(isDark).text
             )
           ]}
           onChangeText={text => setGroupNameInput(text)}
@@ -77,7 +83,7 @@ const GroupNameTextInput = ({
           autoCapitalize='words'
           autoCorrect={false}
           placeholder={t.groups && t.groups.group_name_here}
-          placeholderTextColor={colors.chateau}
+          placeholderTextColor={colors(isDark).disabled}
           maxLength={50}
           returnKeyType='done'
         />
@@ -92,7 +98,7 @@ const GroupNameTextInput = ({
           >
             <Icon
               name='cancel'
-              color={colors.red}
+              color={colors(isDark).error}
               size={45 * scaleMultiplier}
             />
           </View>
@@ -109,10 +115,8 @@ const styles = StyleSheet.create({
     maxWidth: 500
   },
   groupNameTextInputContainer: {
-    backgroundColor: colors.white,
     borderRadius: 10,
     paddingHorizontal: 10,
-    borderColor: colors.athens,
     borderWidth: 2,
     height: 50 * scaleMultiplier,
     fontSize: 18 * scaleMultiplier,

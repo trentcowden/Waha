@@ -15,6 +15,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     primaryColor: activeDatabaseSelector(state).primaryColor
   }
@@ -24,11 +25,13 @@ function mapDispatchToProps (dispatch) {
   return {}
 }
 
-const Dot = ({ isActive, primaryColor }) => (
+const Dot = ({ isActive, primaryColor, isDark }) => (
   <View
     style={{
       marginHorizontal: 5,
-      backgroundColor: isActive ? colors.tuna : colors.chateau,
+      backgroundColor: isActive
+        ? colors(isDark).icons
+        : colors(isDark).disabled,
       width: isActive ? 9 * scaleMultiplier : 7 * scaleMultiplier,
       height: isActive ? 9 * scaleMultiplier : 7 * scaleMultiplier,
       borderRadius: isActive ? 4.5 * scaleMultiplier : 3.5 * scaleMultiplier
@@ -50,6 +53,7 @@ const PageDots = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  isDark,
   font,
 
   primaryColor
@@ -64,6 +68,7 @@ const PageDots = ({
         // Whether a dot is active depends on whether the pages go from RTL or LTR. For RTL:
         isActive={isRTL ? numDots - activeDot === i : activeDot + 1 === i}
         key={i}
+        isDark={isDark}
       />
     )
   }

@@ -15,6 +15,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL,
@@ -39,6 +40,7 @@ const LessonTextScrollBar = ({
 
   t,
   isRTL,
+  isDark,
   primaryColor
 }) => (
   <PanGestureHandler
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
   scrollBar: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.tuna,
+    backgroundColor: colors(isDark).icons,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

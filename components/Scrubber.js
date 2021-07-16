@@ -1,9 +1,16 @@
 import Slider from '@react-native-community/slider'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { connect } from 'react-redux'
 import TimeDisplay from '../components/TimeDisplay'
 import { gutterSize, isTablet } from '../constants'
 import { colors } from '../styles/colors'
+
+function mapStateToProps (state) {
+  return {
+    isDark: state.settings.isDarkModeEnabled
+  }
+}
 
 /**
  * A component on the Play Screen that shows the current progress through the loaded media and allows the user to "scrub" to a different position.
@@ -17,7 +24,9 @@ const Scrubber = ({
   playFromLocation,
   shouldThumbUpdate,
   mediaLength,
-  mediaProgress
+  mediaProgress,
+  // Props passed from redux.
+  isDark
 }) => (
   <View
     style={[
@@ -36,9 +45,13 @@ const Scrubber = ({
         minimumValue={0}
         maximumValue={mediaLength}
         step={100}
-        minimumTrackTintColor={colors.tuna}
-        maximumTrackTintColor={colors.geyser}
-        thumbTintColor={colors.tuna}
+        minimumTrackTintColor={colors(isDark).icons}
+        maximumTrackTintColor={
+          Platform.OS === 'ios' && !isDark
+            ? colors(isDark).bg1
+            : colors(isDark).disabled
+        }
+        thumbTintColor={colors(isDark).icons}
       />
     </View>
     <View style={styles.timeInfoContainer}>
@@ -68,4 +81,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Scrubber
+export default connect(mapStateToProps)(Scrubber)

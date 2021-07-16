@@ -21,7 +21,12 @@ const SwipeBar = ({
         { alignSelf: side === 'right' ? 'flex-start' : 'flex-end' }
       ]}
     >
-      <Animated.View style={[styles.swipeBar, { opacity: opacity }]} />
+      <Animated.View
+        style={[
+          styles.swipeBar,
+          { opacity: opacity, backgroundColor: colors(isDark).disabled }
+        ]}
+      />
     </View>
   )
 }
@@ -39,7 +44,6 @@ const styles = StyleSheet.create({
   swipeBar: {
     width: 4,
     height: 75 * scaleMultiplier,
-    backgroundColor: colors.chateau,
     borderRadius: 10
   }
 })

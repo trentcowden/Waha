@@ -9,7 +9,7 @@ import { languages } from '../languages'
  *  'p',
  *  'Regular',
  *  'left',
- *  colors.shark
+ *  colors(isDark).text
  * )}/>
  * @export
  * @param {Object} props - The props from the component that calls this function. Notably includes the font name for the active group and whether the active group's language is RTL.

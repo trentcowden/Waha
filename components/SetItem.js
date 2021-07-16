@@ -34,6 +34,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor,
     font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
@@ -67,6 +68,7 @@ const SetItem = ({
   copilot = null,
   // Props passed from redux.
   isRTL,
+  isDark,
   activeDatabase,
   primaryColor,
   font,
@@ -119,17 +121,24 @@ const SetItem = ({
               width={7 * scaleMultiplier}
               fill={progressPercentage * 100}
               tintColor={
-                progressPercentage === 1 ? primaryColor + '50' : primaryColor
+                progressPercentage === 1
+                  ? colors(isDark, activeGroup.language).accent + '50'
+                  : colors(isDark, activeGroup.language).accent
               }
               rotation={0}
-              backgroundColor={colors.white}
+              backgroundColor={colors(isDark).bg4}
             >
               {() => (
                 <View
                   style={{
                     flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    backgroundColor: isDark
+                      ? progressPercentage === 1
+                        ? colors(isDark).disabled
+                        : colors(isDark).icons
+                      : null
                   }}
                 >
                   <SVG
@@ -137,7 +146,13 @@ const SetItem = ({
                     width={70 * scaleMultiplier}
                     height={70 * scaleMultiplier}
                     color={
-                      progressPercentage === 1 ? colors.chateau : colors.shark
+                      progressPercentage === 1
+                        ? isDark
+                          ? colors(isDark).bg4
+                          : colors(isDark).disabled
+                        : isDark
+                        ? colors(isDark).bg4
+                        : colors(isDark).icons
                     }
                   />
                 </View>
@@ -152,7 +167,7 @@ const SetItem = ({
               <Icon
                 name='check-outline'
                 size={30 * scaleMultiplier}
-                color={colors.chateau}
+                color={colors(isDark).disabled}
               />
             </View>
           ) : (
@@ -166,7 +181,7 @@ const SetItem = ({
                     : null
                 }
                 size={30 * scaleMultiplier}
-                color={primaryColor}
+                color={colors(isDark, activeGroup.language).accent}
               />
             </View>
           )
@@ -181,17 +196,24 @@ const SetItem = ({
               width={7 * scaleMultiplier}
               fill={progressPercentage * 100}
               tintColor={
-                progressPercentage === 1 ? primaryColor + '50' : primaryColor
+                progressPercentage === 1
+                  ? colors(isDark, activeGroup.language).accent + '50'
+                  : colors(isDark, activeGroup.language).accent
               }
               rotation={0}
-              backgroundColor={colors.white}
+              backgroundColor={colors(isDark).bg4}
             >
               {() => (
                 <View
                   style={{
                     flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    backgroundColor: isDark
+                      ? progressPercentage === 1
+                        ? colors(isDark).disabled
+                        : colors(isDark).icons
+                      : null
                   }}
                 >
                   <SVG
@@ -199,7 +221,13 @@ const SetItem = ({
                     width={70 * scaleMultiplier}
                     height={70 * scaleMultiplier}
                     color={
-                      progressPercentage === 1 ? colors.chateau : colors.shark
+                      progressPercentage === 1
+                        ? isDark
+                          ? colors(isDark).bg4
+                          : colors(isDark).disabled
+                        : isDark
+                        ? colors(isDark).bg4
+                        : colors(isDark).icons
                     }
                   />
                 </View>
@@ -242,7 +270,7 @@ const SetItem = ({
                 <Icon
                   name='dropdown'
                   size={35 * scaleMultiplier}
-                  color={primaryColor}
+                  color={colors(isDark, activeGroup.language).accent}
                   style={{
                     transform: [{ rotateX: '180deg' }]
                   }}
@@ -251,7 +279,7 @@ const SetItem = ({
                 <Icon
                   name='info'
                   size={25 * scaleMultiplier}
-                  color={colors.tuna}
+                  color={colors(isDark).icons}
                 />
               )}
             </TouchableOpacity>
@@ -265,11 +293,13 @@ const SetItem = ({
             style={[
               styles.primaryIconContainer,
               {
-                backgroundColor: colors.white,
+                backgroundColor: isDark
+                  ? colors(isDark).icons
+                  : colors(isDark).bg4,
                 borderRadius: 14,
                 overflow: 'hidden',
                 borderWidth: 7,
-                borderColor: colors.tuna
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
               }
             ]}
           >
@@ -277,7 +307,7 @@ const SetItem = ({
               name={thisSet.iconName}
               width={80 * scaleMultiplier}
               height={80 * scaleMultiplier}
-              color={colors.tuna}
+              color={isDark ? colors(isDark).bg4 : colors(isDark).icons}
             />
           </View>
         )
@@ -287,7 +317,7 @@ const SetItem = ({
             <Icon
               name={isRTL ? 'arrow-left' : 'arrow-right'}
               size={30 * scaleMultiplier}
-              color={primaryColor}
+              color={colors(isDark, activeGroup.language).accent}
             />
           </View>
         )
@@ -299,11 +329,13 @@ const SetItem = ({
             style={[
               styles.primaryIconContainer,
               {
-                backgroundColor: colors.white,
+                backgroundColor: isDark
+                  ? colors(isDark).icons
+                  : colors(isDark).bg4,
                 borderRadius: 14,
                 overflow: 'hidden',
                 borderWidth: 7,
-                borderColor: colors.tuna
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
               }
             ]}
           >
@@ -311,7 +343,7 @@ const SetItem = ({
               name={thisSet.iconName}
               width={80 * scaleMultiplier}
               height={80 * scaleMultiplier}
-              color={colors.tuna}
+              color={isDark ? colors(isDark).bg4 : colors(isDark).icons}
             />
           </View>
         )
@@ -319,7 +351,12 @@ const SetItem = ({
         setSecondaryIcon(<View style={styles.secondaryIconContainer} />)
         break
     }
-  }, [progressPercentage, thisSet.id === activeGroup.setBookmark, isInInfoMode])
+  }, [
+    progressPercentage,
+    thisSet.id === activeGroup.setBookmark,
+    isInInfoMode,
+    isDark
+  ])
 
   return (
     <TouchableOpacity
@@ -354,7 +391,9 @@ const SetItem = ({
               'd',
               'Regular',
               'left',
-              progressPercentage === 1 ? colors.chateau : colors.shark
+              progressPercentage === 1
+                ? colors(isDark).disabled
+                : colors(isDark).icons
             ),
             {
               textAlignVertical: 'center',
@@ -372,7 +411,9 @@ const SetItem = ({
               'h3',
               'Black',
               'left',
-              progressPercentage === 1 ? colors.chateau : colors.shark
+              progressPercentage === 1
+                ? colors(isDark).disabled
+                : colors(isDark).text
             ),
             {
               textAlignVertical: 'center',
@@ -405,7 +446,7 @@ const SetItem = ({
               colorFilters={[
                 {
                   keypath: 'hand 2',
-                  color: primaryColor
+                  color: colors(isDark, activeGroup.language).accent
                 }
               ]}
               resizeMode='cover'
@@ -455,7 +496,8 @@ const areEqual = (prevProps, nextProps) => {
     prevProps.setIsInInfoMode === nextProps.setIsInInfoMode &&
     prevProps.showTrailerHighlights === nextProps.showTrailerHighlights &&
     prevProps.areMobilizationToolsUnlocked ===
-      nextProps.areMobilizationToolsUnlocked
+      nextProps.areMobilizationToolsUnlocked &&
+    prevProps.isDark === nextProps.isDark
   )
 }
 
@@ -470,7 +512,7 @@ source={{
 }}
 width={70 * scaleMultiplier}
 height={70 * scaleMultiplier}
-// fill={fullyCompleted ? colors.chateau : colors.shark}
-fill={colors.chateau}
+// fill={fullyCompleted ? colors(isDark).disabled : colors(isDark).text}
+fill={colors(isDark).disabled}
 fillAll
 />  */
