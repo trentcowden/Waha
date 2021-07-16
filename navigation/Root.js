@@ -1,11 +1,12 @@
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar as StatusBarExpo } from 'expo-status-bar'
 import React from 'react'
-import { View } from 'react-native'
+import { StatusBar as StatusBarRN, View } from 'react-native'
 import { connect } from 'react-redux'
 import { groupNames } from '../constants'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { createGroup } from '../redux/actions/groupsActions'
 import LoadingScreen from '../screens/LoadingScreen'
+import { colors } from '../styles/colors'
 import MainDrawer from './MainDrawer'
 import Onboarding from './Onboarding'
 
@@ -103,7 +104,7 @@ const Root = ({
   ) {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <StatusBarExpo style={isDark ? 'light' : 'dark'} />
         <MainDrawer />
       </View>
     )
@@ -113,14 +114,17 @@ const Root = ({
   ) {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <StatusBarRN
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={isDark ? colors(isDark).bg1 : colors(isDark).bg3}
+        />
         <Onboarding />
       </View>
     )
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <StatusBarRN barStyle={isDark ? 'light-content' : 'dark-content'} />
         <LoadingScreen />
       </View>
     )

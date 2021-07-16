@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 3,
     aspectRatio: 1,
     overflow: 'hidden',
     justifyContent: 'center'

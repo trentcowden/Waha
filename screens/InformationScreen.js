@@ -233,30 +233,32 @@ const InformationScreen = ({
           size={25 * scaleMultiplier}
         />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.informationItem,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
-        onPress={() => setShowCopyrightsModal(true)}
-      >
-        <Text
-          style={StandardTypography(
-            { font, isRTL },
-            'h3',
-            'Bold',
-            'left',
-            colors.shark
-          )}
+      {t.general.copyrights !== '' && (
+        <TouchableOpacity
+          style={[
+            styles.informationItem,
+            { flexDirection: isRTL ? 'row-reverse' : 'row' }
+          ]}
+          onPress={() => setShowCopyrightsModal(true)}
         >
-          {t.general && t.general.view_copyright}
-        </Text>
-        <Icon
-          name={isRTL ? 'arrow-left' : 'arrow-right'}
-          color={colors.tuna}
-          size={25 * scaleMultiplier}
-        />
-      </TouchableOpacity>
+          <Text
+            style={StandardTypography(
+              { font, isRTL },
+              'h3',
+              'Bold',
+              'left',
+              colors(isDark).text
+            )}
+          >
+            {t.general && t.general.view_copyright}
+          </Text>
+          <Icon
+            name={isRTL ? 'arrow-left' : 'arrow-right'}
+            color={colors(isDark).icons}
+            size={25 * scaleMultiplier}
+          />
+        </TouchableOpacity>
+      )}
       {/* Cheeky little easter egg :) */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View style={styles.easterEggContainer}>

@@ -15,7 +15,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageFont(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -36,7 +37,8 @@ const CopyrightsModal = ({
   isRTL,
   activeGroup,
   t,
-  font
+  font,
+  isDark
 }) => {
   return (
     <ModalScreen
@@ -51,7 +53,7 @@ const CopyrightsModal = ({
             'h3',
             'Regular',
             'left',
-            colors.shark
+            colors(isDark).text
           )}
           adjustsFontSizeToFit
         >

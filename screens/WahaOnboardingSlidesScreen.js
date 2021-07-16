@@ -127,7 +127,7 @@ const WahaOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -138,7 +138,12 @@ const WahaOnboardingSlidesScreen = ({
         ]}
       >
         <LottieView
-          style={[styles.image, { backgroundColor: colors(isDark).bg4 }]}
+          style={[
+            styles.image,
+            {
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
+          ]}
           autoPlay
           loop
           resizeMode='cover'
@@ -155,7 +160,7 @@ const WahaOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -166,7 +171,12 @@ const WahaOnboardingSlidesScreen = ({
         ]}
       >
         <LottieView
-          style={[styles.image, { backgroundColor: colors(isDark).bg4 }]}
+          style={[
+            styles.image,
+            {
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
+          ]}
           autoPlay
           loop
           resizeMode='cover'
@@ -183,7 +193,7 @@ const WahaOnboardingSlidesScreen = ({
         style={[
           styles.imageContainer,
           {
-            borderColor: colors(isDark).bg2,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
             maxWidth: isTablet
               ? Dimensions.get('window').width * 0.7
               : Dimensions.get('window').width - 40,
@@ -194,7 +204,12 @@ const WahaOnboardingSlidesScreen = ({
         ]}
       >
         <LottieView
-          style={[styles.image, { backgroundColor: colors(isDark).bg4 }]}
+          style={[
+            styles.image,
+            {
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            }
+          ]}
           autoPlay
           loop
           resizeMode='cover'
@@ -309,7 +324,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     borderRadius: 15,
-    borderWidth: 2,
+    borderWidth: 3,
     aspectRatio: 1,
     overflow: 'hidden',
     justifyContent: 'center',

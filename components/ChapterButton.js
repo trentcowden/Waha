@@ -218,7 +218,7 @@ const ChapterButton = ({
         break
       case chapterButtonModes.DOWNLOADING:
         setExtraButtonStyle({
-          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg3,
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
           backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark).disabled })
@@ -227,7 +227,7 @@ const ChapterButton = ({
         break
       case chapterButtonModes.DISABLED:
         setExtraButtonStyle({
-          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg3,
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
           backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
         })
         setTextStyle({ color: colors(isDark).disabled })

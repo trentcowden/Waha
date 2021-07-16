@@ -174,6 +174,7 @@ const LessonTextContent = ({
       onLayout={onLayout}
       removeClippedSubviews={false}
       scrollEventThrottle={256}
+      indicatorStyle={isDark ? 'white' : 'black'}
     >
       {!lessonType.includes('BookText') ? (
         <View>
@@ -227,31 +228,32 @@ const LessonTextContent = ({
             </View>
           ))}
           {/* <WahaSeparator /> */}
-          <TouchableOpacity
-            onPress={() => setShowCopyrightsModal(true)}
-            style={{
-              width: '100%',
-              paddingVertical: 10 * scaleMultiplier,
-              flexDirection: isRTL ? 'row-reverse' : 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              paddingHorizontal: gutterSize,
-              marginTop: -20 * scaleMultiplier,
-              marginBottom: 20 * scaleMultiplier
-            }}
-          >
-            <Text
-              style={StandardTypography(
-                { font, isRTL },
-                'h4',
-                'Regular',
-                'left',
-                colors.chateau
-              )}
+          {t.general.copyrights !== '' && (
+            <TouchableOpacity
+              onPress={() => setShowCopyrightsModal(true)}
+              style={{
+                width: '100%',
+                paddingVertical: 10 * scaleMultiplier,
+                flexDirection: isRTL ? 'row-reverse' : 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                paddingHorizontal: gutterSize,
+                marginTop: -20 * scaleMultiplier,
+                marginBottom: 20 * scaleMultiplier
+              }}
             >
-              {t.general && t.general.view_copyright}
-            </Text>
-            {/* <View
+              <Text
+                style={StandardTypography(
+                  { font, isRTL },
+                  'h4',
+                  'Regular',
+                  'left',
+                  colors(isDark).disabled
+                )}
+              >
+                {t.general && t.general.view_copyright}
+              </Text>
+              {/* <View
               style={
                 {
                   // paddingHorizontal: 20,
@@ -265,7 +267,8 @@ const LessonTextContent = ({
                 color={colors.chateau}
               />
             </View> */}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )}
           {/* <WahaSeparator /> */}
           {/* Header for application section. */}
           <HeaderBig
