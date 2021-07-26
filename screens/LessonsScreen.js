@@ -432,12 +432,15 @@ const LessonsScreen = ({
         rightOpenValue={-50}
         // For whatever reason, the activation value causes a crash on Android, so this is ios-only.
         leftActivationValue={
-          Platform.OS === 'ios' ? Dimensions.get('screen').width / 2 - 10 : 1000
+          // Platform.OS === 'ios' ?
+          Dimensions.get('screen').width / 2 - 10
+          // : 1000
         }
         rightActivationValue={
-          Platform.OS === 'ios'
-            ? -Dimensions.get('screen').width / 2 + 10
-            : -1000
+          // Platform.OS === 'ios'
+          // ?
+          -Dimensions.get('screen').width / 2 + 10
+          // : -1000
         }
         stopLeftSwipe={Dimensions.get('screen').width / 2}
         stopRightSwipe={-Dimensions.get('screen').width / 2}
