@@ -52,21 +52,37 @@ export const languages = [
           'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
       }
     ]
+  },
+  {
+    i18nName: 'hindi',
+    languageCode: 'hi',
+    font: 'Roboto',
+    isRTL: false,
+    data: [
+      {
+        nativeName: 'हिन्दी',
+        i18nName: 'hindi',
+        wahaID: 'hi',
+        font: 'Roboto',
+        versions: [
+          {
+            wahaID: 'hi',
+            brandName: 'परमेश्वर को खोजना',
+            note: 'Recommended for Hindi backgrounds',
+            logoSource:
+              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
+            versions: null
+          },
+          {
+            wahaID: 'hc',
+            brandName: 'इब्राहीम की औलाद',
+            note: 'Recommended for Muslim backgrounds',
+            logoSource:
+              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
+            versions: null
+          }
+        ]
+      }
+    ]
   }
-  // {
-  //   i18nName: 'hindi',
-  //   languageCode: 'hi',
-  //   font: 'Roboto',
-  //   isRTL: false,
-  //   data: [
-  //     {
-  //       nativeName: 'हिन्दी',
-  //       wahaID: 'hi',
-  //       i18nName: 'hindi',
-  //       brandName: 'परमेश्वर को खोजना',
-  //       logoSource:
-  //         'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media'
-  //     }
-  //   ]
-  // }
 ]
