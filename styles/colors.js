@@ -1,12 +1,15 @@
-/**
- * This file contains the hex codes for all colors used in Waha. The normal colors and the colors used for the piano keys are exported from this file.
- */
-
 import { languages } from '../languages'
 
+/**
+ * Returns a specific color for light mode or dark mode.
+ * @param {boolean} isDark - Whether dark mode is enabled or not.
+ * @param {string} languageID - If trying to get an accent color, the ID of the language to get the color for is required.
+ */
 export const colors = (isDark, languageID = null) => {
+  // Get the accent color if languageID was provided as an argument.
   var accentColor = ''
   if (languageID !== null)
+    // Go through each language in each language family until we find the one that matches with our ID, then set accentColor to the accent color of that language.
     languages.forEach(languageFamily => {
       languageFamily.data.forEach(language => {
         if (language.versions !== null) {
@@ -23,9 +26,10 @@ export const colors = (isDark, languageID = null) => {
       })
     })
 
+  // Return either the light or dark mode colors.
   if (!isDark)
     return {
-      // Light (default) mode colors.
+      // Light mode colors.
       accent: accentColor,
       brand: '#E63946',
       text: '#2D3336',
@@ -68,54 +72,6 @@ export const colors = (isDark, languageID = null) => {
       bg1Shadow: '#1B1F21'
     }
 }
-
-// // The standard colors used in components in Waha.
-// export const colors = {
-//   // Used for almost all text.
-//   shark: '#1D1E20',
-
-//   // Used as a secondary text color and for some icons.
-//   tuna: '#3A3C3F',
-
-//   // Used for grayed out stuff.
-//   chateau: '#9FA5AD',
-
-//   // Used for darker borders.
-//   oslo: '#828282',
-
-//   // Used in miscellaneous places throughout the app.
-//   geyser: '#DEE3E9',
-
-//   // Waha's brand color.
-//   waha: '#E63946',
-
-//   // Used for backgrounds, list items, and borders.
-//   // Darkest.
-//   porcelain: '#EAEEF0',
-//   // Medium.
-//   athens: '#EFF2F4',
-//   // Light.
-//   aquaHaze: '#f7f9fa',
-//   // Lightest.
-//   white: '#FFFFFF',
-
-//   // Used for confirms/positive action buttons/highlights.
-//   apple: '#60C239',
-
-//   // Used for cancels/negative action buttons/highlights.
-//   red: '#FF0800',
-
-//   // Used for neutral action buttons/highlights.
-//   blue: '#2D9CDB',
-
-//   // Used for button 'shadows'.
-//   appleShadow: '#54A534',
-//   // chateauShadow: '#868A91',
-//   redShadow: '#DB0700',
-//   blueShadow: '#2986BB',
-//   porcelainShadow: '#BFC7CC',
-//   wahaShadow: '#CF333F'
-// }
 
 // The colors used for each piano key in the PianoApp component.
 export const keyColors = {
