@@ -1,4 +1,3 @@
-import * as StoreReview from 'expo-store-review'
 import { getSetInfo } from '../constants'
 
 /** Checks to see if a set is almost complete and adds the next set if all the conditions are met. The conditions are:
@@ -53,7 +52,6 @@ export const checkForFullyCompleteSet = (
   setShowSetCompleteModal
 ) => {
   if (addedSet.progress.length === thisSet.lessons.length) {
-    StoreReview.requestReview()
     setShowSetCompleteModal(true)
     return true
   }

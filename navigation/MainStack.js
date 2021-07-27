@@ -30,6 +30,13 @@ import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors } from '../styles/colors'
 import { getLanguageFont, SystemTypography } from '../styles/typography'
+import * as StoreReview from 'expo-store-review'
+import {
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout
+} from '../redux/actions/persistedPopupsActions'
 
 // Ignore the Android timer warning because it's annoying.
 LogBox.ignoreLogs(['Setting a timer'])
@@ -46,7 +53,11 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     security: state.security,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
+    hasUsedPlayScreen: state.persistedPopups.hasUsedPlayScreen,
+    reviewTimeout: state.persistedPopups.reviewTimeout,
+    lessonCounter: state.persistedPopups.lessonCounter,
+    numLessonsTilReview: state.persistedPopups.numLessonsTilReview
   }
 }
 
@@ -57,6 +68,16 @@ function mapDispatchToProps (dispatch) {
     },
     setIsTimedOut: toSet => {
       dispatch(setIsTimedOut(toSet))
+    },
+    setHasUsedPlayScreen: toSet => dispatch(setHasUsedPlayScreen(toSet)),
+    setLessonCounter: numLessons => {
+      dispatch(setLessonCounter(numLessons))
+    },
+    setNumLessonsTilReview: numLessons => {
+      dispatch(setNumLessonsTilReview(numLessons))
+    },
+    setReviewTimeout: timeout => {
+      dispatch(setReviewTimeout(timeout))
     }
   }
 }
@@ -76,8 +97,16 @@ const MainStack = ({
   activeGroup,
   security,
   languageCoreFilesToUpdate,
+  hasUsedPlayScreen,
+  reviewTimeout,
+  lessonCounter,
+  numLessonsTilReview,
   setTimer,
-  setIsTimedOut
+  setIsTimedOut,
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout
 }) => {
   /** Keeps track of the current app state. Can be "active", "inactive", or "background". Set by the app state listener function. */
   const [appState, setAppState] = useState('')
@@ -93,6 +122,14 @@ const MainStack = ({
     }
   }, [])
 
+  // Temporary function to initialize these redux variables for users who are updating.
+  useEffect(() => {
+    if (hasUsedPlayScreen === undefined) setHasUsedPlayScreen(true)
+    if (reviewTimeout === undefined) setReviewTimeout(null)
+    if (lessonCounter === undefined) setLessonCounter(0)
+    if (numLessonsTilReview === undefined) setNumLessonsTilReview(2)
+  }, [])
+
   /** useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts. */
   useEffect(() => {
     if (appState === 'inactive' || appState === 'background') {
@@ -102,6 +139,12 @@ const MainStack = ({
       // Store the current time for security mode timeout checking later.
       setTimer(Date.now())
     } else if (appState === 'active') {
+      // If we're past our review timeout, request a review and reset the timeout.
+      if (reviewTimeout !== null && Date.now() > reviewTimeout) {
+        StoreReview.requestReview()
+        setReviewTimeout(null)
+      }
+
       if (security.securityEnabled) {
         // If we've already timed out...
         if (security.isTimedOut) {

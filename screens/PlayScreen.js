@@ -39,6 +39,12 @@ import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
 import { addSet, toggleComplete } from '../redux/actions/groupsActions'
 import {
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout
+} from '../redux/actions/persistedPopupsActions'
+import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
@@ -57,7 +63,11 @@ function mapStateToProps (state) {
     font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
-    isConnected: state.network.isConnected
+    isConnected: state.network.isConnected,
+    hasUsedPlayScreen: state.persistedPopups.hasUsedPlayScreen,
+    reviewTimeout: state.persistedPopups.reviewTimeout,
+    lessonCounter: state.persistedPopups.lessonCounter,
+    numLessonsTilReview: state.persistedPopups.numLessonsTilReview
   }
 }
 
@@ -74,6 +84,18 @@ function mapDispatchToProps (dispatch) {
     },
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
+    },
+    setHasUsedPlayScreen: toSet => {
+      dispatch(setHasUsedPlayScreen(toSet))
+    },
+    setLessonCounter: numLessons => {
+      dispatch(setLessonCounter(numLessons))
+    },
+    setNumLessonsTilReview: numLessons => {
+      dispatch(setNumLessonsTilReview(numLessons))
+    },
+    setReviewTimeout: timeout => {
+      dispatch(setReviewTimeout(timeout))
     }
   }
 }
@@ -129,10 +151,18 @@ const PlayScreen = ({
   isDark,
   font,
   isConnected,
+  hasUsedPlayScreen,
+  reviewTimeout,
+  lessonCounter,
+  numLessonsTilReview,
   toggleComplete,
   downloadMedia,
   removeDownload,
-  addSet
+  addSet,
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout
 }) => {
   /*
     STATE
@@ -322,6 +352,15 @@ const PlayScreen = ({
 
   /** useEffect function that acts as a constructor to set the sources for the various chapters and download any necessary audio files. */
   useEffect(() => {
+    // If this is the first time on the play screen, we'll want to request an app review soon.
+    if (
+      (!hasUsedPlayScreen || hasUsedPlayScreen === null) &&
+      reviewTimeout === null
+    ) {
+      setHasUsedPlayScreen(true)
+      setReviewTimeout(Date.now() + 30000)
+    }
+
     // Start downloading any necessary lesson files.
     if (isConnected) downloadLessonFiles()
 
@@ -841,6 +880,15 @@ const PlayScreen = ({
 
     // Track analytics.
     logCompleteLesson(thisLesson, activeGroup.id)
+
+    setLessonCounter(lessonCounter + 1)
+
+    if (reviewTimeout === null && lessonCounter >= numLessonsTilReview - 1) {
+      setReviewTimeout(Date.now() + 30000)
+      setLessonCounter(0)
+      if (numLessonsTilReview === 2) setNumLessonsTilReview(5)
+      else if (numLessonsTilReview === 5) setNumLessonsTilReview(10)
+    }
   }
 
   /**
