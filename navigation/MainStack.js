@@ -1,7 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
 import { AppState, LogBox, View } from 'react-native'
-import { copilot } from 'react-native-copilot'
 import { connect } from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import ScreenHeaderImage from '../components/ScreenHeaderImage'
@@ -68,9 +67,6 @@ function mapDispatchToProps (dispatch) {
 const MainStack = ({
   // Props passed from navigation.
   navigation: { navigate, goBack, toggleDrawer },
-  // Props passed from copilot.
-  start,
-  copilotEvents,
   // Props passed from redux.
   isRTL,
   isDark,
@@ -95,21 +91,6 @@ const MainStack = ({
     return function cleanup () {
       AppState.removeEventListener('change', change => setAppState(change))
     }
-  }, [])
-
-  useEffect(() => {
-    // if (!props.hasFinishedCopilot) {
-    // start()
-    // copilotEvents.on('stop', () => {
-    //   navigate('Lessons', {
-    //     setID: activeDatabase.sets.filter(
-    //       set =>
-    //         getSetInfo('category', set.id) === 'MobilizationTools' &&
-    //         getSetInfo('index', set.id) === 1
-    //     )[0].id
-    //   })
-    // })
-    // }
   }, [])
 
   /** useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts. */
@@ -167,22 +148,10 @@ const MainStack = ({
             horizontal: 50 * scaleMultiplier,
             vertical: 135
           },
-          // headerStyle: {
-          //   elevation: 0,
-          //   shadowColor: 'transparent'
-          // },
           headerTitleAlign: 'center',
           cardStyle: {
             opacity: 1
           }
-          // cardOverlay: () => (
-          //   <View
-          //     style={{
-          //       flex: 1,
-          //       backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
-          //     }}
-          //   />
-          // )
         }}
         mode='card'
       >
@@ -209,14 +178,6 @@ const MainStack = ({
                       isActive={true}
                     />
                     {languageCoreFilesToUpdate.length !== 0 ? (
-                      // <View
-                      //   style={{
-                      //     width: '100%',
-                      //     height: 12,
-                      //     position: 'absolute',
-                      //     alignSelf: 'flex-start'
-                      //   }}
-                      // >
                       <View
                         style={{
                           zIndex: 100,
@@ -552,15 +513,4 @@ const MainStack = ({
   )
 }
 
-export default copilot({
-  overlay: 'svg',
-  animated: true,
-  labels: {
-    finish: false
-  },
-  // tooltipComponent: Tooltip,
-  stepNumberComponent: () => <View />,
-  tooltipStyle: {
-    borderRadius: 10
-  }
-})(connect(mapStateToProps, mapDispatchToProps)(MainStack))
+export default connect(mapStateToProps, mapDispatchToProps)(MainStack)

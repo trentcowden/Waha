@@ -3,7 +3,6 @@ import * as FileSystem from 'expo-file-system'
 import LottieView from 'lottie-react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
-import { copilot, CopilotStep } from 'react-native-copilot'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 import LessonItem from '../components/LessonItem'
@@ -74,9 +73,6 @@ const LessonsScreen = ({
     // Props passed from previous screen.
     params: { setID }
   },
-  // Props passed from copilot.
-  start,
-  copilotEvents,
   // Props passed from redux.
   downloads,
   isRTL,
@@ -155,22 +151,6 @@ const LessonsScreen = ({
         ? () => {}
         : () => <WahaBackButton onPress={() => goBack()} />
     })
-  }, [])
-
-  useEffect(() => {
-    // setTimeout(() => start(), 500)
-    // copilotEvents.on('stop', () => {
-    //   goToPlayScreen({
-    //     thisLesson: thisLesson,
-    //     isAudioAlreadyDownloaded: false,
-    //     isVideoAlreadyDownloaded: downloadedLessons.includes(
-    //       thisLesson.id + 'v'
-    //     ),
-    //     isAlreadyDownloading: isDownloading,
-    //     lessonType: lessonType,
-    //     downloadedLessons: downloadedLessons
-    //   })
-    // })
   }, [])
 
   /** useEffect function that checks which lessons are downloaded to the file system whenever the downloads redux object changes or when we manually refresh. */
@@ -349,37 +329,7 @@ const LessonsScreen = ({
         if (index !== 0) scriptureList += ', ' + passage.header
       })
     }
-    return getLessonInfo('subtitle', item.id) === '3.1.1' ? (
-      <CopilotStep
-        text='Watch the trailer now (change later)'
-        order={2}
-        name='Lesson3.1.1'
-      >
-        <LessonItem
-          thisLesson={item}
-          goToPlayScreen={goToPlayScreen}
-          isBookmark={addedSet.bookmark === getLessonInfo('index', item.id)}
-          lessonType={getLessonType(item)}
-          isComplete={addedSet.progress.includes(
-            getLessonInfo('index', item.id)
-          )}
-          downloadedLessons={downloadedLessons}
-          showDownloadLessonModal={() => {
-            setActiveLessonInModal(item)
-            setModalLessonType(getLessonType(item))
-            setShowDownloadLessonModal(true)
-          }}
-          showDeleteLessonModal={() => {
-            setActiveLessonInModal(item)
-            setModalLessonType(getLessonType(item))
-            setShowDeleteLessonModal(true)
-          }}
-          scriptureList={scriptureList}
-          isInInfoMode={isInInfoMode}
-          animationFinished={animationFinished}
-        />
-      </CopilotStep>
-    ) : (
+    return (
       <LessonItem
         thisLesson={item}
         goToPlayScreen={goToPlayScreen}
@@ -525,14 +475,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default copilot({
-  overlay: 'svg',
-  animated: true,
-  labels: {
-    finish: false
-  },
-  stepNumberComponent: () => <View />,
-  tooltipStyle: {
-    borderRadius: 10
-  }
-})(connect(mapStateToProps, mapDispatchToProps)(LessonsScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(LessonsScreen)

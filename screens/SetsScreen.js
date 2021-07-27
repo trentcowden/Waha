@@ -315,20 +315,6 @@ const SetsScreen = ({
    */
   const renderSetItem = ({ item, index }) => {
     return (
-      // index === 0 &&
-      //   getSetInfo('category', item.id) === 'MobilizationTools' ? (
-      //   <CopilotStep text='Start here (change later)' order={1} name='Set3.1'>
-      //     <SetItem
-      //       thisSet={item}
-      //       mode={setItemModes.SETS_SCREEN}
-      //       onSetSelect={() => navigate('Lessons', { setID: item.id })}
-      //       progressPercentage={
-      //         activeGroup.addedSets.filter(addedSet => addedSet.id === item.id)[0]
-      //           .progress.length / item.lessons.length
-      //       }
-      //     />
-      //   </CopilotStep>
-      // ) : (
       <SetItem
         thisSet={item}
         mode={setItemModes.SETS_SCREEN}

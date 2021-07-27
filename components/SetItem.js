@@ -65,7 +65,6 @@ const SetItem = ({
   progressPercentage = null,
   setIsInInfoMode = null,
   isInInfoMode = null,
-  copilot = null,
   // Props passed from redux.
   isRTL,
   isDark,
@@ -360,7 +359,6 @@ const SetItem = ({
 
   return (
     <TouchableOpacity
-      {...copilot}
       style={[
         styles.setItemContainer,
         {

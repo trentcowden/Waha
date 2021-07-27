@@ -69,8 +69,6 @@ const LessonItem = ({
   scriptureList,
   isInInfoMode,
   animationFinished,
-  // Props passed from copilot.
-  copilot = null,
   // Props passed from redux.
   primaryColor,
   isRTL,
@@ -145,7 +143,6 @@ const LessonItem = ({
 
   return (
     <View
-      {...copilot}
       style={[
         styles.lessonItemContainer,
         {
