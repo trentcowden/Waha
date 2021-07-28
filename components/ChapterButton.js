@@ -15,7 +15,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -88,7 +88,7 @@ const ChapterButton = ({
   ]
 
   // The default text style.
-  const defaultTextStyle = StandardTypography(
+  const defaultTextStyle = type(
     activeGroup.language,
     'p',
     'Bold',

@@ -5,7 +5,7 @@ import { scaleMultiplier } from '../constants'
 import { getLanguageInfo } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -47,7 +47,7 @@ const WahaItem = ({
       onPress={onPress}
     >
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'h3',
           'Bold',
@@ -71,7 +71,7 @@ const WahaItem = ({
       ]}
     >
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'h3',
           'Bold',

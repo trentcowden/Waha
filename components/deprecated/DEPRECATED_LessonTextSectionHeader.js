@@ -4,11 +4,11 @@ import { Animated, StyleSheet, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { gutterSize } from '../constants'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -50,7 +50,7 @@ const LessonTextSectionHeader = ({
   >
     <Text>
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'h2',
           'Black',
@@ -63,7 +63,7 @@ const LessonTextSectionHeader = ({
       {sectionSubtitleText !== '' && (
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'h3',
               'Regular',
@@ -78,7 +78,7 @@ const LessonTextSectionHeader = ({
       {sectionSubtitleText !== '' && (
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'h3',
               'Regular',

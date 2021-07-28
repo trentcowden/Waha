@@ -5,7 +5,7 @@ import { scaleMultiplier } from '../constants'
 import { getLanguageInfo } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography, SystemTypography } from '../styles/typography'
+import { SystemTypography, type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return activeGroupSelector(state)
@@ -33,7 +33,7 @@ function mapStateToProps (state) {
  */
 const WahaButton = ({
   // Props passed from a parent component.s
-  type,
+  mode,
   color,
   label = '',
   style = {},
@@ -122,7 +122,7 @@ const WahaButton = ({
   const labelStyle = [
     useDefaultFont
       ? SystemTypography(false, 'h3', 'Bold', 'center', color)
-      : StandardTypography(activeGroup.language, 'h3', 'Bold', 'center', color),
+      : type(activeGroup.language, 'h3', 'Bold', 'center', color),
     { fontWeight: font ? null : 'bold' },
     textStyle
   ]
@@ -132,7 +132,7 @@ const WahaButton = ({
   const filledLabelStyle = [labelStyle, { color: colors(isDark).textOnColor }]
   const inactiveLabelStyle = [labelStyle, { color: colors(isDark).disabled }]
 
-  switch (type) {
+  switch (mode) {
     case 'outline':
       return (
         <TouchableOpacity style={outlineButtonStyle} onPress={onPress}>

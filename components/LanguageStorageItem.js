@@ -9,7 +9,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import WahaButton from './WahaButton'
 import WahaSeparator from './WahaSeparator'
 
@@ -53,7 +53,7 @@ const LanguageStorageItem = ({
         ]}
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Regular',
@@ -83,7 +83,7 @@ const LanguageStorageItem = ({
         ]}
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Bold',
@@ -95,7 +95,7 @@ const LanguageStorageItem = ({
         </Text>
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'h3',
               'Regular',
@@ -111,7 +111,7 @@ const LanguageStorageItem = ({
           {t.storage && t.storage.storage_used}
         </Text>
         <WahaButton
-          type='outline'
+          mode='outline'
           color={colors(isDark).error}
           label={t.general && t.general.clear}
           width={92 * scaleMultiplier}

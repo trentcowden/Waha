@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -27,13 +27,7 @@ const PianoKeyLabel = ({
   return (
     <View style={[styles.circle, { backgroundColor: backgroundColor }, style]}>
       <Text
-        style={StandardTypography(
-          'en',
-          'h2',
-          'Bold',
-          'center',
-          colors(isDark).textOnColor
-        )}
+        style={type('en', 'h2', 'Bold', 'center', colors(isDark).textOnColor)}
         adjustsFontSizeToFit
       >
         {number}

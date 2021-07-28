@@ -15,7 +15,7 @@ import { setHasOnboarded } from '../redux/actions/databaseActions'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -269,7 +269,7 @@ const WahaOnboardingSlidesScreen = ({
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'h4',
                 'Bold',
@@ -294,7 +294,7 @@ const WahaOnboardingSlidesScreen = ({
               ? editGroupAndFinish
               : () => pagerRef.current.setPage(activePage + 1)
           }
-          type='filled'
+          mode='filled'
           color={colors(isDark).success}
           style={{
             // Make the continue button twice as big as the skip button.

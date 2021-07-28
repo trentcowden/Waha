@@ -20,7 +20,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -189,7 +189,7 @@ const GroupListHeader = ({
         {trashButtonComponent}
         <Text
           style={[
-            StandardTypography(
+            type(
               languageID,
               'h3',
               'Regular',

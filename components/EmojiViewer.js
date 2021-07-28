@@ -16,7 +16,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -81,7 +81,7 @@ const EmojiViewer = ({
     <View style={styles.emojiViewerContainer}>
       <Text
         style={[
-          StandardTypography(
+          type(
             activeGroup.language,
             'p',
             'Regular',

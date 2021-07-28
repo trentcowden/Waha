@@ -21,7 +21,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -187,7 +187,7 @@ const PianoPasscodeSetScreen = ({
       <View style={styles.topContainer}>
         <View style={styles.instructionTextContainer}>
           <Text
-            style={StandardTypography(
+            style={type(
               activeGroup.language,
               'h2',
               'Bold',
@@ -200,7 +200,7 @@ const PianoPasscodeSetScreen = ({
         </View>
         <PianoPasscodeDisplay passcode={localPasscode} />
         <WahaButton
-          type='outline'
+          mode='outline'
           onPress={() => setLocalPasscode('')}
           color={colors(isDark).error}
           label={t.general && t.general.clear}

@@ -21,7 +21,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -101,7 +101,7 @@ const WahaDrawer = ({
           />
         </View>
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h2',
             'Black',
@@ -146,7 +146,7 @@ const WahaDrawer = ({
         <WahaSeparator />
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'p',
               'Regular',
@@ -186,7 +186,7 @@ const WahaDrawer = ({
       <AddEditGroupModal
         isVisible={showEditGroupModal}
         hideModal={() => setShowEditGroupModal(false)}
-        type='EditGroup'
+        mode='EditGroup'
         thisGroup={activeGroup}
       />
     </SafeAreaView>

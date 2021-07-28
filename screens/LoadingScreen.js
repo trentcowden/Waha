@@ -25,7 +25,7 @@ import { deleteGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import ar from '../translations/ar.json'
 import en from '../translations/en.json'
 import hi from '../translations/hi.json'
@@ -276,7 +276,7 @@ const LoadingScreen = ({
           >
             <Icon name='cancel' color={colors(isDark).icons} size={50} />
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'h4',
                 'Bold',

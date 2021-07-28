@@ -98,7 +98,7 @@
 //     <View style={{ width: '100%', height: 40 * scaleMultiplier }} />
 //     <View style={{ width: '100%', paddingHorizontal: 20 }}>
 //       <Text
-//         style={StandardTypography(
+//         style={type(
 //           activeGroup.language,
 //           'h2',
 //           'Black',
@@ -161,7 +161,7 @@
 //       }}
 //     >
 //       <Text
-//         style={StandardTypography(
+//         style={type(
 //           activeGroup.language,
 //           'p',
 //           'Regular',
@@ -184,18 +184,16 @@ import { connect } from 'react-redux'
 import { getSetInfo, scaleMultiplier } from '../../constants'
 import { logEnableMobilizationToolsForAGroup } from '../../LogEventFunctions'
 import {
-    addSet,
-    setShouldShowMobilizationToolsTab
+  addSet,
+  setShouldShowMobilizationToolsTab
 } from '../../redux/actions/groupsActions'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../../redux/reducers/activeGroup'
 import { colors } from '../../styles/colors'
 import {
-    getLanguageFont,
-    StandardTypography,
-    SystemTypography
+  getLanguageFont, SystemTypography, type
 } from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 
@@ -339,7 +337,7 @@ const GroupItemMT = ({
       </View>
       <View style={styles.groupNameContainer}>
         <Text
-          style={StandardTypography(
+          style={type(
             {
               font: getLanguageFont(thisGroup.language),
               isRTL: isRTL

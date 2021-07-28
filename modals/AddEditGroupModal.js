@@ -26,7 +26,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -96,7 +96,7 @@ const AddEditGroupModal = ({
   // Props passed from a parent component.
   isVisible,
   hideModal,
-  type,
+  mode,
   thisGroup = null,
   languageID = null,
   // Props passed from redux.
@@ -126,11 +126,11 @@ const AddEditGroupModal = ({
 
   /** If editing a group, keeps track of whether that group is the active group or not. */
   const [isActive, setIsActive] = useState(
-    type === 'EditGroup' ? activeGroup.name === thisGroup.name : false
+    mode === 'EditGroup' ? activeGroup.name === thisGroup.name : false
   )
 
   const [isGroupNameBlank, setIsGroupNameBlank] = useState(
-    type === 'EditGroup' ? false : true
+    mode === 'EditGroup' ? false : true
   )
 
   const [isGroupNameDuplicate, setIsGroupNameDuplicate] = useState(false)
@@ -146,7 +146,7 @@ const AddEditGroupModal = ({
    */
   const checkForDuplicate = () => {
     // If we're adding a new group, simply check if the group name already exists in another group.
-    if (type === 'AddGroup')
+    if (mode === 'AddGroup')
       if (groups.some(group => group.name === groupNameInput))
         setIsGroupNameDuplicate(true)
       else setIsGroupNameDuplicate(false)
@@ -219,7 +219,7 @@ const AddEditGroupModal = ({
         !isGroupNameDuplicate && (
           <TouchableOpacity
             onPress={
-              type === 'AddGroup' ? createGroupHandler : editGroupHandler
+              mode === 'AddGroup' ? createGroupHandler : editGroupHandler
             }
             style={{
               width: 45 * scaleMultiplier,
@@ -241,7 +241,7 @@ const AddEditGroupModal = ({
         setShouldShowMTTabInput(false)
       }}
       onModalWillShow={
-        type === 'AddGroup'
+        mode === 'AddGroup'
           ? () => {
               setGroupNameInput('')
               setEmojiInput('default')
@@ -254,7 +254,7 @@ const AddEditGroupModal = ({
             }
       }
       title={
-        type === 'AddGroup'
+        mode === 'AddGroup'
           ? t.groups && t.groups.new_group
           : t.groups && t.groups.edit_group
       }
@@ -285,7 +285,7 @@ const AddEditGroupModal = ({
           ]}
         >
           <Text
-            style={StandardTypography(
+            style={type(
               activeGroup.language,
               'h3',
               'Regular',

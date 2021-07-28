@@ -16,7 +16,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
@@ -278,7 +278,7 @@ const AddSetScreen = ({
               backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
             }
           ]}
-          textStyle={StandardTypography(
+          textStyle={type(
             activeGroup.language,
             'p',
             'Regular',
@@ -289,7 +289,7 @@ const AddSetScreen = ({
             backgroundColor: colors(isDark, activeGroup.language).accent,
             borderColor: colors(isDark, activeGroup.language).accent
           }}
-          activeTextStyle={StandardTypography(
+          activeTextStyle={type(
             activeGroup.language,
             'p',
             'Regular',
@@ -317,7 +317,7 @@ const AddSetScreen = ({
             }}
           >
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'p',
                 'Regular',

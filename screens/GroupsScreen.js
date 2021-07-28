@@ -208,13 +208,13 @@ const GroupsScreen = ({
       <AddEditGroupModal
         isVisible={showAddGroupModal}
         hideModal={() => setShowAddGroupModal(false)}
-        type='AddGroup'
+        mode='AddGroup'
         languageID={languageID}
       />
       <AddEditGroupModal
         isVisible={showEditGroupModal}
         hideModal={() => setShowEditGroupModal(false)}
-        type='EditGroup'
+        mode='EditGroup'
         thisGroup={editingGroup}
       />
     </View>

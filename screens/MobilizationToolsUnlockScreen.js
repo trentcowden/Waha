@@ -16,7 +16,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -167,7 +167,7 @@ const MobilizationToolsUnlockScreen = ({
     >
       <Text
         style={[
-          StandardTypography(
+          type(
             activeGroup.language,
             'h3',
             'Regular',
@@ -190,7 +190,7 @@ const MobilizationToolsUnlockScreen = ({
         autoFocus={true}
         restrictToNumbers={true}
         animationFocused=''
-        textStyle={StandardTypography(
+        textStyle={type(
           activeGroup.language,
           'h2',
           'Regular',
@@ -225,7 +225,7 @@ const MobilizationToolsUnlockScreen = ({
       />
       <Text
         style={[
-          StandardTypography(
+          type(
             activeGroup.language,
             'h3',
             'Regular',

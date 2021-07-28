@@ -18,7 +18,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
 function mapStateToProps (state) {
@@ -91,7 +91,7 @@ const SetInfoModal = ({
         activeOpacity={1}
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h4',
             'Bold',
@@ -105,7 +105,7 @@ const SetInfoModal = ({
         {/* Display list of scripture below the title if this lesson has scripture (not all of them do). */}
         {item.scripture && (
           <Text
-            style={StandardTypography(
+            style={type(
               activeGroup.language,
               'p',
               'Regular',
@@ -137,7 +137,7 @@ const SetInfoModal = ({
         />
       </View>
       <WahaButton
-        type='filled'
+        mode='filled'
         color={colors(isDark).success}
         onPress={() => {
           addSet(activeGroup.name, activeGroup.id, thisSet)

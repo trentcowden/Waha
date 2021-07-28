@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -61,7 +61,7 @@ const TimeDisplay = ({
   return (
     <View>
       <Text
-        style={StandardTypography(
+        style={type(
           'en',
           'd',
           'Regular',

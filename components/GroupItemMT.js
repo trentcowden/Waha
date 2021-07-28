@@ -7,7 +7,7 @@ import { getLanguageInfo } from '../languages'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -90,7 +90,7 @@ const GroupItemMT = ({
       </View>
       <View style={styles.groupNameContainer}>
         <Text
-          style={StandardTypography(
+          style={type(
             thisGroup.language,
             'h3',
             'Regular',

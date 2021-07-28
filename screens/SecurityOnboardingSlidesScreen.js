@@ -14,7 +14,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -200,7 +200,7 @@ const SecurityOnboardingSlidesScreen = ({
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'h4',
                 'Bold',
@@ -225,7 +225,7 @@ const SecurityOnboardingSlidesScreen = ({
               ? () => navigate('PianoPasscodeSet')
               : () => pagerRef.current.setPage(activePage + 1)
           }
-          type='filled'
+          mode='filled'
           color={colors(isDark).success}
           style={{
             // Make the continue button twice as big as the skip button.

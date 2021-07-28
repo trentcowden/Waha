@@ -10,7 +10,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import AlbumArt from './AlbumArt'
 import LessonTextViewer from './LessonTextViewer'
 import PageDots from './PageDots'
@@ -116,7 +116,7 @@ const PlayScreenSwiper = ({
             ]}
           >
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'h2',
                 'Black',

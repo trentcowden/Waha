@@ -19,7 +19,7 @@ import {
   setItemModes
 } from '../constants'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import SVG from './SVG.js'
 
 /**
@@ -367,7 +367,7 @@ const SetItem = ({
       >
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'd',
               'Regular',
@@ -387,7 +387,7 @@ const SetItem = ({
         </Text>
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'h3',
               'Black',

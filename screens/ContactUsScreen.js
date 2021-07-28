@@ -24,7 +24,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -144,13 +144,7 @@ const ContactUsScreen = ({
   var asteriskComponent = isRTL ? (
     <Text
       style={[
-        StandardTypography(
-          activeGroup.language,
-          'h3',
-          'Bold',
-          'left',
-          colors(isDark).error
-        )
+        type(activeGroup.language, 'h3', 'Bold', 'left', colors(isDark).error)
       ]}
     >
       {'* '}
@@ -158,13 +152,7 @@ const ContactUsScreen = ({
   ) : (
     <Text
       style={[
-        StandardTypography(
-          activeGroup.language,
-          'h3',
-          'Bold',
-          'left',
-          colors(isDark).error
-        )
+        type(activeGroup.language, 'h3', 'Bold', 'left', colors(isDark).error)
       ]}
     >
       {' *'}
@@ -186,7 +174,7 @@ const ContactUsScreen = ({
         <View style={styles.sectionContainer}>
           <Text
             style={[
-              StandardTypography(
+              type(
                 activeGroup.language,
                 'h3',
                 'Bold',
@@ -213,7 +201,7 @@ const ContactUsScreen = ({
               autoCorrect={false}
               spellCheck={false}
               style={[
-                StandardTypography(
+                type(
                   activeGroup.language,
                   'h3',
                   'Regular',
@@ -261,7 +249,7 @@ const ContactUsScreen = ({
           >
             <Text
               style={[
-                StandardTypography(
+                type(
                   activeGroup.language,
                   'h3',
                   'Bold',
@@ -277,7 +265,7 @@ const ContactUsScreen = ({
             </Text>
             <Text
               style={[
-                StandardTypography(
+                type(
                   activeGroup.language,
                   'h4',
                   'regular',
@@ -294,7 +282,7 @@ const ContactUsScreen = ({
           <TextInput
             onChangeText={text => setMessageTextInput(text)}
             style={[
-              StandardTypography(
+              type(
                 activeGroup.language,
                 'h3',
                 'Regular',
@@ -343,7 +331,7 @@ const ContactUsScreen = ({
           </TouchableOpacity>
           <Text
             style={[
-              StandardTypography(
+              type(
                 activeGroup.language,
                 'h3',
                 'Regular',
@@ -361,7 +349,7 @@ const ContactUsScreen = ({
           <View style={styles.sectionContainer}>
             <Text
               style={[
-                StandardTypography(
+                type(
                   activeGroup.language,
                   'h3',
                   'Bold',
@@ -376,7 +364,7 @@ const ContactUsScreen = ({
             <TextInput
               onChangeText={text => setReproductionStepsTextInput(text)}
               style={[
-                StandardTypography(
+                type(
                   activeGroup.language,
                   'h3',
                   'Regular',
@@ -400,7 +388,7 @@ const ContactUsScreen = ({
         ) : null}
         {/* Submit button. */}
         <WahaButton
-          type={
+          mode={
             // Potential error states are if the email is invalid, the email is blank, or the message length is over 1000 characters.
             emailError ||
             emailTextInput === null ||

@@ -24,7 +24,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     database: state.database,
@@ -135,7 +135,7 @@ const MobilizationToolsScreen = ({
             }}
           >
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'h4',
                 'Regular',
@@ -146,7 +146,7 @@ const MobilizationToolsScreen = ({
               {t.mobilization_tools && t.mobilization_tools.unlock_code}
             </Text>
             <Text
-              style={StandardTypography(
+              style={type(
                 activeGroup.language,
                 'h1',
                 'Bold',
@@ -212,7 +212,7 @@ const MobilizationToolsScreen = ({
               {shareComponent}
               <Text
                 style={[
-                  StandardTypography(
+                  type(
                     activeGroup.language,
                     'h2',
                     'Bold',

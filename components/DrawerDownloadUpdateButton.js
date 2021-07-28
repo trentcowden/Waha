@@ -7,7 +7,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -81,7 +81,7 @@ const DrawerDownloadUpdateButton = ({
       <Text
         style={[
           { paddingHorizontal: 10 },
-          StandardTypography(
+          type(
             activeGroup.language,
             'h3',
             'Bold',

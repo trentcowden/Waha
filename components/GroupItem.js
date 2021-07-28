@@ -17,7 +17,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import GroupAvatar from './GroupAvatar'
 
 function mapStateToProps (state) {
@@ -303,7 +303,7 @@ const GroupItem = ({
             ]}
           >
             <Text
-              style={StandardTypography(
+              style={type(
                 // Always display the group name in the group's language's font, not the active group's font.
                 thisGroup.language,
                 'h3',
@@ -318,7 +318,7 @@ const GroupItem = ({
             {getBookmarkLesson() === '' ? null : (
               <Text
                 style={[
-                  StandardTypography(
+                  type(
                     // Similarly, display the bookmark text in the group's language's font, not the active group's language's font.
                     thisGroup.language,
                     'd',

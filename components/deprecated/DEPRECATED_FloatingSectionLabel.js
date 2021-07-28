@@ -4,11 +4,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -59,7 +59,7 @@ const FloatingSectionLabel = ({
       ]}
     >
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'p',
           'Bold',

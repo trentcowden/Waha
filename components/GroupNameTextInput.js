@@ -8,7 +8,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -45,7 +45,7 @@ const GroupNameTextInput = ({
   return (
     <View style={styles.groupNameAreaContainer}>
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'p',
           'Regular',
@@ -70,7 +70,7 @@ const GroupNameTextInput = ({
               backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
               borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
             },
-            StandardTypography(
+            type(
               activeGroup.language,
               'h3',
               'Regular',

@@ -218,7 +218,7 @@ const StorageScreen = ({
         )}
       />
       <WahaButton
-        type='filled'
+        mode='filled'
         color={colors(isDark).error}
         label={`${t.storage &&
           t.storage

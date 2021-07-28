@@ -5,7 +5,7 @@ import { scaleMultiplier } from '../constants'
 import { getLanguageInfo } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -49,13 +49,7 @@ const DrawerItem = ({
     </View>
     <Text
       style={[
-        StandardTypography(
-          activeGroup.language,
-          'h3',
-          'Bold',
-          'left',
-          colors(isDark).text
-        ),
+        type(activeGroup.language, 'h3', 'Bold', 'left', colors(isDark).text),
         { paddingHorizontal: 10 }
       ]}
       // numberOfLines={1}

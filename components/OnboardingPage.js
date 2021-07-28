@@ -5,7 +5,7 @@ import { scaleMultiplier } from '../constants'
 import { getLanguageInfo } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -44,7 +44,7 @@ const OnboardingPage = ({
     <View style={styles.textContainer}>
       <Text
         style={[
-          StandardTypography(
+          type(
             activeGroup.language,
             'h2',
             'Bold',
@@ -58,7 +58,7 @@ const OnboardingPage = ({
       </Text>
       <View style={{ height: 15 * scaleMultiplier }} />
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'h3',
           'Regular',

@@ -4,7 +4,7 @@ import { getLanguageInfo, languages } from '../languages'
 
 /**
  * Takes in some text style settings and returns a filled out text style object. This is used simply to save space in components and simplify things overall. Used within the style prop of a text component. For example:
- * <Text style={StandardTypography(
+ * <Text style={type(
  *  props,
  *  'p',
  *  'Regular',
@@ -19,13 +19,7 @@ import { getLanguageInfo, languages } from '../languages'
  * @param {string} color - The color of the font. Can be any color for the colors object in ./colors.js.
  * @return {Object} - The completed style object.
  */
-export const StandardTypography = (
-  languageID,
-  fontSize,
-  fontFamily,
-  textAlign,
-  color
-) => {
+export const type = (languageID, fontSize, fontFamily, textAlign, color) => {
   var languageInfo = getLanguageInfo(languageID)
 
   // A font size modifier that makes all Arabic script a point smaller and increases the font size on tablets.
@@ -66,7 +60,7 @@ export const StandardTypography = (
 }
 
 /**
- * Similar to the StandardTypography function, except this is used with the system language, not the language of the active group. It's used on screens where no active group has yet been declared, or when we just want to use the system language. As an example, on the language select screen, we haven't declared an active group yet, so we need to display the system language in the font that goes with that language. In that case, we'd use this function to style any text on that screen.
+ * Similar to the type function, except this is used with the system language, not the language of the active group. It's used on screens where no active group has yet been declared, or when we just want to use the system language. As an example, on the language select screen, we haven't declared an active group yet, so we need to display the system language in the font that goes with that language. In that case, we'd use this function to style any text on that screen.
  * @export
  * @param {boolean} isHeader - Whether this style object will be used for a header or not.
  * @param {string} fontSize - The size of the font. Can be "d" (for detail), "p" (for paragraph), "h4" (for header 4), "h3" (for header 3), "h2" (for header 2), or "h1" (for header 1).

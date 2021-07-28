@@ -22,7 +22,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -128,7 +128,7 @@ const PianoAppScreen = ({
         />
         <Text
           style={[
-            StandardTypography(
+            type(
               activeGroup.language,
               'h1',
               'Bold',
@@ -175,7 +175,7 @@ const PianoAppScreen = ({
               ]}
             >
               <Text
-                style={StandardTypography(
+                style={type(
                   activeGroup.language,
                   'h2',
                   'Regular',

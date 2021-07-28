@@ -7,7 +7,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -36,7 +36,7 @@ const GroupsScreenEditButton = ({
     <TouchableOpacity style={styles.editButtonContainer} onPress={onPress}>
       <Text
         style={[
-          StandardTypography(
+          type(
             activeGroup.language,
             'h3',
             isEditing ? 'Bold' : 'Regular',

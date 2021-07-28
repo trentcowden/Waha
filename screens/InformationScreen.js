@@ -23,7 +23,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -85,7 +85,7 @@ const InformationScreen = ({
         onPress={() => openBrowser('https://waha.app/privacy-policy/')}
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Bold',
@@ -111,7 +111,7 @@ const InformationScreen = ({
         }
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Bold',
@@ -145,7 +145,7 @@ const InformationScreen = ({
         }
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Bold',
@@ -176,7 +176,7 @@ const InformationScreen = ({
         }
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Bold',
@@ -205,7 +205,7 @@ const InformationScreen = ({
       >
         <View>
           <Text
-            style={StandardTypography(
+            style={type(
               activeGroup.language,
               'h3',
               'Bold',
@@ -216,7 +216,7 @@ const InformationScreen = ({
             {t.general && t.general.version}
           </Text>
           <Text
-            style={StandardTypography(
+            style={type(
               activeGroup.language,
               'h4',
               'Bold',
@@ -242,7 +242,7 @@ const InformationScreen = ({
           onPress={() => setShowCopyrightsModal(true)}
         >
           <Text
-            style={StandardTypography(
+            style={type(
               activeGroup.language,
               'h3',
               'Bold',
@@ -264,7 +264,7 @@ const InformationScreen = ({
         <View style={styles.easterEggContainer}>
           <Text
             style={[
-              StandardTypography(
+              type(
                 activeGroup.language,
                 'd',
                 'Regular',
@@ -279,7 +279,7 @@ const InformationScreen = ({
           <Icon name='heart' size={15} color={colors(isDark).bg1} />
           <Text
             style={[
-              StandardTypography(
+              type(
                 activeGroup.language,
                 'd',
                 'Regular',

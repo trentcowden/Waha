@@ -570,7 +570,7 @@ const LanguageInstanceInstallScreen = ({
         ]}
       >
         <WahaButton
-          type={isConnected ? 'filled' : 'inactive'}
+          mode={isConnected ? 'filled' : 'inactive'}
           color={
             isConnected
               ? colors(isDark).success

@@ -8,7 +8,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
 function mapStateToProps (state) {
@@ -48,7 +48,7 @@ const CopyrightsModal = ({
     >
       <View style={{ flex: 1, paddingHorizontal: gutterSize }}>
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h3',
             'Regular',

@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography, SystemTypography } from '../styles/typography'
+import { SystemTypography, type } from '../styles/typography'
 import WahaButton from './WahaButton'
 
 function mapStateToProps (state) {
@@ -83,7 +83,7 @@ const OnboardingSwiper = ({
                       'center',
                       colors(isDark).text
                     )
-                  : StandardTypography(
+                  : type(
                       activeGroup.language,
                       'h2',
                       'Bold',
@@ -105,7 +105,7 @@ const OnboardingSwiper = ({
                       'center',
                       colors(isDark).disabled
                     )
-                  : StandardTypography(
+                  : type(
                       activeGroup.language,
                       'h3',
                       'Regular',

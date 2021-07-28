@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -36,13 +36,7 @@ const WahaItemDescription = ({
       }}
     >
       <Text
-        style={StandardTypography(
-          activeGroup.language,
-          'p',
-          'Regular',
-          'left',
-          colors.oslo
-        )}
+        style={type(activeGroup.language, 'p', 'Regular', 'left', colors.oslo)}
       >
         {text}
       </Text>

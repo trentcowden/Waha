@@ -26,7 +26,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -281,7 +281,7 @@ const SetsScreen = ({
         }}
       >
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h4',
             'Bold',
@@ -299,7 +299,7 @@ const SetsScreen = ({
   const renderNoMTLabel = () => (
     <View style={{ width: '100%', height: 80 * scaleMultiplier, padding: 20 }}>
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'p',
           'Regular',

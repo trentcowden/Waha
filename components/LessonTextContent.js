@@ -15,7 +15,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -43,13 +43,7 @@ const HeaderBig = ({ text, activeGroup, onLayout, isDark }) => (
   >
     <Text
       style={[
-        StandardTypography(
-          activeGroup.language,
-          'h2',
-          'Black',
-          'left',
-          colors(isDark).icons
-        )
+        type(activeGroup.language, 'h2', 'Black', 'left', colors(isDark).icons)
       ]}
     >
       {text}
@@ -61,7 +55,7 @@ const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
   <View>
     <Text
       style={[
-        StandardTypography(
+        type(
           activeGroup.language,
           'h3',
           'Regular',
@@ -80,7 +74,7 @@ const StandardText = ({ text, activeGroup, isTablet, isDark }) => (
   <View>
     <Text
       style={[
-        StandardTypography(
+        type(
           activeGroup.language,
           'h3',
           'Regular',
@@ -240,7 +234,7 @@ const LessonTextContent = ({
               }}
             >
               <Text
-                style={StandardTypography(
+                style={type(
                   activeGroup.language,
                   'h4',
                   'Regular',

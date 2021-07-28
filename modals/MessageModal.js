@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
-import { StandardTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 /**
  * A modal component that shows an image, a title, a message, and a button to dismiss.
@@ -46,7 +46,7 @@ const MessageModal = ({
       {children}
       <Text
         style={[
-          StandardTypography(
+          type(
             activeGroup.language,
             'h2',
             'Black',
@@ -59,7 +59,7 @@ const MessageModal = ({
         {title}
       </Text>
       <Text
-        style={StandardTypography(
+        style={type(
           activeGroup.language,
           'h4',
           'Bold',
@@ -71,7 +71,7 @@ const MessageModal = ({
       </Text>
       <TouchableOpacity style={styles.buttonContainer} onPress={confirmOnPress}>
         <Text
-          style={StandardTypography(
+          style={type(
             activeGroup.language,
             'h2',
             'Bold',
