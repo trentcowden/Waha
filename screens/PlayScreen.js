@@ -1062,6 +1062,8 @@ const PlayScreen = ({
           setShowSetCompleteModal(false)
           goBack()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <LottieView
           style={{ width: '100%' }}
@@ -1084,6 +1086,8 @@ const PlayScreen = ({
           setShowNextSetUnlockedModal(false)
           goBack()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <LottieView
           style={{ width: '100%' }}

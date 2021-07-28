@@ -1,21 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { StandardTypography } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-
-    activeGroup: activeGroupSelector(state),
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
-  }
-}
 
 /**
  * A modal component that shows an image, a title, a message, and a button to dismiss.
@@ -36,10 +24,8 @@ const MessageModal = ({
   confirmText,
   confirmOnPress,
   children,
-  // Props passed from redux.
   isDark,
-  activeGroup,
-  isRTL
+  activeGroup
 }) => (
   <Modal
     isVisible={isVisible}
@@ -118,4 +104,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(MessageModal)
+export default MessageModal

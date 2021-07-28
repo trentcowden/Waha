@@ -27,6 +27,7 @@ import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
 import { addSet, toggleComplete } from '../redux/actions/groupsActions'
+import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -41,7 +42,9 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageInfo(activeGroupSelector(state).language).font
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
+    showTrailerHighlights: state.persistedPopups.showTrailerHighlights
   }
 }
 
@@ -58,6 +61,9 @@ function mapDispatchToProps (dispatch) {
     },
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
+    },
+    setShowTrailerHighlights: toSet => {
+      dispatch(setShowTrailerHighlights(toSet))
     }
   }
 }
@@ -81,10 +87,13 @@ const LessonsScreen = ({
   activeGroup,
   t,
   font,
+  areMobilizationToolsUnlocked,
+  showTrailerHighlights,
   downloadMedia,
   toggleComplete,
   removeDownload,
-  addSet
+  addSet,
+  setShowTrailerHighlights
 }) => {
   const isFocused = useIsFocused()
 
@@ -349,7 +358,15 @@ const LessonsScreen = ({
         }}
         scriptureList={scriptureList}
         isInInfoMode={isInInfoMode}
-        animationFinished={animationFinished}
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+        downloads={downloads}
+        font={font}
+        areMobilizationToolsUnlocked={areMobilizationToolsUnlocked}
+        showTrailerHighlights={showTrailerHighlights}
+        setShowTrailerHighlights={setShowTrailerHighlights}
+        removeDownload={removeDownload}
       />
     )
   }
@@ -368,7 +385,10 @@ const LessonsScreen = ({
           progressPercentage={addedSet.progress.length / thisSet.lessons.length}
           setIsInInfoMode={setIsInInfoMode}
           isInInfoMode={isInInfoMode}
-          setAnimationFinished={setAnimationFinished}
+          font={font}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
       </View>
       <SwipeListView
@@ -439,6 +459,8 @@ const LessonsScreen = ({
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <LottieView
           style={{ width: '100%' }}
@@ -455,6 +477,8 @@ const LessonsScreen = ({
         message={t.sets && t.sets.new_story_set_unlocked_message}
         confirmText={t.general && t.general.got_it}
         confirmOnPress={() => setShowNextSetUnlockedModal(false)}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <LottieView
           style={{ width: '100%' }}

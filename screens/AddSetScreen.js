@@ -52,6 +52,7 @@ const AddSetScreen = ({
     params: { category }
   },
   // Props passed from redux.
+  font,
   t,
   isRTL,
   isDark,
@@ -248,6 +249,10 @@ const AddSetScreen = ({
         setSetInModal(item)
         setShowSetInfoModal(true)
       }}
+      font={font}
+      isRTL={isRTL}
+      isDark={isDark}
+      activeGroup={activeGroup}
     />
   )
 

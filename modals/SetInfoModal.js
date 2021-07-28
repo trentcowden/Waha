@@ -28,7 +28,7 @@ function mapStateToProps (state) {
     isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -61,6 +61,7 @@ const SetInfoModal = ({
   isDark,
   activeGroup,
   t,
+  font,
   addSet
 }) => {
   /**
@@ -126,7 +127,14 @@ const SetInfoModal = ({
       isVisible={isVisible}
     >
       <View style={styles.setItemContainer}>
-        <SetItem thisSet={thisSet} mode={setItemModes.SET_INFO_MODAL} />
+        <SetItem
+          thisSet={thisSet}
+          mode={setItemModes.SET_INFO_MODAL}
+          font={font}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
+        />
       </View>
       <WahaButton
         type='filled'

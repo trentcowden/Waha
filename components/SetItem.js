@@ -11,7 +11,6 @@ import {
   View
 } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
 import {
   isTablet,
@@ -19,44 +18,32 @@ import {
   scaleMultiplier,
   setItemModes
 } from '../constants'
-import { getLanguageInfo } from '../languages'
-import { addSet } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { StandardTypography } from '../styles/typography'
 import SVG from './SVG.js'
 
-function mapStateToProps (state) {
-  return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    activeDatabase: activeDatabaseSelector(state),
-    primaryColor: activeDatabaseSelector(state).primaryColor,
-    font: getLanguageInfo(activeGroupSelector(state).language).font,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    t: activeDatabaseSelector(state).translations,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    showTrailerHighlights: state.persistedPopups.showTrailerHighlights
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    }
-  }
-}
-
 /**
  * A component that displays a set. Used on a variety of screens and displayed in a variety of ways depending on the mode prop.
- * @param {Object} thisSet - The object for the set to display.
- * @param {string} mode - The mode of the set item. The set item is rendered slightly different on all the different screens it's used in. See setItemModes in constants.js.
- * @param {Function} onSetSelect - A function to fire when the set item is pressed. Can be null to make the item non-pressable.
- * @param {number} progressPercentage - The percentage of this set that has been completed.
+ * @param {Object} props
+ * @param {Object} props.thisSet - The object for the set to display.
+ * @param {string} props.mode - The mode of the set item. The set item is rendered slightly different on all the different screens it's used in. See setItemModes in constants.js.
+ * @param {Function} props.onSetSelect - A function to fire when the set item is pressed. Can be null to make the item non-pressable.
+ * @param {number} props.progressPercentage - The percentage of this set that has been completed.
+ */
+
+/**
+ * @param  {} thisSet
+ * @param  {} mode
+ * @param  {} onSetSelect
+ * @param  {} [progressPercentage=null]
+ * @param  {} [setIsInInfoMode=null]
+ * @param  {} [isInInfoMode=null]
+ * @param  {} itemHeight
+ * @param  {} isRTL
+ * @param  {} isDark
+ * @param  {} activeGroup
+ * @param  {} [areMobilizationToolsUnlocked=false]
+ * @param  {} [showTrailerHighlights=false]
  */
 const SetItem = ({
   // Props passed from a parent component.
@@ -66,17 +53,12 @@ const SetItem = ({
   progressPercentage = null,
   setIsInInfoMode = null,
   isInInfoMode = null,
-  // Props passed from redux.
   font,
   isRTL,
   isDark,
-  activeDatabase,
-  primaryColor,
   activeGroup,
-  t,
-  areMobilizationToolsUnlocked,
-  showTrailerHighlights,
-  addSet
+  areMobilizationToolsUnlocked = false,
+  showTrailerHighlights = false
 }) => {
   // console.log(`${Date.now()} Set ${thisSet.id} is re-rendering.`)
 
@@ -500,10 +482,7 @@ const areEqual = (prevProps, nextProps) => {
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(React.memo(SetItem, areEqual))
+export default React.memo(SetItem, areEqual)
 
 /* <SvgUri
 source={{

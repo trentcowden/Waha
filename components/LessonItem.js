@@ -1,7 +1,6 @@
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import {
   getLessonInfo,
   isTablet,
@@ -9,42 +8,9 @@ import {
   lessonTypes,
   scaleMultiplier
 } from '../constants'
-import { getLanguageInfo } from '../languages'
-import { removeDownload } from '../redux/actions/downloadActions'
-import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { StandardTypography } from '../styles/typography'
 import DownloadStatusIndicator from './DownloadStatusIndicator'
-
-function mapStateToProps (state) {
-  return {
-    primaryColor: activeDatabaseSelector(state).primaryColor,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    downloads: state.downloads,
-    t: activeDatabaseSelector(state).translations,
-    isConnected: state.network.isConnected,
-    font: getLanguageInfo(activeGroupSelector(state).language).font,
-    isDark: state.settings.isDarkModeEnabled,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    showTrailerHighlights: state.persistedPopups.showTrailerHighlights
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    },
-    setShowTrailerHighlights: toSet => {
-      dispatch(setShowTrailerHighlights(toSet))
-    }
-  }
-}
 
 /**
  * A list item used to display a single lesson on the LessonsScreen. Shows the title, subtitle, complete status, and download status.
@@ -71,20 +37,16 @@ const LessonItem = ({
   isInInfoMode,
   animationFinished,
   // Props passed from redux.
-  primaryColor,
   isRTL,
   isDark,
   activeGroup,
   downloads,
-  t,
   font,
-  isConnected,
   areMobilizationToolsUnlocked,
   showTrailerHighlights,
   setShowTrailerHighlights,
   removeDownload
 }) => {
-  // console.log(`${Date.now()} Lesson ${thisLesson.id} is re-rendering.`)
   /** Keeps track of whether this lesson is downloaded or not. */
   const [isFullyDownloaded, setIsFullyDownloaded] = useState(false)
 
@@ -151,7 +113,6 @@ const LessonItem = ({
           flexDirection: isRTL ? 'row-reverse' : 'row',
           paddingVertical: isInInfoMode ? (isTablet ? 20 : 10) : 0,
           paddingLeft: 20,
-          // alignItems: isInInfoMode ? 'flex-start' : 'center',
           alignItems: 'center',
           minHeight: isTablet
             ? itemHeights[font].LessonItem + 15
@@ -217,19 +178,13 @@ const LessonItem = ({
           ]}
         >
           <Text
-            // adjustsFontSizeToFit
-            style={[
-              StandardTypography(
-                activeGroup.language,
-                'h4',
-                'Bold',
-                'left',
-                isComplete ? colors(isDark).disabled : colors(isDark).text
-              ),
-              {
-                // flex: 1
-              }
-            ]}
+            style={StandardTypography(
+              activeGroup.language,
+              'h4',
+              'Bold',
+              'left',
+              isComplete ? colors(isDark).disabled : colors(isDark).text
+            )}
             numberOfLines={2}
           >
             {thisLesson.title}
@@ -389,6 +344,8 @@ const styles = StyleSheet.create({
   1. Their or any other lesson in the set's complete status changes
   2. Their download progress changes
   3. Their downloaded status changes
+  4. Info mode changes
+  5. Show trailer highlights changes
 */
 const areEqual = (prevProps, nextProps) => {
   return (
@@ -407,7 +364,4 @@ const areEqual = (prevProps, nextProps) => {
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(React.memo(LessonItem, areEqual))
+export default React.memo(LessonItem, areEqual)

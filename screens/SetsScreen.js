@@ -18,6 +18,7 @@ import {
 } from '../constants'
 import { getLanguageInfo } from '../languages'
 import MessageModal from '../modals/MessageModal'
+import { addSet } from '../redux/actions/groupsActions'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import {
@@ -52,6 +53,9 @@ function mapDispatchToProps (dispatch) {
     },
     setShowTrailerHighlights: toSet => {
       dispatch(setShowTrailerHighlights(toSet))
+    },
+    addSet: (groupName, groupID, set) => {
+      dispatch(addSet(groupName, groupID, set))
     }
   }
 }
@@ -334,6 +338,12 @@ const SetsScreen = ({
           activeGroup.addedSets.filter(addedSet => addedSet.id === item.id)[0]
             .progress.length / item.lessons.length
         }
+        font={font}
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+        areMobilizationToolsUnlocked={areMobilizationToolsUnlocked}
+        showTrailerHighlights={showTrailerHighlights}
       />
     )
   }
@@ -377,6 +387,8 @@ const SetsScreen = ({
         }
         confirmText={t.general && t.general.got_it}
         confirmOnPress={() => setShowMTTabAddedSnackbar(false)}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <LottieView
           autoPlay
