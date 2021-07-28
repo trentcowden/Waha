@@ -1,6 +1,6 @@
 import i18n from 'i18n-js'
-import { getSystemIsRTL, scaleMultiplier } from '../constants'
-import { languages } from '../languages'
+import { isTablet, scaleMultiplier } from '../constants'
+import { getLanguageInfo, languages } from '../languages'
 
 /**
  * Takes in some text style settings and returns a filled out text style object. This is used simply to save space in components and simplify things overall. Used within the style prop of a text component. For example:
@@ -20,22 +20,24 @@ import { languages } from '../languages'
  * @return {Object} - The completed style object.
  */
 export const StandardTypography = (
-  props,
+  languageID,
   fontSize,
   fontFamily,
   textAlign,
   color
 ) => {
-  // A font size modifier that makes all Arabic script a point smaller.
+  var languageInfo = getLanguageInfo(languageID)
+
+  // A font size modifier that makes all Arabic script a point smaller and increases the font size on tablets.
   var fontSizeModifier = 0
-  fontSizeModifier += props.font === 'NotoSansArabic' ? -1 : 0
-  fontSizeModifier += props.isTablet ? 2 : 0
+  fontSizeModifier += languageInfo.font === 'NotoSansArabic' ? -1 : 0
+  fontSizeModifier += isTablet ? 2 : 0
 
   // The options for font families.
   const families = {
-    Regular: props.font + '-Regular',
-    Bold: props.font + '-Bold',
-    Black: props.font + '-Black'
+    Regular: languageInfo.font + '-Regular',
+    Bold: languageInfo.font + '-Bold',
+    Black: languageInfo.font + '-Black'
   }
 
   // The options for font sizes.
@@ -50,14 +52,14 @@ export const StandardTypography = (
 
   // The options for font alignments.
   const alignments = {
-    left: props.isRTL ? 'right' : 'left',
+    left: languageInfo.isRTL ? 'right' : 'left',
     center: 'center'
   }
 
   // Return the completed style object.
   return {
     fontSize: sizes[fontSize] + fontSizeModifier,
-    fontFamily: props.font ? families[fontFamily] : null,
+    fontFamily: languageInfo.font ? families[fontFamily] : null,
     textAlign: alignments[textAlign],
     color: color
   }
@@ -94,7 +96,7 @@ export const SystemTypography = (
 
   // The options for alignments.
   const alignments = {
-    left: getSystemIsRTL() ? 'right' : 'left',
+    left: getLanguageInfo(i18n.locale.slice(0, 2)).isRTL ? 'right' : 'left',
     center: 'center'
   }
 
@@ -104,7 +106,7 @@ export const SystemTypography = (
       // If we have an override font, use that instead of the system font.
       fontFamily: overrideFont
         ? overrideFont + '-' + fontFamily
-        : getSystemFont() + '-' + fontFamily,
+        : getLanguageInfo(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
       textAlign: alignments[textAlign],
       color: color
     }
@@ -114,7 +116,7 @@ export const SystemTypography = (
       // If we have an override font, use that instead of the system font.
       fontFamily: overrideFont
         ? overrideFont + '-' + fontFamily
-        : getSystemFont() + '-' + fontFamily,
+        : getLanguageInfo(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
       textAlign: alignments[textAlign],
       color: color
     }
@@ -126,15 +128,15 @@ export const SystemTypography = (
  * @export
  * @return {string} - The name of the font to use.
  */
-export const getSystemFont = () => {
-  var systemFont = 'Roboto'
-  languages.forEach(languageFamily => {
-    if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
-      systemFont = languageFamily.font
-    }
-  })
-  return systemFont
-}
+// export const getSystemFont = () => {
+//   var systemFont = 'Roboto'
+//   languages.forEach(languageFamily => {
+//     if (i18n.locale.slice(0, 2) === languageFamily.languageFamilyID) {
+//       systemFont = languageFamily.font
+//     }
+//   })
+//   return systemFont
+// }
 
 /**
  * Get the font used for whatever language is associated with the active group. For example, if the user has the English language instance installed but their phone is set to Arabic, this function will return the name of the font used for English.
@@ -144,7 +146,9 @@ export const getSystemFont = () => {
 export const getLanguageFont = languageID => {
   var languageFont
   languages.forEach(languageFamily => {
-    if (languageFamily.data.some(language => language.wahaID === languageID))
+    if (
+      languageFamily.data.some(language => language.languageID === languageID)
+    )
       languageFont = languageFamily.font
   })
   return languageFont

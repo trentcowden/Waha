@@ -13,8 +13,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
-    t: activeDatabaseSelector(state).translations
+    t: activeDatabaseSelector(state).translations,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -29,15 +29,15 @@ const GroupsScreenEditButton = ({
   isRTL,
   isDark,
   font,
-
-  t
+  t,
+  activeGroup
 }) => {
   return (
     <TouchableOpacity style={styles.editButtonContainer} onPress={onPress}>
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             isEditing ? 'Bold' : 'Regular',
             'center',

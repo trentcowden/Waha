@@ -65,7 +65,7 @@ const MessageModal = ({
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h2',
             'Black',
             'center',
@@ -78,7 +78,7 @@ const MessageModal = ({
       </Text>
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h4',
           'Bold',
           'center',
@@ -90,7 +90,7 @@ const MessageModal = ({
       <TouchableOpacity style={styles.buttonContainer} onPress={confirmOnPress}>
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h2',
             'Bold',
             'center',

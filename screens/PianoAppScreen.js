@@ -132,7 +132,7 @@ const PianoAppScreen = ({
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h1',
               'Bold',
               'center',
@@ -179,7 +179,7 @@ const PianoAppScreen = ({
             >
               <Text
                 style={StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h2',
                   'Regular',
                   'center',

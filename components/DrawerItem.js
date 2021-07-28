@@ -54,7 +54,7 @@ const DrawerItem = ({
     <Text
       style={[
         StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Bold',
           'left',

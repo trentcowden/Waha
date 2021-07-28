@@ -99,7 +99,7 @@
 //     <View style={{ width: '100%', paddingHorizontal: 20 }}>
 //       <Text
 //         style={StandardTypography(
-//           { font, isRTL },
+//           activeGroup.language,
 //           'h2',
 //           'Black',
 //           'left',
@@ -162,7 +162,7 @@
 //     >
 //       <Text
 //         style={StandardTypography(
-//           { font, isRTL },
+//           activeGroup.language,
 //           'p',
 //           'Regular',
 //           'center',

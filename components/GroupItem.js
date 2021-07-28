@@ -305,11 +305,8 @@ const GroupItem = ({
           >
             <Text
               style={StandardTypography(
-                {
-                  // Always display the group name in the group's language's font, not the active group's font.
-                  font: getLanguageFont(thisGroup.language),
-                  isRTL: isRTL
-                },
+                // Always display the group name in the group's language's font, not the active group's font.
+                thisGroup.language,
                 'h3',
                 'Black',
                 'left',
@@ -323,11 +320,8 @@ const GroupItem = ({
               <Text
                 style={[
                   StandardTypography(
-                    {
-                      // Similarly, display the bookmark text in the group's language's font, not the active group's language's font.
-                      font: getLanguageFont(thisGroup.language),
-                      isRTL: isRTL
-                    },
+                    // Similarly, display the bookmark text in the group's language's font, not the active group's language's font.
+                    thisGroup.language,
                     'd',
                     'Regular',
                     'left',

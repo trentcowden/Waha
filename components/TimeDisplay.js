@@ -65,7 +65,7 @@ const TimeDisplay = ({
     <View>
       <Text
         style={StandardTypography(
-          { font: 'Roboto' },
+          'en',
           'd',
           'Regular',
           'center',

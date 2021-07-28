@@ -276,7 +276,7 @@ const LoadingScreen = ({
             <Icon name='cancel' color={colors(isDark).icons} size={50} />
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h4',
                 'Bold',
                 'center',

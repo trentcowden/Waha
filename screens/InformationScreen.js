@@ -86,7 +86,7 @@ const InformationScreen = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',
@@ -112,7 +112,7 @@ const InformationScreen = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',
@@ -146,7 +146,7 @@ const InformationScreen = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',
@@ -177,7 +177,7 @@ const InformationScreen = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',
@@ -206,7 +206,7 @@ const InformationScreen = ({
         <View>
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Bold',
               'left',
@@ -217,7 +217,7 @@ const InformationScreen = ({
           </Text>
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h4',
               'Bold',
               'left',
@@ -243,7 +243,7 @@ const InformationScreen = ({
         >
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Bold',
               'left',
@@ -265,7 +265,7 @@ const InformationScreen = ({
           <Text
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'd',
                 'Regular',
                 'center',
@@ -280,7 +280,7 @@ const InformationScreen = ({
           <Text
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'd',
                 'Regular',
                 'center',

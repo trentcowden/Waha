@@ -17,7 +17,8 @@ function mapStateToProps (state) {
     t: activeDatabaseSelector(state).translations,
     installedLanguageInstances: Object.keys(state.database).filter(
       key => key.length === 2
-    )
+    ),
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -35,7 +36,8 @@ const AddNewLanguageInstanceButton = ({
   isDark,
   font,
   installedLanguageInstances,
-  t
+  t,
+  activeGroup
 }) => {
   return (
     installedLanguageInstances.length !== languages.length && (
@@ -63,7 +65,7 @@ const AddNewLanguageInstanceButton = ({
         </View>
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',

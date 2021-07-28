@@ -188,7 +188,7 @@ const PianoPasscodeSetScreen = ({
         <View style={styles.instructionTextContainer}>
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h2',
               'Bold',
               'center',

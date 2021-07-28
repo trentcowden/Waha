@@ -1,88 +1,172 @@
 /**
  * This file contains all of the language families and languages in Waha. This is used to populate the LanguageInstanceInstall screen, get the i18n keys for translation, and get the font and RTL status of a language family or language.
- * @param {string} languages[].i18nName - This is the key that i18n will use to get the translation of this language family’s name in a different language.
- * @param {string} languages[].languageCode - This is language code for this language family. Must be the same as the code for this language used in i18n.
+ * @param {string} languages[].i18nKey - This is the key that i18n will use to get the translation of this language family’s name in a different language.
+ * @param {string} languages[].languageFamilyID - This is language code for this language family. Must be the same as the code for this language used in i18n.
  * @param {string} languages[].font - This is the name of the font that this language family uses.
  * @param {boolean} languages[].isRTL - Whether this language family’s script is RTL or not.
  * @param {Object[]} languages[].data - This is an array of the language instances that are in this language family.
  * @param {string} languages[].data[].nativeName - This is the same as the displayName key in Firestore and will be how the language instance is displayed in-app.
- * @param {string} languages[].data[].wahaID - This is the language instance’s 2-letter ID. Must match up with the ID used in Firestore.
- * @param {string} languages[].data[].i18nName - This is the key that i18n will use to get the translation of this language’s name in a different language. For instance, if the user’s app is set to Arabic, the app will look for an Arabic translation of the “English” language instance in the ar.json translations object (which is the language family, not the language instance) using the i18nName property in the english language instance object.
+ * @param {string} languages[].data[].languageID - This is the language instance’s 2-letter ID. Must match up with the ID used in Firestore.
+ * @param {string} languages[].data[].i18nKey - This is the key that i18n will use to get the translation of this language’s name in a different language. For instance, if the user’s app is set to Arabic, the app will look for an Arabic translation of the “English” language instance in the ar.json translations object (which is the language family, not the language instance) using the i18nKey property in the english language instance object.
  * @param {string} languages[].data[].logoSource - This is the Firebase URL for this language instance’s logo. This is used only to display the logo on the LanguageSelectScreen before any logos have been downloaded to the user’s device.
  */
 export const languages = [
   {
-    i18nName: 'english',
-    languageCode: 'en',
+    languageFamilyID: 'en',
+    i18nKey: 'english',
     font: 'Roboto',
     isRTL: false,
     data: [
       {
+        languageID: 'en',
+        i18nKey: 'english',
         nativeName: 'English',
-        wahaID: 'en',
-        i18nName: 'english',
         brandName: 'Discovering God',
-        colorLight: '#E74D3D',
-        colorDark: '#EA8E84',
-        versions: null,
-        logoSourceLight:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
-        logoSourceDark:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+        contactEmail: 'developer@waha.app',
+        colors: {
+          light: '#E74D3D',
+          dark: '#EA8E84'
+        },
+        logos: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+        },
+        versions: null
       }
     ]
   },
   {
-    i18nName: 'arabic',
-    languageCode: 'ar',
+    languageFamilyID: 'ar',
+    i18nKey: 'arabic',
     font: 'NotoSansArabic',
     isRTL: true,
     data: [
       {
+        languageID: 'ga',
+        i18nKey: 'gulf_arabic',
         nativeName: 'الخليج العربي',
-        wahaID: 'ga',
-        i18nName: 'gulf_arabic',
         brandName: 'طريق الواحة',
-        colorLight: '#DAA520',
-        colorDark: '#DBBA69',
-        versions: null,
-        logoSourceLight:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media',
-        logoSourceDark:
-          'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
-      }
-    ]
-  },
-  {
-    i18nName: 'hindi',
-    languageCode: 'hi',
-    font: 'Roboto',
-    isRTL: false,
-    data: [
-      {
-        nativeName: 'हिन्दी',
-        i18nName: 'hindi',
-        wahaID: 'hi',
-        font: 'Roboto',
-        versions: [
-          {
-            wahaID: 'hi',
-            brandName: 'परमेश्वर को खोजना',
-            note: 'Recommended for Hindi backgrounds',
-            logoSource:
-              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
-            versions: null
-          },
-          {
-            wahaID: 'hc',
-            brandName: 'इब्राहीम की औलाद',
-            note: 'Recommended for Muslim backgrounds',
-            logoSource:
-              'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
-            versions: null
-          }
-        ]
+        contactEmail: 'simskimm@protonmail.com',
+        colors: {
+          light: '#DAA520',
+          dark: '#DBBA69'
+        },
+        logos: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
+        },
+        versions: null
       }
     ]
   }
+  // {
+  //   languageFamilyID: 'hi',
+  //   i18nKey: 'hindi',
+  //   font: 'Roboto',
+  //   isRTL: false,
+  //   data: [
+  //     {
+  //       languageID: 'hi',
+  //       i18nKey: 'hindi',
+  //       nativeName: 'हिन्दी',
+  //       font: 'Roboto',
+  //       versions: [
+  //         {
+  //           languageID: 'hi',
+  //           brandName: 'परमेश्वर को खोजना',
+  //           contactEmail: 'zach@quikmail.org',
+  //           note: 'Recommended for Hindi backgrounds',
+  //           colors: {
+  //             light: '#FF9933',
+  //             dark: '#FFC58B'
+  //           },
+  //           logos: {
+  //             light:
+  //               'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
+  //             dark: ''
+  //           },
+  //           versions: null
+  //         },
+  //         {
+  //           languageID: 'hc',
+  //           brandName: 'इब्राहीम की औलाद',
+  //           contactEmail: 'zach@quikmail.org',
+  //           note: 'Recommended for Muslim backgrounds',
+  //           colors: {
+  //             light: '2C7A1F',
+  //             dark: '#89C17F'
+  //           },
+  //           logos: {
+  //             light:
+  //               'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
+  //             dark: ''
+  //           },
+  //           versions: null
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // }
 ]
+
+export const getLanguageInfo = languageID => {
+  // Default values in case the language can't be found.
+  var languageInfo = {
+    languageFamilyID: 'en',
+    i18nKey: 'english',
+    font: 'Roboto',
+    isRTL: false,
+    languageID: 'en',
+    nativeName: 'English',
+    brandName: 'Discovering God',
+    contactEmail: 'developer@waha.app',
+    colors: {
+      light: '#E74D3D',
+      dark: '#EA8E84'
+    },
+    logos: {
+      light:
+        'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+      dark:
+        'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+    },
+    versions: null
+  }
+
+  languages.forEach(languageFamily => {
+    languageFamily.data.forEach(language => {
+      // If our language has multiple versions, check through each version to find the language we want.
+      if (language.versions !== null) {
+        language.versions.forEach(version => {
+          if (version.languageID === languageID) {
+            languageInfo = {
+              ...version,
+              // Extra keys to return from the language family.
+              languageFamilyID: languageFamily.languageFamilyID,
+              i18nKey: languageFamily.i18nKey,
+              font: languageFamily.font,
+              isRTL: languageFamily.isRTL,
+              // Extra keys to return from the language.
+              i18nKey: language.i18nKey,
+              nativeName: language.nativeName
+            }
+          }
+        })
+      } else if (language.languageID === languageID) {
+        languageInfo = {
+          ...language,
+          languageFamilyID: languageFamily.languageFamilyID,
+          i18nKey: languageFamily.i18nKey,
+          font: languageFamily.font,
+          isRTL: languageFamily.isRTL
+        }
+      }
+    })
+  })
+
+  return languageInfo
+}

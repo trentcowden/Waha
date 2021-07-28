@@ -61,7 +61,7 @@ const FloatingSectionLabel = ({
     >
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'p',
           'Bold',
           'center',

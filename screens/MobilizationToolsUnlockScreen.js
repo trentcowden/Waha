@@ -169,7 +169,7 @@ const MobilizationToolsUnlockScreen = ({
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Regular',
             'center',
@@ -192,7 +192,7 @@ const MobilizationToolsUnlockScreen = ({
         restrictToNumbers={true}
         animationFocused=''
         textStyle={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h2',
           'Regular',
           'center',
@@ -227,7 +227,7 @@ const MobilizationToolsUnlockScreen = ({
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Regular',
             'center',

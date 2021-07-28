@@ -136,7 +136,7 @@ const MobilizationToolsScreen = ({
           >
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h4',
                 'Regular',
                 'center',
@@ -147,7 +147,7 @@ const MobilizationToolsScreen = ({
             </Text>
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h1',
                 'Bold',
                 'center',
@@ -213,7 +213,7 @@ const MobilizationToolsScreen = ({
               <Text
                 style={[
                   StandardTypography(
-                    { font, isRTL },
+                    activeGroup.language,
                     'h2',
                     'Bold',
                     'left',

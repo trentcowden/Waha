@@ -219,7 +219,7 @@ const LessonItem = ({
             // adjustsFontSizeToFit
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h4',
                 'Bold',
                 'left',
@@ -239,7 +239,7 @@ const LessonItem = ({
           <Text
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'd',
                 'Regular',
                 'left',
@@ -259,7 +259,7 @@ const LessonItem = ({
             <Text
               style={[
                 StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'd',
                   'Regular',
                   'left',
@@ -297,7 +297,7 @@ const LessonItem = ({
           {isInInfoMode && thisLesson.scripture && (
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'd',
                 'Regular',
                 'left',

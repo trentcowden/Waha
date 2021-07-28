@@ -92,7 +92,7 @@ const SetInfoModal = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h4',
             'Bold',
             'left',
@@ -106,7 +106,7 @@ const SetInfoModal = ({
         {item.scripture && (
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'p',
               'Regular',
               'left',

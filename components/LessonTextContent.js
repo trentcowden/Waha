@@ -31,7 +31,7 @@ function mapStateToProps (state) {
   A simple set of 3 components to display different parts of the lesson text.
 */
 
-const HeaderBig = ({ text, font, isRTL, onLayout, isDark }) => (
+const HeaderBig = ({ text, activeGroup, onLayout, isDark }) => (
   <View
     style={{
       marginBottom: 10 * scaleMultiplier,
@@ -42,7 +42,7 @@ const HeaderBig = ({ text, font, isRTL, onLayout, isDark }) => (
     <Text
       style={[
         StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h2',
           'Black',
           'left',
@@ -55,12 +55,12 @@ const HeaderBig = ({ text, font, isRTL, onLayout, isDark }) => (
   </View>
 )
 
-const HeaderSmall = ({ text, font, isRTL, isTablet, isDark }) => (
+const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
   <View>
     <Text
       style={[
         StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Regular',
           'left',
@@ -74,12 +74,12 @@ const HeaderSmall = ({ text, font, isRTL, isTablet, isDark }) => (
   </View>
 )
 
-const StandardText = ({ text, font, isRTL, isTablet, isDark }) => (
+const StandardText = ({ text, activeGroup, isTablet, isDark }) => (
   <View>
     <Text
       style={[
         StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Regular',
           'left',
@@ -192,14 +192,12 @@ const LessonTextContent = ({
                   text={
                     t.play && t.play.question + ' ' + (index + 1).toString()
                   }
-                  font={font}
-                  isRTL={isRTL}
+                  activeGroup={activeGroup}
                   isDark={isDark}
                 />
                 <StandardText
                   text={question + '\n'}
-                  font={font}
-                  isRTL={isRTL}
+                  activeGroup={activeGroup}
                   isDark={isDark}
                 />
               </View>
@@ -215,14 +213,12 @@ const LessonTextContent = ({
             >
               <HeaderBig
                 text={scriptureChunk.header}
-                font={font}
-                isRTL={isRTL}
+                activeGroup={activeGroup}
                 isDark={isDark}
               />
               <StandardText
                 text={scriptureChunk.text}
-                font={font}
-                isRTL={isRTL}
+                activeGroup={activeGroup}
                 isDark={isDark}
               />
             </View>
@@ -244,7 +240,7 @@ const LessonTextContent = ({
             >
               <Text
                 style={StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h4',
                   'Regular',
                   'left',
@@ -275,8 +271,7 @@ const LessonTextContent = ({
             onLayout={({ nativeEvent }) =>
               setOffsets(t.play && t.play.application, nativeEvent)
             }
-            font={font}
-            isRTL={isRTL}
+            activeGroup={activeGroup}
             text={t.play && t.play.application}
             isDark={isDark}
           />
@@ -288,14 +283,12 @@ const LessonTextContent = ({
                   text={
                     t.play && t.play.question + ' ' + (index + 1).toString()
                   }
-                  font={font}
-                  isRTL={isRTL}
+                  activeGroup={activeGroup}
                   isDark={isDark}
                 />
                 <StandardText
                   text={question + '\n'}
-                  font={font}
-                  isRTL={isRTL}
+                  activeGroup={activeGroup}
                   isDark={isDark}
                 />
               </View>
@@ -307,15 +300,13 @@ const LessonTextContent = ({
         <View style={{ paddingTop: 20 * scaleMultiplier }}>
           <HeaderSmall
             text={thisLesson.title}
-            font={font}
-            isRTL={isRTL}
+            activeGroup={activeGroup}
             isDark={isDark}
           />
           {thisLesson.text.split('\n').map((paragraph, index) => (
             <StandardText
               key={index}
-              font={font}
-              isRTL={isRTL}
+              activeGroup={activeGroup}
               text={paragraph + '\n'}
               isDark={isDark}
             />

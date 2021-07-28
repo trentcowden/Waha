@@ -46,7 +46,7 @@ const GroupNameTextInput = ({
     <View style={styles.groupNameAreaContainer}>
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'p',
           'Regular',
           'left',
@@ -71,7 +71,7 @@ const GroupNameTextInput = ({
               borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
             },
             StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Regular',
               'left',

@@ -14,7 +14,8 @@ function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: activeDatabaseSelector(state).isRTL,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -34,7 +35,8 @@ const OptionsModal = ({
   // Props passed from redux.
   font,
   isDark,
-  isRTL
+  isRTL,
+  activeGroup
 }) => (
   <Modal
     isVisible={isVisible}
@@ -73,7 +75,7 @@ const OptionsModal = ({
         >
           <Text
             style={StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Bold',
               'center',

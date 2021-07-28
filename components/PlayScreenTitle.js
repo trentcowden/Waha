@@ -53,7 +53,7 @@ const PlayScreenTitle = ({
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Black',
             'center',

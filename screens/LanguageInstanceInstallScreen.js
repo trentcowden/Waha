@@ -332,8 +332,8 @@ const LanguageInstanceInstallScreen = ({
   const getLanguageData = () => {
     // Sort the languages to put the language family of the phone's current locale at the top.
     const sortByLocale = (a, b) => {
-      if (i18n.locale.includes(a.languageCode)) return -1
-      else if (i18n.locale.includes(b.languageCode)) return 1
+      if (i18n.locale.includes(a.languageFamilyID)) return -1
+      else if (i18n.locale.includes(b.languageFamilyID)) return 1
       else return 0
     }
 
@@ -341,7 +341,7 @@ const LanguageInstanceInstallScreen = ({
     const filterBySearch = languageFamily => {
       if (
         i18n
-          .t(languageFamily.i18nName)
+          .t(languageFamily.i18nKey)
           .toLowerCase()
           .includes(searchTextInput.toLowerCase())
       )
@@ -355,7 +355,7 @@ const LanguageInstanceInstallScreen = ({
                 .toLowerCase()
                 .includes(searchTextInput.toLowerCase()) ||
               i18n
-                .t(language.i18nName)
+                .t(language.i18nKey)
                 .toLowerCase()
                 .includes(searchTextInput.toLowerCase()) ||
               language.brandName
@@ -372,7 +372,7 @@ const LanguageInstanceInstallScreen = ({
         if (
           installedLanguageInstances.some(
             installedLanguage =>
-              installedLanguage.languageID === language.wahaID
+              installedLanguage.languageID === language.languageID
           )
         ) {
           return false
@@ -420,20 +420,19 @@ const LanguageInstanceInstallScreen = ({
   const renderLanguageItem = (language, languageFamily) => (
     <LanguageItem
       nativeName={language.nativeName}
-      localeName={i18n.t(language.i18nName)}
+      localeName={i18n.t(language.i18nKey)}
       font={languageFamily.font}
-      logoSourceLight={language.logoSourceLight}
-      logoSourceDark={language.logoSourceDark}
+      logos={language.logos}
       onPress={() => {
         if (!selectedLanguage) {
           Animated.spring(buttonYPos, {
             toValue: 0
           }).start()
         }
-        setSelectedLanguage(language.wahaID)
+        setSelectedLanguage(language.languageID)
       }}
-      isSelected={selectedLanguage === language.wahaID ? true : false}
-      playAudio={() => playAudio(language.wahaID)}
+      isSelected={selectedLanguage === language.languageID ? true : false}
+      playAudio={() => playAudio(language.languageID)}
       isDark={isDark}
     />
   )
@@ -462,7 +461,7 @@ const LanguageInstanceInstallScreen = ({
           colors(isDark).secondaryText
         )}
       >
-        {i18n.t(languageFamily.i18nName)}
+        {i18n.t(languageFamily.i18nKey)}
       </Text>
     </View>
   )
@@ -552,7 +551,7 @@ const LanguageInstanceInstallScreen = ({
           sections={getLanguageData()}
           ItemSeparatorComponent={() => <WahaSeparator />}
           SectionSeparatorComponent={() => <WahaSeparator />}
-          keyExtractor={item => item.wahaID}
+          keyExtractor={item => item.languageID}
           renderItem={({ item, section }) => renderLanguageItem(item, section)}
           renderSectionHeader={({ section }) => renderLanguageHeader(section)}
           renderSectionFooter={() => (

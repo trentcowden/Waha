@@ -21,8 +21,7 @@ const LanguageItem = ({
   localeName,
   font,
   isDark,
-  logoSourceLight,
-  logoSourceDark,
+  logos,
   onPress,
   isSelected,
   playAudio
@@ -85,7 +84,7 @@ const LanguageItem = ({
       </View>
       <Image
         style={styles.headerImage}
-        source={{ uri: isDark ? logoSourceDark : logoSourceLight }}
+        source={{ uri: isDark ? logos.dark : logos.light }}
       />
     </TouchableOpacity>
   </View>

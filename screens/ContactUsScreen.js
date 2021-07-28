@@ -145,7 +145,7 @@ const ContactUsScreen = ({
     <Text
       style={[
         StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Bold',
           'left',
@@ -159,7 +159,7 @@ const ContactUsScreen = ({
     <Text
       style={[
         StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Bold',
           'left',
@@ -187,7 +187,7 @@ const ContactUsScreen = ({
           <Text
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h3',
                 'Bold',
                 'left',
@@ -214,7 +214,7 @@ const ContactUsScreen = ({
               spellCheck={false}
               style={[
                 StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h3',
                   'Regular',
                   'left',
@@ -262,7 +262,7 @@ const ContactUsScreen = ({
             <Text
               style={[
                 StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h3',
                   'Bold',
                   'left',
@@ -278,7 +278,7 @@ const ContactUsScreen = ({
             <Text
               style={[
                 StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h4',
                   'regular',
                   'left',
@@ -295,7 +295,7 @@ const ContactUsScreen = ({
             onChangeText={text => setMessageTextInput(text)}
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h3',
                 'Regular',
                 'left',
@@ -344,7 +344,7 @@ const ContactUsScreen = ({
           <Text
             style={[
               StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h3',
                 'Regular',
                 'left',
@@ -362,7 +362,7 @@ const ContactUsScreen = ({
             <Text
               style={[
                 StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h3',
                   'Bold',
                   'left',
@@ -377,7 +377,7 @@ const ContactUsScreen = ({
               onChangeText={text => setReproductionStepsTextInput(text)}
               style={[
                 StandardTypography(
-                  { font, isRTL },
+                  activeGroup.language,
                   'h3',
                   'Regular',
                   'left',

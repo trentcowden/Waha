@@ -43,7 +43,7 @@ const OptionsModalButton = ({
   >
     <Text
       style={StandardTypography(
-        { font, isRTL },
+        activeGroup.language,
         'h3',
         'Regular',
         'center',

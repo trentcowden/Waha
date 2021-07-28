@@ -49,7 +49,7 @@ const CopyrightsModal = ({
       <View style={{ flex: 1, paddingHorizontal: gutterSize }}>
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Regular',
             'left',

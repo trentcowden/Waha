@@ -53,7 +53,7 @@ const WahaItem = ({
     >
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Bold',
           'left',
@@ -77,7 +77,7 @@ const WahaItem = ({
     >
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Bold',
           'left',

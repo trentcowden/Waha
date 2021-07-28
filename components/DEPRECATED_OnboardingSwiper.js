@@ -92,7 +92,7 @@ const OnboardingSwiper = ({
                       colors(isDark).text
                     )
                   : StandardTypography(
-                      { font, isRTL },
+                      activeGroup.language,
                       'h2',
                       'Bold',
                       'center',
@@ -114,7 +114,7 @@ const OnboardingSwiper = ({
                       colors(isDark).disabled
                     )
                   : StandardTypography(
-                      { font, isRTL },
+                      activeGroup.language,
                       'h3',
                       'Regular',
                       'center',

@@ -15,8 +15,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
-    t: activeDatabaseSelector(state).translations
+    t: activeDatabaseSelector(state).translations,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -35,8 +35,8 @@ const AddNewGroupButton = ({
   isRTL,
   isDark,
   font,
-
-  t
+  t,
+  activeGroup
 }) => {
   return (
     <View>
@@ -65,7 +65,7 @@ const AddNewGroupButton = ({
         </View>
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',

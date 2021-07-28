@@ -41,7 +41,7 @@ const WahaItemDescription = ({
     >
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'p',
           'Regular',
           'left',

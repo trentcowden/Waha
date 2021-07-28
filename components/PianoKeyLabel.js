@@ -28,7 +28,7 @@ const PianoKeyLabel = ({
     <View style={[styles.circle, { backgroundColor: backgroundColor }, style]}>
       <Text
         style={StandardTypography(
-          { font: 'Roboto' },
+          'en',
           'h2',
           'Bold',
           'center',

@@ -52,7 +52,7 @@ const LessonTextSectionHeader = ({
     <Text>
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h2',
           'Black',
           'left',
@@ -65,7 +65,7 @@ const LessonTextSectionHeader = ({
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Regular',
               'left',
@@ -80,7 +80,7 @@ const LessonTextSectionHeader = ({
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Regular',
               'left',

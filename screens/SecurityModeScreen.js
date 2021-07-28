@@ -135,7 +135,7 @@ const SecurityModeScreen = ({
               >
                 <Text
                   style={StandardTypography(
-                    { font, isRTL },
+                    activeGroup.language,
                     'h4',
                     'Regular',
                     'left',

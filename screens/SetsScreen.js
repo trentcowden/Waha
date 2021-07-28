@@ -278,7 +278,7 @@ const SetsScreen = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h4',
             'Bold',
             'left',
@@ -296,7 +296,7 @@ const SetsScreen = ({
     <View style={{ width: '100%', height: 80 * scaleMultiplier, padding: 20 }}>
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'p',
           'Regular',
           'center',

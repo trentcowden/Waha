@@ -276,7 +276,7 @@ const AddSetScreen = ({
             }
           ]}
           textStyle={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'p',
             'Regular',
             'center',
@@ -287,7 +287,7 @@ const AddSetScreen = ({
             borderColor: colors(isDark, activeGroup.language).accent
           }}
           activeTextStyle={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'p',
             'Regular',
             'center',
@@ -315,7 +315,7 @@ const AddSetScreen = ({
           >
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'p',
                 'Regular',
                 'center',

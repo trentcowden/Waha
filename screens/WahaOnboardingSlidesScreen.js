@@ -275,7 +275,7 @@ const WahaOnboardingSlidesScreen = ({
           >
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h4',
                 'Bold',
                 'center',

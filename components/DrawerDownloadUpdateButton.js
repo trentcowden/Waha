@@ -84,7 +84,7 @@ const DrawerDownloadUpdateButton = ({
         style={[
           { paddingHorizontal: 10 },
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'center',

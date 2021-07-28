@@ -13,7 +13,8 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     font: getLanguageFont(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled
+    isDark: state.settings.isDarkModeEnabled,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -35,7 +36,8 @@ const OnboardingPage = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  font
+  font,
+  activeGroup
 }) => (
   <View
     style={[
@@ -47,7 +49,7 @@ const OnboardingPage = ({
       <Text
         style={[
           StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h2',
             'Bold',
             'center',
@@ -61,7 +63,7 @@ const OnboardingPage = ({
       <View style={{ height: 15 * scaleMultiplier }} />
       <Text
         style={StandardTypography(
-          { font, isRTL },
+          activeGroup.language,
           'h3',
           'Regular',
           'center',

@@ -14,13 +14,15 @@ export const colors = (isDark, languageID = null) => {
       languageFamily.data.forEach(language => {
         if (language.versions !== null) {
           language.versions.forEach(version => {
-            if (version.wahaID === languageID) {
-              accentColor = isDark ? language.colorDark : language.colorLight
+            if (version.languageID === languageID) {
+              accentColor = isDark
+                ? language.colors.dark
+                : language.colors.light
             }
           })
         } else {
-          if (language.wahaID === languageID) {
-            accentColor = isDark ? language.colorDark : language.colorLight
+          if (language.languageID === languageID) {
+            accentColor = isDark ? language.colors.dark : language.colors.light
           }
         }
       })

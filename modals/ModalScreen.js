@@ -106,7 +106,7 @@ const ModalScreen = ({
           <View style={styles.headerTitleContainer}>
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h3',
                 'Bold',
                 'center',

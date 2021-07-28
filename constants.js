@@ -91,7 +91,7 @@ export const groupNames = {
 export const getSystemIsRTL = () => {
   systemIsRTL = false
   languages.forEach(languageFamily => {
-    if (i18n.locale.slice(0, 2) === languageFamily.languageCode) {
+    if (i18n.locale.slice(0, 2) === languageFamily.languageFamilyID) {
       systemIsRTL = languageFamily.isRTL
     }
   })

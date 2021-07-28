@@ -90,7 +90,7 @@ const ChapterButton = ({
 
   // The default text style.
   const defaultTextStyle = StandardTypography(
-    { font, isRTL },
+    activeGroup.language,
     'p',
     'Bold',
     'center',

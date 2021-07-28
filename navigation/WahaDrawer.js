@@ -102,7 +102,7 @@ const WahaDrawer = ({
         </View>
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h2',
             'Black',
             'center',
@@ -147,7 +147,7 @@ const WahaDrawer = ({
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'p',
               'Regular',
               'left',

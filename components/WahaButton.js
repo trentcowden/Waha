@@ -129,7 +129,7 @@ const WahaButton = ({
   const labelStyle = [
     useDefaultFont
       ? SystemTypography(false, 'h3', 'Bold', 'center', color)
-      : StandardTypography({ font, isRTL }, 'h3', 'Bold', 'center', color),
+      : StandardTypography(activeGroup.language, 'h3', 'Bold', 'center', color),
     { fontWeight: font ? null : 'bold' },
     textStyle
   ]

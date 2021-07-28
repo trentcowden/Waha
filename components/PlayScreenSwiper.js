@@ -117,7 +117,7 @@ const PlayScreenSwiper = ({
           >
             <Text
               style={StandardTypography(
-                { font, isRTL },
+                activeGroup.language,
                 'h2',
                 'Black',
                 'left',

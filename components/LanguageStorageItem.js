@@ -16,9 +16,9 @@ function mapStateToProps (state) {
   return {
     font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
     isRTL: activeDatabaseSelector(state).isRTL,
-    t: activeDatabaseSelector(state).translations
+    t: activeDatabaseSelector(state).translations,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -37,10 +37,10 @@ const LanguageStorageItem = ({
   clearDownloads,
   // Props passed from redux.
   font,
-
   isRTL,
   isDark,
-  t
+  t,
+  activeGroup
 }) => {
   return (
     <View style={styles.languageStorageItemContainer}>
@@ -55,7 +55,7 @@ const LanguageStorageItem = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Regular',
             'left',
@@ -85,7 +85,7 @@ const LanguageStorageItem = ({
       >
         <Text
           style={StandardTypography(
-            { font, isRTL },
+            activeGroup.language,
             'h3',
             'Bold',
             'left',
@@ -97,7 +97,7 @@ const LanguageStorageItem = ({
         <Text
           style={[
             StandardTypography(
-              { font, isRTL },
+              activeGroup.language,
               'h3',
               'Regular',
               'left',
