@@ -25,7 +25,7 @@ function mapStateToProps (state) {
     isDark: state.settings.isDarkModeEnabled,
     font: getLanguageInfo(activeGroupSelector(state).language).font,
     t: activeDatabaseSelector(state).translations,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor

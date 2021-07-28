@@ -2,12 +2,11 @@ import React from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
   }
 }
 

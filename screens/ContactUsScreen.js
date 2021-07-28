@@ -17,6 +17,7 @@ import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
 import db from '../firebase/db'
+import { getLanguageInfo } from '../languages'
 import { appVersion } from '../modeSwitch'
 import {
   activeDatabaseSelector,
@@ -29,7 +30,7 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
     isConnected: state.network.isConnected,

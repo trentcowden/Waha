@@ -23,7 +23,7 @@ import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     t: activeDatabaseSelector(state).translations,
     isDark: state.settings.isDarkModeEnabled,
     showPasscodeSetSnackbar: state.popups.showPasscodeSetSnackbar,

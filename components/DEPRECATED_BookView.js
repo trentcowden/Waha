@@ -1,7 +1,6 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { StandardTypography } from '../styles/typography'
 
@@ -9,7 +8,7 @@ function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
   }
 }
 

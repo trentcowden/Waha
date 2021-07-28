@@ -19,7 +19,7 @@ import { colors } from '../styles/colors'
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     t: activeDatabaseSelector(state).translations,
     isConnected: state.network.isConnected,
 

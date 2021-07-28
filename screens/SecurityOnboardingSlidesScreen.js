@@ -8,6 +8,7 @@ import PageDots from '../components/PageDots'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { isTablet, scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -19,7 +20,7 @@ function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
     isDark: state.settings.isDarkModeEnabled,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state)
   }
 }

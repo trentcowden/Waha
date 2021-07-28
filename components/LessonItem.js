@@ -23,7 +23,7 @@ import DownloadStatusIndicator from './DownloadStatusIndicator'
 function mapStateToProps (state) {
   return {
     primaryColor: activeDatabaseSelector(state).primaryColor,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     downloads: state.downloads,
     t: activeDatabaseSelector(state).translations,
@@ -77,6 +77,7 @@ const LessonItem = ({
   activeGroup,
   downloads,
   t,
+  font,
   isConnected,
   areMobilizationToolsUnlocked,
   showTrailerHighlights,

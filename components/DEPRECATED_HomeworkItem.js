@@ -10,10 +10,7 @@ import {
 import { connect } from 'react-redux'
 import { colors } from '../../styles/colors'
 import { scaleMultiplier } from '../constants'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 
 // renders a simple touchable item within the main navigation drawer
 const HomeworkItem = props => {
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({})
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 

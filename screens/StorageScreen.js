@@ -12,12 +12,16 @@ import { connect } from 'react-redux'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import { getLanguageInfo } from '../languages'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     database: state.database,
     t: activeDatabaseSelector(state).translations,
     isDark: state.settings.isDarkModeEnabled

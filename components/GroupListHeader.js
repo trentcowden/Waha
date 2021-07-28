@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { deleteLanguageData } from '../redux/actions/databaseActions'
 import { removeDownload } from '../redux/actions/downloadActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
@@ -23,7 +24,7 @@ import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     database: state.database,
     activeDatabase: activeDatabaseSelector(state),
     groups: state.groups,

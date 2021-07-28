@@ -31,7 +31,7 @@ import SVG from './SVG.js'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeDatabase: activeDatabaseSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor,
     font: getLanguageInfo(activeGroupSelector(state).language).font,

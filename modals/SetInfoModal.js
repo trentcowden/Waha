@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
 import { scaleMultiplier, setItemModes } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { addSet } from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
@@ -24,7 +25,7 @@ function mapStateToProps (state) {
   return {
     downloads: state.downloads,
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
 

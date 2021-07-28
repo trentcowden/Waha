@@ -9,6 +9,7 @@ import {
   lessonTypes,
   scaleMultiplier
 } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -23,7 +24,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor,
     t: activeDatabaseSelector(state).translations,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     downloads: state.downloads,
     isConnected: state.network.isConnected
   }

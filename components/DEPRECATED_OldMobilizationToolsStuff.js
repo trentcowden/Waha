@@ -201,7 +201,7 @@ import GroupAvatar from '../GroupAvatar'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     t: activeDatabaseSelector(state).translations,
 
     isDark: state.settings.isDarkModeEnabled,
@@ -277,7 +277,7 @@ export default connect(mapStateToProps)(GroupListHeaderMT)
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
 
     isDark: state.settings.isDarkModeEnabled,

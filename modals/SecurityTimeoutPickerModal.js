@@ -4,19 +4,23 @@ import { connect } from 'react-redux'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import OptionsModal from '../modals/OptionsModal'
 import {
   setSecurityEnabled,
   setTimeoutDuration
 } from '../redux/actions/securityActions'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
     security: state.security,
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
   }
 }
 

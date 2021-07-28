@@ -30,7 +30,7 @@ import { StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
     font: getLanguageInfo(activeGroupSelector(state).language).font,

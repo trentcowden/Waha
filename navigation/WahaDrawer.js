@@ -7,6 +7,7 @@ import DrawerItem from '../components/DrawerItem'
 import GroupAvatar from '../components/GroupAvatar'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import {
   setHasFetchedLanguageData,
@@ -25,7 +26,7 @@ import { StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     primaryColor: activeDatabaseSelector(state).primaryColor,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
 

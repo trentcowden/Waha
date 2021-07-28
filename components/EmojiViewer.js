@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux'
 import { groupIcons, groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -21,7 +22,7 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled,
     t: activeDatabaseSelector(state).translations
   }

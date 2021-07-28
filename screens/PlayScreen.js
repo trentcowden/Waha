@@ -32,6 +32,7 @@ import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
+import { getLanguageInfo } from '../languages'
 import { logCompleteLesson } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
@@ -59,7 +60,7 @@ function mapStateToProps (state) {
     t: activeDatabaseSelector(state).translations,
     downloads: state.downloads,
     primaryColor: activeDatabaseSelector(state).primaryColor,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 

@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -12,8 +13,7 @@ import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
-
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled,
     t: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)

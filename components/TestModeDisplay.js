@@ -1,8 +1,9 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
+import { getLanguageInfo } from '../languages'
 import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { SystemTypography } from '../styles/typography'
 
@@ -10,7 +11,7 @@ function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
   }
 }
 

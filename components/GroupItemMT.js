@@ -3,18 +3,16 @@ import { StyleSheet, Switch, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { editGroup } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
 
     isDark: state.settings.isDarkModeEnabled,

@@ -12,6 +12,7 @@ import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
+import { getLanguageInfo } from '../languages'
 import { logEnableSecurityMode } from '../LogEventFunctions'
 import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
 import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
@@ -28,7 +29,7 @@ function mapStateToProps (state) {
 
     isDark: state.settings.isDarkModeEnabled,
     security: state.security,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state)
   }
 }

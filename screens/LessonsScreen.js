@@ -36,7 +36,7 @@ import { colors } from '../styles/colors'
 function mapStateToProps (state) {
   return {
     downloads: state.downloads,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
@@ -80,6 +80,7 @@ const LessonsScreen = ({
   activeDatabase,
   activeGroup,
   t,
+  font,
   downloadMedia,
   toggleComplete,
   removeDownload,

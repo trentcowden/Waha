@@ -2,12 +2,13 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import { getLanguageInfo } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled
   }
 }

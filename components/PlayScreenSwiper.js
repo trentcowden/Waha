@@ -4,6 +4,7 @@ import { Animated, StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import { connect } from 'react-redux'
 import { gutterSize, lessonTypes, scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -23,7 +24,7 @@ function mapStateToProps (state) {
     isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
   }
 }
 

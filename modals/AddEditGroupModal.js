@@ -12,6 +12,7 @@ import EmojiViewer from '../components/EmojiViewer'
 import GroupAvatar from '../components/GroupAvatar'
 import GroupNameTextInput from '../components/GroupNameTextInput'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
@@ -30,7 +31,7 @@ import { StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     groups: state.groups,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     t: activeDatabaseSelector(state).translations,
 
     isDark: state.settings.isDarkModeEnabled,

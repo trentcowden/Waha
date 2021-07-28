@@ -27,7 +27,7 @@ import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),

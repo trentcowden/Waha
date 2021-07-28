@@ -16,7 +16,7 @@ import WahaSeparator from './WahaSeparator'
 function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     t: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)
   }

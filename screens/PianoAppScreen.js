@@ -15,6 +15,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import Piano from '../components/Piano'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { setIsMuted, setIsTimedOut } from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
@@ -29,7 +30,7 @@ function mapStateToProps (state) {
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    isRTL: activeDatabaseSelector(state).isRTL
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
   }
 }
 

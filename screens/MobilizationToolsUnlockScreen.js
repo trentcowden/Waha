@@ -4,6 +4,7 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { logUnlockMobilizationTools } from '../LogEventFunctions'
 import { setAreMobilizationToolsUnlocked } from '../redux/actions/areMobilizationToolsUnlockedActions'
 import { addSet } from '../redux/actions/groupsActions'
@@ -19,7 +20,7 @@ import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     t: activeDatabaseSelector(state).translations,
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),

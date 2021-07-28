@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { getLessonInfo, scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
 import {
@@ -23,7 +24,7 @@ function mapStateToProps (state) {
   return {
     database: state.database,
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: activeDatabaseSelector(state).isRTL,
+    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
     isDark: state.settings.isDarkModeEnabled,
