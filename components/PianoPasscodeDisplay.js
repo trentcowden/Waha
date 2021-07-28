@@ -7,12 +7,10 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors, keyColors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 import PianoKeyLabel from './PianoKeyLabel'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
     security: state.security,
@@ -30,7 +28,6 @@ const PianoPasscodeDisplay = ({
   passcode,
   // Props passed from redux.
   font,
-
   security,
   isRTL,
   isDark,

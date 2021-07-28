@@ -9,14 +9,14 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     database: state.database,
     isRTL: activeDatabaseSelector(state).isRTL,
     groups: state.groups,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
@@ -58,8 +58,6 @@ const GroupItemMT = ({
   isRTL,
   isDark,
   groups,
-  font,
-
   areMobilizationToolsUnlocked,
   activeGroup,
   editGroup,
@@ -95,10 +93,7 @@ const GroupItemMT = ({
       <View style={styles.groupNameContainer}>
         <Text
           style={StandardTypography(
-            {
-              font: getLanguageFont(thisGroup.language),
-              isRTL: isRTL
-            },
+            thisGroup.language,
             'h3',
             'Regular',
             'left',

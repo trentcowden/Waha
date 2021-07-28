@@ -3,13 +3,13 @@ import React from 'react'
 import { Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { getSetInfo, scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import SetsScreen from '../screens/SetsScreen'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 
 // Create the top tab navigator.
 const Tab = createMaterialTopTabNavigator()
@@ -18,9 +18,8 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
-
     primaryColor: activeDatabaseSelector(state).primaryColor,
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
@@ -37,7 +36,6 @@ const SetsTabs = ({
   t,
   activeDatabase,
   font,
-
   primaryColor,
   isRTL,
   isDark,

@@ -12,6 +12,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -24,7 +25,7 @@ import { deleteGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 import ar from '../translations/ar.json'
 import en from '../translations/en.json'
 import hi from '../translations/hi.json'
@@ -37,7 +38,9 @@ i18n.translations = {
 
 function mapStateToProps (state) {
   var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
-  var font = state.activeGroup ? getLanguageFont(activeGroup.language) : null
+  var font = state.activeGroup
+    ? getLanguageInfo(activeGroup.language).font
+    : null
   var isRTL = state.activeGroup
     ? state.database[activeGroup.language].isRTL
     : null
@@ -109,8 +112,6 @@ const LoadingScreen = ({
   groups,
   recentActiveGroup,
   hasFetchedLanguageData,
-  font,
-
   isRTL,
   isDark,
   t,

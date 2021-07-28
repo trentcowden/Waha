@@ -9,6 +9,7 @@ import {
   lessonTypes,
   scaleMultiplier
 } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { removeDownload } from '../redux/actions/downloadActions'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import {
@@ -16,7 +17,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 import DownloadStatusIndicator from './DownloadStatusIndicator'
 
 function mapStateToProps (state) {
@@ -27,7 +28,7 @@ function mapStateToProps (state) {
     downloads: state.downloads,
     t: activeDatabaseSelector(state).translations,
     isConnected: state.network.isConnected,
-    font: getLanguageFont(activeGroupSelector(state).language),
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     showTrailerHighlights: state.persistedPopups.showTrailerHighlights
@@ -77,7 +78,6 @@ const LessonItem = ({
   downloads,
   t,
   isConnected,
-  font,
   areMobilizationToolsUnlocked,
   showTrailerHighlights,
   setShowTrailerHighlights,

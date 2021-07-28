@@ -8,6 +8,7 @@ import SetItem from '../components/SetItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { getSetInfo, scaleMultiplier, setItemModes } from '../constants'
+import { getLanguageInfo } from '../languages'
 import SetInfoModal from '../modals/SetInfoModal'
 import { addSet } from '../redux/actions/groupsActions'
 import {
@@ -15,15 +16,14 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL,
     activeDatabase: activeDatabaseSelector(state),
@@ -52,8 +52,6 @@ const AddSetScreen = ({
     params: { category }
   },
   // Props passed from redux.
-  font,
-
   t,
   isRTL,
   isDark,
@@ -334,7 +332,7 @@ const AddSetScreen = ({
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
-          fontFamily: font + '-Black',
+          fontFamily: getLanguageInfo(activeGroup.language).font + '-Black',
           textAlign: 'center'
         }}
         backgroundColor={colors(isDark).success}

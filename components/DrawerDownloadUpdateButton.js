@@ -7,7 +7,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -15,7 +15,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     t: activeDatabaseSelector(state).translations,
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     isConnected: state.network.isConnected,
@@ -40,8 +40,6 @@ const DrawerDownloadUpdateButton = ({
   t,
   isRTL,
   isDark,
-  font,
-
   isConnected,
   languageCoreFilesToUpdate
 }) => (

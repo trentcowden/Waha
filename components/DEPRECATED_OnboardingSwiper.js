@@ -12,19 +12,11 @@ import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import {
-  getLanguageFont,
-  StandardTypography,
-  SystemTypography
-} from '../styles/typography'
+import { StandardTypography, SystemTypography } from '../styles/typography'
 import WahaButton from './WahaButton'
 
 function mapStateToProps (state) {
-  return activeGroupSelector(state)
-    ? {
-        font: getLanguageFont(activeGroupSelector(state).language)
-      }
-    : {}
+  return activeGroupSelector(state) ? {} : {}
 }
 
 const OnboardingSwiper = ({

@@ -25,14 +25,14 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     groups: state.groups,
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state),
@@ -103,7 +103,6 @@ const AddEditGroupModal = ({
   isRTL,
   isDark,
   t,
-  font,
   activeGroup,
   globalGroupCounter,
   areMobilizationToolsUnlocked,

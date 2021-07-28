@@ -1,16 +1,12 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL

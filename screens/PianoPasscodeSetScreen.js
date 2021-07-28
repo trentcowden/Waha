@@ -20,12 +20,12 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
     security: state.security,
     isRTL: activeDatabaseSelector(state).isRTL,
@@ -56,7 +56,6 @@ const PianoPasscodeSetScreen = ({
   },
   // Props passed from redux.
   t,
-  font,
   security,
   isRTL,
   isDark,

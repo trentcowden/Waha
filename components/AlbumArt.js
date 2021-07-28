@@ -14,13 +14,12 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 import SVG from './SVG'
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
@@ -46,7 +45,6 @@ const AlbumArt = ({
   // Props passed from redux.
   activeGroup,
   activeDatabase,
-  font,
   isDark,
   t,
   isRTL

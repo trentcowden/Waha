@@ -7,12 +7,12 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)
@@ -33,8 +33,6 @@ const DrawerItem = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  font,
-
   activeGroup
 }) => (
   <TouchableOpacity

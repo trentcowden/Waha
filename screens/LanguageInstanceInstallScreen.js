@@ -124,6 +124,7 @@ const LanguageInstanceInstallScreen = ({
     }
   },
   // Props passed from redux.
+  font,
   groups,
   database,
   activeGroup,

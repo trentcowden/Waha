@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
+import * as StoreReview from 'expo-store-review'
 import React, { useEffect, useState } from 'react'
 import { AppState, LogBox, View } from 'react-native'
 import { connect } from 'react-redux'
@@ -7,7 +8,14 @@ import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import TestModeDisplay from '../components/TestModeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import SetsTabs from '../navigation/SetsTabs'
+import {
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout
+} from '../redux/actions/persistedPopupsActions'
 import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
@@ -29,14 +37,7 @@ import SecurityOnboardingSlidesScreen from '../screens/SecurityOnboardingSlidesS
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors } from '../styles/colors'
-import { getLanguageFont, SystemTypography } from '../styles/typography'
-import * as StoreReview from 'expo-store-review'
-import {
-  setHasUsedPlayScreen,
-  setLessonCounter,
-  setNumLessonsTilReview,
-  setReviewTimeout
-} from '../redux/actions/persistedPopupsActions'
+import { SystemTypography } from '../styles/typography'
 
 // Ignore the Android timer warning because it's annoying.
 LogBox.ignoreLogs(['Setting a timer'])
@@ -48,7 +49,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),

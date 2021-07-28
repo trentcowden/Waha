@@ -14,6 +14,7 @@ import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { logShareApp } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import { appVersion } from '../modeSwitch'
@@ -22,12 +23,12 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations
@@ -42,7 +43,6 @@ const InformationScreen = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  font,
   activeGroup,
   t
 }) => {
@@ -299,7 +299,7 @@ const InformationScreen = ({
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
-          fontFamily: font + '-Black',
+          fontFamily: getLanguageInfo(activeGroup.language).font + '-Black',
           textAlign: 'center'
         }}
         backgroundColor={colors(isDark).success}

@@ -4,17 +4,16 @@ import { Animated, StyleSheet, View } from 'react-native'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import {
-  activeDatabaseSelector,
-  activeGroupSelector
+    activeDatabaseSelector,
+    activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
@@ -35,8 +34,7 @@ const LessonTextScrollBar = ({
   onHandlerStateChange,
   // Props passed from redux.
   activeGroup,
-  activeDatabase,
-  font,
+  activeDatabase
 
   t,
   isRTL,

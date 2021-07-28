@@ -7,14 +7,13 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     primaryColor: activeDatabaseSelector(state).primaryColor
@@ -54,8 +53,6 @@ const PageDots = ({
   activeDatabase,
   isRTL,
   isDark,
-  font,
-
   primaryColor
 }) => {
   // Array that holds the many dot components.

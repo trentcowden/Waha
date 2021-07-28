@@ -7,7 +7,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
 function mapStateToProps (state) {
@@ -15,7 +15,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -37,7 +37,6 @@ const CopyrightsModal = ({
   isRTL,
   activeGroup,
   t,
-  font,
   isDark
 }) => {
   return (

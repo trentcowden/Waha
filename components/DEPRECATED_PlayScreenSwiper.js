@@ -5,11 +5,10 @@ import PagerView from 'react-native-pager-view'
 import { connect } from 'react-redux'
 import { lessonTypes, scaleMultiplier } from '../constants'
 import {
-  activeDatabaseSelector,
-  activeGroupSelector
+    activeDatabaseSelector,
+    activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 import AlbumArt from './AlbumArt'
 import LessonTextSectionHeader from './LessonTextSectionHeader'
 import LessonTextViewer from './LessonTextViewer'
@@ -20,7 +19,7 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,
@@ -52,8 +51,7 @@ const PlayScreenSwiper = ({
   isThisLessonComplete,
   // Props passed from redux.
   activeGroup,
-  activeDatabase,
-  font,
+  activeDatabase
 
   t,
   isRTL

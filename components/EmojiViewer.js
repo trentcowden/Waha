@@ -15,16 +15,14 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
     t: activeDatabaseSelector(state).translations
   }
 }
@@ -47,8 +45,6 @@ const EmojiViewer = ({
   activeDatabase,
   isRTL,
   isDark,
-  font,
-
   t
 }) => {
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)

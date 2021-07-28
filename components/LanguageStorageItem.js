@@ -3,18 +3,18 @@ import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 import WahaButton from './WahaButton'
 import WahaSeparator from './WahaSeparator'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
@@ -36,7 +36,6 @@ const LanguageStorageItem = ({
   megabytes,
   clearDownloads,
   // Props passed from redux.
-  font,
   isRTL,
   isDark,
   t,
@@ -118,7 +117,9 @@ const LanguageStorageItem = ({
           width={92 * scaleMultiplier}
           onPress={clearDownloads}
           style={{ height: 45 * scaleMultiplier }}
-          textStyle={{ fontFamily: font + '-Regular' }}
+          textStyle={{
+            fontFamily: getLanguageInfo(activeGroup.language).font + '-Regular'
+          }}
         />
       </View>
       <WahaSeparator />

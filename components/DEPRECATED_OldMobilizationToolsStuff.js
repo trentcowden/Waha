@@ -184,18 +184,18 @@ import { connect } from 'react-redux'
 import { getSetInfo, scaleMultiplier } from '../../constants'
 import { logEnableMobilizationToolsForAGroup } from '../../LogEventFunctions'
 import {
-  addSet,
-  setShouldShowMobilizationToolsTab
+    addSet,
+    setShouldShowMobilizationToolsTab
 } from '../../redux/actions/groupsActions'
 import {
-  activeDatabaseSelector,
-  activeGroupSelector
+    activeDatabaseSelector,
+    activeGroupSelector
 } from '../../redux/reducers/activeGroup'
 import { colors } from '../../styles/colors'
 import {
-  getLanguageFont,
-  StandardTypography,
-  SystemTypography
+    getLanguageFont,
+    StandardTypography,
+    SystemTypography
 } from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 
@@ -203,7 +203,7 @@ function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     database: state.database
@@ -220,8 +220,7 @@ const GroupListHeaderMT = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  t,
-  font,
+  t
 
   database
 }) => {
@@ -280,7 +279,7 @@ function mapStateToProps (state) {
     database: state.database,
     isRTL: activeDatabaseSelector(state).isRTL,
     groups: state.groups,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
@@ -310,8 +309,7 @@ const GroupItemMT = ({
   database,
   isRTL,
   isDark,
-  groups,
-  font,
+  groups
 
   areMobilizationToolsUnlocked,
   activeGroup,

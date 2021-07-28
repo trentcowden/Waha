@@ -12,19 +12,14 @@ import { connect } from 'react-redux'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
     database: state.database,
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -46,8 +41,7 @@ const StorageScreen = ({
   isRTL,
   isDark,
   database,
-  t,
-  font
+  t
 }) => {
   /** Keeps track of the amount of storage each language's downloaded Story and Training chapter mp3s and mp4s take up. */
   const [languageStorageSizes, setLanguageSizes] = useState({})

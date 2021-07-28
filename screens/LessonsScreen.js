@@ -21,6 +21,7 @@ import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
+import { getLanguageInfo } from '../languages'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
@@ -31,7 +32,6 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -41,7 +41,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language)
+    font: getLanguageInfo(activeGroupSelector(state).language).font
   }
 }
 
@@ -80,7 +80,6 @@ const LessonsScreen = ({
   activeDatabase,
   activeGroup,
   t,
-  font,
   downloadMedia,
   toggleComplete,
   removeDownload,

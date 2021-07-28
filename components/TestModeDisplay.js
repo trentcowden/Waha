@@ -2,16 +2,12 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, SystemTypography } from '../styles/typography'
+import { SystemTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL
@@ -23,7 +19,6 @@ function mapStateToProps (state) {
  */
 const TestModeDisplay = ({
   // Props passed from redux.
-  font,
   isDark,
   isRTL
 }) => {

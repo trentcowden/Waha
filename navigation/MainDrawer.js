@@ -116,7 +116,6 @@ const MainDrawer = ({
   groups,
   installedLanguageInstances,
   areMobilizationToolsUnlocked,
-
   updateConnectionStatus,
   storeLanguageData,
   storeLanguageSets,

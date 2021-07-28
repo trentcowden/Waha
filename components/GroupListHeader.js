@@ -19,7 +19,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -29,7 +29,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -67,8 +67,6 @@ const GroupListHeader = ({
   groups,
   activeGroup,
   t,
-  font,
-
   deleteGroup,
   deleteLanguageData,
   removeDownload
@@ -191,10 +189,7 @@ const GroupListHeader = ({
         <Text
           style={[
             StandardTypography(
-              {
-                font: getLanguageFont(languageID),
-                isRTL: isRTL
-              },
+              languageID,
               'h3',
               'Regular',
               'left',

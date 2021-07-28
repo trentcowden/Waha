@@ -14,11 +14,10 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state),
@@ -51,7 +50,6 @@ const ChapterButton = ({
   isVideoDownloaded = false,
   // Props passed from redux.
   font,
-
   activeGroup,
   primaryColor,
   t,

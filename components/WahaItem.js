@@ -7,11 +7,10 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
     isRTL: activeDatabaseSelector(state).isRTL,
@@ -33,8 +32,6 @@ const WahaItem = ({
   title,
   children,
   // Props passed from redux.
-  font,
-
   isRTL,
   isDark,
   activeGroup

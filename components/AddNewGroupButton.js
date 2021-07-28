@@ -8,12 +8,12 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
     t: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)
@@ -34,7 +34,6 @@ const AddNewGroupButton = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  font,
   t,
   activeGroup
 }) => {

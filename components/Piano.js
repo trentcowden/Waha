@@ -7,13 +7,12 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors, keyColors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 import PianoKeyLabel from './PianoKeyLabel'
 
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)
@@ -48,8 +47,6 @@ const Piano = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  font,
-
   activeGroup
 }) => {
   /** Ref to store the audio object. */

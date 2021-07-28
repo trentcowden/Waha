@@ -16,7 +16,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 import GroupAvatar from './GroupAvatar'
 
 function mapStateToProps (state) {
@@ -26,7 +26,6 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     primaryColor: activeDatabaseSelector(state).primaryColor,
     t: activeDatabaseSelector(state).translations
@@ -68,7 +67,6 @@ const GroupItem = ({
   isDark,
   groups,
   activeGroup,
-  font,
   primaryColor,
   t,
   deleteGroup,

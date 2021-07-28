@@ -16,6 +16,7 @@ import {
   scaleMultiplier,
   setItemModes
 } from '../constants'
+import { getLanguageInfo } from '../languages'
 import MessageModal from '../modals/MessageModal'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
@@ -24,7 +25,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -32,9 +33,8 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
-
     // For testing.
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter,

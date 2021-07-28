@@ -18,21 +18,22 @@ import WahaHero from '../components/WahaHero'
 import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     database: state.database,
     isRTL: activeDatabaseSelector(state).isRTL,
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    groups: state.groups
+    groups: state.groups,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -47,10 +48,9 @@ const MobilizationToolsScreen = ({
   isRTL,
   isDark,
   t,
-  font,
-
   areMobilizationToolsUnlocked,
-  groups
+  groups,
+  activeGroup
 }) => {
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -261,7 +261,7 @@ const MobilizationToolsScreen = ({
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
-          fontFamily: font + '-Black',
+          fontFamily: getLanguageInfo(activeGroup.language).font + '-Black',
           textAlign: 'center'
         }}
         backgroundColor={colors(isDark).success}

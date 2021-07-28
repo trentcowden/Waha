@@ -20,7 +20,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
@@ -28,7 +28,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
     isConnected: state.network.isConnected,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
@@ -59,7 +59,6 @@ const WahaDrawer = ({
   isDark,
   activeGroup,
   t,
-  font,
   isConnected,
   languageCoreFilesToUpdate,
   updateLanguageCoreFiles,

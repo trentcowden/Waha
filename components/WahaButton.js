@@ -7,16 +7,11 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import {
-  getLanguageFont,
-  StandardTypography,
-  SystemTypography
-} from '../styles/typography'
+import { StandardTypography, SystemTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return activeGroupSelector(state)
     ? {
-        font: getLanguageFont(activeGroupSelector(state).language),
         isDark: state.settings.isDarkModeEnabled,
         isRTL: activeDatabaseSelector(state).isRTL,
         activeGroup: activeGroupSelector(state)
@@ -50,10 +45,10 @@ const WahaButton = ({
   useDefaultFont = false,
   extraComponent = null,
   // Props passed from redux.
-  font = null,
   isRTL = null,
   activeGroup = null,
-  isDark
+  isDark,
+  font
 }) => {
   /** Keeps track of the color of the bottom border (shadow) of the button. */
   const [shadowColor, setShadowColor] = useState()

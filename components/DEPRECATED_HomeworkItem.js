@@ -14,7 +14,6 @@ import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
-import { getLanguageFont } from '../styles/typography'
 
 // renders a simple touchable item within the main navigation drawer
 const HomeworkItem = props => {
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({})
 function mapStateToProps (state) {
   return {
     isRTL: activeDatabaseSelector(state).isRTL,
-    font: getLanguageFont(activeGroupSelector(state).language),
+
     isDark: state.settings.isDarkModeEnabled,
 
     activeGroup: activeGroupSelector(state)

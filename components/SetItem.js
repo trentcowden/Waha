@@ -19,13 +19,14 @@ import {
   scaleMultiplier,
   setItemModes
 } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { addSet } from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont, StandardTypography } from '../styles/typography'
+import { StandardTypography } from '../styles/typography'
 import SVG from './SVG.js'
 
 function mapStateToProps (state) {
@@ -33,7 +34,7 @@ function mapStateToProps (state) {
     isRTL: activeDatabaseSelector(state).isRTL,
     activeDatabase: activeDatabaseSelector(state),
     primaryColor: activeDatabaseSelector(state).primaryColor,
-    font: getLanguageFont(activeGroupSelector(state).language),
+    font: getLanguageInfo(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     t: activeDatabaseSelector(state).translations,
@@ -66,11 +67,11 @@ const SetItem = ({
   setIsInInfoMode = null,
   isInInfoMode = null,
   // Props passed from redux.
+  font,
   isRTL,
   isDark,
   activeDatabase,
   primaryColor,
-  font,
   activeGroup,
   t,
   areMobilizationToolsUnlocked,

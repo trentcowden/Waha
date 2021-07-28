@@ -16,7 +16,6 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getLanguageFont } from '../styles/typography'
 
 // modal variant that shows some information
 const HomeworkModal = props => {
@@ -105,7 +104,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    font: getLanguageFont(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
 
     t: activeDatabaseSelector(state).translations,

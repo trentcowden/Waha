@@ -19,12 +19,12 @@ const LanguageItem = ({
   // Props passed from a parent component.
   nativeName,
   localeName,
-  font,
   isDark,
   logos,
   onPress,
   isSelected,
-  playAudio
+  playAudio,
+  font
 }) => (
   <View
     style={[
