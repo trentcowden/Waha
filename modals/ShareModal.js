@@ -2,23 +2,10 @@ import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 import React, { useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
-import { connect } from 'react-redux'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { logShareApp, logShareAudio, logShareText } from '../LogEventFunctions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import OptionsModal from './OptionsModal'
-
-function mapStateToProps (state) {
-  return {
-    t: activeDatabaseSelector(state).translations,
-    downloads: state.downloads,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 const shareTypes = {
   APP: 1,
@@ -45,10 +32,10 @@ const ShareModal = ({
   lesson,
   lessonType,
   set,
-  // Props passed from redux.
   t,
   downloads,
-  activeGroup
+  activeGroup,
+  isDark
 }) => {
   const [isLessonDownloaded, setIsLessonDownloaded] = useState(true)
 
@@ -149,10 +136,14 @@ const ShareModal = ({
       isVisible={isVisible}
       hideModal={hideModal}
       closeText={closeText}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OptionsModalButton
         label={t.general && t.general.share_app}
         onPress={() => shareLessonContent(shareTypes.APP)}
+        isDark={isDark}
+        activeGroup={activeGroup}
       />
       {/* Include a "Share Text" button if a lesson has questions. If it has questions, then it also has Scripture text. */}
       {lessonType.includes('Questions') ? (
@@ -161,6 +152,8 @@ const ShareModal = ({
           <OptionsModalButton
             label={t.general && t.general.share_passage_text}
             onPress={() => shareLessonContent(shareTypes.TEXT)}
+            isDark={isDark}
+            activeGroup={activeGroup}
           />
         </View>
       ) : null}
@@ -173,6 +166,8 @@ const ShareModal = ({
             <OptionsModalButton
               label={t.general && t.general.share_passage_audio}
               onPress={() => shareLessonContent(shareTypes.AUDIO)}
+              isDark={isDark}
+              activeGroup={activeGroup}
             />
           </View>
         )}
@@ -185,6 +180,8 @@ const ShareModal = ({
             <OptionsModalButton
               label={t.general && t.general.share_video_link}
               onPress={() => shareLessonContent(shareTypes.VIDEO)}
+              isDark={isDark}
+              activeGroup={activeGroup}
             />
           </View>
         )}
@@ -194,6 +191,8 @@ const ShareModal = ({
           <OptionsModalButton
             label={t.general && t.general.share_mobilization_tools}
             onPress={() => shareLessonContent(shareTypes.MOBILIZATION_TOOLS)}
+            isDark={isDark}
+            activeGroup={activeGroup}
           />
         </View>
       )}
@@ -201,4 +200,4 @@ const ShareModal = ({
   )
 }
 
-export default connect(mapStateToProps)(ShareModal)
+export default ShareModal

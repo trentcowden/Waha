@@ -5,21 +5,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { connect } from 'react-redux'
 import { isTablet, scaleMultiplier } from '../constants'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    primaryColor: activeDatabaseSelector(state).primaryColor,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A component that shows the play/pause and skip buttons on the Play Screen.
@@ -36,7 +23,6 @@ const PlaybackControls = ({
   playHandler,
   mediaProgress,
   playFromLocation,
-  // Props passed from redux.
   primaryColor,
   isDark,
   activeGroup
@@ -116,4 +102,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(PlaybackControls)
+export default PlaybackControls

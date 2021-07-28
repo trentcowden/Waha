@@ -7,27 +7,9 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { connect } from 'react-redux'
 import { gutterSize, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-
-    isDark: state.settings.isDarkModeEnabled,
-
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
-  }
-}
 
 /*
   A simple set of 3 components to display different parts of the lesson text.
@@ -110,7 +92,6 @@ const LessonTextContent = ({
   onScroll,
   sectionOffsets,
   setShowCopyrightsModal,
-  // Props passed from redux.
   activeGroup,
   activeDatabase,
   isDark,
@@ -313,4 +294,4 @@ const LessonTextContent = ({
 }
 const styles = StyleSheet.create({})
 
-export default connect(mapStateToProps)(LessonTextContent)
+export default LessonTextContent

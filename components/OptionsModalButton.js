@@ -1,19 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A simple button component that is used inside the <OptionsModal /> component.
@@ -27,9 +16,6 @@ const OptionsModalButton = ({
   style,
   label,
   children = null,
-  // Props passed from redux.
-  font,
-  isRTL,
   isDark,
   activeGroup
 }) => (
@@ -61,4 +47,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(OptionsModalButton)
+export default OptionsModalButton

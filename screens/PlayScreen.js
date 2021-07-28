@@ -978,6 +978,11 @@ const PlayScreen = ({
               markLessonAsComplete={markLessonAsComplete}
               isThisLessonComplete={isThisLessonComplete}
               setShowCopyrightsModal={setShowCopyrightsModal}
+              activeGroup={activeGroup}
+              activeDatabase={activeDatabase}
+              isDark={isDark}
+              t={t}
+              isRTL={isRTL}
             />
           </Animated.View>
         )}
@@ -1023,6 +1028,12 @@ const PlayScreen = ({
               isVideoDownloaded={isVideoDownloaded}
               lessonType={lessonType}
               lessonID={thisLesson.id}
+              isDark={isDark}
+              activeGroup={activeGroup}
+              activeGroup={activeGroup}
+              t={t}
+              downloads={downloads}
+              isConnected={isConnected}
             />
           )}
           <Scrubber
@@ -1030,6 +1041,7 @@ const PlayScreen = ({
             shouldThumbUpdate={shouldThumbUpdate}
             mediaLength={mediaLength}
             mediaProgress={mediaProgress}
+            isDark={isDark}
           />
           <PlaybackControls
             isMediaPlaying={isMediaPlaying}
@@ -1037,6 +1049,8 @@ const PlayScreen = ({
             playHandler={playHandler}
             mediaProgress={mediaProgress}
             playFromLocation={playFromLocation}
+            isDark={isDark}
+            activeGroup={activeGroup}
           />
         </SafeAreaView>
       )}
@@ -1048,6 +1062,10 @@ const PlayScreen = ({
         lesson={thisLesson}
         lessonType={lessonType}
         set={thisSet}
+        t={t}
+        downloads={downloads}
+        activeGroup={activeGroup}
+        isDark={isDark}
       />
       <MessageModal
         isVisible={showSetCompleteModal}

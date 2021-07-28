@@ -1,17 +1,7 @@
 import React from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
 
 /**
  * A component that renders behind the <LessonItem /> component that gets revealed when the user swipes the lesson item.
@@ -24,7 +14,6 @@ const LessonSwipeBackdrop = ({
   isComplete,
   toggleComplete,
   showShareModal,
-  // Props passed from redux.
   isRTL,
   isDark
 }) => (
@@ -103,4 +92,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(LessonSwipeBackdrop)
+export default LessonSwipeBackdrop

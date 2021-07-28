@@ -44,6 +44,7 @@ const LessonItem = ({
   font,
   areMobilizationToolsUnlocked,
   showTrailerHighlights,
+  isConnected,
   setShowTrailerHighlights,
   removeDownload
 }) => {
@@ -310,6 +311,10 @@ const LessonItem = ({
             showDownloadLessonModal={showDownloadLessonModal}
             lessonID={thisLesson.id}
             lessonType={lessonType}
+            isConnected={isConnected}
+            downloads={downloads}
+            isDark={isDark}
+            removeDownload={removeDownload}
           />
         )}
       </View>

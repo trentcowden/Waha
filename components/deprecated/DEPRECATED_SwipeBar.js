@@ -1,8 +1,8 @@
 //basic imports
 import React from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { scaleMultiplier } from '../constants'
-import { colors } from '../styles/colors'
+import { scaleMultiplier } from '../../constants'
+import { colors } from '../../styles/colors'
 
 /**
  * Component that indicates that the AlbumArtSwiper can be swiped to a different page. Basically a copy of the nav bar on the bottom of iPhone 10+'s.

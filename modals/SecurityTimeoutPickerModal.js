@@ -59,6 +59,8 @@ const SecurityTimeoutPickerModal = ({
       isVisible={isVisible}
       hideModal={hideModal}
       closeText={t.general && t.general.cancel}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       {/* Button to set the timeout duration to instant. */}
       <OptionsModalButton
@@ -83,6 +85,8 @@ const SecurityTimeoutPickerModal = ({
         onPress={() => {
           setTimeoutDuration(60000), hideModal()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         {security.timeoutDuration === 60000 ? (
           <Icon
@@ -100,6 +104,8 @@ const SecurityTimeoutPickerModal = ({
         onPress={() => {
           setTimeoutDuration(300000), hideModal()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         {security.timeoutDuration === 300000 ? (
           <Icon
@@ -117,6 +123,8 @@ const SecurityTimeoutPickerModal = ({
         onPress={() => {
           setTimeoutDuration(900000), hideModal()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         {security.timeoutDuration === 900000 ? (
           <Icon
@@ -134,6 +142,8 @@ const SecurityTimeoutPickerModal = ({
         onPress={() => {
           setTimeoutDuration(3600000), hideModal()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         {security.timeoutDuration === 3600000 ? (
           <Icon

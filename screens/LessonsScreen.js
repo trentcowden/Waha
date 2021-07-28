@@ -44,7 +44,8 @@ function mapStateToProps (state) {
     t: activeDatabaseSelector(state).translations,
     font: getLanguageInfo(activeGroupSelector(state).language).font,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    showTrailerHighlights: state.persistedPopups.showTrailerHighlights
+    showTrailerHighlights: state.persistedPopups.showTrailerHighlights,
+    isConnected: state.network.isConnected
   }
 }
 
@@ -88,6 +89,7 @@ const LessonsScreen = ({
   t,
   font,
   areMobilizationToolsUnlocked,
+  isConnected,
   showTrailerHighlights,
   downloadMedia,
   toggleComplete,
@@ -300,6 +302,8 @@ const LessonsScreen = ({
         setShowShareModal(true)
         rowMap[getLessonInfo('index', data.item.id)].closeRow()
       }}
+      isRTL={isRTL}
+      isDark={isDark}
     />
   )
 
@@ -367,6 +371,7 @@ const LessonsScreen = ({
         showTrailerHighlights={showTrailerHighlights}
         setShowTrailerHighlights={setShowTrailerHighlights}
         removeDownload={removeDownload}
+        isConnected={isConnected}
       />
     )
   }
@@ -426,20 +431,28 @@ const LessonsScreen = ({
         isVisible={showDownloadLessonModal}
         hideModal={() => setShowDownloadLessonModal(false)}
         closeText={t.general && t.general.cancel}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <OptionsModalButton
           label={t.lessons && t.lessons.download_lesson}
           onPress={downloadLessonFromModal}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
       </OptionsModal>
       <OptionsModal
         isVisible={showDeleteLessonModal}
         hideModal={() => setShowDeleteLessonModal(false)}
         closeText={t.general && t.general.cancel}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         <OptionsModalButton
           label={t.lessons && t.lessons.remove_download}
           onPress={deleteLessonFromModal}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
       </OptionsModal>
       <ShareModal
@@ -449,6 +462,10 @@ const LessonsScreen = ({
         lesson={activeLessonInModal}
         lessonType={getLessonType(activeLessonInModal)}
         set={thisSet}
+        t={t}
+        downloads={downloads}
+        activeGroup={activeGroup}
+        isDark={isDark}
       />
       <MessageModal
         isVisible={showSetCompleteModal}

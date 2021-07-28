@@ -1,26 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import { connect } from 'react-redux'
 import { lessonTypes, scaleMultiplier } from '../constants'
-import { removeDownload } from '../redux/actions/downloadActions'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    isConnected: state.network.isConnected,
-    downloads: state.downloads,
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    }
-  }
-}
 
 /**
  * A component that shows the status of the download for a lesson as a button which allows the user to do an action related to the download, like start it or delete it.
@@ -39,7 +21,6 @@ const DownloadStatusIndicator = ({
   showDownloadLessonModal,
   lessonID,
   lessonType,
-  // Props passed from redux.
   isConnected,
   downloads,
   isDark,
@@ -169,7 +150,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DownloadStatusIndicator)
+export default DownloadStatusIndicator

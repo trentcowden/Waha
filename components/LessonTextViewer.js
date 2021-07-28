@@ -2,27 +2,9 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import LessonTextContent from './LessonTextContent'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-
-    isDark: state.settings.isDarkModeEnabled,
-
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
-  }
-}
 
 const scrollBarSize = 40 * scaleMultiplier
 
@@ -50,7 +32,6 @@ const LessonTextViewer = ({
   markLessonAsComplete,
   isThisLessonComplete,
   setShowCopyrightsModal = null,
-  // Props passed from redux.
   activeGroup,
   activeDatabase,
   isDark,
@@ -171,6 +152,11 @@ const LessonTextViewer = ({
         onScroll={onScroll}
         sectionOffsets={sectionOffsets}
         setShowCopyrightsModal={setShowCopyrightsModal}
+        activeGroup={activeGroup}
+        activeDatabase={activeDatabase}
+        isDark={isDark}
+        t={t}
+        isRTL={isRTL}
       />
       <LinearGradient
         colors={
@@ -194,4 +180,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(LessonTextViewer)
+export default LessonTextViewer

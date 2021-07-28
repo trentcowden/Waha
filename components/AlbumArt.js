@@ -7,27 +7,9 @@ import {
   TouchableHighlight,
   View
 } from 'react-native'
-import { connect } from 'react-redux'
 import { gutterSize, isTablet, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import SVG from './SVG'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-
-    isDark: state.settings.isDarkModeEnabled,
-
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
-  }
-}
 
 /**
  * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
@@ -44,12 +26,8 @@ const AlbumArt = ({
   playFeedbackOpacity,
   playFeedbackZIndex,
   isMediaPlaying,
-  // Props passed from redux.
   activeGroup,
-  activeDatabase,
-  isDark,
-  t,
-  isRTL
+  isDark
 }) => (
   <View
     style={[
@@ -122,4 +100,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(AlbumArt)
+export default AlbumArt

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import { connect } from 'react-redux'
 import {
   chapterButtonModes,
   chapters,
@@ -9,26 +8,8 @@ import {
   lessonTypes,
   scaleMultiplier
 } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-
-    activeGroup: activeGroupSelector(state),
-    primaryColor: activeDatabaseSelector(state).primaryColor,
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    downloads: state.downloads,
-    isConnected: state.network.isConnected
-  }
-}
 
 /**
  * Pressable component for a single chapter button used in ChapterSeparator. Has a variety of possible styles based on its current mode.
@@ -49,12 +30,8 @@ const ChapterButton = ({
   lessonID = null,
   isAudioDownloaded = false,
   isVideoDownloaded = false,
-  // Props passed from redux.
-  font,
   activeGroup,
-  primaryColor,
   t,
-  isRTL,
   isDark,
   downloads,
   isConnected
@@ -304,9 +281,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 3,
     paddingHorizontal: 3
-    // borderTopWidth: 2,
-    // borderBottomWidth: 2
   }
 })
 
-export default connect(mapStateToProps)(ChapterButton)
+export default ChapterButton

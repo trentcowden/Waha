@@ -1,20 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A modal component that displays a list of buttons. Very similar to the standard iOS action sheet.
@@ -31,7 +20,6 @@ const OptionsModal = ({
   children,
   // Props passed from redux.
   isDark,
-  isRTL,
   activeGroup
 }) => (
   <Modal
@@ -102,4 +90,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(OptionsModal)
+export default OptionsModal

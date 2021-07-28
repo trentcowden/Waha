@@ -1,20 +1,8 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
 import { chapters, gutterSize, isTablet, lessonTypes } from '../constants'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import ChapterButton from './ChapterButton'
-function mapStateToProps (state) {
-  return {
-    primaryColor: activeDatabaseSelector(state).primaryColor,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * Component that displays the various 3 or 4 chapter buttons on the PlayScreen.
@@ -33,10 +21,11 @@ const ChapterSelector = ({
   isVideoDownloaded,
   lessonType,
   lessonID,
-  // Props passed from redux.
-  primaryColor,
   isDark,
-  activeGroup
+  activeGroup,
+  t,
+  downloads,
+  isConnected
 }) => (
   <View
     style={[
@@ -49,6 +38,11 @@ const ChapterSelector = ({
       activeChapter={activeChapter}
       lessonType={lessonType}
       changeChapter={changeChapter}
+      activeGroup={activeGroup}
+      t={t}
+      isDark={isDark}
+      downloads={downloads}
+      isConnected={isConnected}
     />
     <View style={{ width: isTablet ? 8 : 4 }} />
     {/* <ChapterSeparator /> */}
@@ -59,6 +53,11 @@ const ChapterSelector = ({
       lessonType={lessonType}
       lessonID={lessonID}
       isAudioDownloaded={isAudioDownloaded}
+      activeGroup={activeGroup}
+      t={t}
+      isDark={isDark}
+      downloads={downloads}
+      isConnected={isConnected}
     />
     {/* For DMC lessons, we need an extra 'Training' chapter button. */}
     {lessonType === lessonTypes.STANDARD_DMC ? (
@@ -73,6 +72,11 @@ const ChapterSelector = ({
         lessonType={lessonType}
         lessonID={lessonID}
         isVideoDownloaded={isVideoDownloaded}
+        activeGroup={activeGroup}
+        t={t}
+        isDark={isDark}
+        downloads={downloads}
+        isConnected={isConnected}
       />
     ) : null}
     <View style={{ width: isTablet ? 8 : 4 }} />
@@ -82,6 +86,11 @@ const ChapterSelector = ({
       activeChapter={activeChapter}
       changeChapter={changeChapter}
       lessonType={lessonType}
+      activeGroup={activeGroup}
+      t={t}
+      isDark={isDark}
+      downloads={downloads}
+      isConnected={isConnected}
     />
   </View>
 )
@@ -91,10 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: gutterSize
-    // borderRadius: 20,
-    // borderWidth: 2,
-    // overflow: 'hidden'
   }
 })
 
-export default connect(mapStateToProps)(ChapterSelector)
+export default ChapterSelector

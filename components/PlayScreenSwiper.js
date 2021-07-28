@@ -2,31 +2,13 @@
 import React, { useRef, useState } from 'react'
 import { Animated, StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
-import { connect } from 'react-redux'
 import { gutterSize, lessonTypes, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import AlbumArt from './AlbumArt'
 import LessonTextViewer from './LessonTextViewer'
 import PageDots from './PageDots'
 import PlayScreenTitle from './PlayScreenTitle'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-
-    isDark: state.settings.isDarkModeEnabled,
-
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
-  }
-}
 
 /**
  * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
@@ -57,7 +39,6 @@ const PlayScreenSwiper = ({
   markLessonAsComplete,
   isThisLessonComplete,
   setShowCopyrightsModal,
-  // Props passed from redux.
   activeGroup,
   activeDatabase,
   isDark,
@@ -92,6 +73,8 @@ const PlayScreenSwiper = ({
       <PlayScreenTitle
         text={thisLesson.title}
         backgroundColor={colors(isDark).bg4}
+        activeGroup={activeGroup}
+        isDark={isDark}
       />
       <AlbumArt
         iconName={iconName}
@@ -99,6 +82,8 @@ const PlayScreenSwiper = ({
         playFeedbackOpacity={playFeedbackOpacity}
         playFeedbackZIndex={playFeedbackZIndex}
         isMediaPlaying={isMediaPlaying}
+        activeGroup={activeGroup}
+        isDark={isDark}
       />
     </View>,
     <View key='2' style={{ width: '100%', height: '100%' }}>
@@ -138,6 +123,11 @@ const PlayScreenSwiper = ({
             markLessonAsComplete={markLessonAsComplete}
             isThisLessonComplete={isThisLessonComplete}
             setShowCopyrightsModal={setShowCopyrightsModal}
+            activeGroup={activeGroup}
+            activeDatabase={activeDatabase}
+            isDark={isDark}
+            t={t}
+            isRTL={isRTL}
           />
         </View>
       ) : (
@@ -149,6 +139,11 @@ const PlayScreenSwiper = ({
           sectionOffsets={sectionOffsets}
           markLessonAsComplete={markLessonAsComplete}
           isThisLessonComplete={isThisLessonComplete}
+          activeGroup={activeGroup}
+          activeDatabase={activeDatabase}
+          isDark={isDark}
+          t={t}
+          isRTL={isRTL}
         />
       )}
     </View>
@@ -195,4 +190,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(PlayScreenSwiper)
+export default PlayScreenSwiper

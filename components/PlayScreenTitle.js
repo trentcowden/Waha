@@ -1,28 +1,9 @@
 // import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 /**
  * A component that shows the title of a lesson on the Play Screen. Ticks across the screen if it's long and fades out at the edges of the screen.
@@ -33,23 +14,11 @@ const PlayScreenTitle = ({
   // Props passed from a parent component.
   text,
   backgroundColor,
-  // Props passed from redux.
   activeGroup,
-  activeDatabase,
-  isRTL,
-  isDark,
-  font
+  isDark
 }) => {
   return (
     <View style={styles.titleContainer}>
-      {/* <View
-      style={{
-        // height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%'
-      }}
-    > */}
       <Text
         style={[
           type(
@@ -66,40 +35,13 @@ const PlayScreenTitle = ({
       >
         {text}
       </Text>
-      {/* </View> */}
-      {/* <LinearGradient
-        colors={[backgroundColor, backgroundColor + '00']}
-        start={[0, 1]}
-        end={[1, 1]}
-        style={styles.leftGradient}
-      />
-      <View
-        style={[
-          styles.leftGradientFiller,
-          { backgroundColor: backgroundColor }
-        ]}
-      />
-      <LinearGradient
-        colors={[backgroundColor, backgroundColor + '00']}
-        start={[1, 0]}
-        end={[0, 0]}
-        style={styles.rightGradient}
-      />
-      <View
-        style={[
-          styles.rightGradientFiller,
-          { backgroundColor: backgroundColor }
-        ]}
-      /> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    // width: Dimensions.get('window').width,
     width: '100%',
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 15 * scaleMultiplier
@@ -120,4 +62,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlayScreenTitle)
+export default PlayScreenTitle

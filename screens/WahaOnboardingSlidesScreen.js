@@ -10,10 +10,14 @@ import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
 import { groupNames, isTablet, scaleMultiplier } from '../constants'
+import { getLanguageInfo } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { setHasOnboarded } from '../redux/actions/databaseActions'
 import { editGroup } from '../redux/actions/groupsActions'
-import { activeDatabaseSelector } from '../redux/reducers/activeGroup'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector
+} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -21,7 +25,8 @@ function mapStateToProps (state) {
   return {
     t: activeDatabaseSelector(state).translations,
     isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled
+    isDark: state.settings.isDarkModeEnabled,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -63,6 +68,7 @@ const WahaOnboardingSlidesScreen = ({
   t,
   isRTL,
   isDark,
+  activeGroup,
   setHasOnboarded,
   editGroup,
   changeActiveGroup
