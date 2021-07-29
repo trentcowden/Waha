@@ -1,22 +1,19 @@
+import { locale, t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    t: activeDatabaseSelector(state).translations,
-    activeGroup: activeGroupSelector(state)
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+    isDark: state.settings.isDarkModeEnabled
+    // activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -34,7 +31,6 @@ const AddNewGroupButton = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  t,
   activeGroup
 }) => {
   return (
@@ -63,15 +59,9 @@ const AddNewGroupButton = ({
           />
         </View>
         <Text
-          style={type(
-            activeGroup.language,
-            'h3',
-            'Bold',
-            'left',
-            colors(isDark).highlight
-          )}
+          style={type(locale, 'h3', 'Bold', 'left', colors(isDark).highlight)}
         >
-          {t.groups && t.groups.new_group}
+          {t('groups.new_group')}
         </Text>
       </TouchableOpacity>
       <WahaSeparator />

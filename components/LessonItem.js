@@ -212,25 +212,6 @@ const LessonItem = ({
           >
             {getLessonInfo('subtitle', thisLesson.id)}
           </Text>
-          {/* {isInInfoMode && (
-            <Text
-              style={[
-                type(
-                  activeGroup.language,
-                  'd',
-                  'Regular',
-                  'left',
-                  colors(isDark).icons
-                ),
-                {
-                  fontSize: 13 * scaleMultiplier
-                }
-              ]}
-            >
-              {' '}
-              •{' '}
-            </Text>
-          )} */}
           {isInInfoMode && (
             <View style={{ flexDirection: isRTL ? 'row-reverse' : 'row' }}>
               {/* {lessonType.includes('Audio') && (

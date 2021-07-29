@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { chapters, gutterSize, isTablet, lessonTypes } from '../constants'
@@ -23,7 +24,6 @@ const ChapterSelector = ({
   lessonID,
   isDark,
   activeGroup,
-  t,
   downloads,
   isConnected
 }) => (

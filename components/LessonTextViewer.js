@@ -1,5 +1,6 @@
 // import SvgUri from 'expo-svg-uri'
 import { LinearGradient } from 'expo-linear-gradient'
+import { t } from 'i18n-js'
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
@@ -35,7 +36,6 @@ const LessonTextViewer = ({
   activeGroup,
   activeDatabase,
   isDark,
-  t,
   isRTL
 }) => {
   /** Keeps track of the heights of the various text layouts. */
@@ -60,12 +60,8 @@ const LessonTextViewer = ({
     // Marks a lesson as complete if the user scrolls 20% of the way through the application text.
     if (
       currentSection &&
-      currentSection.title === t.play.application &&
+      currentSection.title === t('play.application') &&
       !isThisLessonComplete.current
-      // &&
-      // (nativeEvent.contentOffset.y - currentSection.globalOffset) /
-      //   (layouts.current.contentHeight - currentSection.globalOffset) >
-      //   0.2
     )
       markLessonAsComplete()
   }

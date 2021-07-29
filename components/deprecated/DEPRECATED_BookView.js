@@ -8,7 +8,7 @@ function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
+    isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
 
@@ -32,6 +32,7 @@ const BookView = ({
     <Text
       style={[
         type(
+          activeGroup.language,
           activeGroup.language,
           'h3',
           'Regular',

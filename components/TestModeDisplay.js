@@ -1,17 +1,17 @@
+import { locale } from 'i18n-js'
 import React from 'react'
 import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { SystemTypography } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
+    isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
 
@@ -34,18 +34,10 @@ const TestModeDisplay = ({
     >
       {dbMode === 'test' || reduxMode === 'test' || analyticsMode === 'test' ? (
         <Text
-          style={[
-            SystemTypography(
-              false,
-              'd',
-              'Bold',
-              'center',
-              colors(isDark).textOnColor
-            ),
-            {
-              paddingHorizontal: 10
-            }
-          ]}
+          style={{
+            ...type(locale, 'd', 'Bold', 'center', colors(isDark).textOnColor),
+            paddingHorizontal: 10
+          }}
         >
           Test
         </Text>

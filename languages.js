@@ -113,7 +113,7 @@ export const languages = [
   // }
 ]
 
-export const getLanguageInfo = languageID => {
+export const info = languageID => {
   // Default values in case the language can't be found.
   var languageInfo = {
     languageFamilyID: 'en',

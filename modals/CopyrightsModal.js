@@ -1,21 +1,18 @@
+import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { gutterSize } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import ModalScreen from './ModalScreen'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-    t: activeDatabaseSelector(state).translations,
 
     isDark: state.settings.isDarkModeEnabled
   }
@@ -37,12 +34,11 @@ const CopyrightsModal = ({
   // Props passed from redux.
   isRTL,
   activeGroup,
-  t,
   isDark
 }) => {
   return (
     <ModalScreen
-      title={t.general && t.general.view_copyright}
+      title={t('general.view_copyright')}
       hideModal={hideModal}
       isVisible={isVisible}
     >
@@ -57,7 +53,7 @@ const CopyrightsModal = ({
           )}
           adjustsFontSizeToFit
         >
-          {t.general && t.general.copyrights}
+          {t('general.copyrights')}
         </Text>
       </View>
     </ModalScreen>

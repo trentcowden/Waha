@@ -4,8 +4,8 @@ import { Animated, StyleSheet, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { gutterSize } from '../constants'
 import {
-  activeDatabaseSelector,
-  activeGroupSelector
+    activeDatabaseSelector,
+    activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -17,8 +17,8 @@ function mapStateToProps (state) {
 
     isDark: state.settings.isDarkModeEnabled,
 
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
+    
+    isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
 
@@ -50,7 +50,7 @@ const LessonTextSectionHeader = ({
   >
     <Text>
       <Text
-        style={type(
+        style={type(activeGroup.language, 
           activeGroup.language,
           'h2',
           'Black',
@@ -63,7 +63,7 @@ const LessonTextSectionHeader = ({
       {sectionSubtitleText !== '' && (
         <Text
           style={[
-            type(
+            type(activeGroup.language, 
               activeGroup.language,
               'h3',
               'Regular',
@@ -78,7 +78,7 @@ const LessonTextSectionHeader = ({
       {sectionSubtitleText !== '' && (
         <Text
           style={[
-            type(
+            type(activeGroup.language, 
               activeGroup.language,
               'h3',
               'Regular',

@@ -1,10 +1,10 @@
 import i18n from 'i18n-js'
 import { isTablet, scaleMultiplier } from '../constants'
-import { getLanguageInfo, languages } from '../languages'
+import { info, languages } from '../languages'
 
 /**
  * Takes in some text style settings and returns a filled out text style object. This is used simply to save space in components and simplify things overall. Used within the style prop of a text component. For example:
- * <Text style={type(
+ * <Text style={type(activeGroup.language,
  *  props,
  *  'p',
  *  'Regular',
@@ -20,7 +20,7 @@ import { getLanguageInfo, languages } from '../languages'
  * @return {Object} - The completed style object.
  */
 export const type = (languageID, fontSize, fontFamily, textAlign, color) => {
-  var languageInfo = getLanguageInfo(languageID)
+  var languageInfo = info(languageID)
 
   // A font size modifier that makes all Arabic script a point smaller and increases the font size on tablets.
   var fontSizeModifier = 0
@@ -90,7 +90,7 @@ export const SystemTypography = (
 
   // The options for alignments.
   const alignments = {
-    left: getLanguageInfo(i18n.locale.slice(0, 2)).isRTL ? 'right' : 'left',
+    left: info(i18n.locale.slice(0, 2)).isRTL ? 'right' : 'left',
     center: 'center'
   }
 
@@ -100,7 +100,7 @@ export const SystemTypography = (
       // If we have an override font, use that instead of the system font.
       fontFamily: overrideFont
         ? overrideFont + '-' + fontFamily
-        : getLanguageInfo(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
+        : info(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
       textAlign: alignments[textAlign],
       color: color
     }
@@ -110,7 +110,7 @@ export const SystemTypography = (
       // If we have an override font, use that instead of the system font.
       fontFamily: overrideFont
         ? overrideFont + '-' + fontFamily
-        : getLanguageInfo(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
+        : info(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
       textAlign: alignments[textAlign],
       color: color
     }

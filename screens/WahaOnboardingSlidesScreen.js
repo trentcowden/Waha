@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useRef, useState } from 'react'
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native'
@@ -10,21 +11,17 @@ import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
 import { groupNames, isTablet, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { setHasOnboarded } from '../redux/actions/databaseActions'
 import { editGroup } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state)
   }
@@ -65,7 +62,6 @@ const WahaOnboardingSlidesScreen = ({
     params: { selectedLanguage }
   },
   // Props passed from redux.
-  t,
   isRTL,
   isDark,
   activeGroup,
@@ -76,7 +72,7 @@ const WahaOnboardingSlidesScreen = ({
   /** The ref for the pager view. Used to manually swipe pages. */
   const pagerRef = useRef()
 
-  console.log(isTablet)
+  // i18n.locale = selectedLanguage
 
   /** Ref for the group name text input. */
   const groupNameInputRef = useRef()
@@ -121,8 +117,8 @@ const WahaOnboardingSlidesScreen = ({
   const pages = [
     <OnboardingPage
       key='1'
-      title={t.onboarding && t.onboarding.onboarding_1_title}
-      message={t.onboarding && t.onboarding.onboarding_1_message}
+      title={t('onboarding.onboarding_1_title')}
+      message={t('onboarding.onboarding_1_message')}
     >
       <View
         style={[
@@ -154,8 +150,8 @@ const WahaOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='2'
-      title={t.onboarding && t.onboarding.onboarding_2_title}
-      message={t.onboarding && t.onboarding.onboarding_2_message}
+      title={t('onboarding.onboarding_2_title')}
+      message={t('onboarding.onboarding_2_message')}
     >
       <View
         style={[
@@ -187,8 +183,8 @@ const WahaOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='3'
-      title={t.onboarding && t.onboarding.onboarding_3_title}
-      message={t.onboarding && t.onboarding.onboarding_3_message}
+      title={t('onboarding.onboarding_3_title')}
+      message={t('onboarding.onboarding_3_message')}
     >
       <View
         style={[
@@ -220,8 +216,8 @@ const WahaOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='4'
-      title={t.onboarding && t.onboarding.onboarding_4_title}
-      message={t.onboarding && t.onboarding.onboarding_4_message}
+      title={t('onboarding.onboarding_4_title')}
+      message={t('onboarding.onboarding_4_message')}
     >
       <GroupNameTextInput
         groupNameInput={groupNameInput}
@@ -283,13 +279,13 @@ const WahaOnboardingSlidesScreen = ({
                 colors(isDark).text
               )}
             >
-              {t.general && t.general.skip}
+              {t('general.skip')}
             </Text>
           </TouchableOpacity>
         </View>
         <View style={{ width: 20 }} />
         <WahaButton
-          label={t.general && t.general.continue}
+          label={t('general.continue')}
           onPress={
             // This button goes to the next page or finishes onboarding if we're on the last page.
             isRTL

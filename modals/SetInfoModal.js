@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React from 'react'
 import {
   Dimensions,
@@ -11,7 +12,7 @@ import { connect } from 'react-redux'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
 import { scaleMultiplier, setItemModes } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { addSet } from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
@@ -25,10 +26,10 @@ function mapStateToProps (state) {
   return {
     downloads: state.downloads,
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-    t: activeDatabaseSelector(state).translations,
-    font: getLanguageInfo(activeGroupSelector(state).language).font,
+
+    font: info(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -60,7 +61,6 @@ const SetInfoModal = ({
   isRTL,
   isDark,
   activeGroup,
-  t,
   font,
   addSet
 }) => {
@@ -122,7 +122,7 @@ const SetInfoModal = ({
 
   return (
     <ModalScreen
-      title={t.sets && t.sets.set_details}
+      title={t('sets.set_details')}
       hideModal={hideModal}
       isVisible={isVisible}
     >
@@ -145,7 +145,7 @@ const SetInfoModal = ({
           hideModal()
         }}
         style={{ marginHorizontal: 20, marginVertical: 10 }}
-        label={t.sets && t.sets.add_new_story_set}
+        label={t('sets.add_new_story_set')}
         extraComponent={
           <Icon
             style={{ marginHorizontal: 10 }}

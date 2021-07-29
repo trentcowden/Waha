@@ -85,7 +85,7 @@ const styles = StyleSheet.create({})
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 

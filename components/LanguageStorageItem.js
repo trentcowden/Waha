@@ -1,13 +1,11 @@
 import * as FileSystem from 'expo-file-system'
+import { t } from 'i18n-js'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import WahaButton from './WahaButton'
@@ -16,8 +14,8 @@ import WahaSeparator from './WahaSeparator'
 function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+
     activeGroup: activeGroupSelector(state)
   }
 }
@@ -38,7 +36,6 @@ const LanguageStorageItem = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  t,
   activeGroup
 }) => {
   return (
@@ -91,7 +88,7 @@ const LanguageStorageItem = ({
             colors(isDark).icons
           )}
         >
-          {`${megabytes} ${t.storage && t.storage.megabyte}`}
+          {`${megabytes} ${t('storage.megabyte')}`}
         </Text>
         <Text
           style={[
@@ -108,17 +105,17 @@ const LanguageStorageItem = ({
             }
           ]}
         >
-          {t.storage && t.storage.storage_used}
+          {t('storage.storage_used')}
         </Text>
         <WahaButton
           mode='outline'
           color={colors(isDark).error}
-          label={t.general && t.general.clear}
+          label={t('general.clear')}
           width={92 * scaleMultiplier}
           onPress={clearDownloads}
           style={{ height: 45 * scaleMultiplier }}
           textStyle={{
-            fontFamily: getLanguageInfo(activeGroup.language).font + '-Regular'
+            fontFamily: info(activeGroup.language).font + '-Regular'
           }}
         />
       </View>

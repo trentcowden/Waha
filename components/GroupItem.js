@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -9,7 +10,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { getLessonInfo, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
 import {
@@ -24,12 +25,11 @@ function mapStateToProps (state) {
   return {
     database: state.database,
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
     isDark: state.settings.isDarkModeEnabled,
-    primaryColor: activeDatabaseSelector(state).primaryColor,
-    t: activeDatabaseSelector(state).translations
+    primaryColor: activeDatabaseSelector(state).primaryColor
   }
 }
 
@@ -69,7 +69,6 @@ const GroupItem = ({
   groups,
   activeGroup,
   primaryColor,
-  t,
   deleteGroup,
   changeActiveGroup
 }) => {
@@ -171,16 +170,16 @@ const GroupItem = ({
             style={styles.minusButtonContainer}
             onPress={() => {
               Alert.alert(
-                t.groups && t.groups.delete_group_title,
-                t.groups && t.groups.delete_group_message,
+                t('groups.delete_group_title'),
+                t('groups.delete_group_message'),
                 [
                   {
-                    text: t.general && t.general.cancel,
+                    text: t('general.cancel'),
                     onPress: () => {},
                     style: 'cancel'
                   },
                   {
-                    text: t.general && t.general.ok,
+                    text: t('general.ok'),
                     onPress: () => deleteGroup(thisGroup.name),
                     style: 'destructive'
                   }
@@ -303,14 +302,19 @@ const GroupItem = ({
             ]}
           >
             <Text
-              style={type(
-                // Always display the group name in the group's language's font, not the active group's font.
-                thisGroup.language,
-                'h3',
-                'Black',
-                'left',
-                colors(isDark).text
-              )}
+              style={[
+                type(
+                  // Always display the group name in the group's language's font, not the active group's font.
+                  thisGroup.language,
+                  'h3',
+                  'Black',
+                  'left',
+                  colors(isDark).text
+                ),
+                {
+                  textAlign: isRTL ? 'right' : 'left'
+                }
+              ]}
               numberOfLines={1}
             >
               {thisGroup.name}
@@ -325,7 +329,10 @@ const GroupItem = ({
                     'Regular',
                     'left',
                     colors(isDark).secondaryText
-                  )
+                  ),
+                  {
+                    textAlign: isRTL ? 'right' : 'left'
+                  }
                 ]}
                 numberOfLines={1}
               >

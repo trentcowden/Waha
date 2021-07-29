@@ -22,8 +22,8 @@ function mapStateToProps (state) {
 
     isDark: state.settings.isDarkModeEnabled,
 
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
+    
+    isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
 
@@ -241,8 +241,7 @@ const LessonTextViewer = ({
 
     // Auto-complete lesson if text is scrolled 20% through the Application chapter.
     if (
-      section.title === t.play &&
-      t.play.application &&
+      section.title === t('play.application') &&
       !isThisLessonComplete.current &&
       (scrollPosition - section.globalOffset) /
         (layouts.current.contentHeight - section.globalOffset) >

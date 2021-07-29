@@ -2,6 +2,7 @@ import { decode, encode } from 'base-64'
 import { Audio } from 'expo-av'
 import * as Font from 'expo-font'
 import * as ScreenOrientation from 'expo-screen-orientation'
+import { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
@@ -89,7 +90,7 @@ export default function App () {
         {/* The persist gate allows the redux data to persist across restarts. */}
         <PersistGate loading={<View></View>} persistor={persistor}>
           {/* Set a few settings related to the status bar. */}
-          <Root />
+          <Root locale={locale} />
         </PersistGate>
       </Provider>
     )

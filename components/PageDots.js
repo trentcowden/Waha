@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -13,7 +13,7 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 

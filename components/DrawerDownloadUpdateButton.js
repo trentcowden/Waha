@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
@@ -13,8 +14,8 @@ function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    t: activeDatabaseSelector(state).translations,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+
+    isRTL: info(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 
@@ -37,7 +38,6 @@ const DrawerDownloadUpdateButton = ({
   // Props passed from redux.
   activeGroup,
   activeDatabase,
-  t,
   isRTL,
   isDark,
   isConnected,
@@ -47,16 +47,16 @@ const DrawerDownloadUpdateButton = ({
     style={styles.drawerDownloadUpdateButtonContainer}
     onPress={() => {
       Alert.alert(
-        t.general && t.general.download_update_title,
-        t.general && t.general.download_update_message,
+        t('general.download_update_title'),
+        t('general.download_update_message'),
         [
           {
-            text: t.general && t.general.cancel,
+            text: t('general.cancel'),
             onPress: () => {},
             style: 'cancel'
           },
           {
-            text: t.general && t.general.ok,
+            text: t('general.ok'),
             onPress: updateHandler
           }
         ]
@@ -90,7 +90,7 @@ const DrawerDownloadUpdateButton = ({
           )
         ]}
       >
-        {t.general && t.general.download_update}
+        {t('general.download_update')}
       </Text>
       {isConnected ? (
         <View style={styles.iconContainer}>

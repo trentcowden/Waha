@@ -1,27 +1,25 @@
+import { t } from 'i18n-js'
 import React, { useEffect, useRef, useState } from 'react'
 import { Keyboard, StyleSheet, Text, View } from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { logUnlockMobilizationTools } from '../LogEventFunctions'
 import { setAreMobilizationToolsUnlocked } from '../redux/actions/areMobilizationToolsUnlockedActions'
 import { addSet } from '../redux/actions/groupsActions'
 import { setMTUnlockAttempts } from '../redux/actions/mtUnlockAttemptsActions'
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import { setMTUnlockTimeout } from '../redux/actions/securityActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     security: state.security,
@@ -60,7 +58,6 @@ const MobilizationToolsUnlockScreen = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  t,
   activeGroup,
   security,
   mtUnlockAttempts,
@@ -147,14 +144,13 @@ const MobilizationToolsUnlockScreen = ({
    */
   const getTimeoutText = () => {
     if (Date.now() - security.mtUnlockTimeout < 0)
-      return `${t.mobilization_tools &&
-        t.mobilization_tools.too_many_attempts} ${Math.round(
+      return `${t('mobilization_tools.too_many_attempts')} ${Math.round(
         (security.mtUnlockTimeout - Date.now()) / 60000
-      )} ${t.mobilization_tools && t.mobilization_tools.minutes}.`
+      )} ${t('mobilization_tools.minutes')}.`
     else if (mtUnlockAttempts === 3)
-      return t.mobilization_tools && t.mobilization_tools.two_attempts_remaining
+      return t('mobilization_tools.two_attempts_remaining')
     else if (mtUnlockAttempts === 4)
-      return t.mobilization_tools && t.mobilization_tools.one_attempt_remaining
+      return t('mobilization_tools.one_attempt_remaining')
     else return ''
   }
 
@@ -181,7 +177,7 @@ const MobilizationToolsUnlockScreen = ({
           }
         ]}
       >
-        {t.mobilization_tools && t.mobilization_tools.enter_code}
+        {t('mobilization_tools.enter_code')}
       </Text>
       <SmoothPinCodeInput
         ref={pinRef}

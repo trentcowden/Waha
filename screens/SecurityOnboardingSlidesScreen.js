@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React, { useEffect, useRef, useState } from 'react'
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -8,19 +9,15 @@ import PageDots from '../components/PageDots'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { isTablet, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    t: activeDatabaseSelector(state).translations,
     isDark: state.settings.isDarkModeEnabled,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state)
   }
 }
@@ -33,7 +30,6 @@ const numPages = 4
 const SecurityOnboardingSlidesScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, navigate, goBack },
-  t,
   isRTL,
   isDark,
   activeGroup
@@ -60,8 +56,8 @@ const SecurityOnboardingSlidesScreen = ({
   const pages = [
     <OnboardingPage
       key='1'
-      title={t.security && t.security.onboarding_1_title}
-      message={t.security && t.security.onboarding_1_message}
+      title={t('security.onboarding_1_title')}
+      message={t('security.onboarding_1_message')}
     >
       <View
         style={[
@@ -86,8 +82,8 @@ const SecurityOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='2'
-      title={t.security && t.security.onboarding_2_title}
-      message={t.security && t.security.onboarding_2_message}
+      title={t('security.onboarding_2_title')}
+      message={t('security.onboarding_2_message')}
     >
       <View
         style={[
@@ -112,8 +108,8 @@ const SecurityOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='3'
-      title={t.security && t.security.onboarding_3_title}
-      message={t.security && t.security.onboarding_3_message}
+      title={t('security.onboarding_3_title')}
+      message={t('security.onboarding_3_message')}
     >
       <View
         style={[
@@ -138,8 +134,8 @@ const SecurityOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='4'
-      title={t.security && t.security.onboarding_4_title}
-      message={t.security && t.security.onboarding_4_message}
+      title={t('security.onboarding_4_title')}
+      message={t('security.onboarding_4_message')}
     >
       <View
         style={[
@@ -208,13 +204,13 @@ const SecurityOnboardingSlidesScreen = ({
                 colors(isDark).text
               )}
             >
-              {t.general && t.general.skip}
+              {t('general.skip')}
             </Text>
           </TouchableOpacity>
         </View>
         <View style={{ width: 20 }} />
         <WahaButton
-          label={t.general && t.general.continue}
+          label={t('general.continue')}
           onPress={
             // This button goes to the next page or finishes onboarding if we're on the last page.
             isRTL

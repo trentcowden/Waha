@@ -1,4 +1,5 @@
 // import SvgUri from 'expo-svg-uri'
+import { locale } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import {
@@ -368,7 +369,7 @@ const SetItem = ({
         <Text
           style={[
             type(
-              activeGroup.language,
+              locale,
               'd',
               'Regular',
               'left',
@@ -388,7 +389,7 @@ const SetItem = ({
         <Text
           style={[
             type(
-              activeGroup.language,
+              locale,
               'h3',
               'Black',
               'left',

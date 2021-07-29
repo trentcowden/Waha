@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -16,9 +16,8 @@ function mapStateToProps (state) {
   return {
     downloads: state.downloads,
     activeDatabase: activeDatabaseSelector(state),
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-    t: activeDatabaseSelector(state).translations,
 
     isDark: state.settings.isDarkModeEnabled
   }
@@ -49,7 +48,6 @@ const ModalScreen = ({
   isRTL,
   isDark,
   activeGroup,
-  t,
   font
 }) => (
   // Outer view is here because of some weird scrolling issues that occur when there's nested scrollable content inside the modal.

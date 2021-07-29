@@ -1,17 +1,18 @@
+import { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { SystemTypography, type } from '../styles/typography'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return activeGroupSelector(state)
     ? {
         isDark: state.settings.isDarkModeEnabled,
-        isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+        isRTL: info(activeGroupSelector(state).language).isRTL,
         activeGroup: activeGroupSelector(state)
       }
     : {
@@ -40,7 +41,6 @@ const WahaButton = ({
   textStyle = {},
   width = null,
   onPress,
-  useDefaultFont = false,
   extraComponent = null,
   // Props passed from redux.
   isRTL = null,
@@ -118,11 +118,9 @@ const WahaButton = ({
     }
   ]
 
-  // Styles for the button text.
+  // Styles for the button tetxt.
   const labelStyle = [
-    useDefaultFont
-      ? SystemTypography(false, 'h3', 'Bold', 'center', color)
-      : type(activeGroup.language, 'h3', 'Bold', 'center', color),
+    type(locale, 'h3', 'Bold', 'center', color),
     { fontWeight: font ? null : 'bold' },
     textStyle
   ]

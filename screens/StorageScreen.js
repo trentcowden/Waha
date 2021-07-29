@@ -1,4 +1,5 @@
 import * as FileSystem from 'expo-file-system'
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -12,18 +13,15 @@ import { connect } from 'react-redux'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     database: state.database,
-    t: activeDatabaseSelector(state).translations,
+
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -44,8 +42,7 @@ const StorageScreen = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  database,
-  t
+  database
 }) => {
   /** Keeps track of the amount of storage each language's downloaded Story and Training chapter mp3s and mp4s take up. */
   const [languageStorageSizes, setLanguageSizes] = useState({})
@@ -177,18 +174,16 @@ const StorageScreen = ({
       megabytes={languageStorageSizes[item.languageID]}
       clearDownloads={() => {
         Alert.alert(
-          t.storage &&
-            t.storage.clear_all_downloaded_lessons_for_a_language_title,
-          t.storage &&
-            t.storage.clear_all_downloaded_lessons_for_a_language_message,
+          t('storage.clear_all_downloaded_lessons_for_a_language_title'),
+          t('storage.clear_all_downloaded_lessons_for_a_language_message'),
           [
             {
-              text: t.general && t.general.cancel,
+              text: t('general.cancel'),
               onPress: () => {},
               style: 'cancel'
             },
             {
-              text: t.general && t.general.ok,
+              text: t('general.ok'),
               onPress: () => deleteDownloadedLessons(item.languageID),
               style: 'destructive'
             }
@@ -220,23 +215,22 @@ const StorageScreen = ({
       <WahaButton
         mode='filled'
         color={colors(isDark).error}
-        label={`${t.storage &&
-          t.storage
-            .clear_all_downloaded_lessons} (${totalStorage} ${t.storage &&
-          t.storage.megabyte})`}
+        label={`${t(
+          'storage.clear_all_downloaded_lessons'
+        )} (${totalStorage} ${t('storage.megabyte')})`}
         width={Dimensions.get('window').width - 40}
         onPress={() =>
           Alert.alert(
-            t.storage && t.storage.clear_all_downloaded_lessons_title,
-            t.storage && t.storage.clear_all_downloaded_lessons_message,
+            t('storage.clear_all_downloaded_lessons_title'),
+            t('storage.clear_all_downloaded_lessons_message'),
             [
               {
-                text: t.general && t.general.cancel,
+                text: t('general.cancel'),
                 onPress: () => {},
                 style: 'cancel'
               },
               {
-                text: t.general && t.general.ok,
+                text: t('general.ok'),
                 onPress: () => deleteDownloadedLessons(),
                 style: 'destructive'
               }

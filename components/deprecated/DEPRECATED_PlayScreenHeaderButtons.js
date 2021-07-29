@@ -6,7 +6,7 @@ import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL
+    isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
 

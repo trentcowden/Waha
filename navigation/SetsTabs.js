@@ -1,9 +1,10 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { t } from 'i18n-js'
 import React from 'react'
 import { Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { getSetInfo, scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -16,9 +17,9 @@ const Tab = createMaterialTopTabNavigator()
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
-    font: getLanguageInfo(activeGroupSelector(state).language).font,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+
+    font: info(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
     primaryColor: activeDatabaseSelector(state).primaryColor,
     activeGroup: activeGroupSelector(state),
@@ -33,7 +34,6 @@ function mapStateToProps (state) {
 const SetsTabs = ({
   // Props passed from redux.
   activeGroup,
-  t,
   activeDatabase,
   font,
   primaryColor,
@@ -49,7 +49,7 @@ const SetsTabs = ({
         name='MobilizationTools'
         component={SetsScreen}
         options={{
-          title: t.sets && t.sets.mobilization
+          title: t('sets.mobilization')
         }}
       />
     ) : null
@@ -60,7 +60,7 @@ const SetsTabs = ({
       name='Foundational'
       component={SetsScreen}
       options={{
-        title: t.sets && t.sets.foundations
+        title: t('sets.foundations')
       }}
     />
   )
@@ -71,7 +71,7 @@ const SetsTabs = ({
       name='Topical'
       component={SetsScreen}
       options={{
-        title: t.sets && t.sets.topics
+        title: t('sets.topics')
       }}
     />
   )

@@ -1,21 +1,19 @@
+import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo, languages } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info, languages } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
-    t: activeDatabaseSelector(state).translations,
+
     installedLanguageInstances: Object.keys(state.database).filter(
       key => key.length === 2
     ),
@@ -36,7 +34,6 @@ const AddNewLanguageInstanceButton = ({
   isRTL,
   isDark,
   installedLanguageInstances,
-  t,
   activeGroup
 }) => {
   return (
@@ -72,7 +69,7 @@ const AddNewLanguageInstanceButton = ({
             colors(isDark).secondaryText
           )}
         >
-          {t.groups && t.groups.add_language}
+          {t('groups.add_language')}
         </Text>
       </TouchableOpacity>
     )

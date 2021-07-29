@@ -1,6 +1,6 @@
 import NetInfo from '@react-native-community/netinfo'
 import { Audio } from 'expo-av'
-import * as Localization from 'expo-localization'
+// import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
@@ -41,15 +41,6 @@ import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { SystemTypography } from '../styles/typography'
-import ar from '../translations/ar.json'
-import en from '../translations/en.json'
-import hi from '../translations/hi.json'
-
-i18n.translations = {
-  en,
-  ar,
-  hi
-}
 
 function mapStateToProps (state) {
   var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
@@ -144,10 +135,10 @@ const LanguageInstanceInstallScreen = ({
   setIsDarkModeEnabled
 }) => {
   // Set the i18n locale to the locale of the user's phone.
-  i18n.locale = Localization.locale
+  // i18n.locale = Localization.locale
 
   // Setting fallbacks to true means that if the user's phone language isn't in i18n, it defaults to English.
-  i18n.fallbacks = true
+  // i18n.fallbacks = true
 
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState('')
@@ -177,7 +168,7 @@ const LanguageInstanceInstallScreen = ({
     setOptions(
       routeName === 'SubsequentlLanguageInstanceInstall'
         ? {
-            headerTitle: i18n.t('add_language')
+            headerTitle: i18n.t('language_select.add_language')
           }
         : null
     )
@@ -295,6 +286,7 @@ const LanguageInstanceInstallScreen = ({
 
         // Change the active group to the new group we just created.
         changeActiveGroup(groupNames[selectedLanguage])
+        i18n.locale = selectedLanguage
 
         // Set the local isFetchingFirebaseData state to false.
         setIsFetchingFirebaseData(false)
@@ -314,11 +306,11 @@ const LanguageInstanceInstallScreen = ({
         deleteLanguageData(selectedLanguage)
 
         Alert.alert(
-          i18n.t('fetch_error_title'),
-          i18n.t('fetch_error_message'),
+          i18n.t('language_select.fetch_error_title'),
+          i18n.t('language_select.fetch_error_message'),
           [
             {
-              text: i18n.t('ok'),
+              text: i18n.t('general.ok'),
               onPress: () => {}
             }
           ]
@@ -342,7 +334,7 @@ const LanguageInstanceInstallScreen = ({
     const filterBySearch = languageFamily => {
       if (
         i18n
-          .t(languageFamily.i18nKey)
+          .t('languages.' + languageFamily.i18nKey)
           .toLowerCase()
           .includes(searchTextInput.toLowerCase())
       )
@@ -356,7 +348,7 @@ const LanguageInstanceInstallScreen = ({
                 .toLowerCase()
                 .includes(searchTextInput.toLowerCase()) ||
               i18n
-                .t(language.i18nKey)
+                .t('languages.' + language.i18nKey)
                 .toLowerCase()
                 .includes(searchTextInput.toLowerCase()) ||
               language.brandName
@@ -420,8 +412,9 @@ const LanguageInstanceInstallScreen = ({
    */
   const renderLanguageItem = (language, languageFamily) => (
     <LanguageItem
+      languageID={language.languageID}
       nativeName={language.nativeName}
-      localeName={i18n.t(language.i18nKey)}
+      localeName={i18n.t('languages.' + language.i18nKey)}
       font={languageFamily.font}
       logos={language.logos}
       onPress={() => {
@@ -462,7 +455,7 @@ const LanguageInstanceInstallScreen = ({
           colors(isDark).secondaryText
         )}
       >
-        {i18n.t(languageFamily.i18nKey)}
+        {i18n.t('languages.' + languageFamily.i18nKey)}
       </Text>
     </View>
   )
@@ -490,7 +483,7 @@ const LanguageInstanceInstallScreen = ({
               { fontSize: 28 * scaleMultiplier }
             ]}
           >
-            {i18n.t('welcome')}
+            {i18n.t('language_select.welcome')}
           </Text>
           <View style={{ height: 5 }} />
           <Text
@@ -502,7 +495,7 @@ const LanguageInstanceInstallScreen = ({
               colors(isDark).text
             )}
           >
-            {i18n.t('select_language')}
+            {i18n.t('language_select.select_language')}
           </Text>
         </View>
       )}
@@ -585,7 +578,7 @@ const LanguageInstanceInstallScreen = ({
                 ? ''
                 : routeName === 'InitialLanguageInstanceInstall'
                 ? 'Continue'
-                : i18n.t('add_language') + ' '
+                : i18n.t('language_select.add_language') + ' '
               : ''
           }
           style={{
@@ -593,7 +586,6 @@ const LanguageInstanceInstallScreen = ({
             marginHorizontal: 20,
             height: 68 * scaleMultiplier
           }}
-          useDefaultFont={true}
           extraComponent={
             isConnected ? (
               isFetchingFirebaseData ? (

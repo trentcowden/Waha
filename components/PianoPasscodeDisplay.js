@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'
@@ -12,7 +12,7 @@ function mapStateToProps (state) {
     isDark: state.settings.isDarkModeEnabled,
 
     security: state.security,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state)
   }
 }

@@ -1,6 +1,7 @@
 import { Audio, Video } from 'expo-av'
 import * as FileSystem from 'expo-file-system'
 import { useKeepAwake } from 'expo-keep-awake'
+import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -32,7 +33,7 @@ import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { logCompleteLesson } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
@@ -57,10 +58,10 @@ function mapStateToProps (state) {
     database: state.database,
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    t: activeDatabaseSelector(state).translations,
+
     downloads: state.downloads,
     primaryColor: activeDatabaseSelector(state).primaryColor,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 
@@ -145,7 +146,6 @@ const PlayScreen = ({
   database,
   activeGroup,
   activeDatabase,
-  t,
   downloads,
   primaryColor,
   isRTL,
@@ -1058,7 +1058,7 @@ const PlayScreen = ({
       <ShareModal
         isVisible={showShareLessonModal}
         hideModal={() => setShowShareLessonModal(false)}
-        closeText={t.general && t.general.close}
+        closeText={t('general.close')}
         lesson={thisLesson}
         lessonType={lessonType}
         set={thisSet}
@@ -1073,9 +1073,9 @@ const PlayScreen = ({
           setShowSetCompleteModal(false)
           goBack()
         }}
-        title={t.sets && t.sets.set_complete_title}
-        message={t.sets && t.sets.set_complete_message}
-        confirmText={t.general && t.general.got_it}
+        title={t('sets.set_complete_title')}
+        message={t('sets.set_complete_message')}
+        confirmText={t('general.got_it')}
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
           goBack()
@@ -1097,9 +1097,9 @@ const PlayScreen = ({
           setShowNextSetUnlockedModal(false)
           goBack()
         }}
-        title={t.sets && t.sets.new_story_set_unlocked_title}
-        message={t.sets && t.sets.new_story_set_unlocked_message}
-        confirmText={t.general && t.general.got_it}
+        title={t('sets.new_story_set_unlocked_title')}
+        message={t('sets.new_story_set_unlocked_message')}
+        confirmText={t('general.got_it')}
         confirmOnPress={() => {
           setShowNextSetUnlockedModal(false)
           goBack()

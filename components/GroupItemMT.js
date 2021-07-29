@@ -3,7 +3,7 @@ import { StyleSheet, Switch, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -12,7 +12,7 @@ import { type } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
 
     isDark: state.settings.isDarkModeEnabled,
@@ -91,11 +91,12 @@ const GroupItemMT = ({
       <View style={styles.groupNameContainer}>
         <Text
           style={type(
-            thisGroup.language,
+            activeGroup.language,
             'h3',
             'Regular',
             'left',
-            colors(isDark).text
+            colors(isDark).text,
+            thisGroup.language
           )}
         >
           {thisGroup.name}

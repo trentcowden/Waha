@@ -1,23 +1,28 @@
 import { StatusBar as StatusBarExpo } from 'expo-status-bar'
-import React from 'react'
+import i18n from 'i18n-js'
+import React, { useEffect } from 'react'
 import { StatusBar as StatusBarRN, View } from 'react-native'
 import { connect } from 'react-redux'
 import { groupNames } from '../constants'
+import en from '../locales/en.json'
+import ga from '../locales/ga.json'
+import hi from '../locales/hi.json'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { createGroup } from '../redux/actions/groupsActions'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import LoadingScreen from '../screens/LoadingScreen'
 import { colors } from '../styles/colors'
 import MainDrawer from './MainDrawer'
 import Onboarding from './Onboarding'
 
 function mapStateToProps (state) {
-  if (state.activeGroup)
+  if (state.activeGroup !== null)
     return {
       hasOnboarded: state.database.hasOnboarded,
       hasInstalledFirstLanguageInstance:
         state.database.hasInstalledFirstLanguageInstance,
       isInstallingLanguageInstance: state.isInstallingLanguageInstance,
-      activeGroup: state.activeGroup,
+      activeGroup: activeGroupSelector(state),
       groups: state.groups,
       database: state.database,
       isDark: state.settings.isDarkModeEnabled
@@ -58,10 +63,16 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+// Setup for i18n.
+i18n.fallbacks = true
+i18n.translations = { en, ga, hi }
+i18n.locale = 'en'
+
 /**
  * This component renders a navigator conditionally based on state. It's the first thing rendered in App.js.
  */
 const Root = ({
+  locale,
   // Props passed from redux.
   hasOnboarded,
   hasInstalledFirstLanguageInstance,
@@ -73,6 +84,13 @@ const Root = ({
   changeActiveGroup,
   createGroup
 }) => {
+  console.log(i18n.locale)
+
+  useEffect(() => {
+    // console.log(activeGroup.language)
+    if (activeGroup !== null) i18n.locale = activeGroup.language
+  }, [activeGroup])
+
   // Below are some failsafes to keep the app functioning in case of group errors.
   if (activeGroup) {
     // If somehow, every group got deleted, create a new group in one of the installed languages so that the app can still function.
@@ -86,7 +104,7 @@ const Root = ({
       createGroup(groupNames[languageID], languageID, 'default', true, 1, 1)
       changeActiveGroup(groupNames[languageID])
       // If somehow, we switch to a group that doesn't exist, fall back to the first group in the groups redux array so that the app can still function.
-    } else if (!groups.some(group => activeGroup === group.name)) {
+    } else if (!groups.some(group => activeGroup.name === group.name)) {
       changeActiveGroup(groups[0].name)
     }
   }
@@ -105,7 +123,7 @@ const Root = ({
     return (
       <View style={{ flex: 1 }}>
         <StatusBarExpo style={isDark ? 'light' : 'dark'} />
-        <MainDrawer />
+        <MainDrawer locale={locale} />
       </View>
     )
   } else if (

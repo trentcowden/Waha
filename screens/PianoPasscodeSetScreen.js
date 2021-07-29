@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -12,24 +13,19 @@ import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { logEnableSecurityMode } from '../LogEventFunctions'
 import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
 import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    t: activeDatabaseSelector(state).translations,
-
     isDark: state.settings.isDarkModeEnabled,
     security: state.security,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state)
   }
 }
@@ -56,7 +52,6 @@ const PianoPasscodeSetScreen = ({
     params: { passcode } = { passcode: null }
   },
   // Props passed from redux.
-  t,
   security,
   isRTL,
   isDark,
@@ -70,16 +65,16 @@ const PianoPasscodeSetScreen = ({
 
   /** The text to display above the piano telling the user what to do. */
   const instructionText = {
-    PianoPasscodeSet: t.security && t.security.choose_passcode,
-    PianoPasscodeSetConfirm: t.security && t.security.confirm_passcode,
-    PianoPasscodeChange: t.security && t.security.choose_passcode,
-    PianoPasscodeChangeConfirm: t.security && t.security.confirm_passcode
+    PianoPasscodeSet: t('security.choose_passcode'),
+    PianoPasscodeSetConfirm: t('security.confirm_passcode'),
+    PianoPasscodeChange: t('security.choose_passcode'),
+    PianoPasscodeChangeConfirm: t('security.confirm_passcode')
   }
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions({
-      title: t.security && t.security.security,
+      title: t('security.security'),
       headerRight: isRTL
         ? () => (
             <WahaBackButton
@@ -118,11 +113,6 @@ const PianoPasscodeSetScreen = ({
         case 'PianoPasscodeSetConfirm':
           // If passcodes match, pop up an alert, log it, set security enabled, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            // Alert.alert(
-            //   t.security && t.security.passcode_confirmation_title,
-            //   t.security && t.security.passcode_confirmation_message,
-            //   [{ text: t.general && t.general.ok, onPress: () => {} }]
-            // )
             setShowPasscodeSetSnackbar(true)
             setTimeout(() => setShowPasscodeSetSnackbar(false), 2000)
             // Log the enabling of Security Mode in Firebase analytics.
@@ -136,9 +126,9 @@ const PianoPasscodeSetScreen = ({
           } // Otherwise, show an alert that the passcodes don't match.
           else {
             Alert.alert(
-              t.security && t.security.no_match_title,
-              t.security && t.security.no_match_message,
-              [{ text: t.general && t.general.ok, onPress: () => {} }]
+              t('security.no_match_title'),
+              t('security.no_match_message'),
+              [{ text: t('general.ok'), onPress: () => {} }]
             )
             goBack()
           }
@@ -153,11 +143,6 @@ const PianoPasscodeSetScreen = ({
         case 'PianoPasscodeChangeConfirm':
           // If passcodes match, pop up an alert, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            // Alert.alert(
-            //   t.security && t.security.passcode_confirmation_title,
-            //   t.security && t.security.passcode_confirmation_message,
-            //   [{ text: t.general && t.general.ok, onPress: () => {} }]
-            // )
             setShowPasscodeSetSnackbar(true)
             setTimeout(() => setShowPasscodeSetSnackbar(false), 2000)
             setSecurityEnabled(true)
@@ -167,9 +152,9 @@ const PianoPasscodeSetScreen = ({
           } // Otherwise, show an alert that the passcodes don't match.
           else {
             Alert.alert(
-              t.security && t.security.no_match_title,
-              t.security && t.security.no_match_message,
-              [{ text: t.general && t.general.ok, onPress: () => {} }]
+              t('security.no_match_title'),
+              t('security.no_match_message'),
+              [{ text: t('general.ok'), onPress: () => {} }]
             )
             goBack()
           }
@@ -203,7 +188,7 @@ const PianoPasscodeSetScreen = ({
           mode='outline'
           onPress={() => setLocalPasscode('')}
           color={colors(isDark).error}
-          label={t.general && t.general.clear}
+          label={t('general.clear')}
           width={Dimensions.get('window').width / 3}
           style={{ marginVertical: 0 }}
         />

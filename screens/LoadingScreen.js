@@ -1,6 +1,6 @@
 import NetInfo from '@react-native-community/netinfo'
 import * as FileSystem from 'expo-file-system'
-import i18n from 'i18n-js'
+import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import {
@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -26,21 +26,10 @@ import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLa
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import ar from '../translations/ar.json'
-import en from '../translations/en.json'
-import hi from '../translations/hi.json'
-
-i18n.translations = {
-  en,
-  ar,
-  hi
-}
 
 function mapStateToProps (state) {
   var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
-  var font = state.activeGroup
-    ? getLanguageInfo(activeGroup.language).font
-    : null
+  var font = state.activeGroup ? info(activeGroup.language).font : null
   var isRTL = state.activeGroup
     ? state.database[activeGroup.language].isRTL
     : null
@@ -114,7 +103,6 @@ const LoadingScreen = ({
   hasFetchedLanguageData,
   isRTL,
   isDark,
-  t,
   setIsInstallingLanguageInstance,
   setHasOnboarded,
   setTotalLanguageCoreFilesToDownload,
@@ -284,7 +272,7 @@ const LoadingScreen = ({
                 colors(isDark).icons
               )}
             >
-              {t.general && t.general.cancel}
+              {t('general.cancel')}
             </Text>
           </TouchableOpacity>
         )}

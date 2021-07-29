@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React from 'react'
 import {
   FlatList,
@@ -11,10 +12,7 @@ import { connect } from 'react-redux'
 import HomeworkItem from '../components/DEPRECATED_HomeworkItem'
 import WahaItemDescription from '../components/DEPRECATED_WahaItemDescription'
 import { scaleMultiplier } from '../constants'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 // modal variant that shows some information
@@ -106,7 +104,6 @@ function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    t: activeDatabaseSelector(state).translations,
     activeGroup: activeGroupSelector(state)
   }
 }

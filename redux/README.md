@@ -39,6 +39,8 @@ In order to access data from the store within a Component or Screen, there are a
 Every component that needs to access the redux store must use the connect function to do so. Here's how to implement the connect function:
 
 1. Include the connect function with `import { connect } from 'react-redux'
+import { t } from 'i18n-js'
+import { t } from 'i18n-js'
 import {
 activeDatabaseSelector,
   activeGroupSelector

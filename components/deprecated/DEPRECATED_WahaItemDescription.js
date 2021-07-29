@@ -10,7 +10,7 @@ function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state)
   }
 }
@@ -36,7 +36,14 @@ const WahaItemDescription = ({
       }}
     >
       <Text
-        style={type(activeGroup.language, 'p', 'Regular', 'left', colors.oslo)}
+        style={type(
+          activeGroup.language,
+          activeGroup.language,
+          'p',
+          'Regular',
+          'left',
+          colors.oslo
+        )}
       >
         {text}
       </Text>

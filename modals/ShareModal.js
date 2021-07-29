@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
 import OptionsModalButton from '../components/OptionsModalButton'
@@ -32,7 +33,6 @@ const ShareModal = ({
   lesson,
   lessonType,
   set,
-  t,
   downloads,
   activeGroup,
   isDark
@@ -85,27 +85,6 @@ const ShareModal = ({
           logShareAudio(lesson, activeGroup.id)
           hideModal()
         })
-        // FileSystem.getInfoAsync(
-        //   FileSystem.documentDirectory + lesson.id + '.mp3'
-        // ).then(({ exists }) => {
-        //   exists
-        //     ? Sharing.shareAsync(
-        //         FileSystem.documentDirectory + lesson.id + '.mp3'
-        //       ).then(() => {
-        //         logShareAudio(lesson, activeGroup.id)
-        //         hideModal()
-        //       })
-        //     : Alert.alert(
-        //         t.general && t.general.share_undownloaded_lesson_title,
-        //         t.general && t.general.share_undownloaded_lesson_message,
-        //         [
-        //           {
-        //             text: t.general && t.general.ok,
-        //             onPress: () => {}
-        //           }
-        //         ]
-        //       )
-        // })
         break
       // Share a link to the video for this lesson if there is one.
       case shareTypes.VIDEO:
@@ -117,12 +96,11 @@ const ShareModal = ({
         break
       case shareTypes.MOBILIZATION_TOOLS:
         Share.share({
-          message: `${t.mobilization_tools &&
-            t.mobilization_tools.share_message_1}\n${t.mobilization_tools &&
-            t.mobilization_tools.share_message_2}\n${t.mobilization_tools &&
-            t.mobilization_tools.share_message_3}\n${t.mobilization_tools &&
-            t.mobilization_tools.share_message_4}\n${t.mobilization_tools &&
-            t.mobilization_tools.share_message_5}`
+          message: `${t('mobilization_tools.share_message_1')}\n
+            ${t('mobilization_tools.share_message_2')}\n
+            ${t('mobilization_tools.share_message_3')}\n
+            ${t('mobilization_tools.share_message_4')}\n
+            ${t('mobilization_tools.share_message_5')}`
         }).then(() => {
           hideModal()
         })
@@ -140,7 +118,7 @@ const ShareModal = ({
       activeGroup={activeGroup}
     >
       <OptionsModalButton
-        label={t.general && t.general.share_app}
+        label={t('general.share_app')}
         onPress={() => shareLessonContent(shareTypes.APP)}
         isDark={isDark}
         activeGroup={activeGroup}
@@ -150,7 +128,7 @@ const ShareModal = ({
         <View>
           <WahaSeparator />
           <OptionsModalButton
-            label={t.general && t.general.share_passage_text}
+            label={t('general.share_passage_text')}
             onPress={() => shareLessonContent(shareTypes.TEXT)}
             isDark={isDark}
             activeGroup={activeGroup}
@@ -164,7 +142,7 @@ const ShareModal = ({
           <View>
             <WahaSeparator />
             <OptionsModalButton
-              label={t.general && t.general.share_passage_audio}
+              label={t('general.share_passage_audio')}
               onPress={() => shareLessonContent(shareTypes.AUDIO)}
               isDark={isDark}
               activeGroup={activeGroup}
@@ -178,7 +156,7 @@ const ShareModal = ({
           <View>
             <WahaSeparator />
             <OptionsModalButton
-              label={t.general && t.general.share_video_link}
+              label={t('general.share_video_link')}
               onPress={() => shareLessonContent(shareTypes.VIDEO)}
               isDark={isDark}
               activeGroup={activeGroup}
@@ -189,7 +167,7 @@ const ShareModal = ({
         <View>
           <WahaSeparator />
           <OptionsModalButton
-            label={t.general && t.general.share_mobilization_tools}
+            label={t('general.share_mobilization_tools')}
             onPress={() => shareLessonContent(shareTypes.MOBILIZATION_TOOLS)}
             isDark={isDark}
             activeGroup={activeGroup}

@@ -85,6 +85,7 @@ const OnboardingSwiper = ({
                     )
                   : type(
                       activeGroup.language,
+                      activeGroup.language,
                       'h2',
                       'Bold',
                       'center',
@@ -106,6 +107,7 @@ const OnboardingSwiper = ({
                       colors(isDark).disabled
                     )
                   : type(
+                      activeGroup.language,
                       activeGroup.language,
                       'h3',
                       'Regular',

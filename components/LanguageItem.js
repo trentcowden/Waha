@@ -1,9 +1,11 @@
+import { locale } from 'i18n-js'
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import { getSystemIsRTL, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
+import { info } from '../languages'
 import { colors } from '../styles/colors'
-import { SystemTypography } from '../styles/typography'
+import { type } from '../styles/typography'
 
 /**
  * A pressable item used to display a language instance on the LanguageInstanceInstallScreen.
@@ -17,84 +19,76 @@ import { SystemTypography } from '../styles/typography'
  */
 const LanguageItem = ({
   // Props passed from a parent component.
+  languageID,
   nativeName,
   localeName,
   isDark,
   logos,
   onPress,
   isSelected,
-  playAudio,
-  font
-}) => (
-  <View
-    style={[
-      styles.languageItemContainer,
-      {
-        backgroundColor: isSelected
-          ? colors(isDark).success + '40'
-          : isDark
-          ? colors(isDark).bg2
-          : colors(isDark).bg4
-      }
-    ]}
-  >
-    {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
-    {isSelected ? (
-      <View style={{ marginHorizontal: 20 }}>
-        <Icon name='check' size={30} color={colors(isDark).success} />
-      </View>
-    ) : (
-      <TouchableOpacity
-        onPress={playAudio}
-        style={{
-          height: '100%',
-          width: 70,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Icon name='volume' size={30} color={colors(isDark).icons} />
+  playAudio
+}) => {
+  return (
+    <View
+      style={[
+        styles.languageItemContainer,
+        {
+          backgroundColor: isSelected
+            ? colors(isDark).success + '40'
+            : isDark
+            ? colors(isDark).bg2
+            : colors(isDark).bg4
+        }
+      ]}
+    >
+      {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
+      {isSelected ? (
+        <View style={{ marginHorizontal: 20 }}>
+          <Icon name='check' size={30} color={colors(isDark).success} />
+        </View>
+      ) : (
+        <TouchableOpacity
+          onPress={playAudio}
+          style={{
+            height: '100%',
+            width: 70,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Icon name='volume' size={30} color={colors(isDark).icons} />
+        </TouchableOpacity>
+      )}
+      <TouchableOpacity style={styles.touchableAreaContainer} onPress={onPress}>
+        <View style={styles.namesContainer}>
+          <Text
+            style={{
+              ...type(languageID, 'h3', 'Bold', 'left', colors(isDark).text),
+              textAlign: info(locale).isRTL ? 'right' : 'left'
+            }}
+          >
+            {nativeName}
+          </Text>
+          <Text
+            style={type(locale, 'p', 'Regular', 'left', colors(isDark).text)}
+          >
+            {localeName}
+          </Text>
+        </View>
+        <Image
+          style={styles.headerImage}
+          source={{ uri: isDark ? logos.dark : logos.light }}
+        />
       </TouchableOpacity>
-    )}
-    <TouchableOpacity style={styles.touchableAreaContainer} onPress={onPress}>
-      <View style={styles.namesContainer}>
-        <Text
-          style={SystemTypography(
-            false,
-            'h3',
-            'Bold',
-            'left',
-            colors(isDark).text,
-            font
-          )}
-        >
-          {nativeName}
-        </Text>
-        <Text
-          style={SystemTypography(
-            false,
-            'p',
-            'Regular',
-            'left',
-            colors(isDark).text
-          )}
-        >
-          {localeName}
-        </Text>
-      </View>
-      <Image
-        style={styles.headerImage}
-        source={{ uri: isDark ? logos.dark : logos.light }}
-      />
-    </TouchableOpacity>
-  </View>
-)
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   languageItemContainer: {
     height: 80 * scaleMultiplier,
     width: '100%',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
+    flexDirection: info(locale).isRTL ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
@@ -103,7 +97,7 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row'
+    flexDirection: info(locale).isRTL ? 'row-reverse' : 'row'
   },
   namesContainer: {
     justifyContent: 'center',

@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Clipboard,
@@ -18,18 +19,15 @@ import WahaHero from '../components/WahaHero'
 import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { info } from '../languages'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+
     isDark: state.settings.isDarkModeEnabled,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     groups: state.groups,
@@ -47,7 +45,6 @@ const MobilizationToolsScreen = ({
   database,
   isRTL,
   isDark,
-  t,
   areMobilizationToolsUnlocked,
   groups,
   activeGroup
@@ -81,8 +78,8 @@ const MobilizationToolsScreen = ({
       <WahaBlurb
         text={
           areMobilizationToolsUnlocked
-            ? t.mobilization_tools && t.mobilization_tools.blurb_post_unlock
-            : t.mobilization_tools && t.mobilization_tools.blurb_pre_unlock
+            ? t('mobilization_tools.blurb_post_unlock')
+            : t('mobilization_tools.blurb_pre_unlock')
         }
       />
     </View>
@@ -109,12 +106,11 @@ const MobilizationToolsScreen = ({
             setShowSnackbar(true)
             setTimeout(() => setShowSnackbar(false), 1500)
             Clipboard.setString(
-              `${t.mobilization_tools &&
-                t.mobilization_tools.share_message_1}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_2}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_3}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_4}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_5}`
+              `${t('mobilization_tools.share_message_1')}\n${t(
+                'mobilization_tools.share_message_2'
+              )}\n${t('mobilization_tools.share_message_3')}\n${t(
+                'mobilization_tools.share_message_4'
+              )}\n${t('mobilization_tools.share_message_5')}`
             )
           }}
         >
@@ -143,7 +139,7 @@ const MobilizationToolsScreen = ({
                 colors(isDark).text
               )}
             >
-              {t.mobilization_tools && t.mobilization_tools.unlock_code}
+              {t('mobilization_tools.unlock_code')}
             </Text>
             <Text
               style={type(
@@ -167,12 +163,11 @@ const MobilizationToolsScreen = ({
           }}
           onPress={() =>
             Share.share({
-              message: `${t.mobilization_tools &&
-                t.mobilization_tools.share_message_1}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_2}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_3}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_4}\n${t.mobilization_tools &&
-                t.mobilization_tools.share_message_5}`
+              message: `${t('mobilization_tools.share_message_1')}\n${t(
+                'mobilization_tools.share_message_2'
+              )}\n${t('mobilization_tools.share_message_3')}\n${t(
+                'mobilization_tools.share_message_4'
+              )}\n${t('mobilization_tools.share_message_5')}`
             })
           }
         >
@@ -226,8 +221,7 @@ const MobilizationToolsScreen = ({
                   }
                 ]}
               >
-                {t.mobilization_tools &&
-                  t.mobilization_tools.show_mobilization_tab}
+                {t('mobilization_tools.show_mobilization_tab')}
               </Text>
               <WahaSeparator />
             </View>
@@ -240,10 +234,7 @@ const MobilizationToolsScreen = ({
         <View style={{ width: '100%' }}>
           <WahaSeparator />
           <WahaItem
-            title={
-              t.mobilization_tools &&
-              t.mobilization_tools.unlock_mobilization_tools
-            }
+            title={t('mobilization_tools.unlock_mobilization_tools')}
             onPress={() => navigate('MobilizationToolsUnlock')}
           >
             <Icon
@@ -257,11 +248,11 @@ const MobilizationToolsScreen = ({
       )}
       <SnackBar
         visible={showSnackbar}
-        textMessage={t.general && t.general.copied_to_clipboard}
+        textMessage={t('general.copied_to_clipboard')}
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
-          fontFamily: getLanguageInfo(activeGroup.language).font + '-Black',
+          fontFamily: info(activeGroup.language).font + '-Black',
           textAlign: 'center'
         }}
         backgroundColor={colors(isDark).success}

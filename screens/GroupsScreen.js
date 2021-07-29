@@ -8,19 +8,16 @@ import GroupListHeader from '../components/GroupListHeader'
 import GroupsScreenEditButton from '../components/GroupsScreenEditButton'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+
     isConnected: state.network.isConnected,
 
     isDark: state.settings.isDarkModeEnabled,
@@ -40,7 +37,6 @@ const GroupsScreen = ({
   database,
   isRTL,
   isDark,
-  t,
   isConnected,
   groups,
   activeGroup
@@ -64,7 +60,7 @@ const GroupsScreen = ({
       headerTitleStyle: {
         // Update the header text color to go with the background color changes.
         color: isEditing ? colors(isDark).textOnColor : colors(isDark).text,
-        fontFamily: getLanguageInfo(activeGroup.language).font + '-Bold'
+        fontFamily: info(activeGroup.language).font + '-Bold'
       },
       headerRight: isRTL
         ? () => (

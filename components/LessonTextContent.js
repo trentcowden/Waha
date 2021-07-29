@@ -1,4 +1,5 @@
 // import SvgUri from 'expo-svg-uri'
+import { t } from 'i18n-js'
 import React from 'react'
 import {
   ScrollView,
@@ -95,7 +96,6 @@ const LessonTextContent = ({
   activeGroup,
   activeDatabase,
   isDark,
-  t,
   isRTL
 }) => {
   /**
@@ -157,7 +157,7 @@ const LessonTextContent = ({
           {/* Used to get the offset for the Fellowship section. */}
           <View
             onLayout={({ nativeEvent }) =>
-              setOffsets(t.play && t.play.fellowship, nativeEvent)
+              setOffsets(t('play.fellowship'), nativeEvent)
             }
           />
           {/* Fellowship questions. */}
@@ -165,9 +165,7 @@ const LessonTextContent = ({
             (question, index) => (
               <View key={index}>
                 <HeaderSmall
-                  text={
-                    t.play && t.play.question + ' ' + (index + 1).toString()
-                  }
+                  text={t('play.question') + ' ' + (index + 1).toString()}
                   activeGroup={activeGroup}
                   isDark={isDark}
                 />
@@ -200,7 +198,7 @@ const LessonTextContent = ({
             </View>
           ))}
           {/* <WahaSeparator /> */}
-          {t.general.copyrights !== '' && (
+          {t('general.copyrights') !== '' && (
             <TouchableOpacity
               onPress={() => setShowCopyrightsModal(true)}
               style={{
@@ -223,7 +221,7 @@ const LessonTextContent = ({
                   colors(isDark).disabled
                 )}
               >
-                {t.general && t.general.view_copyright}
+                {t('general.view_copyright')}
               </Text>
               {/* <View
               style={
@@ -245,10 +243,10 @@ const LessonTextContent = ({
           {/* Header for application section. */}
           <HeaderBig
             onLayout={({ nativeEvent }) =>
-              setOffsets(t.play && t.play.application, nativeEvent)
+              setOffsets(t('play.application'), nativeEvent)
             }
             activeGroup={activeGroup}
-            text={t.play && t.play.application}
+            text={t('play.application')}
             isDark={isDark}
           />
           {/* Application questions. */}
@@ -256,9 +254,7 @@ const LessonTextContent = ({
             (question, index) => (
               <View key={index}>
                 <HeaderSmall
-                  text={
-                    t.play && t.play.question + ' ' + (index + 1).toString()
-                  }
+                  text={t('play.question') + ' ' + (index + 1).toString()}
                   activeGroup={activeGroup}
                   isDark={isDark}
                 />

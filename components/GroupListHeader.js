@@ -1,4 +1,5 @@
 import * as FileSystem from 'expo-file-system'
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -11,7 +12,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { deleteLanguageData } from '../redux/actions/databaseActions'
 import { removeDownload } from '../redux/actions/downloadActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
@@ -24,12 +25,11 @@ import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     database: state.database,
     activeDatabase: activeDatabaseSelector(state),
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
-    t: activeDatabaseSelector(state).translations,
 
     isDark: state.settings.isDarkModeEnabled
   }
@@ -67,7 +67,6 @@ const GroupListHeader = ({
   activeDatabase,
   groups,
   activeGroup,
-  t,
   deleteGroup,
   deleteLanguageData,
   removeDownload
@@ -134,16 +133,16 @@ const GroupListHeader = ({
         style={styles.trashButtonContainer}
         onPress={() =>
           Alert.alert(
-            t.groups && t.groups.delete_language_title,
-            t.groups && t.groups.delete_language_message,
+            t('groups.delete_language_title'),
+            t('groups.delete_language_message'),
             [
               {
-                text: t.general && t.general.cancel,
+                text: t('general.cancel'),
                 onPress: () => {},
                 style: 'cancel'
               },
               {
-                text: t.general && t.general.ok,
+                text: t('general.ok'),
                 onPress: deleteLanguageInstance,
                 style: 'destructive'
               }
@@ -190,11 +189,12 @@ const GroupListHeader = ({
         <Text
           style={[
             type(
-              languageID,
+              activeGroup.language,
               'h3',
               'Regular',
               'left',
-              colors(isDark).secondaryText
+              colors(isDark).secondaryText,
+              languageID
             ),
             { flex: 1 }
           ]}

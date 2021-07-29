@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import * as StoreReview from 'expo-store-review'
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { AppState, LogBox, View } from 'react-native'
 import { connect } from 'react-redux'
@@ -8,7 +9,7 @@ import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import TestModeDisplay from '../components/TestModeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import SetsTabs from '../navigation/SetsTabs'
 import {
   setHasUsedPlayScreen,
@@ -47,9 +48,9 @@ const Stack = createStackNavigator()
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
-    font: getLanguageInfo(activeGroupSelector(state).language).font,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+
+    font: info(activeGroupSelector(state).language).font,
     isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
@@ -92,7 +93,6 @@ const MainStack = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  t,
   font,
   activeDatabase,
   activeGroup,
@@ -311,7 +311,7 @@ const MainStack = ({
           name='Groups'
           component={GroupsScreen}
           options={{
-            headerTitle: t.groups && t.groups.groups_and_languages,
+            headerTitle: t('groups.groups_and_languages'),
             headerStyle: {
               elevation: 0,
               shadowColor: 'transparent'
@@ -363,7 +363,7 @@ const MainStack = ({
           name='Storage'
           component={StorageScreen}
           options={{
-            headerTitle: t.storage && t.storage.storage,
+            headerTitle: t('storage.storage'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
@@ -379,8 +379,7 @@ const MainStack = ({
           name='MobilizationTools'
           component={MobilizationToolsScreen}
           options={{
-            headerTitle:
-              t.mobilization_tools && t.mobilization_tools.mobilization_tools,
+            headerTitle: t('mobilization_tools.mobilization_tools'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
@@ -396,8 +395,7 @@ const MainStack = ({
           name='MobilizationToolsUnlock'
           component={MobilizationToolsUnlockScreen}
           options={{
-            headerTitle:
-              t.mobilization_tools && t.mobilization_tools.mobilization_tools,
+            headerTitle: t('mobilization_tools.mobilization_tools'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
@@ -413,7 +411,7 @@ const MainStack = ({
           name='SecurityMode'
           component={SecurityModeScreen}
           options={{
-            headerTitle: t.security && t.security.security,
+            headerTitle: t('security.security'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
@@ -429,7 +427,7 @@ const MainStack = ({
           name='SecurityOnboardingSlides'
           component={SecurityOnboardingSlidesScreen}
           options={{
-            headerTitle: t.security && t.security.security,
+            headerTitle: t('security.security'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
@@ -524,7 +522,7 @@ const MainStack = ({
           name='Information'
           component={InformationScreen}
           options={{
-            headerTitle: t.information && t.information.information,
+            headerTitle: t('information.information'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
@@ -540,7 +538,7 @@ const MainStack = ({
           name='ContactUs'
           component={ContactUsScreen}
           options={{
-            headerTitle: t.contact_us && t.contact_us.contact_us,
+            headerTitle: t('contact_us.contact_us'),
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,

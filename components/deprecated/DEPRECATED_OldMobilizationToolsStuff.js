@@ -98,7 +98,7 @@
 //     <View style={{ width: '100%', height: 40 * scaleMultiplier }} />
 //     <View style={{ width: '100%', paddingHorizontal: 20 }}>
 //       <Text
-//         style={type(
+//         style={type(activeGroup.language, 
 //           activeGroup.language,
 //           'h2',
 //           'Black',
@@ -161,7 +161,7 @@
 //       }}
 //     >
 //       <Text
-//         style={type(
+//         style={type(activeGroup.language, 
 //           activeGroup.language,
 //           'p',
 //           'Regular',
@@ -184,23 +184,22 @@ import { connect } from 'react-redux'
 import { getSetInfo, scaleMultiplier } from '../../constants'
 import { logEnableMobilizationToolsForAGroup } from '../../LogEventFunctions'
 import {
-  addSet,
-  setShouldShowMobilizationToolsTab
+    addSet,
+    setShouldShowMobilizationToolsTab
 } from '../../redux/actions/groupsActions'
 import {
-  activeDatabaseSelector,
-  activeGroupSelector
+    activeGroupSelector
 } from '../../redux/reducers/activeGroup'
 import { colors } from '../../styles/colors'
 import {
-  getLanguageFont, SystemTypography, type
+    getLanguageFont, SystemTypography, type
 } from '../../styles/typography'
 import GroupAvatar from '../GroupAvatar'
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
+    
 
     isDark: state.settings.isDarkModeEnabled,
 
@@ -275,7 +274,7 @@ export default connect(mapStateToProps)(GroupListHeaderMT)
 function mapStateToProps (state) {
   return {
     database: state.database,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
 
     isDark: state.settings.isDarkModeEnabled,
@@ -337,7 +336,7 @@ const GroupItemMT = ({
       </View>
       <View style={styles.groupNameContainer}>
         <Text
-          style={type(
+          style={type(activeGroup.language, 
             {
               font: getLanguageFont(thisGroup.language),
               isRTL: isRTL

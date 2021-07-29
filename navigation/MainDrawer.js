@@ -10,7 +10,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { isTablet, scaleMultiplier, storageMode } from '../constants'
 import db from '../firebase/db'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import { appVersion } from '../modeSwitch'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
@@ -34,11 +34,11 @@ const Drawer = createDrawerNavigator()
 
 function mapStateToProps (state) {
   return {
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
     database: state.database,
     activeDatabase: activeDatabaseSelector(state),
     isConnected: state.network.isConnected,
-    t: activeDatabaseSelector(state).translations,
+
     activeGroup: activeGroupSelector(state),
     security: state.security,
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
@@ -107,7 +107,6 @@ const MainDrawer = ({
   database,
   activeDatabase,
   isConnected,
-  t,
   activeGroup,
   security,
   languageCoreFilesCreatedTimes,

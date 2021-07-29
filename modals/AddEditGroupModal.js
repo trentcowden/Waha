@@ -1,3 +1,4 @@
+import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Dimensions,
@@ -12,7 +13,7 @@ import EmojiViewer from '../components/EmojiViewer'
 import GroupAvatar from '../components/GroupAvatar'
 import GroupNameTextInput from '../components/GroupNameTextInput'
 import { scaleMultiplier } from '../constants'
-import { getLanguageInfo } from '../languages'
+import { info } from '../languages'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
@@ -21,18 +22,14 @@ import {
   editGroup,
   resetProgress
 } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     groups: state.groups,
-    isRTL: getLanguageInfo(activeGroupSelector(state).language).isRTL,
-    t: activeDatabaseSelector(state).translations,
+    isRTL: info(activeGroupSelector(state).language).isRTL,
 
     isDark: state.settings.isDarkModeEnabled,
 
@@ -103,7 +100,6 @@ const AddEditGroupModal = ({
   groups,
   isRTL,
   isDark,
-  t,
   activeGroup,
   globalGroupCounter,
   areMobilizationToolsUnlocked,
@@ -254,9 +250,7 @@ const AddEditGroupModal = ({
             }
       }
       title={
-        mode === 'AddGroup'
-          ? t.groups && t.groups.new_group
-          : t.groups && t.groups.edit_group
+        mode === 'AddGroup' ? t('groups.new_group') : t('groups.edit_group')
       }
     >
       <View style={styles.groupAvatarContainer}>
@@ -293,7 +287,7 @@ const AddEditGroupModal = ({
               colors(isDark).text
             )}
           >
-            {t.mobilization_tools && t.mobilization_tools.show_mobilization_tab}
+            {t('mobilization_tools.show_mobilization_tab')}
           </Text>
           <Switch
             trackColor={{
