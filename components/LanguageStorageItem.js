@@ -1,13 +1,13 @@
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 import WahaButton from './WahaButton'
 import WahaSeparator from './WahaSeparator'
 
@@ -15,7 +15,7 @@ function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state)
   }
 }
@@ -29,13 +29,14 @@ function mapStateToProps (state) {
  */
 const LanguageStorageItem = ({
   // Props passed from a parent component.
-  languageName,
+  nativeName,
   languageID,
   megabytes,
   clearDownloads,
   // Props passed from redux.
   isRTL,
   isDark,
+  t,
   activeGroup
 }) => {
   return (
@@ -51,14 +52,14 @@ const LanguageStorageItem = ({
       >
         <Text
           style={type(
-            activeGroup.language,
+            languageID,
             'h3',
             'Regular',
             'left',
             colors(isDark).secondaryText
           )}
         >
-          {languageName}
+          {nativeName}
         </Text>
         <Image
           style={styles.languageLogo}
@@ -88,7 +89,7 @@ const LanguageStorageItem = ({
             colors(isDark).icons
           )}
         >
-          {`${megabytes} ${t('storage.megabyte')}`}
+          {`${megabytes} ${t.storage.megabyte}`}
         </Text>
         <Text
           style={[
@@ -105,18 +106,22 @@ const LanguageStorageItem = ({
             }
           ]}
         >
-          {t('storage.storage_used')}
+          {t.storage.storage_used}
         </Text>
         <WahaButton
           mode='outline'
           color={colors(isDark).error}
-          label={t('general.clear')}
+          label={t.general.clear}
           width={92 * scaleMultiplier}
           onPress={clearDownloads}
           style={{ height: 45 * scaleMultiplier }}
-          textStyle={{
-            fontFamily: info(activeGroup.language).font + '-Regular'
-          }}
+          textStyle={type(
+            activeGroup.language,
+            'p',
+            'Regular',
+            'center',
+            colors(isDark).error
+          )}
         />
       </View>
       <WahaSeparator />

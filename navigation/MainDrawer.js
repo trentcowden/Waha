@@ -1,4 +1,3 @@
-import NetInfo from '@react-native-community/netinfo'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import {
   getFocusedRouteNameFromRoute,
@@ -10,7 +9,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { isTablet, scaleMultiplier, storageMode } from '../constants'
 import db from '../firebase/db'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { appVersion } from '../modeSwitch'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
@@ -20,12 +19,12 @@ import {
   storeLanguageData,
   storeLanguageSets
 } from '../redux/actions/databaseActions'
-import { addSet, deleteGroup, editGroup } from '../redux/actions/groupsActions'
-import { updateConnectionStatus } from '../redux/actions/networkActions'
+import { addSet, deleteGroup } from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
+import { getTranslations } from '../translations/translationsConfig'
 import MainStack from './MainStack'
 import WahaDrawer from './WahaDrawer'
 
@@ -38,7 +37,7 @@ function mapStateToProps (state) {
     database: state.database,
     activeDatabase: activeDatabaseSelector(state),
     isConnected: state.network.isConnected,
-
+    t: getTranslations(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state),
     security: state.security,
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
@@ -46,18 +45,12 @@ function mapStateToProps (state) {
     mtUnlockAttempts: state.mtUnlockAttempts,
     downloads: state.downloads,
     groups: state.groups,
-    installedLanguageInstances: Object.keys(state.database).filter(
-      key => key.length === 2
-    ),
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    updateConnectionStatus: status => {
-      dispatch(updateConnectionStatus(status))
-    },
     storeLanguageData: (data, language) => {
       dispatch(storeLanguageData(data, language))
     },
@@ -79,21 +72,7 @@ function mapDispatchToProps (dispatch) {
       dispatch(clearLanguageCoreFilesToUpdate()),
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
-    },
-    editGroup: (
-      oldGroupName,
-      newGroupName,
-      emoji,
-      shouldShowMobilizationToolsTab
-    ) =>
-      dispatch(
-        editGroup(
-          oldGroupName,
-          newGroupName,
-          emoji,
-          shouldShowMobilizationToolsTab
-        )
-      )
+    }
   }
 }
 
@@ -114,7 +93,7 @@ const MainDrawer = ({
   mtUnlockAttempts,
   downloads,
   groups,
-  installedLanguageInstances,
+  t,
   areMobilizationToolsUnlocked,
   updateConnectionStatus,
   storeLanguageData,
@@ -124,66 +103,8 @@ const MainDrawer = ({
   deleteGroup,
   storeLanguageCoreFileCreatedTime,
   clearLanguageCoreFilesToUpdate,
-  addSet,
-  editGroup
+  addSet
 }) => {
-  /** useEffect function that adds a listener for listening to network changes. */
-  useEffect(() => {
-    // Add a listener for connection status and update the redux state accordingly.
-    const netInfoUnsubscribe = NetInfo.addEventListener(state => {
-      updateConnectionStatus(state.isConnected)
-    })
-
-    return function cleanup () {
-      // Cancel our connection status listener.
-      netInfoUnsubscribe()
-    }
-  }, [])
-
-  // (TEMP) Create the language core files to update redux variable for users who are updating from a previous version.
-  if (!languageCoreFilesToUpdate) {
-    clearLanguageCoreFilesToUpdate()
-  }
-
-  // (TEMP) Check to makes sure that users who update have the language core file created times.
-  if (!languageCoreFilesCreatedTimes) {
-    installedLanguageInstances.forEach(language => {
-      database[language].files.forEach(fileName => {
-        var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
-        var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
-        // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
-        firebase
-          .storage()
-          .refFromURL(url)
-          .getMetadata()
-          .then(metadata =>
-            storeLanguageCoreFileCreatedTime(
-              `${language}-${fileName}`,
-              metadata.timeCreated
-            )
-          )
-      })
-    })
-  }
-
-  // (TEMP) Add MT Sets to all groups.
-  useEffect(() => {
-    groups.forEach(group => {
-      if (!group.addedSets.some(set => set.id === group.language + '.3.1')) {
-        addSet(group.name, group.id, { id: group.language + '.3.1' })
-        addSet(group.name, group.id, { id: group.language + '.3.2' })
-      }
-    })
-  }, [])
-
-  // (TEMP) Show the MT tab for every group.
-  useEffect(() => {
-    groups.forEach(group => {
-      if (group.shouldShowMobilizationToolsTab === undefined)
-        editGroup(group.name, group.name, group.emoji, true)
-    })
-  }, [])
-
   /** useEffect function that checks for database updates for other installed languages besides the active one. */
   useEffect(() => {
     Object.keys(database).forEach(key => {

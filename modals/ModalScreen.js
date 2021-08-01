@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import {
   activeDatabaseSelector,
   activeGroupSelector

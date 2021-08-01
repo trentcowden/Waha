@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import {
@@ -17,7 +16,7 @@ import {
   scaleMultiplier,
   setItemModes
 } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 // import en from '../locales/en.json'
 import MessageModal from '../modals/MessageModal'
 import { addSet } from '../redux/actions/groupsActions'
@@ -29,6 +28,7 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 // i18n.translations = { en }
 
@@ -37,9 +37,9 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-    //
-    font: info(activeGroupSelector(state).language).font,
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
+    font: info(activeGroupSelector(state).language).font,
     // For testing.
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter,
@@ -77,6 +77,7 @@ const SetsScreen = ({
   isRTL,
   isDark,
   activeGroup,
+  t,
   font,
   languageCoreFilesCreatedTimes,
   globalGroupCounter,
@@ -92,10 +93,10 @@ const SetsScreen = ({
   useEffect(() => {
     setAddNewSetLabel(
       category === 'Foundational'
-        ? t('sets.add_foundational_set')
+        ? t.sets.add_foundational_set
         : category === 'Topical'
-        ? t('sets.add_topical_set')
-        : t('sets.add_mobilization_tool')
+        ? t.sets.add_topical_set
+        : t.sets.add_mobilization_tool
     )
   }, [activeGroup, activeDatabase.translations])
 
@@ -310,7 +311,7 @@ const SetsScreen = ({
           colors(isDark).secondaryText
         )}
       >
-        {t('sets.no_mobilization_tools_content')}
+        {t.sets.no_mobilization_tools_content}
       </Text>
     </View>
   )
@@ -382,9 +383,9 @@ const SetsScreen = ({
       <MessageModal
         isVisible={showMTTabAddedSnackbar}
         hideModal={() => setShowMTTabAddedSnackbar(false)}
-        title={t('mobilization_tools.unlock_successful_title')}
-        message={t('mobilization_tools.unlock_successful_message')}
-        confirmText={t('general.got_it')}
+        title={t.mobilization_tools.unlock_successful_title}
+        message={t.mobilization_tools.unlock_successful_message}
+        confirmText={t.general.got_it}
         confirmOnPress={() => setShowMTTabAddedSnackbar(false)}
         isDark={isDark}
         activeGroup={activeGroup}

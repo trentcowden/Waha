@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -13,20 +12,22 @@ import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { logEnableSecurityMode } from '../LogEventFunctions'
 import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
 import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
     security: state.security,
     isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
+    t: getTranslations(activeGroupSelector(state).language)
   }
 }
 
@@ -55,6 +56,7 @@ const PianoPasscodeSetScreen = ({
   security,
   isRTL,
   isDark,
+  t,
   activeGroup,
   setSecurityEnabled,
   setCode,
@@ -65,16 +67,16 @@ const PianoPasscodeSetScreen = ({
 
   /** The text to display above the piano telling the user what to do. */
   const instructionText = {
-    PianoPasscodeSet: t('security.choose_passcode'),
-    PianoPasscodeSetConfirm: t('security.confirm_passcode'),
-    PianoPasscodeChange: t('security.choose_passcode'),
-    PianoPasscodeChangeConfirm: t('security.confirm_passcode')
+    PianoPasscodeSet: t.security.choose_passcode,
+    PianoPasscodeSetConfirm: t.security.confirm_passcode,
+    PianoPasscodeChange: t.security.choose_passcode,
+    PianoPasscodeChangeConfirm: t.security.confirm_passcode
   }
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions({
-      title: t('security.security'),
+      title: t.security.security,
       headerRight: isRTL
         ? () => (
             <WahaBackButton
@@ -126,9 +128,9 @@ const PianoPasscodeSetScreen = ({
           } // Otherwise, show an alert that the passcodes don't match.
           else {
             Alert.alert(
-              t('security.no_match_title'),
-              t('security.no_match_message'),
-              [{ text: t('general.ok'), onPress: () => {} }]
+              t.security.no_match_title,
+              t.security.no_match_message,
+              [{ text: t.general.ok, onPress: () => {} }]
             )
             goBack()
           }
@@ -152,9 +154,9 @@ const PianoPasscodeSetScreen = ({
           } // Otherwise, show an alert that the passcodes don't match.
           else {
             Alert.alert(
-              t('security.no_match_title'),
-              t('security.no_match_message'),
-              [{ text: t('general.ok'), onPress: () => {} }]
+              t.security.no_match_title,
+              t.security.no_match_message,
+              [{ text: t.general.ok, onPress: () => {} }]
             )
             goBack()
           }
@@ -188,7 +190,7 @@ const PianoPasscodeSetScreen = ({
           mode='outline'
           onPress={() => setLocalPasscode('')}
           color={colors(isDark).error}
-          label={t('general.clear')}
+          label={t.general.clear}
           width={Dimensions.get('window').width / 3}
           style={{ marginVertical: 0 }}
         />

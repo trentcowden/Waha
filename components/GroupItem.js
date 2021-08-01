@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -10,7 +9,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { getLessonInfo, scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
 import {
@@ -19,6 +18,7 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 import GroupAvatar from './GroupAvatar'
 
 function mapStateToProps (state) {
@@ -29,7 +29,7 @@ function mapStateToProps (state) {
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
     isDark: state.settings.isDarkModeEnabled,
-    primaryColor: activeDatabaseSelector(state).primaryColor
+    t: getTranslations(activeGroupSelector(state).language)
   }
 }
 
@@ -67,8 +67,8 @@ const GroupItem = ({
   isRTL,
   isDark,
   groups,
+  t,
   activeGroup,
-  primaryColor,
   deleteGroup,
   changeActiveGroup
 }) => {
@@ -170,16 +170,16 @@ const GroupItem = ({
             style={styles.minusButtonContainer}
             onPress={() => {
               Alert.alert(
-                t('groups.delete_group_title'),
-                t('groups.delete_group_message'),
+                t.groups.delete_group_title,
+                t.groups.delete_group_message,
                 [
                   {
-                    text: t('general.cancel'),
+                    text: t.general.cancel,
                     onPress: () => {},
                     style: 'cancel'
                   },
                   {
-                    text: t('general.ok'),
+                    text: t.general.ok,
                     onPress: () => deleteGroup(thisGroup.name),
                     style: 'destructive'
                   }

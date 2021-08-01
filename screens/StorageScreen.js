@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -13,16 +12,21 @@ import { connect } from 'react-redux'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { info } from '../languages'
+import {
+  getInstalledLanguagesData,
+  info
+} from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     database: state.database,
-
-    isDark: state.settings.isDarkModeEnabled
+    t: getTranslations(activeGroupSelector(state).language),
+    isDark: state.settings.isDarkModeEnabled,
+    groups: state.groups
   }
 }
 
@@ -42,7 +46,9 @@ const StorageScreen = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  database
+  database,
+  t,
+  groups
 }) => {
   /** Keeps track of the amount of storage each language's downloaded Story and Training chapter mp3s and mp4s take up. */
   const [languageStorageSizes, setLanguageSizes] = useState({})
@@ -106,7 +112,7 @@ const StorageScreen = ({
     setLanguageSizes({})
 
     // Get the currently installed langauges.
-    var languages = getInstalledLanguageInstances()
+    var languages = getInstalledLanguagesData(database, groups)
 
     // Go through each language and get its storage size.
     languages.forEach(language =>
@@ -147,51 +153,36 @@ const StorageScreen = ({
   }
 
   /**
-   * Gets an array of the currently installed language instances.
-   * @return {Object[]} - The currently installed language instances.
-   */
-  const getInstalledLanguageInstances = () => {
-    var installedLanguageInstances = []
-    for (key in database) {
-      if (key.length === 2) {
-        var languageObject = {}
-        languageObject['languageName'] = database[key].displayName
-        languageObject['languageID'] = key
-        installedLanguageInstances.push(languageObject)
-      }
-    }
-    return installedLanguageInstances
-  }
-
-  /**
    * Renders a <LanguageStorageItem />.
    * @param {Object} item - The language instance to render.
    */
-  const renderLanguageStorageItem = ({ item }) => (
-    <LanguageStorageItem
-      languageName={item.languageName}
-      languageID={item.languageID}
-      megabytes={languageStorageSizes[item.languageID]}
-      clearDownloads={() => {
-        Alert.alert(
-          t('storage.clear_all_downloaded_lessons_for_a_language_title'),
-          t('storage.clear_all_downloaded_lessons_for_a_language_message'),
-          [
-            {
-              text: t('general.cancel'),
-              onPress: () => {},
-              style: 'cancel'
-            },
-            {
-              text: t('general.ok'),
-              onPress: () => deleteDownloadedLessons(item.languageID),
-              style: 'destructive'
-            }
-          ]
-        )
-      }}
-    />
-  )
+  const renderLanguageStorageItem = ({ item }) => {
+    return (
+      <LanguageStorageItem
+        nativeName={item.nativeName}
+        languageID={item.languageID}
+        megabytes={languageStorageSizes[item.languageID]}
+        clearDownloads={() => {
+          Alert.alert(
+            t.storage.clear_all_downloaded_lessons_for_a_language_title,
+            t.storage.clear_all_downloaded_lessons_for_a_language_message,
+            [
+              {
+                text: t.general.cancel,
+                onPress: () => {},
+                style: 'cancel'
+              },
+              {
+                text: t.general.ok,
+                onPress: () => deleteDownloadedLessons(item.languageID),
+                style: 'destructive'
+              }
+            ]
+          )
+        }}
+      />
+    )
+  }
 
   return (
     <SafeAreaView
@@ -202,7 +193,7 @@ const StorageScreen = ({
     >
       <FlatList
         style={{ flex: 1 }}
-        data={getInstalledLanguageInstances()}
+        data={getInstalledLanguagesData(database, groups)}
         renderItem={renderLanguageStorageItem}
         keyExtractor={item => item.languageID}
         ItemSeparatorComponent={() => (
@@ -215,22 +206,20 @@ const StorageScreen = ({
       <WahaButton
         mode='filled'
         color={colors(isDark).error}
-        label={`${t(
-          'storage.clear_all_downloaded_lessons'
-        )} (${totalStorage} ${t('storage.megabyte')})`}
+        label={`${t.storage.clear_all_downloaded_lessons} (${totalStorage} ${t.storage.megabyte})`}
         width={Dimensions.get('window').width - 40}
         onPress={() =>
           Alert.alert(
-            t('storage.clear_all_downloaded_lessons_title'),
-            t('storage.clear_all_downloaded_lessons_message'),
+            t.storage.clear_all_downloaded_lessons_title,
+            t.storage.clear_all_downloaded_lessons_message,
             [
               {
-                text: t('general.cancel'),
+                text: t.general.cancel,
                 onPress: () => {},
                 style: 'cancel'
               },
               {
-                text: t('general.ok'),
+                text: t.general.ok,
                 onPress: () => deleteDownloadedLessons(),
                 style: 'destructive'
               }

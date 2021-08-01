@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
@@ -9,16 +8,15 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-
+    t: getTranslations(activeGroupSelector(state).language),
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
     isDark: state.settings.isDarkModeEnabled,
-
     isConnected: state.network.isConnected,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
   }
@@ -39,6 +37,7 @@ const DrawerDownloadUpdateButton = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  t,
   isDark,
   isConnected,
   languageCoreFilesToUpdate
@@ -47,16 +46,16 @@ const DrawerDownloadUpdateButton = ({
     style={styles.drawerDownloadUpdateButtonContainer}
     onPress={() => {
       Alert.alert(
-        t('general.download_update_title'),
-        t('general.download_update_message'),
+        t.general.download_update_title,
+        t.general.download_update_message,
         [
           {
-            text: t('general.cancel'),
+            text: t.general.cancel,
             onPress: () => {},
             style: 'cancel'
           },
           {
-            text: t('general.ok'),
+            text: t.general.ok,
             onPress: updateHandler
           }
         ]
@@ -90,7 +89,7 @@ const DrawerDownloadUpdateButton = ({
           )
         ]}
       >
-        {t('general.download_update')}
+        {t.general.download_update}
       </Text>
       {isConnected ? (
         <View style={styles.iconContainer}>

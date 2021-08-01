@@ -1,9 +1,8 @@
-import { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -120,7 +119,7 @@ const WahaButton = ({
 
   // Styles for the button tetxt.
   const labelStyle = [
-    type(locale, 'h3', 'Bold', 'center', color),
+    type(activeGroup.language, 'h3', 'Bold', 'center', color),
     { fontWeight: font ? null : 'bold' },
     textStyle
   ]

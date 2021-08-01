@@ -1,22 +1,22 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -38,7 +38,8 @@ const GroupNameTextInput = ({
   activeGroup,
   activeDatabase,
   isRTL,
-  isDark
+  isDark,
+  t
 }) => {
   return (
     <View style={styles.groupNameAreaContainer}>
@@ -51,7 +52,7 @@ const GroupNameTextInput = ({
           colors(isDark).secondaryText
         )}
       >
-        {t('groups.group_name')}
+        {t.groups.group_name}
       </Text>
       <View
         style={{
@@ -80,7 +81,7 @@ const GroupNameTextInput = ({
           value={groupNameInput}
           autoCapitalize='words'
           autoCorrect={false}
-          placeholder={t('groups.group_name_here')}
+          placeholder={t.groups.group_name_here}
           placeholderTextColor={colors(isDark).disabled}
           maxLength={50}
           returnKeyType='done'

@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
@@ -12,7 +11,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { deleteLanguageData } from '../redux/actions/databaseActions'
 import { removeDownload } from '../redux/actions/downloadActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
@@ -22,6 +21,7 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
@@ -30,7 +30,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     groups: state.groups,
     activeGroup: activeGroupSelector(state),
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -57,11 +57,12 @@ function mapDispatchToProps (dispatch) {
  */
 const GroupListHeader = ({
   // Props passed from a parent component.
-  languageName,
+  nativeName,
   languageID,
   isEditing,
   // Props passed from redux.
   isRTL,
+  t,
   isDark,
   database,
   activeDatabase,
@@ -133,16 +134,16 @@ const GroupListHeader = ({
         style={styles.trashButtonContainer}
         onPress={() =>
           Alert.alert(
-            t('groups.delete_language_title'),
-            t('groups.delete_language_message'),
+            t.groups.delete_language_title,
+            t.groups.delete_language_message,
             [
               {
-                text: t('general.cancel'),
+                text: t.general.cancel,
                 onPress: () => {},
                 style: 'cancel'
               },
               {
-                text: t('general.ok'),
+                text: t.general.ok,
                 onPress: deleteLanguageInstance,
                 style: 'destructive'
               }
@@ -163,43 +164,36 @@ const GroupListHeader = ({
 
   return (
     <View
-      style={[
-        styles.groupListHeaderContainer,
-        {
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
-        }
-      ]}
+      style={{
+        ...styles.groupListHeaderContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <Animated.View
         style={{
-          transform:
-            // activeGroup.language === languageID
-            //   ? []
-            //   :
-            [{ translateX: leftIconXPos }],
+          transform: [{ translateX: leftIconXPos }],
           flexDirection: isRTL ? 'row-reverse' : 'row',
           flex: 1,
-          // width: '100%',
           height: '100%',
           alignItems: 'center'
         }}
       >
         {trashButtonComponent}
         <Text
-          style={[
-            type(
-              activeGroup.language,
+          style={{
+            ...type(
+              languageID,
               'h3',
               'Regular',
               'left',
-              colors(isDark).secondaryText,
-              languageID
+              colors(isDark).secondaryText
             ),
-            { flex: 1 }
-          ]}
+            textAlign: isRTL ? 'right' : 'left',
+            flex: 1
+          }}
         >
-          {languageName}
+          {nativeName}
         </Text>
       </Animated.View>
       <Image

@@ -1,16 +1,16 @@
-import { locale } from 'i18n-js'
 import React from 'react'
 import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
+import { type } from '../styles/typography'
 
 function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
-
+    activeGroup: activeGroupSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
@@ -21,6 +21,7 @@ function mapStateToProps (state) {
 const TestModeDisplay = ({
   // Props passed from redux.
   isDark,
+  activeGroup,
   isRTL
 }) => {
   return (
@@ -35,7 +36,13 @@ const TestModeDisplay = ({
       {dbMode === 'test' || reduxMode === 'test' || analyticsMode === 'test' ? (
         <Text
           style={{
-            ...type(locale, 'd', 'Bold', 'center', colors(isDark).textOnColor),
+            ...type(
+              activeGroup.language,
+              'd',
+              'Bold',
+              'center',
+              colors(isDark).textOnColor
+            ),
             paddingHorizontal: 10
           }}
         >

@@ -3,7 +3,7 @@ import { StyleSheet, Switch, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -28,14 +28,16 @@ function mapDispatchToProps (dispatch) {
       oldGroupName,
       newGroupName,
       emoji,
-      shouldShowMobilizationToolsTab
+      shouldShowMobilizationToolsTab,
+      language
     ) =>
       dispatch(
         editGroup(
           oldGroupName,
           newGroupName,
           emoji,
-          shouldShowMobilizationToolsTab
+          shouldShowMobilizationToolsTab,
+          language
         )
       ),
     addSet: (groupName, groupID, set) => {
@@ -116,7 +118,8 @@ const GroupItemMT = ({
               thisGroup.name,
               thisGroup.name,
               thisGroup.emoji,
-              !thisGroup.shouldShowMobilizationToolsTab
+              !thisGroup.shouldShowMobilizationToolsTab,
+              thisGroup.language
             )
           }}
           value={thisGroup.shouldShowMobilizationToolsTab}

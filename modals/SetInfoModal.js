@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import {
   Dimensions,
@@ -12,7 +11,7 @@ import { connect } from 'react-redux'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
 import { scaleMultiplier, setItemModes } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { addSet } from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
@@ -20,6 +19,7 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 import ModalScreen from './ModalScreen'
 
 function mapStateToProps (state) {
@@ -28,8 +28,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-
-    font: info(activeGroupSelector(state).language).font,
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -59,6 +58,7 @@ const SetInfoModal = ({
   downloads,
   activeDatabase,
   isRTL,
+  t,
   isDark,
   activeGroup,
   font,
@@ -122,7 +122,7 @@ const SetInfoModal = ({
 
   return (
     <ModalScreen
-      title={t('sets.set_details')}
+      title={t.sets.set_details}
       hideModal={hideModal}
       isVisible={isVisible}
     >
@@ -145,7 +145,7 @@ const SetInfoModal = ({
           hideModal()
         }}
         style={{ marginHorizontal: 20, marginVertical: 10 }}
-        label={t('sets.add_new_story_set')}
+        label={t.sets.add_new_story_set}
         extraComponent={
           <Icon
             style={{ marginHorizontal: 10 }}

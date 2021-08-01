@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
@@ -9,7 +8,7 @@ import WahaHero from '../components/WahaHero'
 import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
 import {
   setSecurityEnabled,
@@ -18,11 +17,12 @@ import {
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     showPasscodeSetSnackbar: state.popups.showPasscodeSetSnackbar,
     security: state.security,
@@ -46,6 +46,7 @@ const SecurityModeScreen = ({
   // Props passed from redux.
   isRTL,
   isDark,
+  t,
   activeGroup,
   showPasscodeSetSnackbar,
   security,
@@ -72,13 +73,12 @@ const SecurityModeScreen = ({
    * @return {string} - The label to display next to the timeout button that says how long the current security timeout is.
    */
   const getTimeoutText = () => {
-    if (security.timeoutDuration === 60000) return t('security.one_minute')
-    else if (security.timeoutDuration === 300000)
-      return t('security.five_minutes')
+    if (security.timeoutDuration === 60000) return t.security.one_minute
+    else if (security.timeoutDuration === 300000) return t.security.five_minutes
     else if (security.timeoutDuration === 900000)
-      return t('security.fifteen_minutes')
-    else if (security.timeoutDuration === 3600000) return t('security.one_hour')
-    else if (security.timeoutDuration === 0) return t('security.instant')
+      return t.security.fifteen_minutes
+    else if (security.timeoutDuration === 3600000) return t.security.one_hour
+    else if (security.timeoutDuration === 0) return t.security.instant
   }
 
   return (
@@ -91,9 +91,9 @@ const SecurityModeScreen = ({
       {/* Inside a ScrollView in case a user's phone can't fit all of the controls on their screen. */}
       <ScrollView bounces={false}>
         <WahaHero source={require('../assets/lotties/security_mode.json')} />
-        <WahaBlurb text={t('security.security_mode_blurb')} />
+        <WahaBlurb text={t.security.security_mode_blurb} />
         <WahaSeparator />
-        <WahaItem title={t('security.security_mode')}>
+        <WahaItem title={t.security.security_mode}>
           <Switch
             trackColor={{
               false: colors(isDark).disabled,
@@ -119,7 +119,7 @@ const SecurityModeScreen = ({
             {/* Control item one allows the user to change the security mode timeout. */}
             <WahaSeparator />
             <WahaItem
-              title={t('security.change_timeout')}
+              title={t.security.change_timeout}
               onPress={() => setShowChangeTimeoutModal(true)}
             >
               <View
@@ -149,7 +149,7 @@ const SecurityModeScreen = ({
             {/* Control item two allows the user to update their passcode. */}
             <WahaSeparator />
             <WahaItem
-              title={t('security.change_passcode')}
+              title={t.security.change_passcode}
               onPress={() => navigate('PianoPasscodeChange')}
             >
               <Icon
@@ -169,7 +169,7 @@ const SecurityModeScreen = ({
       />
       <SnackBar
         visible={showPasscodeSetSnackbar}
-        textMessage={t('security.passcode_confirmation_title')}
+        textMessage={t.security.passcode_confirmation_title}
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,

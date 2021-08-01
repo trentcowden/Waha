@@ -1,40 +1,26 @@
+import NetInfo from '@react-native-community/netinfo'
 import { StatusBar as StatusBarExpo } from 'expo-status-bar'
-import i18n from 'i18n-js'
 import React, { useEffect } from 'react'
 import { StatusBar as StatusBarRN, View } from 'react-native'
 import { connect } from 'react-redux'
-import { groupNames } from '../constants'
-import en from '../locales/en.json'
-import ga from '../locales/ga.json'
-import hi from '../locales/hi.json'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { createGroup } from '../redux/actions/groupsActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { updateConnectionStatus } from '../redux/actions/networkActions'
 import LoadingScreen from '../screens/LoadingScreen'
 import { colors } from '../styles/colors'
 import MainDrawer from './MainDrawer'
 import Onboarding from './Onboarding'
 
 function mapStateToProps (state) {
-  if (state.activeGroup !== null)
-    return {
-      hasOnboarded: state.database.hasOnboarded,
-      hasInstalledFirstLanguageInstance:
-        state.database.hasInstalledFirstLanguageInstance,
-      isInstallingLanguageInstance: state.isInstallingLanguageInstance,
-      activeGroup: activeGroupSelector(state),
-      groups: state.groups,
-      database: state.database,
-      isDark: state.settings.isDarkModeEnabled
-    }
-  else
-    return {
-      hasOnboarded: state.database.hasOnboarded,
-      hasInstalledFirstLanguageInstance:
-        state.database.hasInstalledFirstLanguageInstance,
-      isInstallingLanguageInstance: state.isInstallingLanguageInstance,
-      isDark: state.settings.isDarkModeEnabled
-    }
+  return {
+    hasOnboarded: state.database.hasOnboarded,
+    hasInstalledFirstLanguageInstance:
+      state.database.hasInstalledFirstLanguageInstance,
+    isInstallingLanguageInstance: state.isInstallingLanguageInstance,
+    groups: state.groups,
+    database: state.database,
+    isDark: state.settings.isDarkModeEnabled
+  }
 }
 
 function mapDispatchToProps (dispatch) {
@@ -59,55 +45,68 @@ function mapDispatchToProps (dispatch) {
           groupID,
           groupNumber
         )
-      )
+      ),
+    updateConnectionStatus: status => {
+      dispatch(updateConnectionStatus(status))
+    }
   }
 }
 
 // Setup for i18n.
-i18n.fallbacks = true
-i18n.translations = { en, ga, hi }
-i18n.locale = 'en'
+// i18n.fallbacks = true
+// i18n.translations = { en, ga, hi }
+// i18n.locale = 'en'
 
 /**
  * This component renders a navigator conditionally based on state. It's the first thing rendered in App.js.
  */
 const Root = ({
-  locale,
   // Props passed from redux.
   hasOnboarded,
   hasInstalledFirstLanguageInstance,
   isInstallingLanguageInstance,
   isDark,
-  activeGroup = null,
   groups = null,
   database = null,
   changeActiveGroup,
-  createGroup
+  createGroup,
+  updateConnectionStatus
 }) => {
-  console.log(i18n.locale)
+  // if (groups.length === 0) {
+  //   createGroup(groupNames['en'], 'en', 'default', true, 1, 1)
+  //   changeActiveGroup(groupNames['en'])
+  // }
 
+  /** useEffect function that adds a listener for listening to network changes. */
   useEffect(() => {
-    // console.log(activeGroup.language)
-    if (activeGroup !== null) i18n.locale = activeGroup.language
-  }, [activeGroup])
+    // Add a listener for connection status and update the redux state accordingly.
+    const netInfoUnsubscribe = NetInfo.addEventListener(state => {
+      updateConnectionStatus(state.isConnected)
+    })
+
+    return function cleanup () {
+      // Cancel our connection status listener.
+      netInfoUnsubscribe()
+    }
+  }, [])
 
   // Below are some failsafes to keep the app functioning in case of group errors.
-  if (activeGroup) {
-    // If somehow, every group got deleted, create a new group in one of the installed languages so that the app can still function.
-    if (groups.length === 0) {
-      var languageID
-      Object.keys(database).forEach(key => {
-        if (key.length === 2) {
-          languageID = key
-        }
-      })
-      createGroup(groupNames[languageID], languageID, 'default', true, 1, 1)
-      changeActiveGroup(groupNames[languageID])
-      // If somehow, we switch to a group that doesn't exist, fall back to the first group in the groups redux array so that the app can still function.
-    } else if (!groups.some(group => activeGroup.name === group.name)) {
-      changeActiveGroup(groups[0].name)
-    }
-  }
+  // if (activeGroup) {
+  //   // If somehow, every group got deleted, create a new group in one of the installed languages so that the app can still function.
+  //   if (groups.length === 0) {
+  //     var languageID
+  //     Object.keys(database).forEach(key => {
+  //       if (key.length === 2) {
+  //         languageID = key
+  //       }
+  //     })
+  //     createGroup(groupNames[languageID], languageID, 'default', true, 1, 1)
+  //     changeActiveGroup(groupNames[languageID])
+  //     // If somehow, we switch to a group that doesn't exist, fall back to the first group in the groups redux array so that the app can still function.
+  //   } else if (!groups.some(group => activeGroup.name === group.name)) {
+  //     changeActiveGroup(groups[0].name)
+  //   }
+  // }
 
   /*
   Conditionally render the navigator based on the state of the 3 redux variables above. There's 3 possible options:
@@ -123,7 +122,7 @@ const Root = ({
     return (
       <View style={{ flex: 1 }}>
         <StatusBarExpo style={isDark ? 'light' : 'dark'} />
-        <MainDrawer locale={locale} />
+        <MainDrawer />
       </View>
     )
   } else if (

@@ -12,7 +12,7 @@
     <preset_collections/>
     <framework>generic-json</framework>
     <filename>translations.babel</filename>
-    <source_root_dir/>
+    <source_root_dir>../</source_root_dir>
     <folder_node>
         <name/>
         <children>
@@ -1629,6 +1629,47 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>search</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>ar-SA</language>
+                                <approved>true</approved>
+                            </translation>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>true</approved>
+                            </translation>
+                            <translation>
+                                <language>hi-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>mr-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ro-RO</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>tr-TR</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ur-PK</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>share_app</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -2961,7 +3002,7 @@
                 <name>languages</name>
                 <children>
                     <concept_node>
-                        <name>arabic</name>
+                        <name>ar</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -3002,7 +3043,7 @@
                         </translations>
                     </concept_node>
                     <concept_node>
-                        <name>english</name>
+                        <name>en</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -3043,7 +3084,7 @@
                         </translations>
                     </concept_node>
                     <concept_node>
-                        <name>gulf_arabic</name>
+                        <name>ga</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -3084,7 +3125,7 @@
                         </translations>
                     </concept_node>
                     <concept_node>
-                        <name>hindi</name>
+                        <name>hi</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>

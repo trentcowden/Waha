@@ -1,16 +1,16 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { t } from 'i18n-js'
 import React from 'react'
 import { Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { getSetInfo, scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import SetsScreen from '../screens/SetsScreen'
 import { colors } from '../styles/colors'
+import { getTranslations } from '../translations/translationsConfig'
 
 // Create the top tab navigator.
 const Tab = createMaterialTopTabNavigator()
@@ -18,13 +18,12 @@ const Tab = createMaterialTopTabNavigator()
 function mapStateToProps (state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
-    font: info(activeGroupSelector(state).language).font,
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    primaryColor: activeDatabaseSelector(state).primaryColor,
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
+    font: info(activeGroupSelector(state).language).font
   }
 }
 
@@ -35,11 +34,11 @@ const SetsTabs = ({
   // Props passed from redux.
   activeGroup,
   activeDatabase,
-  font,
-  primaryColor,
   isRTL,
+  t,
   isDark,
-  areMobilizationToolsUnlocked
+  areMobilizationToolsUnlocked,
+  font
 }) => {
   // Only dispaly the Mobilization Tools tab if the Mobilization Tools have been unlocked.
   var MobilizationToolsScreen =
@@ -49,7 +48,7 @@ const SetsTabs = ({
         name='MobilizationTools'
         component={SetsScreen}
         options={{
-          title: t('sets.mobilization')
+          title: t.sets.mobilization
         }}
       />
     ) : null
@@ -60,7 +59,7 @@ const SetsTabs = ({
       name='Foundational'
       component={SetsScreen}
       options={{
-        title: t('sets.foundations')
+        title: t.sets.foundations
       }}
     />
   )
@@ -71,7 +70,7 @@ const SetsTabs = ({
       name='Topical'
       component={SetsScreen}
       options={{
-        title: t('sets.topics')
+        title: t.sets.topics
       }}
     />
   )

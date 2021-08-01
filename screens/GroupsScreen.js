@@ -8,20 +8,22 @@ import GroupListHeader from '../components/GroupListHeader'
 import GroupsScreenEditButton from '../components/GroupsScreenEditButton'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { info } from '../languages'
+import {
+  getInstalledLanguagesData,
+  info
+} from '../functions/languageDataFunctions'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     database: state.database,
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isConnected: state.network.isConnected,
-
     isDark: state.settings.isDarkModeEnabled,
-
     groups: state.groups,
     activeGroup: activeGroupSelector(state)
   }
@@ -39,7 +41,8 @@ const GroupsScreen = ({
   isDark,
   isConnected,
   groups,
-  activeGroup
+  activeGroup,
+  t
 }) => {
   /** Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen. */
   const [isEditing, setIsEditing] = useState(false)
@@ -110,44 +113,44 @@ const GroupsScreen = ({
    * @return {Object[].languageID} - The ID of the language instance.
    * @return {Object[].data[]} - An array of the groups that are a part of this language instance.
    */
-  const getLanguageAndGroupData = () => {
-    var installedLanguageInstances = []
-    for (key in database) {
-      // Because there are other redux variables stored in the database object, filter for just the language objects (which all have a length of 2).
-      if (key.length === 2) {
-        var languageObject = {}
-        languageObject['languageName'] = database[key].displayName
-        languageObject['languageID'] = key
+  // const getLanguageAndGroupData = () => {
+  //   var installedLanguageInstances = []
+  //   for (key in database) {
+  //     // Because there are other redux variables stored in the database object, filter for just the language objects (which all have a length of 2).
+  //     if (key.length === 2) {
+  //       var languageObject = {}
+  //       languageObject['languageName'] = database[key].displayName
+  //       languageObject['languageID'] = key
 
-        // Get all the groups that are a part of this language instance.
-        languageObject['data'] = groups.filter(group => group.language === key)
+  //       // Get all the groups that are a part of this language instance.
+  //       languageObject['data'] = groups.filter(group => group.language === key)
 
-        // Add all of this to the installedLanguageInstances array.
-        installedLanguageInstances.push(languageObject)
-      }
-    }
+  //       // Add all of this to the installedLanguageInstances array.
+  //       installedLanguageInstances.push(languageObject)
+  //     }
+  //   }
 
-    // (TEMP) If we have the install times stored, sort the languages by the time installed.
-    return installedLanguageInstances.some(
-      key => database[key.languageID].installTime === null
-    )
-      ? installedLanguageInstances
-      : installedLanguageInstances.sort(
-          (a, b) =>
-            database[a.languageID].installTime -
-            database[b.languageID].installTime
-        )
-  }
+  //   // (TEMP) If we have the install times stored, sort the languages by the time installed.
+  //   return installedLanguageInstances.some(
+  //     key => database[key.languageID].installTime === null
+  //   )
+  //     ? installedLanguageInstances
+  //     : installedLanguageInstances.sort(
+  //         (a, b) =>
+  //           database[a.languageID].installTime -
+  //           database[b.languageID].installTime
+  //       )
+  // }
 
   /**
    * Renders a GroupListHeader component used for the Groups SectionList section header.
    * @param {Object} languageInstance - The object for the language instance to render.
    * @return {Component} - The GroupListHeader component.
    */
-  const renderGroupListHeader = languageInstance => (
+  const renderGroupListHeader = language => (
     <GroupListHeader
-      languageName={languageInstance.languageName}
-      languageID={languageInstance.languageID}
+      nativeName={language.nativeName}
+      languageID={language.languageID}
       isEditing={isEditing}
     />
   )
@@ -176,7 +179,7 @@ const GroupsScreen = ({
       ]}
     >
       <SectionList
-        sections={getLanguageAndGroupData()}
+        sections={getInstalledLanguagesData(database, groups)}
         renderItem={({ item }) => renderGroupItem(item)}
         renderSectionHeader={({ section }) => renderGroupListHeader(section)}
         keyExtractor={item => item.name}
@@ -196,7 +199,7 @@ const GroupsScreen = ({
         ListFooterComponent={
           <AddNewLanguageInstanceButton
             navigate={(screen, params) => navigate(screen, params)}
-            languageAndGroupData={getLanguageAndGroupData()}
+            languageAndGroupData={getInstalledLanguagesData(database, groups)}
           />
         }
       />

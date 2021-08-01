@@ -23,7 +23,6 @@ const PlaybackControls = ({
   playHandler,
   mediaProgress,
   playFromLocation,
-  primaryColor,
   isDark,
   activeGroup
 }) => (

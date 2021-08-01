@@ -13,13 +13,11 @@
 export const languages = [
   {
     languageFamilyID: 'en',
-    i18nKey: 'english',
     font: 'Roboto',
     isRTL: false,
     data: [
       {
         languageID: 'en',
-        i18nKey: 'english',
         nativeName: 'English',
         brandName: 'Discovering God',
         contactEmail: 'developer@waha.app',
@@ -39,13 +37,11 @@ export const languages = [
   },
   {
     languageFamilyID: 'ar',
-    i18nKey: 'arabic',
     font: 'NotoSansArabic',
     isRTL: true,
     data: [
       {
         languageID: 'ga',
-        i18nKey: 'gulf_arabic',
         nativeName: 'الخليج العربي',
         brandName: 'طريق الواحة',
         contactEmail: 'simskimm@protonmail.com',
@@ -112,61 +108,3 @@ export const languages = [
   //   ]
   // }
 ]
-
-export const info = languageID => {
-  // Default values in case the language can't be found.
-  var languageInfo = {
-    languageFamilyID: 'en',
-    i18nKey: 'english',
-    font: 'Roboto',
-    isRTL: false,
-    languageID: 'en',
-    nativeName: 'English',
-    brandName: 'Discovering God',
-    contactEmail: 'developer@waha.app',
-    colors: {
-      light: '#E74D3D',
-      dark: '#EA8E84'
-    },
-    logos: {
-      light:
-        'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
-      dark:
-        'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
-    },
-    versions: null
-  }
-
-  languages.forEach(languageFamily => {
-    languageFamily.data.forEach(language => {
-      // If our language has multiple versions, check through each version to find the language we want.
-      if (language.versions !== null) {
-        language.versions.forEach(version => {
-          if (version.languageID === languageID) {
-            languageInfo = {
-              ...version,
-              // Extra keys to return from the language family.
-              languageFamilyID: languageFamily.languageFamilyID,
-              i18nKey: languageFamily.i18nKey,
-              font: languageFamily.font,
-              isRTL: languageFamily.isRTL,
-              // Extra keys to return from the language.
-              i18nKey: language.i18nKey,
-              nativeName: language.nativeName
-            }
-          }
-        })
-      } else if (language.languageID === languageID) {
-        languageInfo = {
-          ...language,
-          languageFamilyID: languageFamily.languageFamilyID,
-          i18nKey: languageFamily.i18nKey,
-          font: languageFamily.font,
-          isRTL: languageFamily.isRTL
-        }
-      }
-    })
-  })
-
-  return languageInfo
-}

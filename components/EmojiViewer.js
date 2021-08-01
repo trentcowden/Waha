@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useState } from 'react'
 import {
   FlatList,
@@ -11,20 +10,22 @@ import {
 import { connect } from 'react-redux'
 import { groupIcons, groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled
+    isDark: state.settings.isDarkModeEnabled,
+    t: getTranslations(activeGroupSelector(state).language)
   }
 }
 
@@ -45,7 +46,8 @@ const EmojiViewer = ({
   activeGroup,
   activeDatabase,
   isRTL,
-  isDark
+  isDark,
+  t
 }) => {
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)
 
@@ -90,7 +92,7 @@ const EmojiViewer = ({
           { marginTop: 20 * scaleMultiplier }
         ]}
       >
-        {t('groups.avatar')}
+        {t.groups.avatar}
       </Text>
       <View
         style={[

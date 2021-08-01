@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { FlatList, LogBox, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
@@ -9,7 +8,7 @@ import SetItem from '../components/SetItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { getSetInfo, scaleMultiplier, setItemModes } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import SetInfoModal from '../modals/SetInfoModal'
 import { addSet } from '../redux/actions/groupsActions'
 import {
@@ -18,18 +17,17 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
 function mapStateToProps (state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
-    font: info(activeGroupSelector(state).language).font,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeDatabase: activeDatabaseSelector(state),
-    activeGroup: activeGroupSelector(state),
-    primaryColor: activeDatabaseSelector(state).primaryColor
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -54,11 +52,11 @@ const AddSetScreen = ({
   },
   // Props passed from redux.
   font,
+  t,
   isRTL,
   isDark,
   activeDatabase,
   activeGroup,
-  primaryColor,
   addSet
 }) => {
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
@@ -86,13 +84,13 @@ const AddSetScreen = ({
   useEffect(() => {
     switch (category) {
       case 'Foundational':
-        setHeaderTitle(t('sets.add_foundational_set'))
+        setHeaderTitle(t.sets.add_foundational_set)
         break
       case 'Topical':
-        setHeaderTitle(t('sets.add_topical_set'))
+        setHeaderTitle(t.sets.add_topical_set)
 
         // Start off array of tags with the 'All' label since we always display that option.
-        var tags = [t('general.all')]
+        var tags = [t.general.all]
 
         // Go through each Topical Story Set and add all the various tags to our tag array.
         activeDatabase.sets
@@ -107,7 +105,7 @@ const AddSetScreen = ({
         setTags(tags)
         break
       case 'MobilizationTools':
-        setHeaderTitle(t('sets.add_mobilization_tool'))
+        setHeaderTitle(t.sets.add_mobilization_tool)
         break
     }
   }, [])
@@ -195,7 +193,7 @@ const AddSetScreen = ({
           // Filter for Topical Story Sets that match the currently selected tag (if there is one).
           .filter(topicalAddedSet =>
             // If the selected tag is blank (meaning nothing has been selected) or 'All' is selected, show all the Topical Story Sets. Otherwise, filter by the selected tag.
-            selectedTag === '' || selectedTag === t('general.all')
+            selectedTag === '' || selectedTag === t.general.all
               ? true
               : topicalAddedSet.tags.some(tag => selectedTag === tag)
           )
@@ -325,7 +323,7 @@ const AddSetScreen = ({
                 colors(isDark).secondaryText
               )}
             >
-              {t('sets.no_more_sets')}
+              {t.sets.no_more_sets}
             </Text>
           </View>
         )}
@@ -333,7 +331,7 @@ const AddSetScreen = ({
       {/* Modals */}
       <SnackBar
         visible={showSnackbar}
-        textMessage={t('sets.set_added')}
+        textMessage={t.sets.set_added}
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,

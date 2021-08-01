@@ -1,5 +1,4 @@
 import * as WebBrowser from 'expo-web-browser'
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Clipboard,
@@ -15,18 +14,19 @@ import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { logShareApp } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import { appVersion } from '../modeSwitch'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state)
   }
@@ -39,6 +39,7 @@ const InformationScreen = ({
   navigation: { setOptions, goBack },
   // Props passed from redux.
   isRTL,
+  t,
   isDark,
   activeGroup
 }) => {
@@ -89,7 +90,7 @@ const InformationScreen = ({
             colors(isDark).text
           )}
         >
-          {t('information.privacy_policy')}
+          {t.information.privacy_policy}
         </Text>
         <Icon
           name='launch'
@@ -115,7 +116,7 @@ const InformationScreen = ({
             colors(isDark).text
           )}
         >
-          {t('information.donate_to_waha')}
+          {t.information.donate_to_waha}
         </Text>
         <Icon
           name='launch'
@@ -149,7 +150,7 @@ const InformationScreen = ({
             colors(isDark).text
           )}
         >
-          {t('information.rate_waha')}
+          {t.information.rate_waha}
         </Text>
         <Icon
           name='launch'
@@ -180,7 +181,7 @@ const InformationScreen = ({
             colors(isDark).text
           )}
         >
-          {t('general.share_app')}
+          {t.general.share_app}
         </Text>
         <Icon
           name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
@@ -209,7 +210,7 @@ const InformationScreen = ({
               colors(isDark).text
             )}
           >
-            {t('general.version')}
+            {t.general.version}
           </Text>
           <Text
             style={type(
@@ -229,7 +230,7 @@ const InformationScreen = ({
           size={25 * scaleMultiplier}
         />
       </TouchableOpacity>
-      {t('general.copyrights') !== '' && (
+      {t.general.copyrights !== '' && (
         <TouchableOpacity
           style={[
             styles.informationItem,
@@ -246,7 +247,7 @@ const InformationScreen = ({
               colors(isDark).text
             )}
           >
-            {t('general.view_copyright')}
+            {t.general.view_copyright}
           </Text>
           <Icon
             name={isRTL ? 'arrow-left' : 'arrow-right'}
@@ -291,7 +292,7 @@ const InformationScreen = ({
       </View>
       <SnackBar
         visible={showSnackbar}
-        textMessage={t('general.copied_to_clipboard')}
+        textMessage={t.general.copied_to_clipboard}
         messageStyle={{
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,

@@ -43,6 +43,7 @@
 		"next": "Next",
 		"ok": "OK",
 		"other": "Other",
+		"search": "Search",
 		"share_app": "Share App",
 		"share_mobilization_tools": "Share Mobilization Tools",
 		"share_passage_audio": "Share Story Audio",
@@ -83,10 +84,10 @@
 		"welcome": "Hello and welcome!"
 	},
 	"languages": {
-		"arabic": "Arabic",
-		"english": "English",
-		"gulf_arabic": "Gulf Arabic",
-		"hindi": "Hindi"
+		"ar": "Arabic",
+		"en": "English",
+		"ga": "Gulf Arabic",
+		"hi": "Hindi"
 	},
 	"lessons": {
 		"download_lesson": "Download Lesson",

@@ -1,7 +1,7 @@
 import i18n from 'i18n-js'
 import { isTablet, scaleMultiplier } from '../constants'
-import { info, languages } from '../languages'
-
+import { info } from '../functions/languageDataFunctions'
+import { languages } from '../languages'
 /**
  * Takes in some text style settings and returns a filled out text style object. This is used simply to save space in components and simplify things overall. Used within the style prop of a text component. For example:
  * <Text style={type(activeGroup.language,

@@ -43,6 +43,7 @@
 		"next": "",
 		"ok": "",
 		"other": "",
+		"search": "",
 		"share_app": "",
 		"share_mobilization_tools": "",
 		"share_passage_audio": "",
@@ -83,10 +84,10 @@
 		"welcome": ""
 	},
 	"languages": {
-		"arabic": "",
-		"english": "",
-		"gulf_arabic": "",
-		"hindi": ""
+		"ar": "",
+		"en": "",
+		"ga": "",
+		"hi": ""
 	},
 	"lessons": {
 		"download_lesson": "",

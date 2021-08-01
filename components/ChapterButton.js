@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
@@ -34,7 +33,8 @@ const ChapterButton = ({
   activeGroup,
   isDark,
   downloads,
-  isConnected
+  isConnected,
+  t
 }) => {
   /** Keeps track of the mode of this chapter button. */
   const [mode, setMode] = useState(chapterButtonModes.INACTIVE)
@@ -58,10 +58,10 @@ const ChapterButton = ({
   // The names of the chapters. 'Filler' is there to line up this array with the chapters enum since the enum starts at 1.
   const chapterNames = [
     'Filler',
-    t('play.fellowship'),
-    t('play.story'),
-    t('play.training'),
-    t('play.application')
+    t.play.fellowship,
+    t.play.story,
+    t.play.training,
+    t.play.application
   ]
 
   // The default text style.

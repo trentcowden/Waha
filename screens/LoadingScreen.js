@@ -1,8 +1,6 @@
-import NetInfo from '@react-native-community/netinfo'
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   Dimensions,
   StyleSheet,
@@ -12,7 +10,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -26,15 +24,14 @@ import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLa
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
   var font = state.activeGroup ? info(activeGroup.language).font : null
-  var isRTL = state.activeGroup
-    ? state.database[activeGroup.language].isRTL
-    : null
+  var isRTL = state.activeGroup ? info(activeGroup.language).isRTL : null
   var translations = state.activeGroup
-    ? state.database[activeGroup.language].translations
+    ? getTranslations(activeGroupSelector(state).language)
     : null
   return {
     languageCoreFilesDownloadProgress:
@@ -53,7 +50,8 @@ function mapStateToProps (state) {
     font: font,
     isDark: state.settings.isDarkModeEnabled,
     isRTL: isRTL,
-    t: translations
+    t: translations,
+    isConnected: state.network.isConnected
   }
 }
 
@@ -103,6 +101,8 @@ const LoadingScreen = ({
   hasFetchedLanguageData,
   isRTL,
   isDark,
+  t,
+  isConnected,
   setIsInstallingLanguageInstance,
   setHasOnboarded,
   setTotalLanguageCoreFilesToDownload,
@@ -112,20 +112,6 @@ const LoadingScreen = ({
   deleteGroup,
   changeActiveGroup
 }) => {
-  /** Keeps track of whether or not the user has internet or not. This is separate from the redux isConnected because that listener hasn't started yet (it lives in MainDrawer.js which hasn't been rendered yet). */
-  const [isConnected, setIsConnected] = useState(true)
-
-  /** useEffect function that sets up the network listener. */
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnected(state.isConnected)
-    })
-
-    return function cleanup () {
-      unsubscribe()
-    }
-  }, [])
-
   /** Cancels the language core files downloads, does a few cleanup actions, and sends the user back to the language instance install screen. */
   const cancelDownloads = () => {
     // Set the core files download progress to 0.
@@ -272,7 +258,7 @@ const LoadingScreen = ({
                 colors(isDark).icons
               )}
             >
-              {t('general.cancel')}
+              {t.general.cancel}
             </Text>
           </TouchableOpacity>
         )}

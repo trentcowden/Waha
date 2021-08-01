@@ -1,9 +1,7 @@
-import { locale } from 'i18n-js'
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -26,20 +24,21 @@ const LanguageItem = ({
   logos,
   onPress,
   isSelected,
-  playAudio
+  playAudio,
+  isRTL,
+  screenLanguage
 }) => {
   return (
     <View
-      style={[
-        styles.languageItemContainer,
-        {
-          backgroundColor: isSelected
-            ? colors(isDark).success + '40'
-            : isDark
-            ? colors(isDark).bg2
-            : colors(isDark).bg4
-        }
-      ]}
+      style={{
+        ...styles.languageItemContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        backgroundColor: isSelected
+          ? colors(isDark).success + '40'
+          : isDark
+          ? colors(isDark).bg2
+          : colors(isDark).bg4
+      }}
     >
       {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
       {isSelected ? (
@@ -59,18 +58,33 @@ const LanguageItem = ({
           <Icon name='volume' size={30} color={colors(isDark).icons} />
         </TouchableOpacity>
       )}
-      <TouchableOpacity style={styles.touchableAreaContainer} onPress={onPress}>
+      <TouchableOpacity
+        style={{
+          ...styles.touchableAreaContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row'
+        }}
+        onPress={onPress}
+      >
         <View style={styles.namesContainer}>
           <Text
             style={{
               ...type(languageID, 'h3', 'Bold', 'left', colors(isDark).text),
-              textAlign: info(locale).isRTL ? 'right' : 'left'
+              textAlign: isRTL ? 'right' : 'left'
             }}
           >
             {nativeName}
           </Text>
           <Text
-            style={type(locale, 'p', 'Regular', 'left', colors(isDark).text)}
+            style={{
+              ...type(
+                screenLanguage,
+                'p',
+                'Regular',
+                'left',
+                colors(isDark).text
+              ),
+              textAlign: isRTL ? 'right' : 'left'
+            }}
           >
             {localeName}
           </Text>
@@ -88,7 +102,6 @@ const styles = StyleSheet.create({
   languageItemContainer: {
     height: 80 * scaleMultiplier,
     width: '100%',
-    flexDirection: info(locale).isRTL ? 'row-reverse' : 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
@@ -96,8 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: info(locale).isRTL ? 'row-reverse' : 'row'
+    justifyContent: 'space-around'
   },
   namesContainer: {
     justifyContent: 'center',

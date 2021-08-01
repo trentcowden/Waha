@@ -1,6 +1,5 @@
 import { useIsFocused } from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
-import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
@@ -18,11 +17,11 @@ import {
   lessonTypes,
   setItemModes
 } from '../constants'
+import { info } from '../functions/languageDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
-import { info } from '../languages'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
@@ -34,6 +33,7 @@ import {
   activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
@@ -42,11 +42,11 @@ function mapStateToProps (state) {
     isDark: state.settings.isDarkModeEnabled,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
-
-    font: info(activeGroupSelector(state).language).font,
+    t: getTranslations(activeGroupSelector(state).language),
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     showTrailerHighlights: state.persistedPopups.showTrailerHighlights,
-    isConnected: state.network.isConnected
+    isConnected: state.network.isConnected,
+    font: info(activeGroupSelector(state).language).font
   }
 }
 
@@ -88,6 +88,7 @@ const LessonsScreen = ({
   activeDatabase,
   activeGroup,
   font,
+  t,
   areMobilizationToolsUnlocked,
   isConnected,
   showTrailerHighlights,
@@ -430,12 +431,12 @@ const LessonsScreen = ({
       <OptionsModal
         isVisible={showDownloadLessonModal}
         hideModal={() => setShowDownloadLessonModal(false)}
-        closeText={t('general.cancel')}
+        closeText={t.general.cancel}
         isDark={isDark}
         activeGroup={activeGroup}
       >
         <OptionsModalButton
-          label={t('lessons.download_lesson')}
+          label={t.lessons.download_lesson}
           onPress={downloadLessonFromModal}
           isDark={isDark}
           activeGroup={activeGroup}
@@ -444,12 +445,12 @@ const LessonsScreen = ({
       <OptionsModal
         isVisible={showDeleteLessonModal}
         hideModal={() => setShowDeleteLessonModal(false)}
-        closeText={t('general.cancel')}
+        closeText={t.general.cancel}
         isDark={isDark}
         activeGroup={activeGroup}
       >
         <OptionsModalButton
-          label={t('lessons.remove_download')}
+          label={t.lessons.remove_download}
           onPress={deleteLessonFromModal}
           isDark={isDark}
           activeGroup={activeGroup}
@@ -458,7 +459,7 @@ const LessonsScreen = ({
       <ShareModal
         isVisible={showShareModal}
         hideModal={() => setShowShareModal(false)}
-        closeText={t('general.close')}
+        closeText={t.general.close}
         lesson={activeLessonInModal}
         lessonType={getLessonType(activeLessonInModal)}
         set={thisSet}
@@ -470,9 +471,9 @@ const LessonsScreen = ({
       <MessageModal
         isVisible={showSetCompleteModal}
         hideModal={() => setShowSetCompleteModal(false)}
-        title={t('sets.set_complete_title')}
-        message={t('sets.set_complete_message')}
-        confirmText={t('general.got_it')}
+        title={t.sets.set_complete_title}
+        message={t.sets.set_complete_message}
+        confirmText={t.general.got_it}
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
         }}
@@ -490,9 +491,9 @@ const LessonsScreen = ({
       <MessageModal
         isVisible={showNextSetUnlockedModal}
         hideModal={() => setShowNextSetUnlockedModal(false)}
-        title={t('sets.new_story_set_unlocked_title')}
-        message={t('sets.new_story_set_unlocked_message')}
-        confirmText={t('general.got_it')}
+        title={t.sets.new_story_set_unlocked_title}
+        message={t.sets.new_story_set_unlocked_message}
+        confirmText={t.general.got_it}
         confirmOnPress={() => setShowNextSetUnlockedModal(false)}
         isDark={isDark}
         activeGroup={activeGroup}

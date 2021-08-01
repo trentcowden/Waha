@@ -1,11 +1,10 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import OptionsModal from '../modals/OptionsModal'
 import {
   setSecurityEnabled,
@@ -13,12 +12,14 @@ import {
 } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     security: state.security,
     isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
+    t: getTranslations(activeGroupSelector(state).language)
   }
 }
 
@@ -41,6 +42,7 @@ const SecurityTimeoutPickerModal = ({
   security,
   isRTL,
   isDark,
+  t,
   activeGroup,
   setSecurityEnabled,
   setTimeoutDuration
@@ -56,13 +58,13 @@ const SecurityTimeoutPickerModal = ({
     <OptionsModal
       isVisible={isVisible}
       hideModal={hideModal}
-      closeText={t('general.cancel')}
+      closeText={t.general.cancel}
       isDark={isDark}
       activeGroup={activeGroup}
     >
       {/* Button to set the timeout duration to instant. */}
       <OptionsModalButton
-        label={t('security.instant')}
+        label={t.security.instant}
         onPress={() => {
           setTimeoutDuration(0), hideModal()
         }}
@@ -79,7 +81,7 @@ const SecurityTimeoutPickerModal = ({
       <WahaSeparator />
       {/* Button to set the timeout duration to 1 minute. */}
       <OptionsModalButton
-        label={t('security.one_minute')}
+        label={t.security.one_minute}
         onPress={() => {
           setTimeoutDuration(60000), hideModal()
         }}
@@ -98,7 +100,7 @@ const SecurityTimeoutPickerModal = ({
       <WahaSeparator />
       {/* Button to set the timeout duration to 5 minutes. */}
       <OptionsModalButton
-        label={t('security.five_minutes')}
+        label={t.security.five_minutes}
         onPress={() => {
           setTimeoutDuration(300000), hideModal()
         }}
@@ -117,7 +119,7 @@ const SecurityTimeoutPickerModal = ({
       <WahaSeparator />
       {/* Button to set the timeout duration to 15 minutes. */}
       <OptionsModalButton
-        label={t('security.fifteen_minutes')}
+        label={t.security.fifteen_minutes}
         onPress={() => {
           setTimeoutDuration(900000), hideModal()
         }}
@@ -136,7 +138,7 @@ const SecurityTimeoutPickerModal = ({
       <WahaSeparator />
       {/* Button to set the timeout duration to 1 hour. */}
       <OptionsModalButton
-        label={t('security.one_hour')}
+        label={t.security.one_hour}
         onPress={() => {
           setTimeoutDuration(3600000), hideModal()
         }}

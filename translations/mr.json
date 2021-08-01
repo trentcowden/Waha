@@ -43,6 +43,7 @@
 		"next": "पुढे",
 		"ok": "ठीक आहे",
 		"other": "इतर",
+		"search": "",
 		"share_app": "अँप सामायिक करा",
 		"share_mobilization_tools": "",
 		"share_passage_audio": "कथा मजकूर सामायिक करा",
@@ -83,10 +84,10 @@
 		"welcome": "नमस्कार आणि स्वागत आहे!"
 	},
 	"languages": {
-		"arabic": "अरबी",
-		"english": "इंग्रजी",
-		"gulf_arabic": "आखाती अरबी",
-		"hindi": ""
+		"ar": "अरबी",
+		"en": "इंग्रजी",
+		"ga": "आखाती अरबी",
+		"hi": ""
 	},
 	"lessons": {
 		"download_lesson": "धडा डाउनलोड करा",

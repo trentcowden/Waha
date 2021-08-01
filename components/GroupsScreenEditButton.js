@@ -1,18 +1,17 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
     activeGroup: activeGroupSelector(state)
   }
 }
@@ -27,7 +26,8 @@ const GroupsScreenEditButton = ({
   // Props passed from redux.
   isRTL,
   isDark,
-  activeGroup
+  activeGroup,
+  t
 }) => {
   return (
     <TouchableOpacity style={styles.editButtonContainer} onPress={onPress}>
@@ -46,7 +46,7 @@ const GroupsScreenEditButton = ({
           }
         ]}
       >
-        {isEditing ? t('general.done') : t('general.edit')}
+        {isEditing ? t.general.done : t.general.edit}
       </Text>
     </TouchableOpacity>
   )

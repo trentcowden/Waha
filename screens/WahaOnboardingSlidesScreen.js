@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useRef, useState } from 'react'
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native'
@@ -11,19 +10,21 @@ import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
 import { groupNames, isTablet, scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { setHasOnboarded } from '../redux/actions/databaseActions'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
+    t: getTranslations(activeGroupSelector(state).language)
   }
 }
 
@@ -34,14 +35,16 @@ function mapDispatchToProps (dispatch) {
       oldGroupName,
       newGroupName,
       emoji,
-      shouldShowMobilizationToolsTab
+      shouldShowMobilizationToolsTab,
+      language
     ) =>
       dispatch(
         editGroup(
           oldGroupName,
           newGroupName,
           emoji,
-          shouldShowMobilizationToolsTab
+          shouldShowMobilizationToolsTab,
+          language
         )
       ),
     changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName))
@@ -65,6 +68,7 @@ const WahaOnboardingSlidesScreen = ({
   isRTL,
   isDark,
   activeGroup,
+  t,
   setHasOnboarded,
   editGroup,
   changeActiveGroup
@@ -96,7 +100,13 @@ const WahaOnboardingSlidesScreen = ({
     changeActiveGroup(groupNameInput)
 
     // Call editGroup() redux function.
-    editGroup(groupNames[selectedLanguage], groupNameInput, emojiInput, true)
+    editGroup(
+      groupNames[selectedLanguage],
+      groupNameInput,
+      emojiInput,
+      true,
+      selectedLanguage
+    )
 
     // Finish up onboarding and go to the loading screen.
     setHasOnboarded(true)
@@ -117,8 +127,8 @@ const WahaOnboardingSlidesScreen = ({
   const pages = [
     <OnboardingPage
       key='1'
-      title={t('onboarding.onboarding_1_title')}
-      message={t('onboarding.onboarding_1_message')}
+      title={t.onboarding.onboarding_1_title}
+      message={t.onboarding.onboarding_1_message}
     >
       <View
         style={[
@@ -150,8 +160,8 @@ const WahaOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='2'
-      title={t('onboarding.onboarding_2_title')}
-      message={t('onboarding.onboarding_2_message')}
+      title={t.onboarding.onboarding_2_title}
+      message={t.onboarding.onboarding_2_message}
     >
       <View
         style={[
@@ -183,8 +193,8 @@ const WahaOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='3'
-      title={t('onboarding.onboarding_3_title')}
-      message={t('onboarding.onboarding_3_message')}
+      title={t.onboarding.onboarding_3_title}
+      message={t.onboarding.onboarding_3_message}
     >
       <View
         style={[
@@ -216,8 +226,8 @@ const WahaOnboardingSlidesScreen = ({
     </OnboardingPage>,
     <OnboardingPage
       key='4'
-      title={t('onboarding.onboarding_4_title')}
-      message={t('onboarding.onboarding_4_message')}
+      title={t.onboarding.onboarding_4_title}
+      message={t.onboarding.onboarding_4_message}
     >
       <GroupNameTextInput
         groupNameInput={groupNameInput}
@@ -279,13 +289,13 @@ const WahaOnboardingSlidesScreen = ({
                 colors(isDark).text
               )}
             >
-              {t('general.skip')}
+              {t.general.skip}
             </Text>
           </TouchableOpacity>
         </View>
         <View style={{ width: 20 }} />
         <WahaButton
-          label={t('general.continue')}
+          label={t.general.continue}
           onPress={
             // This button goes to the next page or finishes onboarding if we're on the last page.
             isRTL

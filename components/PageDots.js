@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -15,9 +15,7 @@ function mapStateToProps (state) {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
 
-    isDark: state.settings.isDarkModeEnabled,
-
-    primaryColor: activeDatabaseSelector(state).primaryColor
+    isDark: state.settings.isDarkModeEnabled
   }
 }
 
@@ -25,7 +23,7 @@ function mapDispatchToProps (dispatch) {
   return {}
 }
 
-const Dot = ({ isActive, primaryColor, isDark }) => (
+const Dot = ({ isActive, isDark }) => (
   <View
     style={{
       marginHorizontal: 5,
@@ -53,8 +51,7 @@ const PageDots = ({
   activeGroup,
   activeDatabase,
   isRTL,
-  isDark,
-  primaryColor
+  isDark
 }) => {
   // Array that holds the many dot components.
   var dots = []

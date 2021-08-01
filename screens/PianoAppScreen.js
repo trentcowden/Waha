@@ -1,6 +1,5 @@
 import { useBackHandler } from '@react-native-community/hooks'
 import { Audio } from 'expo-av'
-import { t } from 'i18n-js'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Dimensions,
@@ -16,18 +15,19 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import Piano from '../components/Piano'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { setIsMuted, setIsTimedOut } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     security: state.security,
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
-
+    t: getTranslations(activeGroupSelector(state).language),
     isRTL: info(activeGroupSelector(state).language).isRTL
   }
 }
@@ -53,6 +53,7 @@ const PianoAppScreen = ({
   security,
   activeGroup,
   isRTL,
+  t,
   isDark,
   setIsMuted,
   setIsTimedOut
@@ -135,7 +136,7 @@ const PianoAppScreen = ({
             { paddingHorizontal: 10 }
           ]}
         >
-          {t('security.game_screen_title')}
+          {t.security.game_screen_title}
         </Text>
       </View>
       <View>

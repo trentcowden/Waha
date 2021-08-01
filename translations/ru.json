@@ -43,6 +43,7 @@
 		"next": "Далее",
 		"ok": "OK",
 		"other": "Иное",
+		"search": "",
 		"share_app": "Поделиться приложением",
 		"share_mobilization_tools": "",
 		"share_passage_audio": "Поделиться аудио истории",
@@ -83,10 +84,10 @@
 		"welcome": ""
 	},
 	"languages": {
-		"arabic": "",
-		"english": "",
-		"gulf_arabic": "",
-		"hindi": ""
+		"ar": "",
+		"en": "",
+		"ga": "",
+		"hi": ""
 	},
 	"lessons": {
 		"download_lesson": "Загрузить урок",

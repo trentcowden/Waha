@@ -43,6 +43,7 @@
 		"next": "التالي",
 		"ok": "موافق",
 		"other": "آخر",
+		"search": "بحث",
 		"share_app": "شارك التطبيق",
 		"share_mobilization_tools": "شارك أدوات التحريك",
 		"share_passage_audio": "شارك القصة الصوتية",
@@ -83,10 +84,10 @@
 		"welcome": "أهلاً ومرحباً"
 	},
 	"languages": {
-		"arabic": "عربى",
-		"english": "اللغة الإنجليزية",
-		"gulf_arabic": "الخليج العربي",
-		"hindi": "هندي"
+		"ar": "عربى",
+		"en": "اللغة الإنجليزية",
+		"ga": "الخليج العربي",
+		"hi": "هندي"
 	},
 	"lessons": {
 		"download_lesson": "تنزيل الدرس",

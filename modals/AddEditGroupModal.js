@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   Dimensions,
@@ -13,7 +12,7 @@ import EmojiViewer from '../components/EmojiViewer'
 import GroupAvatar from '../components/GroupAvatar'
 import GroupNameTextInput from '../components/GroupNameTextInput'
 import { scaleMultiplier } from '../constants'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
@@ -25,14 +24,14 @@ import {
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     groups: state.groups,
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
     activeGroup: activeGroupSelector(state),
     globalGroupCounter: state.database.globalGroupCounter,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked
@@ -45,14 +44,16 @@ function mapDispatchToProps (dispatch) {
       oldGroupName,
       newGroupName,
       emoji,
-      shouldShowMobilizationToolsTab
+      shouldShowMobilizationToolsTab,
+      language
     ) =>
       dispatch(
         editGroup(
           oldGroupName,
           newGroupName,
           emoji,
-          shouldShowMobilizationToolsTab
+          shouldShowMobilizationToolsTab,
+          language
         )
       ),
     createGroup: (
@@ -102,6 +103,7 @@ const AddEditGroupModal = ({
   isDark,
   activeGroup,
   globalGroupCounter,
+  t,
   areMobilizationToolsUnlocked,
   editGroup,
   createGroup,
@@ -200,7 +202,13 @@ const AddEditGroupModal = ({
     if (thisGroup.name === activeGroup.name) changeActiveGroup(groupNameInput)
 
     // Call editGroup() redux function.
-    editGroup(thisGroup.name, groupNameInput, emojiInput, shouldShowMTTabInput)
+    editGroup(
+      thisGroup.name,
+      groupNameInput,
+      emojiInput,
+      shouldShowMTTabInput,
+      thisGroup.language
+    )
 
     // Hide this modal.
     hideModal()
@@ -249,9 +257,7 @@ const AddEditGroupModal = ({
               setShouldShowMTTabInput(thisGroup.shouldShowMobilizationToolsTab)
             }
       }
-      title={
-        mode === 'AddGroup' ? t('groups.new_group') : t('groups.edit_group')
-      }
+      title={mode === 'AddGroup' ? t.groups.new_group : t.groups.edit_group}
     >
       <View style={styles.groupAvatarContainer}>
         <GroupAvatar
@@ -287,7 +293,7 @@ const AddEditGroupModal = ({
               colors(isDark).text
             )}
           >
-            {t('mobilization_tools.show_mobilization_tab')}
+            {t.mobilization_tools.show_mobilization_tab}
           </Text>
           <Switch
             trackColor={{

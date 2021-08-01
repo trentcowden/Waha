@@ -1,7 +1,6 @@
 import { Audio, Video } from 'expo-av'
 import * as FileSystem from 'expo-file-system'
 import { useKeepAwake } from 'expo-keep-awake'
-import { t } from 'i18n-js'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import {
@@ -29,11 +28,11 @@ import {
   lockPortrait,
   scaleMultiplier
 } from '../constants'
+import { info } from '../functions/languageDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
-import { info } from '../languages'
 import { logCompleteLesson } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
@@ -52,19 +51,17 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     database: state.database,
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
-
     downloads: state.downloads,
-    primaryColor: activeDatabaseSelector(state).primaryColor,
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-
     isConnected: state.network.isConnected,
     hasUsedPlayScreen: state.persistedPopups.hasUsedPlayScreen,
     reviewTimeout: state.persistedPopups.reviewTimeout,
@@ -147,9 +144,9 @@ const PlayScreen = ({
   activeGroup,
   activeDatabase,
   downloads,
-  primaryColor,
   isRTL,
   isDark,
+  t,
   isConnected,
   hasUsedPlayScreen,
   reviewTimeout,
@@ -1058,7 +1055,7 @@ const PlayScreen = ({
       <ShareModal
         isVisible={showShareLessonModal}
         hideModal={() => setShowShareLessonModal(false)}
-        closeText={t('general.close')}
+        closeText={t.general.close}
         lesson={thisLesson}
         lessonType={lessonType}
         set={thisSet}
@@ -1073,9 +1070,9 @@ const PlayScreen = ({
           setShowSetCompleteModal(false)
           goBack()
         }}
-        title={t('sets.set_complete_title')}
-        message={t('sets.set_complete_message')}
-        confirmText={t('general.got_it')}
+        title={t.sets.set_complete_title}
+        message={t.sets.set_complete_message}
+        confirmText={t.general.got_it}
         confirmOnPress={() => {
           setShowSetCompleteModal(false)
           goBack()
@@ -1097,9 +1094,9 @@ const PlayScreen = ({
           setShowNextSetUnlockedModal(false)
           goBack()
         }}
-        title={t('sets.new_story_set_unlocked_title')}
-        message={t('sets.new_story_set_unlocked_message')}
-        confirmText={t('general.got_it')}
+        title={t.sets.new_story_set_unlocked_title}
+        message={t.sets.new_story_set_unlocked_message}
+        confirmText={t.general.got_it}
         confirmOnPress={() => {
           setShowNextSetUnlockedModal(false)
           goBack()

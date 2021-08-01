@@ -1,7 +1,6 @@
-import NetInfo from '@react-native-community/netinfo'
 import { Audio } from 'expo-av'
-// import * as Localization from 'expo-localization'
-import i18n, { locale } from 'i18n-js'
+import * as Localization from 'expo-localization'
+import { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -23,7 +22,7 @@ import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { groupNames, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
-import { info, languages } from '../languages'
+import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -40,15 +39,29 @@ import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { SystemTypography } from '../styles/typography'
+import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
-  var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
+  console.log(state.activeGroup)
   return {
     groups: state.groups,
     database: state.database,
-    activeGroup: activeGroup,
-    isDark: state.settings.isDarkModeEnabled
+    activeGroup: state.activeGroup === null ? {} : activeGroupSelector(state),
+    isDark: state.settings.isDarkModeEnabled,
+    t:
+      state.activeGroup === null
+        ? getTranslations(Localization.locale.slice(0, 2))
+        : getTranslations(activeGroupSelector(state).language),
+    isConnected: state.network.isConnected,
+    isRTL:
+      state.activeGroup === null
+        ? info(Localization.locale.slice(0, 2))
+        : info(activeGroupSelector(state).language).isRTL,
+    screenLanguage:
+      state.activeGroup === null
+        ? info(Localization.locale.slice(0, 2)).languageID
+        : activeGroupSelector(state).language
   }
 }
 
@@ -111,7 +124,7 @@ const LanguageSelectScreen = ({
     name: routeName,
     // Props passed from previous screen.
     params: { installedLanguageInstances } = {
-      installedLanguageInstances: null
+      installedLanguageInstances: []
     }
   },
   // Props passed from redux.
@@ -120,6 +133,10 @@ const LanguageSelectScreen = ({
   database,
   activeGroup,
   isDark,
+  t,
+  isConnected,
+  isRTL,
+  screenLanguage,
   downloadLanguageCoreFiles,
   storeLanguageData,
   setIsInstallingLanguageInstance,
@@ -134,20 +151,8 @@ const LanguageSelectScreen = ({
   setRecentActiveGroup,
   setIsDarkModeEnabled
 }) => {
-  // Set the i18n locale to the locale of the user's phone.
-  // i18n.locale = Localization.locale
-
-  // Setting fallbacks to true means that if the user's phone language isn't in i18n, it defaults to English.
-  // i18n.fallbacks = true
-
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState('')
-
-  /** Keeps track of whether the list of languages to install is empty. */
-  const [isListEmpty, setIsListEmpty] = useState(false)
-
-  /** Keeps track of whether the user is connected to the internet. Note: we don't use the redux isConnected variable because if this is the first time the user has opened the app, that redux variable hasn't been created yet. */
-  const [isConnected, setIsConnected] = useState(true)
 
   /** Keeps track of the Y position of the start button for animating. */
   const [buttonYPos, setButtonYPos] = useState(
@@ -163,36 +168,23 @@ const LanguageSelectScreen = ({
   /** Keeps track of whether we're actively fetching Firebase data or not. */
   const [isFetchingFirebaseData, setIsFetchingFirebaseData] = useState(false)
 
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions(
-      routeName === 'SubsequentlLanguageSelect'
-        ? {
-            headerTitle: i18n.t('language_select.add_language')
-          }
-        : null
-    )
-  }, [])
-
   const colorScheme = useColorScheme()
 
   useEffect(() => {
     if (routeName === 'InitialLanguageSelect') {
-      console.log(colorScheme)
+      // Create our first group.
+
+      // Set color mode to the phone's current setting (light or dark mode).
       if (colorScheme === 'dark') setIsDarkModeEnabled(true)
       else setIsDarkModeEnabled(false)
     }
   }, [])
 
-  /** useEffect function sets the isConnected state with the status of the user's internet connection. */
+  /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnected(state.isConnected)
+    setOptions({
+      headerTitle: t.language_select.add_language
     })
-
-    return function cleanup () {
-      unsubscribe()
-    }
   }, [])
 
   /**
@@ -286,7 +278,6 @@ const LanguageSelectScreen = ({
 
         // Change the active group to the new group we just created.
         changeActiveGroup(groupNames[selectedLanguage])
-        i18n.locale = selectedLanguage
 
         // Set the local isFetchingFirebaseData state to false.
         setIsFetchingFirebaseData(false)
@@ -306,102 +297,16 @@ const LanguageSelectScreen = ({
         deleteLanguageData(selectedLanguage)
 
         Alert.alert(
-          i18n.t('language_select.fetch_error_title'),
-          i18n.t('language_select.fetch_error_message'),
+          t.language_select.fetch_error_title,
+          t.language_select.fetch_error_message,
           [
             {
-              text: i18n.t('general.ok'),
+              text: t.general.ok,
               onPress: () => {}
             }
           ]
         )
       })
-  }
-
-  /**
-   * Gets a list of all the languages and language families available in Waha. These are stored in the languages.js file.
-   * @return {Object[]} - An array of language family objects.
-   */
-  const getLanguageData = () => {
-    // Sort the languages to put the language family of the phone's current locale at the top.
-    const sortByLocale = (a, b) => {
-      if (i18n.locale.includes(a.languageFamilyID)) return -1
-      else if (i18n.locale.includes(b.languageFamilyID)) return 1
-      else return 0
-    }
-
-    // If search text matches with a language family name, show the whole language family. If it doesn't, show the specific languages it matches with.
-    const filterBySearch = languageFamily => {
-      if (
-        i18n
-          .t('languages.' + languageFamily.i18nKey)
-          .toLowerCase()
-          .includes(searchTextInput.toLowerCase())
-      )
-        return languageFamily
-      else
-        return {
-          ...languageFamily,
-          data: languageFamily.data.filter(
-            language =>
-              language.nativeName
-                .toLowerCase()
-                .includes(searchTextInput.toLowerCase()) ||
-              i18n
-                .t('languages.' + language.i18nKey)
-                .toLowerCase()
-                .includes(searchTextInput.toLowerCase()) ||
-              language.brandName
-                .toLowerCase()
-                .includes(searchTextInput.toLowerCase())
-          )
-        }
-    }
-
-    // Filter out language instances that are already installed. Only on SubsequentLanguageInstanceInstallScreen.
-    const filterInstalledLanguages = languageFamily => ({
-      ...languageFamily,
-      data: languageFamily.data.filter(language => {
-        if (
-          installedLanguageInstances.some(
-            installedLanguage =>
-              installedLanguage.languageID === language.languageID
-          )
-        ) {
-          return false
-        } else {
-          return true
-        }
-      })
-    })
-
-    // Filter our language families that are empty.
-    const filterEmptyLanguages = languageFamily => {
-      if (languageFamily.data.length !== 0) return true
-      else return false
-    }
-
-    // Create our sections array.
-    var sections
-
-    // Only difference between Initial and Subsequent language instance installs is that in subsequent, we want to filter out installed languages.
-    if (routeName === 'InitialLanguageSelect')
-      sections = languages
-        .sort(sortByLocale)
-        .map(filterBySearch)
-        .filter(filterEmptyLanguages)
-    else
-      sections = languages
-        .sort(sortByLocale)
-        .map(filterInstalledLanguages)
-        .map(filterBySearch)
-        .filter(filterEmptyLanguages)
-
-    // If, after all of our filtering, the list is empty, we've installed every language instance and want to set isListEmpty to true.
-    if (sections.length === 0 && !isListEmpty) setIsListEmpty(true)
-
-    // Finally, return the sorted and filtered array of languages.
-    return sections
   }
 
   /**
@@ -414,7 +319,7 @@ const LanguageSelectScreen = ({
     <LanguageItem
       languageID={language.languageID}
       nativeName={language.nativeName}
-      localeName={i18n.t('languages.' + language.i18nKey)}
+      localeName={t.languages[language.languageID]}
       font={languageFamily.font}
       logos={language.logos}
       onPress={() => {
@@ -428,6 +333,8 @@ const LanguageSelectScreen = ({
       isSelected={selectedLanguage === language.languageID ? true : false}
       playAudio={() => playAudio(language.languageID)}
       isDark={isDark}
+      isRTL={isRTL}
+      screenLanguage={screenLanguage}
     />
   )
 
@@ -439,23 +346,22 @@ const LanguageSelectScreen = ({
    */
   const renderLanguageHeader = languageFamily => (
     <View
-      style={[
-        styles.languageHeaderContainer,
-        {
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
-        }
-      ]}
+      style={{
+        ...styles.languageHeaderContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <Text
-        style={SystemTypography(
-          false,
+        style={type(
+          screenLanguage,
           'h3',
           'Regular',
           'left',
           colors(isDark).secondaryText
         )}
       >
-        {i18n.t('languages.' + languageFamily.i18nKey)}
+        {t.languages[languageFamily.languageFamilyID]}
       </Text>
     </View>
   )
@@ -473,42 +379,35 @@ const LanguageSelectScreen = ({
         <View style={styles.headerTextContainer}>
           <Text
             style={[
-              SystemTypography(
-                false,
-                'h2',
-                'Bold',
-                'center',
-                colors(isDark).text
-              ),
+              type(screenLanguage, 'h2', 'Bold', 'center', colors(isDark).text),
               { fontSize: 28 * scaleMultiplier }
             ]}
           >
-            {i18n.t('language_select.welcome')}
+            {t.language_select.welcome}
           </Text>
           <View style={{ height: 5 }} />
           <Text
-            style={SystemTypography(
-              false,
+            style={type(
+              screenLanguage,
               'h3',
               'Regular',
               'center',
               colors(isDark).text
             )}
           >
-            {i18n.t('language_select.select_language')}
+            {t.language_select.select_language}
           </Text>
         </View>
       )}
       <View
-        style={[
-          styles.searchBarContainer,
-          {
-            width: Dimensions.get('window').width - 40,
-            maxWidth: 500,
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-          }
-        ]}
+        style={{
+          ...styles.searchBarContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          width: Dimensions.get('window').width - 40,
+          maxWidth: 500,
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        }}
       >
         <View style={styles.searchIconContainer}>
           <Icon
@@ -518,31 +417,33 @@ const LanguageSelectScreen = ({
           />
         </View>
         <TextInput
-          style={[
-            SystemTypography(
-              false,
+          style={{
+            ...type(
+              screenLanguage,
               'h3',
               'Regular',
               'left',
               colors(isDark).text
             ),
-            {
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }
-          ]}
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
           onChangeText={text => setSearchTextInput(text)}
           autoCorrect={false}
           autoCapitalize='none'
-          placeholder='Search'
+          placeholder={t.general.search}
           placeholderTextColor={colors(isDark).secondaryText}
         />
       </View>
       <View style={styles.languageListContainer}>
         <SectionList
           style={{ height: '100%' }}
-          sections={getLanguageData()}
+          sections={getAllLanguagesData(
+            t,
+            installedLanguageInstances,
+            searchTextInput
+          )}
           ItemSeparatorComponent={() => <WahaSeparator />}
           SectionSeparatorComponent={() => <WahaSeparator />}
           keyExtractor={item => item.languageID}
@@ -577,8 +478,8 @@ const LanguageSelectScreen = ({
               ? isFetchingFirebaseData
                 ? ''
                 : routeName === 'InitialLanguageSelect'
-                ? 'Continue'
-                : i18n.t('language_select.add_language') + ' '
+                ? t.general.continue
+                : t.language_select.add_language + ' '
               : ''
           }
           style={{
@@ -624,7 +525,6 @@ const styles = StyleSheet.create({
   languageHeaderContainer: {
     height: 40 * scaleMultiplier,
     width: '100%',
-    flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20
   },

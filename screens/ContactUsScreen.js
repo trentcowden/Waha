@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -18,7 +17,7 @@ import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
 import db from '../firebase/db'
-import { info } from '../languages'
+import { info } from '../functions/languageDataFunctions'
 import { appVersion } from '../modeSwitch'
 import {
   activeDatabaseSelector,
@@ -26,17 +25,16 @@ import {
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
-
+    t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    isConnected: state.network.isConnected,
-
-    primaryColor: activeDatabaseSelector(state).primaryColor
+    isConnected: state.network.isConnected
   }
 }
 
@@ -46,9 +44,9 @@ const ContactUsScreen = ({
   activeGroup,
   activeDatabase,
   isRTL,
+  t,
   isDark,
-  isConnected,
-  primaryColor
+  isConnected
 }) => {
   /** The text for the email input component. */
   const [emailTextInput, setEmailTextInput] = useState(null)
@@ -113,11 +111,11 @@ const ContactUsScreen = ({
       .then(() => {
         setIsSubmitting(false)
         Alert.alert(
-          t('contact_us.submitted_successfully_title'),
-          t('contact_us.submitted_successfully_message'),
+          t.contact_us.submitted_successfully_title,
+          t.contact_us.submitted_successfully_message,
           [
             {
-              text: t('general.ok'),
+              text: t.general.ok,
               onPress: () => {
                 goBack()
               }
@@ -128,11 +126,11 @@ const ContactUsScreen = ({
       .catch(() => {
         setIsSubmitting(false)
         Alert.alert(
-          t('contact_us.submit_error_title'),
-          t('contact_us.submit_error_message'),
+          t.contact_us.submit_error_title,
+          t.contact_us.submit_error_message,
           [
             {
-              text: t('general.ok'),
+              text: t.general.ok,
               onPress: () => {}
             }
           ]
@@ -185,7 +183,7 @@ const ContactUsScreen = ({
             ]}
           >
             {leftAsterisk}
-            {t('contact_us.email')}
+            {t.contact_us.email}
             {rightAsterisk}
           </Text>
           <View
@@ -260,7 +258,7 @@ const ContactUsScreen = ({
               ]}
             >
               {leftAsterisk}
-              {t('contact_us.message')}
+              {t.contact_us.message}
               {rightAsterisk}
             </Text>
             <Text
@@ -301,7 +299,7 @@ const ContactUsScreen = ({
               }
             ]}
             multiline
-            placeholder={t('contact_us.message_placeholder')}
+            placeholder={t.contact_us.message_placeholder}
             placeholderTextColor={colors(isDark).disabled}
           />
         </View>
@@ -341,7 +339,7 @@ const ContactUsScreen = ({
               { marginHorizontal: 10 }
             ]}
           >
-            {t('contact_us.is_a_bug')}
+            {t.contact_us.is_a_bug}
           </Text>
         </View>
         {/* Reproduction steps input area. */}
@@ -359,7 +357,7 @@ const ContactUsScreen = ({
                 { marginVertical: 10 * scaleMultiplier }
               ]}
             >
-              {t('contact_us.reproducable')}
+              {t.contact_us.reproducable}
             </Text>
             <TextInput
               onChangeText={text => setReproductionStepsTextInput(text)}
@@ -407,7 +405,7 @@ const ContactUsScreen = ({
                 : colors(isDark).bg1
               : colors(isDark).success
           }
-          label={isSubmitting || !isConnected ? '' : t('general.submit')}
+          label={isSubmitting || !isConnected ? '' : t.general.submit}
           width={Dimensions.get('window').width / 3}
           onPress={submit}
           style={{
