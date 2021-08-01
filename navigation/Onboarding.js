@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
-import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
+import LanguageSelectScreen from '../screens/LanguageSelectScreen'
 import LoadingScreen from '../screens/LoadingScreen'
 import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
 import { colors } from '../styles/colors'
@@ -42,8 +42,8 @@ const Onboarding = ({ isDark }) => {
           }}
         >
           <Stack.Screen
-            name='InitialLanguageInstanceInstall'
-            component={LanguageInstanceInstallScreen}
+            name='InitialLanguageSelect'
+            component={LanguageSelectScreen}
           />
           <Stack.Screen
             name='WahaOnboardingSlides'

@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo'
 import { Audio } from 'expo-av'
 // import * as Localization from 'expo-localization'
-import i18n from 'i18n-js'
+import i18n, { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -21,9 +21,9 @@ import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
 import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { getSystemIsRTL, groupNames, scaleMultiplier } from '../constants'
+import { groupNames, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
-import { languages } from '../languages'
+import { info, languages } from '../languages'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -104,7 +104,7 @@ function mapDispatchToProps (dispatch) {
  * @param {string} installedLanguageInstances[].languageID - The ID of the language.
  * @param {string} installedLanguageInstances[].languageName - The name of the language.
  */
-const LanguageInstanceInstallScreen = ({
+const LanguageSelectScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, goBack, reset, navigate },
   route: {
@@ -166,7 +166,7 @@ const LanguageInstanceInstallScreen = ({
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions(
-      routeName === 'SubsequentlLanguageInstanceInstall'
+      routeName === 'SubsequentlLanguageSelect'
         ? {
             headerTitle: i18n.t('language_select.add_language')
           }
@@ -177,7 +177,7 @@ const LanguageInstanceInstallScreen = ({
   const colorScheme = useColorScheme()
 
   useEffect(() => {
-    if (routeName === 'InitialLanguageInstanceInstall') {
+    if (routeName === 'InitialLanguageSelect') {
       console.log(colorScheme)
       if (colorScheme === 'dark') setIsDarkModeEnabled(true)
       else setIsDarkModeEnabled(false)
@@ -292,7 +292,7 @@ const LanguageInstanceInstallScreen = ({
         setIsFetchingFirebaseData(false)
 
         // Navigate to the onboarding slides if this is the first language instance install.
-        if (routeName === 'InitialLanguageInstanceInstall') {
+        if (routeName === 'InitialLanguageSelect') {
           navigate('WahaOnboardingSlides', {
             selectedLanguage: selectedLanguage
           })
@@ -385,7 +385,7 @@ const LanguageInstanceInstallScreen = ({
     var sections
 
     // Only difference between Initial and Subsequent language instance installs is that in subsequent, we want to filter out installed languages.
-    if (routeName === 'InitialLanguageInstanceInstall')
+    if (routeName === 'InitialLanguageSelect')
       sections = languages
         .sort(sortByLocale)
         .map(filterBySearch)
@@ -469,7 +469,7 @@ const LanguageInstanceInstallScreen = ({
         }
       ]}
     >
-      {routeName === 'InitialLanguageInstanceInstall' && (
+      {routeName === 'InitialLanguageSelect' && (
         <View style={styles.headerTextContainer}>
           <Text
             style={[
@@ -576,7 +576,7 @@ const LanguageInstanceInstallScreen = ({
             isConnected
               ? isFetchingFirebaseData
                 ? ''
-                : routeName === 'InitialLanguageInstanceInstall'
+                : routeName === 'InitialLanguageSelect'
                 ? 'Continue'
                 : i18n.t('language_select.add_language') + ' '
               : ''
@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 50 * scaleMultiplier,
     paddingHorizontal: 5,
-    flexDirection: getSystemIsRTL() ? 'row-reverse' : 'row',
+    flexDirection: info(locale).isRTL ? 'row-reverse' : 'row',
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'flex-start',
@@ -659,4 +659,4 @@ const styles = StyleSheet.create({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LanguageInstanceInstallScreen)
+)(LanguageSelectScreen)

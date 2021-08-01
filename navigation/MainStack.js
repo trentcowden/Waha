@@ -26,7 +26,7 @@ import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
 import InformationScreen from '../screens/InformationScreen'
-import LanguageInstanceInstallScreen from '../screens/LanguageInstanceInstallScreen'
+import LanguageSelectScreen from '../screens/LanguageSelectScreen'
 import LessonsScreen from '../screens/LessonsScreen'
 import MobilizationToolsScreen from '../screens/MobilizationToolsScreen'
 import MobilizationToolsUnlockScreen from '../screens/MobilizationToolsUnlockScreen'
@@ -38,7 +38,6 @@ import SecurityOnboardingSlidesScreen from '../screens/SecurityOnboardingSlidesS
 import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors } from '../styles/colors'
-import { SystemTypography } from '../styles/typography'
 
 // Ignore the Android timer warning because it's annoying.
 LogBox.ignoreLogs(['Setting a timer'])
@@ -335,22 +334,14 @@ const MainStack = ({
           }}
         />
         <Stack.Screen
-          name='SubsequentlLanguageInstanceInstall'
-          component={LanguageInstanceInstallScreen}
+          name='SubsequentlLanguageSelect'
+          component={LanguageSelectScreen}
           options={{
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
               shadowColor: 'transparent'
             },
-            // Use the system font for this header since this title is displayed in the phone's language, not the active group's language.
-            headerTitleStyle: SystemTypography(
-              true,
-              '',
-              'Bold',
-              'center',
-              colors(isDark).text
-            ),
             headerRight: isRTL
               ? () => <WahaBackButton onPress={() => goBack()} />
               : () => {},
