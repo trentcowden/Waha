@@ -16,11 +16,7 @@ import { info } from '../functions/languageDataFunctions'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
-import {
-  createGroup,
-  editGroup,
-  resetProgress
-} from '../redux/actions/groupsActions'
+import { createGroup, editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -73,9 +69,6 @@ function mapDispatchToProps (dispatch) {
         )
       ),
     changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName)),
-    resetProgress: name => {
-      dispatch(resetProgress(name))
-    },
     incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter())
   }
 }
@@ -107,7 +100,6 @@ const AddEditGroupModal = ({
   createGroup,
   changeActiveGroup,
   deleteGroup,
-  resetProgress,
   incrementGlobalGroupCounter
 }) => {
   /** Keeps track of the user input for the group name <TextInput />. */

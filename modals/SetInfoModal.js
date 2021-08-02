@@ -13,10 +13,7 @@ import WahaButton from '../components/WahaButton'
 import { buttonModes, scaleMultiplier, setItemModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { addSet } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -24,8 +21,6 @@ import ModalScreen from './ModalScreen'
 
 function mapStateToProps (state) {
   return {
-    downloads: state.downloads,
-    activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: getTranslations(activeGroupSelector(state).language),
@@ -56,8 +51,6 @@ const SetInfoModal = ({
   thisSet,
   showSnackbar,
   // Props passed from redux.
-  downloads,
-  activeDatabase,
   isRTL,
   t,
   isDark,
