@@ -35,16 +35,14 @@ function mapDispatchToProps (dispatch) {
       oldGroupName,
       newGroupName,
       emoji,
-      shouldShowMobilizationToolsTab,
-      language
+      shouldShowMobilizationToolsTab
     ) =>
       dispatch(
         editGroup(
           oldGroupName,
           newGroupName,
           emoji,
-          shouldShowMobilizationToolsTab,
-          language
+          shouldShowMobilizationToolsTab
         )
       ),
     changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName))
@@ -100,13 +98,7 @@ const WahaOnboardingSlidesScreen = ({
     changeActiveGroup(groupNameInput)
 
     // Call editGroup() redux function.
-    editGroup(
-      groupNames[selectedLanguage],
-      groupNameInput,
-      emojiInput,
-      true,
-      selectedLanguage
-    )
+    editGroup(groupNames[selectedLanguage], groupNameInput, emojiInput, true)
 
     // Finish up onboarding and go to the loading screen.
     setHasOnboarded(true)

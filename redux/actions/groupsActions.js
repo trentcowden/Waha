@@ -56,16 +56,14 @@ export function editGroup (
   oldGroupName,
   newGroupName,
   emoji,
-  shouldShowMobilizationToolsTab,
-  language
+  shouldShowMobilizationToolsTab
 ) {
   return {
     type: EDIT_GROUP,
     oldGroupName,
     newGroupName,
     emoji,
-    shouldShowMobilizationToolsTab,
-    language
+    shouldShowMobilizationToolsTab
   }
 }
 

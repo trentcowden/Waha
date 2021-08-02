@@ -76,8 +76,7 @@ export function groups (state = [], params) {
             name: params.newGroupName,
             emoji: params.emoji,
             shouldShowMobilizationToolsTab:
-              params.shouldShowMobilizationToolsTab,
-            language: params.language
+              params.shouldShowMobilizationToolsTab
           }
         }
         return group

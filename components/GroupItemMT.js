@@ -74,8 +74,7 @@ const GroupItemMT = ({
               thisGroup.name,
               thisGroup.name,
               thisGroup.emoji,
-              !thisGroup.shouldShowMobilizationToolsTab,
-              thisGroup.language
+              !thisGroup.shouldShowMobilizationToolsTab
             )
           }}
           value={thisGroup.shouldShowMobilizationToolsTab}

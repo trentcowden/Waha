@@ -44,16 +44,14 @@ function mapDispatchToProps (dispatch) {
       oldGroupName,
       newGroupName,
       emoji,
-      shouldShowMobilizationToolsTab,
-      language
+      shouldShowMobilizationToolsTab
     ) =>
       dispatch(
         editGroup(
           oldGroupName,
           newGroupName,
           emoji,
-          shouldShowMobilizationToolsTab,
-          language
+          shouldShowMobilizationToolsTab
         )
       ),
     createGroup: (
@@ -202,13 +200,7 @@ const AddEditGroupModal = ({
     if (thisGroup.name === activeGroup.name) changeActiveGroup(groupNameInput)
 
     // Call editGroup() redux function.
-    editGroup(
-      thisGroup.name,
-      groupNameInput,
-      emojiInput,
-      shouldShowMTTabInput,
-      thisGroup.language
-    )
+    editGroup(thisGroup.name, groupNameInput, emojiInput, shouldShowMTTabInput)
 
     // Hide this modal.
     hideModal()

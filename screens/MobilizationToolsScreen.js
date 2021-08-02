@@ -35,16 +35,14 @@ function mapDispatchToProps (dispatch) {
       oldGroupName,
       newGroupName,
       emoji,
-      shouldShowMobilizationToolsTab,
-      language
+      shouldShowMobilizationToolsTab
     ) =>
       dispatch(
         editGroup(
           oldGroupName,
           newGroupName,
           emoji,
-          shouldShowMobilizationToolsTab,
-          language
+          shouldShowMobilizationToolsTab
         )
       )
   }
