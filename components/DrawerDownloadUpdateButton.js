@@ -1,30 +1,8 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    isConnected: state.network.isConnected,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 /**
  * Button that prompts the user to download new language core files should they be available/needed.
@@ -35,80 +13,81 @@ const DrawerDownloadUpdateButton = ({
   updateHandler,
   // Props passed from redux.
   activeGroup,
-  activeDatabase,
   isRTL,
   t,
   isDark,
   isConnected,
   languageCoreFilesToUpdate
-}) => (
-  <TouchableOpacity
-    style={styles.drawerDownloadUpdateButtonContainer}
-    onPress={() => {
-      Alert.alert(
-        t.general.download_update_title,
-        t.general.download_update_message,
-        [
-          {
-            text: t.general.cancel,
-            onPress: () => {},
-            style: 'cancel'
-          },
-          {
-            text: t.general.ok,
-            onPress: updateHandler
-          }
-        ]
-      )
-    }}
-    activeOpacity={isConnected ? 0.2 : 1}
-  >
-    <View
-      style={{
-        ...styles.innerContainer,
-        backgroundColor: isConnected
-          ? colors(isDark).success
-          : colors(isDark).bg1,
-        flexDirection: isRTL ? 'row' : 'row-reverse',
-        borderBottomColor: isConnected
-          ? colors(isDark).successShadow
-          : colors(isDark).bg1Shadow
+}) => {
+  return languageCoreFilesToUpdate.length !== 0 ? (
+    <TouchableOpacity
+      style={styles.drawerDownloadUpdateButtonContainer}
+      onPress={() => {
+        Alert.alert(
+          t.general.download_update_title,
+          t.general.download_update_message,
+          [
+            {
+              text: t.general.cancel,
+              onPress: () => {},
+              style: 'cancel'
+            },
+            {
+              text: t.general.ok,
+              onPress: updateHandler
+            }
+          ]
+        )
       }}
+      activeOpacity={isConnected ? 0.2 : 1}
     >
-      <Text
+      <View
         style={{
-          ...type(
-            activeGroup.language,
-            'h3',
-            'Bold',
-            'center',
-            isConnected ? colors(isDark).textOnColor : colors(isDark).disabled
-          ),
-          paddingHorizontal: 10
+          ...styles.innerContainer,
+          backgroundColor: isConnected
+            ? colors(isDark).success
+            : colors(isDark).bg1,
+          flexDirection: isRTL ? 'row' : 'row-reverse',
+          borderBottomColor: isConnected
+            ? colors(isDark).successShadow
+            : colors(isDark).bg1Shadow
         }}
       >
-        {t.general.download_update}
-      </Text>
-      {isConnected ? (
-        <View style={styles.iconContainer}>
-          <Icon
-            name='error-filled'
-            size={30 * scaleMultiplier}
-            color={colors(isDark).bg4}
-          />
-        </View>
-      ) : (
-        <View style={styles.iconContainer}>
-          <Icon
-            name='cloud-slash'
-            size={30 * scaleMultiplier}
-            color={colors(isDark).disabled}
-          />
-        </View>
-      )}
-    </View>
-  </TouchableOpacity>
-)
+        <Text
+          style={{
+            ...type(
+              activeGroup.language,
+              'h3',
+              'Bold',
+              'center',
+              isConnected ? colors(isDark).textOnColor : colors(isDark).disabled
+            ),
+            paddingHorizontal: 10
+          }}
+        >
+          {t.general.download_update}
+        </Text>
+        {isConnected ? (
+          <View style={styles.iconContainer}>
+            <Icon
+              name='error-filled'
+              size={30 * scaleMultiplier}
+              color={colors(isDark).bg4}
+            />
+          </View>
+        ) : (
+          <View style={styles.iconContainer}>
+            <Icon
+              name='cloud-slash'
+              size={30 * scaleMultiplier}
+              color={colors(isDark).disabled}
+            />
+          </View>
+        )}
+      </View>
+    </TouchableOpacity>
+  ) : null
+}
 
 const styles = StyleSheet.create({
   drawerDownloadUpdateButtonContainer: {
@@ -132,7 +111,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DrawerDownloadUpdateButton)
+export default DrawerDownloadUpdateButton

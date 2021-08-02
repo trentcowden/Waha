@@ -29,7 +29,6 @@ const WahaItem = ({
   style = {},
   title,
   children,
-  // Props passed from redux.
   isRTL,
   isDark,
   activeGroup

@@ -133,9 +133,21 @@ const AddSetScreen = ({
       title: headerTitle,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <WahaBackButton onPress={() => goBack()} />,
+        : () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          ),
       headerRight: isRTL
-        ? () => <WahaBackButton onPress={() => goBack()} />
+        ? () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
         : () => <View></View>
     })
   }, [headerTitle])
@@ -296,9 +308,9 @@ const AddSetScreen = ({
       <FlatList
         style={{ flex: 1 }}
         data={setData}
-        ItemSeparatorComponent={() => <WahaSeparator />}
-        ListFooterComponent={() => <WahaSeparator />}
-        ListHeaderComponent={() => <WahaSeparator />}
+        ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
+        ListFooterComponent={() => <WahaSeparator isDark={isDark} />}
+        ListHeaderComponent={() => <WahaSeparator isDark={isDark} />}
         renderItem={renderSetItem}
         contentContainerStyle={{
           flexGrow: 1

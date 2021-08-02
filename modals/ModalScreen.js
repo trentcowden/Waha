@@ -2,26 +2,9 @@ import Constants from 'expo-constants'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    downloads: state.downloads,
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
 
 /**
  * A component that renders a fullscreen modal with a header.
@@ -43,12 +26,9 @@ const ModalScreen = ({
   title,
   children,
   // Props passed from redux.
-  downloads,
-  activeDatabase,
   isRTL,
   isDark,
-  activeGroup,
-  font
+  activeGroup
 }) => (
   // Outer view is here because of some weird scrolling issues that occur when there's nested scrollable content inside the modal.
   <View>
@@ -143,4 +123,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(ModalScreen)
+export default ModalScreen

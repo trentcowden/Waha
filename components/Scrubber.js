@@ -45,8 +45,18 @@ const Scrubber = ({
       />
     </View>
     <View style={styles.timeInfoContainer}>
-      <TimeDisplay time={mediaProgress} max={mediaLength} side='left' />
-      <TimeDisplay time={mediaLength} max={mediaLength} side='right' />
+      <TimeDisplay
+        time={mediaProgress}
+        max={mediaLength}
+        side='left'
+        isDark={isDark}
+      />
+      <TimeDisplay
+        time={mediaLength}
+        max={mediaLength}
+        side='right'
+        isDark={isDark}
+      />
     </View>
   </View>
 )

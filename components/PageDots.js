@@ -1,27 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 const Dot = ({ isActive, isDark }) => (
   <View
@@ -47,9 +27,6 @@ const PageDots = ({
   // Props passed from a parent component.
   numDots,
   activeDot,
-  // Props passed from redux
-  activeGroup,
-  activeDatabase,
   isRTL,
   isDark
 }) => {
@@ -82,4 +59,4 @@ const PageDots = ({
 
 const styles = StyleSheet.create({})
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageDots)
+export default PageDots

@@ -93,6 +93,7 @@ const WahaDrawer = ({
             emoji={activeGroup.emoji}
             size={120}
             onPress={() => setShowEditGroupModal(true)}
+            isDark={isDark}
           />
         </View>
         <Text
@@ -116,27 +117,42 @@ const WahaDrawer = ({
         }}
       >
         {/* Show an update button if we have any core files to update. */}
-        {languageCoreFilesToUpdate.length !== 0 && (
-          <DrawerDownloadUpdateButton updateHandler={updateHandler} />
-        )}
+        <DrawerDownloadUpdateButton
+          updateHandler={updateHandler}
+          activeGroup={activeGroup}
+          isRTL={isRTL}
+          t={t}
+          isDark={isDark}
+          isConnected={isConnected}
+          languageCoreFilesToUpdate={languageCoreFilesToUpdate}
+        />
         <View style={{ width: '100%', height: 5 }} />
         <DrawerItem
           icon='group'
           label={t.groups.groups_and_languages}
           onPress={() => navigate('Groups')}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
         <DrawerItem
           icon='security'
           label={t.security.security}
           onPress={() => navigate('SecurityMode')}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
         <DrawerItem
           icon='boat'
           label={t.mobilization_tools.mobilization_tools}
           onPress={() => navigate('MobilizationTools')}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
         <View style={{ width: '100%', height: 5 }} />
-        <WahaSeparator />
+        <WahaSeparator isDark={isDark} />
         <Text
           style={{
             ...type(
@@ -157,21 +173,33 @@ const WahaDrawer = ({
           icon='storage'
           label={t.storage.storage}
           onPress={() => navigate('Storage')}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
         <DrawerItem
           icon={isDark ? 'sun' : 'moon'}
           onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
           label={isDark ? t.general.light_mode : t.general.dark_mode}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
         <DrawerItem
           icon='email'
           label={t.contact_us.contact_us}
           onPress={() => navigate('ContactUs')}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
         <DrawerItem
           icon='info'
           onPress={() => navigate('Information')}
           label={t.information.information}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
       </ScrollView>
       <AddEditGroupModal

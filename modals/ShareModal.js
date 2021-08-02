@@ -126,7 +126,7 @@ const ShareModal = ({
       {/* Include a "Share Text" button if a lesson has questions. If it has questions, then it also has Scripture text. */}
       {lessonType.includes('Questions') ? (
         <View>
-          <WahaSeparator />
+          <WahaSeparator isDark={isDark} />
           <OptionsModalButton
             label={t.general.share_passage_text}
             onPress={() => shareLessonContent(shareTypes.TEXT)}
@@ -140,7 +140,7 @@ const ShareModal = ({
         !downloads[lesson.id] &&
         isLessonDownloaded && (
           <View>
-            <WahaSeparator />
+            <WahaSeparator isDark={isDark} />
             <OptionsModalButton
               label={t.general.share_passage_audio}
               onPress={() => shareLessonContent(shareTypes.AUDIO)}
@@ -154,7 +154,7 @@ const ShareModal = ({
         lesson.videoShareLink &&
         !downloads[lesson.id] && (
           <View>
-            <WahaSeparator />
+            <WahaSeparator isDark={isDark} />
             <OptionsModalButton
               label={t.general.share_video_link}
               onPress={() => shareLessonContent(shareTypes.VIDEO)}
@@ -165,7 +165,7 @@ const ShareModal = ({
         )}
       {/[a-z]{2}.3.[0-9]+.[0-9]+/.test(lesson.id) && (
         <View>
-          <WahaSeparator />
+          <WahaSeparator isDark={isDark} />
           <OptionsModalButton
             label={t.general.share_mobilization_tools}
             onPress={() => shareLessonContent(shareTypes.MOBILIZATION_TOOLS)}

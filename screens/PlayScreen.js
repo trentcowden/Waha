@@ -314,7 +314,13 @@ const PlayScreen = ({
       </View>
     ),
     headerRight: isRTL
-      ? () => <WahaBackButton onPress={onBackButtonPress} />
+      ? () => (
+          <WahaBackButton
+            onPress={onBackButtonPress}
+            isRTL={isRTL}
+            isDark={isDark}
+          />
+        )
       : () => (
           <TouchableOpacity
             style={{ marginHorizontal: gutterSize }}
@@ -340,7 +346,13 @@ const PlayScreen = ({
             />
           </TouchableOpacity>
         )
-      : () => <WahaBackButton onPress={onBackButtonPress} />
+      : () => (
+          <WahaBackButton
+            onPress={onBackButtonPress}
+            isRTL={isRTL}
+            isDark={isDark}
+          />
+        )
   })
 
   /*

@@ -1,17 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
 
 /**
  * A simple pressable component with a backwards arrow that acts as a back button. Used in almost every header in Waha.
@@ -22,7 +12,6 @@ const WahaBackButton = ({
   // Props passed from a parent component.
   onPress,
   color = null,
-  // Props passed from redux.
   isRTL,
   isDark
 }) => (
@@ -48,4 +37,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(WahaBackButton)
+export default WahaBackButton

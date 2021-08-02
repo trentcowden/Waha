@@ -129,6 +129,8 @@ const WahaOnboardingSlidesScreen = ({
       key='1'
       title={t.onboarding.onboarding_1_title}
       message={t.onboarding.onboarding_1_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         imageType='lottie'
@@ -140,6 +142,8 @@ const WahaOnboardingSlidesScreen = ({
       key='2'
       title={t.onboarding.onboarding_2_title}
       message={t.onboarding.onboarding_2_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         imageType='lottie'
@@ -151,6 +155,8 @@ const WahaOnboardingSlidesScreen = ({
       key='3'
       title={t.onboarding.onboarding_3_title}
       message={t.onboarding.onboarding_3_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         imageType='lottie'
@@ -162,13 +168,25 @@ const WahaOnboardingSlidesScreen = ({
       key='4'
       title={t.onboarding.onboarding_4_title}
       message={t.onboarding.onboarding_4_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <GroupNameTextInput
         groupNameInput={groupNameInput}
         setGroupNameInput={setGroupNameInput}
         groupNameInputRef={groupNameInputRef}
+        activeGroup={activeGroup}
+        isRTL={isRTL}
+        isDark={isDark}
+        t={t}
       />
-      <EmojiViewer emojiInput={emojiInput} setEmojiInput={setEmojiInput} />
+      <EmojiViewer
+        emojiInput={emojiInput}
+        setEmojiInput={setEmojiInput}
+        activeGroup={activeGroup}
+        isDark={isDark}
+        t={t}
+      />
     </OnboardingPage>
   ]
 
@@ -203,7 +221,12 @@ const WahaOnboardingSlidesScreen = ({
           flexDirection: isRTL ? 'row-reverse' : 'row'
         }}
       >
-        <PageDots numDots={numPages} activeDot={activePage} />
+        <PageDots
+          numDots={numPages}
+          activeDot={activePage}
+          isRTL={isRTL}
+          isDark={isDark}
+        />
         <View
           style={{
             ...styles.skipButtonContainer,

@@ -447,8 +447,8 @@ const LanguageSelectScreen = ({
             installedLanguageInstances,
             searchTextInput
           )}
-          ItemSeparatorComponent={() => <WahaSeparator />}
-          SectionSeparatorComponent={() => <WahaSeparator />}
+          ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
+          SectionSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
           keyExtractor={item => item.languageID}
           renderItem={({ item, section }) => renderLanguageItem(item, section)}
           renderSectionHeader={({ section }) => renderLanguageHeader(section)}

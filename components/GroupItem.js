@@ -7,42 +7,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { connect } from 'react-redux'
 import { getLessonInfo, scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { deleteGroup } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
 import GroupAvatar from './GroupAvatar'
-
-function mapStateToProps (state) {
-  return {
-    database: state.database,
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    groups: state.groups,
-    activeGroup: activeGroupSelector(state),
-    isDark: state.settings.isDarkModeEnabled,
-    t: getTranslations(activeGroupSelector(state).language)
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    },
-    changeActiveGroup: name => {
-      dispatch(changeActiveGroup(name))
-    }
-  }
-}
 
 const animatedPositions = {
   EDITING: 0,
@@ -61,9 +29,7 @@ const GroupItem = ({
   thisGroup,
   isEditing,
   openEditModal,
-  // Props passed from redux.
   database,
-  activeDatabase,
   isRTL,
   isDark,
   groups,
@@ -289,6 +255,7 @@ const GroupItem = ({
             size={50 * scaleMultiplier}
             emoji={thisGroup.emoji}
             isActive={activeGroup.name === thisGroup.name}
+            isDark={isDark}
           />
           <View
             style={{
@@ -368,9 +335,8 @@ const styles = StyleSheet.create({
   groupTextContainer: {
     flex: 1,
     height: '100%',
-    // justifyContent: 'center',
     flexWrap: 'nowrap'
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupItem)
+export default GroupItem

@@ -18,10 +18,6 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {}
-}
-
 /**
  * A modal that displays the various copyright attributions for a language. Uses <ModalScreen /> under the hood.
  * @param {boolean} isVisible - Whether the modal is visible.
@@ -42,6 +38,9 @@ const CopyrightsModal = ({
       title={t.general.view_copyright}
       hideModal={hideModal}
       isVisible={isVisible}
+      isRTL={isRTL}
+      activeGroup={activeGroup}
+      isDark={isDark}
     >
       <View style={{ flex: 1, paddingHorizontal: gutterSize }}>
         <Text
@@ -69,4 +68,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CopyrightsModal)
+export default connect(mapStateToProps)(CopyrightsModal)

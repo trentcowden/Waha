@@ -200,7 +200,7 @@ const LessonTextContent = ({
               />
             </View>
           ))}
-          {/* <WahaSeparator /> */}
+          {/* <WahaSeparator isDark={isDark} /> */}
           {t.general.copyrights !== '' && (
             <TouchableOpacity
               onPress={() => setShowCopyrightsModal(true)}
@@ -242,7 +242,7 @@ const LessonTextContent = ({
             </View> */}
             </TouchableOpacity>
           )}
-          {/* <WahaSeparator /> */}
+          {/* <WahaSeparator isDark={isDark} /> */}
           {/* Header for application section. */}
           <HeaderBig
             onLayout={({ nativeEvent }) =>

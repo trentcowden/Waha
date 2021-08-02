@@ -1,19 +1,8 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A component to show a nicely styled blurb (section of text). Used on the Mobilization Tools and Security Mode screens.
@@ -22,10 +11,7 @@ function mapStateToProps (state) {
 const WahaBlurb = ({
   // Props passed from a parent component.
   text,
-  // Props passed from redux.
-  font,
   isDark,
-  isRTL,
   activeGroup
 }) => (
   <View
@@ -49,4 +35,4 @@ const WahaBlurb = ({
   </View>
 )
 
-export default connect(mapStateToProps)(WahaBlurb)
+export default WahaBlurb

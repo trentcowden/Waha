@@ -56,11 +56,23 @@ const StorageScreen = ({
   useEffect(() => {
     setOptions({
       headerRight: isRTL
-        ? () => <WahaBackButton onPress={() => goBack()} />
+        ? () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
         : () => <View></View>,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <WahaBackButton onPress={() => goBack()} />
+        : () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
     })
   }, [])
 
@@ -176,6 +188,10 @@ const StorageScreen = ({
             ]
           )
         }}
+        isRTL={isRTL}
+        isDark={isDark}
+        t={t}
+        activeGroup={activeGroup}
       />
     )
   }

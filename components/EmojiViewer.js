@@ -7,31 +7,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { connect } from 'react-redux'
 import { groupIcons, groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    t: getTranslations(activeGroupSelector(state).language)
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 /**
  * A component that shows a list of emojis available to be set for a group's avatar.
@@ -42,10 +21,7 @@ const EmojiViewer = ({
   // Props passed from a parent component.
   emojiInput,
   setEmojiInput,
-  // Props passed from redux.
   activeGroup,
-  activeDatabase,
-  isRTL,
   isDark,
   t
 }) => {
@@ -145,4 +121,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmojiViewer)
+export default EmojiViewer

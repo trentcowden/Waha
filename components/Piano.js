@@ -1,21 +1,8 @@
 import { Audio } from 'expo-av'
 import React, { useRef } from 'react'
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-
-    isDark: state.settings.isDarkModeEnabled,
-
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 // The piano sound effects.
 const pianoNotes = [
@@ -42,10 +29,7 @@ const Piano = ({
   // Props passed from a parent component.
   setPlayedNotes,
   isMuted = false,
-  // Props passed from redux.
-  isRTL,
-  isDark,
-  activeGroup
+  isDark
 }) => {
   /** Ref to store the audio object. */
   const note = useRef(new Audio.Sound())
@@ -96,7 +80,11 @@ const Piano = ({
             playNote(1)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['1']} number='1' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['1']}
+            number='1'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
@@ -105,7 +93,11 @@ const Piano = ({
             playNote(3)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['3']} number='3' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['3']}
+            number='3'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
@@ -115,7 +107,11 @@ const Piano = ({
             playNote(6)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['6']} number='6' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['6']}
+            number='6'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
@@ -124,7 +120,11 @@ const Piano = ({
             playNote(8)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['8']} number='8' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['8']}
+            number='8'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
@@ -133,7 +133,11 @@ const Piano = ({
             playNote(10)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['10']} number='10' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['10']}
+            number='10'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <View style={{ flex: 0.5 }} />
       </View>
@@ -145,7 +149,11 @@ const Piano = ({
             playNote(0)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['0']} number='0' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['0']}
+            number='0'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
@@ -154,7 +162,11 @@ const Piano = ({
             playNote(2)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['2']} number='2' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['2']}
+            number='2'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
@@ -163,7 +175,11 @@ const Piano = ({
             playNote(4)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['4']} number='4' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['4']}
+            number='4'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
@@ -172,7 +188,11 @@ const Piano = ({
             playNote(5)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['5']} number='5' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['5']}
+            number='5'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
@@ -181,7 +201,11 @@ const Piano = ({
             playNote(7)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['7']} number='7' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['7']}
+            number='7'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
@@ -190,7 +214,11 @@ const Piano = ({
             playNote(9)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['9']} number='9' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['9']}
+            number='9'
+            isDark={isDark}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
@@ -199,7 +227,11 @@ const Piano = ({
             playNote(11)
           }}
         >
-          <PianoKeyLabel backgroundColor={keyColors['11']} number='11' />
+          <PianoKeyLabel
+            backgroundColor={keyColors['11']}
+            number='11'
+            isDark={isDark}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -239,4 +271,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(Piano)
+export default Piano

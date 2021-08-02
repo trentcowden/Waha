@@ -57,11 +57,23 @@ const SecurityModeScreen = ({
   useEffect(() => {
     setOptions({
       headerRight: isRTL
-        ? () => <WahaBackButton onPress={() => goBack()} />
+        ? () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
         : () => <View></View>,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <WahaBackButton onPress={() => goBack()} />
+        : () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
     })
   }, [])
 
@@ -90,10 +102,22 @@ const SecurityModeScreen = ({
     >
       {/* Inside a ScrollView in case a user's phone can't fit all of the controls on their screen. */}
       <ScrollView bounces={false}>
-        <WahaHero source={require('../assets/lotties/security_mode.json')} />
-        <WahaBlurb text={t.security.security_mode_blurb} />
-        <WahaSeparator />
-        <WahaItem title={t.security.security_mode}>
+        <WahaHero
+          source={require('../assets/lotties/security_mode.json')}
+          isDark={isDark}
+        />
+        <WahaBlurb
+          text={t.security.security_mode_blurb}
+          isDark={isDark}
+          activeGroup={activeGroup}
+        />
+        <WahaSeparator isDark={isDark} />
+        <WahaItem
+          title={t.security.security_mode}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
+        >
           <Switch
             trackColor={{
               false: colors(isDark).disabled,
@@ -111,16 +135,19 @@ const SecurityModeScreen = ({
             value={security.securityEnabled}
           />
         </WahaItem>
-        <WahaSeparator />
+        <WahaSeparator isDark={isDark} />
         <View style={{ height: 20 * scaleMultiplier }} />
         {/* If the user has already gone through the security onboarding (i.e. has created a code), then we show the controls. */}
         {security.code && (
           <View style={{ width: '100%' }}>
             {/* Control item one allows the user to change the security mode timeout. */}
-            <WahaSeparator />
+            <WahaSeparator isDark={isDark} />
             <WahaItem
               title={t.security.change_timeout}
               onPress={() => setShowChangeTimeoutModal(true)}
+              isRTL={isRTL}
+              isDark={isDark}
+              activeGroup={activeGroup}
             >
               <View
                 style={{
@@ -147,10 +174,13 @@ const SecurityModeScreen = ({
               </View>
             </WahaItem>
             {/* Control item two allows the user to update their passcode. */}
-            <WahaSeparator />
+            <WahaSeparator isDark={isDark} />
             <WahaItem
               title={t.security.change_passcode}
               onPress={() => navigate('PianoPasscodeChange')}
+              isRTL={isRTL}
+              isDark={isDark}
+              activeGroup={activeGroup}
             >
               <Icon
                 name={isRTL ? 'arrow-left' : 'arrow-right'}
@@ -158,7 +188,7 @@ const SecurityModeScreen = ({
                 size={50 * scaleMultiplier}
               />
             </WahaItem>
-            <WahaSeparator />
+            <WahaSeparator isDark={isDark} />
           </View>
         )}
       </ScrollView>
@@ -166,6 +196,13 @@ const SecurityModeScreen = ({
       <SecurityTimeoutPickerModal
         isVisible={showChangeTimeoutModal}
         hideModal={() => setShowChangeTimeoutModal(false)}
+        security={security}
+        isRTL={isRTL}
+        isDark={isDark}
+        t={t}
+        activeGroup={activeGroup}
+        setSecurityEnabled={setSecurityEnabled}
+        setTimeoutDuration={setTimeoutDuration}
       />
       <SnackBar
         visible={showPasscodeSetSnackbar}

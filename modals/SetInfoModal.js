@@ -126,6 +126,9 @@ const SetInfoModal = ({
       title={t.sets.set_details}
       hideModal={hideModal}
       isVisible={isVisible}
+      isRTL={isRTL}
+      activeGroup={activeGroup}
+      isDark={isDark}
     >
       <View style={styles.setItemContainer}>
         <SetItem

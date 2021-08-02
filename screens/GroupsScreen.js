@@ -1,3 +1,4 @@
+import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState } from 'react'
 import { SectionList, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
@@ -13,6 +14,10 @@ import {
   info
 } from '../functions/languageDataFunctions'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
+import { changeActiveGroup } from '../redux/actions/activeGroupActions'
+import { deleteLanguageData } from '../redux/actions/databaseActions'
+import { removeDownload } from '../redux/actions/downloadActions'
+import { deleteGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -29,6 +34,23 @@ function mapStateToProps (state) {
   }
 }
 
+function mapDispatchToProps (dispatch) {
+  return {
+    deleteGroup: name => {
+      dispatch(deleteGroup(name))
+    },
+    deleteLanguageData: language => {
+      dispatch(deleteLanguageData(language))
+    },
+    removeDownload: lessonID => {
+      dispatch(removeDownload(lessonID))
+    },
+    changeActiveGroup: name => {
+      dispatch(changeActiveGroup(name))
+    }
+  }
+}
+
 /**
  * A screen that displays all of the installed language instances and the groups in those language instances. Allows for switching the active group and  editing, deleting, and adding groups & languages.
  */
@@ -42,7 +64,11 @@ const GroupsScreen = ({
   isConnected,
   groups,
   activeGroup,
-  t
+  t,
+  deleteGroup,
+  deleteLanguageData,
+  removeDownload,
+  changeActiveGroup
 }) => {
   /** Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen. */
   const [isEditing, setIsEditing] = useState(false)
@@ -70,12 +96,17 @@ const GroupsScreen = ({
             <WahaBackButton
               color={isEditing ? colors(isDark).bg4 : null}
               onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
             />
           )
         : () => (
             <GroupsScreenEditButton
               onPress={() => setIsEditing(old => !old)}
               isEditing={isEditing}
+              isDark={isDark}
+              activeGroup={activeGroup}
+              t={t}
             />
           ),
       headerLeft: isRTL
@@ -83,12 +114,17 @@ const GroupsScreen = ({
             <GroupsScreenEditButton
               onPress={() => setIsEditing(old => !old)}
               isEditing={isEditing}
+              isDark={isDark}
+              activeGroup={activeGroup}
+              t={t}
             />
           )
         : () => (
             <WahaBackButton
               color={isEditing ? colors(isDark).bg4 : null}
               onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
             />
           )
     })
@@ -106,41 +142,30 @@ const GroupsScreen = ({
   /** Keeps track of whether the edit gruop modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
-  /**
-   * Gets an array of all the installed language instances and their groups. This is used as the data for the section list of all the groups on this screen and on the MobilizationTools screen.
-   * @return {Object[]} - A list of the installed language instances and their groups.
-   * @return {Object[].title} - The name of the language.
-   * @return {Object[].languageID} - The ID of the language instance.
-   * @return {Object[].data[]} - An array of the groups that are a part of this language instance.
-   */
-  // const getLanguageAndGroupData = () => {
-  //   var installedLanguageInstances = []
-  //   for (key in database) {
-  //     // Because there are other redux variables stored in the database object, filter for just the language objects (which all have a length of 2).
-  //     if (key.length === 2) {
-  //       var languageObject = {}
-  //       languageObject['languageName'] = database[key].displayName
-  //       languageObject['languageID'] = key
+  /** Deletes an entire language instance. This involves deleting every group, every downloaded file, and all data stored in redux for a language instance. Triggered by pressing the trash can icon next to the langauge's name in editing mode. */
+  const deleteLanguageInstance = languageID => {
+    // Delete every group for this language instance.
+    groups.map(group => {
+      if (group.language === languageID) {
+        deleteGroup(group.name)
+      }
+    })
 
-  //       // Get all the groups that are a part of this language instance.
-  //       languageObject['data'] = groups.filter(group => group.language === key)
+    // Delete all downloaded files for this language instance.
+    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+      contents => {
+        for (const item of contents) {
+          if (item.slice(0, 2) === languageID) {
+            FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+            removeDownload(item.slice(0, 5))
+          }
+        }
+      }
+    )
 
-  //       // Add all of this to the installedLanguageInstances array.
-  //       installedLanguageInstances.push(languageObject)
-  //     }
-  //   }
-
-  //   // (TEMP) If we have the install times stored, sort the languages by the time installed.
-  //   return installedLanguageInstances.some(
-  //     key => database[key.languageID].installTime === null
-  //   )
-  //     ? installedLanguageInstances
-  //     : installedLanguageInstances.sort(
-  //         (a, b) =>
-  //           database[a.languageID].installTime -
-  //           database[b.languageID].installTime
-  //       )
-  // }
+    // Delete redux data for this language instance.
+    deleteLanguageData(languageID)
+  }
 
   /**
    * Renders a GroupListHeader component used for the Groups SectionList section header.
@@ -152,6 +177,12 @@ const GroupsScreen = ({
       nativeName={language.nativeName}
       languageID={language.languageID}
       isEditing={isEditing}
+      isRTL={isRTL}
+      t={t}
+      isDark={isDark}
+      groups={groups}
+      activeGroup={activeGroup}
+      deleteLanguageInstance={deleteLanguageInstance}
     />
   )
 
@@ -168,6 +199,14 @@ const GroupsScreen = ({
         setEditingGroup(group)
         setShowEditGroupModal(true)
       }}
+      database={database}
+      isRTL={isRTL}
+      isDark={isDark}
+      groups={groups}
+      t={t}
+      activeGroup={activeGroup}
+      deleteGroup={deleteGroup}
+      changeActiveGroup={changeActiveGroup}
     />
   )
 
@@ -184,13 +223,17 @@ const GroupsScreen = ({
         renderSectionHeader={({ section }) => renderGroupListHeader(section)}
         keyExtractor={item => item.name}
         extraData={isRTL}
-        ItemSeparatorComponent={() => <WahaSeparator />}
-        SectionSeparatorComponent={() => <WahaSeparator />}
+        ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
+        SectionSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
         renderSectionFooter={({ section }) => (
           <AddNewGroupButton
             section={section}
             setLanguageID={languageID => setLanguageID(languageID)}
             setShowAddGroupModal={toSet => setShowAddGroupModal(toSet)}
+            isRTL={isRTL}
+            isDark={isDark}
+            t={t}
+            activeGroup={activeGroup}
           />
         )}
         ListHeaderComponent={() => (
@@ -200,6 +243,10 @@ const GroupsScreen = ({
           <AddNewLanguageInstanceButton
             navigate={(screen, params) => navigate(screen, params)}
             languageAndGroupData={getInstalledLanguagesData(database, groups)}
+            isRTL={isRTL}
+            isDark={isDark}
+            t={t}
+            activeGroup={activeGroup}
           />
         }
       />
@@ -226,4 +273,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(GroupsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupsScreen)

@@ -1,22 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    t: getTranslations(activeGroupSelector(state).language),
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A pressable component that is used to add a new group. It's styled after the Group item component and is rendered as the section footer for the Groups SectionList on the Groups screen.
@@ -29,7 +16,6 @@ const AddNewGroupButton = ({
   section,
   setLanguageID,
   setShowAddGroupModal,
-  // Props passed from redux.
   isRTL,
   isDark,
   t,
@@ -70,7 +56,7 @@ const AddNewGroupButton = ({
           {t.groups.new_group}
         </Text>
       </TouchableOpacity>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
       <View style={{ height: 20 * scaleMultiplier, width: '100%' }} />
     </View>
   )
@@ -92,4 +78,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(AddNewGroupButton)
+export default AddNewGroupButton

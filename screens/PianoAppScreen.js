@@ -208,7 +208,11 @@ const PianoAppScreen = ({
             }}
             source={require('../assets/securityMode/piano.png')}
           />
-          <Piano setPlayedNotes={setPlayedNotes} isMuted={security.isMuted} />
+          <Piano
+            setPlayedNotes={setPlayedNotes}
+            isMuted={security.isMuted}
+            isDark={isDark}
+          />
         </View>
         <View
           style={{

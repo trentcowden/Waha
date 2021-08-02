@@ -1,14 +1,7 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
 
 /**
  * Component that displays a simple circle with a number. Used to label the various keys of the piano.
@@ -21,7 +14,6 @@ const PianoKeyLabel = ({
   backgroundColor,
   style,
   number,
-  // Props passed from redux.
   isDark
 }) => {
   return (
@@ -52,4 +44,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(PianoKeyLabel)
+export default PianoKeyLabel

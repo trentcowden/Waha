@@ -9,45 +9,9 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { deleteLanguageData } from '../redux/actions/databaseActions'
-import { removeDownload } from '../redux/actions/downloadActions'
-import { deleteGroup } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    database: state.database,
-    activeDatabase: activeDatabaseSelector(state),
-    groups: state.groups,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    deleteGroup: name => {
-      dispatch(deleteGroup(name))
-    },
-    deleteLanguageData: language => {
-      dispatch(deleteLanguageData(language))
-    },
-    removeDownload: lessonID => {
-      dispatch(removeDownload(lessonID))
-    }
-  }
-}
 
 /**
  * The header for the groups section list used on the Groups screen. Displays the name of the language and the language instance's logo.
@@ -60,17 +24,12 @@ const GroupListHeader = ({
   nativeName,
   languageID,
   isEditing,
-  // Props passed from redux.
   isRTL,
   t,
   isDark,
-  database,
-  activeDatabase,
   groups,
   activeGroup,
-  deleteGroup,
-  deleteLanguageData,
-  removeDownload
+  deleteLanguageInstance
 }) => {
   /** Keeps track of the animated position of the left icon, in this case the trash can icon. */
   const [leftIconXPos, setLeftIconXPos] = useState(
@@ -102,31 +61,6 @@ const GroupListHeader = ({
     }
   }, [activeGroup, isEditing])
 
-  /** Deletes an entire language instance. This involves deleting every group, every downloaded file, and all data stored in redux for a language instance. Triggered by pressing the trash can icon next to the langauge's name in editing mode. */
-  const deleteLanguageInstance = () => {
-    // Delete every group for this language instance.
-    groups.map(group => {
-      if (group.language === languageID) {
-        deleteGroup(group.name)
-      }
-    })
-
-    // Delete all downloaded files for this language instance.
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
-        for (const item of contents) {
-          if (item.slice(0, 2) === languageID) {
-            FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-            removeDownload(item.slice(0, 5))
-          }
-        }
-      }
-    )
-
-    // Delete redux data for this language instance.
-    deleteLanguageData(languageID)
-  }
-
   // The trash button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
   if (!(activeGroup.language === languageID))
     var trashButtonComponent = (
@@ -144,7 +78,7 @@ const GroupListHeader = ({
               },
               {
                 text: t.general.ok,
-                onPress: deleteLanguageInstance,
+                onPress: () => deleteLanguageInstance(languageID),
                 style: 'destructive'
               }
             ]
@@ -228,4 +162,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupListHeader)
+export default GroupListHeader

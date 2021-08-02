@@ -209,7 +209,9 @@ const MainStack = ({
               elevation: 0,
               shadowColor: 'transparent'
             },
-            headerTitle: () => <ScreenHeaderImage />,
+            headerTitle: () => (
+              <ScreenHeaderImage isDark={isDark} activeGroup={activeGroup} />
+            ),
             headerLeft: isRTL
               ? () => <TestModeDisplay />
               : () => (
@@ -220,6 +222,7 @@ const MainStack = ({
                       size={35}
                       onPress={() => toggleDrawer()}
                       isActive={true}
+                      isDark={isDark}
                     />
                     {languageCoreFilesToUpdate.length !== 0 ? (
                       <View
@@ -254,6 +257,7 @@ const MainStack = ({
                       size={35}
                       onPress={() => toggleDrawer()}
                       isActive={true}
+                      isDark={isDark}
                     />
                     {languageCoreFilesToUpdate.length !== 0 && (
                       <View
@@ -348,11 +352,23 @@ const MainStack = ({
               fontFamily: font + '-Bold'
             },
             headerRight: isRTL
-              ? () => <WahaBackButton onPress={() => goBack()} />
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
               : () => {},
             headerLeft: isRTL
               ? () => {}
-              : () => <WahaBackButton onPress={() => goBack()} />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
           }}
         />
         <Stack.Screen

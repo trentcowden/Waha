@@ -162,7 +162,12 @@ const PlayScreenSwiper = ({
         {isRTL ? pages.reverse() : pages}
       </PagerView>
       <View style={styles.pageDotsContainer}>
-        <PageDots numDots={2} activeDot={activePage} />
+        <PageDots
+          numDots={2}
+          activeDot={activePage}
+          isRTL={isRTL}
+          isDark={isDark}
+        />
       </View>
     </View>
   )

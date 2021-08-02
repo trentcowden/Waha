@@ -7,7 +7,6 @@ import { activeGroupSelector } from '../redux/reducers/activeGroup'
 function mapStateToProps (state) {
   return {
     activeGroup: activeGroupSelector(state),
-    database: state.database,
     isDark: state.settings.isDarkModeEnabled
   }
 }
@@ -16,7 +15,6 @@ function mapStateToProps (state) {
 const ScreenHeaderImage = ({
   // Props passed from redux.
   activeGroup,
-  database,
   isDark
 }) => (
   <Image

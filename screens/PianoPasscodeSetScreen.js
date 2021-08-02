@@ -85,6 +85,8 @@ const PianoPasscodeSetScreen = ({
                 goBack()
                 if (routeName === 'PianoPasscodeSet') goBack()
               }}
+              isRTL={isRTL}
+              isDark={isDark}
             />
           )
         : () => <View></View>,
@@ -96,6 +98,8 @@ const PianoPasscodeSetScreen = ({
                 goBack()
                 if (routeName === 'PianoPasscodeSet') goBack()
               }}
+              isRTL={isRTL}
+              isDark={isDark}
             />
           )
     })
@@ -186,7 +190,11 @@ const PianoPasscodeSetScreen = ({
             {instructionText[routeName]}
           </Text>
         </View>
-        <PianoPasscodeDisplay passcode={localPasscode} />
+        <PianoPasscodeDisplay
+          passcode={localPasscode}
+          isRTL={isRTL}
+          isDark={isDark}
+        />
         <WahaButton
           mode={buttonModes.ERROR_SECONDARY}
           onPress={() => setLocalPasscode('')}
@@ -200,7 +208,7 @@ const PianoPasscodeSetScreen = ({
           language={activeGroup.language}
         />
       </View>
-      <Piano setPlayedNotes={setLocalPasscode} />
+      <Piano setPlayedNotes={setLocalPasscode} isDark={isDark} />
     </SafeAreaView>
   )
 }

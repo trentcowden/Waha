@@ -1,21 +1,8 @@
 import React from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-
-    security: state.security,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A component that shows the passcode that is currently entered on the piano.
@@ -24,12 +11,8 @@ function mapStateToProps (state) {
 const PianoPasscodeDisplay = ({
   // Props passed from a parent component.s
   passcode,
-  // Props passed from redux.
-  font,
-  security,
   isRTL,
-  isDark,
-  activeGroup
+  isDark
 }) => {
   const extraKeyPlaceholderStyles = {
     backgroundColor: colors(isDark).bg2,
@@ -52,6 +35,7 @@ const PianoPasscodeDisplay = ({
             backgroundColor={keyColors[passcode.substr(0, 2).replace(/^0/, '')]}
             number={passcode.substr(0, 2).replace(/^0/, '')}
             style={{ alignSelf: null, marginBottom: 0 }}
+            isDark={isDark}
           />
         )}
       </View>
@@ -61,6 +45,7 @@ const PianoPasscodeDisplay = ({
             backgroundColor={keyColors[passcode.substr(2, 2).replace(/^0/, '')]}
             number={passcode.substr(2, 2).replace(/^0/, '')}
             style={{ alignSelf: null, marginBottom: 0 }}
+            isDark={isDark}
           />
         )}
       </View>
@@ -70,6 +55,7 @@ const PianoPasscodeDisplay = ({
             backgroundColor={keyColors[passcode.substr(4, 2).replace(/^0/, '')]}
             number={passcode.substr(4, 2).replace(/^0/, '')}
             style={{ alignSelf: null, marginBottom: 0 }}
+            isDark={isDark}
           />
         )}
       </View>
@@ -79,6 +65,7 @@ const PianoPasscodeDisplay = ({
             backgroundColor={keyColors[passcode.substr(6, 2).replace(/^0/, '')]}
             number={passcode.substr(6, 2).replace(/^0/, '')}
             style={{ alignSelf: null, marginBottom: 0 }}
+            isDark={isDark}
           />
         )}
       </View>
@@ -88,6 +75,7 @@ const PianoPasscodeDisplay = ({
             backgroundColor={keyColors[passcode.substr(8, 2).replace(/^0/, '')]}
             number={passcode.substr(8, 2).replace(/^0/, '')}
             style={{ alignSelf: null, marginBottom: 0 }}
+            isDark={isDark}
           />
         )}
       </View>
@@ -99,6 +87,7 @@ const PianoPasscodeDisplay = ({
             }
             number={passcode.substr(10, 2).replace(/^0/, '')}
             style={{ alignSelf: null, marginBottom: 0 }}
+            isDark={isDark}
           />
         )}
       </View>
@@ -118,4 +107,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(PianoPasscodeDisplay)
+export default PianoPasscodeDisplay

@@ -1,19 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A pressable item used in Waha's navigation drawer.
@@ -26,7 +15,6 @@ const DrawerItem = ({
   onPress,
   icon,
   label,
-  // Props passed from redux.
   isRTL,
   isDark,
   activeGroup
@@ -78,4 +66,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(DrawerItem)
+export default DrawerItem

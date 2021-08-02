@@ -1,14 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
 
 /**
  * A simple component to display a specific time in a nice format. Used for the current time and total time of a piece of media on the Play Screen and displayed in the <Scrubber /> component.
@@ -21,7 +14,6 @@ const TimeDisplay = ({
   max,
   time,
   side,
-  // Props passed from redux.
   isDark
 }) => {
   /**
@@ -75,4 +67,4 @@ const TimeDisplay = ({
   )
 }
 
-export default connect(mapStateToProps)(TimeDisplay)
+export default TimeDisplay

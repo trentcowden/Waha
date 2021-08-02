@@ -1,23 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 /**
  * A component that's used for a single onboarding page in the various onboarding slides used in Waha.
@@ -30,8 +15,6 @@ const OnboardingPage = ({
   title,
   message,
   children,
-  // Props passed from redux.
-  isRTL,
   isDark,
   activeGroup
 }) => (
@@ -96,4 +79,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(OnboardingPage)
+export default OnboardingPage

@@ -50,11 +50,23 @@ const InformationScreen = ({
   useEffect(() => {
     setOptions({
       headerRight: isRTL
-        ? () => <WahaBackButton onPress={() => goBack()} />
+        ? () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
         : () => {},
       headerLeft: isRTL
         ? () => {}
-        : () => <WahaBackButton onPress={() => goBack()} />
+        : () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
     })
   }, [])
 

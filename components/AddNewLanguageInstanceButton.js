@@ -1,22 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
 import { languages } from '../languages'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A pressable component that is used to add a new language instance. It's rendered as the list footer for the Groups SectionList on the Groups screen.
@@ -27,13 +14,13 @@ const AddNewLanguageInstanceButton = ({
   // Props passed from a parent component.
   navigate,
   languageAndGroupData,
-  // Props passed from redux.
   isRTL,
   isDark,
   t,
   activeGroup
 }) => {
   return (
+    // Hide this button if every language has already been added.
     languageAndGroupData.length !== languages.length && (
       <TouchableOpacity
         style={{
@@ -87,4 +74,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(AddNewLanguageInstanceButton)
+export default AddNewLanguageInstanceButton

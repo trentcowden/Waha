@@ -47,11 +47,23 @@ const SecurityOnboardingSlidesScreen = ({
   useEffect(() => {
     setOptions({
       headerRight: isRTL
-        ? () => <WahaBackButton onPress={() => goBack()} />
+        ? () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
         : () => <View></View>,
       headerLeft: isRTL
         ? () => <View></View>
-        : () => <WahaBackButton onPress={() => goBack()} />
+        : () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
     })
   }, [])
 
@@ -61,6 +73,8 @@ const SecurityOnboardingSlidesScreen = ({
       key='1'
       title={t.security.onboarding_1_title}
       message={t.security.onboarding_1_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding1.png')}
@@ -72,6 +86,8 @@ const SecurityOnboardingSlidesScreen = ({
       key='2'
       title={t.security.onboarding_2_title}
       message={t.security.onboarding_2_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding2.png')}
@@ -83,6 +99,8 @@ const SecurityOnboardingSlidesScreen = ({
       key='3'
       title={t.security.onboarding_3_title}
       message={t.security.onboarding_3_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding3.png')}
@@ -94,6 +112,8 @@ const SecurityOnboardingSlidesScreen = ({
       key='4'
       title={t.security.onboarding_4_title}
       message={t.security.onboarding_4_message}
+      isDark={isDark}
+      activeGroup={activeGroup}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding4.png')}
@@ -127,7 +147,12 @@ const SecurityOnboardingSlidesScreen = ({
           flexDirection: isRTL ? 'row-reverse' : 'row'
         }}
       >
-        <PageDots numDots={numPages} activeDot={activePage} />
+        <PageDots
+          numDots={numPages}
+          activeDot={activePage}
+          isRTL={isRTL}
+          isDark={isDark}
+        />
         <View
           style={{
             ...styles.skipButtonContainer,

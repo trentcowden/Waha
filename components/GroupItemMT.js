@@ -1,48 +1,9 @@
 import React from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { editGroup } from '../redux/actions/groupsActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    database: state.database,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    groups: state.groups,
-    isDark: state.settings.isDarkModeEnabled,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    activeGroup: activeGroupSelector(state)
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    editGroup: (
-      oldGroupName,
-      newGroupName,
-      emoji,
-      shouldShowMobilizationToolsTab,
-      language
-    ) =>
-      dispatch(
-        editGroup(
-          oldGroupName,
-          newGroupName,
-          emoji,
-          shouldShowMobilizationToolsTab,
-          language
-        )
-      ),
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    }
-  }
-}
 
 /**
  * A pressable item used on the MobilizationTools screen to display a group. Similar to the GroupItem component, but a lot simpler. It still displays the group name, but just allows the user to enable the Mobilization Tools for a specific group.
@@ -51,15 +12,11 @@ function mapDispatchToProps (dispatch) {
 const GroupItemMT = ({
   // Props passed from a parent component.
   thisGroup,
-  // Props passed from redux.
-  database,
   isRTL,
   isDark,
-  groups,
   areMobilizationToolsUnlocked,
   activeGroup,
-  editGroup,
-  addSet
+  editGroup
 }) => {
   return (
     <View
@@ -84,6 +41,7 @@ const GroupItemMT = ({
           size={50 * scaleMultiplier}
           emoji={thisGroup.emoji}
           isActive={activeGroup.name === thisGroup.name}
+          isDark={isDark}
         />
       </View>
       <View style={styles.groupNameContainer}>
@@ -144,4 +102,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupItemMT)
+export default GroupItemMT

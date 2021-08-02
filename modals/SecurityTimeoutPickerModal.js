@@ -1,34 +1,10 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { connect } from 'react-redux'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
 import OptionsModal from '../modals/OptionsModal'
-import {
-  setSecurityEnabled,
-  setTimeoutDuration
-} from '../redux/actions/securityActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    security: state.security,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language)
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
-    setTimeoutDuration: ms => dispatch(setTimeoutDuration(ms))
-  }
-}
 
 /**
  * A modal that allows the user to change the security timeout. Displays a list of options using the OptionsModal component.
@@ -68,6 +44,8 @@ const SecurityTimeoutPickerModal = ({
         onPress={() => {
           setTimeoutDuration(0), hideModal()
         }}
+        isDark={isDark}
+        activeGroup={activeGroup}
       >
         {security.timeoutDuration === 0 ? (
           <Icon
@@ -78,7 +56,7 @@ const SecurityTimeoutPickerModal = ({
           />
         ) : null}
       </OptionsModalButton>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
       {/* Button to set the timeout duration to 1 minute. */}
       <OptionsModalButton
         label={t.security.one_minute}
@@ -97,7 +75,7 @@ const SecurityTimeoutPickerModal = ({
           />
         ) : null}
       </OptionsModalButton>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
       {/* Button to set the timeout duration to 5 minutes. */}
       <OptionsModalButton
         label={t.security.five_minutes}
@@ -116,7 +94,7 @@ const SecurityTimeoutPickerModal = ({
           />
         ) : null}
       </OptionsModalButton>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
       {/* Button to set the timeout duration to 15 minutes. */}
       <OptionsModalButton
         label={t.security.fifteen_minutes}
@@ -135,7 +113,7 @@ const SecurityTimeoutPickerModal = ({
           />
         ) : null}
       </OptionsModalButton>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
       {/* Button to set the timeout duration to 1 hour. */}
       <OptionsModalButton
         label={t.security.one_hour}
@@ -162,7 +140,4 @@ const styles = StyleSheet.create({
   checkIcon: {}
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SecurityTimeoutPickerModal)
+export default SecurityTimeoutPickerModal

@@ -1,20 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps (state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * The edit button that is displayed in the header on the Groups screen. Switches editingMode on or off when pressed.
@@ -24,7 +11,6 @@ const GroupsScreenEditButton = ({
   onPress,
   isEditing,
   // Props passed from redux.
-  isRTL,
   isDark,
   activeGroup,
   t
@@ -59,4 +45,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(GroupsScreenEditButton)
+export default GroupsScreenEditButton

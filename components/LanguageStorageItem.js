@@ -1,24 +1,11 @@
 import * as FileSystem from 'expo-file-system'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
 import { buttonModes, scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
 import WahaButton from './WahaButton'
 import WahaSeparator from './WahaSeparator'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A list item used to display a language and the amount of storage all of its downloaded lessons take up. Used on the StorageScreen.
@@ -33,7 +20,6 @@ const LanguageStorageItem = ({
   languageID,
   megabytes,
   clearDownloads,
-  // Props passed from redux.
   isRTL,
   isDark,
   t,
@@ -68,7 +54,7 @@ const LanguageStorageItem = ({
           }}
         />
       </View>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
       <View
         style={{
           ...styles.mainAreaContainer,
@@ -116,7 +102,7 @@ const LanguageStorageItem = ({
           language={activeGroup.language}
         />
       </View>
-      <WahaSeparator />
+      <WahaSeparator isDark={isDark} />
     </View>
   )
 }
@@ -146,4 +132,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(LanguageStorageItem)
+export default LanguageStorageItem

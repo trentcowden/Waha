@@ -1,19 +1,8 @@
 import React from 'react'
 import { Image, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 /**
  * Component to display a group's avatar (emoji) in a little circle.
@@ -84,4 +73,4 @@ const GroupAvatar = ({
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupAvatar)
+export default GroupAvatar

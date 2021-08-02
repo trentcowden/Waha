@@ -1,17 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { connect } from 'react-redux'
 import { colors } from '../styles/colors'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
 
 /**
  * A simple component that renders a horizontal line. Used to separate list items, text, or whatever else.
@@ -26,4 +15,4 @@ const WahaSeparator = ({ isDark }) => (
   />
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(WahaSeparator)
+export default WahaSeparator

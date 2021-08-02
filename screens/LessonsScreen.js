@@ -155,13 +155,27 @@ const LessonsScreen = ({
   /** useEffect function to set the navigation options. */
   useEffect(() => {
     setOptions({
-      headerTitle: () => <ScreenHeaderImage />,
+      headerTitle: () => (
+        <ScreenHeaderImage isDark={isDark} activeGroup={activeGroup} />
+      ),
       headerRight: isRTL
-        ? () => <WahaBackButton onPress={() => goBack()} />
+        ? () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
         : () => {},
       headerLeft: isRTL
         ? () => {}
-        : () => <WahaBackButton onPress={() => goBack()} />
+        : () => (
+            <WahaBackButton
+              onPress={() => goBack()}
+              isRTL={isRTL}
+              isDark={isDark}
+            />
+          )
     })
   }, [])
 

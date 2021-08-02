@@ -1,33 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
-
-/**
- *
- */
 const GroupNameTextInput = ({
   // Props passed from a parent component.
   groupNameInput,
@@ -36,7 +12,6 @@ const GroupNameTextInput = ({
   isDuplicate = false,
   // Props passed from redux.
   activeGroup,
-  activeDatabase,
   isRTL,
   isDark,
   t
@@ -123,4 +98,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupNameTextInput)
+export default GroupNameTextInput

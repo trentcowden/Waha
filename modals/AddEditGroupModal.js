@@ -258,6 +258,9 @@ const AddEditGroupModal = ({
             }
       }
       title={mode === 'AddGroup' ? t.groups.new_group : t.groups.edit_group}
+      isRTL={isRTL}
+      activeGroup={activeGroup}
+      isDark={isDark}
     >
       <View style={styles.groupAvatarContainer}>
         <GroupAvatar
@@ -266,12 +269,17 @@ const AddEditGroupModal = ({
           }}
           emoji={emojiInput}
           size={120}
+          isDark={isDark}
         />
       </View>
       <GroupNameTextInput
         groupNameInput={groupNameInput}
         setGroupNameInput={setGroupNameInput}
         isDuplicate={isGroupNameDuplicate}
+        activeGroup={activeGroup}
+        isRTL={isRTL}
+        isDark={isDark}
+        t={t}
       />
       {areMobilizationToolsUnlocked && (
         <View
@@ -306,7 +314,13 @@ const AddEditGroupModal = ({
           />
         </View>
       )}
-      <EmojiViewer emojiInput={emojiInput} setEmojiInput={setEmojiInput} />
+      <EmojiViewer
+        emojiInput={emojiInput}
+        setEmojiInput={setEmojiInput}
+        activeGroup={activeGroup}
+        isDark={isDark}
+        t={t}
+      />
     </ModalScreen>
   )
 }
