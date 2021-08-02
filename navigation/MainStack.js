@@ -213,7 +213,9 @@ const MainStack = ({
               <ScreenHeaderImage isDark={isDark} activeGroup={activeGroup} />
             ),
             headerLeft: isRTL
-              ? () => <TestModeDisplay />
+              ? () => (
+                  <TestModeDisplay isDark={isDark} activeGroup={activeGroup} />
+                )
               : () => (
                   <View style={{ paddingHorizontal: 10 }}>
                     <GroupAvatar
@@ -283,7 +285,9 @@ const MainStack = ({
                     )}
                   </View>
                 )
-              : () => <TestModeDisplay />
+              : () => (
+                  <TestModeDisplay isDark={isDark} activeGroup={activeGroup} />
+                )
           }}
         />
         <Stack.Screen

@@ -24,7 +24,7 @@ import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
 import i18n from 'i18n-js'
 import { storageMode } from '../../constants'
-import { logInstallLanguage } from '../../LogEventFunctions'
+import { logInstallLanguage } from '../../functions/analyticsFunctions'
 import { setIsInstallingLanguageInstance } from './isInstallingLanguageInstanceActions'
 import { storeDownloads } from './storedDownloadsActions'
 

@@ -4,10 +4,9 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
+import { logUnlockMobilizationTools } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
-import { logUnlockMobilizationTools } from '../LogEventFunctions'
 import { setAreMobilizationToolsUnlocked } from '../redux/actions/areMobilizationToolsUnlockedActions'
-import { addSet } from '../redux/actions/groupsActions'
 import { setMTUnlockAttempts } from '../redux/actions/mtUnlockAttemptsActions'
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import { setMTUnlockTimeout } from '../redux/actions/securityActions'
@@ -24,7 +23,6 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     security: state.security,
     mtUnlockAttempts: state.mtUnlockAttempts,
-    groups: state.groups,
     database: state.database
   }
 }
@@ -39,9 +37,6 @@ function mapDispatchToProps (dispatch) {
     },
     setMTUnlockAttempts: numAttempts => {
       dispatch(setMTUnlockAttempts(numAttempts))
-    },
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
     },
     setShowMTTabAddedSnackbar: toSet => {
       dispatch(setShowMTTabAddedSnackbar(toSet))
@@ -62,12 +57,10 @@ const MobilizationToolsUnlockScreen = ({
   activeGroup,
   security,
   mtUnlockAttempts,
-  groups,
   database,
   setAreMobilizationToolsUnlocked,
   setMTUnlockTimeout,
   setMTUnlockAttempts,
-  addSet,
   setShowMTTabAddedSnackbar
 }) => {
   /** useEffect function that sets the navigation options for this screen. */

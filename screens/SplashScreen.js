@@ -10,10 +10,6 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {}
-}
-
 /**
  * Screen that gets navigated to whenever the app enters "background" mode on iOS. This is so the app preview is hidden in the iOS multitasking view.
  */
@@ -42,4 +38,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)
+export default connect(mapStateToProps)(SplashScreen)

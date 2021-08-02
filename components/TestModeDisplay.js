@@ -1,19 +1,8 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { connect } from 'react-redux'
-import { info } from '../functions/languageDataFunctions'
 import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL
-  }
-}
 
 /**
  * This component displays some simple text that says "TEST MODE" whenever any of the modes in modeSwitch.js are set to "test". This is displayed in the corner on the opposite side of the group avatar on the SetsTabs screen.
@@ -21,8 +10,7 @@ function mapStateToProps (state) {
 const TestModeDisplay = ({
   // Props passed from redux.
   isDark,
-  activeGroup,
-  isRTL
+  activeGroup
 }) => {
   return (
     <View
@@ -53,4 +41,4 @@ const TestModeDisplay = ({
   )
 }
 
-export default connect(mapStateToProps)(TestModeDisplay)
+export default TestModeDisplay

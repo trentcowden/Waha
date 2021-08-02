@@ -28,12 +28,12 @@ import {
   lockPortrait,
   scaleMultiplier
 } from '../constants'
+import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet
 } from '../functions/setProgressFunctions'
-import { logCompleteLesson } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
@@ -55,7 +55,6 @@ import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   return {
-    database: state.database,
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     downloads: state.downloads,
@@ -140,7 +139,6 @@ const PlayScreen = ({
     }
   },
   // Props passed from redux.
-  database,
   activeGroup,
   activeDatabase,
   downloads,

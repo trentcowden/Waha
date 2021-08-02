@@ -4,7 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { logShareApp, logShareAudio, logShareText } from '../LogEventFunctions'
+import {
+  logShareApp,
+  logShareAudio,
+  logShareText
+} from '../functions/analyticsFunctions'
 import OptionsModal from './OptionsModal'
 
 const shareTypes = {

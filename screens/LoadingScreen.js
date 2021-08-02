@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -28,8 +27,6 @@ import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
   var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
-  var font = state.activeGroup ? info(activeGroup.language).font : null
-  var isRTL = state.activeGroup ? info(activeGroup.language).isRTL : null
   var translations = state.activeGroup
     ? getTranslations(activeGroupSelector(state).language)
     : null
@@ -41,15 +38,12 @@ function mapStateToProps (state) {
     hasInstalledFirstLanguageInstance:
       state.database.hasInstalledFirstLanguageInstance,
     storedDownloads: state.storedDownloads,
-    database: state.database,
     hasFetchedLanguageData: state.database.hasFetchedLanguageData,
     actingLanguageID: state.database.actingLanguageID,
     activeGroup: activeGroup,
     groups: state.groups,
     recentActiveGroup: state.database.recentActiveGroup,
-    font: font,
     isDark: state.settings.isDarkModeEnabled,
-    isRTL: isRTL,
     t: translations,
     isConnected: state.network.isConnected
   }
@@ -93,13 +87,11 @@ const LoadingScreen = ({
   totalLanguageCoreFilesToDownload,
   hasInstalledFirstLanguageInstance,
   storedDownloads,
-  database,
   actingLanguageID,
   activeGroup,
   groups,
   recentActiveGroup,
   hasFetchedLanguageData,
-  isRTL,
   isDark,
   t,
   isConnected,

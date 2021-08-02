@@ -27,7 +27,6 @@ function mapStateToProps (state) {
     database: state.database,
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
-    isConnected: state.network.isConnected,
     isDark: state.settings.isDarkModeEnabled,
     groups: state.groups,
     activeGroup: activeGroupSelector(state)
@@ -61,7 +60,6 @@ const GroupsScreen = ({
   database,
   isRTL,
   isDark,
-  isConnected,
   groups,
   activeGroup,
   t,

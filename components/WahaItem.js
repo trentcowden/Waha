@@ -1,20 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
-import { info } from '../functions/languageDataFunctions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-
-function mapStateToProps (state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state)
-  }
-}
 
 /**
  * A component used for standard list items/buttons throughout Waha.
@@ -90,4 +78,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(WahaItem)
+export default WahaItem

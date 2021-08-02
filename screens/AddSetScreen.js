@@ -10,7 +10,6 @@ import WahaSeparator from '../components/WahaSeparator'
 import { getSetInfo, scaleMultiplier, setItemModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import SetInfoModal from '../modals/SetInfoModal'
-import { addSet } from '../redux/actions/groupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector
@@ -32,14 +31,6 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    addSet: (groupName, setID) => {
-      dispatch(addSet(groupName, setID))
-    }
-  }
-}
-
 /**
  * Screen that shows a list of available Story Sets to add in a specific category.
  * @param {string} category - The category of Story Sets to display.
@@ -57,8 +48,7 @@ const AddSetScreen = ({
   isRTL,
   isDark,
   activeDatabase,
-  activeGroup,
-  addSet
+  activeGroup
 }) => {
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
@@ -380,4 +370,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddSetScreen)
+export default connect(mapStateToProps)(AddSetScreen)

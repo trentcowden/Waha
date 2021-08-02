@@ -25,10 +25,6 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {}
-}
-
 // Regular expression that checks whether a file name is for a lesson mp3 or mp4.
 const isLessonFile = new RegExp('[a-z]{2}.[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}.*')
 
@@ -250,4 +246,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(StorageScreen)
+export default connect(mapStateToProps)(StorageScreen)

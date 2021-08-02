@@ -33,10 +33,9 @@ import {
   storeLanguageData,
   storeLanguageSets
 } from '../redux/actions/databaseActions'
-import { createGroup, deleteGroup } from '../redux/actions/groupsActions'
+import { createGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
-import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -72,14 +71,12 @@ function mapDispatchToProps (dispatch) {
       dispatch(storeLanguageData(data, languageInstanceID)),
     setIsInstallingLanguageInstance: toSet =>
       dispatch(setIsInstallingLanguageInstance(toSet)),
-    storeDownloads: downloads => dispatch(storeDownloads(downloads)),
     setHasFetchedLanguageData: hasFetchedLanguageData =>
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
     storeLanguageSets: (sets, languageInstanceID) =>
       dispatch(storeLanguageSets(sets, languageInstanceID)),
     deleteLanguageData: languageInstanceID =>
       dispatch(deleteLanguageData(languageInstanceID)),
-    deleteGroup: groupName => dispatch(deleteGroup(groupName)),
     incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter()),
     createGroup: (
       groupName,
@@ -139,11 +136,9 @@ const LanguageSelectScreen = ({
   downloadLanguageCoreFiles,
   storeLanguageData,
   setIsInstallingLanguageInstance,
-  storeDownloads,
   setHasFetchedLanguageData,
   storeLanguageSets,
   deleteLanguageData,
-  deleteGroup,
   incrementGlobalGroupCounter,
   createGroup,
   changeActiveGroup,

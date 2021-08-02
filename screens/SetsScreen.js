@@ -40,13 +40,13 @@ function mapStateToProps (state) {
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     font: info(activeGroupSelector(state).language).font,
+    showMTTabAddedSnackbar: state.popups.showMTTabAddedSnackbar,
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
+    showTrailerHighlights: state.persistedPopups.showTrailerHighlights,
     // For testing.
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
-    showMTTabAddedSnackbar: state.popups.showMTTabAddedSnackbar,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    showTrailerHighlights: state.persistedPopups.showTrailerHighlights
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
   }
 }
 

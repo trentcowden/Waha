@@ -3,7 +3,7 @@ import {
   logAddStorySet,
   logCompleteStorySet,
   logCreateGroup
-} from '../../LogEventFunctions'
+} from '../../functions/analyticsFunctions'
 
 export const CREATE_GROUP = 'CREATE_GROUP'
 export const EDIT_GROUP = 'EDIT_GROUP'
