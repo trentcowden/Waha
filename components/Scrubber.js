@@ -21,13 +21,11 @@ const Scrubber = ({
   isDark
 }) => (
   <View
-    style={[
-      styles.scrubberContainer,
-      {
-        marginTop: isTablet ? 20 : 10,
-        marginBottom: isTablet ? 10 : 0
-      }
-    ]}
+    style={{
+      ...styles.scrubberContainer,
+      marginTop: isTablet ? 20 : 10,
+      marginBottom: isTablet ? 10 : 0
+    }}
   >
     <View style={styles.sliderContainer}>
       <Slider

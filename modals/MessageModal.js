@@ -38,23 +38,23 @@ const MessageModal = ({
     propagateSwipe={true}
   >
     <View
-      style={[
-        styles.contentContainer,
-        { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
-      ]}
+      style={{
+        ...styles.contentContainer,
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+      }}
     >
       {children}
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h2',
             'Black',
             'center',
             colors(isDark).text
           ),
-          { marginVertical: 10 }
-        ]}
+          marginVertical: 10
+        }}
       >
         {title}
       </Text>

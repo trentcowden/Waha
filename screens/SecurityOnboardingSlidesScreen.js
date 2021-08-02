@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
 import { connect } from 'react-redux'
+import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { isTablet, scaleMultiplier } from '../constants'
+import { buttonModes, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -61,113 +62,53 @@ const SecurityOnboardingSlidesScreen = ({
       title={t.security.onboarding_1_title}
       message={t.security.onboarding_1_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <Image
-          style={styles.image}
-          source={require('../assets/onboardingImages/security_onboarding1.png')}
-        />
-      </View>
+      <OnboardingImage
+        source={require('../assets/onboardingImages/security_onboarding1.png')}
+        imageType='png'
+        isDark={isDark}
+      />
     </OnboardingPage>,
     <OnboardingPage
       key='2'
       title={t.security.onboarding_2_title}
       message={t.security.onboarding_2_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <Image
-          style={styles.image}
-          source={require('../assets/onboardingImages/security_onboarding2.png')}
-        />
-      </View>
+      <OnboardingImage
+        source={require('../assets/onboardingImages/security_onboarding2.png')}
+        imageType='png'
+        isDark={isDark}
+      />
     </OnboardingPage>,
     <OnboardingPage
       key='3'
       title={t.security.onboarding_3_title}
       message={t.security.onboarding_3_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <Image
-          style={styles.image}
-          source={require('../assets/onboardingImages/security_onboarding3.png')}
-        />
-      </View>
+      <OnboardingImage
+        source={require('../assets/onboardingImages/security_onboarding3.png')}
+        imageType='png'
+        isDark={isDark}
+      />
     </OnboardingPage>,
     <OnboardingPage
       key='4'
       title={t.security.onboarding_4_title}
       message={t.security.onboarding_4_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <Image
-          style={styles.image}
-          source={require('../assets/onboardingImages/security_onboarding4.png')}
-        />
-      </View>
+      <OnboardingImage
+        source={require('../assets/onboardingImages/security_onboarding4.png')}
+        imageType='png'
+        isDark={isDark}
+      />
     </OnboardingPage>
   ]
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <PagerView
         ref={pagerRef}
@@ -181,17 +122,17 @@ const SecurityOnboardingSlidesScreen = ({
         {isRTL ? pages.reverse() : pages}
       </PagerView>
       <View
-        style={[
-          styles.bottomControlsContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+        style={{
+          ...styles.bottomControlsContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row'
+        }}
       >
         <PageDots numDots={numPages} activeDot={activePage} />
         <View
-          style={[
-            styles.skipButtonContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
+          style={{
+            ...styles.skipButtonContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }}
         >
           <TouchableOpacity
             onPress={() => navigate('PianoPasscodeSet')}
@@ -223,12 +164,14 @@ const SecurityOnboardingSlidesScreen = ({
               ? () => navigate('PianoPasscodeSet')
               : () => pagerRef.current.setPage(activePage + 1)
           }
-          mode='filled'
-          color={colors(isDark).success}
-          style={{
+          mode={buttonModes.SUCCESS}
+          extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
             flex: 2
           }}
+          isDark={isDark}
+          isRTL={isRTL}
+          language={activeGroup.language}
         />
       </View>
     </View>
@@ -245,19 +188,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  imageContainer: {
-    flex: 1,
-    borderRadius: 15,
-    borderWidth: 3,
-    aspectRatio: 1,
-    overflow: 'hidden',
-    justifyContent: 'center'
-  },
-  image: {
-    resizeMode: 'contain',
-    width: '100%',
-    height: '100%'
   },
   bottomControlsContainer: {
     alignItems: 'center',

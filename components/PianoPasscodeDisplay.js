@@ -46,7 +46,7 @@ const PianoPasscodeDisplay = ({
         flexDirection: isRTL ? 'row-reverse' : 'row'
       }}
     >
-      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+      <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
         {passcode[1] && (
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(0, 2).replace(/^0/, '')]}
@@ -55,7 +55,7 @@ const PianoPasscodeDisplay = ({
           />
         )}
       </View>
-      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+      <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
         {passcode[3] && (
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(2, 2).replace(/^0/, '')]}
@@ -64,7 +64,7 @@ const PianoPasscodeDisplay = ({
           />
         )}
       </View>
-      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+      <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
         {passcode[5] && (
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(4, 2).replace(/^0/, '')]}
@@ -73,7 +73,7 @@ const PianoPasscodeDisplay = ({
           />
         )}
       </View>
-      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+      <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
         {passcode[7] && (
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(6, 2).replace(/^0/, '')]}
@@ -82,7 +82,7 @@ const PianoPasscodeDisplay = ({
           />
         )}
       </View>
-      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+      <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
         {passcode[9] && (
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(8, 2).replace(/^0/, '')]}
@@ -91,7 +91,7 @@ const PianoPasscodeDisplay = ({
           />
         )}
       </View>
-      <View style={[styles.keyPlaceholder, extraKeyPlaceholderStyles]}>
+      <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
         {passcode[11] && (
           <PianoKeyLabel
             backgroundColor={

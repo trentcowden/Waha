@@ -1,17 +1,11 @@
 import * as FileSystem from 'expo-file-system'
 import React, { useEffect, useState } from 'react'
-import {
-  Alert,
-  Dimensions,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  View
-} from 'react-native'
+import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
+import { buttonModes } from '../constants'
 import {
   getInstalledLanguagesData,
   info
@@ -26,7 +20,8 @@ function mapStateToProps (state) {
     database: state.database,
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    groups: state.groups
+    groups: state.groups,
+    activeGroup: activeGroupSelector(state)
   }
 }
 
@@ -48,7 +43,8 @@ const StorageScreen = ({
   isDark,
   database,
   t,
-  groups
+  groups,
+  activeGroup
 }) => {
   /** Keeps track of the amount of storage each language's downloaded Story and Training chapter mp3s and mp4s take up. */
   const [languageStorageSizes, setLanguageSizes] = useState({})
@@ -186,10 +182,10 @@ const StorageScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <FlatList
         style={{ flex: 1 }}
@@ -204,10 +200,8 @@ const StorageScreen = ({
         )}
       />
       <WahaButton
-        mode='filled'
-        color={colors(isDark).error}
+        mode={buttonModes.ERROR}
         label={`${t.storage.clear_all_downloaded_lessons} (${totalStorage} ${t.storage.megabyte})`}
-        width={Dimensions.get('window').width - 40}
         onPress={() =>
           Alert.alert(
             t.storage.clear_all_downloaded_lessons_title,
@@ -226,7 +220,9 @@ const StorageScreen = ({
             ]
           )
         }
-        style={{ alignSelf: 'center' }}
+        isDark={isDark}
+        isRTL={isRTL}
+        language={activeGroup.language}
       />
     </SafeAreaView>
   )

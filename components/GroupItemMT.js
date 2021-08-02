@@ -14,9 +14,7 @@ function mapStateToProps (state) {
     database: state.database,
     isRTL: info(activeGroupSelector(state).language).isRTL,
     groups: state.groups,
-
     isDark: state.settings.isDarkModeEnabled,
-
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     activeGroup: activeGroupSelector(state)
   }
@@ -65,16 +63,14 @@ const GroupItemMT = ({
 }) => {
   return (
     <View
-      style={[
-        styles.groupListItemContainer,
-        {
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          borderLeftWidth: isRTL ? 0 : 5,
-          borderRightWidth: isRTL ? 5 : 0,
-          borderColor: colors(isDark, thisGroup.language).accent
-        }
-      ]}
+      style={{
+        ...styles.groupListItemContainer,
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        borderLeftWidth: isRTL ? 0 : 5,
+        borderRightWidth: isRTL ? 5 : 0,
+        borderColor: colors(isDark, thisGroup.language).accent
+      }}
     >
       <View
         style={{
@@ -92,14 +88,16 @@ const GroupItemMT = ({
       </View>
       <View style={styles.groupNameContainer}>
         <Text
-          style={type(
-            activeGroup.language,
-            'h3',
-            'Regular',
-            'left',
-            colors(isDark).text,
-            thisGroup.language
-          )}
+          style={{
+            ...type(
+              thisGroup.language,
+              'h3',
+              'Regular',
+              'left',
+              colors(isDark).text
+            ),
+            textAlign: isRTL ? 'right' : 'left'
+          }}
         >
           {thisGroup.name}
         </Text>

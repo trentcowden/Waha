@@ -30,20 +30,17 @@ const AlbumArt = ({
   isDark
 }) => (
   <View
-    style={[
-      styles.albumArtContainer,
-      {
-        backgroundColor: isDark ? colors(isDark).icons : colors(isDark).bg2,
-        // borderWidth: isDark ? 5 : 0,
-        borderColor: colors(isDark).icons,
-        maxWidth: isTablet
-          ? Dimensions.get('window').width * 0.7
-          : Dimensions.get('window').width - gutterSize * 2,
-        maxHeight: isTablet
-          ? Dimensions.get('window').width * 0.7
-          : Dimensions.get('window').width - gutterSize * 2
-      }
-    ]}
+    style={{
+      ...styles.albumArtContainer,
+      backgroundColor: isDark ? colors(isDark).icons : colors(isDark).bg2,
+      borderColor: colors(isDark).icons,
+      maxWidth: isTablet
+        ? Dimensions.get('window').width * 0.7
+        : Dimensions.get('window').width - gutterSize * 2,
+      maxHeight: isTablet
+        ? Dimensions.get('window').width * 0.7
+        : Dimensions.get('window').width - gutterSize * 2
+    }}
   >
     <TouchableHighlight
       style={styles.touchableContainer}

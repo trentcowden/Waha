@@ -64,30 +64,28 @@ const DrawerDownloadUpdateButton = ({
     activeOpacity={isConnected ? 0.2 : 1}
   >
     <View
-      style={[
-        styles.innerContainer,
-        {
-          backgroundColor: isConnected
-            ? colors(isDark).success
-            : colors(isDark).bg1,
-          flexDirection: isRTL ? 'row' : 'row-reverse',
-          borderBottomColor: isConnected
-            ? colors(isDark).successShadow
-            : colors(isDark).bg1Shadow
-        }
-      ]}
+      style={{
+        ...styles.innerContainer,
+        backgroundColor: isConnected
+          ? colors(isDark).success
+          : colors(isDark).bg1,
+        flexDirection: isRTL ? 'row' : 'row-reverse',
+        borderBottomColor: isConnected
+          ? colors(isDark).successShadow
+          : colors(isDark).bg1Shadow
+      }}
     >
       <Text
-        style={[
-          { paddingHorizontal: 10 },
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h3',
             'Bold',
             'center',
             isConnected ? colors(isDark).textOnColor : colors(isDark).disabled
-          )
-        ]}
+          ),
+          paddingHorizontal: 10
+        }}
       >
         {t.general.download_update}
       </Text>

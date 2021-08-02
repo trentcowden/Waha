@@ -24,9 +24,13 @@ const HeaderBig = ({ text, activeGroup, onLayout, isDark }) => (
     onLayout={onLayout}
   >
     <Text
-      style={[
-        type(activeGroup.language, 'h2', 'Black', 'left', colors(isDark).icons)
-      ]}
+      style={type(
+        activeGroup.language,
+        'h2',
+        'Black',
+        'left',
+        colors(isDark).icons
+      )}
     >
       {text}
     </Text>
@@ -36,16 +40,17 @@ const HeaderBig = ({ text, activeGroup, onLayout, isDark }) => (
 const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
   <View>
     <Text
-      style={[
-        type(
+      style={{
+        ...type(
           activeGroup.language,
           'h3',
           'Regular',
           'left',
           colors(isDark).disabled
         ),
-        { paddingHorizontal: gutterSize, marginVertical: 5 * scaleMultiplier }
-      ]}
+        paddingHorizontal: gutterSize,
+        marginVertical: 5 * scaleMultiplier
+      }}
     >
       {text}
     </Text>
@@ -55,19 +60,17 @@ const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
 const StandardText = ({ text, activeGroup, isTablet, isDark }) => (
   <View>
     <Text
-      style={[
-        type(
+      style={{
+        ...type(
           activeGroup.language,
           'h3',
           'Regular',
           'left',
           colors(isDark).text
         ),
-        {
-          zIndex: 0,
-          paddingHorizontal: gutterSize
-        }
-      ]}
+        zIndex: 0,
+        paddingHorizontal: gutterSize
+      }}
     >
       {text}
     </Text>

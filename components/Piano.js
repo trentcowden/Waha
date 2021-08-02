@@ -90,7 +90,7 @@ const Piano = ({
       <View style={styles.blackKeysContainer}>
         <View style={{ flex: 0.5 }} />
         <TouchableOpacity
-          style={[styles.blackKey, extraBlackKeyStyles]}
+          style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '01')
             playNote(1)
@@ -99,7 +99,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['1']} number='1' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.blackKey, extraBlackKeyStyles]}
+          style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '03')
             playNote(3)
@@ -109,7 +109,7 @@ const Piano = ({
         </TouchableOpacity>
         <View style={{ flex: 1 }} />
         <TouchableOpacity
-          style={[styles.blackKey, extraBlackKeyStyles]}
+          style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '06')
             playNote(6)
@@ -118,7 +118,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['6']} number='6' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.blackKey, extraBlackKeyStyles]}
+          style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '08')
             playNote(8)
@@ -127,7 +127,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['8']} number='8' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.blackKey, extraBlackKeyStyles]}
+          style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '10')
             playNote(10)
@@ -139,7 +139,7 @@ const Piano = ({
       </View>
       <View style={styles.whiteKeysContainer}>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '00')
             playNote(0)
@@ -148,7 +148,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['0']} number='0' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '02')
             playNote(2)
@@ -157,7 +157,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['2']} number='2' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '04')
             playNote(4)
@@ -166,7 +166,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['4']} number='4' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '05')
             playNote(5)
@@ -175,7 +175,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['5']} number='5' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '07')
             playNote(7)
@@ -184,7 +184,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['7']} number='7' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '09')
             playNote(9)
@@ -193,7 +193,7 @@ const Piano = ({
           <PianoKeyLabel backgroundColor={keyColors['9']} number='9' />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.whiteKey, extraWhiteKeyStyles]}
+          style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
             setPlayedNotes(pattern => pattern + '11')
             playNote(11)

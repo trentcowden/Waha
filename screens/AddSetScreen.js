@@ -27,7 +27,8 @@ function mapStateToProps (state) {
     t: getTranslations(activeGroupSelector(state).language),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeDatabase: activeDatabaseSelector(state),
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
+    font: info(activeGroupSelector(state).language).font
   }
 }
 
@@ -256,10 +257,10 @@ const AddSetScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+      }}
     >
       {category === 'Topical' && (
         <TagGroup
@@ -267,15 +268,11 @@ const AddSetScreen = ({
           singleChoiceMode
           onSelectedTagChange={selected => setSelectedTag(selected)}
           style={styles.tagGroupContainer}
-          tagStyle={[
-            styles.tagContainer,
-            {
-              borderColor: isDark
-                ? colors(isDark).bg4
-                : colors(isDark).disabled,
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
+          tagStyle={{
+            ...styles.tagContainer,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).disabled,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          }}
           textStyle={type(
             activeGroup.language,
             'p',

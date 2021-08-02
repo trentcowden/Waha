@@ -167,10 +167,10 @@ const LoadingScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <View
         style={{
@@ -197,38 +197,32 @@ const LoadingScreen = ({
           source={require('../assets/lotties/loading.json')}
         />
         <View
-          style={[
-            styles.progressBarContainer,
-            {
-              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
+          style={{
+            ...styles.progressBarContainer,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          }}
         >
           {languageCoreFilesDownloadProgress ? (
             <View
-              style={[
-                styles.progress,
-                {
-                  flex: languageCoreFilesDownloadProgress,
-                  backgroundColor: colors(isDark).brand
-                }
-              ]}
+              style={{
+                ...styles.progress,
+                flex: languageCoreFilesDownloadProgress,
+                backgroundColor: colors(isDark).brand
+              }}
             />
           ) : null}
           {languageCoreFilesDownloadProgress ? (
             <View
-              style={[
-                styles.progressToGo,
-                {
-                  backgroundColor: isDark
-                    ? colors(isDark).bg2
-                    : colors(isDark).bg4,
-                  flex:
-                    totalLanguageCoreFilesToDownload -
-                    languageCoreFilesDownloadProgress
-                }
-              ]}
+              style={{
+                ...styles.progressToGo,
+                backgroundColor: isDark
+                  ? colors(isDark).bg2
+                  : colors(isDark).bg4,
+                flex:
+                  totalLanguageCoreFilesToDownload -
+                  languageCoreFilesDownloadProgress
+              }}
             />
           ) : null}
         </View>

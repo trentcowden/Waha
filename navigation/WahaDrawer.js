@@ -80,10 +80,10 @@ const WahaDrawer = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.wahaDrawerContainer,
-        { backgroundColor: colors(isDark, activeGroup.language).accent }
-      ]}
+      style={{
+        ...styles.wahaDrawerContainer,
+        backgroundColor: colors(isDark, activeGroup.language).accent
+      }}
       forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' }}
     >
       <View style={styles.drawerHeaderContainer}>
@@ -138,20 +138,18 @@ const WahaDrawer = ({
         <View style={{ width: '100%', height: 5 }} />
         <WahaSeparator />
         <Text
-          style={[
-            type(
+          style={{
+            ...type(
               activeGroup.language,
               'p',
               'Regular',
               'left',
               colors(isDark).secondaryText
             ),
-            {
-              marginHorizontal: 20,
-              marginTop: 20 * scaleMultiplier,
-              marginBottom: 15 * scaleMultiplier
-            }
-          ]}
+            marginHorizontal: 20,
+            marginTop: 20 * scaleMultiplier,
+            marginBottom: 15 * scaleMultiplier
+          }}
         >
           {t.general.other}
         </Text>

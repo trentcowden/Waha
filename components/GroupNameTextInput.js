@@ -63,20 +63,18 @@ const GroupNameTextInput = ({
       >
         <TextInput
           ref={groupNameInputRef}
-          style={[
-            styles.groupNameTextInputContainer,
-            {
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
-            },
-            type(
+          style={{
+            ...styles.groupNameTextInputContainer,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            ...type(
               activeGroup.language,
               'h3',
               'Regular',
               'left',
               colors(isDark).text
             )
-          ]}
+          }}
           onChangeText={text => setGroupNameInput(text)}
           value={groupNameInput}
           autoCapitalize='words'

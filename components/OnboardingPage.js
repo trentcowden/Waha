@@ -36,23 +36,23 @@ const OnboardingPage = ({
   activeGroup
 }) => (
   <View
-    style={[
-      styles.onboardingPageContainer,
-      { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-    ]}
+    style={{
+      ...styles.onboardingPageContainer,
+      backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+    }}
   >
     <View style={styles.textContainer}>
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h2',
             'Bold',
             'center',
             colors(isDark).text
           ),
-          { fontSize: 24 * scaleMultiplier }
-        ]}
+          fontSize: 24 * scaleMultiplier
+        }}
       >
         {title}
       </Text>

@@ -25,7 +25,9 @@ const PianoKeyLabel = ({
   isDark
 }) => {
   return (
-    <View style={[styles.circle, { backgroundColor: backgroundColor }, style]}>
+    <View
+      style={{ ...styles.circle, backgroundColor: backgroundColor, ...style }}
+    >
       <Text
         style={type('en', 'h2', 'Bold', 'center', colors(isDark).textOnColor)}
         adjustsFontSizeToFit

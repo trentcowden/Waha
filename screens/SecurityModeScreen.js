@@ -83,10 +83,10 @@ const SecurityModeScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       {/* Inside a ScrollView in case a user's phone can't fit all of the controls on their screen. */}
       <ScrollView bounces={false}>

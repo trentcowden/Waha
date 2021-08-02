@@ -20,18 +20,16 @@ const PlayScreenTitle = ({
   return (
     <View style={styles.titleContainer}>
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h3',
             'Black',
             'center',
             colors(isDark).text
           ),
-          {
-            fontSize: 21 * scaleMultiplier
-          }
-        ]}
+          fontSize: 21 * scaleMultiplier
+        }}
       >
         {text}
       </Text>

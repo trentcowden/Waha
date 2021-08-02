@@ -109,10 +109,10 @@ const PianoAppScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <View style={styles.titleContainer}>
         <Image
@@ -125,26 +125,26 @@ const PianoAppScreen = ({
           }}
         />
         <Text
-          style={[
-            type(
+          style={{
+            ...type(
               activeGroup.language,
               'h1',
               'Bold',
               'center',
               colors(isDark).text
             ),
-            { paddingHorizontal: 10 }
-          ]}
+            paddingHorizontal: 10
+          }}
         >
           {t.security.game_screen_title}
         </Text>
       </View>
       <View>
         <View
-          style={[
-            styles.dummyControlsContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
+          style={{
+            ...styles.dummyControlsContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }}
         >
           <TouchableOpacity
             onPress={
@@ -164,13 +164,11 @@ const PianoAppScreen = ({
             }}
           >
             <View
-              style={[
-                styles.recordButton,
-                {
-                  backgroundColor: colors(isDark).error,
-                  borderColor: colors(isDark).icons
-                }
-              ]}
+              style={{
+                ...styles.recordButton,
+                backgroundColor: colors(isDark).error,
+                borderColor: colors(isDark).icons
+              }}
             >
               <Text
                 style={type(
@@ -213,10 +211,10 @@ const PianoAppScreen = ({
           <Piano setPlayedNotes={setPlayedNotes} isMuted={security.isMuted} />
         </View>
         <View
-          style={[
-            styles.bottomControlsContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
+          style={{
+            ...styles.bottomControlsContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }}
         >
           <TouchableOpacity
             onPress={() => {}}

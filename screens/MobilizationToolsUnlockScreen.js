@@ -157,26 +157,24 @@ const MobilizationToolsUnlockScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+      }}
     >
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h3',
             'Regular',
             'center',
             colors(isDark).text
           ),
-          {
-            marginTop: 50 * scaleMultiplier,
-            marginBottom: 30 * scaleMultiplier,
-            paddingHorizontal: 20
-          }
-        ]}
+          marginTop: 50 * scaleMultiplier,
+          marginBottom: 30 * scaleMultiplier,
+          paddingHorizontal: 20
+        }}
       >
         {t.mobilization_tools.enter_code}
       </Text>
@@ -221,19 +219,17 @@ const MobilizationToolsUnlockScreen = ({
         }}
       />
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h3',
             'Regular',
             'center',
             colors(isDark).error
           ),
-          {
-            marginTop: 30 * scaleMultiplier,
-            paddingHorizontal: 20
-          }
-        ]}
+          marginTop: 30 * scaleMultiplier,
+          paddingHorizontal: 20
+        }}
       >
         {getTimeoutText()}
       </Text>

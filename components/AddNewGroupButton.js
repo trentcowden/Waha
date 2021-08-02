@@ -38,13 +38,11 @@ const AddNewGroupButton = ({
   return (
     <View>
       <TouchableOpacity
-        style={[
-          styles.touchableAreaContainer,
-          {
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-          }
-        ]}
+        style={{
+          ...styles.touchableAreaContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        }}
         onPress={() => {
           // When adding a new group, set the languageID so that we can pass that to the CreateGroup function when we actually do create the group.
           setLanguageID(section.languageID)

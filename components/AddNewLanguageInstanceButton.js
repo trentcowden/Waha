@@ -36,12 +36,10 @@ const AddNewLanguageInstanceButton = ({
   return (
     languageAndGroupData.length !== languages.length && (
       <TouchableOpacity
-        style={[
-          styles.addNewLanguageButtonContainer,
-          {
-            flexDirection: isRTL ? 'row-reverse' : 'row'
-          }
-        ]}
+        style={{
+          ...styles.addNewLanguageButtonContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row'
+        }}
         onPress={() => {
           // Navigate to the LanguageInstanceInstall screen so that the user can install another language instance.
           navigate('SubsequentLanguageSelect', {

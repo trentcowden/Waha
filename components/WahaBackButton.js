@@ -27,10 +27,10 @@ const WahaBackButton = ({
   isDark
 }) => (
   <TouchableOpacity
-    style={[
-      styles.backButtonContainer,
-      { justifyContent: isRTL ? 'flex-end' : 'flex-start' }
-    ]}
+    style={{
+      ...styles.backButtonContainer,
+      justifyContent: isRTL ? 'flex-end' : 'flex-start'
+    }}
     onPress={onPress}
   >
     <Icon

@@ -20,7 +20,7 @@ import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
 import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { groupNames, scaleMultiplier } from '../constants'
+import { buttonModes, groupNames, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
@@ -43,7 +43,6 @@ import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
 function mapStateToProps (state) {
-  console.log(state.activeGroup)
   return {
     groups: state.groups,
     database: state.database,
@@ -56,7 +55,7 @@ function mapStateToProps (state) {
     isConnected: state.network.isConnected,
     isRTL:
       state.activeGroup === null
-        ? info(Localization.locale.slice(0, 2))
+        ? info(Localization.locale.slice(0, 2)).isRTL
         : info(activeGroupSelector(state).language).isRTL,
     screenLanguage:
       state.activeGroup === null
@@ -368,20 +367,24 @@ const LanguageSelectScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        {
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
-        }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       {routeName === 'InitialLanguageSelect' && (
         <View style={styles.headerTextContainer}>
           <Text
-            style={[
-              type(screenLanguage, 'h2', 'Bold', 'center', colors(isDark).text),
-              { fontSize: 28 * scaleMultiplier }
-            ]}
+            style={{
+              ...type(
+                screenLanguage,
+                'h2',
+                'Bold',
+                'center',
+                colors(isDark).text
+              ),
+              fontSize: 28 * scaleMultiplier
+            }}
           >
             {t.language_select.welcome}
           </Text>
@@ -458,21 +461,13 @@ const LanguageSelectScreen = ({
         />
       </View>
       <Animated.View
-        style={[
-          styles.startButtonContainer,
-          { transform: [{ translateY: buttonYPos }] }
-        ]}
+        style={{
+          ...styles.startButtonContainer,
+          transform: [{ translateY: buttonYPos }]
+        }}
       >
         <WahaButton
-          mode={isConnected ? 'filled' : 'inactive'}
-          color={
-            isConnected
-              ? colors(isDark).success
-              : isDark
-              ? colors(isDark).bg4
-              : colors(isDark).bg1
-          }
-          onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
+          mode={isConnected ? buttonModes.SUCCESS : buttonModes.DISABLED}
           label={
             isConnected
               ? isFetchingFirebaseData
@@ -482,11 +477,7 @@ const LanguageSelectScreen = ({
                 : t.language_select.add_language + ' '
               : ''
           }
-          style={{
-            width: Dimensions.get('window').width - 40,
-            marginHorizontal: 20,
-            height: 68 * scaleMultiplier
-          }}
+          onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
           extraComponent={
             isConnected ? (
               isFetchingFirebaseData ? (
@@ -500,6 +491,9 @@ const LanguageSelectScreen = ({
               />
             )
           }
+          isDark={isDark}
+          isRTL={isRTL}
+          language={screenLanguage}
         />
       </Animated.View>
     </SafeAreaView>

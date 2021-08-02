@@ -78,16 +78,16 @@ const ModalScreen = ({
       onModalWillShow={onModalWillShow}
     >
       <View
-        style={[
-          styles.contentContainer,
-          { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-        ]}
+        style={{
+          ...styles.contentContainer,
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        }}
       >
         <View
-          style={[
-            styles.headerContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
+          style={{
+            ...styles.headerContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }}
         >
           <TouchableOpacity
             onPress={() => {

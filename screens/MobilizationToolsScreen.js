@@ -177,10 +177,10 @@ const MobilizationToolsScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       {!areMobilizationToolsUnlocked && topComponents}
       {areMobilizationToolsUnlocked ? (
@@ -200,20 +200,18 @@ const MobilizationToolsScreen = ({
               {topComponents}
               {shareComponent}
               <Text
-                style={[
-                  type(
+                style={{
+                  ...type(
                     activeGroup.language,
                     'h2',
                     'Bold',
                     'left',
                     colors(isDark).text
                   ),
-                  {
-                    paddingHorizontal: 20,
-                    marginBottom: 10,
-                    fontSize: 22 * scaleMultiplier
-                  }
-                ]}
+                  paddingHorizontal: 20,
+                  marginBottom: 10,
+                  fontSize: 22 * scaleMultiplier
+                }}
               >
                 {t.mobilization_tools.show_mobilization_tab}
               </Text>

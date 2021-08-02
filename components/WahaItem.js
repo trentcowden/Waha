@@ -36,14 +36,12 @@ const WahaItem = ({
 }) =>
   onPress ? (
     <TouchableOpacity
-      style={[
-        styles.wahaItemContainer,
-        {
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-        },
-        style
-      ]}
+      style={{
+        ...styles.wahaItemContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+        ...style
+      }}
       onPress={onPress}
     >
       <Text
@@ -61,14 +59,12 @@ const WahaItem = ({
     </TouchableOpacity>
   ) : (
     <View
-      style={[
-        styles.wahaItemContainer,
-        {
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-        },
+      style={{
+        ...styles.wahaItemContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         style
-      ]}
+      }}
     >
       <Text
         style={type(

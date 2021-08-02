@@ -198,12 +198,10 @@ const GroupItem = ({
     else if (activeGroup.name === thisGroup.name)
       setLeftButton(
         <Animated.View
-          style={[
-            styles.minusButtonContainer,
-            {
-              transform: [{ translateX: groupItemXPos }]
-            }
-          ]}
+          style={{
+            ...styles.minusButtonContainer,
+            transform: [{ translateX: groupItemXPos }]
+          }}
         >
           <Icon
             name='check'
@@ -245,29 +243,29 @@ const GroupItem = ({
       )
     else
       setRightIcon(
-        <View style={[styles.iconContainer, { width: 24 * scaleMultiplier }]} />
+        <View
+          style={{ ...styles.iconContainer, width: 24 * scaleMultiplier }}
+        />
       )
   }, [isEditing, activeGroup, isLastGroupInLanguageInstance])
 
   return (
     <View
-      style={[
-        styles.groupItemContainer,
-        {
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          borderLeftWidth: isRTL ? 0 : 5,
-          borderRightWidth: isRTL ? 5 : 0,
-          borderColor: colors(isDark, thisGroup.language).accent
-        }
-      ]}
+      style={{
+        ...styles.groupItemContainer,
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        borderLeftWidth: isRTL ? 0 : 5,
+        borderRightWidth: isRTL ? 5 : 0,
+        borderColor: colors(isDark, thisGroup.language).accent
+      }}
     >
       {leftButton}
       <TouchableOpacity
-        style={[
-          styles.touchableAreaContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+        style={{
+          ...styles.touchableAreaContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row'
+        }}
         onPress={
           // Tapping on a group while not in edit mode switches the active group; in edit mode, it opens the edit group modal.
           isEditing
@@ -293,17 +291,15 @@ const GroupItem = ({
             isActive={activeGroup.name === thisGroup.name}
           />
           <View
-            style={[
-              styles.groupTextContainer,
-              {
-                marginLeft: isRTL ? 0 : 20,
-                marginRight: isRTL ? 20 : 0
-              }
-            ]}
+            style={{
+              ...styles.groupTextContainer,
+              marginLeft: isRTL ? 0 : 20,
+              marginRight: isRTL ? 20 : 0
+            }}
           >
             <Text
-              style={[
-                type(
+              style={{
+                ...type(
                   // Always display the group name in the group's language's font, not the active group's font.
                   thisGroup.language,
                   'h3',
@@ -311,18 +307,16 @@ const GroupItem = ({
                   'left',
                   colors(isDark).text
                 ),
-                {
-                  textAlign: isRTL ? 'right' : 'left'
-                }
-              ]}
+                textAlign: isRTL ? 'right' : 'left'
+              }}
               numberOfLines={1}
             >
               {thisGroup.name}
             </Text>
             {getBookmarkLesson() === '' ? null : (
               <Text
-                style={[
-                  type(
+                style={{
+                  ...type(
                     // Similarly, display the bookmark text in the group's language's font, not the active group's language's font.
                     thisGroup.language,
                     'd',
@@ -330,10 +324,8 @@ const GroupItem = ({
                     'left',
                     colors(isDark).secondaryText
                   ),
-                  {
-                    textAlign: isRTL ? 'right' : 'left'
-                  }
-                ]}
+                  textAlign: isRTL ? 'right' : 'left'
+                }}
                 numberOfLines={1}
               >
                 {getBookmarkLesson()}

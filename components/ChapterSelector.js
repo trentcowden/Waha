@@ -1,4 +1,3 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { chapters, gutterSize, isTablet, lessonTypes } from '../constants'
@@ -25,13 +24,14 @@ const ChapterSelector = ({
   isDark,
   activeGroup,
   downloads,
-  isConnected
+  isConnected,
+  t
 }) => (
   <View
-    style={[
-      styles.chapterSelectorContainer,
-      { borderColor: colors(isDark, activeGroup.language).accent }
-    ]}
+    style={{
+      ...styles.chapterSelectorContainer,
+      borderColor: colors(isDark, activeGroup.language).accent
+    }}
   >
     <ChapterButton
       chapter={chapters.FELLOWSHIP}

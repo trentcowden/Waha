@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
-import { scaleMultiplier } from '../constants'
+import { buttonModes, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -42,13 +42,11 @@ const LanguageStorageItem = ({
   return (
     <View style={styles.languageStorageItemContainer}>
       <View
-        style={[
-          styles.languageStorageHeaderContainer,
-          {
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
-          }
-        ]}
+        style={{
+          ...styles.languageStorageHeaderContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        }}
       >
         <Text
           style={type(
@@ -72,13 +70,11 @@ const LanguageStorageItem = ({
       </View>
       <WahaSeparator />
       <View
-        style={[
-          styles.mainAreaContainer,
-          {
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-          }
-        ]}
+        style={{
+          ...styles.mainAreaContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        }}
       >
         <Text
           style={type(
@@ -92,36 +88,32 @@ const LanguageStorageItem = ({
           {`${megabytes} ${t.storage.megabyte}`}
         </Text>
         <Text
-          style={[
-            type(
+          style={{
+            ...type(
               activeGroup.language,
               'h3',
               'Regular',
               'left',
               colors(isDark).icons
             ),
-            {
-              flex: 1,
-              paddingHorizontal: 20
-            }
-          ]}
+            flex: 1,
+            paddingHorizontal: 20
+          }}
         >
           {t.storage.storage_used}
         </Text>
         <WahaButton
-          mode='outline'
-          color={colors(isDark).error}
+          mode={buttonModes.ERROR_SECONDARY}
           label={t.general.clear}
-          width={92 * scaleMultiplier}
           onPress={clearDownloads}
-          style={{ height: 45 * scaleMultiplier }}
-          textStyle={type(
-            activeGroup.language,
-            'p',
-            'Regular',
-            'center',
-            colors(isDark).error
-          )}
+          extraContainerStyles={{
+            width: 92 * scaleMultiplier,
+            height: 45 * scaleMultiplier
+          }}
+          extraLabelStyles={{ fontSize: 14 * scaleMultiplier }}
+          isDark={isDark}
+          isRTL={isRTL}
+          language={activeGroup.language}
         />
       </View>
       <WahaSeparator />

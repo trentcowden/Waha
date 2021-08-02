@@ -35,27 +35,25 @@ const OptionsModal = ({
   >
     <View style={{ alignItems: 'center' }}>
       <View
-        style={[
-          styles.childrenContainer,
-          { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
-        ]}
+        style={{
+          ...styles.childrenContainer,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        }}
       >
         {children}
       </View>
       <View
-        style={[
-          styles.closeButtonContainer,
-          { backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4 }
-        ]}
+        style={{
+          ...styles.closeButtonContainer,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        }}
       >
         <TouchableOpacity
           onPress={hideModal}
-          style={[
-            styles.closeButtonContainer,
-            {
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
+          style={{
+            ...styles.closeButtonContainer,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          }}
         >
           <Text
             style={type(

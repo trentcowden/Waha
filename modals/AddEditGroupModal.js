@@ -275,14 +275,12 @@ const AddEditGroupModal = ({
       />
       {areMobilizationToolsUnlocked && (
         <View
-          style={[
-            styles.shouldShowMTTabInputContainer,
-            {
-              flexDirection: isRTL ? 'row-reverse' : 'row',
-              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
+          style={{
+            ...styles.shouldShowMTTabInputContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          }}
         >
           <Text
             style={type(

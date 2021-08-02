@@ -32,10 +32,10 @@ const DrawerItem = ({
   activeGroup
 }) => (
   <TouchableOpacity
-    style={[
-      styles.drawerItemContainer,
-      { flexDirection: isRTL ? 'row-reverse' : 'row' }
-    ]}
+    style={{
+      ...styles.drawerItemContainer,
+      flexDirection: isRTL ? 'row-reverse' : 'row'
+    }}
     onPress={onPress}
   >
     <View style={styles.iconContainer}>
@@ -46,11 +46,16 @@ const DrawerItem = ({
       />
     </View>
     <Text
-      style={[
-        type(activeGroup.language, 'h3', 'Bold', 'left', colors(isDark).text),
-        { paddingHorizontal: 10 }
-      ]}
-      // numberOfLines={1}
+      style={{
+        ...type(
+          activeGroup.language,
+          'h3',
+          'Bold',
+          'left',
+          colors(isDark).text
+        ),
+        paddingHorizontal: 10
+      }}
     >
       {label}
     </Text>

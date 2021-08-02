@@ -22,7 +22,7 @@ const SplashScreen = ({
   isDark
 }) => {
   return (
-    <View style={[styles.screen, { backgroundColor: colors(isDark).brand }]}>
+    <View style={{ ...styles.screen, backgroundColor: colors(isDark).brand }}>
       <Image
         source={require('../assets/icons/splash.png')}
         style={{

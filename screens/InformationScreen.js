@@ -2,20 +2,18 @@ import * as WebBrowser from 'expo-web-browser'
 import React, { useEffect, useState } from 'react'
 import {
   Clipboard,
-  Platform,
   SafeAreaView,
   Share,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
+import InformationItem from '../components/InformationItem'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { logShareApp } from '../LogEventFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import { appVersion } from '../modeSwitch'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
@@ -69,66 +67,34 @@ const InformationScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
-      <TouchableOpacity
-        style={[
-          styles.informationItem,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+      <InformationItem
         onPress={() => openBrowser('https://waha.app/privacy-policy/')}
-      >
-        <Text
-          style={type(
-            activeGroup.language,
-            'h3',
-            'Bold',
-            'left',
-            colors(isDark).text
-          )}
-        >
-          {t.information.privacy_policy}
-        </Text>
-        <Icon
-          name='launch'
-          color={colors(isDark).icons}
-          size={25 * scaleMultiplier}
+        label={t.information.privacy_policy}
+        icon='launch'
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+      />
+      {t.general.copyrights !== '' && (
+        <InformationItem
+          onPress={() =>
+            openBrowser(
+              'https://kingdomstrategies.givingfuel.com/general-giving'
+            )
+          }
+          label={t.information.donate_to_waha}
+          icon='launch'
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
         />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.informationItem,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
-        onPress={() =>
-          openBrowser('https://kingdomstrategies.givingfuel.com/general-giving')
-        }
-      >
-        <Text
-          style={type(
-            activeGroup.language,
-            'h3',
-            'Bold',
-            'left',
-            colors(isDark).text
-          )}
-        >
-          {t.information.donate_to_waha}
-        </Text>
-        <Icon
-          name='launch'
-          color={colors(isDark).icons}
-          size={25 * scaleMultiplier}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.informationItem,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+      )}
+      <InformationItem
         onPress={
           Platform.OS === 'ios'
             ? () =>
@@ -140,29 +106,13 @@ const InformationScreen = ({
                   'https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha'
                 )
         }
-      >
-        <Text
-          style={type(
-            activeGroup.language,
-            'h3',
-            'Bold',
-            'left',
-            colors(isDark).text
-          )}
-        >
-          {t.information.rate_waha}
-        </Text>
-        <Icon
-          name='launch'
-          color={colors(isDark).icons}
-          size={25 * scaleMultiplier}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.informationItem,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+        label={t.information.rate_waha}
+        icon='launch'
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+      />
+      <InformationItem
         onPress={() =>
           Share.share({
             message:
@@ -171,120 +121,62 @@ const InformationScreen = ({
             logShareApp(activeGroup.id)
           })
         }
-      >
-        <Text
-          style={type(
-            activeGroup.language,
-            'h3',
-            'Bold',
-            'left',
-            colors(isDark).text
-          )}
-        >
-          {t.general.share_app}
-        </Text>
-        <Icon
-          name={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
-          color={colors(isDark).icons}
-          size={25 * scaleMultiplier}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.informationItem,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+        label={t.general.share_app}
+        icon='launch'
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+      />
+      <InformationItem
         onPress={() => {
           setShowSnackbar(true)
           setTimeout(() => setShowSnackbar(false), 2000)
           Clipboard.setString(appVersion)
         }}
-      >
-        <View>
-          <Text
-            style={type(
-              activeGroup.language,
-              'h3',
-              'Bold',
-              'left',
-              colors(isDark).text
-            )}
-          >
-            {t.general.version}
-          </Text>
-          <Text
-            style={type(
-              activeGroup.language,
-              'h4',
-              'Bold',
-              'left',
-              colors(isDark).secondaryText
-            )}
-          >
-            {appVersion}
-          </Text>
-        </View>
-        <Icon
-          name='clipboard'
-          color={colors(isDark).icons}
-          size={25 * scaleMultiplier}
-        />
-      </TouchableOpacity>
-      {t.general.copyrights !== '' && (
-        <TouchableOpacity
-          style={[
-            styles.informationItem,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
-          onPress={() => setShowCopyrightsModal(true)}
-        >
-          <Text
-            style={type(
-              activeGroup.language,
-              'h3',
-              'Bold',
-              'left',
-              colors(isDark).text
-            )}
-          >
-            {t.general.view_copyright}
-          </Text>
-          <Icon
-            name={isRTL ? 'arrow-left' : 'arrow-right'}
-            color={colors(isDark).icons}
-            size={25 * scaleMultiplier}
-          />
-        </TouchableOpacity>
-      )}
+        label={t.general.version}
+        secondaryLabel={appVersion}
+        icon='launch'
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+      />
+      <InformationItem
+        onPress={() => setShowCopyrightsModal(true)}
+        label={t.general.view_copyright}
+        icon='launch'
+        isRTL={isRTL}
+        isDark={isDark}
+        activeGroup={activeGroup}
+      />
       {/* Cheeky little easter egg :) */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View style={styles.easterEggContainer}>
           <Text
-            style={[
-              type(
+            style={{
+              ...type(
                 activeGroup.language,
                 'd',
                 'Regular',
                 'center',
                 colors(isDark).bg1
               ),
-              { marginHorizontal: 2 }
-            ]}
+              marginHorizontal: 2
+            }}
           >
             Made with
           </Text>
           <Icon name='heart' size={15} color={colors(isDark).bg1} />
           <Text
-            style={[
-              type(
+            style={{
+              ...type(
                 activeGroup.language,
                 'd',
                 'Regular',
                 'center',
                 colors(isDark).bg1
               ),
-              { marginHorizontal: 2 }
-            ]}
+              marginHorizontal: 2
+            }}
           >
             by the Waha team
           </Text>

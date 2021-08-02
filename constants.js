@@ -38,6 +38,13 @@ export const setItemModes = {
   SET_INFO_MODAL: 4
 }
 
+export const buttonModes = {
+  SUCCESS: 1,
+  ERROR: 2,
+  ERROR_SECONDARY: 3,
+  DISABLED: 4
+}
+
 /** Set the max font scaling allowed. This is based on the system font scaling that the user sets in their phone's accessibility settings. We limit it so that the text in the app isn't allowed scale above 1.2 times normal size, which would not be good for the UI. */
 const fontScale =
   PixelRatio.getFontScale() >= 1.2 ? 1.2 : PixelRatio.getFontScale()

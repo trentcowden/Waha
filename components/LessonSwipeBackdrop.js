@@ -18,21 +18,18 @@ const LessonSwipeBackdrop = ({
   isDark
 }) => (
   <View
-    style={[
-      styles.lessonSwipeBackdropContainer,
-      // Reverse the sides that the complete/share buttons are on for RTL languages.
-      { flexDirection: isRTL ? 'row-reverse' : 'row' }
-    ]}
+    style={{
+      ...styles.lessonSwipeBackdropContainer,
+      flexDirection: isRTL ? 'row-reverse' : 'row'
+    }}
   >
     {isComplete ? (
       <TouchableOpacity
-        style={[
-          styles.buttonContainer,
-          {
-            backgroundColor: colors(isDark).disabled,
-            alignItems: isRTL ? 'flex-end' : 'flex-start'
-          }
-        ]}
+        style={{
+          ...styles.buttonContainer,
+          backgroundColor: colors(isDark).disabled,
+          alignItems: isRTL ? 'flex-end' : 'flex-start'
+        }}
         onPress={toggleComplete}
       >
         <View style={styles.iconContainer}>
@@ -41,13 +38,11 @@ const LessonSwipeBackdrop = ({
       </TouchableOpacity>
     ) : (
       <TouchableOpacity
-        style={[
-          styles.buttonContainer,
-          {
-            backgroundColor: colors(isDark).success,
-            alignItems: isRTL ? 'flex-end' : 'flex-start'
-          }
-        ]}
+        style={{
+          ...styles.buttonContainer,
+          backgroundColor: colors(isDark).success,
+          alignItems: isRTL ? 'flex-end' : 'flex-start'
+        }}
         onPress={toggleComplete}
       >
         <View style={styles.iconContainer}>
@@ -56,13 +51,11 @@ const LessonSwipeBackdrop = ({
       </TouchableOpacity>
     )}
     <TouchableOpacity
-      style={[
-        styles.buttonContainer,
-        {
-          backgroundColor: colors(isDark).highlight,
-          alignItems: isRTL ? 'flex-start' : 'flex-end'
-        }
-      ]}
+      style={{
+        ...styles.buttonContainer,
+        backgroundColor: colors(isDark).highlight,
+        alignItems: isRTL ? 'flex-start' : 'flex-end'
+      }}
       onPress={showShareModal}
     >
       <View style={styles.iconContainer}>

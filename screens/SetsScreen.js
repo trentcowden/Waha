@@ -253,10 +253,10 @@ const SetsScreen = ({
   // A button that goes at the bottom of each list of sets that allows the user to add a new set.
   const renderAddSetButton = () => (
     <TouchableOpacity
-      style={[
-        styles.addSetButtonContainer,
-        { flexDirection: isRTL ? 'row-reverse' : 'row' }
-      ]}
+      style={{
+        ...styles.addSetButtonContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row'
+      }}
       onPress={() => navigate('AddSet', { category: category })}
     >
       <View
@@ -361,10 +361,10 @@ const SetsScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg1 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg1
+      }}
     >
       <FlatList
         data={setData}

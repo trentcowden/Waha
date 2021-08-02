@@ -1,5 +1,4 @@
 // import SvgUri from 'expo-svg-uri'
-import { t } from 'i18n-js'
 import React, { useRef, useState } from 'react'
 import { Animated, StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
@@ -43,13 +42,14 @@ const PlayScreenSwiper = ({
   activeGroup,
   activeDatabase,
   isDark,
-  isRTL
+  isRTL,
+  t
 }) => {
   /** Keeps track of the active page of the album art swiper. */
   const [activePage, setActivePage] = useState(0)
 
   /** Keeps track of the section title text. */
-  const [sectionTitleText, setSectionTitleText] = useState(t('play.fellowship'))
+  const [sectionTitleText, setSectionTitleText] = useState(t.play.fellowship)
 
   /** Keeps track of the opacity and transform value of the section header so it can be animated. */
   const sectionHeaderOpacity = useRef(new Animated.Value(1)).current
@@ -89,14 +89,12 @@ const PlayScreenSwiper = ({
         // Standard Page used for most lessons.
         <View style={{ flex: 1 }}>
           <Animated.View
-            style={[
-              styles.sectionHeaderContainer,
-              {
-                flexDirection: isRTL ? 'row-reverse' : 'row',
-                opacity: sectionHeaderOpacity,
-                transform: [{ translateY: sectionHeaderYTransform }]
-              }
-            ]}
+            style={{
+              ...styles.sectionHeaderContainer,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              opacity: sectionHeaderOpacity,
+              transform: [{ translateY: sectionHeaderYTransform }]
+            }}
           >
             <Text
               style={type(

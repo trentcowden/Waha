@@ -1,15 +1,15 @@
-import LottieView from 'lottie-react-native'
 import React, { useRef, useState } from 'react'
-import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
 import { connect } from 'react-redux'
 import EmojiViewer from '../components/EmojiViewer'
 import GroupNameTextInput from '../components/GroupNameTextInput'
+import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
-import { groupNames, isTablet, scaleMultiplier } from '../constants'
+import { buttonModes, groupNames, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { setHasOnboarded } from '../redux/actions/databaseActions'
@@ -130,99 +130,33 @@ const WahaOnboardingSlidesScreen = ({
       title={t.onboarding.onboarding_1_title}
       message={t.onboarding.onboarding_1_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <LottieView
-          style={[
-            styles.image,
-            {
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
-          autoPlay
-          loop
-          resizeMode='cover'
-          source={require('../assets/lotties/onboarding1.json')}
-        />
-      </View>
+      <OnboardingImage
+        imageType='lottie'
+        source={require('../assets/lotties/onboarding1.json')}
+        isDark={isDark}
+      />
     </OnboardingPage>,
     <OnboardingPage
       key='2'
       title={t.onboarding.onboarding_2_title}
       message={t.onboarding.onboarding_2_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <LottieView
-          style={[
-            styles.image,
-            {
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
-          autoPlay
-          loop
-          resizeMode='cover'
-          source={require('../assets/lotties/onboarding2.json')}
-        />
-      </View>
+      <OnboardingImage
+        imageType='lottie'
+        source={require('../assets/lotties/onboarding2.json')}
+        isDark={isDark}
+      />
     </OnboardingPage>,
     <OnboardingPage
       key='3'
       title={t.onboarding.onboarding_3_title}
       message={t.onboarding.onboarding_3_message}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
-            maxWidth: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40,
-            maxHeight: isTablet
-              ? Dimensions.get('window').width * 0.7
-              : Dimensions.get('window').width - 40
-          }
-        ]}
-      >
-        <LottieView
-          style={[
-            styles.image,
-            {
-              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-            }
-          ]}
-          autoPlay
-          loop
-          resizeMode='cover'
-          source={require('../assets/lotties/onboarding3.json')}
-        />
-      </View>
+      <OnboardingImage
+        imageType='lottie'
+        source={require('../assets/lotties/onboarding3.json')}
+        isDark={isDark}
+      />
     </OnboardingPage>,
     <OnboardingPage
       key='4'
@@ -240,10 +174,10 @@ const WahaOnboardingSlidesScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <PagerView
         ref={pagerRef}
@@ -264,17 +198,17 @@ const WahaOnboardingSlidesScreen = ({
         {isRTL ? pages.reverse() : pages}
       </PagerView>
       <View
-        style={[
-          styles.bottomControlsContainer,
-          { flexDirection: isRTL ? 'row-reverse' : 'row' }
-        ]}
+        style={{
+          ...styles.bottomControlsContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row'
+        }}
       >
         <PageDots numDots={numPages} activeDot={activePage} />
         <View
-          style={[
-            styles.skipButtonContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
+          style={{
+            ...styles.skipButtonContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }}
         >
           <TouchableOpacity
             onPress={skipOnboarding}
@@ -306,12 +240,14 @@ const WahaOnboardingSlidesScreen = ({
               ? editGroupAndFinish
               : () => pagerRef.current.setPage(activePage + 1)
           }
-          mode='filled'
-          color={colors(isDark).success}
-          style={{
+          mode={buttonModes.SUCCESS}
+          extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
             flex: 2
           }}
+          isDark={isDark}
+          isRTL={isRTL}
+          language={activeGroup.language}
         />
       </View>
     </SafeAreaView>
@@ -327,19 +263,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  imageContainer: {
-    flex: 1,
-    borderRadius: 15,
-    borderWidth: 3,
-    aspectRatio: 1,
-    overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  image: {
-    width: '100%',
-    height: '100%'
   },
   bottomControlsContainer: {
     alignItems: 'center',

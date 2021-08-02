@@ -32,19 +32,17 @@ const GroupsScreenEditButton = ({
   return (
     <TouchableOpacity style={styles.editButtonContainer} onPress={onPress}>
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'h3',
             isEditing ? 'Bold' : 'Regular',
             'center',
             isEditing ? colors(isDark).textOnColor : colors(isDark).highlight
           ),
-          {
-            // Underline the text for this button if we're in editing mode. This is standard for header buttons in material design.
-            textDecorationLine: isEditing ? 'underline' : null
-          }
-        ]}
+          // Underline the text for this button if we're in editing mode. This is standard for header buttons in material design.
+          textDecorationLine: isEditing ? 'underline' : null
+        }}
       >
         {isEditing ? t.general.done : t.general.edit}
       </Text>

@@ -107,33 +107,29 @@ const LessonItem = ({
 
   return (
     <View
-      style={[
-        styles.lessonItemContainer,
-        {
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          paddingVertical: isInInfoMode ? (isTablet ? 20 : 10) : 0,
-          paddingLeft: 20,
-          alignItems: 'center',
-          minHeight: isTablet
-            ? itemHeights[font].LessonItem + 15
-            : itemHeights[font].LessonItem,
-          height: isInInfoMode
-            ? null
-            : isTablet
-            ? itemHeights[font].LessonItem + 15
-            : itemHeights[font].LessonItem
-        }
-      ]}
+      style={{
+        ...styles.lessonItemContainer,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        paddingVertical: isInInfoMode ? (isTablet ? 20 : 10) : 0,
+        paddingLeft: 20,
+        alignItems: 'center',
+        minHeight: isTablet
+          ? itemHeights[font].LessonItem + 15
+          : itemHeights[font].LessonItem,
+        height: isInInfoMode
+          ? null
+          : isTablet
+          ? itemHeights[font].LessonItem + 15
+          : itemHeights[font].LessonItem
+      }}
     >
       <TouchableOpacity
-        style={[
-          styles.touchableAreaContainer,
-          {
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            justifyContent: isRTL ? 'flex-end' : 'flex-start'
-          }
-        ]}
+        style={{
+          ...styles.touchableAreaContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+          justifyContent: isRTL ? 'flex-end' : 'flex-start'
+        }}
         onPress={() => {
           if (areMobilizationToolsUnlocked && showTrailerHighlights)
             setShowTrailerHighlights(false)
@@ -170,13 +166,11 @@ const LessonItem = ({
           />
         </View>
         <View
-          style={[
-            styles.titlesContainer,
-            {
-              marginLeft: isRTL ? (thisLesson.hasAudio ? 0 : 20) : 20,
-              marginRight: isRTL ? 20 : thisLesson.hasAudio ? 0 : 20
-            }
-          ]}
+          style={{
+            ...styles.titlesContainer,
+            marginLeft: isRTL ? (thisLesson.hasAudio ? 0 : 20) : 20,
+            marginRight: isRTL ? 20 : thisLesson.hasAudio ? 0 : 20
+          }}
         >
           <Text
             style={type(
@@ -194,21 +188,15 @@ const LessonItem = ({
           // numberOfLines={2}
           > */}
           <Text
-            style={[
-              type(
-                activeGroup.language,
-                'd',
-                'Regular',
-                'left',
-                isComplete
-                  ? colors(isDark).disabled
-                  : colors(isDark).secondaryText
-              ),
-              {
-                // fontSize: 13 * scaleMultiplier,
-              }
-            ]}
-            // numberOfLines={1}
+            style={type(
+              activeGroup.language,
+              'd',
+              'Regular',
+              'left',
+              isComplete
+                ? colors(isDark).disabled
+                : colors(isDark).secondaryText
+            )}
           >
             {getLessonInfo('subtitle', thisLesson.id)}
           </Text>

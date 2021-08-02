@@ -298,16 +298,16 @@ const PlayScreen = ({
           )}
         </View>
         <Text
-          style={[
-            type(
+          style={{
+            ...type(
               activeGroup.language,
               'h3',
               'Bold',
               'center',
               colors(isDark).secondaryText
             ),
-            { marginHorizontal: 2 }
-          ]}
+            marginHorizontal: 2
+          }}
         >
           {getLessonInfo('subtitle', thisLesson.id)}
         </Text>
@@ -940,10 +940,10 @@ const PlayScreen = ({
 
   return (
     <View
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+      }}
     >
       <View style={styles.middleAreaContainer}>
         {lessonType !== lessonTypes.VIDEO_ONLY && (

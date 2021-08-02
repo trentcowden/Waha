@@ -12,6 +12,7 @@ import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
+import { buttonModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { logEnableSecurityMode } from '../LogEventFunctions'
 import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
@@ -166,10 +167,10 @@ const PianoPasscodeSetScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+      }}
     >
       <View style={styles.topContainer}>
         <View style={styles.instructionTextContainer}>
@@ -187,12 +188,16 @@ const PianoPasscodeSetScreen = ({
         </View>
         <PianoPasscodeDisplay passcode={localPasscode} />
         <WahaButton
-          mode='outline'
+          mode={buttonModes.ERROR_SECONDARY}
           onPress={() => setLocalPasscode('')}
-          color={colors(isDark).error}
           label={t.general.clear}
-          width={Dimensions.get('window').width / 3}
-          style={{ marginVertical: 0 }}
+          extraContainerStyles={{
+            width: Dimensions.get('window').width / 3,
+            marginVertical: 0
+          }}
+          isDark={isDark}
+          isRTL={isRTL}
+          language={activeGroup.language}
         />
       </View>
       <Piano setPlayedNotes={setLocalPasscode} />

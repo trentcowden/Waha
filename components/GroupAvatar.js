@@ -72,13 +72,13 @@ const GroupAvatar = ({
   // If we have an onPress function, render the component as a <TouchableOpacity/>. Otherwise, render it as a <View/>.
   return onPress ? (
     <TouchableOpacity
-      style={[style, groupAvatarContainerStyle]}
+      style={{ ...style, ...groupAvatarContainerStyle }}
       onPress={onPress}
     >
       {emojiComponent}
     </TouchableOpacity>
   ) : (
-    <View style={[style, groupAvatarContainerStyle]} onPress={onPress}>
+    <View style={{ ...style, ...groupAvatarContainerStyle }} onPress={onPress}>
       {emojiComponent}
     </View>
   )

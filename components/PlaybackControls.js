@@ -40,13 +40,11 @@ const PlaybackControls = ({
     </TouchableOpacity>
     {isMediaLoaded ? (
       <TouchableOpacity
-        style={[
-          styles.playButtonContainer,
-          {
-            width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
-            height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier
-          }
-        ]}
+        style={{
+          ...styles.playButtonContainer,
+          width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
+          height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier
+        }}
         onPress={playHandler}
       >
         <Icon
@@ -58,13 +56,11 @@ const PlaybackControls = ({
     ) : (
       // Show a spinning activity indicator if the media is loading.
       <View
-        style={[
-          styles.playButtonContainer,
-          {
-            width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
-            height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier
-          }
-        ]}
+        style={{
+          ...styles.playButtonContainer,
+          width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
+          height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier
+        }}
       >
         <ActivityIndicator size='large' color={colors(isDark).text} />
       </View>

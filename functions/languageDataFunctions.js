@@ -134,19 +134,6 @@ export const getAllLanguagesData = (
   // Create our sections array.
   var sections
 
-  // Only difference between Initial and Subsequent language instance installs is that in subsequent, we want to filter out installed languages.
-  // if (routeName === 'InitialLanguageSelect')
-  //   sections = languages
-  //     .sort(sortByLocale)
-  //     .map(filterBySearch)
-  //     .filter(filterEmptyLanguageFamilies)
-  // else
-  //   sections = languages
-  //     .sort(sortByLocale)
-  //     .map(filterInstalledLanguages)
-  //     .map(filterBySearch)
-  //     .filter(filterEmptyLanguageFamilies)
-
   sections = languages
     .sort(sortByLocale)
     .map(filterInstalledLanguages)

@@ -15,7 +15,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { scaleMultiplier } from '../constants'
+import { buttonModes, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
 import { appVersion } from '../modeSwitch'
@@ -141,17 +141,25 @@ const ContactUsScreen = ({
   // Determine what to render for the asterisk components based on isRTL. They need to be conditional because in LTR, the asterisk goes on the right of the word whereas in RTL, it goes on the left. The asterisk indicates a required field.
   var asteriskComponent = isRTL ? (
     <Text
-      style={[
-        type(activeGroup.language, 'h3', 'Bold', 'left', colors(isDark).error)
-      ]}
+      style={type(
+        activeGroup.language,
+        'h3',
+        'Bold',
+        'left',
+        colors(isDark).error
+      )}
     >
       {'* '}
     </Text>
   ) : (
     <Text
-      style={[
-        type(activeGroup.language, 'h3', 'Bold', 'left', colors(isDark).error)
-      ]}
+      style={type(
+        activeGroup.language,
+        'h3',
+        'Bold',
+        'left',
+        colors(isDark).error
+      )}
     >
       {' *'}
     </Text>
@@ -161,26 +169,26 @@ const ContactUsScreen = ({
 
   return (
     <SafeAreaView
-      style={[
-        styles.screen,
-        { backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3 }
-      ]}
+      style={{
+        ...styles.screen,
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      }}
     >
       <ScrollView bounces={false} style={styles.scrollViewContainer}>
         <View style={{ width: '100%', height: 20 * scaleMultiplier }} />
         {/* Email input area. */}
         <View style={styles.sectionContainer}>
           <Text
-            style={[
-              type(
+            style={{
+              ...type(
                 activeGroup.language,
                 'h3',
                 'Bold',
                 'left',
                 colors(isDark).text
               ),
-              { marginVertical: 10 }
-            ]}
+              marginVertical: 10
+            }}
           >
             {leftAsterisk}
             {t.contact_us.email}
@@ -198,25 +206,23 @@ const ContactUsScreen = ({
               autoCapitalize='none'
               autoCorrect={false}
               spellCheck={false}
-              style={[
-                type(
+              style={{
+                ...type(
                   activeGroup.language,
                   'h3',
                   'Regular',
                   'left',
                   colors(isDark).text
                 ),
-                styles.textInputContainer,
-                {
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  backgroundColor: isDark
-                    ? colors(isDark).bg2
-                    : colors(isDark).bg4,
-                  borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-                  borderWidth: 2
-                }
-              ]}
+                ...styles.textInputContainer,
+                paddingTop: 0,
+                paddingBottom: 0,
+                backgroundColor: isDark
+                  ? colors(isDark).bg2
+                  : colors(isDark).bg4,
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+                borderWidth: 2
+              }}
               keyboardType='email-address'
               placeholder='name@email.com'
               placeholderTextColor={colors(isDark).disabled}
@@ -246,58 +252,52 @@ const ContactUsScreen = ({
             }}
           >
             <Text
-              style={[
-                type(
+              style={{
+                ...type(
                   activeGroup.language,
                   'h3',
                   'Bold',
                   'left',
                   colors(isDark).text
                 ),
-                { marginVertical: 10 * scaleMultiplier }
-              ]}
+                marginVertical: 10 * scaleMultiplier
+              }}
             >
               {leftAsterisk}
               {t.contact_us.message}
               {rightAsterisk}
             </Text>
             <Text
-              style={[
-                type(
-                  activeGroup.language,
-                  'h4',
-                  'regular',
-                  'left',
-                  messageTextInput.length > 1000
-                    ? colors(isDark).error
-                    : colors(isDark).disabled
-                )
-              ]}
+              style={type(
+                activeGroup.language,
+                'h4',
+                'regular',
+                'left',
+                messageTextInput.length > 1000
+                  ? colors(isDark).error
+                  : colors(isDark).disabled
+              )}
             >
               {messageTextInput.length + '/1000'}
             </Text>
           </View>
           <TextInput
             onChangeText={text => setMessageTextInput(text)}
-            style={[
-              type(
+            style={{
+              ...type(
                 activeGroup.language,
                 'h3',
                 'Regular',
                 'left',
                 colors(isDark).text
               ),
-              styles.textInputContainer,
-              {
-                height: 200 * scaleMultiplier,
-                textAlignVertical: 'top',
-                backgroundColor: isDark
-                  ? colors(isDark).bg2
-                  : colors(isDark).bg4,
-                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-                borderWidth: 2
-              }
-            ]}
+              ...styles.textInputContainer,
+              height: 200 * scaleMultiplier,
+              textAlignVertical: 'top',
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              borderWidth: 2
+            }}
             multiline
             placeholder={t.contact_us.message_placeholder}
             placeholderTextColor={colors(isDark).disabled}
@@ -305,39 +305,35 @@ const ContactUsScreen = ({
         </View>
         {/* Bug checkmark input area. */}
         <View
-          style={[
-            styles.bugSectionContainer,
-            { flexDirection: isRTL ? 'row-reverse' : 'row' }
-          ]}
+          style={{
+            ...styles.bugSectionContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row'
+          }}
         >
           <TouchableOpacity
             onPress={() => setIsBugChecked(old => !old)}
-            style={[
-              styles.checkIconContainer,
-              {
-                backgroundColor: isDark
-                  ? colors(isDark).bg2
-                  : colors(isDark).bg4,
-                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-                borderWidth: 2
-              }
-            ]}
+            style={{
+              ...styles.checkIconContainer,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              borderWidth: 2
+            }}
           >
             {isBugChecked ? (
               <Icon name='check' size={25} color={colors(isDark).icons} />
             ) : null}
           </TouchableOpacity>
           <Text
-            style={[
-              type(
+            style={{
+              ...type(
                 activeGroup.language,
                 'h3',
                 'Regular',
                 'left',
                 colors(isDark).text
               ),
-              { marginHorizontal: 10 }
-            ]}
+              marginHorizontal: 10
+            }}
           >
             {t.contact_us.is_a_bug}
           </Text>
@@ -346,40 +342,38 @@ const ContactUsScreen = ({
         {isBugChecked ? (
           <View style={styles.sectionContainer}>
             <Text
-              style={[
-                type(
+              style={{
+                ...type(
                   activeGroup.language,
                   'h3',
                   'Bold',
                   'left',
                   colors(isDark).text
                 ),
-                { marginVertical: 10 * scaleMultiplier }
-              ]}
+                marginVertical: 10 * scaleMultiplier
+              }}
             >
               {t.contact_us.reproducable}
             </Text>
             <TextInput
               onChangeText={text => setReproductionStepsTextInput(text)}
-              style={[
-                type(
+              style={{
+                ...type(
                   activeGroup.language,
                   'h3',
                   'Regular',
                   'left',
                   colors(isDark).text
                 ),
-                styles.textInputContainer,
-                {
-                  height: 200 * scaleMultiplier,
-                  textAlignVertical: 'top',
-                  backgroundColor: isDark
-                    ? colors(isDark).bg2
-                    : colors(isDark).bg4,
-                  borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-                  borderWidth: 2
-                }
-              ]}
+                ...styles.textInputContainer,
+                height: 200 * scaleMultiplier,
+                textAlignVertical: 'top',
+                backgroundColor: isDark
+                  ? colors(isDark).bg2
+                  : colors(isDark).bg4,
+                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+                borderWidth: 2
+              }}
               multiline
             />
           </View>
@@ -392,27 +386,15 @@ const ContactUsScreen = ({
             emailTextInput === null ||
             !isConnected ||
             messageTextInput.length > 1000
-              ? 'inactive'
-              : 'filled'
-          }
-          color={
-            emailError ||
-            emailTextInput === null ||
-            !isConnected ||
-            messageTextInput.length > 1000
-              ? isDark
-                ? colors(isDark).bg4
-                : colors(isDark).bg1
-              : colors(isDark).success
+              ? buttonModes.DISABLED
+              : buttonModes.SUCCESS
           }
           label={isSubmitting || !isConnected ? '' : t.general.submit}
-          width={Dimensions.get('window').width / 3}
           onPress={submit}
-          style={{
-            height: 68 * scaleMultiplier,
+          extraContainerStyles={{
+            width: Dimensions.get('window').width / 3,
             alignSelf: isRTL ? 'flex-start' : 'flex-end',
-            marginTop: 10 * scaleMultiplier,
-            marginBottom: 20 * scaleMultiplier
+            marginTop: 10 * scaleMultiplier
           }}
           extraComponent={
             isConnected ? (
@@ -430,6 +412,9 @@ const ContactUsScreen = ({
               />
             )
           }
+          isDark={isDark}
+          isRTL={isRTL}
+          language={activeGroup.language}
         />
       </ScrollView>
     </SafeAreaView>

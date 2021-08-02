@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
-import { scaleMultiplier, setItemModes } from '../constants'
+import { buttonModes, scaleMultiplier, setItemModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { addSet } from '../redux/actions/groupsActions'
 import {
@@ -29,7 +29,8 @@ function mapStateToProps (state) {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled
+    isDark: state.settings.isDarkModeEnabled,
+    font: info(activeGroupSelector(state).language).font
   }
 }
 
@@ -137,14 +138,13 @@ const SetInfoModal = ({
         />
       </View>
       <WahaButton
-        mode='filled'
-        color={colors(isDark).success}
+        mode={buttonModes.SUCCESS}
         onPress={() => {
           addSet(activeGroup.name, activeGroup.id, thisSet)
           showSnackbar()
           hideModal()
         }}
-        style={{ marginHorizontal: 20, marginVertical: 10 }}
+        extraContainerStyles={{ marginVertical: 10 }}
         label={t.sets.add_new_story_set}
         extraComponent={
           <Icon
@@ -154,6 +154,9 @@ const SetInfoModal = ({
             name='playlist-add'
           />
         }
+        isDark={isDark}
+        isRTL={isRTL}
+        language={activeGroup.language}
       />
       <FlatList
         keyExtractor={item => item.id}

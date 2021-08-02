@@ -215,13 +215,11 @@ const ChapterButton = ({
 
   return (
     <TouchableOpacity
-      style={[
-        styles.chapterButton,
-        extraButtonStyle,
-        {
-          paddingVertical: isTablet ? 16 : 8
-        }
-      ]}
+      style={{
+        ...styles.chapterButton,
+        ...extraButtonStyle,
+        paddingVertical: isTablet ? 16 : 8
+      }}
       // Disable onPress (by making the onPress function empty and by disabling the touch effect) if the chapter button is DISABLED or DOWNLOADING.
       onPress={
         mode === chapterButtonModes.DISABLED ||
@@ -264,7 +262,7 @@ const ChapterButton = ({
       <Text
         adjustsFontSizeToFit
         numberOfLines={1}
-        style={[defaultTextStyle, textStyle]}
+        style={{ ...defaultTextStyle, ...textStyle }}
       >
         {chapterNames[chapter]}
       </Text>

@@ -55,15 +55,13 @@ const EmojiViewer = ({
   const renderEmoji = ({ item }) => {
     return (
       <TouchableOpacity
-        style={[
-          styles.emojiContainer,
-          {
-            borderWidth: item === emojiInput ? 2 : 0,
-            borderColor: item === emojiInput ? colors(isDark).highlight : null,
-            backgroundColor:
-              item === emojiInput ? colors(isDark).highlight + '38' : null
-          }
-        ]}
+        style={{
+          ...styles.emojiContainer,
+          borderWidth: item === emojiInput ? 2 : 0,
+          borderColor: item === emojiInput ? colors(isDark).highlight : null,
+          backgroundColor:
+            item === emojiInput ? colors(isDark).highlight + '38' : null
+        }}
         onPress={() => setEmojiInput(item)}
       >
         <Image
@@ -81,27 +79,25 @@ const EmojiViewer = ({
   return (
     <View style={styles.emojiViewerContainer}>
       <Text
-        style={[
-          type(
+        style={{
+          ...type(
             activeGroup.language,
             'p',
             'Regular',
             'left',
             colors(isDark).secondaryText
           ),
-          { marginTop: 20 * scaleMultiplier }
-        ]}
+          marginTop: 20 * scaleMultiplier
+        }}
       >
         {t.groups.avatar}
       </Text>
       <View
-        style={[
-          styles.emojiListContainer,
-          {
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
-          }
-        ]}
+        style={{
+          ...styles.emojiListContainer,
+          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        }}
         onLayout={({ nativeEvent }) =>
           setEmojiViewerWidth(nativeEvent.layout.width)
         }

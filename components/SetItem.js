@@ -272,18 +272,16 @@ const SetItem = ({
         // Primary icon for the SetItem on the AddSet screen is a slightly altered version of the set's SVG without any progress shown.
         setPrimaryIcon(
           <View
-            style={[
-              styles.primaryIconContainer,
-              {
-                backgroundColor: isDark
-                  ? colors(isDark).icons
-                  : colors(isDark).bg4,
-                borderRadius: 14,
-                overflow: 'hidden',
-                borderWidth: 7,
-                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
-              }
-            ]}
+            style={{
+              ...styles.primaryIconContainer,
+              backgroundColor: isDark
+                ? colors(isDark).icons
+                : colors(isDark).bg4,
+              borderRadius: 14,
+              overflow: 'hidden',
+              borderWidth: 7,
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
+            }}
           >
             <SVG
               name={thisSet.iconName}
@@ -308,18 +306,16 @@ const SetItem = ({
         // Primary icon for the SetItem on the SetInfo modal screen is similar to the one on the AddSet screen, with some slightly style variations.
         setPrimaryIcon(
           <View
-            style={[
-              styles.primaryIconContainer,
-              {
-                backgroundColor: isDark
-                  ? colors(isDark).icons
-                  : colors(isDark).bg4,
-                borderRadius: 14,
-                overflow: 'hidden',
-                borderWidth: 7,
-                borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
-              }
-            ]}
+            style={{
+              ...styles.primaryIconContainer,
+              backgroundColor: isDark
+                ? colors(isDark).icons
+                : colors(isDark).bg4,
+              borderRadius: 14,
+              overflow: 'hidden',
+              borderWidth: 7,
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
+            }}
           >
             <SVG
               name={thisSet.iconName}
@@ -342,32 +338,28 @@ const SetItem = ({
 
   return (
     <TouchableOpacity
-      style={[
-        styles.setItemContainer,
-        {
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          height: isTablet
-            ? itemHeights[font].SetItem + 15
-            : itemHeights[font].SetItem
-        }
-      ]}
+      style={{
+        ...styles.setItemContainer,
+        flexDirection: isRTL ? 'row-reverse' : 'row',
+        height: isTablet
+          ? itemHeights[font].SetItem + 15
+          : itemHeights[font].SetItem
+      }}
       onPress={onSetSelect}
       // Disable the touch feedback if there's no onSetSelect function.
       activeOpacity={onSetSelect ? 0.2 : 1}
     >
       {primaryIcon}
       <View
-        style={[
-          styles.textContainer,
-          {
-            marginRight: isRTL ? 20 : 0,
-            marginLeft: isRTL ? 0 : 20
-          }
-        ]}
+        style={{
+          ...styles.textContainer,
+          marginRight: isRTL ? 20 : 0,
+          marginLeft: isRTL ? 0 : 20
+        }}
       >
         <Text
-          style={[
-            type(
+          style={{
+            ...type(
               activeGroup.language,
               'd',
               'Regular',
@@ -376,18 +368,16 @@ const SetItem = ({
                 ? colors(isDark).disabled
                 : colors(isDark).icons
             ),
-            {
-              textAlignVertical: 'center',
-              flexWrap: 'wrap'
-            }
-          ]}
+            textAlignVertical: 'center',
+            flexWrap: 'wrap'
+          }}
           numberOfLines={1}
         >
           {thisSet.subtitle}
         </Text>
         <Text
-          style={[
-            type(
+          style={{
+            ...type(
               activeGroup.language,
               'h3',
               'Black',
@@ -396,11 +386,9 @@ const SetItem = ({
                 ? colors(isDark).disabled
                 : colors(isDark).text
             ),
-            {
-              textAlignVertical: 'center',
-              flexWrap: 'wrap'
-            }
-          ]}
+            textAlignVertical: 'center',
+            flexWrap: 'wrap'
+          }}
           numberOfLines={2}
         >
           {thisSet.title}
