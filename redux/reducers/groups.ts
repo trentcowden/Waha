@@ -25,7 +25,7 @@ import {
  * @param {number[]} groups[].addedSet[].progress - Stores the progress for this particular set. Each element is a number for the index of the lesson that has been completed. A set with 0 completed lessons would have an empty progress array.
  * @param {number} groups[].addedSet[].bookmark - The index
  */
-export function groups (state = [], params) {
+export function groups (state = [], params?) {
   switch (params.type) {
     /**
      * Adds a new group to the state.

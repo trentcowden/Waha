@@ -1,36 +1,35 @@
 {
   "compilerOptions": {
-    /* Basic Options */
-    "target": "esnext",       
-  "lib": ["ES6"],
-  "isolatedModules": true,                   
-    "module": "commonjs",     
-    "allowJs": true,                        
+    "target": "esnext",
+    "lib": [
+      "ES6"
+    ],
+    "isolatedModules": true,
+    "module": "commonjs",
+    "allowJs": true,
     "resolveJsonModule": true,
-    "jsx": "react",                         
-    "noEmit": true,                        
-/* Strict Type-Checking Options */
-    "strict": true,                           
-    "noImplicitAny": false,               
-    "strictNullChecks": true,              
-    "strictFunctionTypes": true,           
-    "strictPropertyInitialization": true,  
-    "noImplicitThis": true,                
-    "alwaysStrict": true,                 
+    "jsx": "react",
+    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
     "suppressImplicitAnyIndexErrors": true,
-/* Additional Checks */
-    "noUnusedLocals": true,                
-    "noUnusedParameters": true,           
-    "noImplicitReturns": true,             
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-/* Module Resolution Options */
-    "moduleResolution": "node",           
-    "baseUrl": ".",                      
-    "allowSyntheticDefaultImports": true, 
-    "esModuleInterop": true   
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules",
     "babel.config.js"
-  ]
+  ],
+  "extends": "expo/tsconfig.base"
 }

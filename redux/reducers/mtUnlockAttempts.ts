@@ -5,7 +5,7 @@ import { SET_MT_UNLOCK_ATTEMPTS } from '../actions/mtUnlockAttemptsActions'
  * @param {Object} action - Parameters passed from securityActions.js functions.
  * @param {number} mtUnlockAttempts - (state) The number of times that the user has unsuccessfully attempted to unlock the Mobilization Tools. Defaults to 0.
  */
-export function mtUnlockAttempts (state = 0, params) {
+export function mtUnlockAttempts (state = 0, params?) {
   switch (params.type) {
     case SET_MT_UNLOCK_ATTEMPTS:
       return params.numAttempts

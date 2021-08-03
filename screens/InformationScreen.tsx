@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser'
 import React, { useEffect, useState } from 'react'
 import {
   Clipboard,
+  Platform,
   SafeAreaView,
   Share,
   StyleSheet,
@@ -134,7 +135,7 @@ const InformationScreen = ({
           })
         }
         label={t.general.share_app}
-        icon='launch'
+        icon={Platform.OS === 'ios' ? 'share-ios' : 'share-android'}
         isRTL={isRTL}
         isDark={isDark}
         activeGroup={activeGroup}
@@ -147,7 +148,7 @@ const InformationScreen = ({
         }}
         label={t.general.version}
         secondaryLabel={appVersion}
-        icon='launch'
+        icon='clipboard'
         isRTL={isRTL}
         isDark={isDark}
         activeGroup={activeGroup}
@@ -155,7 +156,7 @@ const InformationScreen = ({
       <InformationItem
         onPress={() => setShowCopyrightsModal(true)}
         label={t.general.view_copyright}
-        icon='launch'
+        icon={isRTL ? 'arrow-left' : 'arrow-right'}
         isRTL={isRTL}
         isDark={isDark}
         activeGroup={activeGroup}

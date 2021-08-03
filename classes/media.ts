@@ -1,6 +1,9 @@
 import { chapters } from '../constants'
 
 export class Media {
+	public audio: any;
+	public video: any;
+
   constructor (audio) {
     this.audio = audio
     this.video = null

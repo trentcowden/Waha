@@ -19,7 +19,13 @@ import { languages } from '../languages'
  * @param {string} color - The color of the font. Can be any color for the colors object in ./colors.js.
  * @return {Object} - The completed style object.
  */
-export const type = (languageID, fontSize, fontFamily, textAlign, color) => {
+export const type = (
+  languageID: string,
+  fontSize: 'd' | 'p' | 'h4' | 'h3' | 'h2' | 'h1',
+  fontFamily: 'Regular' | 'Bold' | 'Black',
+  textAlign: 'left' | 'center',
+  color: string
+): Object => {
   var languageInfo = info(languageID)
 
   // A font size modifier that makes all Arabic script a point smaller and increases the font size on tablets.

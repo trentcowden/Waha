@@ -30,7 +30,7 @@ export function security (
     isTimedOut: false,
     mtUnlockTimeout: 0
   },
-  params
+  params?
 ) {
   switch (params.type) {
     case SET_SECURITY_ENABLED:

@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
+import { CommonProps } from '../interfaces/common'
 import { appVersion } from '../modeSwitch'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-const InformationItem = ({
+interface Props extends CommonProps {
+  label: string,
+  secondaryLabel?: string,
+  icon: string,
+  onPress: Function
+}
+
+const InformationItem: FC<Props> = ({
   // Props passed from redux.
   isRTL,
   isDark,
@@ -14,13 +23,13 @@ const InformationItem = ({
   secondaryLabel,
   icon,
   onPress
-}) => (
+}): ReactElement => (
   <TouchableOpacity
     style={{
       ...styles.informationItem,
       flexDirection: isRTL ? 'row-reverse' : 'row'
     }}
-    onPress={onPress}
+    onPress={() => onPress()}
   >
     <View>
       <Text

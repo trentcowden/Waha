@@ -9,7 +9,7 @@ export function settings (
   state = {
     isDarkModeEnabled: false
   },
-  params
+  params?
 ) {
   switch (params.type) {
     case SET_IS_DARK_MODE_ENABLED:

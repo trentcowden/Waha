@@ -10,7 +10,7 @@ import {
  * @param {number} downloads[lessonID].progress - The progress of this lesson's download from 0 to 1.
  * @param {Object} downloads[lessonID].resumable - The resumable object for this lesson's download saved from the expo download object. This is stored so that we can "cancel" the download later. In this case, cancelling means pausing the download and never resuming it since expo doesn't have a cancel download function.
  */
-export function downloads (state = {}, params) {
+export function downloads (state = {}, params?) {
   switch (params.type) {
     /**
      * Adds or updates the progress for a download in the downloads state. The reason these are grouped into one is because the functionality is the same. If the lesson ID is found in the object, it replaces it (updates it). If it's not, it adds it.

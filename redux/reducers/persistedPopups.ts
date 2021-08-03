@@ -19,7 +19,7 @@ export function persistedPopups (
     lessonCounter: 0,
     numLessonsTilReview: 2
   },
-  params
+  params?
 ) {
   switch (params.type) {
     case SET_SHOW_TRAILER_HIGHLIGHTS:

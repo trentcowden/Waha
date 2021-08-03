@@ -20,7 +20,7 @@ import {
 } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
-import SVG from './SVG.js'
+import SVG from './SVG'
 
 /**
  * A component that displays a set. Used on a variety of screens and displayed in a variety of ways depending on the mode prop.

@@ -3,7 +3,7 @@
  * @param {Object} action - Parameters passed from networkActions.js functions.
  * @param {Object} deviceInfo - (state) Stores information related to the user's device.
  */
-export function deviceInfo (state = {}, params) {
+export function deviceInfo (state = {}, params?) {
   switch (params.type) {
     default:
       return state

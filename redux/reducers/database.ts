@@ -66,7 +66,7 @@ export function database (
     actingLanguageID: null,
     recentActiveGroup: null
   },
-  params
+  params?
 ) {
   switch (params.type) {
     case INCREMENT_GLOBAL_GROUP_COUNTER:

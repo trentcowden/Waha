@@ -12,7 +12,7 @@ export function popups (
   state = {
     showMTTabAddedSnackbar: false
   },
-  params
+  params?
 ) {
   switch (params.type) {
     case SET_SHOW_MT_TAB_ADDED_SNACKBAR:
