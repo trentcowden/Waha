@@ -56,6 +56,23 @@ export const languages = [
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
         },
         versions: null
+      },
+      {
+        languageID: 'ma',
+        nativeName: 'الدارجة المغربية',
+        brandName: 'معرفة الله',
+        contactEmail: 'hello@waha.app',
+        colors: {
+          light: '#006233',
+          dark: '#76B798'
+        },
+        logos: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+        },
+        versions: null
       }
     ]
   }

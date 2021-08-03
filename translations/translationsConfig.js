@@ -2,6 +2,7 @@ import en from './en.json'
 import ga from './ga.json'
 import hc from './hc.json'
 import hi from './hi.json'
+import ma from './ma.json'
 import mr from './mr.json'
 import ro from './ro.json'
 import ru from './ru.json'
@@ -14,6 +15,8 @@ export const getTranslations = languageID => {
     case 'ar':
     case 'ga':
       return ga
+    case 'ma':
+      return ma
     case 'hc':
       return hc
     case 'hi':

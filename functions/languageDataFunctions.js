@@ -167,3 +167,16 @@ export const getInstalledLanguagesData = (database, groups) => {
           database[b.languageID].installTime
       )
 }
+
+export const getTotalNumberOfLanguages = () => {
+  var numLanguages = 0
+
+  languages.forEach(languageFamily => {
+    languageFamily.data.forEach(language => {
+      if (language.versions !== null) {
+        language.versions.forEach(version => (numLanguages += 1))
+      } else numLanguages += 1
+    })
+  })
+  return numLanguages
+}

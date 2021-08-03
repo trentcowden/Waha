@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
-import { languages } from '../languages'
+import { getTotalNumberOfLanguages } from '../functions/languageDataFunctions'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -21,7 +21,7 @@ const AddNewLanguageInstanceButton = ({
 }) => {
   return (
     // Hide this button if every language has already been added.
-    languageAndGroupData.length !== languages.length && (
+    languageAndGroupData.length !== getTotalNumberOfLanguages() && (
       <TouchableOpacity
         style={{
           ...styles.addNewLanguageButtonContainer,

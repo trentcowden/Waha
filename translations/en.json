@@ -87,7 +87,8 @@
 		"ar": "Arabic",
 		"en": "English",
 		"ga": "Gulf Arabic",
-		"hi": "Hindi"
+		"hi": "Hindi",
+		"ma": "Moroccan Arabic"
 	},
 	"lessons": {
 		"download_lesson": "Download Lesson",

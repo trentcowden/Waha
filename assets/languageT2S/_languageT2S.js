@@ -5,5 +5,6 @@
 export const languageT2S = {
   en: require('./en.mp3'),
   ga: require('./ga.mp3'),
-  hi: require('./hi.mp3')
+  hi: require('./hi.mp3'),
+  ma: require('./en.mp3')
 }
