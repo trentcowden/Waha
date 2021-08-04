@@ -14,13 +14,14 @@ import {
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
-  setReviewTimeout
+  setReviewTimeout,
 } from '../redux/actions/persistedPopupsActions'
 import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { AppDispatch, RootState } from '../redux/store'
 import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
@@ -45,7 +46,7 @@ LogBox.ignoreLogs(['Setting a timer'])
 // Create the stack navigator.
 const Stack = createStackNavigator()
 
-function mapStateToProps (state) {
+function mapStateToProps(state: RootState) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
@@ -58,28 +59,29 @@ function mapStateToProps (state) {
     reviewTimeout: state.persistedPopups.reviewTimeout,
     lessonCounter: state.persistedPopups.lessonCounter,
     numLessonsTilReview: state.persistedPopups.numLessonsTilReview,
-    font: info(activeGroupSelector(state).language).font
+    font: info(activeGroupSelector(state).language).font,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch: AppDispatch) {
   return {
-    setTimer: ms => {
+    setTimer: (ms: number) => {
       dispatch(setTimer(ms))
     },
-    setIsTimedOut: toSet => {
+    setIsTimedOut: (toSet: boolean) => {
       dispatch(setIsTimedOut(toSet))
     },
-    setHasUsedPlayScreen: toSet => dispatch(setHasUsedPlayScreen(toSet)),
-    setLessonCounter: numLessons => {
+    setHasUsedPlayScreen: (toSet: boolean) =>
+      dispatch(setHasUsedPlayScreen(toSet)),
+    setLessonCounter: (numLessons: number) => {
       dispatch(setLessonCounter(numLessons))
     },
-    setNumLessonsTilReview: numLessons => {
+    setNumLessonsTilReview: (numLessons: number) => {
       dispatch(setNumLessonsTilReview(numLessons))
     },
-    setReviewTimeout: timeout => {
+    setReviewTimeout: (timeout: number) => {
       dispatch(setReviewTimeout(timeout))
-    }
+    },
   }
 }
 
@@ -107,19 +109,19 @@ const MainStack = ({
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
-  setReviewTimeout
+  setReviewTimeout,
 }) => {
   /** Keeps track of the current app state. Can be "active", "inactive", or "background". Set by the app state listener function. */
   const [appState, setAppState] = useState('')
 
   /** useEffect function that acts as a constructor. It starts up the app state listener and cleans it up as well. */
   useEffect(() => {
-    const appStateUnsubscribe = AppState.addEventListener('change', change =>
+    const appStateUnsubscribe = AppState.addEventListener('change', (change) =>
       setAppState(change)
     )
 
-    return function cleanup () {
-      AppState.removeEventListener('change', change => setAppState(change))
+    return function cleanup() {
+      AppState.removeEventListener('change', (change) => setAppState(change))
     }
   }, [])
 
@@ -171,15 +173,15 @@ const MainStack = ({
   /** Function for fading out from the piano screen into the normal navigator. */
   const forFade = ({ current }) => ({
     cardStyle: {
-      opacity: current.progress
-    }
+      opacity: current.progress,
+    },
   })
 
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
       <Stack.Navigator
@@ -190,12 +192,12 @@ const MainStack = ({
           gestureDirection: isRTL ? 'horizontal-inverted' : 'horizontal',
           gestureResponseDistance: {
             horizontal: 50 * scaleMultiplier,
-            vertical: 135
+            vertical: 135,
           },
           headerTitleAlign: 'center',
           cardStyle: {
-            opacity: 1
-          }
+            opacity: 1,
+          },
         }}
         mode='card'
       >
@@ -207,7 +209,7 @@ const MainStack = ({
               backgroundColor: colors(isDark).bg3,
               // Remove the header shadow.
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitle: () => (
               <ScreenHeaderImage isDark={isDark} activeGroup={activeGroup} />
@@ -232,7 +234,7 @@ const MainStack = ({
                           zIndex: 100,
                           position: 'absolute',
                           alignSelf: 'flex-end',
-                          paddingHorizontal: 10
+                          paddingHorizontal: 10,
                         }}
                       >
                         <View
@@ -242,7 +244,7 @@ const MainStack = ({
                             borderRadius: 6.5 * scaleMultiplier,
                             backgroundColor: colors(isDark).success,
                             alignSelf: 'flex-end',
-                            zIndex: 100
+                            zIndex: 100,
                           }}
                         />
                         <View style={{ width: 5 }} />
@@ -267,7 +269,7 @@ const MainStack = ({
                           zIndex: 100,
                           position: 'absolute',
                           alignSelf: 'flex-start',
-                          paddingHorizontal: 10
+                          paddingHorizontal: 10,
                         }}
                       >
                         <View
@@ -277,7 +279,7 @@ const MainStack = ({
                             borderRadius: 6.5 * scaleMultiplier,
                             backgroundColor: colors(isDark).success,
                             alignSelf: 'flex-end',
-                            zIndex: 100
+                            zIndex: 100,
                           }}
                         />
                         <View style={{ width: 5 }} />
@@ -287,7 +289,7 @@ const MainStack = ({
                 )
               : () => (
                   <TestModeDisplay isDark={isDark} activeGroup={activeGroup} />
-                )
+                ),
           }}
         />
         <Stack.Screen
@@ -297,9 +299,9 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
-            headerTitleAlign: 'center'
+            headerTitleAlign: 'center',
           }}
         />
         <Stack.Screen
@@ -309,10 +311,10 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             // Disable gestures on this screen because there are already horizontally-swipable elements on it.
-            gestureEnabled: false
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -322,8 +324,8 @@ const MainStack = ({
             headerTitle: t.groups.groups_and_languages,
             headerStyle: {
               elevation: 0,
-              shadowColor: 'transparent'
-            }
+              shadowColor: 'transparent',
+            },
           }}
         />
         <Stack.Screen
@@ -333,13 +335,13 @@ const MainStack = ({
             title: '',
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
+              fontFamily: font + '-Bold',
             },
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
-            }
+              shadowColor: 'transparent',
+            },
           }}
         />
         <Stack.Screen
@@ -349,11 +351,11 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
+              fontFamily: font + '-Bold',
             },
             headerRight: isRTL
               ? () => (
@@ -372,7 +374,7 @@ const MainStack = ({
                     isRTL={isRTL}
                     isDark={isDark}
                   />
-                )
+                ),
           }}
         />
         <Stack.Screen
@@ -383,12 +385,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -399,12 +401,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -415,12 +417,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -431,12 +433,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -447,12 +449,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -462,12 +464,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -477,12 +479,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -492,12 +494,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -507,12 +509,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -522,7 +524,7 @@ const MainStack = ({
             gestureEnabled: false,
             headerShown: false,
             // Set the transition out of the piano screen to be a fade instead of a swipe.
-            cardStyleInterpolator: forFade
+            cardStyleInterpolator: forFade,
           }}
         />
         <Stack.Screen
@@ -531,7 +533,7 @@ const MainStack = ({
           options={{
             gestureEnabled: false,
             headerShown: false,
-            animationEnabled: false
+            animationEnabled: false,
           }}
         />
         <Stack.Screen
@@ -542,12 +544,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
         <Stack.Screen
@@ -558,12 +560,12 @@ const MainStack = ({
             headerStyle: {
               backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
               elevation: 0,
-              shadowColor: 'transparent'
+              shadowColor: 'transparent',
             },
             headerTitleStyle: {
               color: colors(isDark).text,
-              fontFamily: font + '-Bold'
-            }
+              fontFamily: font + '-Bold',
+            },
           }}
         />
       </Stack.Navigator>

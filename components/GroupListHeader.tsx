@@ -55,8 +55,6 @@ const GroupListHeader: FC<Props> = ({
       )
   }, [activeGroup, isRTL])
 
-  const [trashButtonComponent, setTrashButtonComponent] = useState(<View />)
-
   /** Animated the position of the trash icon whenever isEditing changes. This pushes the whole component over to the right. */
   useEffect(() => {
     if (isEditing && activeGroup.language !== languageID) {
@@ -72,9 +70,10 @@ const GroupListHeader: FC<Props> = ({
     }
   }, [activeGroup, isEditing])
 
+  var trashButtonComponent = <View />
   // The trash button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
   if (!(activeGroup.language === languageID))
-    setTrashButtonComponent(
+    trashButtonComponent = (
       <TouchableOpacity
         style={styles.trashButtonContainer}
         onPress={() =>
@@ -105,7 +104,7 @@ const GroupListHeader: FC<Props> = ({
     )
   // For the language instance that contains the active group, render an empty view for this button so the layout still lines up.
   else if (activeGroup.language === languageID)
-    setTrashButtonComponent(<View style={styles.trashButtonContainer} />)
+    trashButtonComponent = <View style={styles.trashButtonContainer} />
 
   return (
     <View

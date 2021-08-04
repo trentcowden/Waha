@@ -1,12 +1,12 @@
-export interface DatabaseConfig {
+export type DatabaseConfig = {
   globalGroupCounter: number
   hasOnboarded: boolean
   hasFetchedLanguageData: boolean
   hasInstalledFirstLanguageInstance: boolean
   languageCoreFilesDownloadProgress: number
-  languageCoreFilesToUpdate: number
-  actingLanguageID: string
-  recentActiveGroup: string
+  languageCoreFilesToUpdate: string[]
+  actingLanguageID: string | undefined
+  recentActiveGroup: string | undefined
 }
 
 export type Database = DatabaseConfig & {
@@ -48,3 +48,5 @@ export interface ScripturePassage {
   addressID: string
   text: string
 }
+
+export type CoreFileCreatedTimes = Record<string, number>

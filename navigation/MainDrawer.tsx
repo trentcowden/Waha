@@ -1,13 +1,15 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import {
   getFocusedRouteNameFromRoute,
-  NavigationContainer
+  NavigationContainer,
 } from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { isTablet, scaleMultiplier, storageMode } from '../constants'
+import { AGProps, CommonProps, DBProps, DLProps } from 'interfaces/common'
+import { DBLanguageData, StorySet } from 'interfaces/database'
+import React, { FC, ReactElement, useEffect } from 'react'
+import { connect, ConnectedProps } from 'react-redux'
+import { isTablet, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
 import { appVersion } from '../modeSwitch'
@@ -17,97 +19,96 @@ import {
   clearLanguageCoreFilesToUpdate,
   storeLanguageCoreFileCreatedTime,
   storeLanguageData,
-  storeLanguageSets
+  storeLanguageSets,
 } from '../redux/actions/databaseActions'
 import { addSet, deleteGroup } from '../redux/actions/groupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector
-} from '../redux/reducers/activeGroup'
-import { getTranslations } from '../translations/translationsConfig'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { AppDispatch, RootState } from '../redux/store'
 import MainStack from './MainStack'
 import WahaDrawer from './WahaDrawer'
 
 // Create the drawer navigator.
 const Drawer = createDrawerNavigator()
 
-function mapStateToProps (state) {
+function mapStateToProps(state: RootState) {
+  console.log(state.groups)
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     database: state.database,
-    activeDatabase: activeDatabaseSelector(state),
-    isConnected: state.network.isConnected,
-    t: getTranslations(activeGroupSelector(state).language),
     activeGroup: activeGroupSelector(state),
     security: state.security,
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
     mtUnlockAttempts: state.mtUnlockAttempts,
     downloads: state.downloads,
-    groups: state.groups,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked
+    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch: AppDispatch) {
   return {
-    storeLanguageData: (data, language) => {
+    storeLanguageData: (data: DBLanguageData, language: string) => {
       dispatch(storeLanguageData(data, language))
     },
-    storeLanguageSets: (sets, language) => {
+    storeLanguageSets: (sets: StorySet[], language: string) => {
       dispatch(storeLanguageSets(sets, language))
     },
-    addLanguageCoreFileToUpdate: fileName => {
+    addLanguageCoreFileToUpdate: (fileName: string) => {
       dispatch(addLanguageCoreFileToUpdate(fileName))
     },
-    changeActiveGroup: name => {
+    changeActiveGroup: (name: string) => {
       dispatch(changeActiveGroup(name))
     },
-    deleteGroup: name => {
+    deleteGroup: (name: string) => {
       dispatch(deleteGroup(name))
     },
-    storeLanguageCoreFileCreatedTime: (fileName, timeCreated) =>
+    storeLanguageCoreFileCreatedTime: (fileName: string, timeCreated: number) =>
       dispatch(storeLanguageCoreFileCreatedTime(fileName, timeCreated)),
     clearLanguageCoreFilesToUpdate: () =>
       dispatch(clearLanguageCoreFilesToUpdate()),
-    addSet: (groupName, groupID, set) => {
+    addSet: (groupName: string, groupID: number, set: StorySet) => {
       dispatch(addSet(groupName, groupID, set))
-    }
+    },
   }
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+type ReduxProps = ConnectedProps<typeof connector>
+
+interface Props extends ReduxProps, CommonProps, AGProps, DBProps, DLProps {
+  // security: Object
+  // languageCoreFilesCreatedTimes: CoreFileCreatedTimes
+  // languageCoreFilesToUpdate: string[]
+  // storeLanguageData: Function
+  // storeLanguageSets: Function
+  // addLanguageCoreFileToUpdate: Function
+  // storeLanguageCoreFileCreatedTime: Function
+  // clearLanguageCoreFilesToUpdate: Function
 }
 
 /**
  * This component renders a drawer navigator that contains Waha's navigation drawer. It's placed around the MainStack navigator. It also contains a ton of logic related to things that happen globally in the background, such as updating the connection status and retrieving updates from Firestore.
  */
-const MainDrawer = ({
+const MainDrawer: FC<Props> = ({
   // Props passed from redux.
   isRTL,
   isDark,
   database,
-  activeDatabase,
-  isConnected,
   activeGroup,
   security,
   languageCoreFilesCreatedTimes,
   languageCoreFilesToUpdate,
-  mtUnlockAttempts,
   downloads,
-  groups,
-  t,
-  areMobilizationToolsUnlocked,
-  updateConnectionStatus,
   storeLanguageData,
   storeLanguageSets,
   addLanguageCoreFileToUpdate,
-  changeActiveGroup,
-  deleteGroup,
   storeLanguageCoreFileCreatedTime,
   clearLanguageCoreFilesToUpdate,
-  addSet
-}) => {
+}): ReactElement => {
   /** useEffect function that checks for database updates for other installed languages besides the active one. */
   useEffect(() => {
-    Object.keys(database).forEach(key => {
+    Object.keys(database).forEach((key) => {
       if (key.length === 2 && key !== activeGroup.language) {
         // Whether the app should write the new Firestore changes to redux or not. The only reason that it wouldn't is if the app version is behind the database version.
         var shouldWrite = false
@@ -116,9 +117,9 @@ const MainDrawer = ({
         db.collection('languages')
           .doc(key)
           .get()
-          .then(async doc => {
+          .then(async (doc) => {
             // If we get some legitimate data back...
-            if (doc.exists && doc.data()) {
+            if (doc.exists && doc.data() !== undefined) {
               // If the Waha version is greater than or equal to the app version in the database...
               if (doc.data().appVersion <= appVersion) {
                 // Set shouldWrite to true. This way, when we fetch data for the Story Sets for this language, we know we're safe to write to redux.
@@ -129,7 +130,8 @@ const MainDrawer = ({
               }
             }
           })
-          .catch(error => {
+          .catch((error) => {
+            console.log(error)
             console.log('Error retrieving languages data from Firestore.')
           })
 
@@ -137,24 +139,31 @@ const MainDrawer = ({
         db.collection('sets')
           .where('languageID', '==', key)
           .get()
-          .then(querySnapshot => {
+          .then((querySnapshot) => {
             // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
             if (!querySnapshot.empty) {
               if (shouldWrite) {
                 // Add each Story Set to a temporary set array...
-                var sets = []
-                querySnapshot.forEach(doc => {
-                  sets.push({
+                var sets: StorySet[] = []
+                querySnapshot.forEach((doc) => {
+                  var storySetItem: StorySet = {
                     id: doc.id,
-                    ...doc.data()
-                  })
+                    languageID: doc.data().languageID,
+                    title: doc.data().title,
+                    subtitle: doc.data().subtitle,
+                    iconName: doc.data().iconName,
+                    lessons: doc.data().lessons,
+                  }
+
+                  sets.push(storySetItem)
                 })
                 /// ...and write all of them to redux.
                 storeLanguageSets(sets, key)
               }
             }
           })
-          .catch(error => {
+          .catch((error) => {
+            console.log(error)
             console.log('Error retrieving sets data from Firestore.')
           })
       }
@@ -170,11 +179,14 @@ const MainDrawer = ({
     db.collection('languages')
       .doc(activeGroup.language)
       .get()
-      .then(async doc => {
+      .then(async (doc) => {
+        // Get our langauge data.
+        var languageData = doc.data()
+
         // If we get some legitimate data back...
-        if (doc.exists && doc.data()) {
+        if (doc.exists && languageData !== undefined) {
           // If the Waha version is greater than or equal to the app version in the database...
-          if (doc.data().appVersion <= appVersion) {
+          if (languageData.appVersion <= appVersion) {
             // Set shouldWrite to true. This way, when we fetch data for the Story Sets for this language, we know we're safe to write to redux.
             shouldWrite = true
 
@@ -183,14 +195,15 @@ const MainDrawer = ({
             storeLanguageData(doc.data(), activeGroup.language)
 
             // Check if we need replacements for already downloaded core files by comparing the created times of downloaded core files in redux with the created times of the current Firebase storage core files. If the created times don't match, it means a core file has been updated and we need to queue the new core file to download.
-            doc.data().files.forEach(fileName => {
+            languageData.files.forEach((fileName: string) => {
               // Set the file extension for the core file we're currently checking.
               var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
 
               var url =
-                storageMode === 'test'
-                  ? `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
-                  : `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+                // storageMode === 'test'
+                //   ? `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+                //   :
+                `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
               // Check the timeCreated of this core file in Firebase storage.
               firebase
@@ -223,39 +236,43 @@ const MainDrawer = ({
                 })
             })
 
-            // Read the contents of Waha's file directory to check which core files are downloaded.
-            FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-              contents => {
-                // For each core file listed in Firestore, verify that it's already downloaded.
-                doc.data().files.forEach(fileName => {
-                  var fileExtension = fileName.includes('header')
-                    ? 'png'
-                    : 'mp3'
-                  // If it isn't downloaded...
-                  if (
-                    !contents.includes(
-                      `${activeGroup.language}-${fileName}.${fileExtension}`
-                    )
-                  ) {
-                    // Add the core file to our redux array of files to download, assuming that it hasn't already been added.
-                    if (
-                      !languageCoreFilesToUpdate.includes(
-                        `${activeGroup.language}-${fileName}`
-                      )
-                    ) {
-                      console.log(`${fileName} needs to be added.\n`)
-                      addLanguageCoreFileToUpdate(
-                        `${activeGroup.language}-${fileName}`
-                      )
-                    }
-                  }
-                })
-              }
-            )
+            if (FileSystem.documentDirectory !== null) {
+              // Read the contents of Waha's file directory to check which core files are downloaded.
+              FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+                (contents) => {
+                  // For each core file listed in Firestore, verify that it's already downloaded.
+                  if (languageData !== undefined)
+                    languageData.files.forEach((fileName: string) => {
+                      var fileExtension = fileName.includes('header')
+                        ? 'png'
+                        : 'mp3'
+                      // If it isn't downloaded...
+                      if (
+                        !contents.includes(
+                          `${activeGroup.language}-${fileName}.${fileExtension}`
+                        )
+                      ) {
+                        // Add the core file to our redux array of files to download, assuming that it hasn't already been added.
+                        if (
+                          !languageCoreFilesToUpdate.includes(
+                            `${activeGroup.language}-${fileName}`
+                          )
+                        ) {
+                          console.log(`${fileName} needs to be added.`)
+                          addLanguageCoreFileToUpdate(
+                            `${activeGroup.language}-${fileName}`
+                          )
+                        }
+                      }
+                    })
+                }
+              )
+            }
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log(error)
         console.log(
           'Error retrieving languages data from Firestore (in checking created times part).'
         )
@@ -265,24 +282,31 @@ const MainDrawer = ({
     db.collection('sets')
       .where('languageID', '==', activeGroup.language)
       .get()
-      .then(querySnapshot => {
+      .then((querySnapshot) => {
         // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
         if (!querySnapshot.empty) {
           if (shouldWrite) {
             // Add each Story Set to a temporary set array...
-            var sets = []
-            querySnapshot.forEach(doc => {
-              sets.push({
+            var sets: StorySet[] = []
+            querySnapshot.forEach((doc) => {
+              var storySetItem: StorySet = {
                 id: doc.id,
-                ...doc.data()
-              })
+                languageID: doc.data().languageID,
+                title: doc.data().title,
+                subtitle: doc.data().subtitle,
+                iconName: doc.data().iconName,
+                lessons: doc.data().lessons,
+              }
+
+              sets.push(storySetItem)
             })
             /// ...and write all of them to redux.
             storeLanguageSets(sets, activeGroup.language)
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log(error)
         console.log('Error retrieving sets data from Firestore.')
       })
   }, [Object.keys(downloads).length, activeGroup])
@@ -292,7 +316,7 @@ const MainDrawer = ({
    * @param {string} route - The route passed from the navigation component.
    * @return {boolean} - Whether gestures should be enabled or not.
    */
-  function getGestureEnabled (route) {
+  function getGestureEnabled(route) {
     const routeName = getFocusedRouteNameFromRoute(route)
 
     if (routeName === undefined) return security.securityEnabled ? false : true
@@ -304,16 +328,16 @@ const MainDrawer = ({
       <Drawer.Navigator
         drawerPosition={isRTL ? 'right' : 'left'}
         drawerType={'back'}
-        drawerContent={props => <WahaDrawer {...props} />}
+        drawerContent={(props) => <WahaDrawer {...props} />}
         drawerStyle={{
-          width: isTablet ? '50%' : '80%'
+          width: isTablet ? '50%' : '80%',
         }}
         edgeWidth={75 * scaleMultiplier}
         initialRouteName='MainStack'
       >
         <Drawer.Screen
           options={({ route }) => ({
-            gestureEnabled: getGestureEnabled(route)
+            gestureEnabled: getGestureEnabled(route),
           })}
           name='MainStack'
           component={MainStack}
@@ -323,4 +347,4 @@ const MainDrawer = ({
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainDrawer)
+export default connector(MainDrawer)

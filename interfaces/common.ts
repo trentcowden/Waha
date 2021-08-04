@@ -1,3 +1,4 @@
+import { Database } from './database'
 import { Download } from './downloads'
 import { Group } from './groups'
 import { Translations } from './translations'
@@ -26,7 +27,7 @@ export interface NetworkProps {
 }
 
 export interface DBProps {
-  database: Object
+  database: Database
 }
 
 export interface ADBProps {

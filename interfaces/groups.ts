@@ -1,6 +1,6 @@
 export interface Group {
   name: string
-  id: string
+  id: number
   language: string
   emoji: string
   recentCoreOrTool: string

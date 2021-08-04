@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
 } from 'react-native'
 import { useColorScheme } from 'react-native-appearance'
 import { connect } from 'react-redux'
@@ -32,17 +32,17 @@ import {
   setHasFetchedLanguageData,
   setRecentActiveGroup,
   storeLanguageData,
-  storeLanguageSets
+  storeLanguageSets,
 } from '../redux/actions/databaseActions'
-import { createGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { createGroup } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     groups: state.groups,
     database: state.database,
@@ -60,50 +60,50 @@ function mapStateToProps (state) {
     screenLanguage:
       state.activeGroup === null
         ? info(Localization.locale.slice(0, 2)).languageID
-        : activeGroupSelector(state).language
+        : activeGroupSelector(state).language,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    downloadLanguageCoreFiles: languageInstanceID =>
+    downloadLanguageCoreFiles: (languageInstanceID) =>
       dispatch(downloadLanguageCoreFiles(languageInstanceID)),
     storeLanguageData: (data, languageInstanceID) =>
       dispatch(storeLanguageData(data, languageInstanceID)),
-    setIsInstallingLanguageInstance: toSet =>
+    setIsInstallingLanguageInstance: (toSet) =>
       dispatch(setIsInstallingLanguageInstance(toSet)),
-    setHasFetchedLanguageData: hasFetchedLanguageData =>
+    setHasFetchedLanguageData: (hasFetchedLanguageData) =>
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
     storeLanguageSets: (sets, languageInstanceID) =>
       dispatch(storeLanguageSets(sets, languageInstanceID)),
-    deleteLanguageData: languageInstanceID =>
+    deleteLanguageData: (languageInstanceID) =>
       dispatch(deleteLanguageData(languageInstanceID)),
     incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter()),
     createGroup: (
-      groupName,
-      language,
-      emoji,
-      shouldShowMobilizationToolsTab,
-      groupID,
-      groupNumber
+      groupName: string,
+      language: string,
+      emoji: string,
+      shouldShowMobilizationToolsTab: boolean,
+      groupID: number,
+      groupNumber: number
     ) =>
       dispatch(
-        createGroup(
-          groupName,
-          language,
-          emoji,
-          shouldShowMobilizationToolsTab,
-          groupID,
-          groupNumber
-        )
+        createGroup({
+          groupName: groupName,
+          language: language,
+          emoji: emoji,
+          shouldShowMobilizationToolsTab: shouldShowMobilizationToolsTab,
+          groupID: groupID,
+          groupNumber: groupNumber,
+        })
       ),
-    changeActiveGroup: name => {
+    changeActiveGroup: (name) => {
       dispatch(changeActiveGroup(name))
     },
-    setRecentActiveGroup: groupName => {
+    setRecentActiveGroup: (groupName) => {
       dispatch(setRecentActiveGroup(groupName))
     },
-    setIsDarkModeEnabled: toSet => dispatch(setIsDarkModeEnabled(toSet))
+    setIsDarkModeEnabled: (toSet) => dispatch(setIsDarkModeEnabled(toSet)),
   }
 }
 
@@ -121,8 +121,8 @@ const LanguageSelectScreen = ({
     name: routeName,
     // Props passed from previous screen.
     params: { installedLanguageInstances } = {
-      installedLanguageInstances: []
-    }
+      installedLanguageInstances: [],
+    },
   },
   // Props passed from redux.
   font,
@@ -144,7 +144,7 @@ const LanguageSelectScreen = ({
   createGroup,
   changeActiveGroup,
   setRecentActiveGroup,
-  setIsDarkModeEnabled
+  setIsDarkModeEnabled,
 }) => {
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState('')
@@ -178,7 +178,7 @@ const LanguageSelectScreen = ({
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
     setOptions({
-      headerTitle: t.language_select.add_language
+      headerTitle: t.language_select.add_language,
     })
   }, [])
 
@@ -186,7 +186,7 @@ const LanguageSelectScreen = ({
    * Plays the text-to-speech audio file for a language.
    * @param {string} languageID - The ID of the language to play.
    */
-  const playAudio = async languageID => {
+  const playAudio = async (languageID) => {
     audio.unloadAsync()
     await audio.loadAsync(languageT2S[languageID]).then(() => {
       audio.playAsync()
@@ -197,7 +197,7 @@ const LanguageSelectScreen = ({
    * Fetches all the data for a language from Firebase. This includes the various Story Sets from the 'sets' collection and the language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
    * @param {string} language - The language to fetch the firebase data for.
    */
-  const fetchFirebaseData = async language => {
+  const fetchFirebaseData = async (language) => {
     // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
     setIsInstallingLanguageInstance(true)
 
@@ -209,17 +209,17 @@ const LanguageSelectScreen = ({
       .collection('sets')
       .where('languageID', '==', language)
       .get()
-      .then(response => {
+      .then((response) => {
         var sets = []
-        response.forEach(set => {
+        response.forEach((set) => {
           sets.push({
             id: set.id,
-            ...set.data()
+            ...set.data(),
           })
         })
         storeLanguageSets(sets, language)
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
         throw error
       })
@@ -229,12 +229,12 @@ const LanguageSelectScreen = ({
       .collection('languages')
       .doc(language)
       .get()
-      .then(async doc => {
+      .then(async (doc) => {
         if (doc.exists) {
           storeLanguageData(doc.data(), language)
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
         throw error
       })
@@ -257,7 +257,7 @@ const LanguageSelectScreen = ({
 
         // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
         if (
-          !groups.some(group => group.name === groupNames[selectedLanguage])
+          !groups.some((group) => group.name === groupNames[selectedLanguage])
         ) {
           incrementGlobalGroupCounter()
 
@@ -280,11 +280,11 @@ const LanguageSelectScreen = ({
         // Navigate to the onboarding slides if this is the first language instance install.
         if (routeName === 'InitialLanguageSelect') {
           navigate('WahaOnboardingSlides', {
-            selectedLanguage: selectedLanguage
+            selectedLanguage: selectedLanguage,
           })
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error)
 
         // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
@@ -297,8 +297,8 @@ const LanguageSelectScreen = ({
           [
             {
               text: t.general.ok,
-              onPress: () => {}
-            }
+              onPress: () => {},
+            },
           ]
         )
       })
@@ -320,7 +320,7 @@ const LanguageSelectScreen = ({
       onPress={() => {
         if (!selectedLanguage) {
           Animated.spring(buttonYPos, {
-            toValue: 0
+            toValue: 0,
           }).start()
         }
         setSelectedLanguage(language.languageID)
@@ -339,12 +339,12 @@ const LanguageSelectScreen = ({
    * @param {Object} languageFamily - The object for the language family that this language is a part of.
    * @return {Component} - The LanguageSelectItem component.
    */
-  const renderLanguageHeader = languageFamily => (
+  const renderLanguageHeader = (languageFamily) => (
     <View
       style={{
         ...styles.languageHeaderContainer,
         flexDirection: isRTL ? 'row-reverse' : 'row',
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <Text
@@ -365,7 +365,7 @@ const LanguageSelectScreen = ({
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       {routeName === 'InitialLanguageSelect' && (
@@ -379,7 +379,7 @@ const LanguageSelectScreen = ({
                 'center',
                 colors(isDark).text
               ),
-              fontSize: 28 * scaleMultiplier
+              fontSize: 28 * scaleMultiplier,
             }}
           >
             {t.language_select.welcome}
@@ -405,7 +405,7 @@ const LanguageSelectScreen = ({
           width: Dimensions.get('window').width - 40,
           maxWidth: 500,
           borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         }}
       >
         <View style={styles.searchIconContainer}>
@@ -426,9 +426,9 @@ const LanguageSelectScreen = ({
             ),
             flex: 1,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
-          onChangeText={text => setSearchTextInput(text)}
+          onChangeText={(text) => setSearchTextInput(text)}
           autoCorrect={false}
           autoCapitalize='none'
           placeholder={t.general.search}
@@ -445,7 +445,7 @@ const LanguageSelectScreen = ({
           )}
           ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
           SectionSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
-          keyExtractor={item => item.languageID}
+          keyExtractor={(item) => item.languageID}
           renderItem={({ item, section }) => renderLanguageItem(item, section)}
           renderSectionHeader={({ section }) => renderLanguageHeader(section)}
           renderSectionFooter={() => (
@@ -459,7 +459,7 @@ const LanguageSelectScreen = ({
       <Animated.View
         style={{
           ...styles.startButtonContainer,
-          transform: [{ translateY: buttonYPos }]
+          transform: [{ translateY: buttonYPos }],
         }}
       >
         <WahaButton
@@ -500,23 +500,23 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerTextContainer: {
     marginTop: 20 * scaleMultiplier,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   startButtonContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   languageHeaderContainer: {
     height: 40 * scaleMultiplier,
     width: '100%',
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   searchBarContainer: {
     borderRadius: 30,
@@ -529,21 +529,21 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 25 * scaleMultiplier
+    marginTop: 25 * scaleMultiplier,
   },
   searchIconContainer: {
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   languageListContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    flex: 1
-  }
+    flex: 1,
+  },
 })
 
 export default connect(

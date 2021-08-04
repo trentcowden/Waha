@@ -1,4 +1,3 @@
-import { StackNavigationProp } from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
 import { AGProps, CommonProps, DBProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
@@ -61,11 +60,6 @@ interface Props extends CommonProps, AGProps, TProps, DBProps {
   removeDownload: Function
   changeActiveGroup: Function
 }
-
-type GroupsScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Profile'
->
 
 /**
  * A screen that displays all of the installed language instances and the groups in those language instances. Allows for switching the active group and  editing, deleting, and adding groups & languages.

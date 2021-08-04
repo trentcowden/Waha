@@ -4,7 +4,7 @@ import { areMobilizationToolsUnlocked } from './reducers/areMobilizationToolsUnl
 import { database } from './reducers/database'
 import { deviceInfo } from './reducers/deviceInfo'
 import { downloads } from './reducers/downloads'
-import { groups } from './reducers/groups'
+import groups from './reducers/groups'
 import { isInstallingLanguageInstance } from './reducers/isInstallingLanguageInstance'
 import { mtUnlockAttempts } from './reducers/mtUnlockAttempts'
 import { network } from './reducers/network'

@@ -1,3 +1,4 @@
+import { Database } from 'interfaces/database'
 import {
   ADD_LANGUAGE_CORE_FILE_TO_UPDATE,
   CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE,
@@ -56,15 +57,15 @@ import {
  * @param {string} database[languageID].sets[].lessons[].text - The text for the chapter of the book that this lesson is. Only necesssary if this lesson is a part of an audio book.
  */
 export function database (
-  state = {
+  state: Database = {
     globalGroupCounter: 0,
     hasOnboarded: false,
     hasFetchedLanguageData: false,
     hasInstalledFirstLanguageInstance: false,
     languageCoreFilesDownloadProgress: 0,
     languageCoreFilesToUpdate: [],
-    actingLanguageID: null,
-    recentActiveGroup: null
+    actingLanguageID: undefined,
+    recentActiveGroup: undefined
   },
   params?
 ) {

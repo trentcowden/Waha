@@ -25,12 +25,12 @@ export const SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB =
  * @return {Object} - Object to send to the reducer.
  */
 export function createGroup (
-  groupName,
-  language,
-  emoji,
-  shouldShowMobilizationToolsTab,
-  groupID,
-  groupNumber
+  groupName: string,
+  language: string,
+  emoji: string,
+  shouldShowMobilizationToolsTab: boolean,
+  groupID: number,
+  groupNumber: number
 ) {
   logCreateGroup(language, groupID, groupNumber)
   // console.log(groupID)
