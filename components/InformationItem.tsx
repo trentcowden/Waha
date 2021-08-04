@@ -2,12 +2,12 @@ import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { CommonProps } from '../interfaces/common'
+import { AGProps, CommonProps } from '../interfaces/common'
 import { appVersion } from '../modeSwitch'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-interface Props extends CommonProps {
+interface Props extends CommonProps, AGProps {
   label: string,
   secondaryLabel?: string,
   icon: string,
@@ -15,7 +15,6 @@ interface Props extends CommonProps {
 }
 
 const InformationItem: FC<Props> = ({
-  // Props passed from redux.
   isRTL,
   isDark,
   activeGroup,

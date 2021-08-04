@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import Piano from '../components/Piano'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'

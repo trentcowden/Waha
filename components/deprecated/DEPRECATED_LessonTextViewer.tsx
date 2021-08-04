@@ -7,8 +7,8 @@ import { State } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import { scaleMultiplier } from '../constants'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import FloatingSectionLabel from './FloatingSectionLabel'

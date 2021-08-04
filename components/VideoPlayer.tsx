@@ -3,6 +3,7 @@ import * as ScreenOrientation from 'expo-screen-orientation'
 import { DeviceMotion } from 'expo-sensors'
 import React, { useEffect, useState } from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import {
   chapters,
   isTablet,

@@ -1,21 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import { Database } from 'interfaces/database'
+import { Group } from 'interfaces/groups'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Alert,
   Animated,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { getLessonInfo, scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import GroupAvatar from './GroupAvatar'
 
-const animatedPositions = {
-  EDITING: 0,
-  ISRTL: 24 * scaleMultiplier + 25,
-  ISNOTRTL: -24 * scaleMultiplier - 25
+enum AnimatedPosition {
+  EDITING = 0,
+  ISRTL = 24 * scaleMultiplier + 25,
+  ISNOTRTL = -24 * scaleMultiplier - 25,
+}
+
+interface Props extends CommonProps, AGProps, TProps {
+  thisGroup: Group
+  isEditing: boolean
+  openEditModal: Function
+  database: Database
+  groups: Group[]
+  deleteGroup: Function
+  changeActiveGroup: Function
 }
 
 /**
@@ -24,7 +38,7 @@ const animatedPositions = {
  * @param {boolean} isEditing - Whether we're in "editing" mode or not.
  * @param {Function} openEditModal - A function that opens the modal that allows us to edit the information for a group.
  */
-const GroupItem = ({
+const GroupItem: FC<Props> = ({
   // Props passed from a parent component.
   thisGroup,
   isEditing,
@@ -36,26 +50,24 @@ const GroupItem = ({
   t,
   activeGroup,
   deleteGroup,
-  changeActiveGroup
-}) => {
+  changeActiveGroup,
+}): ReactElement => {
   /** Keeps track of the components for the left button and the right icon of the group item. These get switched when isRTL is true. */
-  const [leftButton, setLeftButton] = useState(null)
-  const [rightIcon, setRightIcon] = useState(null)
+  const [leftButton, setLeftButton] = useState(<View />)
+  const [rightIcon, setRightIcon] = useState(<View />)
 
   /** Keeps track of whether this group is the last group in a language instance. */
-  const [
-    isLastGroupInLanguageInstance,
-    setIsLastGroupInLanguageInstance
-  ] = useState(false)
+  const [isLastGroupInLanguageInstance, setIsLastGroupInLanguageInstance] =
+    useState(false)
 
   /** Keeps track of the animated position of the left icon of the group item component, in this case the delete button. */
-  const [groupItemXPos, setGroupItemXPos] = useState(
+  const [groupItemXPos] = useState(
     new Animated.Value(
       isEditing
-        ? animatedPositions.EDITING
+        ? AnimatedPosition.EDITING
         : isRTL
-        ? animatedPositions.ISRTL
-        : animatedPositions.ISNOTRTL
+        ? AnimatedPosition.ISRTL
+        : AnimatedPosition.ISNOTRTL
     )
   )
 
@@ -69,17 +81,20 @@ const GroupItem = ({
     // If a group is the last in a language instance and isn't the active group, it should always stay in the non-edit-mode position.
     if (isLastGroupInLanguageInstance && activeGroup.name !== thisGroup.name) {
       Animated.spring(groupItemXPos, {
-        toValue: isRTL ? animatedPositions.ISRTL : animatedPositions.ISNOTRTL
+        toValue: isRTL ? AnimatedPosition.ISRTL : AnimatedPosition.ISNOTRTL,
+        useNativeDriver: true,
       }).start()
       // Otherwise, animate the group item based off whether edit mode is active or not.
     } else {
       if (isEditing) {
         Animated.spring(groupItemXPos, {
-          toValue: animatedPositions.EDITING
+          toValue: AnimatedPosition.EDITING,
+          useNativeDriver: true,
         }).start()
       } else if (!isEditing) {
         Animated.spring(groupItemXPos, {
-          toValue: isRTL ? animatedPositions.ISRTL : animatedPositions.ISNOTRTL
+          toValue: isRTL ? AnimatedPosition.ISRTL : AnimatedPosition.ISNOTRTL,
+          useNativeDriver: true,
         }).start()
       }
     }
@@ -88,7 +103,8 @@ const GroupItem = ({
   /** useEffect function that determines whether this group is the last in a language instance. */
   useEffect(() => {
     if (
-      groups.filter(group => group.language === thisGroup.language).length === 1
+      groups.filter((group) => group.language === thisGroup.language).length ===
+      1
     )
       setIsLastGroupInLanguageInstance(true)
     else setIsLastGroupInLanguageInstance(false)
@@ -103,17 +119,17 @@ const GroupItem = ({
     if (thisGroup) {
       // Get the object for the currently bookmarked set.
       var bookmarkSet = database[thisGroup.language].sets.filter(
-        set => set.id === thisGroup.setBookmark
+        (set) => set.id === thisGroup.setBookmark
       )[0]
 
       // Get the index of the bookmarked lesson within the bookmarked set.
       var bookmarkSetBookmarkLesson = thisGroup.addedSets.filter(
-        addedSet => addedSet.id === bookmarkSet.id
+        (addedSet) => addedSet.id === bookmarkSet.id
       )[0].bookmark
 
       // Finally, get the object for the bookmarked lesson. This will be the most useful information to see on the group item.
       var bookmarkLesson = bookmarkSet.lessons.filter(
-        lesson =>
+        (lesson) =>
           getLessonInfo('index', lesson.id) === bookmarkSetBookmarkLesson
       )[0]
 
@@ -142,13 +158,13 @@ const GroupItem = ({
                   {
                     text: t.general.cancel,
                     onPress: () => {},
-                    style: 'cancel'
+                    style: 'cancel',
                   },
                   {
                     text: t.general.ok,
                     onPress: () => deleteGroup(thisGroup.name),
-                    style: 'destructive'
-                  }
+                    style: 'destructive',
+                  },
                 ]
               )
             }}
@@ -166,7 +182,7 @@ const GroupItem = ({
         <Animated.View
           style={{
             ...styles.minusButtonContainer,
-            transform: [{ translateX: groupItemXPos }]
+            transform: [{ translateX: groupItemXPos }],
           }}
         >
           <Icon
@@ -181,7 +197,7 @@ const GroupItem = ({
         <View
           style={{
             // Make the width such that the group avatar/text doesn't change position in editing mode. This width makes up for the padding that is lost in editing mode.
-            width: 24 * scaleMultiplier + 40
+            width: 24 * scaleMultiplier + 40,
           }}
         />
       )
@@ -223,14 +239,14 @@ const GroupItem = ({
         flexDirection: isRTL ? 'row-reverse' : 'row',
         borderLeftWidth: isRTL ? 0 : 5,
         borderRightWidth: isRTL ? 5 : 0,
-        borderColor: colors(isDark, thisGroup.language).accent
+        borderColor: colors(isDark, thisGroup.language).accent,
       }}
     >
       {leftButton}
       <TouchableOpacity
         style={{
           ...styles.touchableAreaContainer,
-          flexDirection: isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
         onPress={
           // Tapping on a group while not in edit mode switches the active group; in edit mode, it opens the edit group modal.
@@ -245,23 +261,24 @@ const GroupItem = ({
             justifyContent: 'flex-start',
             alignItems: 'center',
             flex: 1,
-            transform: [{ translateX: groupItemXPos }]
+            transform: [{ translateX: groupItemXPos }],
           }}
         >
           <GroupAvatar
             style={{
-              backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2
+              backgroundColor: isDark ? colors(isDark).bg4 : colors(isDark).bg2,
             }}
             size={50 * scaleMultiplier}
             emoji={thisGroup.emoji}
             isActive={activeGroup.name === thisGroup.name}
             isDark={isDark}
+            isRTL={isRTL}
           />
           <View
             style={{
               ...styles.groupTextContainer,
               marginLeft: isRTL ? 0 : 20,
-              marginRight: isRTL ? 20 : 0
+              marginRight: isRTL ? 20 : 0,
             }}
           >
             <Text
@@ -274,7 +291,7 @@ const GroupItem = ({
                   'left',
                   colors(isDark).text
                 ),
-                textAlign: isRTL ? 'right' : 'left'
+                textAlign: isRTL ? 'right' : 'left',
               }}
               numberOfLines={1}
             >
@@ -291,7 +308,7 @@ const GroupItem = ({
                     'left',
                     colors(isDark).secondaryText
                   ),
-                  textAlign: isRTL ? 'right' : 'left'
+                  textAlign: isRTL ? 'right' : 'left',
                 }}
                 numberOfLines={1}
               >
@@ -311,7 +328,7 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   touchableAreaContainer: {
     flex: 1,
@@ -319,24 +336,24 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 20
+    paddingRight: 20,
   },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    height: '100%',
   },
   minusButtonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   groupTextContainer: {
     flex: 1,
     height: '100%',
-    flexWrap: 'nowrap'
-  }
+    flexWrap: 'nowrap',
+  },
 })
 
 export default GroupItem

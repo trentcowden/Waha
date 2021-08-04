@@ -8,6 +8,7 @@ import {
   View
 } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
 import { buttonModes, scaleMultiplier, setItemModes } from '../constants'

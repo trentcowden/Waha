@@ -15,12 +15,12 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language)
+    t: getTranslations(activeGroupSelector(state).language),
   }
 }
 
@@ -35,7 +35,7 @@ const SecurityOnboardingSlidesScreen = ({
   isRTL,
   isDark,
   t,
-  activeGroup
+  activeGroup,
 }) => {
   /** The ref for the pager view. Used to manually swipe pages. */
   const pagerRef = useRef()
@@ -54,16 +54,16 @@ const SecurityOnboardingSlidesScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>,
+        : () => <View />,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => goBack()}
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -120,14 +120,14 @@ const SecurityOnboardingSlidesScreen = ({
         imageType='png'
         isDark={isDark}
       />
-    </OnboardingPage>
+    </OnboardingPage>,
   ]
 
   return (
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <PagerView
@@ -144,7 +144,7 @@ const SecurityOnboardingSlidesScreen = ({
       <View
         style={{
           ...styles.bottomControlsContainer,
-          flexDirection: isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
       >
         <PageDots
@@ -156,7 +156,7 @@ const SecurityOnboardingSlidesScreen = ({
         <View
           style={{
             ...styles.skipButtonContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <TouchableOpacity
@@ -192,7 +192,7 @@ const SecurityOnboardingSlidesScreen = ({
           mode={buttonModes.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
-            flex: 2
+            flex: 2,
           }}
           isDark={isDark}
           isRTL={isRTL}
@@ -207,24 +207,24 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pager: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bottomControlsContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   skipButtonContainer: {
     height: 65 * scaleMultiplier,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 })
 
 export default connect(mapStateToProps)(SecurityOnboardingSlidesScreen)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaBlurb from '../components/WahaBlurb'
 import WahaHero from '../components/WahaHero'
@@ -12,28 +13,28 @@ import { info } from '../functions/languageDataFunctions'
 import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
 import {
   setSecurityEnabled,
-  setTimeoutDuration
+  setTimeoutDuration,
 } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     showPasscodeSetSnackbar: state.popups.showPasscodeSetSnackbar,
     security: state.security,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
-    setTimeoutDuration: ms => dispatch(setTimeoutDuration(ms))
+    setSecurityEnabled: (toSet) => dispatch(setSecurityEnabled(toSet)),
+    setTimeoutDuration: (ms) => dispatch(setTimeoutDuration(ms)),
   }
 }
 
@@ -51,7 +52,7 @@ const SecurityModeScreen = ({
   showPasscodeSetSnackbar,
   security,
   setSecurityEnabled,
-  setTimeoutDuration
+  setTimeoutDuration,
 }) => {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -64,16 +65,16 @@ const SecurityModeScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>,
+        : () => <View />,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => goBack()}
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -97,7 +98,7 @@ const SecurityModeScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       {/* Inside a ScrollView in case a user's phone can't fit all of the controls on their screen. */}
@@ -121,7 +122,7 @@ const SecurityModeScreen = ({
           <Switch
             trackColor={{
               false: colors(isDark).disabled,
-              true: colors(isDark).success
+              true: colors(isDark).success,
             }}
             thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
             ios_backgroundColor={colors(isDark).disabled}
@@ -152,7 +153,7 @@ const SecurityModeScreen = ({
               <View
                 style={{
                   flexDirection: isRTL ? 'row-reverse' : 'row',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
                 <Text
@@ -211,7 +212,7 @@ const SecurityModeScreen = ({
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: info(activeGroup.language).font + '-Black',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
         backgroundColor={colors(isDark).success}
       />
@@ -221,8 +222,8 @@ const SecurityModeScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SecurityModeScreen)

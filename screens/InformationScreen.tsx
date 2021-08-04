@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import InformationItem from '../components/InformationItem'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'

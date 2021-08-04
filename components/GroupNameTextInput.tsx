@@ -1,10 +1,19 @@
-import React from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement, RefObject } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-const GroupNameTextInput = ({
+interface Props extends CommonProps, AGProps, TProps {
+  groupNameInput: string
+  setGroupNameInput: Function
+  groupNameInputRef: RefObject<TextInput>
+  isDuplicate: boolean
+}
+
+const GroupNameTextInput: FC<Props> = ({
   // Props passed from a parent component.
   groupNameInput,
   setGroupNameInput,
@@ -14,8 +23,8 @@ const GroupNameTextInput = ({
   activeGroup,
   isRTL,
   isDark,
-  t
-}) => {
+  t,
+}): ReactElement => {
   return (
     <View style={styles.groupNameAreaContainer}>
       <Text
@@ -33,7 +42,7 @@ const GroupNameTextInput = ({
         style={{
           flexDirection: isRTL ? 'row-reverse' : 'row',
           width: '100%',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <TextInput
@@ -48,9 +57,9 @@ const GroupNameTextInput = ({
               'Regular',
               'left',
               colors(isDark).text
-            )
+            ),
           }}
-          onChangeText={text => setGroupNameInput(text)}
+          onChangeText={(text) => setGroupNameInput(text)}
           value={groupNameInput}
           autoCapitalize='words'
           autoCorrect={false}
@@ -65,7 +74,7 @@ const GroupNameTextInput = ({
               width: 50 * scaleMultiplier,
               height: 50 * scaleMultiplier,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Icon
@@ -84,7 +93,7 @@ const styles = StyleSheet.create({
   groupNameAreaContainer: {
     width: '100%',
     paddingHorizontal: 20,
-    maxWidth: 500
+    maxWidth: 500,
   },
   groupNameTextInputContainer: {
     borderRadius: 10,
@@ -94,8 +103,8 @@ const styles = StyleSheet.create({
     fontSize: 18 * scaleMultiplier,
     marginTop: 5,
     alignItems: 'center',
-    flex: 1
-  }
+    flex: 1,
+  },
 })
 
 export default GroupNameTextInput

@@ -1,9 +1,18 @@
-import React from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import { InfoAndGroupsForLanguage } from 'interfaces/languages'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps, TProps {
+  section: InfoAndGroupsForLanguage
+  setLanguageID: Function
+  setShowAddGroupModal: Function
+}
 
 /**
  * A pressable component that is used to add a new group. It's styled after the Group item component and is rendered as the section footer for the Groups SectionList on the Groups screen.
@@ -11,7 +20,7 @@ import { type } from '../styles/typography'
  * @param {Function} setLanguageID - Sets the languageID state variable on the Groups screen.
  * @param {Function} setShowAddGroupModal - Shows the add group modal.
  */
-const AddNewGroupButton = ({
+const AddNewGroupButton: FC<Props> = ({
   // Props passed from a parent component.
   section,
   setLanguageID,
@@ -19,15 +28,15 @@ const AddNewGroupButton = ({
   isRTL,
   isDark,
   t,
-  activeGroup
-}) => {
+  activeGroup,
+}): ReactElement => {
   return (
     <View>
       <TouchableOpacity
         style={{
           ...styles.touchableAreaContainer,
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         }}
         onPress={() => {
           // When adding a new group, set the languageID so that we can pass that to the CreateGroup function when we actually do create the group.
@@ -67,15 +76,15 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   iconContainer: {
     width: 55 * scaleMultiplier,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 20
-  }
+    marginHorizontal: 20,
+  },
 })
 
 export default AddNewGroupButton

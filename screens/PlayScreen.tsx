@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import { Media } from '../classes/media'
 import ChapterSelector from '../components/ChapterSelector'
 import PlaybackControls from '../components/PlaybackControls'

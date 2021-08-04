@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {

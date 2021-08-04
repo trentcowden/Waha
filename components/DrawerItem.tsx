@@ -1,8 +1,16 @@
-import React from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps, TProps {
+  onPress: Function
+  icon: string
+  label: string
+}
 
 /**
  * A pressable item used in Waha's navigation drawer.
@@ -10,21 +18,20 @@ import { type } from '../styles/typography'
  * @param {string} icon - The name of the icon to display on the drawer item.
  * @param {string} label - The label to display on the drawer item.
  */
-const DrawerItem = ({
-  // Props passed from a parent component.
+const DrawerItem: FC<Props> = ({
   onPress,
   icon,
   label,
   isRTL,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <TouchableOpacity
     style={{
       ...styles.drawerItemContainer,
-      flexDirection: isRTL ? 'row-reverse' : 'row'
+      flexDirection: isRTL ? 'row-reverse' : 'row',
     }}
-    onPress={onPress}
+    onPress={() => onPress()}
   >
     <View style={styles.iconContainer}>
       <Icon
@@ -42,7 +49,7 @@ const DrawerItem = ({
           'left',
           colors(isDark).text
         ),
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
       }}
     >
       {label}
@@ -52,18 +59,17 @@ const DrawerItem = ({
 
 const styles = StyleSheet.create({
   drawerItemContainer: {
-    // height: 50 * scaleMultiplier,
     paddingHorizontal: 10,
     paddingVertical: 10 * scaleMultiplier,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   iconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 50 * scaleMultiplier
-  }
+    width: 50 * scaleMultiplier,
+  },
 })
 
 export default DrawerItem

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import GroupItemMT from '../components/GroupItemMT'
 import ShareMobilizationToolsButton from '../components/ShareMobilizationToolsButton'
 import WahaBackButton from '../components/WahaBackButton'
@@ -17,7 +18,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     database: state.database,
     isRTL: info(activeGroupSelector(state).language).isRTL,
@@ -25,11 +26,11 @@ function mapStateToProps (state) {
     isDark: state.settings.isDarkModeEnabled,
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     groups: state.groups,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     editGroup: (
       oldGroupName,
@@ -44,7 +45,7 @@ function mapDispatchToProps (dispatch) {
           emoji,
           shouldShowMobilizationToolsTab
         )
-      )
+      ),
   }
 }
 
@@ -62,7 +63,7 @@ const MobilizationToolsScreen = ({
   groups,
   activeGroup,
   t,
-  editGroup
+  editGroup,
 }) => {
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -77,20 +78,20 @@ const MobilizationToolsScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>,
+        : () => <View />,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => goBack()}
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
-  function renderGroupItem ({ item }) {
+  function renderGroupItem({ item }) {
     return (
       <GroupItemMT
         thisGroup={item}
@@ -125,7 +126,7 @@ const MobilizationToolsScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       {!areMobilizationToolsUnlocked && topComponents}
@@ -161,7 +162,7 @@ const MobilizationToolsScreen = ({
                   ),
                   paddingHorizontal: 20,
                   marginBottom: 10,
-                  fontSize: 22 * scaleMultiplier
+                  fontSize: 22 * scaleMultiplier,
                 }}
               >
                 {t.mobilization_tools.show_mobilization_tab}
@@ -169,7 +170,7 @@ const MobilizationToolsScreen = ({
               <WahaSeparator isDark={isDark} />
             </View>
           )}
-          keyExtractor={item => item.name}
+          keyExtractor={(item) => item.name}
           ListFooterComponent={() => <WahaSeparator isDark={isDark} />}
           ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
         />
@@ -199,7 +200,7 @@ const MobilizationToolsScreen = ({
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: info(activeGroup.language).font + '-Black',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
         backgroundColor={colors(isDark).success}
       />
@@ -210,8 +211,8 @@ const MobilizationToolsScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default connect(

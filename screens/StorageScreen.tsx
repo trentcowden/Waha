@@ -8,20 +8,20 @@ import WahaButton from '../components/WahaButton'
 import { buttonModes } from '../constants'
 import {
   getInstalledLanguagesData,
-  info
+  info,
 } from '../functions/languageDataFunctions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     database: state.database,
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     groups: state.groups,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
   }
 }
 
@@ -40,7 +40,7 @@ const StorageScreen = ({
   database,
   t,
   groups,
-  activeGroup
+  activeGroup,
 }) => {
   /** Keeps track of the amount of storage each language's downloaded Story and Training chapter mp3s and mp4s take up. */
   const [languageStorageSizes, setLanguageSizes] = useState({})
@@ -59,16 +59,16 @@ const StorageScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>,
+        : () => <View />,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => goBack()}
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -82,13 +82,13 @@ const StorageScreen = ({
    * @param {string} language - The language to get the storage size of.
    * @return {number} - The size that the language takes up.
    */
-  const getLanguageStorageSize = async language => {
+  const getLanguageStorageSize = async (language) => {
     // Stores the size of this language.
     var languageStorageSize = 0
 
     // Read the contents of the FileSystem directory.
     return await FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then(async contents => {
+      .then(async (contents) => {
         for (const item of contents) {
           // If a file is a lesson...
           if (isLessonFile.exec(item)) {
@@ -119,12 +119,12 @@ const StorageScreen = ({
     var languages = getInstalledLanguagesData(database, groups)
 
     // Go through each language and get its storage size.
-    languages.forEach(language =>
-      getLanguageStorageSize(language.languageID).then(storageUsed => {
-        setTotalStorage(oldStorage => oldStorage + storageUsed)
-        setLanguageSizes(oldObject => ({
+    languages.forEach((language) =>
+      getLanguageStorageSize(language.languageID).then((storageUsed) => {
+        setTotalStorage((oldStorage) => oldStorage + storageUsed)
+        setLanguageSizes((oldObject) => ({
           ...oldObject,
-          [language.languageID]: storageUsed
+          [language.languageID]: storageUsed,
         }))
       })
     )
@@ -137,9 +137,9 @@ const StorageScreen = ({
    * Deletes all of the Story and Training mp3s and mp4s for a specific language. If no language is specified, deletes them for all languages.
    * @param {string} language - (Optional) The language to delete the downloaded content for.
    */
-  const deleteDownloadedLessons = async language => {
+  const deleteDownloadedLessons = async (language) => {
     await FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then(contents => {
+      .then((contents) => {
         for (const item of contents) {
           // If a file is a lesson...
           if (isLessonFile.exec(item)) {
@@ -174,13 +174,13 @@ const StorageScreen = ({
               {
                 text: t.general.cancel,
                 onPress: () => {},
-                style: 'cancel'
+                style: 'cancel',
               },
               {
                 text: t.general.ok,
                 onPress: () => deleteDownloadedLessons(item.languageID),
-                style: 'destructive'
-              }
+                style: 'destructive',
+              },
             ]
           )
         }}
@@ -196,14 +196,14 @@ const StorageScreen = ({
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <FlatList
         style={{ flex: 1 }}
         data={getInstalledLanguagesData(database, groups)}
         renderItem={renderLanguageStorageItem}
-        keyExtractor={item => item.languageID}
+        keyExtractor={(item) => item.languageID}
         ItemSeparatorComponent={() => (
           <View style={{ height: 20, width: '100%' }} />
         )}
@@ -222,13 +222,13 @@ const StorageScreen = ({
               {
                 text: t.general.cancel,
                 onPress: () => {},
-                style: 'cancel'
+                style: 'cancel',
               },
               {
                 text: t.general.ok,
                 onPress: () => deleteDownloadedLessons(),
-                style: 'destructive'
-              }
+                style: 'destructive',
+              },
             ]
           )
         }
@@ -242,8 +242,8 @@ const StorageScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })
 
 export default connect(mapStateToProps)(StorageScreen)

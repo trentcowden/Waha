@@ -1,15 +1,25 @@
 // import SvgUri from 'expo-svg-uri'
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import {
   Animated,
   Dimensions,
   StyleSheet,
   TouchableHighlight,
-  View
+  View,
 } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { gutterSize, isTablet, scaleMultiplier } from '../constants'
+import { CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 import SVG from './SVG'
+
+interface Props extends CommonProps {
+  iconName: string
+  playHandler: Function
+  playFeedbackOpacity: Animated.Value
+  playFeedbackZIndex: number
+  isMediaPlaying: boolean
+}
 
 /**
  * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
@@ -19,16 +29,16 @@ import SVG from './SVG'
  * @param {number} playFeedbackZIndex - Z-index for the play/pause animation feedback that appears whenever the lesson is played or paused.
  * @param {boolean} isMediaPlaying - Whether the current media (audio or video) is currently playing.
  */
-const AlbumArt = ({
+const AlbumArt: FC<Props> = ({
   // Props passed from a parent component.
   iconName,
   playHandler,
   playFeedbackOpacity,
   playFeedbackZIndex,
   isMediaPlaying,
-  activeGroup,
-  isDark
-}) => (
+  isDark,
+  isRTL,
+}): ReactElement => (
   <View
     style={{
       ...styles.albumArtContainer,
@@ -39,12 +49,12 @@ const AlbumArt = ({
         : Dimensions.get('window').width - gutterSize * 2,
       maxHeight: isTablet
         ? Dimensions.get('window').width * 0.7
-        : Dimensions.get('window').width - gutterSize * 2
+        : Dimensions.get('window').width - gutterSize * 2,
     }}
   >
     <TouchableHighlight
       style={styles.touchableContainer}
-      onPress={playHandler}
+      onPress={() => playHandler()}
       underlayColor={colors(isDark).bg4 + '00'}
       activeOpacity={1}
     >
@@ -63,11 +73,11 @@ const AlbumArt = ({
           {
             scale: playFeedbackOpacity.interpolate({
               inputRange: [0, 1],
-              outputRange: [2, 1]
-            })
-          }
+              outputRange: [2, 1],
+            }),
+          },
         ],
-        zIndex: playFeedbackZIndex
+        zIndex: playFeedbackZIndex,
       }}
     >
       <Icon
@@ -86,15 +96,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     flex: 1,
-    aspectRatio: 1
+    aspectRatio: 1,
   },
   touchableContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 })
 
 export default AlbumArt

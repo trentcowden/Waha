@@ -1,8 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import {
+  AGProps,
+  CommonProps,
+  DLProps,
+  NetworkProps,
+  TProps,
+} from 'interfaces/common'
+import { LessonType } from 'interfaces/playScreen'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import { lessonTypes, scaleMultiplier } from '../constants'
+import Icon from '../assets/fonts/icon_font_config'
+import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
+  isFullyDownloaded: boolean
+  isDownloading: boolean
+  showDeleteLessonModal: Function
+  showDownloadLessonModal: Function
+  lessonID: string
+  lessonType: LessonType
+  removeDownload: Function
+}
 
 /**
  * A component that shows the status of the download for a lesson as a button which allows the user to do an action related to the download, like start it or delete it.
@@ -13,7 +32,7 @@ import { colors } from '../styles/colors'
  * @param {string} lessonID - The ID for the lesson this is showing the download status of.
  * @param {boolean} lessonType - The type of the lesson this is showing the download status of.
  */
-const DownloadStatusIndicator = ({
+const DownloadStatusIndicator: FC<Props> = ({
   // Props passed from a parent component.
   isFullyDownloaded,
   isDownloading,
@@ -24,8 +43,8 @@ const DownloadStatusIndicator = ({
   isConnected,
   downloads,
   isDark,
-  removeDownload
-}) => {
+  removeDownload,
+}): ReactElement => {
   /** Keeps track of the percentage of the download for this lesson if it's currently downloading. */
   const [downloadPercentage, setDownloadPercentage] = useState(0)
 
@@ -33,13 +52,13 @@ const DownloadStatusIndicator = ({
   useEffect(() => {
     if (downloads[lessonID] || downloads[lessonID + 'v'])
       switch (lessonType) {
-        case lessonTypes.STANDARD_DBS:
-        case lessonTypes.AUDIOBOOK:
+        case LessonType.STANDARD_DBS:
+        case LessonType.AUDIOBOOK:
           // For audio only lessons, the progress is just the progress of the video download.
           setDownloadPercentage(downloads[lessonID].progress * 100)
           break
         // Special case. When we're in a DMC lesson, the download progress should be the audio and video download progress combined. If one has already finished and has been removed from the downloads redux object, use 1 for its progress instead.
-        case lessonTypes.STANDARD_DMC:
+        case LessonType.STANDARD_DMC:
           var audioPercentage = downloads[lessonID]
             ? downloads[lessonID].progress
             : 1
@@ -48,7 +67,7 @@ const DownloadStatusIndicator = ({
             : 1
           setDownloadPercentage(((audioPercentage + videoPercentage) / 2) * 100)
           break
-        case lessonTypes.VIDEO_ONLY:
+        case LessonType.VIDEO_ONLY:
           // For video only lessons, the progress is just the progress of the video download.
           setDownloadPercentage(downloads[lessonID + 'v'].progress * 100)
           break
@@ -57,15 +76,15 @@ const DownloadStatusIndicator = ({
 
   // If our lesson has no media to download, return nothing.
   if (
-    lessonType === lessonTypes.STANDARD_NO_AUDIO ||
-    lessonType === lessonTypes.BOOK
+    lessonType === LessonType.STANDARD_NO_AUDIO ||
+    lessonType === LessonType.BOOK
   )
-    return null
+    return <View />
   // If all the media for the lesson is downloaded, show the checkmark icon. Pressing on this deletes the media.
   else if (isFullyDownloaded)
     return (
       <TouchableOpacity
-        onPress={showDeleteLessonModal}
+        onPress={() => showDeleteLessonModal()}
         style={styles.downloadStatusIndicatorContainer}
       >
         <Icon
@@ -105,7 +124,7 @@ const DownloadStatusIndicator = ({
               style={{
                 width: 5 * scaleMultiplier,
                 height: 5 * scaleMultiplier,
-                backgroundColor: colors(isDark).text
+                backgroundColor: colors(isDark).text,
               }}
             />
           )}
@@ -116,7 +135,7 @@ const DownloadStatusIndicator = ({
   else if (!isDownloading && !isFullyDownloaded && isConnected)
     return (
       <TouchableOpacity
-        onPress={showDownloadLessonModal}
+        onPress={() => showDownloadLessonModal()}
         style={styles.downloadStatusIndicatorContainer}
       >
         <Icon
@@ -139,6 +158,7 @@ const DownloadStatusIndicator = ({
         />
       </View>
     )
+  else return <View />
 }
 
 const styles = StyleSheet.create({
@@ -146,8 +166,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    height: '100%'
-  }
+    height: '100%',
+  },
 })
 
 export default DownloadStatusIndicator

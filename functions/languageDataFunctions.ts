@@ -1,7 +1,17 @@
 import { locale } from 'i18n-js'
+import { Database } from 'interfaces/database'
+import { Group } from 'interfaces/groups'
+import {
+  InfoAndGroupsForAllLanguages,
+  InfoAndGroupsForLanguage,
+  Language,
+  LanguageFamily,
+  LanguageInfo
+} from 'interfaces/languages'
+import { Translations } from 'interfaces/translations'
 import { languages } from '../languages'
 
-export const info = languageID => {
+export const info = (languageID: string): LanguageInfo => {
   // Default values in case the language can't be found.
   var languageInfo = {
     languageFamilyID: 'en',
@@ -20,21 +30,21 @@ export const info = languageID => {
         'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
       dark:
         'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
-    },
-    versions: null
+    }
   }
 
   languages.forEach(languageFamily => {
     if (languageFamily.languageFamilyID === languageID) {
       languageInfo = {
         ...languageFamily.data[0],
+        languageFamilyID: languageFamily.languageFamilyID,
         isRTL: languageFamily.isRTL,
         font: languageFamily.font
       }
     } else
       languageFamily.data.forEach(language => {
         // If our language has multiple versions, check through each version to find the language we want.
-        if (language.versions !== null) {
+        if (language.versions !== undefined) {
           language.versions.forEach(version => {
             if (version.languageID === languageID) {
               languageInfo = {
@@ -58,7 +68,6 @@ export const info = languageID => {
         }
       })
   })
-
   return languageInfo
 }
 
@@ -67,19 +76,19 @@ export const info = languageID => {
  * @return {Object[]} - An array of language family objects.
  */
 export const getAllLanguagesData = (
-  t,
-  installedLanguageInstances,
-  searchTextInput
+  t: Translations,
+  installedLanguageInstances: InfoAndGroupsForAllLanguages,
+  searchTextInput: string
 ) => {
   // Sort the languages to put the language family of the phone's current locale at the top.
-  const sortByLocale = (a, b) => {
+  const sortByLocale = (a: LanguageFamily, b: LanguageFamily) => {
     if (locale.includes(a.languageFamilyID)) return -1
     else if (locale.includes(b.languageFamilyID)) return 1
     else return 0
   }
 
   // If search text matches with a language family name, show the whole language family. If it doesn't, show the specific languages it matches with.
-  const filterBySearch = languageFamily => {
+  const filterBySearch = (languageFamily: LanguageFamily) => {
     if (
       t.languages[languageFamily.languageFamilyID]
         .toLowerCase()
@@ -105,14 +114,14 @@ export const getAllLanguagesData = (
   }
 
   // Filter out language instances that are already installed. Only on SubsequentLanguageInstanceInstallScreen.
-  const filterInstalledLanguages = languageFamily => {
+  const filterInstalledLanguages = (languageFamily: LanguageFamily) => {
     if (installedLanguageInstances)
       return {
         ...languageFamily,
         data: languageFamily.data.filter(language => {
           if (
             installedLanguageInstances.some(
-              installedLanguage =>
+              (installedLanguage: Language) =>
                 installedLanguage.languageID === language.languageID
             )
           ) {
@@ -126,7 +135,7 @@ export const getAllLanguagesData = (
   }
 
   // Filter our language families that are empty.
-  const filterEmptyLanguageFamilies = languageFamily => {
+  const filterEmptyLanguageFamilies = (languageFamily: LanguageFamily) => {
     if (languageFamily.data.length !== 0) return true
     else return false
   }
@@ -144,21 +153,23 @@ export const getAllLanguagesData = (
   return sections
 }
 
-export const getInstalledLanguagesData = (database, groups) => {
-  var installedLanguageInstances = []
+export const getInstalledLanguagesData = (
+  database: Database,
+  groups: Group[]
+): InfoAndGroupsForAllLanguages => {
+  var installedLanguageInstances: InfoAndGroupsForLanguage[] = []
 
-  for (key in database) {
+  Object.keys(database).forEach(key => {
     if (key.length === 2)
       // Add all of this to the installedLanguageInstances array.
       installedLanguageInstances.push({
         ...info(key),
         data: groups.filter(group => group.language === key)
       })
-  }
+  })
 
-  // If we have the install times stored, sort the languages by the time installed.
-  return installedLanguageInstances.some(
-    key => database[key.languageID].installTime === null
+  installedLanguageInstances = installedLanguageInstances.some(
+    key => database[key.languageID].installTime === undefined
   )
     ? installedLanguageInstances
     : installedLanguageInstances.sort(
@@ -166,6 +177,9 @@ export const getInstalledLanguagesData = (database, groups) => {
           database[a.languageID].installTime -
           database[b.languageID].installTime
       )
+
+  // If we have the install times stored, sort the languages by the time installed.
+  return installedLanguageInstances
 }
 
 export const getTotalNumberOfLanguages = () => {
@@ -173,8 +187,8 @@ export const getTotalNumberOfLanguages = () => {
 
   languages.forEach(languageFamily => {
     languageFamily.data.forEach(language => {
-      if (language.versions !== null) {
-        language.versions.forEach(version => (numLanguages += 1))
+      if (language.versions !== undefined) {
+        language.versions.forEach(() => (numLanguages += 1))
       } else numLanguages += 1
     })
   })

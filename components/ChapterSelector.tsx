@@ -1,8 +1,25 @@
-import React from 'react'
+import {
+  AGProps,
+  CommonProps,
+  DLProps,
+  NetworkProps,
+  TProps,
+} from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { chapters, gutterSize, isTablet, lessonTypes } from '../constants'
+import { chapters, gutterSize, isTablet } from '../constants'
+import { Chapter, LessonType } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 import ChapterButton from './ChapterButton'
+
+interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
+  activeChapter: Chapter
+  changeChapter: Function
+  lessonType: LessonType
+  lessonID?: string
+  isAudioDownloaded: boolean
+  isVideoDownloaded: boolean
+}
 
 /**
  * Component that displays the various 3 or 4 chapter buttons on the PlayScreen.
@@ -13,7 +30,7 @@ import ChapterButton from './ChapterButton'
  * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
  * @param {string} lessonID - The ID for the active lesson.
  */
-const ChapterSelector = ({
+const ChapterSelector: FC<Props> = ({
   // Props passed from a parent component.
   activeChapter,
   changeChapter,
@@ -25,12 +42,13 @@ const ChapterSelector = ({
   activeGroup,
   downloads,
   isConnected,
-  t
-}) => (
+  t,
+  isRTL,
+}): ReactElement => (
   <View
     style={{
       ...styles.chapterSelectorContainer,
-      borderColor: colors(isDark, activeGroup.language).accent
+      borderColor: colors(isDark, activeGroup.language).accent,
     }}
   >
     <ChapterButton
@@ -43,6 +61,7 @@ const ChapterSelector = ({
       isDark={isDark}
       downloads={downloads}
       isConnected={isConnected}
+      isRTL={isRTL}
     />
     <View style={{ width: isTablet ? 8 : 4 }} />
     {/* <ChapterSeparator /> */}
@@ -58,13 +77,14 @@ const ChapterSelector = ({
       isDark={isDark}
       downloads={downloads}
       isConnected={isConnected}
+      isRTL={isRTL}
     />
     {/* For DMC lessons, we need an extra 'Training' chapter button. */}
-    {lessonType === lessonTypes.STANDARD_DMC ? (
+    {lessonType === LessonType.STANDARD_DMC ? (
       <View style={{ width: isTablet ? 8 : 4 }} />
     ) : // <ChapterSeparator />
     null}
-    {lessonType === lessonTypes.STANDARD_DMC ? (
+    {lessonType === LessonType.STANDARD_DMC ? (
       <ChapterButton
         chapter={chapters.TRAINING}
         activeChapter={activeChapter}
@@ -77,6 +97,7 @@ const ChapterSelector = ({
         isDark={isDark}
         downloads={downloads}
         isConnected={isConnected}
+        isRTL={isRTL}
       />
     ) : null}
     <View style={{ width: isTablet ? 8 : 4 }} />
@@ -91,6 +112,7 @@ const ChapterSelector = ({
       isDark={isDark}
       downloads={downloads}
       isConnected={isConnected}
+      isRTL={isRTL}
     />
   </View>
 )
@@ -99,8 +121,8 @@ const styles = StyleSheet.create({
   chapterSelectorContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: gutterSize
-  }
+    marginHorizontal: gutterSize,
+  },
 })
 
 export default ChapterSelector

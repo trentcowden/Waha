@@ -1,24 +1,30 @@
-import React from 'react'
+import { AGProps, CommonProps, NetworkProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps, TProps, NetworkProps {
+  updateHandler: Function
+  languageCoreFilesToUpdate: string[]
+}
 
 /**
  * Button that prompts the user to download new language core files should they be available/needed.
  * @param {Function} updateHandler - Handles the updating of language core files.
  */
-const DrawerDownloadUpdateButton = ({
+const DrawerDownloadUpdateButton: FC<Props> = ({
   // Props passed from a parent component.
   updateHandler,
-  // Props passed from redux.
   activeGroup,
   isRTL,
   t,
   isDark,
   isConnected,
-  languageCoreFilesToUpdate
-}) => {
+  languageCoreFilesToUpdate,
+}): ReactElement => {
   return languageCoreFilesToUpdate.length !== 0 ? (
     <TouchableOpacity
       style={styles.drawerDownloadUpdateButtonContainer}
@@ -30,12 +36,12 @@ const DrawerDownloadUpdateButton = ({
             {
               text: t.general.cancel,
               onPress: () => {},
-              style: 'cancel'
+              style: 'cancel',
             },
             {
               text: t.general.ok,
-              onPress: updateHandler
-            }
+              onPress: () => updateHandler(),
+            },
           ]
         )
       }}
@@ -50,7 +56,7 @@ const DrawerDownloadUpdateButton = ({
           flexDirection: isRTL ? 'row' : 'row-reverse',
           borderBottomColor: isConnected
             ? colors(isDark).successShadow
-            : colors(isDark).bg1Shadow
+            : colors(isDark).bg1Shadow,
         }}
       >
         <Text
@@ -62,7 +68,7 @@ const DrawerDownloadUpdateButton = ({
               'center',
               isConnected ? colors(isDark).textOnColor : colors(isDark).disabled
             ),
-            paddingHorizontal: 10
+            paddingHorizontal: 10,
           }}
         >
           {t.general.download_update}
@@ -86,7 +92,9 @@ const DrawerDownloadUpdateButton = ({
         )}
       </View>
     </TouchableOpacity>
-  ) : null
+  ) : (
+    <View />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -95,20 +103,19 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: 5,
     marginTop: 5,
-    marginBottom: 0
-    // height: 50 * scaleMultiplier
+    marginBottom: 0,
   },
   innerContainer: {
     justifyContent: 'flex-end',
     alignItems: 'center',
     borderBottomWidth: 4,
     paddingHorizontal: 5,
-    paddingVertical: 10 * scaleMultiplier
+    paddingVertical: 10 * scaleMultiplier,
   },
   iconContainer: {
     width: 50 * scaleMultiplier,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default DrawerDownloadUpdateButton

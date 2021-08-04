@@ -1,42 +1,48 @@
-import React, { useState } from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement, useState } from 'react'
 import {
   FlatList,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { groupIcons, groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+interface Props extends CommonProps, AGProps, TProps {
+  emojiInput: string
+  setEmojiInput: Function
+}
+
 /**
  * A component that shows a list of emojis available to be set for a group's avatar.
  * @param {string} emojiInput - The name of the currently selected emoji.
  * @param {Function} setEmojiInput - Sets the name of the currently selected emoji.
  */
-const EmojiViewer = ({
-  // Props passed from a parent component.
+const EmojiViewer: FC<Props> = ({
   emojiInput,
   setEmojiInput,
   activeGroup,
   isDark,
-  t
-}) => {
+  t,
+}): ReactElement => {
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)
 
   /** Renders an emoji for the emoji select <FlatList />. */
-  const renderEmoji = ({ item }) => {
+  const renderEmoji = ({ item }: { item: string }) => {
     return (
       <TouchableOpacity
         style={{
           ...styles.emojiContainer,
           borderWidth: item === emojiInput ? 2 : 0,
-          borderColor: item === emojiInput ? colors(isDark).highlight : null,
+          borderColor:
+            item === emojiInput ? colors(isDark).highlight : undefined,
           backgroundColor:
-            item === emojiInput ? colors(isDark).highlight + '38' : null
+            item === emojiInput ? colors(isDark).highlight + '38' : undefined,
         }}
         onPress={() => setEmojiInput(item)}
       >
@@ -45,7 +51,7 @@ const EmojiViewer = ({
             width: 40 * scaleMultiplier,
             height: 40 * scaleMultiplier,
             tintColor:
-              item === 'default' && isDark ? colors(isDark).icons : undefined
+              item === 'default' && isDark ? colors(isDark).icons : undefined,
           }}
           source={groupIconSources[item]}
         />
@@ -63,7 +69,7 @@ const EmojiViewer = ({
             'left',
             colors(isDark).secondaryText
           ),
-          marginTop: 20 * scaleMultiplier
+          marginTop: 20 * scaleMultiplier,
         }}
       >
         {t.groups.avatar}
@@ -72,7 +78,7 @@ const EmojiViewer = ({
         style={{
           ...styles.emojiListContainer,
           borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         }}
         onLayout={({ nativeEvent }) =>
           setEmojiViewerWidth(nativeEvent.layout.width)
@@ -83,7 +89,7 @@ const EmojiViewer = ({
           data={groupIcons}
           nestedScrollEnabled
           renderItem={renderEmoji}
-          keyExtractor={item => item}
+          keyExtractor={(item) => item}
           numColumns={Math.floor(
             (emojiViewerWidth - 50) / (50 * scaleMultiplier)
           )}
@@ -101,14 +107,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 2,
-    borderRadius: 10
+    borderRadius: 10,
   },
   emojiViewerContainer: {
     width: '100%',
     flex: 1,
     maxHeight: 300 * scaleMultiplier,
     paddingHorizontal: 20,
-    maxWidth: 500
+    maxWidth: 500,
   },
   emojiListContainer: {
     alignItems: 'center',
@@ -117,8 +123,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     flex: 1,
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 })
 
 export default EmojiViewer

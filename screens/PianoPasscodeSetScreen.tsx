@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Piano from '../components/Piano'
@@ -22,22 +22,22 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
     security: state.security,
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language)
+    t: getTranslations(activeGroupSelector(state).language),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setSecurityEnabled: toSet => dispatch(setSecurityEnabled(toSet)),
-    setCode: code => dispatch(setCode(code)),
-    setShowPasscodeSetSnackbar: toSet =>
-      dispatch(setShowPasscodeSetSnackbar(toSet))
+    setSecurityEnabled: (toSet) => dispatch(setSecurityEnabled(toSet)),
+    setCode: (code) => dispatch(setCode(code)),
+    setShowPasscodeSetSnackbar: (toSet) =>
+      dispatch(setShowPasscodeSetSnackbar(toSet)),
   }
 }
 
@@ -51,7 +51,7 @@ const PianoPasscodeSetScreen = ({
   route: {
     name: routeName,
     // Props passed from previous screen.
-    params: { passcode } = { passcode: null }
+    params: { passcode } = { passcode: null },
   },
   // Props passed from redux.
   security,
@@ -61,7 +61,7 @@ const PianoPasscodeSetScreen = ({
   activeGroup,
   setSecurityEnabled,
   setCode,
-  setShowPasscodeSetSnackbar
+  setShowPasscodeSetSnackbar,
 }) => {
   /** Keeps track of the passcode that the user is entering into the piano. */
   const [localPasscode, setLocalPasscode] = useState('')
@@ -71,7 +71,7 @@ const PianoPasscodeSetScreen = ({
     PianoPasscodeSet: t.security.choose_passcode,
     PianoPasscodeSetConfirm: t.security.confirm_passcode,
     PianoPasscodeChange: t.security.choose_passcode,
-    PianoPasscodeChangeConfirm: t.security.confirm_passcode
+    PianoPasscodeChangeConfirm: t.security.confirm_passcode,
   }
 
   /** useEffect function that sets the navigation options for this screen. */
@@ -89,9 +89,9 @@ const PianoPasscodeSetScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>,
+        : () => <View />,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => {
@@ -101,7 +101,7 @@ const PianoPasscodeSetScreen = ({
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -114,7 +114,7 @@ const PianoPasscodeSetScreen = ({
           // After entering in their passcode for the first time, reset the passcode input and navigate to the confirmation screen.
           setLocalPasscode('')
           navigate('PianoPasscodeSetConfirm', {
-            passcode: localPasscode
+            passcode: localPasscode,
           })
           break
         case 'PianoPasscodeSetConfirm':
@@ -144,7 +144,7 @@ const PianoPasscodeSetScreen = ({
           // After entering in their passcode for the first time, reset the passcode input and navigate to the confirmation screen.
           setLocalPasscode('')
           navigate('PianoPasscodeChangeConfirm', {
-            passcode: localPasscode
+            passcode: localPasscode,
           })
           break
         case 'PianoPasscodeChangeConfirm':
@@ -173,7 +173,7 @@ const PianoPasscodeSetScreen = ({
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
       <View style={styles.topContainer}>
@@ -201,7 +201,7 @@ const PianoPasscodeSetScreen = ({
           label={t.general.clear}
           extraContainerStyles={{
             width: Dimensions.get('window').width / 3,
-            marginVertical: 0
+            marginVertical: 0,
           }}
           isDark={isDark}
           isRTL={isRTL}
@@ -217,10 +217,10 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   topContainer: { width: '100%', alignItems: 'center' },
-  instructionTextContainer: { width: '100%', paddingHorizontal: 20 }
+  instructionTextContainer: { width: '100%', paddingHorizontal: 20 },
 })
 
 export default connect(

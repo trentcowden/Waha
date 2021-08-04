@@ -4,8 +4,8 @@ import { Animated, StyleSheet, View } from 'react-native'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 

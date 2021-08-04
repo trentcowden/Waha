@@ -5,8 +5,8 @@ import PagerView from 'react-native-pager-view'
 import { connect } from 'react-redux'
 import { lessonTypes, scaleMultiplier } from '../constants'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import AlbumArt from './AlbumArt'

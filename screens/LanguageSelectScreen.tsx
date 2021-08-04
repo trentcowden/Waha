@@ -16,6 +16,7 @@ import {
 } from 'react-native'
 import { useColorScheme } from 'react-native-appearance'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
 import WahaButton from '../components/WahaButton'

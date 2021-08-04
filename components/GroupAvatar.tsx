@@ -1,8 +1,24 @@
-import React from 'react'
-import { Image, TouchableOpacity, View } from 'react-native'
+import { CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
+import {
+  Image,
+  StyleProp,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import { groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps {
+  style: Object
+  emoji: string
+  size: number
+  onPress?: Function
+  isActive?: boolean
+}
 
 /**
  * Component to display a group's avatar (emoji) in a little circle.
@@ -12,14 +28,15 @@ import { colors } from '../styles/colors'
  * @param {Function} onPress - (optional) Function to trigger when the user taps on the component.
  * @param {boolean} isActive - (optional) Whether the group we're displaying the avatar for is the currently active group or not. We display a blue circle around it if it is. Defaults to false.
  */
-const GroupAvatar = ({
+const GroupAvatar: FC<Props> = ({
   style,
   emoji,
   size,
-  onPress = null,
+  onPress = undefined,
   isActive = false,
-  isDark
-}) => {
+  isDark,
+  isRTL,
+}): ReactElement => {
   // The component for the emoji itself. We have to have conditional logic here because the default group emoji is an icon but the rest are all images.
   const emojiComponent =
     emoji === 'default' ? (
@@ -34,13 +51,13 @@ const GroupAvatar = ({
           width: size * 0.65 * scaleMultiplier,
           height: size * 0.65 * scaleMultiplier,
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <Image
           style={{
             width: size * 0.65 * scaleMultiplier,
-            height: size * 0.65 * scaleMultiplier
+            height: size * 0.65 * scaleMultiplier,
           }}
           source={groupIconSources[emoji]}
         />
@@ -48,26 +65,26 @@ const GroupAvatar = ({
     )
 
   // Style object for the group avatar container. We define it here instead of in a StyleSheet object because most of it requires information from props.
-  const groupAvatarContainerStyle = {
-    borderColor: isActive ? colors(isDark).highlight : null,
-    borderWidth: isActive ? 2 : null,
+  const groupAvatarContainerStyle: StyleProp<ViewStyle> = {
+    borderColor: isActive ? colors(isDark).highlight : undefined,
+    borderWidth: isActive ? 2 : undefined,
     borderRadius: (size * scaleMultiplier) / 2 + 5,
     width: size * scaleMultiplier + 5,
     height: size * scaleMultiplier + 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   }
 
   // If we have an onPress function, render the component as a <TouchableOpacity/>. Otherwise, render it as a <View/>.
   return onPress ? (
     <TouchableOpacity
       style={{ ...style, ...groupAvatarContainerStyle }}
-      onPress={onPress}
+      onPress={() => onPress()}
     >
       {emojiComponent}
     </TouchableOpacity>
   ) : (
-    <View style={{ ...style, ...groupAvatarContainerStyle }} onPress={onPress}>
+    <View style={{ ...style, ...groupAvatarContainerStyle }}>
       {emojiComponent}
     </View>
   )

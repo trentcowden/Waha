@@ -5,14 +5,14 @@ import { languages } from '../languages'
  * @param {boolean} isDark - Whether dark mode is enabled or not.
  * @param {string} languageID - If trying to get an accent color, the ID of the language to get the color for is required.
  */
-export const colors = (isDark, languageID = null) => {
+export const colors = (isDark: boolean, languageID?: string) => {
   // Get the accent color if languageID was provided as an argument.
   var accentColor = ''
   if (languageID !== null)
     // Go through each language in each language family until we find the one that matches with our ID, then set accentColor to the accent color of that language.
     languages.forEach(languageFamily => {
       languageFamily.data.forEach(language => {
-        if (language.versions !== null) {
+        if (language.versions !== undefined) {
           language.versions.forEach(version => {
             if (version.languageID === languageID) {
               accentColor = isDark

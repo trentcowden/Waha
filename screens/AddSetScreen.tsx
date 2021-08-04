@@ -12,7 +12,7 @@ import { info } from '../functions/languageDataFunctions'
 import SetInfoModal from '../modals/SetInfoModal'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -20,14 +20,14 @@ import { getTranslations } from '../translations/translationsConfig'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
     t: getTranslations(activeGroupSelector(state).language),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeDatabase: activeDatabaseSelector(state),
     activeGroup: activeGroupSelector(state),
-    font: info(activeGroupSelector(state).language).font
+    font: info(activeGroupSelector(state).language).font,
   }
 }
 
@@ -40,7 +40,7 @@ const AddSetScreen = ({
   navigation: { setOptions, goBack },
   route: {
     // Props passed from previous screen.
-    params: { category }
+    params: { category },
   },
   // Props passed from redux.
   font,
@@ -48,7 +48,7 @@ const AddSetScreen = ({
   isRTL,
   isDark,
   activeDatabase,
-  activeGroup
+  activeGroup,
 }) => {
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
@@ -85,10 +85,10 @@ const AddSetScreen = ({
 
         // Go through each Topical Story Set and add all the various tags to our tag array.
         activeDatabase.sets
-          .filter(set => getSetInfo('category', set.id) === 'Topical')
-          .forEach(topicalSet => {
+          .filter((set) => getSetInfo('category', set.id) === 'Topical')
+          .forEach((topicalSet) => {
             topicalSet.tags &&
-              topicalSet.tags.forEach(tag => {
+              topicalSet.tags.forEach((tag) => {
                 // If we find a tag that hasn't been added yet, add it.
                 if (!tags.includes(tag)) tags.push(tag)
               })
@@ -104,7 +104,7 @@ const AddSetScreen = ({
   /** useEffect function that checks what files are downloaded to local storage. */
   useEffect(() => {
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
+      (contents) => {
         setDownloadedFiles(contents)
       }
     )
@@ -112,7 +112,7 @@ const AddSetScreen = ({
 
   /** useEffect function that hides the Snackbar if we leave the screen before it auto-dismisses. */
   useEffect(() => {
-    return function cleanup () {
+    return function cleanup() {
       setShowSnackbar(false)
     }
   }, [])
@@ -122,7 +122,7 @@ const AddSetScreen = ({
     setOptions({
       title: headerTitle,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => goBack()}
@@ -138,7 +138,7 @@ const AddSetScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>
+        : () => <View />,
     })
   }, [headerTitle])
 
@@ -147,12 +147,12 @@ const AddSetScreen = ({
    * @param {Object} set - The object for the set that we're checking.
    * @return {boolean} - Whether every necessary file has been downloaded for the set.
    */
-  const filterForDownloadedQuestionSets = set => {
+  const filterForDownloadedQuestionSets = (set) => {
     // Create an array to store the necessary question set mp3s for this set.
     var requiredQuestionSets = []
 
     // Go through each set and add all necessary question set mp3s to requiredQuestionSets array.
-    set.lessons.forEach(lesson => {
+    set.lessons.forEach((lesson) => {
       // Only filter if the lessons have a fellowship/application chapter. For sets like 3.1 which only has video lessons, we don't want to filter.
       if (lesson.fellowshipType) {
         if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
@@ -166,7 +166,7 @@ const AddSetScreen = ({
 
     // If every required file is present, return true. Otherwise, return false.
     if (
-      requiredQuestionSets.every(questionSet =>
+      requiredQuestionSets.every((questionSet) =>
         downloadedFiles.includes(
           activeGroup.language + '-' + questionSet + '.mp3'
         )
@@ -185,20 +185,20 @@ const AddSetScreen = ({
       return (
         activeDatabase.sets
           // Filter for Topical Story Sets.
-          .filter(set => getSetInfo('category', set.id) === category)
+          .filter((set) => getSetInfo('category', set.id) === category)
           // Filter for Topical Story Sets that haven't already been added.
           .filter(
-            topicalSet =>
+            (topicalSet) =>
               !activeGroup.addedSets.some(
-                addedSet => addedSet.id === topicalSet.id
+                (addedSet) => addedSet.id === topicalSet.id
               )
           )
           // Filter for Topical Story Sets that match the currently selected tag (if there is one).
-          .filter(topicalAddedSet =>
+          .filter((topicalAddedSet) =>
             // If the selected tag is blank (meaning nothing has been selected) or 'All' is selected, show all the Topical Story Sets. Otherwise, filter by the selected tag.
             selectedTag === '' || selectedTag === t.general.all
               ? true
-              : topicalAddedSet.tags.some(tag => selectedTag === tag)
+              : topicalAddedSet.tags.some((tag) => selectedTag === tag)
           )
           // Filter for Topical Sets that have all the necessary question set mp3s downloaded.
           .filter(filterForDownloadedQuestionSets)
@@ -215,11 +215,11 @@ const AddSetScreen = ({
       return (
         activeDatabase.sets
           // Filter for Foundational or Mobilization Tools Story Sets.
-          .filter(set => getSetInfo('category', set.id) === category)
+          .filter((set) => getSetInfo('category', set.id) === category)
           // Filter for Foundational or Mobilization Tools Story Sets that haven't already been added.
           .filter(
-            set =>
-              !activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+            (set) =>
+              !activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
           )
           // Filter for Foundational or Mobilization Tools Story Sets that have all the necessary question set mp3s downloaded.
           .filter(filterForDownloadedQuestionSets)
@@ -235,11 +235,10 @@ const AddSetScreen = ({
   }
 
   /** Set data stored in a useMemo so we don't have to get it on every re-render. */
-  const setData = useMemo(() => getSetData(), [
-    activeGroup.addedSets,
-    selectedTag,
-    downloadedFiles
-  ])
+  const setData = useMemo(
+    () => getSetData(),
+    [activeGroup.addedSets, selectedTag, downloadedFiles]
+  )
 
   /** Renders a <SetItem /> for the list of sets available to add. */
   const renderSetItem = ({ item }) => (
@@ -261,19 +260,19 @@ const AddSetScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
       {category === 'Topical' && (
         <TagGroup
           source={tags}
           singleChoiceMode
-          onSelectedTagChange={selected => setSelectedTag(selected)}
+          onSelectedTagChange={(selected) => setSelectedTag(selected)}
           style={styles.tagGroupContainer}
           tagStyle={{
             ...styles.tagContainer,
             borderColor: isDark ? colors(isDark).bg4 : colors(isDark).disabled,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           }}
           textStyle={type(
             activeGroup.language,
@@ -284,7 +283,7 @@ const AddSetScreen = ({
           )}
           activeTagStyle={{
             backgroundColor: colors(isDark, activeGroup.language).accent,
-            borderColor: colors(isDark, activeGroup.language).accent
+            borderColor: colors(isDark, activeGroup.language).accent,
           }}
           activeTextStyle={type(
             activeGroup.language,
@@ -303,14 +302,14 @@ const AddSetScreen = ({
         ListHeaderComponent={() => <WahaSeparator isDark={isDark} />}
         renderItem={renderSetItem}
         contentContainerStyle={{
-          flexGrow: 1
+          flexGrow: 1,
         }}
         ListEmptyComponent={() => (
           <View
             style={{
               flex: 1,
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Text
@@ -335,7 +334,7 @@ const AddSetScreen = ({
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: info(activeGroup.language).font + '-Black',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
         backgroundColor={colors(isDark).success}
       />
@@ -354,20 +353,20 @@ const AddSetScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
   },
   tagGroupContainer: {
     paddingHorizontal: 10,
     paddingTop: 10,
-    paddingBottom: 2
+    paddingBottom: 2,
   },
   tagContainer: {
     borderRadius: 30,
     height: 35 * scaleMultiplier,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20 * scaleMultiplier
-  }
+    paddingHorizontal: 20 * scaleMultiplier,
+  },
 })
 
 export default connect(mapStateToProps)(AddSetScreen)

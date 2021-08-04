@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import HomeworkItem from '../components/DEPRECATED_HomeworkItem'
 import WahaItemDescription from '../components/DEPRECATED_WahaItemDescription'
 import { scaleMultiplier } from '../constants'

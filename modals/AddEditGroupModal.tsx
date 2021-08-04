@@ -8,6 +8,7 @@ import {
   View
 } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import EmojiViewer from '../components/EmojiViewer'
 import GroupAvatar from '../components/GroupAvatar'
 import GroupNameTextInput from '../components/GroupNameTextInput'

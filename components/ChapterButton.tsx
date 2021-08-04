@@ -1,15 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import {
+  AGProps,
+  CommonProps,
+  DLProps,
+  NetworkProps,
+  TProps,
+} from 'interfaces/common'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import {
-  chapterButtonModes,
-  chapters,
-  isTablet,
-  lessonTypes,
-  scaleMultiplier
-} from '../constants'
+import Icon from '../assets/fonts/icon_font_config'
+import { isTablet, scaleMultiplier } from '../constants'
+import { ChapterButtonMode } from '../interfaces/components'
+import { Chapter, LessonType } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
+  chapter: Chapter
+  activeChapter: Chapter
+  changeChapter: Function
+  lessonType: LessonType
+  lessonID?: string
+  isAudioDownloaded?: boolean
+  isVideoDownloaded?: boolean
+}
 
 /**
  * Pressable component for a single chapter button used in ChapterSeparator. Has a variety of possible styles based on its current mode.
@@ -17,36 +31,36 @@ import { type } from '../styles/typography'
  * @param {number} activeChapter - The currently active chapter of the current lesson. See chapters in constants.js.
  * @param {Function} changeChapter - Changes the currently active chapter.
  * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
- * @param {string} lessonID - The ID of the current lesson. Only needed for the Story and Training chapters.
+ * @param {string} lessonID - The ID of the current lesson. Only needed for the Story and Training Chapter.
  * @param {boolean} isAudioDownloaded - Whether this lesson has its audio file downloaded or not. Only needed for the Story chapter button.
  * @param {boolean} isVideoDownloaded - Whether this lesson has its video file downloaded or not. Only needed for the Training chapter button.
  */
-const ChapterButton = ({
+const ChapterButton: FC<Props> = ({
   // Props passed from a parent component.
   chapter,
   activeChapter,
   changeChapter,
   lessonType,
-  lessonID = null,
+  lessonID = '',
   isAudioDownloaded = false,
   isVideoDownloaded = false,
   activeGroup,
   isDark,
   downloads,
   isConnected,
-  t
-}) => {
+  t,
+}): ReactElement => {
   /** Keeps track of the mode of this chapter button. */
-  const [mode, setMode] = useState(chapterButtonModes.INACTIVE)
+  const [mode, setMode] = useState(ChapterButtonMode.INCOMPLETE)
 
   /** Keeps track of the icon name, button style, text style, and icon color for the chapter button. Updates whenever the mode changes. */
   const [iconName, setIconName] = useState('')
   const [extraButtonStyle, setExtraButtonStyle] = useState({
     borderColor: colors(isDark).bg3,
-    backgroundColor: colors(isDark).bg2
+    backgroundColor: colors(isDark).bg2,
   })
   const [textStyle, setTextStyle] = useState({
-    color: colors(isDark, activeGroup.language).accent
+    color: colors(isDark, activeGroup.language).accent,
   })
   const [iconColor, setIconColor] = useState(
     colors(isDark, activeGroup.language).accent
@@ -55,13 +69,13 @@ const ChapterButton = ({
   /** Keeps track of the download progress for the piece of media associated with the chapter button's chapter. */
   const [downloadProgress, setDownloadProgress] = useState(0)
 
-  // The names of the chapters. 'Filler' is there to line up this array with the chapters enum since the enum starts at 1.
+  // The names of the Chapter. 'Filler' is there to line up this array with the chapters enum since the enum starts at 1.
   const chapterNames = [
     'Filler',
     t.play.fellowship,
     t.play.story,
     t.play.training,
-    t.play.application
+    t.play.application,
   ]
 
   // The default text style.
@@ -80,7 +94,7 @@ const ChapterButton = ({
 
   // Also get the most updated mode whenever the download progress changes for this lesson.
   useEffect(() => {
-    if (chapter === chapters.STORY || chapter === chapters.TRAINING)
+    if (chapter === Chapter.STORY || chapter === Chapter.TRAINING)
       setChapterButtonMode()
   }, [downloads[lessonID], downloads[lessonID + 'v']])
 
@@ -92,48 +106,48 @@ const ChapterButton = ({
   /** Sets the mode for this chapter button. */
   const setChapterButtonMode = () => {
     switch (chapter) {
-      case chapters.FELLOWSHIP:
-        if (activeChapter === chapters.FELLOWSHIP)
-          setMode(chapterButtonModes.ACTIVE)
+      case Chapter.FELLOWSHIP:
+        if (activeChapter === Chapter.FELLOWSHIP)
+          setMode(ChapterButtonMode.ACTIVE)
         // Because the active chapter and chapter are stored as numbers, we can check if the active chapter is bigger than the chapter for this button to see if it's already been completed.
-        else if (activeChapter > chapter) setMode(chapterButtonModes.COMPLETE)
-        else setMode(chapterButtonModes.INCOMPLETE)
+        else if (activeChapter > chapter) setMode(ChapterButtonMode.COMPLETE)
+        else setMode(ChapterButtonMode.INCOMPLETE)
         break
-      case chapters.STORY:
+      case Chapter.STORY:
         if (
-          (lessonType === lessonTypes.STANDARD_DBS ||
-            lessonType === lessonTypes.STANDARD_DMC) &&
+          (lessonType === LessonType.STANDARD_DBS ||
+            lessonType === LessonType.STANDARD_DMC) &&
           !isConnected &&
           !isAudioDownloaded
         )
-          setMode(chapterButtonModes.DISABLED)
+          setMode(ChapterButtonMode.DISABLED)
         else if (downloads[lessonID] && downloads[lessonID].progress < 1) {
           setDownloadProgress(downloads[lessonID].progress * 100)
-          setMode(chapterButtonModes.DOWNLOADING)
-        } else if (activeChapter === chapters.STORY)
-          setMode(chapterButtonModes.ACTIVE)
-        else if (activeChapter > chapter) setMode(chapterButtonModes.COMPLETE)
-        else setMode(chapterButtonModes.INCOMPLETE)
+          setMode(ChapterButtonMode.DOWNLOADING)
+        } else if (activeChapter === Chapter.STORY)
+          setMode(ChapterButtonMode.ACTIVE)
+        else if (activeChapter > chapter) setMode(ChapterButtonMode.COMPLETE)
+        else setMode(ChapterButtonMode.INCOMPLETE)
         break
-      case chapters.TRAINING:
+      case Chapter.TRAINING:
         if (!isConnected && !isVideoDownloaded)
-          setMode(chapterButtonModes.DISABLED)
+          setMode(ChapterButtonMode.DISABLED)
         else if (
           downloads[lessonID + 'v'] &&
           downloads[lessonID + 'v'].progress < 1
         ) {
           setDownloadProgress(downloads[lessonID + 'v'].progress * 100)
-          setMode(chapterButtonModes.DOWNLOADING)
-        } else if (activeChapter === chapters.TRAINING)
-          setMode(chapterButtonModes.ACTIVE)
-        else if (activeChapter > chapter) setMode(chapterButtonModes.COMPLETE)
-        else setMode(chapterButtonModes.INCOMPLETE)
+          setMode(ChapterButtonMode.DOWNLOADING)
+        } else if (activeChapter === Chapter.TRAINING)
+          setMode(ChapterButtonMode.ACTIVE)
+        else if (activeChapter > chapter) setMode(ChapterButtonMode.COMPLETE)
+        else setMode(ChapterButtonMode.INCOMPLETE)
         break
-      case chapters.APPLICATION:
-        if (activeChapter === chapters.APPLICATION)
-          setMode(chapterButtonModes.ACTIVE)
-        else if (activeChapter > chapter) setMode(chapterButtonModes.COMPLETE)
-        else setMode(chapterButtonModes.INCOMPLETE)
+      case Chapter.APPLICATION:
+        if (activeChapter === Chapter.APPLICATION)
+          setMode(ChapterButtonMode.ACTIVE)
+        else if (activeChapter > chapter) setMode(ChapterButtonMode.COMPLETE)
+        else setMode(ChapterButtonMode.INCOMPLETE)
         break
     }
   }
@@ -141,32 +155,32 @@ const ChapterButton = ({
   /** Sets the various style states based on the current mode. */
   const setStyles = () => {
     switch (mode) {
-      case chapterButtonModes.ACTIVE:
+      case ChapterButtonMode.ACTIVE:
         setExtraButtonStyle({
           backgroundColor: colors(isDark, activeGroup.language).accent,
-          borderColor: colors(isDark, activeGroup.language).accent
+          borderColor: colors(isDark, activeGroup.language).accent,
         })
         setTextStyle({ color: colors(isDark).textOnColor })
         setIconColor(colors(isDark).bg4)
         // Slight adjustment if the lesson contains a training chapter since that will make the Application need the '4' label instead of '3'.
-        if (lessonType.includes('Video') && chapter === chapters.APPLICATION)
+        if (lessonType.includes('Video') && chapter === Chapter.APPLICATION)
           setIconName('number-4-filled')
         else if (
           !lessonType.includes('Video') &&
-          chapter === chapters.APPLICATION
+          chapter === Chapter.APPLICATION
         )
           setIconName('number-3-filled')
         else setIconName(`number-${chapter}-filled`)
         break
-      case chapterButtonModes.INCOMPLETE:
+      case ChapterButtonMode.INCOMPLETE:
         setExtraButtonStyle({
           borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2,
         })
         setTextStyle({
           color: isDark
             ? colors(isDark).icons
-            : colors(isDark, activeGroup.language).accent
+            : colors(isDark, activeGroup.language).accent,
         })
         setIconColor(
           isDark
@@ -174,37 +188,37 @@ const ChapterButton = ({
             : colors(isDark, activeGroup.language).accent
         )
         // Slight adjustment if the lesson contains a training chapter since that will make the Application need the '4' label instead of '3'. Another adjustment is that if the chapter is behind the active chapter, the icon is a check mark to show that it's been completed.
-        if (lessonType.includes('Video') && chapter === chapters.APPLICATION)
+        if (lessonType.includes('Video') && chapter === Chapter.APPLICATION)
           setIconName('number-4-filled')
         else if (
           !lessonType.includes('Video') &&
-          chapter === chapters.APPLICATION
+          chapter === Chapter.APPLICATION
         )
           setIconName('number-3-filled')
         else setIconName(`number-${chapter}-filled`)
         break
-      case chapterButtonModes.COMPLETE:
+      case ChapterButtonMode.COMPLETE:
         setExtraButtonStyle({
           borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2,
         })
         setTextStyle({ color: colors(isDark, activeGroup.language).accent })
         setIconColor(colors(isDark, activeGroup.language).accent)
         setIconName('check-filled')
         break
-      case chapterButtonModes.DOWNLOADING:
+      case ChapterButtonMode.DOWNLOADING:
         setExtraButtonStyle({
           borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2,
         })
         setTextStyle({ color: colors(isDark).disabled })
-        setIconName(null)
-        setIconColor(null)
+        setIconName('')
+        setIconColor('')
         break
-      case chapterButtonModes.DISABLED:
+      case ChapterButtonMode.DISABLED:
         setExtraButtonStyle({
           borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2
+          backgroundColor: isDark ? colors(isDark).bg3 : colors(isDark).bg2,
         })
         setTextStyle({ color: colors(isDark).disabled })
         setIconName('cloud-slash')
@@ -218,18 +232,18 @@ const ChapterButton = ({
       style={{
         ...styles.chapterButton,
         ...extraButtonStyle,
-        paddingVertical: isTablet ? 16 : 8
+        paddingVertical: isTablet ? 16 : 8,
       }}
       // Disable onPress (by making the onPress function empty and by disabling the touch effect) if the chapter button is DISABLED or DOWNLOADING.
       onPress={
-        mode === chapterButtonModes.DISABLED ||
-        mode === chapterButtonModes.DOWNLOADING
+        mode === ChapterButtonMode.DISABLED ||
+        mode === ChapterButtonMode.DOWNLOADING
           ? () => {}
           : () => changeChapter(chapter)
       }
       activeOpacity={
-        mode === chapterButtonModes.DISABLED ||
-        mode === chapterButtonModes.DOWNLOADING
+        mode === ChapterButtonMode.DISABLED ||
+        mode === ChapterButtonMode.DOWNLOADING
           ? 1
           : 0.2
       }
@@ -240,11 +254,11 @@ const ChapterButton = ({
           height: 25 * scaleMultiplier,
           marginBottom: 1,
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         {/* If we're DOWNLOADING, show the progress indicator. Otherwise, show an icon. */}
-        {mode === chapterButtonModes.DOWNLOADING ? (
+        {mode === ChapterButtonMode.DOWNLOADING ? (
           <AnimatedCircularProgress
             size={22 * scaleMultiplier}
             width={4}
@@ -278,8 +292,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 15,
     borderWidth: 3,
-    paddingHorizontal: 3
-  }
+    paddingHorizontal: 3,
+  },
 })
 
 export default ChapterButton

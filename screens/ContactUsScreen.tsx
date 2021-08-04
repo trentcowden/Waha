@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
+import Icon from '../assets/fonts/icon_font_config'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { buttonModes, scaleMultiplier } from '../constants'

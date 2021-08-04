@@ -15,7 +15,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
@@ -23,24 +23,24 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     security: state.security,
     mtUnlockAttempts: state.mtUnlockAttempts,
-    database: state.database
+    database: state.database,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setAreMobilizationToolsUnlocked: toSet => {
+    setAreMobilizationToolsUnlocked: (toSet) => {
       dispatch(setAreMobilizationToolsUnlocked(toSet))
     },
-    setMTUnlockTimeout: time => {
+    setMTUnlockTimeout: (time) => {
       dispatch(setMTUnlockTimeout(time))
     },
-    setMTUnlockAttempts: numAttempts => {
+    setMTUnlockAttempts: (numAttempts) => {
       dispatch(setMTUnlockAttempts(numAttempts))
     },
-    setShowMTTabAddedSnackbar: toSet => {
+    setShowMTTabAddedSnackbar: (toSet) => {
       dispatch(setShowMTTabAddedSnackbar(toSet))
-    }
+    },
   }
 }
 
@@ -61,7 +61,7 @@ const MobilizationToolsUnlockScreen = ({
   setAreMobilizationToolsUnlocked,
   setMTUnlockTimeout,
   setMTUnlockAttempts,
-  setShowMTTabAddedSnackbar
+  setShowMTTabAddedSnackbar,
 }) => {
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -74,16 +74,16 @@ const MobilizationToolsUnlockScreen = ({
               isDark={isDark}
             />
           )
-        : () => <View></View>,
+        : () => <View />,
       headerLeft: isRTL
-        ? () => <View></View>
+        ? () => <View />
         : () => (
             <WahaBackButton
               onPress={() => goBack()}
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -110,8 +110,8 @@ const MobilizationToolsUnlockScreen = ({
     }
   }, [mtUnlockAttempts])
 
-  const checkForMTContent = languageID =>
-    database[languageID].sets.some(set => {
+  const checkForMTContent = (languageID) =>
+    database[languageID].sets.some((set) => {
       return /[a-z]{2}.3.[0-9]+/.test(set.id)
     })
 
@@ -122,7 +122,7 @@ const MobilizationToolsUnlockScreen = ({
   /**
    * Checks if the passcode the user enters is correct. If it is, show the success modal. If not, add one to the attempts tracker and show an alert that the code is incorrect.
    */
-  const checkPasscode = fullPasscode => {
+  const checkPasscode = (fullPasscode) => {
     if (fullPasscode === '281820') {
       Keyboard.dismiss()
       setAreMobilizationToolsUnlocked(true)
@@ -164,7 +164,7 @@ const MobilizationToolsUnlockScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
       <Text
@@ -178,7 +178,7 @@ const MobilizationToolsUnlockScreen = ({
           ),
           marginTop: 50 * scaleMultiplier,
           marginBottom: 30 * scaleMultiplier,
-          paddingHorizontal: 20
+          paddingHorizontal: 20,
         }}
       >
         {t.mobilization_tools.enter_code}
@@ -197,8 +197,8 @@ const MobilizationToolsUnlockScreen = ({
           'center',
           colors(isDark).text
         )}
-        onTextChange={passcode => setPasscode(passcode)}
-        onFulfill={fullPasscode => checkPasscode(fullPasscode)}
+        onTextChange={(passcode) => setPasscode(passcode)}
+        onFulfill={(fullPasscode) => checkPasscode(fullPasscode)}
         onBackspace={() => {}}
         // Disable entry if the user is locked out.
         editable={
@@ -215,12 +215,12 @@ const MobilizationToolsUnlockScreen = ({
           borderColor: pinInputColor,
           borderWidth: 2,
           marginLeft: 3,
-          marginRight: 3
+          marginRight: 3,
         }}
         cellStyleFocused={{
           borderColor: colors(isDark, activeGroup.language).accent,
           borderRadius: 25,
-          borderWidth: 2
+          borderWidth: 2,
         }}
       />
       <Text
@@ -233,7 +233,7 @@ const MobilizationToolsUnlockScreen = ({
             colors(isDark).error
           ),
           marginTop: 30 * scaleMultiplier,
-          paddingHorizontal: 20
+          paddingHorizontal: 20,
         }}
       >
         {getTimeoutText()}
@@ -245,8 +245,8 @@ const MobilizationToolsUnlockScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default connect(

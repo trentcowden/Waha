@@ -1,3 +1,5 @@
+import { LanguageFamily } from 'interfaces/languages'
+
 /**
  * This file contains all of the language families and languages in Waha. This is used to populate the LanguageInstanceInstall screen, get the i18n keys for translation, and get the font and RTL status of a language family or language.
  * @param {string} languages[].i18nKey - This is the key that i18n will use to get the translation of this language family’s name in a different language.
@@ -10,7 +12,7 @@
  * @param {string} languages[].data[].i18nKey - This is the key that i18n will use to get the translation of this language’s name in a different language. For instance, if the user’s app is set to Arabic, the app will look for an Arabic translation of the “English” language instance in the ar.json translations object (which is the language family, not the language instance) using the i18nKey property in the english language instance object.
  * @param {string} languages[].data[].logoSource - This is the Firebase URL for this language instance’s logo. This is used only to display the logo on the LanguageSelectScreen before any logos have been downloaded to the user’s device.
  */
-export const languages = [
+export const languages: LanguageFamily[] = [
   {
     languageFamilyID: 'en',
     font: 'Roboto',
@@ -31,7 +33,7 @@ export const languages = [
           dark:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
         },
-        versions: null
+        versions: undefined
       }
     ]
   },
@@ -55,7 +57,7 @@ export const languages = [
           dark:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
         },
-        versions: null
+        versions: undefined
       },
       {
         languageID: 'ma',
@@ -72,7 +74,7 @@ export const languages = [
           dark:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
         },
-        versions: null
+        versions: undefined
       }
     ]
   }

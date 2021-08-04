@@ -4,8 +4,8 @@ import { Animated, StyleSheet, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { gutterSize } from '../constants'
 import {
-    activeDatabaseSelector,
-    activeGroupSelector
+  activeDatabaseSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'

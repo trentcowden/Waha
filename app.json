@@ -23,7 +23,14 @@
       "googleServicesFile": "./firebase/GoogleService-Info.plist",
       "supportsTablet": true,
       "buildNumber": "2.2.0",
-      "appStoreUrl": "https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294"
+      "appStoreUrl": "https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294",
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
+      }
+    },
+    "locales": {
+      "en": "./appStoreLocales/en.json",
+      "ar": "./appStoreLocales/ar.json"
     },
     "android": {
       "package": "com.kingdomstrategies.waha",

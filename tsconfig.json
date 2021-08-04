@@ -5,6 +5,7 @@
       "ES6"
     ],
     "isolatedModules": true,
+    "allowUnreachableCode": false,
     "module": "commonjs",
     "allowJs": true,
     "resolveJsonModule": true,

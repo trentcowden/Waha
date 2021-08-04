@@ -1,6 +1,7 @@
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from '../assets/fonts/icon_font_config'
 import {
   getLessonInfo,
   isTablet,
