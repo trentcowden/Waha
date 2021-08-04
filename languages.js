@@ -68,9 +68,9 @@ export const languages = [
         },
         logos: {
           light:
-            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ma%2Fother%2Fheader.png?alt=media',
           dark:
-            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ma%2Fother%2Fheader-dark.png?alt=media'
         },
         versions: null
       }
