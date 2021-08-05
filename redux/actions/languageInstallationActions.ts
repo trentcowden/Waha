@@ -15,6 +15,7 @@ export const CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE =
 export const STORE_ACTING_LANGUAGE_ID = 'STORE_ACTING_LANGUAGE_ID'
 export const INCREMENT_GLOBAL_GROUP_COUNTER = 'INCREMENT_GLOBAL_GROUP_COUNTER'
 export const SET_RECENT_ACTIVE_GROUP = 'SET_RECENT_ACTIVE_GROUP'
+export const SET_GLOBAL_GROUP_COUNTER = 'SET_GLOBAL_GROUP_COUNTER'
 
 interface SetHasOnboardedParams {
   type: 'SET_HAS_ONBOARDED'
@@ -70,6 +71,11 @@ interface IncrementGlobalGroupCounterParams {
   type: 'INCREMENT_GLOBAL_GROUP_COUNTER'
 }
 
+interface SetGlobalGroupCounterParams {
+  type: 'SET_GLOBAL_GROUP_COUNTER'
+  toSet: number
+}
+
 export type LanguageInstallationActionParams =
   | SetHasOnboardedParams
   | SetHasInstalledFirstLanguageInstanceParams
@@ -82,6 +88,7 @@ export type LanguageInstallationActionParams =
   | StoreActingLanguageIDParams
   | SetRecentActiveGroupParams
   | IncrementGlobalGroupCounterParams
+  | SetGlobalGroupCounterParams
 
 /**
  * Sets whether the user has completed the initial onboarding or not.
@@ -238,5 +245,14 @@ export function setRecentActiveGroup (
 export function incrementGlobalGroupCounter (): IncrementGlobalGroupCounterParams {
   return {
     type: INCREMENT_GLOBAL_GROUP_COUNTER
+  }
+}
+
+export function setGlobalGroupCounter (
+  toSet: number
+): SetGlobalGroupCounterParams {
+  return {
+    type: SET_GLOBAL_GROUP_COUNTER,
+    toSet: toSet
   }
 }

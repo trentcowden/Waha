@@ -56,7 +56,6 @@ const AddEditGroupModal: FC<Props> = ({
   const areMobilizationToolsUnlocked = selector(
     (state) => state.areMobilizationToolsUnlocked
   )
-  const downloads = selector((state) => state.downloads)
 
   const dispatch = useAppDispatch()
 

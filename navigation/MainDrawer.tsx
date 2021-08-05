@@ -5,111 +5,54 @@ import {
 } from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
-import { AGProps, CommonProps, DBProps, DLProps } from 'interfaces/common'
-import { DBLanguageData, StorySet } from 'interfaces/database'
 import React, { FC, ReactElement, useEffect } from 'react'
-import { connect, ConnectedProps } from 'react-redux'
 import { isTablet, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
+import { selector, useAppDispatch } from '../hooks'
 import { appVersion } from '../modeSwitch'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
-  addLanguageCoreFileToUpdate,
-  clearLanguageCoreFilesToUpdate,
-  storeLanguageCoreFileCreatedTime,
   storeLanguageData,
   storeLanguageSets,
 } from '../redux/actions/databaseActions'
-import { addSet, deleteGroup } from '../redux/actions/groupsActions'
+import { addLanguageCoreFileToUpdate } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { AppDispatch, RootState } from '../redux/store'
+import { StorySet } from '../redux/reducers/database'
 import MainStack from './MainStack'
 import WahaDrawer from './WahaDrawer'
 
 // Create the drawer navigator.
 const Drawer = createDrawerNavigator()
 
-function mapStateToProps(state: RootState) {
-  console.log(state.groups)
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    database: state.database,
-    activeGroup: activeGroupSelector(state),
-    security: state.security,
-    languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
-    mtUnlockAttempts: state.mtUnlockAttempts,
-    downloads: state.downloads,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-  }
-}
-
-function mapDispatchToProps(dispatch: AppDispatch) {
-  return {
-    storeLanguageData: (data: DBLanguageData, language: string) => {
-      dispatch(storeLanguageData(data, language))
-    },
-    storeLanguageSets: (sets: StorySet[], language: string) => {
-      dispatch(storeLanguageSets(sets, language))
-    },
-    addLanguageCoreFileToUpdate: (fileName: string) => {
-      dispatch(addLanguageCoreFileToUpdate(fileName))
-    },
-    changeActiveGroup: (name: string) => {
-      dispatch(changeActiveGroup(name))
-    },
-    deleteGroup: (name: string) => {
-      dispatch(deleteGroup(name))
-    },
-    storeLanguageCoreFileCreatedTime: (fileName: string, timeCreated: number) =>
-      dispatch(storeLanguageCoreFileCreatedTime(fileName, timeCreated)),
-    clearLanguageCoreFilesToUpdate: () =>
-      dispatch(clearLanguageCoreFilesToUpdate()),
-    addSet: (groupName: string, groupID: number, set: StorySet) => {
-      dispatch(addSet(groupName, groupID, set))
-    },
-  }
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps)
-
-type ReduxProps = ConnectedProps<typeof connector>
-
-interface Props extends ReduxProps, CommonProps, AGProps, DBProps, DLProps {
-  // security: Object
-  // languageCoreFilesCreatedTimes: CoreFileCreatedTimes
-  // languageCoreFilesToUpdate: string[]
-  // storeLanguageData: Function
-  // storeLanguageSets: Function
-  // addLanguageCoreFileToUpdate: Function
-  // storeLanguageCoreFileCreatedTime: Function
-  // clearLanguageCoreFilesToUpdate: Function
-}
+interface Props {}
 
 /**
  * This component renders a drawer navigator that contains Waha's navigation drawer. It's placed around the MainStack navigator. It also contains a ton of logic related to things that happen globally in the background, such as updating the connection status and retrieving updates from Firestore.
  */
-const MainDrawer: FC<Props> = ({
-  // Props passed from redux.
-  // isRTL,
-  isDark,
-  database,
-  activeGroup,
-  security,
-  languageCoreFilesCreatedTimes,
-  languageCoreFilesToUpdate,
-  downloads,
-  storeLanguageData,
-  storeLanguageSets,
-  addLanguageCoreFileToUpdate,
-  storeLanguageCoreFileCreatedTime,
-  clearLanguageCoreFilesToUpdate,
-}): ReactElement => {
+const MainDrawer: FC<Props> = ({}): ReactElement => {
   const isRTL = selector(
     (state) => info(activeGroupSelector(state).language).isRTL
   )
+  const database = selector((state) => state.database)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const security = selector((state) => state.security)
+  const languageCoreFilesCreatedTimes = selector(
+    (state) => state.languageInstallation.languageCoreFilesCreatedTimes
+  )
+  const languageCoreFilesToUpdate = selector(
+    (state) => state.languageInstallation.languageCoreFilesToUpdate
+  )
+
+  console.log(
+    selector(
+      (state) => state.languageInstallation.languageCoreFilesCreatedTimes
+    )
+  )
+
+  const downloads = selector((state) => state.downloads)
+
+  const dispatch = useAppDispatch()
+
   /** useEffect function that checks for database updates for other installed languages besides the active one. */
   useEffect(() => {
     Object.keys(database).forEach((key) => {
@@ -122,15 +65,24 @@ const MainDrawer: FC<Props> = ({
           .doc(key)
           .get()
           .then(async (doc) => {
+            var languageData = doc.data()
             // If we get some legitimate data back...
-            if (doc.exists && doc.data() !== undefined) {
+            if (doc.exists && languageData !== undefined) {
               // If the Waha version is greater than or equal to the app version in the database...
-              if (doc.data().appVersion <= appVersion) {
+              if (languageData.appVersion <= appVersion) {
                 // Set shouldWrite to true. This way, when we fetch data for the Story Sets for this language, we know we're safe to write to redux.
                 shouldWrite = true
 
                 // Store our language info in redux.
-                storeLanguageData(doc.data(), key)
+                dispatch(
+                  storeLanguageData(
+                    {
+                      files: languageData.files,
+                      questions: languageData.questions,
+                    },
+                    key
+                  )
+                )
               }
             }
           })
@@ -162,7 +114,7 @@ const MainDrawer: FC<Props> = ({
                   sets.push(storySetItem)
                 })
                 /// ...and write all of them to redux.
-                storeLanguageSets(sets, key)
+                dispatch(storeLanguageSets(sets, key))
               }
             }
           })
@@ -196,7 +148,15 @@ const MainDrawer: FC<Props> = ({
 
             // console.log(t.groups)
             // Store our language info in redux.
-            storeLanguageData(doc.data(), activeGroup.language)
+            dispatch(
+              storeLanguageData(
+                {
+                  files: languageData.files,
+                  questions: languageData.questions,
+                },
+                activeGroup.language
+              )
+            )
 
             // Check if we need replacements for already downloaded core files by comparing the created times of downloaded core files in redux with the created times of the current Firebase storage core files. If the created times don't match, it means a core file has been updated and we need to queue the new core file to download.
             languageData.files.forEach((fileName: string) => {
@@ -232,8 +192,10 @@ const MainDrawer: FC<Props> = ({
                       )
                     ) {
                       console.log(`${fileName} needs to be replaced.\n`)
-                      addLanguageCoreFileToUpdate(
-                        `${activeGroup.language}-${fileName}`
+                      dispatch(
+                        addLanguageCoreFileToUpdate(
+                          `${activeGroup.language}-${fileName}`
+                        )
                       )
                     }
                   }
@@ -263,8 +225,10 @@ const MainDrawer: FC<Props> = ({
                           )
                         ) {
                           console.log(`${fileName} needs to be added.`)
-                          addLanguageCoreFileToUpdate(
-                            `${activeGroup.language}-${fileName}`
+                          dispatch(
+                            addLanguageCoreFileToUpdate(
+                              `${activeGroup.language}-${fileName}`
+                            )
                           )
                         }
                       }
@@ -305,7 +269,7 @@ const MainDrawer: FC<Props> = ({
               sets.push(storySetItem)
             })
             /// ...and write all of them to redux.
-            storeLanguageSets(sets, activeGroup.language)
+            dispatch(storeLanguageSets(sets, activeGroup.language))
           }
         }
       })
@@ -351,4 +315,4 @@ const MainDrawer: FC<Props> = ({
   )
 }
 
-export default connector(MainDrawer)
+export default MainDrawer

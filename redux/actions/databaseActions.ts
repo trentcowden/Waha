@@ -24,7 +24,7 @@ import { DownloadResumable } from 'expo-file-system'
 import * as Localization from 'expo-localization'
 import firebase from 'firebase'
 import { logInstallLanguage } from '../../functions/analyticsFunctions'
-import { DBLanguageData, StorySet } from '../reducers/database'
+import { LanguageData, StorySet } from '../reducers/database'
 import { AppDispatch, RootState } from '../store'
 import { setIsInstallingLanguageInstance } from './isInstallingLanguageInstanceActions'
 import {
@@ -40,7 +40,7 @@ import { storeDownloads } from './storedDownloadsActions'
 
 interface StoreLanguageDataParams {
   type: 'STORE_LANGUAGE_DATA'
-  languageData: DBLanguageData
+  languageData: LanguageData
   languageInstanceID: string
 }
 
@@ -79,7 +79,7 @@ export type DatabaseActionParams =
  * @return {Object} - Object to send to the reducer.
  */
 export function storeLanguageData (
-  languageData: DBLanguageData,
+  languageData: LanguageData,
   languageInstanceID: string
 ): StoreLanguageDataParams {
   return {

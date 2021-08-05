@@ -7,11 +7,14 @@ import {
 
 export type Database = Record<string, DBLanguageData>
 
-export interface DBLanguageData {
+export interface LanguageData {
   files: string[]
   questions: {
     [questionSet: string]: string[]
   }
+}
+
+export type DBLanguageData = LanguageData & {
   installTime: number
   sets: StorySet[]
 }

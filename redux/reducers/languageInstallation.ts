@@ -3,6 +3,7 @@ import {
   CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE,
   INCREMENT_GLOBAL_GROUP_COUNTER,
   LanguageInstallationActionParams,
+  SET_GLOBAL_GROUP_COUNTER,
   SET_HAS_FETCHED_LANGUAGE_DATA,
   SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE,
   SET_HAS_ONBOARDED,
@@ -46,6 +47,11 @@ export function languageInstallation (
       return {
         ...state,
         globalGroupCounter: state.globalGroupCounter + 1
+      }
+    case SET_GLOBAL_GROUP_COUNTER:
+      return {
+        ...state,
+        globalGroupCounter: params.toSet
       }
     case SET_HAS_ONBOARDED:
       return { ...state, hasOnboarded: params.hasOnboarded }
