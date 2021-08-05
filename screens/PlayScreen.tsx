@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
@@ -27,13 +27,13 @@ import {
   isTablet,
   lessonTypes,
   lockPortrait,
-  scaleMultiplier
+  scaleMultiplier,
 } from '../constants'
 import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import {
   checkForAlmostCompleteSet,
-  checkForFullyCompleteSet
+  checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
@@ -44,17 +44,17 @@ import {
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
-  setReviewTimeout
+  setReviewTimeout,
 } from '../redux/actions/persistedPopupsActions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
@@ -66,11 +66,11 @@ function mapStateToProps (state) {
     hasUsedPlayScreen: state.persistedPopups.hasUsedPlayScreen,
     reviewTimeout: state.persistedPopups.reviewTimeout,
     lessonCounter: state.persistedPopups.lessonCounter,
-    numLessonsTilReview: state.persistedPopups.numLessonsTilReview
+    numLessonsTilReview: state.persistedPopups.numLessonsTilReview,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     toggleComplete: (groupName, set, lessonIndex) => {
       dispatch(toggleComplete(groupName, set, lessonIndex))
@@ -78,31 +78,31 @@ function mapDispatchToProps (dispatch) {
     downloadMedia: (type, lessonID, source) => {
       dispatch(downloadMedia(type, lessonID, source))
     },
-    removeDownload: lessonID => {
+    removeDownload: (lessonID) => {
       dispatch(removeDownload(lessonID))
     },
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
     },
-    setHasUsedPlayScreen: toSet => {
+    setHasUsedPlayScreen: (toSet) => {
       dispatch(setHasUsedPlayScreen(toSet))
     },
-    setLessonCounter: numLessons => {
+    setLessonCounter: (numLessons) => {
       dispatch(setLessonCounter(numLessons))
     },
-    setNumLessonsTilReview: numLessons => {
+    setNumLessonsTilReview: (numLessons) => {
       dispatch(setNumLessonsTilReview(numLessons))
     },
-    setReviewTimeout: timeout => {
+    setReviewTimeout: (timeout) => {
       dispatch(setReviewTimeout(timeout))
-    }
+    },
   }
 }
 
 // Controls whether a piece of content in the middle area is visible or not.
 const middleAreaVisibility = {
   HIDE: 0,
-  SHOW: 1
+  SHOW: 1,
 }
 
 // Path to the file system directory for convenience.
@@ -136,8 +136,8 @@ const PlayScreen = ({
       isVideoAlreadyDownloaded,
       isAlreadyDownloading,
       lessonType,
-      downloadedLessons
-    }
+      downloadedLessons,
+    },
   },
   // Props passed from redux.
   activeGroup,
@@ -158,7 +158,7 @@ const PlayScreen = ({
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
-  setReviewTimeout
+  setReviewTimeout,
 }) => {
   /*
     STATE
@@ -172,7 +172,7 @@ const PlayScreen = ({
     storyStream: getLessonInfo('audioSource', thisLesson.id),
     storyDummy: `${path}${activeGroup.language}-dummy-story.mp3`,
     trainingLocal: `${path}${thisLesson.id}v.mp4`,
-    trainingStream: getLessonInfo('videoSource', thisLesson.id)
+    trainingStream: getLessonInfo('videoSource', thisLesson.id),
   })
 
   /** State for the audio and video refs. */
@@ -228,9 +228,8 @@ const PlayScreen = ({
   /** Keeps track of whether the various modals are visible. */
   const [showShareLessonModal, setShowShareLessonModal] = useState(false)
   const [showSetCompleteModal, setShowSetCompleteModal] = useState(false)
-  const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] = useState(
-    false
-  )
+  const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] =
+    useState(false)
   const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
 
   /** Keeps track of whether the audio and video files for this lesson are downloaded. */
@@ -252,14 +251,14 @@ const PlayScreen = ({
   const sectionOffsets = useRef([
     {
       title: 'END',
-      globalOffset: 1000000
-    }
+      globalOffset: 1000000,
+    },
   ])
 
   /** Keeps track of whether this lesson is complete or not. */
   const isThisLessonComplete = useRef(
     activeGroup.addedSets
-      .filter(set => set.id === thisSet.id)[0]
+      .filter((set) => set.id === thisSet.id)[0]
       .progress.includes(getLessonInfo('index', thisLesson.id))
   )
 
@@ -268,14 +267,14 @@ const PlayScreen = ({
 
   /** Keeps track of the information for this set from redux which includes the progress of this set. */
   const [addedSet, setAddedSet] = useState(
-    activeGroup.addedSets.filter(addedSet => addedSet.id === thisSet.id)[0]
+    activeGroup.addedSets.filter((addedSet) => addedSet.id === thisSet.id)[0]
   )
 
   /** useEffect function that updates the added set local state whenever it changes in redux. */
   useEffect(() => {
-    setAddedSet(activeGroup.addedSets.filter(set => set.id === thisSet.id)[0])
+    setAddedSet(activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0])
     setOptions(getNavOptions())
-  }, [activeGroup.addedSets.filter(set => set.id === thisSet.id)[0]])
+  }, [activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0]])
 
   /** Sets the navigation options for this screen. */
   const getNavOptions = () => ({
@@ -284,7 +283,7 @@ const PlayScreen = ({
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          flexDirection: 'row'
+          flexDirection: 'row',
         }}
       >
         <View>
@@ -305,7 +304,7 @@ const PlayScreen = ({
               'center',
               colors(isDark).secondaryText
             ),
-            marginHorizontal: 2
+            marginHorizontal: 2,
           }}
         >
           {getLessonInfo('subtitle', thisLesson.id)}
@@ -351,7 +350,7 @@ const PlayScreen = ({
             isRTL={isRTL}
             isDark={isDark}
           />
-        )
+        ),
   })
 
   /*
@@ -461,7 +460,7 @@ const PlayScreen = ({
       [chapters.FELLOWSHIP]: fellowshipSource,
       [chapters.STORY]: storySource,
       [chapters.TRAINING]: trainingSource,
-      [chapters.APPLICATION]: applicationSource
+      [chapters.APPLICATION]: applicationSource,
     })
   }
 
@@ -501,7 +500,7 @@ const PlayScreen = ({
    * Updates the active chapter.
    * @param {number} chapter - The chapter to switch to.
    */
-  const changeChapter = async chapter => {
+  const changeChapter = async (chapter) => {
     if (!isMediaLoaded) return
     /* Pause audio or video before changing chapters. This is here because of some jank android-only error where the onPlaybackStatusUpdate function was being called continuously when switching from the Training chapter to a different chapter, even when media wasn't loaded, which caused the app to constantly switch between being loaded and not loaded. Pausing the audio or video before switching fixes this issue. */
     if (isMediaPlaying && isMediaLoaded) {
@@ -523,12 +522,12 @@ const PlayScreen = ({
       if (chapter === chapters.FELLOWSHIP)
         lessonTextContentRef.current.scrollTo({
           y: sectionOffsets.current[0].globalOffset,
-          animated: true
+          animated: true,
         })
       else if (chapter === chapters.STORY)
         lessonTextContentRef.current.scrollTo({
           y: sectionOffsets.current[1].globalOffset + 40 * scaleMultiplier,
-          animated: true
+          animated: true,
         })
       else if (chapter === chapters.APPLICATION)
         lessonTextContentRef.current.scrollTo({
@@ -536,7 +535,7 @@ const PlayScreen = ({
             sectionOffsets.current[sectionOffsets.current.length - 2]
               .globalOffset +
             40 * scaleMultiplier,
-          animated: true
+          animated: true,
         })
     }
 
@@ -571,13 +570,13 @@ const PlayScreen = ({
         Animated.timing(playScreenSwiperOpacity, {
           toValue: 1,
           duration: 300,
-          useNativeDriver: true
+          useNativeDriver: true,
         }),
         Animated.timing(videoPlayerOpacity, {
           toValue: 0,
           duration: 300,
-          useNativeDriver: true
-        })
+          useNativeDriver: true,
+        }),
       ]).start()
     }
     // If we're switching to the Training chapter, fade out the <AlbumArtSwiper /> and fade in the <VideoPlayer />.
@@ -586,13 +585,13 @@ const PlayScreen = ({
         Animated.timing(playScreenSwiperOpacity, {
           toValue: 0,
           duration: 300,
-          useNativeDriver: true
+          useNativeDriver: true,
         }),
         Animated.timing(videoPlayerOpacity, {
           toValue: 1,
           duration: 300,
-          useNativeDriver: true
-        })
+          useNativeDriver: true,
+        }),
       ]).start()
     }
 
@@ -604,10 +603,10 @@ const PlayScreen = ({
    * Loads audio or video for playing.
    * @param source - The source URI of the media to load.
    */
-  const loadMedia = async source => {
+  const loadMedia = async (source) => {
     media
       .load(source, shouldAutoPlay, activeChapter)
-      .then(playbackStatus => {
+      .then((playbackStatus) => {
         // Set the length of this media. Used for the <Scrubber/>.
         setMediaLength(playbackStatus.durationMillis)
 
@@ -618,7 +617,7 @@ const PlayScreen = ({
         if (shouldAutoPlay) setIsMediaPlaying(true)
         else setIsMediaPlaying(false)
       })
-      .catch(error => console.log(error))
+      .catch((error) => console.log(error))
 
     // Auto play starts off false but after the first chapter should always be true, so after loading, we always set it to true.
     if (!shouldAutoPlay) setShouldAutoPlay(true)
@@ -631,7 +630,7 @@ const PlayScreen = ({
   /**
    * Acts as an in-between function to make sure that the playback statuses of audio and video aren't overwriting each other.
    */
-  const onAudioPlaybackStatusUpdate = playbackStatus => {
+  const onAudioPlaybackStatusUpdate = (playbackStatus) => {
     if (activeChapter !== chapters.TRAINING)
       onPlaybackStatusUpdate(playbackStatus)
   }
@@ -639,7 +638,7 @@ const PlayScreen = ({
   /**
    * Acts as an in-between function to make sure that the playback statuses of audio and video aren't overwriting each other.
    */
-  const onVideoPlaybackStatusUpdate = playbackStatus => {
+  const onVideoPlaybackStatusUpdate = (playbackStatus) => {
     if (activeChapter === chapters.TRAINING)
       onPlaybackStatusUpdate(playbackStatus)
   }
@@ -655,7 +654,7 @@ const PlayScreen = ({
     durationMillis,
     didJustFinish,
     uri,
-    error
+    error,
   }) => {
     // Set isLoaded state to true once media loads.
     if (isLoaded) setIsMediaLoaded(true)
@@ -724,7 +723,7 @@ const PlayScreen = ({
       playScreenSwiperRef.current.setPage(isRTL ? 0 : 1)
       lessonTextContentRef.current.scrollTo({
         y: sectionOffsets.current[1].globalOffset + 40 * scaleMultiplier,
-        animated: true
+        animated: true,
       })
     }
     // Otherwise, just change to the Story chapter.
@@ -776,7 +775,7 @@ const PlayScreen = ({
     if (!isMediaLoaded) return
 
     // Switch play button over to the opposite of its current state.
-    setIsMediaPlaying(currentStatus => !currentStatus)
+    setIsMediaPlaying((currentStatus) => !currentStatus)
 
     // Animate the play indicator that appears over the album art.
     setPlayFeedbackZIndex(2)
@@ -784,13 +783,13 @@ const PlayScreen = ({
       Animated.timing(playFeedbackOpacity, {
         toValue: 1,
         duration: 0,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(playFeedbackOpacity, {
         toValue: 0,
         duration: 300,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start(() => setPlayFeedbackZIndex(0))
 
     isMediaPlaying ? media.pause(activeChapter) : media.play(activeChapter)
@@ -800,7 +799,7 @@ const PlayScreen = ({
    * Plays media from a specified location.
    * @param value - The location to start playing from.
    */
-  const playFromLocation = value => {
+  const playFromLocation = (value) => {
     // If we're still loading, don't try and do anything with the media.
     if (!isMediaLoaded) return
 
@@ -826,7 +825,7 @@ const PlayScreen = ({
 
     // Checks whether a lesson's audio or video is downloaded.
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
+      (contents) => {
         if (contents.includes(thisLesson.id + '.mp3'))
           setIsAudioDownloaded(true)
         if (contents.includes(thisLesson.id + 'v.mp4')) {
@@ -920,7 +919,7 @@ const PlayScreen = ({
         // Check to see if we should automatically add the next Story Set if this set is now 85% or more of the way completed.
         !checkForAlmostCompleteSet(
           thisSet,
-          activeGroup.addedSets.filter(set => set.id === thisSet.id)[0],
+          activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0],
           activeGroup,
           activeDatabase,
           addSet,
@@ -929,7 +928,7 @@ const PlayScreen = ({
         // If completing this lesson completes the whole set, show a celebratory modal.
         !checkForFullyCompleteSet(
           thisSet,
-          activeGroup.addedSets.filter(set => set.id === thisSet.id)[0],
+          activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0],
           setShowSetCompleteModal
         )
       )
@@ -953,7 +952,7 @@ const PlayScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
       <View style={styles.middleAreaContainer}>
@@ -969,7 +968,7 @@ const PlayScreen = ({
               zIndex:
                 activeChapter === chapters.TRAINING
                   ? middleAreaVisibility.HIDE
-                  : middleAreaVisibility.SHOW
+                  : middleAreaVisibility.SHOW,
             }}
           >
             <PlayScreenSwiper
@@ -1004,7 +1003,7 @@ const PlayScreen = ({
               zIndex:
                 activeChapter === chapters.TRAINING
                   ? middleAreaVisibility.SHOW
-                  : middleAreaVisibility.HIDE
+                  : middleAreaVisibility.HIDE,
             }}
           >
             <VideoPlayer
@@ -1136,14 +1135,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   middleAreaContainer: {
     width: '100%',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayScreen)

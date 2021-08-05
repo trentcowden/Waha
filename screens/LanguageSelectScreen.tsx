@@ -1,6 +1,5 @@
 import { Audio } from 'expo-av'
 import * as Localization from 'expo-localization'
-import { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -34,10 +33,10 @@ import {
   storeLanguageData,
   storeLanguageSets,
 } from '../redux/actions/databaseActions'
+import { createGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { createGroup } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -88,14 +87,14 @@ function mapDispatchToProps(dispatch) {
       groupNumber: number
     ) =>
       dispatch(
-        createGroup({
-          groupName: groupName,
-          language: language,
-          emoji: emoji,
-          shouldShowMobilizationToolsTab: shouldShowMobilizationToolsTab,
-          groupID: groupID,
-          groupNumber: groupNumber,
-        })
+        createGroup(
+          groupName,
+          language,
+          emoji,
+          shouldShowMobilizationToolsTab,
+          groupID,
+          groupNumber
+        )
       ),
     changeActiveGroup: (name) => {
       dispatch(changeActiveGroup(name))
@@ -523,7 +522,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 50 * scaleMultiplier,
     paddingHorizontal: 5,
-    flexDirection: info(locale).isRTL ? 'row-reverse' : 'row',
+    flexDirection: info(Localization.locale).isRTL ? 'row-reverse' : 'row',
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'flex-start',

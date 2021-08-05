@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
@@ -23,24 +23,24 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     security: state.security,
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
     t: getTranslations(activeGroupSelector(state).language),
-    isRTL: info(activeGroupSelector(state).language).isRTL
+    isRTL: info(activeGroupSelector(state).language).isRTL,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setIsMuted: toSet => {
+    setIsMuted: (toSet) => {
       dispatch(setIsMuted(toSet))
     },
-    setIsTimedOut: toSet => {
+    setIsTimedOut: (toSet) => {
       dispatch(setIsTimedOut(toSet))
-    }
+    },
   }
 }
 
@@ -57,7 +57,7 @@ const PianoAppScreen = ({
   t,
   isDark,
   setIsMuted,
-  setIsTimedOut
+  setIsTimedOut,
 }) => {
   /** Keeps track of the passcode that the user is entering on the piano. */
   const [playedNotes, setPlayedNotes] = useState('')
@@ -79,7 +79,7 @@ const PianoAppScreen = ({
       require('../assets/securityMode/unlock_security_mode_sound.mp3')
     )
 
-    return function cleanup () {
+    return function cleanup() {
       unlockSound.current.unloadAsync()
     }
   }, [])
@@ -100,7 +100,7 @@ const PianoAppScreen = ({
       } else
         reset({
           index: 0,
-          routes: [{ name: 'SetsTabs' }]
+          routes: [{ name: 'SetsTabs' }],
         })
     }
   }, [playedNotes])
@@ -112,7 +112,7 @@ const PianoAppScreen = ({
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <View style={styles.titleContainer}>
@@ -122,7 +122,7 @@ const PianoAppScreen = ({
             resizeMode: 'contain',
             width: 50,
             height: 50,
-            borderRadius: 10
+            borderRadius: 10,
           }}
         />
         <Text
@@ -134,7 +134,7 @@ const PianoAppScreen = ({
               'center',
               colors(isDark).text
             ),
-            paddingHorizontal: 10
+            paddingHorizontal: 10,
           }}
         >
           {t.security.game_screen_title}
@@ -144,7 +144,7 @@ const PianoAppScreen = ({
         <View
           style={{
             ...styles.dummyControlsContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <TouchableOpacity
@@ -161,14 +161,14 @@ const PianoAppScreen = ({
                   }
             }
             style={{
-              margin: 20
+              margin: 20,
             }}
           >
             <View
               style={{
                 ...styles.recordButton,
                 backgroundColor: colors(isDark).error,
-                borderColor: colors(isDark).icons
+                borderColor: colors(isDark).icons,
               }}
             >
               <Text
@@ -189,7 +189,7 @@ const PianoAppScreen = ({
               isPlaying ? () => setIsPlaying(false) : () => setIsPlaying(true)
             }
             style={{
-              margin: 20
+              margin: 20,
             }}
           >
             <Icon
@@ -205,7 +205,7 @@ const PianoAppScreen = ({
               resizeMode: 'contain',
               width: Dimensions.get('window').width,
               height: 60 * scaleMultiplier,
-              borderRadius: 10
+              borderRadius: 10,
             }}
             source={require('../assets/securityMode/piano.png')}
           />
@@ -218,13 +218,13 @@ const PianoAppScreen = ({
         <View
           style={{
             ...styles.bottomControlsContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <TouchableOpacity
             onPress={() => {}}
             style={{
-              margin: 20
+              margin: 20,
             }}
           >
             <Icon name={'settings'} size={50} color={colors(isDark).icons} />
@@ -236,7 +236,7 @@ const PianoAppScreen = ({
                 : () => setIsMuted(true)
             }
             style={{
-              margin: 20
+              margin: 20,
             }}
           >
             <Icon
@@ -255,18 +255,18 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   titleContainer: {
     height: '25%',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   dummyControlsContainer: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   recordButton: {
     width: 50 * scaleMultiplier,
@@ -274,13 +274,13 @@ const styles = StyleSheet.create({
     borderRadius: (50 * scaleMultiplier) / 2,
     borderWidth: 2,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bottomControlsContainer: {
     width: Dimensions.get('window').width,
     justifyContent: 'space-between',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PianoAppScreen)

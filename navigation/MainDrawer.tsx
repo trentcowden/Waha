@@ -12,6 +12,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { isTablet, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import { appVersion } from '../modeSwitch'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
@@ -92,7 +93,7 @@ interface Props extends ReduxProps, CommonProps, AGProps, DBProps, DLProps {
  */
 const MainDrawer: FC<Props> = ({
   // Props passed from redux.
-  isRTL,
+  // isRTL,
   isDark,
   database,
   activeGroup,
@@ -106,6 +107,9 @@ const MainDrawer: FC<Props> = ({
   storeLanguageCoreFileCreatedTime,
   clearLanguageCoreFilesToUpdate,
 }): ReactElement => {
+  const isRTL = selector(
+    (state) => info(activeGroupSelector(state).language).isRTL
+  )
   /** useEffect function that checks for database updates for other installed languages besides the active one. */
   useEffect(() => {
     Object.keys(database).forEach((key) => {

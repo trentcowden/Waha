@@ -1,4 +1,4 @@
-import { locale } from 'i18n-js'
+import * as Localization from 'expo-localization'
 import { Database } from 'interfaces/database'
 import { Group } from 'interfaces/groups'
 import {
@@ -82,8 +82,8 @@ export const getAllLanguagesData = (
 ) => {
   // Sort the languages to put the language family of the phone's current locale at the top.
   const sortByLocale = (a: LanguageFamily, b: LanguageFamily) => {
-    if (locale.includes(a.languageFamilyID)) return -1
-    else if (locale.includes(b.languageFamilyID)) return 1
+    if (Localization.locale.includes(a.languageFamilyID)) return -1
+    else if (Localization.locale.includes(b.languageFamilyID)) return 1
     else return 0
   }
 

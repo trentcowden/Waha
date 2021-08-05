@@ -2,6 +2,23 @@ export const ADD_UPDATE_DOWNLOAD = 'ADD_UPDATE_DOWNLOAD'
 export const REMOVE_DOWNLOAD = 'REMOVE_DOWNLOAD'
 
 import * as FileSystem from 'expo-file-system'
+import { DownloadResumable } from 'expo-file-system'
+import { AppDispatch } from 'redux/store'
+
+interface AddUpdateDownloadParams {
+  type: 'ADD_UPDATE_DOWNLOAD'
+  progress: number
+  resumable: DownloadResumable
+  lessonID: string
+}
+interface RemoveDownloadParams {
+  type: 'REMOVE_DOWNLOAD'
+  lessonID: string
+}
+
+export type DownloadActionParams =
+  | AddUpdateDownloadParams
+  | RemoveDownloadParams
 
 /**
  * Adds or updates the progress for a download in the downloads state.
@@ -11,7 +28,11 @@ import * as FileSystem from 'expo-file-system'
  * @param {string} lessonID - The ID of the lessson to add or update the download for. If we're adding, we add a new key to the downloads object. If we're updating, we update the progress for the existing lesson's key.
  * @return {Object} - Object to send to the reducer.
  */
-export function addUpdateDownload (progress, resumable, lessonID) {
+export function addUpdateDownload (
+  progress: number,
+  resumable: DownloadResumable,
+  lessonID: string
+): AddUpdateDownloadParams {
   return {
     type: ADD_UPDATE_DOWNLOAD,
     progress,
@@ -26,7 +47,7 @@ export function addUpdateDownload (progress, resumable, lessonID) {
  * @param {string} lessonID - The ID of the lesson whose download we want to remove from the downloads state.
  * @return {Object} - Object to send to the reducer.
  */
-export function removeDownload (lessonID) {
+export function removeDownload (lessonID: string): RemoveDownloadParams {
   return {
     type: REMOVE_DOWNLOAD,
     lessonID
@@ -41,12 +62,12 @@ export function removeDownload (lessonID) {
  * @param {string} source - The firebase URI for the file to download.
  * @return {Object} - Thunk object that allows us to get the state and dispatch actions.
  */
-export function downloadMedia (type, lessonID, source) {
+export function downloadMedia (type: string, lessonID: string, source: string) {
   var counter = 0
 
   // All video files are named the same as the audio files except with a 'v' at the end, so if we're downloading a video file we need to add that to the file name that we're wanting to download. We also want to adjust the file extension depending on the media type: .mp3 for audio and .mp4 for video. This is used for the name of the file as it will be saved as on the device.
   var videoModifier = ''
-  var fileEnd
+  var fileEnd = ''
 
   if (type === 'video') {
     videoModifier = 'v'
@@ -55,11 +76,17 @@ export function downloadMedia (type, lessonID, source) {
     fileEnd = '.mp3'
   }
 
-  return dispatch => {
+  return (dispatch: AppDispatch) => {
     // Callback function for updating the progress of a download.
-    function callback ({ totalBytesWritten, totalBytesExpectedToWrite }) {
+    function callback ({
+      totalBytesWritten,
+      totalBytesExpectedToWrite
+    }: {
+      totalBytesWritten: number
+      totalBytesExpectedToWrite: number
+    }) {
       // Calculate the progress of the download.
-      progress = totalBytesWritten / totalBytesExpectedToWrite
+      var progress = totalBytesWritten / totalBytesExpectedToWrite
 
       // We always want to update the progress whenever the download finishes so we know when it's done and can remove the download.
       if (progress == 1) {

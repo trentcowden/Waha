@@ -1,3 +1,5 @@
+import { StorySet } from 'interfaces/database'
+import { AppDispatch, RootState } from 'redux/store'
 import { getLessonInfo, getSetInfo } from '../../constants'
 import {
   logAddStorySet,
@@ -13,6 +15,58 @@ export const RESET_PROGRESS = 'RESET_PROGRESS'
 export const ADD_SET = 'ADD_SET'
 export const SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB =
   'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
+
+interface CreateGroupParams {
+  type: 'CREATE_GROUP'
+  groupName: string
+  groupID: number
+  language: string
+  emoji: string
+  shouldShowMobilizationToolsTab: boolean
+}
+
+interface EditGroupParams {
+  type: 'EDIT_GROUP'
+  oldGroupName: string
+  newGroupName: string
+  emoji: string
+  shouldShowMobilizationToolsTab: boolean
+}
+
+interface UpdateProgressParams {
+  type: 'UPDATE_PROGRESS'
+  groupName: string
+  set: StorySet
+  nextSet: StorySet
+  lessonIndex: number
+  setLength: number
+}
+
+interface DeleteGroupParams {
+  type: 'DELETE_GROUP'
+  groupName: string
+}
+
+interface AddSetParams {
+  type: 'ADD_SET'
+  groupName: string
+  groupID: number
+  set: StorySet
+}
+
+interface SetShouldShowMobilizationToolsTabParams {
+  type: 'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
+  groupName: string
+  toSet: boolean
+}
+
+export type GroupsActionParams =
+  | CreateGroupParams
+  | EditGroupParams
+  | UpdateProgressParams
+  | DeleteGroupParams
+  | AddSetParams
+  | SetShouldShowMobilizationToolsTabParams
 
 /**
  * Creates a new group.
@@ -31,7 +85,7 @@ export function createGroup (
   shouldShowMobilizationToolsTab: boolean,
   groupID: number,
   groupNumber: number
-) {
+): CreateGroupParams {
   logCreateGroup(language, groupID, groupNumber)
   // console.log(groupID)
   return {
@@ -53,11 +107,11 @@ export function createGroup (
  * @return {Object} - Object to send to the reducer.
  */
 export function editGroup (
-  oldGroupName,
-  newGroupName,
-  emoji,
-  shouldShowMobilizationToolsTab
-) {
+  oldGroupName: string,
+  newGroupName: string,
+  emoji: string,
+  shouldShowMobilizationToolsTab: boolean
+): EditGroupParams {
   return {
     type: EDIT_GROUP,
     oldGroupName,
@@ -73,7 +127,7 @@ export function editGroup (
  * @param {string} groupName - The name of the group to delete.
  * @return {Object} - Object to send to the reducer.
  */
-export function deleteGroup (groupName) {
+export function deleteGroup (groupName: string): DeleteGroupParams {
   return {
     type: DELETE_GROUP,
     groupName
@@ -89,7 +143,13 @@ export function deleteGroup (groupName) {
  * @param {number} setLength - The length of the set that the lesson we're updating the progress in is a part of.
  * @return {Object} - Object to send to the reducer.
  */
-function updateProgress (groupName, set, nextSet, lessonIndex, setLength) {
+function updateProgress (
+  groupName: string,
+  set: StorySet,
+  nextSet: StorySet,
+  lessonIndex: number,
+  setLength: number
+): UpdateProgressParams {
   return {
     type: UPDATE_PROGRESS,
     groupName,
@@ -108,9 +168,13 @@ function updateProgress (groupName, set, nextSet, lessonIndex, setLength) {
  * @param {number} lessonIndex - The index of the lesson within the set we need to mark/unmark as complete.
  * @return {Object} - Thunk object that allows us to get the state and dispatch actions.
  */
-export function toggleComplete (groupName, set, lessonIndex) {
+export function toggleComplete (
+  groupName: string,
+  set: StorySet,
+  lessonIndex: number
+) {
   // Set up a thunk function so we can get state and dispatch other actions from within this action.
-  return (dispatch, getState) => {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     // Firstly, get the language for the group we're editing the progress of.
     var thisLanguage = getState().groups.filter(
       group => group.name === groupName
@@ -157,12 +221,12 @@ export function toggleComplete (groupName, set, lessonIndex) {
  * @param {string} groupName - The name of the group to reset the progress of.
  * @return {Object} - Object to send to the reducer.
  */
-export function resetProgress (groupName) {
-  return {
-    type: RESET_PROGRESS,
-    groupName
-  }
-}
+// export function resetProgress (groupName) {
+//   return {
+//     type: RESET_PROGRESS,
+//     groupName
+//   }
+// }
 
 /**
  * Adds a new set to a specified group.
@@ -172,11 +236,16 @@ export function resetProgress (groupName) {
  * @param {Object} set - The object for the set that we are adding to this group.
  * @return {Object} - Object to send to the reducer.
  */
-export function addSet (groupName, groupID, set) {
+export function addSet (
+  groupName: string,
+  groupID: number,
+  set: StorySet
+): AddSetParams {
   logAddStorySet(set, groupID)
   return {
     type: ADD_SET,
     groupName,
+    groupID,
     set
   }
 }
@@ -188,7 +257,10 @@ export function addSet (groupName, groupID, set) {
  * @param {boolean} toSet - What to set to. True = show, false = don't show.
  * @return {Object} - Object to send to the reducer.
  */
-export function setShouldShowMobilizationToolsTab (groupName, toSet) {
+export function setShouldShowMobilizationToolsTab (
+  groupName: string,
+  toSet: boolean
+): SetShouldShowMobilizationToolsTabParams {
   return {
     type: SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB,
     groupName,

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
@@ -15,7 +15,7 @@ import {
   getSetInfo,
   itemHeights,
   scaleMultiplier,
-  setItemModes
+  setItemModes,
 } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 // import en from '../locales/en.json'
@@ -25,7 +25,7 @@ import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsAction
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -33,7 +33,7 @@ import { getTranslations } from '../translations/translationsConfig'
 
 // i18n.translations = { en }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
@@ -47,21 +47,21 @@ function mapStateToProps (state) {
     // For testing.
     languageCoreFilesCreatedTimes: state.database.languageCoreFilesCreatedTimes,
     globalGroupCounter: state.database.globalGroupCounter,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setShowMTTabAddedSnackbar: toSet => {
+    setShowMTTabAddedSnackbar: (toSet) => {
       dispatch(setShowMTTabAddedSnackbar(toSet))
     },
-    setShowTrailerHighlights: toSet => {
+    setShowTrailerHighlights: (toSet) => {
       dispatch(setShowTrailerHighlights(toSet))
     },
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
-    }
+    },
   }
 }
 
@@ -87,7 +87,7 @@ const SetsScreen = ({
   areMobilizationToolsUnlocked,
   showTrailerHighlights,
   setShowMTTabAddedSnackbar,
-  setShowTrailerHighlights
+  setShowTrailerHighlights,
 }) => {
   /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
@@ -107,7 +107,7 @@ const SetsScreen = ({
   /** useEffect function that sets the downloaded files state. It's also used to log some various information to the console for testing. */
   useEffect(() => {
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
+      (contents) => {
         // console.log('Files:')
         // console.log(contents)
         setDownloadedFiles(contents)
@@ -142,12 +142,12 @@ const SetsScreen = ({
    * @param {Object} set - The object for the set that we're checking.
    * @return {boolean} - Whether every necessary file has been downloaded for the set.
    */
-  const filterForDownloadedQuestionSets = set => {
+  const filterForDownloadedQuestionSets = (set) => {
     // Create an array to store the necessary question set mp3s for this set.
     var requiredQuestionSets = []
 
     // Go through each set and add all necessary question set mp3s to requiredQuestionSets array.
-    set.lessons.forEach(lesson => {
+    set.lessons.forEach((lesson) => {
       // Only filter if the lessons have a fellowship/application chapter. For sets like 3.1 which only has video lessons, we don't want to filter.
       if (lesson.fellowshipType) {
         if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
@@ -161,7 +161,7 @@ const SetsScreen = ({
 
     // If every required file is present, return true. Otherwise, return false.
     if (
-      requiredQuestionSets.every(questionSet =>
+      requiredQuestionSets.every((questionSet) =>
         downloadedFiles.includes(
           activeGroup.language + '-' + questionSet + '.mp3'
         )
@@ -181,10 +181,10 @@ const SetsScreen = ({
       return (
         activeDatabase.sets
           // 1. Filter for Foundational sets from the array of all sets.
-          .filter(set => getSetInfo('category', set.id) === category)
+          .filter((set) => getSetInfo('category', set.id) === category)
           // 2. Filter for sets that have been added to this group.
-          .filter(set =>
-            activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+          .filter((set) =>
+            activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
           )
       )
     // If we're displaying Topical Story Sets...
@@ -192,22 +192,22 @@ const SetsScreen = ({
       return (
         activeDatabase.sets
           // 1. Filter for either Topical sets from the array of all sets depending on the category we want to display.
-          .filter(set => getSetInfo('category', set.id) === category)
+          .filter((set) => getSetInfo('category', set.id) === category)
           // 2. Filter for sets that have been added to this group.
-          .filter(set =>
-            activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+          .filter((set) =>
+            activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
           )
           // 3. For these sets, we want to sort based on the order they were added, not in the default order (which is order of index).
           .sort((a, b) => {
             return (
               activeGroup.addedSets.indexOf(
                 activeGroup.addedSets.filter(
-                  addedSet => addedSet.id === a.id
+                  (addedSet) => addedSet.id === a.id
                 )[0]
               ) -
               activeGroup.addedSets.indexOf(
                 activeGroup.addedSets.filter(
-                  addedSet => addedSet.id === b.id
+                  (addedSet) => addedSet.id === b.id
                 )[0]
               )
             )
@@ -220,10 +220,10 @@ const SetsScreen = ({
       return (
         activeDatabase.sets
           // 1. Filter for either Topical or Mobilization Tools sets from the array of all sets depending on the category we want to display.
-          .filter(set => getSetInfo('category', set.id) === category)
+          .filter((set) => getSetInfo('category', set.id) === category)
           // 2. Filter for sets that have been added to this group.
-          .filter(set =>
-            activeGroup.addedSets.some(addedSet => addedSet.id === set.id)
+          .filter((set) =>
+            activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
           )
           // 3. Filter for sets that have all necessary files downloaded.
           .filter(filterForDownloadedQuestionSets)
@@ -232,12 +232,12 @@ const SetsScreen = ({
             return (
               activeGroup.addedSets.indexOf(
                 activeGroup.addedSets.filter(
-                  addedSet => addedSet.id === a.id
+                  (addedSet) => addedSet.id === a.id
                 )[0]
               ) -
               activeGroup.addedSets.indexOf(
                 activeGroup.addedSets.filter(
-                  addedSet => addedSet.id === b.id
+                  (addedSet) => addedSet.id === b.id
                 )[0]
               )
             )
@@ -246,17 +246,17 @@ const SetsScreen = ({
   }
 
   /** Memoize the set data so that the expensive function isn't run on every re-render. */
-  const setData = useMemo(() => getSetData(), [
-    activeGroup.addedSets,
-    downloadedFiles
-  ])
+  const setData = useMemo(
+    () => getSetData(),
+    [activeGroup.addedSets, downloadedFiles]
+  )
 
   // A button that goes at the bottom of each list of sets that allows the user to add a new set.
   const renderAddSetButton = () => (
     <TouchableOpacity
       style={{
         ...styles.addSetButtonContainer,
-        flexDirection: isRTL ? 'row-reverse' : 'row'
+        flexDirection: isRTL ? 'row-reverse' : 'row',
       }}
       onPress={() => navigate('AddSet', { category: category })}
     >
@@ -266,7 +266,7 @@ const SetsScreen = ({
           justifyContent: 'center',
           alignItems: 'center',
           width: 80 * scaleMultiplier,
-          height: 80 * scaleMultiplier
+          height: 80 * scaleMultiplier,
         }}
       >
         <Icon
@@ -282,7 +282,7 @@ const SetsScreen = ({
           justifyContent: 'center',
           flexDirection: 'column',
           marginRight: isRTL ? 20 : 0,
-          marginLeft: isRTL ? 0 : 20
+          marginLeft: isRTL ? 0 : 20,
         }}
       >
         <Text
@@ -340,7 +340,7 @@ const SetsScreen = ({
           navigate('Lessons', { setID: item.id })
         }}
         progressPercentage={
-          activeGroup.addedSets.filter(addedSet => addedSet.id === item.id)[0]
+          activeGroup.addedSets.filter((addedSet) => addedSet.id === item.id)[0]
             .progress.length / item.lessons.length
         }
         font={font}
@@ -357,26 +357,26 @@ const SetsScreen = ({
   const getItemLayout = (data, index) => ({
     length: itemHeights[font].SetItem,
     offset: itemHeights[font].SetItem * index,
-    index
+    index,
   })
 
   return (
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg1
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg1,
       }}
     >
       <FlatList
         data={setData}
         renderItem={renderSetItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         // For performance optimization.
         getItemLayout={getItemLayout}
         ListFooterComponent={
           // If we're in the Mobilization Tab AND this language doesn't have any MT content, display a "No MT Content" component. Otherwise, show the add Story Set button.
           category === 'MobilizationTools' &&
-          !activeDatabase.sets.some(set => /[a-z]{2}.3.[0-9]+/.test(set.id))
+          !activeDatabase.sets.some((set) => /[a-z]{2}.3.[0-9]+/.test(set.id))
             ? renderNoMTLabel
             : renderAddSetButton
         }
@@ -405,7 +405,7 @@ const SetsScreen = ({
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
   },
   addSetButtonContainer: {
     width: '100%',
@@ -413,8 +413,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    padding: 20
-  }
+    padding: 20,
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetsScreen)

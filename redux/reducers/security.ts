@@ -1,4 +1,5 @@
 import {
+  SecurityActionParams,
   SET_CODE,
   SET_IS_MUTED,
   SET_IS_TIMED_OUT,
@@ -7,6 +8,16 @@ import {
   SET_TIMEOUT_DURATION,
   SET_TIMER
 } from '../actions/securityActions'
+
+export interface SecurityState {
+  securityEnabled: boolean
+  code: number | undefined
+  isMuted: boolean
+  timeoutDuration: number
+  timer: number
+  isTimedOut: boolean
+  mtUnlockTimeout: number
+}
 
 /**
  * The security redux reducer stores all the information related to Waha's Security Mode, except for the Mobilization Tools unlock attempts, which is stored in a separate reducer so that it isn't persisted.
@@ -21,16 +32,16 @@ import {
  * @param {boolean} security.mtUnlockTimeout - The Mobilization Tools unlock timeout, as in the amount of time until they can attempt to unlock the Mobilization Tools again. If the tries unsucessfully too many times to unlock the Mobilization Tools, they'll be locked out.
  */
 export function security (
-  state = {
+  state: SecurityState = {
     securityEnabled: false,
-    code: null,
+    code: undefined,
     isMuted: false,
     timeoutDuration: 0,
     timer: 0,
     isTimedOut: false,
     mtUnlockTimeout: 0
   },
-  params?
+  params: SecurityActionParams
 ) {
   switch (params.type) {
     case SET_SECURITY_ENABLED:

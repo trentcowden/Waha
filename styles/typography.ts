@@ -1,4 +1,3 @@
-import i18n from 'i18n-js'
 import { isTablet, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { languages } from '../languages'
@@ -62,64 +61,6 @@ export const type = (
     fontFamily: languageInfo.font ? families[fontFamily] : null,
     textAlign: alignments[textAlign],
     color: color
-  }
-}
-
-/**
- * Similar to the type function, except this is used with the system language, not the language of the active group. It's used on screens where no active group has yet been declared, or when we just want to use the system language. As an example, on the language select screen, we haven't declared an active group yet, so we need to display the system language in the font that goes with that language. In that case, we'd use this function to style any text on that screen.
- * @export
- * @param {boolean} isHeader - Whether this style object will be used for a header or not.
- * @param {string} fontSize - The size of the font. Can be "d" (for detail), "p" (for paragraph), "h4" (for header 4), "h3" (for header 3), "h2" (for header 2), or "h1" (for header 1).
- * @param {string} fontFamily - The family, or weight, of the font. Can be "Regular", "Bold", or "Black".
- * @param {string} textAlign - The alignment of the text. Can be "center" which aligns text center or "left" which aligns text left or right depending on whether we need to be RTL.
- * @param {string} color - The color of the font. Can be any color for the colors object in ./colors.js.
- * @param {string} overrideFont - If we want to override the system language font with the active group's language's font, we can include this parameter.
- * @return {Object} - The completed style object.
- */
-export const SystemTypography = (
-  isHeader,
-  fontSize,
-  fontFamily,
-  textAlign,
-  color,
-  overrideFont
-) => {
-  // The options for font sizes.
-  const sizes = {
-    d: 12 * scaleMultiplier,
-    p: 14 * scaleMultiplier,
-    h4: 16 * scaleMultiplier,
-    h3: 18 * scaleMultiplier,
-    h2: 24 * scaleMultiplier,
-    h1: 36 * scaleMultiplier
-  }
-
-  // The options for alignments.
-  const alignments = {
-    left: info(i18n.locale.slice(0, 2)).isRTL ? 'right' : 'left',
-    center: 'center'
-  }
-
-  // If the text style is for a header, we don't want to set a text size, as the react navigation library does that for us.
-  if (isHeader) {
-    return {
-      // If we have an override font, use that instead of the system font.
-      fontFamily: overrideFont
-        ? overrideFont + '-' + fontFamily
-        : info(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
-      textAlign: alignments[textAlign],
-      color: color
-    }
-  } else {
-    return {
-      fontSize: sizes[fontSize],
-      // If we have an override font, use that instead of the system font.
-      fontFamily: overrideFont
-        ? overrideFont + '-' + fontFamily
-        : info(i18n.locale.slice(0, 2)).font + '-' + fontFamily,
-      textAlign: alignments[textAlign],
-      color: color
-    }
   }
 }
 

@@ -15,12 +15,12 @@ import {
   getLessonInfo,
   itemHeights,
   lessonTypes,
-  setItemModes
+  setItemModes,
 } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import {
   checkForAlmostCompleteSet,
-  checkForFullyCompleteSet
+  checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
@@ -30,12 +30,12 @@ import { addSet, toggleComplete } from '../redux/actions/groupsActions'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     downloads: state.downloads,
     isRTL: info(activeGroupSelector(state).language).isRTL,
@@ -46,11 +46,11 @@ function mapStateToProps (state) {
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
     showTrailerHighlights: state.persistedPopups.showTrailerHighlights,
     isConnected: state.network.isConnected,
-    font: info(activeGroupSelector(state).language).font
+    font: info(activeGroupSelector(state).language).font,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     downloadMedia: (type, lessonID, source) => {
       dispatch(downloadMedia(type, lessonID, source))
@@ -58,15 +58,15 @@ function mapDispatchToProps (dispatch) {
     toggleComplete: (groupName, set, lessonIndex) => {
       dispatch(toggleComplete(groupName, set, lessonIndex))
     },
-    removeDownload: lessonID => {
+    removeDownload: (lessonID) => {
       dispatch(removeDownload(lessonID))
     },
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
     },
-    setShowTrailerHighlights: toSet => {
+    setShowTrailerHighlights: (toSet) => {
       dispatch(setShowTrailerHighlights(toSet))
-    }
+    },
   }
 }
 
@@ -79,7 +79,7 @@ const LessonsScreen = ({
   navigation: { goBack, setOptions, navigate },
   route: {
     // Props passed from previous screen.
-    params: { setID }
+    params: { setID },
   },
   // Props passed from redux.
   downloads,
@@ -96,7 +96,7 @@ const LessonsScreen = ({
   toggleComplete,
   removeDownload,
   addSet,
-  setShowTrailerHighlights
+  setShowTrailerHighlights,
 }) => {
   const isFocused = useIsFocused()
 
@@ -116,11 +116,11 @@ const LessonsScreen = ({
   const [showSetCompleteModal, setShowSetCompleteModal] = useState(false)
 
   const [thisSet, setThisSet] = useState(
-    activeDatabase.sets.filter(set => set.id === setID)[0]
+    activeDatabase.sets.filter((set) => set.id === setID)[0]
   )
 
   const [addedSet, setAddedSet] = useState(
-    activeGroup.addedSets.filter(addedSet => addedSet.id === thisSet.id)[0]
+    activeGroup.addedSets.filter((addedSet) => addedSet.id === thisSet.id)[0]
   )
 
   /** Keeps track of whether this lesson was just completed. */
@@ -143,14 +143,12 @@ const LessonsScreen = ({
   // const [thisSetBookmark, setThisSetBookmark] = useState(1)
 
   /** Used to refresh the downloaded lessons. */
-  const [refreshDownloadedLessons, setRefreshDownloadedLessons] = useState(
-    false
-  )
+  const [refreshDownloadedLessons, setRefreshDownloadedLessons] =
+    useState(false)
 
   /** Keeps track of whether the unlock modal is visible. */
-  const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] = useState(
-    false
-  )
+  const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] =
+    useState(false)
 
   /** useEffect function to set the navigation options. */
   useEffect(() => {
@@ -175,7 +173,7 @@ const LessonsScreen = ({
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -183,8 +181,8 @@ const LessonsScreen = ({
   useEffect(() => {
     var downloadedLessons = []
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then(contents => {
-        thisSet.lessons.forEach(lesson => {
+      .then((contents) => {
+        thisSet.lessons.forEach((lesson) => {
           if (contents.includes(lesson.id + '.mp3'))
             downloadedLessons.push(lesson.id)
           if (contents.includes(lesson.id + 'v.mp4')) {
@@ -193,15 +191,15 @@ const LessonsScreen = ({
         })
         return downloadedLessons
       })
-      .then(whichLessonsDownloaded => {
+      .then((whichLessonsDownloaded) => {
         setDownloadedLessons(whichLessonsDownloaded)
       })
   }, [Object.keys(downloads).length, refreshDownloadedLessons])
 
   /** useEffect functino that updates the addedSet state whenever it changes in redux. */
   useEffect(() => {
-    setAddedSet(activeGroup.addedSets.filter(set => set.id === thisSet.id)[0])
-  }, [activeGroup.addedSets.filter(set => set.id === thisSet.id)[0]])
+    setAddedSet(activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0])
+  }, [activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0]])
 
   /** useEffect function that updates whenever this set's progress changes and handles the changes appropriately. */
   useEffect(() => {
@@ -222,7 +220,7 @@ const LessonsScreen = ({
    * Gets the type of a specific lesson. See lessonTypes in constants.js. While every lesson's type stays constant, this information isn't stored in the database for single source of truth reasons.
    * @param {Object} lesson - The object for the lesson to get the type of.
    */
-  const getLessonType = lesson => {
+  const getLessonType = (lesson) => {
     if (lesson.fellowshipType && lesson.hasAudio && !lesson.hasVideo)
       return lessonTypes.STANDARD_DBS
     else if (lesson.fellowshipType && lesson.hasAudio && lesson.hasVideo)
@@ -264,26 +262,26 @@ const LessonsScreen = ({
     if (modalLessonType.includes('Audio'))
       FileSystem.deleteAsync(
         FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
-      ).then(() => setRefreshDownloadedLessons(current => !current))
+      ).then(() => setRefreshDownloadedLessons((current) => !current))
 
     // If a lesson contains video, delete it and refresh the downloaded lessons.
     if (modalLessonType.includes('Video'))
       FileSystem.deleteAsync(
         FileSystem.documentDirectory + activeLessonInModal.id + 'v.mp4'
-      ).then(() => setRefreshDownloadedLessons(current => !current))
+      ).then(() => setRefreshDownloadedLessons((current) => !current))
 
     setShowDeleteLessonModal(false)
   }
 
   /** Navigates to the Play screen with some parameters. */
-  const goToPlayScreen = params =>
+  const goToPlayScreen = (params) =>
     navigate('Play', { ...params, thisSet: thisSet })
 
   /** Whenever we start swiping a lesson, set the active lesson in modal. */
-  const onLessonSwipeBegin = useCallback(data => {
+  const onLessonSwipeBegin = useCallback((data) => {
     setActiveLessonInModal(
       thisSet.lessons.filter(
-        lesson => getLessonInfo('index', lesson.id) === parseInt(data)
+        (lesson) => getLessonInfo('index', lesson.id) === parseInt(data)
       )[0]
     )
   }, [])
@@ -323,7 +321,7 @@ const LessonsScreen = ({
   )
 
   /** Triggers an action when the user swipes a certain distance to the left. */
-  const onLeftActionStatusChange = useCallback(data => {
+  const onLeftActionStatusChange = useCallback((data) => {
     if (!isRTL && data.isActivated) {
       toggleComplete(activeGroup.name, thisSet, parseInt(data.key))
       justCompleted.current = true
@@ -331,7 +329,7 @@ const LessonsScreen = ({
   }, [])
 
   /** Triggers an action when the user swipes a certain distance to the right. */
-  const onRightActionStatusChange = useCallback(data => {
+  const onRightActionStatusChange = useCallback((data) => {
     if (isRTL && data.isActivated) {
       toggleComplete(activeGroup.name, thisSet, parseInt(data.key))
       justCompleted.current = true
@@ -343,7 +341,7 @@ const LessonsScreen = ({
     (data, index) => ({
       length: itemHeights[font].LessonItem,
       offset: itemHeights[font].LessonItem * index,
-      index
+      index,
     }),
     []
   )
@@ -395,7 +393,7 @@ const LessonsScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <View style={{ height: itemHeights[font].SetItem, width: '100%' }}>
@@ -416,7 +414,7 @@ const LessonsScreen = ({
         renderItem={renderLessonItem}
         getItemLayout={getItemLayout}
         ListFooterComponent={() => <View style={{ height: 30 }} />}
-        keyExtractor={item => getLessonInfo('index', item.id).toString()}
+        keyExtractor={(item) => getLessonInfo('index', item.id).toString()}
         renderHiddenItem={renderLessonSwipeBackdrop}
         leftOpenValue={50}
         rightOpenValue={-50}
@@ -527,8 +525,8 @@ const LessonsScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonsScreen)

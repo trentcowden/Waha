@@ -19,18 +19,18 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     isDark: state.settings.isDarkModeEnabled,
     activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language)
+    t: getTranslations(activeGroupSelector(state).language),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setHasOnboarded: toSet => dispatch(setHasOnboarded(toSet)),
+    setHasOnboarded: (toSet) => dispatch(setHasOnboarded(toSet)),
     editGroup: (
       oldGroupName,
       newGroupName,
@@ -45,7 +45,7 @@ function mapDispatchToProps (dispatch) {
           shouldShowMobilizationToolsTab
         )
       ),
-    changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName))
+    changeActiveGroup: (groupName) => dispatch(changeActiveGroup(groupName)),
   }
 }
 
@@ -60,7 +60,7 @@ const WahaOnboardingSlidesScreen = ({
   navigation: { navigate },
   route: {
     // Props passed from previous screen.
-    params: { selectedLanguage }
+    params: { selectedLanguage },
   },
   // Props passed from redux.
   isRTL,
@@ -69,7 +69,7 @@ const WahaOnboardingSlidesScreen = ({
   t,
   setHasOnboarded,
   editGroup,
-  changeActiveGroup
+  changeActiveGroup,
 }) => {
   /** The ref for the pager view. Used to manually swipe pages. */
   const pagerRef = useRef()
@@ -103,7 +103,7 @@ const WahaOnboardingSlidesScreen = ({
     // Finish up onboarding and go to the loading screen.
     setHasOnboarded(true)
     navigate('Loading', {
-      selectedLanguage: selectedLanguage
+      selectedLanguage: selectedLanguage,
     })
   }
 
@@ -111,7 +111,7 @@ const WahaOnboardingSlidesScreen = ({
   const skipOnboarding = () => {
     setHasOnboarded(true)
     navigate('Loading', {
-      selectedLanguage: selectedLanguage
+      selectedLanguage: selectedLanguage,
     })
   }
 
@@ -179,21 +179,21 @@ const WahaOnboardingSlidesScreen = ({
         isDark={isDark}
         t={t}
       />
-    </OnboardingPage>
+    </OnboardingPage>,
   ]
 
   return (
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <PagerView
         ref={pagerRef}
         style={styles.pager}
         initialPage={isRTL ? numPages - 1 : 0}
-        onPageSelected={event => {
+        onPageSelected={(event) => {
           // Focus the group name text input when the user reaches the last page. Note: it's numPages - 1 because the indices for the pages start at 0.
           if (
             (!isRTL && event.nativeEvent.position === numPages - 1) ||
@@ -210,7 +210,7 @@ const WahaOnboardingSlidesScreen = ({
       <View
         style={{
           ...styles.bottomControlsContainer,
-          flexDirection: isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
       >
         <PageDots
@@ -222,7 +222,7 @@ const WahaOnboardingSlidesScreen = ({
         <View
           style={{
             ...styles.skipButtonContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <TouchableOpacity
@@ -258,7 +258,7 @@ const WahaOnboardingSlidesScreen = ({
           mode={buttonModes.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
-            flex: 2
+            flex: 2,
           }}
           isDark={isDark}
           isRTL={isRTL}
@@ -272,24 +272,24 @@ const WahaOnboardingSlidesScreen = ({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pager: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bottomControlsContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   skipButtonContainer: {
     height: 65 * scaleMultiplier,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 })
 
 export default connect(

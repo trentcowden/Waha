@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
@@ -20,21 +20,21 @@ import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 import ModalScreen from './ModalScreen'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    font: info(activeGroupSelector(state).language).font
+    font: info(activeGroupSelector(state).language).font,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     addSet: (groupName, groupID, set) => {
       dispatch(addSet(groupName, groupID, set))
-    }
+    },
   }
 }
 
@@ -57,7 +57,7 @@ const SetInfoModal = ({
   isDark,
   activeGroup,
   font,
-  addSet
+  addSet,
 }) => {
   /**
    * Renders a item with the information for a lesson.
@@ -80,7 +80,7 @@ const SetInfoModal = ({
           marginVertical: 10 * scaleMultiplier,
           justifyContent: 'center',
           paddingHorizontal: 40,
-          width: Dimensions.get('window').width
+          width: Dimensions.get('window').width,
         }}
         // This disables the touchable feedback so it appears like a <View />.
         activeOpacity={1}
@@ -156,7 +156,7 @@ const SetInfoModal = ({
         language={activeGroup.language}
       />
       <FlatList
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         data={thisSet.lessons}
         renderItem={renderLessonInfoItem}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -169,8 +169,8 @@ const SetInfoModal = ({
 const styles = StyleSheet.create({
   setItemContainer: {
     width: '100%',
-    height: 100 * scaleMultiplier
-  }
+    height: 100 * scaleMultiplier,
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetInfoModal)

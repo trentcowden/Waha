@@ -11,7 +11,7 @@ import { info } from '../functions/languageDataFunctions'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import {
   setHasFetchedLanguageData,
-  updateLanguageCoreFiles
+  updateLanguageCoreFiles,
 } from '../redux/actions/databaseActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
@@ -21,26 +21,26 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
     isConnected: state.network.isConnected,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate
+    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     updateLanguageCoreFiles: () => dispatch(updateLanguageCoreFiles()),
-    setIsInstallingLanguageInstance: toSet =>
+    setIsInstallingLanguageInstance: (toSet) =>
       dispatch(setIsInstallingLanguageInstance(toSet)),
-    storeDownloads: downloads => dispatch(storeDownloads(downloads)),
-    setHasFetchedLanguageData: hasFetchedLanguageData =>
+    storeDownloads: (downloads) => dispatch(storeDownloads(downloads)),
+    setHasFetchedLanguageData: (hasFetchedLanguageData) =>
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
-    setIsDarkModeEnabled: toSet => dispatch(setIsDarkModeEnabled(toSet))
+    setIsDarkModeEnabled: (toSet) => dispatch(setIsDarkModeEnabled(toSet)),
   }
 }
 
@@ -61,7 +61,7 @@ const WahaDrawer = ({
   setIsInstallingLanguageInstance,
   storeDownloads,
   setHasFetchedLanguageData,
-  setIsDarkModeEnabled
+  setIsDarkModeEnabled,
 }) => {
   /** Keeps track of whether the edit group modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
@@ -82,7 +82,7 @@ const WahaDrawer = ({
     <SafeAreaView
       style={{
         ...styles.wahaDrawerContainer,
-        backgroundColor: colors(isDark, activeGroup.language).accent
+        backgroundColor: colors(isDark, activeGroup.language).accent,
       }}
       forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' }}
     >
@@ -113,7 +113,7 @@ const WahaDrawer = ({
         bounces={false}
         style={{
           backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-          flex: 1
+          flex: 1,
         }}
       >
         {/* Show an update button if we have any core files to update. */}
@@ -164,7 +164,7 @@ const WahaDrawer = ({
             ),
             marginHorizontal: 20,
             marginTop: 20 * scaleMultiplier,
-            marginBottom: 15 * scaleMultiplier
+            marginBottom: 15 * scaleMultiplier,
           }}
         >
           {t.general.other}
@@ -214,19 +214,19 @@ const WahaDrawer = ({
 
 const styles = StyleSheet.create({
   wahaDrawerContainer: {
-    flex: 1
+    flex: 1,
   },
   drawerHeaderContainer: {
     width: '100%',
     height: 225 * scaleMultiplier,
     justifyContent: 'center',
     alignContent: 'center',
-    paddingHorizontal: 35
+    paddingHorizontal: 35,
   },
   groupIconContainer: {
     alignItems: 'center',
-    marginVertical: 10
-  }
+    marginVertical: 10,
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WahaDrawer)

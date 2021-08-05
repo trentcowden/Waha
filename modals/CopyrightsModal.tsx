@@ -9,12 +9,12 @@ import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 import ModalScreen from './ModalScreen'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     activeGroup: activeGroupSelector(state),
     t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled
+    isDark: state.settings.isDarkModeEnabled,
   }
 }
 
@@ -31,7 +31,7 @@ const CopyrightsModal = ({
   isRTL,
   activeGroup,
   isDark,
-  t
+  t,
 }) => {
   return (
     <ModalScreen
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 10
-  }
+    paddingTop: 10,
+  },
 })
 
 export default connect(mapStateToProps)(CopyrightsModal)

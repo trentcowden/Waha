@@ -39,7 +39,6 @@
     "expo-store-review": "~4.1.0",
     "expo-web-browser": "~9.2.0",
     "firebase": "8.2.3",
-    "i18n-js": "^3.5.1",
     "js-to-ts-converter": "^0.18.1",
     "lottie-react-native": "4.0.2",
     "react": "16.13.1",

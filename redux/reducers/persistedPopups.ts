@@ -1,4 +1,5 @@
 import {
+  PersistedPopupsActionParams,
   SET_HAS_USED_PLAY_SCREEN,
   SET_LESSON_COUNTER,
   SET_NUM_LESSONS_TIL_REVIEW,
@@ -6,20 +7,28 @@ import {
   SET_SHOW_TRAILER_HIGHLIGHTS
 } from '../actions/persistedPopupsActions'
 
+export interface PersistedPopupsState {
+  showTrailerHighlights: boolean
+  hasUsedPlayScreen: boolean
+  reviewTimeout: number | undefined
+  lessonCounter: number
+  numLessonsTilReview: number
+}
+
 /**
  * The popups reducer stores various states for any modals or snackbars that need to be triggered globally. This state is persisted across app restarts.
  * @param {Object} params - Parameters passed from popupsActions.js functions.
  * @param {boolean} popups - (state) The boolean values for whether modals/snackbars that need to be triggered globally are visible.
  */
 export function persistedPopups (
-  state = {
+  state: PersistedPopupsState = {
     showTrailerHighlights: true,
     hasUsedPlayScreen: false,
-    reviewTimeout: null,
+    reviewTimeout: undefined,
     lessonCounter: 0,
     numLessonsTilReview: 2
   },
-  params?
+  params: PersistedPopupsActionParams
 ) {
   switch (params.type) {
     case SET_SHOW_TRAILER_HIGHLIGHTS:

@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
@@ -22,20 +22,20 @@ import { info } from '../functions/languageDataFunctions'
 import { appVersion } from '../modeSwitch'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    isConnected: state.network.isConnected
+    isConnected: state.network.isConnected,
   }
 }
 
@@ -47,7 +47,7 @@ const ContactUsScreen = ({
   isRTL,
   t,
   isDark,
-  isConnected
+  isConnected,
 }) => {
   /** The text for the email input component. */
   const [emailTextInput, setEmailTextInput] = useState(null)
@@ -56,9 +56,8 @@ const ContactUsScreen = ({
   const [messageTextInput, setMessageTextInput] = useState('')
 
   /** The text for the reproduction steps input component. */
-  const [reproductionStepsTextInput, setReproductionStepsTextInput] = useState(
-    ''
-  )
+  const [reproductionStepsTextInput, setReproductionStepsTextInput] =
+    useState('')
 
   /** The value of the checkbox that keeps track of whether or not the message describes a bug. */
   const [isBugChecked, setIsBugChecked] = useState(false)
@@ -89,7 +88,7 @@ const ContactUsScreen = ({
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -119,7 +118,7 @@ const ContactUsScreen = ({
         reproductionSteps: reproductionStepsTextInput,
         appVersion: appVersion,
         OS: Platform.OS,
-        timeSubmitted: new Date().toString()
+        timeSubmitted: new Date().toString(),
       })
       .then(() => {
         setIsSubmitting(false)
@@ -131,8 +130,8 @@ const ContactUsScreen = ({
               text: t.general.ok,
               onPress: () => {
                 goBack()
-              }
-            }
+              },
+            },
           ]
         )
       })
@@ -144,8 +143,8 @@ const ContactUsScreen = ({
           [
             {
               text: t.general.ok,
-              onPress: () => {}
-            }
+              onPress: () => {},
+            },
           ]
         )
       })
@@ -184,7 +183,7 @@ const ContactUsScreen = ({
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <ScrollView bounces={false} style={styles.scrollViewContainer}>
@@ -200,7 +199,7 @@ const ContactUsScreen = ({
                 'left',
                 colors(isDark).text
               ),
-              marginVertical: 10
+              marginVertical: 10,
             }}
           >
             {leftAsterisk}
@@ -211,11 +210,11 @@ const ContactUsScreen = ({
             style={{
               flexDirection: isRTL ? 'row-reverse' : 'row',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <TextInput
-              onChangeText={text => setEmailTextInput(text)}
+              onChangeText={(text) => setEmailTextInput(text)}
               autoCapitalize='none'
               autoCorrect={false}
               spellCheck={false}
@@ -234,7 +233,7 @@ const ContactUsScreen = ({
                   ? colors(isDark).bg2
                   : colors(isDark).bg4,
                 borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-                borderWidth: 2
+                borderWidth: 2,
               }}
               keyboardType='email-address'
               placeholder='name@email.com'
@@ -261,7 +260,7 @@ const ContactUsScreen = ({
             style={{
               flexDirection: isRTL ? 'row-reverse' : 'row',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Text
@@ -273,7 +272,7 @@ const ContactUsScreen = ({
                   'left',
                   colors(isDark).text
                 ),
-                marginVertical: 10 * scaleMultiplier
+                marginVertical: 10 * scaleMultiplier,
               }}
             >
               {leftAsterisk}
@@ -295,7 +294,7 @@ const ContactUsScreen = ({
             </Text>
           </View>
           <TextInput
-            onChangeText={text => setMessageTextInput(text)}
+            onChangeText={(text) => setMessageTextInput(text)}
             style={{
               ...type(
                 activeGroup.language,
@@ -309,7 +308,7 @@ const ContactUsScreen = ({
               textAlignVertical: 'top',
               backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
               borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-              borderWidth: 2
+              borderWidth: 2,
             }}
             multiline
             placeholder={t.contact_us.message_placeholder}
@@ -320,16 +319,16 @@ const ContactUsScreen = ({
         <View
           style={{
             ...styles.bugSectionContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <TouchableOpacity
-            onPress={() => setIsBugChecked(old => !old)}
+            onPress={() => setIsBugChecked((old) => !old)}
             style={{
               ...styles.checkIconContainer,
               backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
               borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-              borderWidth: 2
+              borderWidth: 2,
             }}
           >
             {isBugChecked ? (
@@ -345,7 +344,7 @@ const ContactUsScreen = ({
                 'left',
                 colors(isDark).text
               ),
-              marginHorizontal: 10
+              marginHorizontal: 10,
             }}
           >
             {t.contact_us.is_a_bug}
@@ -363,13 +362,13 @@ const ContactUsScreen = ({
                   'left',
                   colors(isDark).text
                 ),
-                marginVertical: 10 * scaleMultiplier
+                marginVertical: 10 * scaleMultiplier,
               }}
             >
               {t.contact_us.reproducable}
             </Text>
             <TextInput
-              onChangeText={text => setReproductionStepsTextInput(text)}
+              onChangeText={(text) => setReproductionStepsTextInput(text)}
               style={{
                 ...type(
                   activeGroup.language,
@@ -385,7 +384,7 @@ const ContactUsScreen = ({
                   ? colors(isDark).bg2
                   : colors(isDark).bg4,
                 borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-                borderWidth: 2
+                borderWidth: 2,
               }}
               multiline
             />
@@ -407,7 +406,7 @@ const ContactUsScreen = ({
           extraContainerStyles={{
             width: Dimensions.get('window').width / 3,
             alignSelf: isRTL ? 'flex-start' : 'flex-end',
-            marginTop: 10 * scaleMultiplier
+            marginTop: 10 * scaleMultiplier,
           }}
           extraComponent={
             isConnected ? (
@@ -438,17 +437,17 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   scrollViewContainer: {
     width: '100%',
     flex: 1,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   sectionContainer: {
     width: '100%',
     justifyContent: 'center',
-    marginBottom: 20 * scaleMultiplier
+    marginBottom: 20 * scaleMultiplier,
   },
   textInputContainer: {
     flex: 1,
@@ -458,27 +457,27 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   emailStatusIconContainer: {
     width: 50 * scaleMultiplier,
     height: 50 * scaleMultiplier,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bugSectionContainer: {
     width: '100%',
     alignItems: 'center',
     marginBottom: 20 * scaleMultiplier,
-    marginTop: 10 * scaleMultiplier
+    marginTop: 10 * scaleMultiplier,
   },
   checkIconContainer: {
     width: 30,
     height: 30,
     borderRadius: 15,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default connect(mapStateToProps)(ContactUsScreen)

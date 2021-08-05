@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { Group } from 'interfaces/groups'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Dimensions,
   StyleSheet,
   Switch,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
-import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
 import EmojiViewer from '../components/EmojiViewer'
 import GroupAvatar from '../components/GroupAvatar'
 import GroupNameTextInput from '../components/GroupNameTextInput'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
@@ -23,86 +24,42 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
-  return {
-    groups: state.groups,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    globalGroupCounter: state.database.globalGroupCounter,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked
-  }
+interface Props {
+  isVisible: boolean
+  hideModal: Function
+  // Whether the user is editing an existing group or adding a new group. Possible options are 'EditGroup' or 'AddGroup'.
+  mode: string
+  // If editing a group, this is the object for that group.
+  thisGroup?: Group
+  // If creating a new group, we need the langaugeID for when we call the CreateGroup() redux function.
+  languageID?: string
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    editGroup: (
-      oldGroupName,
-      newGroupName,
-      emoji,
-      shouldShowMobilizationToolsTab
-    ) =>
-      dispatch(
-        editGroup(
-          oldGroupName,
-          newGroupName,
-          emoji,
-          shouldShowMobilizationToolsTab
-        )
-      ),
-    createGroup: (
-      groupName,
-      language,
-      emoji,
-      shouldShowMobilizationToolsTab,
-      groupID,
-      groupNumber
-    ) =>
-      dispatch(
-        createGroup(
-          groupName,
-          language,
-          emoji,
-          shouldShowMobilizationToolsTab,
-          groupID,
-          groupNumber
-        )
-      ),
-    changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName)),
-    incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter())
-  }
-}
-
-/**
- * Modal that allows the user to add or edit a group. Uses the <ModalScreen /> component under the hood.
- * @param {boolean} isVisible - Whether the modal is visible or not.
- * @param {Function} hideModal - Function to hide the modal.
- * @param {string} type - Whether the user is editing an existing group or adding a new group. Possible options are 'EditGroup' or 'AddGroup'.
- * @param {Object} thisGroup - If editing a group, this is the object for that group. Otherwise, it defaults to null.
- * @param {string} languageID - If creating a new group, we need the langaugeID for when we call the CreateGroup() redux function. Otherwise, langaugeID is null.
- */
-const AddEditGroupModal = ({
-  // Props passed from a parent component.
+// Modal that allows the user to add or edit a group. Uses the <ModalScreen /> component under the hood.
+const AddEditGroupModal: FC<Props> = ({
   isVisible,
   hideModal,
   mode,
-  thisGroup = null,
-  languageID = null,
-  // Props passed from redux.
-  groups,
-  isRTL,
-  isDark,
-  activeGroup,
-  globalGroupCounter,
-  t,
-  areMobilizationToolsUnlocked,
-  editGroup,
-  createGroup,
-  changeActiveGroup,
-  deleteGroup,
-  incrementGlobalGroupCounter
-}) => {
+  thisGroup,
+  languageID,
+}): ReactElement => {
+  // Redux variables.
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const isRTL = info(activeGroup.language).isRTL
+  const t = getTranslations(activeGroup.language)
+  const groups = selector((state) => state.groups)
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+
+  const globalGroupCounter = selector(
+    (state) => state.database.globalGroupCounter
+  )
+  const areMobilizationToolsUnlocked = selector(
+    (state) => state.areMobilizationToolsUnlocked
+  )
+  const downloads = selector((state) => state.downloads)
+
+  const dispatch = useAppDispatch()
+
   /** Keeps track of the user input for the group name <TextInput />. */
   const [groupNameInput, setGroupNameInput] = useState('')
 
@@ -111,11 +68,6 @@ const AddEditGroupModal = ({
 
   const [shouldShowMTTabInput, setShouldShowMTTabInput] = useState(
     areMobilizationToolsUnlocked ? false : true
-  )
-
-  /** If editing a group, keeps track of whether that group is the active group or not. */
-  const [isActive, setIsActive] = useState(
-    mode === 'EditGroup' ? activeGroup.name === thisGroup.name : false
   )
 
   const [isGroupNameBlank, setIsGroupNameBlank] = useState(
@@ -136,13 +88,14 @@ const AddEditGroupModal = ({
   const checkForDuplicate = () => {
     // If we're adding a new group, simply check if the group name already exists in another group.
     if (mode === 'AddGroup')
-      if (groups.some(group => group.name === groupNameInput))
+      if (groups.some((group) => group.name === groupNameInput))
         setIsGroupNameDuplicate(true)
       else setIsGroupNameDuplicate(false)
     // If we're editing a group, check if any group has the same name but obvously don't count it as a duplicate for itself.
     else if (
+      thisGroup !== undefined &&
       groups.some(
-        group =>
+        (group) =>
           group.name === groupNameInput && thisGroup.name !== groupNameInput
       )
     )
@@ -161,24 +114,24 @@ const AddEditGroupModal = ({
 
   /** Creates a new group and sets it as the active group. */
   const createGroupHandler = () => {
-    // If the name of the new group is a duplicate or blank, don't continue.
-    if (checkForDuplicate() || checkForBlank()) return
-
-    // Call createGroup() redux function.
-    createGroup(
-      groupNameInput,
-      languageID,
-      emojiInput,
-      shouldShowMTTabInput,
-      globalGroupCounter + 1,
-      groups.length + 1
-    )
+    if (languageID !== undefined)
+      // Call createGroup() redux function.
+      dispatch(
+        createGroup(
+          groupNameInput,
+          languageID,
+          emojiInput,
+          shouldShowMTTabInput,
+          globalGroupCounter + 1,
+          groups.length + 1
+        )
+      )
 
     // Change the active group to the newly created group.
-    changeActiveGroup(groupNameInput)
+    dispatch(changeActiveGroup(groupNameInput))
 
     // Increment the global group counter redux variable.
-    incrementGlobalGroupCounter()
+    dispatch(incrementGlobalGroupCounter())
 
     // Hide this modal.
     hideModal()
@@ -186,14 +139,20 @@ const AddEditGroupModal = ({
 
   /** Edits a group and sets it as the active group. */
   const editGroupHandler = () => {
-    // If the name of the new group is a duplicate or blank, don't continue.
-    if (checkForDuplicate() || checkForBlank()) return
-
     // Change the active group to the newly edited group.
-    if (thisGroup.name === activeGroup.name) changeActiveGroup(groupNameInput)
+    if (thisGroup !== undefined && thisGroup.name === activeGroup.name)
+      dispatch(changeActiveGroup(groupNameInput))
 
     // Call editGroup() redux function.
-    editGroup(thisGroup.name, groupNameInput, emojiInput, shouldShowMTTabInput)
+    if (thisGroup !== undefined)
+      dispatch(
+        editGroup(
+          thisGroup.name,
+          groupNameInput,
+          emojiInput,
+          shouldShowMTTabInput
+        )
+      )
 
     // Hide this modal.
     hideModal()
@@ -204,15 +163,14 @@ const AddEditGroupModal = ({
       isVisible={isVisible}
       hideModal={hideModal}
       topRightComponent={
-        !isGroupNameBlank &&
-        !isGroupNameDuplicate && (
+        !isGroupNameBlank && !isGroupNameDuplicate ? (
           <TouchableOpacity
             onPress={
               mode === 'AddGroup' ? createGroupHandler : editGroupHandler
             }
             style={{
               width: 45 * scaleMultiplier,
-              height: 45 * scaleMultiplier
+              height: 45 * scaleMultiplier,
             }}
           >
             <Icon
@@ -221,6 +179,8 @@ const AddEditGroupModal = ({
               color={colors(isDark).icons}
             />
           </TouchableOpacity>
+        ) : (
+          <View />
         )
       }
       onCancelPress={() => {
@@ -250,7 +210,7 @@ const AddEditGroupModal = ({
       <View style={styles.groupAvatarContainer}>
         <GroupAvatar
           style={{
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg1
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg1,
           }}
           emoji={emojiInput}
           size={120}
@@ -272,7 +232,7 @@ const AddEditGroupModal = ({
             ...styles.shouldShowMTTabInputContainer,
             flexDirection: isRTL ? 'row-reverse' : 'row',
             borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           }}
         >
           <Text
@@ -289,11 +249,11 @@ const AddEditGroupModal = ({
           <Switch
             trackColor={{
               false: colors(isDark).disabled,
-              true: colors(isDark).success
+              true: colors(isDark).success,
             }}
             thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
             ios_backgroundColor={colors(isDark).disabled}
-            onValueChange={() => setShouldShowMTTabInput(current => !current)}
+            onValueChange={() => setShouldShowMTTabInput((current) => !current)}
             value={shouldShowMTTabInput}
             disabled={areMobilizationToolsUnlocked ? false : true}
           />
@@ -315,7 +275,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20 * scaleMultiplier
+    marginVertical: 20 * scaleMultiplier,
   },
   shouldShowMTTabInputContainer: {
     width: Dimensions.get('window').width - 40,
@@ -326,11 +286,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 2,
     borderRadius: 10,
-    marginTop: 20 * scaleMultiplier
-  }
+    marginTop: 20 * scaleMultiplier,
+  },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEditGroupModal)
+export default AddEditGroupModal
 
 // Someday we'll let the user set a custom photo as their group avatar...until then this code will remain sad and neglected.
 

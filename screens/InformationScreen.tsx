@@ -7,7 +7,7 @@ import {
   Share,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import { connect } from 'react-redux'
@@ -23,12 +23,12 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
     isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
   }
 }
 
@@ -41,7 +41,7 @@ const InformationScreen = ({
   isRTL,
   t,
   isDark,
-  activeGroup
+  activeGroup,
 }) => {
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
@@ -68,7 +68,7 @@ const InformationScreen = ({
               isRTL={isRTL}
               isDark={isDark}
             />
-          )
+          ),
     })
   }, [])
 
@@ -76,14 +76,14 @@ const InformationScreen = ({
    * Opens up an in-app browser.
    * @param {string} url - The URL to open.
    */
-  const openBrowser = async url =>
+  const openBrowser = async (url) =>
     await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' })
 
   return (
     <SafeAreaView
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <InformationItem
@@ -130,7 +130,7 @@ const InformationScreen = ({
         onPress={() =>
           Share.share({
             message:
-              'iOS: https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294\n\nAndroid: https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha'
+              'iOS: https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294\n\nAndroid: https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha',
           }).then(() => {
             logShareApp(activeGroup.id)
           })
@@ -174,7 +174,7 @@ const InformationScreen = ({
                 'center',
                 colors(isDark).bg1
               ),
-              marginHorizontal: 2
+              marginHorizontal: 2,
             }}
           >
             Made with
@@ -189,7 +189,7 @@ const InformationScreen = ({
                 'center',
                 colors(isDark).bg1
               ),
-              marginHorizontal: 2
+              marginHorizontal: 2,
             }}
           >
             by the Waha team
@@ -203,7 +203,7 @@ const InformationScreen = ({
           color: colors(isDark).textOnColor,
           fontSize: 24 * scaleMultiplier,
           fontFamily: info(activeGroup.language).font + '-Black',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
         backgroundColor={colors(isDark).success}
       />
@@ -219,21 +219,21 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   informationItem: {
     width: '100%',
     height: 60 * scaleMultiplier,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   easterEggContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 3,
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 })
 
 export default connect(mapStateToProps)(InformationScreen)

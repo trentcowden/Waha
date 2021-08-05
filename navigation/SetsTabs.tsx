@@ -6,7 +6,7 @@ import { getSetInfo, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import SetsScreen from '../screens/SetsScreen'
 import { colors } from '../styles/colors'
@@ -15,7 +15,7 @@ import { getTranslations } from '../translations/translationsConfig'
 // Create the top tab navigator.
 const Tab = createMaterialTopTabNavigator()
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isRTL: info(activeGroupSelector(state).language).isRTL,
     t: getTranslations(activeGroupSelector(state).language),
@@ -23,7 +23,7 @@ function mapStateToProps (state) {
     activeGroup: activeGroupSelector(state),
     activeDatabase: activeDatabaseSelector(state),
     areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    font: info(activeGroupSelector(state).language).font
+    font: info(activeGroupSelector(state).language).font,
   }
 }
 
@@ -38,7 +38,7 @@ const SetsTabs = ({
   t,
   isDark,
   areMobilizationToolsUnlocked,
-  font
+  font,
 }) => {
   // Only dispaly the Mobilization Tools tab if the Mobilization Tools have been unlocked.
   var MobilizationToolsScreen =
@@ -48,7 +48,7 @@ const SetsTabs = ({
         name='MobilizationTools'
         component={SetsScreen}
         options={{
-          title: t.sets.mobilization
+          title: t.sets.mobilization,
         }}
       />
     ) : null
@@ -59,7 +59,7 @@ const SetsTabs = ({
       name='Foundational'
       component={SetsScreen}
       options={{
-        title: t.sets.foundations
+        title: t.sets.foundations,
       }}
     />
   )
@@ -70,7 +70,7 @@ const SetsTabs = ({
       name='Topical'
       component={SetsScreen}
       options={{
-        title: t.sets.topics
+        title: t.sets.topics,
       }}
     />
   )
@@ -83,7 +83,7 @@ const SetsTabs = ({
     // Get the category of the bookmarked set.
     return getSetInfo(
       'category',
-      activeDatabase.sets.filter(set => set.id === activeGroup.setBookmark)[0]
+      activeDatabase.sets.filter((set) => set.id === activeGroup.setBookmark)[0]
         .id
     )
   }
@@ -97,18 +97,18 @@ const SetsTabs = ({
       initialLayout={{ width: Dimensions.get('window').width }}
       tabBarOptions={{
         style: {
-          backgroundColor: colors(isDark).bg3
+          backgroundColor: colors(isDark).bg3,
         },
         labelStyle: {
           fontSize: 14 * scaleMultiplier,
           fontFamily: font + '-Bold',
-          textTransform: 'none'
+          textTransform: 'none',
         },
         activeTintColor: colors(isDark, activeGroup.language).accent,
         inactiveTintColor: colors(isDark).disabled,
         indicatorStyle: {
-          backgroundColor: colors(isDark, activeGroup.language).accent
-        }
+          backgroundColor: colors(isDark, activeGroup.language).accent,
+        },
       }}
     >
       {/* The components are declared above but rendered below like this because the tabs need to be in reverse order if the active group's language is RTL. */}

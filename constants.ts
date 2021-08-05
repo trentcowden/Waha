@@ -1,5 +1,5 @@
+import * as Localization from 'expo-localization'
 import * as ScreenOrientation from 'expo-screen-orientation'
-import i18n from 'i18n-js'
 import { Dimensions, PixelRatio } from 'react-native'
 import { languages } from './languages'
 
@@ -99,7 +99,7 @@ export const groupNames = {
 export const getSystemIsRTL = () => {
   systemIsRTL = false
   languages.forEach(languageFamily => {
-    if (i18n.locale.slice(0, 2) === languageFamily.languageFamilyID) {
+    if (Localization.locale.slice(0, 2) === languageFamily.languageFamilyID) {
       systemIsRTL = languageFamily.isRTL
     }
   })

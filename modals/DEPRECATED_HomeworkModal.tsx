@@ -1,11 +1,10 @@
-import { t } from 'i18n-js'
 import React from 'react'
 import {
   FlatList,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import { connect } from 'react-redux'
@@ -17,8 +16,8 @@ import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 
 // modal variant that shows some information
-const HomeworkModal = props => {
-  function renderHomeworkItem (homeworkList) {
+const HomeworkModal = (props) => {
+  function renderHomeworkItem(homeworkList) {
     return (
       <HomeworkItem
         title={homeworkList.item.title}
@@ -38,7 +37,7 @@ const HomeworkModal = props => {
             width: '100%',
             flex: 1,
             alignItems: 'center',
-            marginTop: 30
+            marginTop: 30,
           }}
         >
           <Icon
@@ -52,7 +51,7 @@ const HomeworkModal = props => {
               fontFamily: props.font + '-Black',
               fontSize: 36 * scaleMultiplier,
               textAlign: 'center',
-              marginBottom: 10
+              marginBottom: 10,
             }}
           >
             Homework
@@ -62,7 +61,7 @@ const HomeworkModal = props => {
             data={props.homework}
             style={{ width: '100%', paddingHorizontal: 20 }}
             renderItem={renderHomeworkItem}
-            keyExtractor={item => item.title}
+            keyExtractor={(item) => item.title}
             persistentScrollbar={true}
           />
         </View>
@@ -71,7 +70,7 @@ const HomeworkModal = props => {
             // marginVertical: 10,
             width: '100%',
             height: 80 * scaleMultiplier,
-            justifyContent: 'center'
+            justifyContent: 'center',
             // backgroundColor: 'blue'
           }}
           onPress={props.hideModal}
@@ -81,7 +80,7 @@ const HomeworkModal = props => {
               fontFamily: props.font + '-Bold',
               fontSize: 24 * scaleMultiplier,
               color: colors(isDark).error,
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             {props.t.general && t.general.close}
@@ -97,15 +96,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors(isDark).textOnColor,
     flex: 1,
     borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
-  }
+    borderTopRightRadius: 10,
+  },
 })
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     isDark: state.settings.isDarkModeEnabled,
 
-    activeGroup: activeGroupSelector(state)
+    activeGroup: activeGroupSelector(state),
   }
 }
 

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
@@ -17,7 +17,7 @@ import {
   setHasFetchedLanguageData,
   setHasOnboarded,
   setLanguageCoreFilesDownloadProgress,
-  setTotalLanguageCoreFilesToDownload
+  setTotalLanguageCoreFilesToDownload,
 } from '../redux/actions/databaseActions'
 import { deleteGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
@@ -26,7 +26,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   var activeGroup = state.activeGroup ? activeGroupSelector(state) : null
   var translations = state.activeGroup
     ? getTranslations(activeGroupSelector(state).language)
@@ -46,34 +46,34 @@ function mapStateToProps (state) {
     recentActiveGroup: state.database.recentActiveGroup,
     isDark: state.settings.isDarkModeEnabled,
     t: translations,
-    isConnected: state.network.isConnected
+    isConnected: state.network.isConnected,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    setIsInstallingLanguageInstance: status => {
+    setIsInstallingLanguageInstance: (status) => {
       dispatch(setIsInstallingLanguageInstance(status))
     },
-    setHasOnboarded: status => {
+    setHasOnboarded: (status) => {
       dispatch(setHasOnboarded(status))
     },
-    setTotalLanguageCoreFilesToDownload: totalLanguageCoreFilesToDownload => {
+    setTotalLanguageCoreFilesToDownload: (totalLanguageCoreFilesToDownload) => {
       dispatch(
         setTotalLanguageCoreFilesToDownload(totalLanguageCoreFilesToDownload)
       )
     },
-    setLanguageCoreFilesDownloadProgress: progress => {
+    setLanguageCoreFilesDownloadProgress: (progress) => {
       dispatch(setLanguageCoreFilesDownloadProgress(progress))
     },
-    setHasFetchedLanguageData: hasFetchedLanguageData => {
+    setHasFetchedLanguageData: (hasFetchedLanguageData) => {
       dispatch(setHasFetchedLanguageData(hasFetchedLanguageData))
     },
-    deleteLanguageData: language => {
+    deleteLanguageData: (language) => {
       dispatch(deleteLanguageData(language))
     },
-    deleteGroup: groupName => dispatch(deleteGroup(groupName)),
-    changeActiveGroup: groupName => dispatch(changeActiveGroup(groupName))
+    deleteGroup: (groupName) => dispatch(deleteGroup(groupName)),
+    changeActiveGroup: (groupName) => dispatch(changeActiveGroup(groupName)),
   }
 }
 
@@ -103,7 +103,7 @@ const LoadingScreen = ({
   setHasFetchedLanguageData,
   deleteLanguageData,
   deleteGroup,
-  changeActiveGroup
+  changeActiveGroup,
 }) => {
   /** Cancels the language core files downloads, does a few cleanup actions, and sends the user back to the language instance install screen. */
   const cancelDownloads = () => {
@@ -118,7 +118,7 @@ const LoadingScreen = ({
     setHasFetchedLanguageData(false)
 
     // Cancel all of the downloads.
-    storedDownloads.forEach(download =>
+    storedDownloads.forEach((download) =>
       download.pauseAsync().catch(() => console.log('Error pausing a download'))
     )
 
@@ -127,7 +127,7 @@ const LoadingScreen = ({
       setHasOnboarded(false)
       navigation.reset({
         index: 0,
-        routes: [{ name: 'InitialLanguageInstanceInstall' }]
+        routes: [{ name: 'InitialLanguageInstanceInstall' }],
       })
     }
 
@@ -137,7 +137,7 @@ const LoadingScreen = ({
     else changeActiveGroup(null)
 
     // Delete any groups from the cancelled language.
-    groups.forEach(group => {
+    groups.forEach((group) => {
       if (group.language === actingLanguageID) {
         deleteGroup(group.name)
       }
@@ -148,7 +148,7 @@ const LoadingScreen = ({
 
     // Delete any files that have alreayd finished downloading for the cancelled language.
     FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      contents => {
+      (contents) => {
         for (const item of contents) {
           if (item.slice(0, 2) === actingLanguageID) {
             FileSystem.deleteAsync(FileSystem.documentDirectory + item)
@@ -162,7 +162,7 @@ const LoadingScreen = ({
     <View
       style={{
         ...styles.screen,
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
       <View
@@ -170,20 +170,20 @@ const LoadingScreen = ({
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: 40 * scaleMultiplier
+          marginTop: 40 * scaleMultiplier,
         }}
       >
         <LottieView
           style={{
             width: Dimensions.get('window').width / 2,
             maxWidth: 300,
-            marginBottom: 30
+            marginBottom: 30,
           }}
           colorFilters={[
             {
               keypath: '*',
-              color: colors(isDark).brand
-            }
+              color: colors(isDark).brand,
+            },
           ]}
           autoPlay
           loop
@@ -193,7 +193,7 @@ const LoadingScreen = ({
           style={{
             ...styles.progressBarContainer,
             borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           }}
         >
           {languageCoreFilesDownloadProgress ? (
@@ -201,7 +201,7 @@ const LoadingScreen = ({
               style={{
                 ...styles.progress,
                 flex: languageCoreFilesDownloadProgress,
-                backgroundColor: colors(isDark).brand
+                backgroundColor: colors(isDark).brand,
               }}
             />
           ) : null}
@@ -214,7 +214,7 @@ const LoadingScreen = ({
                   : colors(isDark).bg4,
                 flex:
                   totalLanguageCoreFilesToDownload -
-                  languageCoreFilesDownloadProgress
+                  languageCoreFilesDownloadProgress,
               }}
             />
           ) : null}
@@ -232,7 +232,7 @@ const LoadingScreen = ({
             onPress={cancelDownloads}
             style={{
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <Icon name='cancel' color={colors(isDark).icons} size={50} />
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   progressBarContainer: {
     width: Dimensions.get('window').width - 60,
@@ -267,29 +267,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     overflow: 'hidden',
     justifyContent: 'center',
-    borderWidth: 2
+    borderWidth: 2,
   },
   progress: {
     height: '100%',
-    borderRadius: 20
+    borderRadius: 20,
   },
   progressToGo: {
-    height: '100%'
+    height: '100%',
   },
   noConnectionContainer: {
     width: Dimensions.get('window').width,
     paddingHorizontal: 20,
     marginVertical: 10,
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   cancelButtonContainer: {
     width: '100%',
     height: 100,
     marginVertical: 20,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen)

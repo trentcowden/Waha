@@ -1,7 +1,16 @@
+import { DownloadResumable } from 'expo-file-system'
 import {
   ADD_UPDATE_DOWNLOAD,
+  DownloadActionParams,
   REMOVE_DOWNLOAD
 } from '../actions/downloadActions'
+
+export interface Download {
+  progress: number
+  resumable: DownloadResumable
+}
+
+export type Downloads = Record<string, Download>
 
 /**
  * The downloads reducer stores the progress for any active lesson downloads. Downloads that happen during the initial install of a language are NOT stored here. They are handled by the database.js reducer and the databaseActions.js. This is only for downloading lesson scripture audio files or lesson video files. This state NOT is persisted across app restarts, so all downloads are cancelled if the user quits the app.
@@ -10,7 +19,10 @@ import {
  * @param {number} downloads[lessonID].progress - The progress of this lesson's download from 0 to 1.
  * @param {Object} downloads[lessonID].resumable - The resumable object for this lesson's download saved from the expo download object. This is stored so that we can "cancel" the download later. In this case, cancelling means pausing the download and never resuming it since expo doesn't have a cancel download function.
  */
-export function downloads (state = {}, params?) {
+export function downloads (
+  state: Downloads = {},
+  params: DownloadActionParams
+) {
   switch (params.type) {
     /**
      * Adds or updates the progress for a download in the downloads state. The reason these are grouped into one is because the functionality is the same. If the lesson ID is found in the object, it replaces it (updates it). If it's not, it adds it.

@@ -2,7 +2,6 @@ import { decode, encode } from 'base-64'
 import { Audio } from 'expo-av'
 import * as Font from 'expo-font'
 import * as ScreenOrientation from 'expo-screen-orientation'
-import { locale } from 'i18n-js'
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
@@ -24,7 +23,7 @@ if (!global.atob) {
 /**
  * App.js is the most root level component and is the start of all rendering for Waha.
  */
-export default function App () {
+export default function App() {
   /**  Keeps track of whether all the fonts are loaded. */
   const [fontsLoaded, setFontsLoaded] = useState(false)
 
@@ -46,37 +45,37 @@ export default function App () {
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
       shouldDuckAndroid: true,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-      playThroughEarpieceAndroid: false
+      playThroughEarpieceAndroid: false,
     })
   }, [])
 
   /**
    * Loads all of the fonts to be used across all languages in Waha.
    */
-  async function loadFonts () {
+  async function loadFonts() {
     // Load the icon font.
     await Font.loadAsync({
-      waha: require('./assets/fonts/waha_icon_font.ttf')
+      waha: require('./assets/fonts/waha_icon_font.ttf'),
     })
 
     // Load the language-specific fonts.
     await Font.loadAsync({
-      'Roboto-Black': require('./assets/fonts/Roboto/Roboto-Black.ttf')
+      'Roboto-Black': require('./assets/fonts/Roboto/Roboto-Black.ttf'),
     })
     await Font.loadAsync({
-      'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Medium.ttf')
+      'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Medium.ttf'),
     })
     await Font.loadAsync({
-      'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf')
+      'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
     })
     await Font.loadAsync({
-      'NotoSansArabic-Black': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedBlack.ttf')
+      'NotoSansArabic-Black': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedBlack.ttf'),
     })
     await Font.loadAsync({
-      'NotoSansArabic-Bold': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedSemiBold.ttf')
+      'NotoSansArabic-Bold': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedSemiBold.ttf'),
     })
     await Font.loadAsync({
-      'NotoSansArabic-Regular': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensed.ttf')
+      'NotoSansArabic-Regular': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensed.ttf'),
     })
 
     // Once we finish loading every font, set our fontsLoaded state to true so we know we can render the app now.
@@ -90,7 +89,7 @@ export default function App () {
         {/* The persist gate allows the redux data to persist across restarts. */}
         <PersistGate loading={<View></View>} persistor={persistor}>
           {/* Set a few settings related to the status bar. */}
-          <Root locale={locale} />
+          <Root />
         </PersistGate>
       </Provider>
     )

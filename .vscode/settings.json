@@ -4,6 +4,7 @@
     "checkmark",
     "has",
     "onboarded",
+    "passcode",
     "pressable",
     "roboto",
     "waha",
@@ -12,6 +13,7 @@
   "cSpell.ignoreWords": [
     "isnotrtl",
     "isrtl",
-    "persistor"
+    "persistor",
+    "resumables"
   ]
 }
