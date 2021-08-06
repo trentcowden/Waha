@@ -1,13 +1,26 @@
-import React from 'react'
+import { CommonProps } from 'interfaces/common'
+import { Language } from 'interfaces/languages'
+import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+interface Props extends CommonProps {
+  languageID: string
+  nativeName: string
+  localeName: string
+  logos: Language['colors']
+  onPress: Function
+  isSelected: boolean
+  playAudio: Function
+  screenLanguage: string
+}
+
 /**
  * A pressable item used to display a language instance on the LanguageInstanceInstallScreen.
- * @param {string} nativeName - The name of the langauge in its native script, e.g. Español.
+ * @param {string} nativeName - The name of the language in its native script, e.g. Español.
  * @param {string} localeName - The name of the language in the current phone language, e.g. Spanish.
  * @param {string} font - The font to display the text in. Either the font for the system language or the font from the active language. See typography.js for more info.
  * @param {string} logoSource - The URL for the logo for this language instance.
@@ -15,8 +28,7 @@ import { type } from '../styles/typography'
  * @param {boolean} isSelected - Whether this language instance is selected or not.
  * @param {Function} playAudio - Function that plays audio of the name of the language.
  */
-const LanguageItem = ({
-  // Props passed from a parent component.
+const LanguageItem: FC<Props> = ({
   languageID,
   nativeName,
   localeName,
@@ -26,8 +38,8 @@ const LanguageItem = ({
   isSelected,
   playAudio,
   isRTL,
-  screenLanguage
-}) => {
+  screenLanguage,
+}): ReactElement => {
   return (
     <View
       style={{
@@ -37,7 +49,7 @@ const LanguageItem = ({
           ? colors(isDark).success + '40'
           : isDark
           ? colors(isDark).bg2
-          : colors(isDark).bg4
+          : colors(isDark).bg4,
       }}
     >
       {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
@@ -47,12 +59,12 @@ const LanguageItem = ({
         </View>
       ) : (
         <TouchableOpacity
-          onPress={playAudio}
+          onPress={() => playAudio()}
           style={{
             height: '100%',
             width: 70,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Icon name='volume' size={30} color={colors(isDark).icons} />
@@ -61,15 +73,15 @@ const LanguageItem = ({
       <TouchableOpacity
         style={{
           ...styles.touchableAreaContainer,
-          flexDirection: isRTL ? 'row-reverse' : 'row'
+          flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
-        onPress={onPress}
+        onPress={() => onPress()}
       >
         <View style={styles.namesContainer}>
           <Text
             style={{
               ...type(languageID, 'h3', 'Bold', 'left', colors(isDark).text),
-              textAlign: isRTL ? 'right' : 'left'
+              textAlign: isRTL ? 'right' : 'left',
             }}
           >
             {nativeName}
@@ -83,7 +95,7 @@ const LanguageItem = ({
                 'left',
                 colors(isDark).text
               ),
-              textAlign: isRTL ? 'right' : 'left'
+              textAlign: isRTL ? 'right' : 'left',
             }}
           >
             {localeName}
@@ -103,24 +115,24 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     width: '100%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   touchableAreaContainer: {
     flex: 1,
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   namesContainer: {
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
   },
   headerImage: {
     resizeMode: 'contain',
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier,
-    marginHorizontal: 20
-  }
+    marginHorizontal: 20,
+  },
 })
 
 export default LanguageItem

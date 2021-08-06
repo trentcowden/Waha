@@ -21,7 +21,8 @@ const blacklist =
         'popups',
         'activeGroup',
         'persistedPopups',
-        'settings'
+        'settings',
+        'languageInstallation'
       ]
     : // In prod mode, we want only a few specific reducers to be NOT persisted.
       [

@@ -9,8 +9,8 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps, TProps {
   groupNameInput: string
   setGroupNameInput: Function
-  groupNameInputRef: RefObject<TextInput>
-  isDuplicate: boolean
+  groupNameInputRef?: RefObject<TextInput>
+  isDuplicate?: boolean
 }
 
 const GroupNameTextInput: FC<Props> = ({

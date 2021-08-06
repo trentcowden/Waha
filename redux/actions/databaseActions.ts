@@ -23,6 +23,8 @@ import * as FileSystem from 'expo-file-system'
 import { DownloadResumable } from 'expo-file-system'
 import * as Localization from 'expo-localization'
 import firebase from 'firebase'
+import { AnyAction } from 'redux'
+import { ThunkAction } from 'redux-thunk'
 import { logInstallLanguage } from '../../functions/analyticsFunctions'
 import { LanguageData, StorySet } from '../reducers/database'
 import { AppDispatch, RootState } from '../store'
@@ -263,8 +265,11 @@ export function deleteLanguageData (
  * @export
  * @param {string} language - The ID for the language instance that we're downloading the core files for.
  */
-export function downloadLanguageCoreFiles (language: string) {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
+export function downloadLanguageCoreFiles (
+  language: string
+): ThunkAction<void, RootState, unknown, AnyAction> {
+  return async (dispatch: AppDispatch, getState) => {
+    console.log('in download function')
     // Store the ID of the language that we're downloading core files for so that if we cancel the install, we know what language to delete from the database.
     dispatch(storeActingLanguageID(language))
 

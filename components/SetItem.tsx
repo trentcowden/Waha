@@ -1,26 +1,42 @@
 // import SvgUri from 'expo-svg-uri'
+import { AGProps, CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
-import React, { useEffect, useState } from 'react'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Animated,
   LayoutAnimation,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   UIManager,
-  View
+  View,
 } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import {
   isTablet,
   itemHeights,
   scaleMultiplier,
-  setItemModes
+  setItemModes,
 } from '../constants'
+import { SetItemMode } from '../interfaces/components'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import SVG from './SVG'
+
+interface Props extends CommonProps, AGProps {
+  thisSet: StorySet
+  mode: SetItemMode
+  font: string
+  onSetSelect?: Function
+  progressPercentage?: number
+  setIsInInfoMode?: Function
+  isInInfoMode?: boolean
+  areMobilizationToolsUnlocked?: boolean
+  showTrailerHighlights?: boolean
+}
 
 /**
  * A component that displays a set. Used on a variety of screens and displayed in a variety of ways depending on the mode prop.
@@ -31,21 +47,7 @@ import SVG from './SVG'
  * @param {number} props.progressPercentage - The percentage of this set that has been completed.
  */
 
-/**
- * @param  {} thisSet
- * @param  {} mode
- * @param  {} onSetSelect
- * @param  {} [progressPercentage=null]
- * @param  {} [setIsInInfoMode=null]
- * @param  {} [isInInfoMode=null]
- * @param  {} itemHeight
- * @param  {} isRTL
- * @param  {} isDark
- * @param  {} activeGroup
- * @param  {} [areMobilizationToolsUnlocked=false]
- * @param  {} [showTrailerHighlights=false]
- */
-const SetItem = ({
+const SetItem: FC<Props> = ({
   // Props passed from a parent component.
   thisSet,
   mode,
@@ -58,8 +60,8 @@ const SetItem = ({
   isDark,
   activeGroup,
   areMobilizationToolsUnlocked = false,
-  showTrailerHighlights = false
-}) => {
+  showTrailerHighlights = false,
+}): ReactElement => {
   // console.log(`${Date.now()} Set ${thisSet.id} is re-rendering.`)
 
   useEffect(() => {
@@ -71,21 +73,23 @@ const SetItem = ({
   }, [])
 
   /** Stores the dynamic primary icon portion of the SetItem component. This contains a unique SVG that represents the set and changes between modes. */
-  const [primaryIcon, setPrimaryIcon] = useState()
+  const [primaryIcon, setPrimaryIcon] = useState(<View />)
 
   /** Stores the dynamic secondary icon portion of the SetItem component. This is a smaller icon on the opposite side from the primary icon and changes between modes as well. */
-  const [secondaryIcon, setSecondaryIcon] = useState()
+  const [secondaryIcon, setSecondaryIcon] = useState(<View />)
 
-  const [iconRotation, setIconRotation] = useState(new Animated.Value(0))
+  const [iconRotation] = useState(new Animated.Value(0))
 
   useEffect(() => {
     if (isInInfoMode)
       Animated.spring(iconRotation, {
-        toValue: 1
+        toValue: 1,
+        useNativeDriver: true,
       }).start()
     else
       Animated.spring(iconRotation, {
-        toValue: 0
+        toValue: 0,
+        useNativeDriver: true,
       }).start()
   }, [isInInfoMode])
 
@@ -101,7 +105,7 @@ const SetItem = ({
             <AnimatedCircularProgress
               size={78 * scaleMultiplier}
               width={7 * scaleMultiplier}
-              fill={progressPercentage * 100}
+              fill={progressPercentage ? progressPercentage * 100 : 0}
               tintColor={
                 progressPercentage === 1
                   ? colors(isDark, activeGroup.language).accent + '50'
@@ -120,7 +124,7 @@ const SetItem = ({
                       ? progressPercentage === 1
                         ? colors(isDark).disabled
                         : colors(isDark).icons
-                      : null
+                      : undefined,
                   }}
                 >
                   <SVG
@@ -176,7 +180,7 @@ const SetItem = ({
             <AnimatedCircularProgress
               size={78 * scaleMultiplier}
               width={7 * scaleMultiplier}
-              fill={progressPercentage * 100}
+              fill={progressPercentage ? progressPercentage * 100 : 0}
               tintColor={
                 progressPercentage === 1
                   ? colors(isDark, activeGroup.language).accent + '50'
@@ -195,7 +199,7 @@ const SetItem = ({
                       ? progressPercentage === 1
                         ? colors(isDark).disabled
                         : colors(isDark).icons
-                      : null
+                      : undefined,
                   }}
                 >
                   <SVG
@@ -225,17 +229,17 @@ const SetItem = ({
                 {
                   rotateZ: iconRotation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: ['0deg', '360deg']
-                  })
+                    outputRange: ['0deg', '360deg'],
+                  }),
                 },
                 {
                   // Keeps the rotation centered instead of around a pivot.
-                  translateX: 2.5 * scaleMultiplier
-                }
+                  translateX: 2.5 * scaleMultiplier,
+                },
                 // {
                 //   translateY: 20 * scaleMultiplier
                 // }
-              ]
+              ],
             }}
           >
             <TouchableOpacity
@@ -243,8 +247,8 @@ const SetItem = ({
                 LayoutAnimation.configureNext(
                   LayoutAnimation.Presets.easeInEaseOut
                 )
-                if (isInInfoMode) setIsInInfoMode(false)
-                else setIsInInfoMode(true)
+                if (isInInfoMode && setIsInInfoMode) setIsInInfoMode(false)
+                else if (setIsInInfoMode) setIsInInfoMode(true)
               }}
               style={styles.secondaryIconContainer}
             >
@@ -254,7 +258,7 @@ const SetItem = ({
                   size={35 * scaleMultiplier}
                   color={colors(isDark, activeGroup.language).accent}
                   style={{
-                    transform: [{ rotateX: '180deg' }]
+                    transform: [{ rotateX: '180deg' }],
                   }}
                 />
               ) : (
@@ -280,7 +284,7 @@ const SetItem = ({
               borderRadius: 14,
               overflow: 'hidden',
               borderWidth: 7,
-              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons,
             }}
           >
             <SVG
@@ -314,7 +318,7 @@ const SetItem = ({
               borderRadius: 14,
               overflow: 'hidden',
               borderWidth: 7,
-              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).icons,
             }}
           >
             <SVG
@@ -333,7 +337,7 @@ const SetItem = ({
     progressPercentage,
     thisSet.id === activeGroup.setBookmark,
     isInInfoMode,
-    isDark
+    isDark,
   ])
 
   return (
@@ -343,9 +347,9 @@ const SetItem = ({
         flexDirection: isRTL ? 'row-reverse' : 'row',
         height: isTablet
           ? itemHeights[font].SetItem + 15
-          : itemHeights[font].SetItem
+          : itemHeights[font].SetItem,
       }}
-      onPress={onSetSelect}
+      onPress={onSetSelect ? () => onSetSelect() : undefined}
       // Disable the touch feedback if there's no onSetSelect function.
       activeOpacity={onSetSelect ? 0.2 : 1}
     >
@@ -354,7 +358,7 @@ const SetItem = ({
         style={{
           ...styles.textContainer,
           marginRight: isRTL ? 20 : 0,
-          marginLeft: isRTL ? 0 : 20
+          marginLeft: isRTL ? 0 : 20,
         }}
       >
         <Text
@@ -369,7 +373,7 @@ const SetItem = ({
                 : colors(isDark).icons
             ),
             textAlignVertical: 'center',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
           numberOfLines={1}
         >
@@ -387,7 +391,7 @@ const SetItem = ({
                 : colors(isDark).text
             ),
             textAlignVertical: 'center',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}
           numberOfLines={2}
         >
@@ -406,7 +410,7 @@ const SetItem = ({
               top: 0,
               right: 0,
               alignItems: 'flex-end',
-              justifyContent: 'flex-end'
+              justifyContent: 'flex-end',
             }}
           >
             <LottieView
@@ -415,8 +419,8 @@ const SetItem = ({
               colorFilters={[
                 {
                   keypath: 'hand 2',
-                  color: colors(isDark, activeGroup.language).accent
-                }
+                  color: colors(isDark, activeGroup.language).accent,
+                },
               ]}
               resizeMode='cover'
               style={{ height: '120%' }}
@@ -435,29 +439,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   primaryIconContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     width: 80 * scaleMultiplier,
-    height: 80 * scaleMultiplier
+    height: 80 * scaleMultiplier,
   },
   secondaryIconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     width: 40 * scaleMultiplier,
-    height: 40 * scaleMultiplier
+    height: 40 * scaleMultiplier,
   },
   textContainer: {
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'column'
-  }
+    flexDirection: 'column',
+  },
 })
 
-const areEqual = (prevProps, nextProps) => {
+const areEqual = (prevProps: Props, nextProps: Props) => {
   return (
     prevProps.progressPercentage === nextProps.progressPercentage &&
     prevProps.activeGroup.setBookmark === nextProps.activeGroup.setBookmark &&

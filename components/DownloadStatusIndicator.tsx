@@ -3,17 +3,11 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import {
-  AGProps,
-  CommonProps,
-  DLProps,
-  NetworkProps,
-  TProps,
-} from '../interfaces/common'
+import { CommonProps, DLProps, NetworkProps } from '../interfaces/common'
 import { LessonType } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 
-interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
+interface Props extends CommonProps, NetworkProps, DLProps {
   isFullyDownloaded: boolean
   isDownloading: boolean
   showDeleteLessonModal: Function

@@ -1,14 +1,16 @@
 import * as FileSystem from 'expo-file-system'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { FlatList, LogBox, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import TagGroup from 'react-native-tag-group'
-import { connect } from 'react-redux'
+import { StorySet } from 'redux/reducers/database'
 import SetItem from '../components/SetItem'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { getSetInfo, scaleMultiplier, setItemModes } from '../constants'
+import { scaleMultiplier, setItemModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { getSetInfo } from '../functions/setOrLessonInfoFunctions'
+import { selector } from '../hooks'
 import SetInfoModal from '../modals/SetInfoModal'
 import {
   activeDatabaseSelector,
@@ -20,36 +22,26 @@ import { getTranslations } from '../translations/translationsConfig'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
-function mapStateToProps(state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    t: getTranslations(activeGroupSelector(state).language),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeDatabase: activeDatabaseSelector(state),
-    activeGroup: activeGroupSelector(state),
-    font: info(activeGroupSelector(state).language).font,
-  }
-}
+interface Props {}
 
 /**
  * Screen that shows a list of available Story Sets to add in a specific category.
  * @param {string} category - The category of Story Sets to display.
  */
-const AddSetScreen = ({
+const AddSetScreen: FC<Props> = ({
   // Props passed from navigation.
   navigation: { setOptions, goBack },
   route: {
     // Props passed from previous screen.
     params: { category },
   },
-  // Props passed from redux.
-  font,
-  t,
-  isRTL,
-  isDark,
-  activeDatabase,
-  activeGroup,
-}) => {
+}): ReactElement => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeDatabase = selector((state) => activeDatabaseSelector(state))
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const font = info(activeGroup.language).font
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -57,7 +49,7 @@ const AddSetScreen = ({
   const [headerTitle, setHeaderTitle] = useState('')
 
   /** Keeps track of the Topical Story Set tags. Tags are retrieved from the database. */
-  const [tags, setTags] = useState([])
+  const [tags, setTags] = useState<string[]>([])
 
   /** Keeps track of the currently selected tag. */
   const [selectedTag, setSelectedTag] = useState('')
@@ -69,7 +61,7 @@ const AddSetScreen = ({
   const [setInModal, setSetInModal] = useState({})
 
   /** Keeps track of all the downloaded question set mp3s. We need this to verify that all the required question set mp3s are installed for the various Story Sets.*/
-  const [downloadedFiles, setDownloadedFiles] = useState([])
+  const [downloadedFiles, setDownloadedFiles] = useState<string[]>([])
 
   /** useEffect function that sets the headerTitle state as well as fetching the tags if we're displaying Topical Story Sets. */
   useEffect(() => {
@@ -84,15 +76,19 @@ const AddSetScreen = ({
         var tags = [t.general.all]
 
         // Go through each Topical Story Set and add all the various tags to our tag array.
-        activeDatabase.sets
-          .filter((set) => getSetInfo('category', set.id) === 'Topical')
-          .forEach((topicalSet) => {
-            topicalSet.tags &&
-              topicalSet.tags.forEach((tag) => {
-                // If we find a tag that hasn't been added yet, add it.
-                if (!tags.includes(tag)) tags.push(tag)
-              })
-          })
+        if (activeDatabase !== undefined)
+          activeDatabase.sets
+            .filter((set) => getSetInfo('category', set.id) === 'Topical')
+            .forEach((topicalSet) => {
+              console.log(topicalSet.tags)
+              if (topicalSet.tags !== undefined) {
+                topicalSet.tags.forEach((tag) => {
+                  console.log(tag)
+                  // If we find a tag that hasn't been added yet, add it.
+                  if (!tags.includes(tag)) tags.push(tag)
+                })
+              }
+            })
         setTags(tags)
         break
       case 'MobilizationTools':
@@ -103,11 +99,12 @@ const AddSetScreen = ({
 
   /** useEffect function that checks what files are downloaded to local storage. */
   useEffect(() => {
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-      (contents) => {
-        setDownloadedFiles(contents)
-      }
-    )
+    if (FileSystem.documentDirectory !== null)
+      FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+        (contents) => {
+          setDownloadedFiles(contents)
+        }
+      )
   }, [])
 
   /** useEffect function that hides the Snackbar if we leave the screen before it auto-dismisses. */
@@ -147,9 +144,9 @@ const AddSetScreen = ({
    * @param {Object} set - The object for the set that we're checking.
    * @return {boolean} - Whether every necessary file has been downloaded for the set.
    */
-  const filterForDownloadedQuestionSets = (set) => {
+  const filterForDownloadedQuestionSets = (set: StorySet) => {
     // Create an array to store the necessary question set mp3s for this set.
-    var requiredQuestionSets = []
+    var requiredQuestionSets: string[] = []
 
     // Go through each set and add all necessary question set mp3s to requiredQuestionSets array.
     set.lessons.forEach((lesson) => {
@@ -158,6 +155,8 @@ const AddSetScreen = ({
         if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
           requiredQuestionSets.push(lesson.fellowshipType)
         }
+      }
+      if (lesson.applicationType) {
         if (!requiredQuestionSets.includes(lesson.applicationType)) {
           requiredQuestionSets.push(lesson.applicationType)
         }
@@ -181,57 +180,65 @@ const AddSetScreen = ({
    * @return {Object[]} - An array of set objects to display.
    */
   const getSetData = () => {
-    if (category === 'Topical')
-      return (
-        activeDatabase.sets
-          // Filter for Topical Story Sets.
-          .filter((set) => getSetInfo('category', set.id) === category)
-          // Filter for Topical Story Sets that haven't already been added.
-          .filter(
-            (topicalSet) =>
-              !activeGroup.addedSets.some(
-                (addedSet) => addedSet.id === topicalSet.id
-              )
-          )
-          // Filter for Topical Story Sets that match the currently selected tag (if there is one).
-          .filter((topicalAddedSet) =>
-            // If the selected tag is blank (meaning nothing has been selected) or 'All' is selected, show all the Topical Story Sets. Otherwise, filter by the selected tag.
-            selectedTag === '' || selectedTag === t.general.all
-              ? true
-              : topicalAddedSet.tags.some((tag) => selectedTag === tag)
-          )
-          // Filter for Topical Sets that have all the necessary question set mp3s downloaded.
-          .filter(filterForDownloadedQuestionSets)
-          // Sort by ID, just in case they aren't added in order in the database.
-          .sort((a, b) =>
-            parseInt(a.id.match(/[0-9]*$/)[0]) -
-              parseInt(b.id.match(/[0-9]*$/)[0]) <
-            0
-              ? -1
-              : 1
-          )
-      )
-    else
-      return (
-        activeDatabase.sets
-          // Filter for Foundational or Mobilization Tools Story Sets.
-          .filter((set) => getSetInfo('category', set.id) === category)
-          // Filter for Foundational or Mobilization Tools Story Sets that haven't already been added.
-          .filter(
-            (set) =>
-              !activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
-          )
-          // Filter for Foundational or Mobilization Tools Story Sets that have all the necessary question set mp3s downloaded.
-          .filter(filterForDownloadedQuestionSets)
-          // Sort by ID, just in case they aren't added in order in the database.
-          .sort((a, b) =>
-            parseInt(a.id.match(/[0-9]*$/)[0]) -
-              parseInt(b.id.match(/[0-9]*$/)[0]) <
-            0
-              ? -1
-              : 1
-          )
-      )
+    const sortByID = (storySet1: StorySet, storySet2: StorySet) => {
+      const storySet1IDMatches = storySet1.id.match(/[0-9]*$/)
+      const storySet2IDMatches = storySet2.id.match(/[0-9]*$/)
+
+      if (storySet1IDMatches && storySet2IDMatches)
+        return parseInt(storySet1IDMatches[0]) -
+          parseInt(storySet2IDMatches[0]) <
+          0
+          ? -1
+          : 1
+      else return 1
+    }
+
+    if (activeDatabase !== undefined) {
+      if (category === 'Topical')
+        return (
+          activeDatabase.sets
+            // Filter for Topical Story Sets.
+            .filter((set) => getSetInfo('category', set.id) === category)
+            // Filter for Topical Story Sets that haven't already been added.
+            .filter(
+              (topicalSet) =>
+                !activeGroup.addedSets.some(
+                  (addedSet) => addedSet.id === topicalSet.id
+                )
+            )
+            // Filter for Topical Story Sets that match the currently selected tag (if there is one).
+            .filter((topicalAddedSet) => {
+              if (topicalAddedSet.tags !== undefined) {
+                console.log(selectedTag)
+                // If the selected tag is blank (meaning nothing has been selected) or 'All' is selected, show all the Topical Story Sets. Otherwise, filter by the selected tag.
+                return selectedTag === '' || selectedTag === t.general.all
+                  ? true
+                  : topicalAddedSet.tags.some((tag) => selectedTag === tag)
+              } else return true
+            })
+            // Filter for Topical Sets that have all the necessary question set mp3s downloaded.
+            .filter(filterForDownloadedQuestionSets)
+            // Sort by ID, just in case they aren't added in order in the database.
+            .sort(sortByID)
+        )
+      else
+        return (
+          activeDatabase.sets
+            // Filter for Foundational or Mobilization Tools Story Sets.
+            .filter((set) => getSetInfo('category', set.id) === category)
+            // Filter for Foundational or Mobilization Tools Story Sets that haven't already been added.
+            .filter(
+              (set) =>
+                !activeGroup.addedSets.some(
+                  (addedSet) => addedSet.id === set.id
+                )
+            )
+            // Filter for Foundational or Mobilization Tools Story Sets that have all the necessary question set mp3s downloaded.
+            .filter(filterForDownloadedQuestionSets)
+            // Sort by ID, just in case they aren't added in order in the database.
+            .sort(sortByID)
+        )
+    } else return undefined
   }
 
   /** Set data stored in a useMemo so we don't have to get it on every re-render. */
@@ -241,7 +248,7 @@ const AddSetScreen = ({
   )
 
   /** Renders a <SetItem /> for the list of sets available to add. */
-  const renderSetItem = ({ item }) => (
+  const renderSetItem = ({ item }: { item: StorySet }) => (
     <SetItem
       thisSet={item}
       mode={setItemModes.ADD_SET_SCREEN}
@@ -267,7 +274,7 @@ const AddSetScreen = ({
         <TagGroup
           source={tags}
           singleChoiceMode
-          onSelectedTagChange={(selected) => setSelectedTag(selected)}
+          onSelectedTagChange={(selected: string) => setSelectedTag(selected)}
           style={styles.tagGroupContainer}
           tagStyle={{
             ...styles.tagContainer,
@@ -369,4 +376,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(AddSetScreen)
+export default AddSetScreen

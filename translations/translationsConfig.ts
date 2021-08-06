@@ -1,3 +1,4 @@
+import { Translations } from 'interfaces/translations'
 import en from './en.json'
 import ga from './ga.json'
 import hc from './hc.json'
@@ -8,7 +9,7 @@ import ro from './ro.json'
 import ru from './ru.json'
 import tr from './tr.json'
 
-export const getTranslations = languageID => {
+export const getTranslations = (languageID: string): Translations => {
   switch (languageID) {
     case 'en':
       return en

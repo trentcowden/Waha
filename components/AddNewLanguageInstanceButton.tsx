@@ -11,7 +11,6 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps, TProps {
   navigate: Function
   languageAndGroupData: InfoAndGroupsForAllLanguages
-  setShowAddGroupModal: Function
 }
 
 /**

@@ -1,9 +1,10 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import { Dimensions } from 'react-native'
-import { connect } from 'react-redux'
-import { getSetInfo, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { getSetInfo } from '../functions/setOrLessonInfoFunctions'
+import { selector } from '../hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
@@ -15,32 +16,21 @@ import { getTranslations } from '../translations/translationsConfig'
 // Create the top tab navigator.
 const Tab = createMaterialTopTabNavigator()
 
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    font: info(activeGroupSelector(state).language).font,
-  }
-}
-
 /**
  * This component renders the tab navigator that is used to display the 3 differnet Story Set tabs.
  */
-const SetsTabs = ({
-  // Props passed from redux.
-  activeGroup,
-  activeDatabase,
-  isRTL,
-  t,
-  isDark,
-  areMobilizationToolsUnlocked,
-  font,
-}) => {
-  // Only dispaly the Mobilization Tools tab if the Mobilization Tools have been unlocked.
+const SetsTabs: FC = ({}): ReactElement => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const activeDatabase = selector((state) => activeDatabaseSelector(state))
+  const areMobilizationToolsUnlocked = selector(
+    (state) => state.areMobilizationToolsUnlocked
+  )
+  const font = info(activeGroup.language).font
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+
+  // Only display the Mobilization Tools tab if the Mobilization Tools have been unlocked.
   var MobilizationToolsScreen =
     activeGroup.shouldShowMobilizationToolsTab &&
     areMobilizationToolsUnlocked ? (
@@ -81,11 +71,14 @@ const SetsTabs = ({
    */
   const getBookmarkedTab = () => {
     // Get the category of the bookmarked set.
-    return getSetInfo(
-      'category',
-      activeDatabase.sets.filter((set) => set.id === activeGroup.setBookmark)[0]
-        .id
-    )
+    if (activeDatabase !== undefined)
+      return getSetInfo(
+        'category',
+        activeDatabase.sets.filter(
+          (set) => set.id === activeGroup.setBookmark
+        )[0].id
+      )
+    else return 'Foundational'
   }
 
   return (
@@ -119,4 +112,4 @@ const SetsTabs = ({
   )
 }
 
-export default connect(mapStateToProps)(SetsTabs)
+export default SetsTabs

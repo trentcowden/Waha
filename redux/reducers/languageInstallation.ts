@@ -25,7 +25,8 @@ export type LanguageInstallationState = {
   languageCoreFilesToUpdate: string[]
   actingLanguageID: string | undefined
   recentActiveGroup: string | undefined
-  languageCoreFilesCreatedTimes: Record<string, number>
+  languageCoreFilesCreatedTimes: Record<string, string>
+  totalLanguageCoreFilesToDownload: number
 }
 
 export function languageInstallation (
@@ -38,7 +39,8 @@ export function languageInstallation (
     languageCoreFilesToUpdate: [],
     actingLanguageID: undefined,
     recentActiveGroup: undefined,
-    languageCoreFilesCreatedTimes: {}
+    languageCoreFilesCreatedTimes: {},
+    totalLanguageCoreFilesToDownload: 0
   },
   params: LanguageInstallationActionParams
 ) {

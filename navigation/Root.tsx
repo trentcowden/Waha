@@ -31,7 +31,7 @@ const Root: FC<Props> = ({}): ReactElement => {
 
   const dispatch = useAppDispatch()
 
-  // (TEMP) Since we're transferring over some of the language installation information, we need to compare the old and new to make sure we transfer everything over.
+  // (TEMP) Since we're transferring over some of the language installation information from the database reducer to the new language installation reducer, we need to compare the old and new to make sure we transfer everything over.
   const oldGlobalGroupCounter = selector(
     (state) => state.database.globalGroupCounter
   )
@@ -55,7 +55,6 @@ const Root: FC<Props> = ({}): ReactElement => {
     (state) => state.languageInstallation.languageCoreFilesCreatedTimes
   )
 
-  /** useEffect function that adds a listener for listening to network changes. */
   useEffect(() => {
     if (oldHasOnboarded !== undefined) {
       if (oldGlobalGroupCounter !== newGlobalGroupCounter) {
@@ -102,23 +101,36 @@ const Root: FC<Props> = ({}): ReactElement => {
     }
   }, [])
 
-  // Below are some failsafes to keep the app functioning in case of group errors.
-  // if (activeGroup) {
-  //   // If somehow, every group got deleted, create a new group in one of the installed languages so that the app can still function.
-  //   if (groups.length === 0) {
-  //     var languageID
-  //     Object.keys(database).forEach(key => {
-  //       if (key.length === 2) {
-  //         languageID = key
-  //       }
-  //     })
-  //     createGroup(groupNames[languageID], languageID, 'default', true, 1, 1)
-  //     changeActiveGroup(groupNames[languageID])
-  //     // If somehow, we switch to a group that doesn't exist, fall back to the first group in the groups redux array so that the app can still function.
-  //   } else if (!groups.some(group => activeGroup.name === group.name)) {
-  //     changeActiveGroup(groups[0].name)
-  //   }
-  // }
+  const languageCoreFilesCreatedTimes = selector(
+    (state) => state.database.languageCoreFilesCreatedTimes
+  )
+  const globalGroupCounter = selector(
+    (state) => state.database.globalGroupCounter
+  )
+  const languageCoreFilesToUpdate = selector(
+    (state) => state.database.languageCoreFilesToUpdate
+  )
+
+  useEffect(() => {
+    // Below are some logs for testing.
+    // Log the groups to the console.
+    // console.log(`Groups:`)
+    // groups.forEach(group => console.log(group.language))
+    // Log the installed language instances to the console.
+    // console.log(
+    //   `Languages in DB: ${Object.keys(database).filter(
+    //     key => key.length === 2
+    //   )}`
+    // )
+    // Log the language core files to update to the console.
+    // console.log(`Language core files to update: ${languageCoreFilesToUpdate}\n`)
+    // Log the language core file created times to the console.
+    // console.log(
+    //   `Language core files created times: ${JSON.stringify(
+    //     languageCoreFilesCreatedTimes
+    //   )}\n`
+    // )
+  }, [])
 
   /*
   Conditionally render the navigator based on the state of the 3 redux variables above. There's 3 possible options:

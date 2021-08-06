@@ -1,5 +1,6 @@
 import { Audio } from 'expo-av'
 import * as Localization from 'expo-localization'
+import { Language, LanguageFamily } from 'interfaces/languages'
 import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -14,7 +15,7 @@ import {
   View,
 } from 'react-native'
 import { useColorScheme } from 'react-native-appearance'
-import { connect } from 'react-redux'
+import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
@@ -23,88 +24,26 @@ import WahaSeparator from '../components/WahaSeparator'
 import { buttonModes, groupNames, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
   downloadLanguageCoreFiles,
-  incrementGlobalGroupCounter,
-  setHasFetchedLanguageData,
-  setRecentActiveGroup,
   storeLanguageData,
   storeLanguageSets,
 } from '../redux/actions/databaseActions'
 import { createGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import {
+  incrementGlobalGroupCounter,
+  setHasFetchedLanguageData,
+  setRecentActiveGroup,
+} from '../redux/actions/languageInstallationActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    groups: state.groups,
-    database: state.database,
-    activeGroup: state.activeGroup === null ? {} : activeGroupSelector(state),
-    isDark: state.settings.isDarkModeEnabled,
-    t:
-      state.activeGroup === null
-        ? getTranslations(Localization.locale.slice(0, 2))
-        : getTranslations(activeGroupSelector(state).language),
-    isConnected: state.network.isConnected,
-    isRTL:
-      state.activeGroup === null
-        ? info(Localization.locale.slice(0, 2)).isRTL
-        : info(activeGroupSelector(state).language).isRTL,
-    screenLanguage:
-      state.activeGroup === null
-        ? info(Localization.locale.slice(0, 2)).languageID
-        : activeGroupSelector(state).language,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    downloadLanguageCoreFiles: (languageInstanceID) =>
-      dispatch(downloadLanguageCoreFiles(languageInstanceID)),
-    storeLanguageData: (data, languageInstanceID) =>
-      dispatch(storeLanguageData(data, languageInstanceID)),
-    setIsInstallingLanguageInstance: (toSet) =>
-      dispatch(setIsInstallingLanguageInstance(toSet)),
-    setHasFetchedLanguageData: (hasFetchedLanguageData) =>
-      dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
-    storeLanguageSets: (sets, languageInstanceID) =>
-      dispatch(storeLanguageSets(sets, languageInstanceID)),
-    deleteLanguageData: (languageInstanceID) =>
-      dispatch(deleteLanguageData(languageInstanceID)),
-    incrementGlobalGroupCounter: () => dispatch(incrementGlobalGroupCounter()),
-    createGroup: (
-      groupName: string,
-      language: string,
-      emoji: string,
-      shouldShowMobilizationToolsTab: boolean,
-      groupID: number,
-      groupNumber: number
-    ) =>
-      dispatch(
-        createGroup(
-          groupName,
-          language,
-          emoji,
-          shouldShowMobilizationToolsTab,
-          groupID,
-          groupNumber
-        )
-      ),
-    changeActiveGroup: (name) => {
-      dispatch(changeActiveGroup(name))
-    },
-    setRecentActiveGroup: (groupName) => {
-      dispatch(setRecentActiveGroup(groupName))
-    },
-    setIsDarkModeEnabled: (toSet) => dispatch(setIsDarkModeEnabled(toSet)),
-  }
-}
 
 /**
  * A screen that displays a list of language instances to install. This appears as the first screen the user sees when they open the app for the first time, as well as later if they want to install another language instance.
@@ -123,38 +62,35 @@ const LanguageSelectScreen = ({
       installedLanguageInstances: [],
     },
   },
-  // Props passed from redux.
-  font,
-  groups,
-  database,
-  activeGroup,
-  isDark,
-  t,
-  isConnected,
-  isRTL,
-  screenLanguage,
-  downloadLanguageCoreFiles,
-  storeLanguageData,
-  setIsInstallingLanguageInstance,
-  setHasFetchedLanguageData,
-  storeLanguageSets,
-  deleteLanguageData,
-  incrementGlobalGroupCounter,
-  createGroup,
-  changeActiveGroup,
-  setRecentActiveGroup,
-  setIsDarkModeEnabled,
 }) => {
+  const groups = selector((state) => state.groups)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const t =
+    activeGroup.name === 'No Active Group'
+      ? getTranslations(Localization.locale.slice(0, 2))
+      : getTranslations(activeGroup.language)
+  const isConnected = selector((state) => state.network.isConnected)
+  const isRTL =
+    activeGroup.name === 'No Active Group'
+      ? info(Localization.locale.slice(0, 2)).isRTL
+      : info(activeGroup.language).isRTL
+  const screenLanguage =
+    activeGroup.name === 'No Active Group'
+      ? info(Localization.locale.slice(0, 2)).languageID
+      : activeGroup.language
+  const languageInstallation = selector((state) => state.languageInstallation)
+
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState('')
 
+  const dispatch = useAppDispatch()
+
   /** Keeps track of the Y position of the start button for animating. */
-  const [buttonYPos, setButtonYPos] = useState(
-    new Animated.Value(68 * scaleMultiplier + 20)
-  )
+  const [buttonYPos] = useState(new Animated.Value(68 * scaleMultiplier + 20))
 
   /** The sound object for playing the language text-to-speech files. */
-  const [audio, setAudio] = useState(new Audio.Sound())
+  const [audio] = useState(new Audio.Sound())
 
   /** Keeps track of the text the user enters into the search bar. */
   const [searchTextInput, setSearchTextInput] = useState('')
@@ -169,8 +105,8 @@ const LanguageSelectScreen = ({
       // Create our first group.
 
       // Set color mode to the phone's current setting (light or dark mode).
-      if (colorScheme === 'dark') setIsDarkModeEnabled(true)
-      else setIsDarkModeEnabled(false)
+      if (colorScheme === 'dark') dispatch(setIsDarkModeEnabled(true))
+      else dispatch(setIsDarkModeEnabled(false))
     }
   }, [])
 
@@ -185,7 +121,7 @@ const LanguageSelectScreen = ({
    * Plays the text-to-speech audio file for a language.
    * @param {string} languageID - The ID of the language to play.
    */
-  const playAudio = async (languageID) => {
+  const playAudio = async (languageID: string) => {
     audio.unloadAsync()
     await audio.loadAsync(languageT2S[languageID]).then(() => {
       audio.playAsync()
@@ -196,9 +132,9 @@ const LanguageSelectScreen = ({
    * Fetches all the data for a language from Firebase. This includes the various Story Sets from the 'sets' collection and the language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
    * @param {string} language - The language to fetch the firebase data for.
    */
-  const fetchFirebaseData = async (language) => {
+  const fetchFirebaseData = async (language: string) => {
     // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
-    setIsInstallingLanguageInstance(true)
+    dispatch(setIsInstallingLanguageInstance(true))
 
     // Set the isFetchingFirebaseData local state to true so that the continue button shows the activity indicator.
     setIsFetchingFirebaseData(true)
@@ -208,15 +144,28 @@ const LanguageSelectScreen = ({
       .collection('sets')
       .where('languageID', '==', language)
       .get()
-      .then((response) => {
-        var sets = []
-        response.forEach((set) => {
-          sets.push({
-            id: set.id,
-            ...set.data(),
+      .then((querySnapshot) => {
+        // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
+        if (!querySnapshot.empty) {
+          // Add each Story Set to a temporary set array...
+          var sets: StorySet[] = []
+
+          querySnapshot.forEach((doc) => {
+            var storySetItem: StorySet = {
+              id: doc.id,
+              languageID: doc.data().languageID,
+              title: doc.data().title,
+              subtitle: doc.data().subtitle,
+              iconName: doc.data().iconName,
+              lessons: doc.data().lessons,
+              tags: doc.data().tags,
+            }
+
+            sets.push(storySetItem)
           })
-        })
-        storeLanguageSets(sets, language)
+          /// ...and write all of them to redux.
+          dispatch(storeLanguageSets(sets, language))
+        }
       })
       .catch((error) => {
         console.log(error)
@@ -229,8 +178,19 @@ const LanguageSelectScreen = ({
       .doc(language)
       .get()
       .then(async (doc) => {
-        if (doc.exists) {
-          storeLanguageData(doc.data(), language)
+        var languageData = doc.data()
+        // If we get some legitimate data back...
+        if (doc.exists && languageData !== undefined) {
+          // Store our language info in redux.
+          dispatch(
+            storeLanguageData(
+              {
+                files: languageData.files,
+                questions: languageData.questions,
+              },
+              language
+            )
+          )
         }
       })
       .catch((error) => {
@@ -241,37 +201,39 @@ const LanguageSelectScreen = ({
     return
   }
 
-  /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to nagivate to the onboarding slides too. */
+  /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to navigate to the onboarding slides too. */
   const onStartPress = () => {
     fetchFirebaseData(selectedLanguage)
       .then(() => {
         // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
-        setHasFetchedLanguageData(true)
+        dispatch(setHasFetchedLanguageData(true))
 
         // If we're adding a subsequent language instance, then we need to store the active group's language
-        if (activeGroup) setRecentActiveGroup(activeGroup.name)
+        if (activeGroup) dispatch(setRecentActiveGroup(activeGroup.name))
 
         // Start downloading the core files for this language.
-        downloadLanguageCoreFiles(selectedLanguage)
+        dispatch(downloadLanguageCoreFiles(selectedLanguage))
 
         // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
         if (
           !groups.some((group) => group.name === groupNames[selectedLanguage])
         ) {
-          incrementGlobalGroupCounter()
+          dispatch(incrementGlobalGroupCounter())
 
-          createGroup(
-            groupNames[selectedLanguage],
-            selectedLanguage,
-            'default',
-            true,
-            database.globalGroupCounter,
-            groups.length + 1
+          dispatch(
+            createGroup(
+              groupNames[selectedLanguage],
+              selectedLanguage,
+              'default',
+              true,
+              languageInstallation.globalGroupCounter,
+              groups.length + 1
+            )
           )
         }
 
         // Change the active group to the new group we just created.
-        changeActiveGroup(groupNames[selectedLanguage])
+        dispatch(changeActiveGroup(groupNames[selectedLanguage]))
 
         // Set the local isFetchingFirebaseData state to false.
         setIsFetchingFirebaseData(false)
@@ -288,7 +250,7 @@ const LanguageSelectScreen = ({
 
         // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
         setIsFetchingFirebaseData(false)
-        deleteLanguageData(selectedLanguage)
+        dispatch(deleteLanguageData(selectedLanguage))
 
         Alert.alert(
           t.language_select.fetch_error_title,
@@ -309,17 +271,17 @@ const LanguageSelectScreen = ({
    * @param {Object} languageFamily - The object for the language family that this language is a part of.
    * @return {Component} - The LanguageSelectItem component.
    */
-  const renderLanguageItem = (language, languageFamily) => (
+  const renderLanguageItem = (language: Language) => (
     <LanguageItem
       languageID={language.languageID}
       nativeName={language.nativeName}
       localeName={t.languages[language.languageID]}
-      font={languageFamily.font}
       logos={language.logos}
       onPress={() => {
         if (!selectedLanguage) {
           Animated.spring(buttonYPos, {
             toValue: 0,
+            useNativeDriver: true,
           }).start()
         }
         setSelectedLanguage(language.languageID)
@@ -338,7 +300,7 @@ const LanguageSelectScreen = ({
    * @param {Object} languageFamily - The object for the language family that this language is a part of.
    * @return {Component} - The LanguageSelectItem component.
    */
-  const renderLanguageHeader = (languageFamily) => (
+  const renderLanguageHeader = (languageFamily: LanguageFamily) => (
     <View
       style={{
         ...styles.languageHeaderContainer,
@@ -445,7 +407,7 @@ const LanguageSelectScreen = ({
           ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
           SectionSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
           keyExtractor={(item) => item.languageID}
-          renderItem={({ item, section }) => renderLanguageItem(item, section)}
+          renderItem={({ item }) => renderLanguageItem(item)}
           renderSectionHeader={({ section }) => renderLanguageHeader(section)}
           renderSectionFooter={() => (
             <View style={{ height: 20 * scaleMultiplier, width: '100%' }} />
@@ -472,12 +434,14 @@ const LanguageSelectScreen = ({
                 : t.language_select.add_language + ' '
               : ''
           }
-          onPress={isConnected && !isFetchingFirebaseData ? onStartPress : null}
+          onPress={
+            isConnected && !isFetchingFirebaseData ? onStartPress : undefined
+          }
           extraComponent={
             isConnected ? (
               isFetchingFirebaseData ? (
                 <ActivityIndicator color={colors(isDark).bg4} />
-              ) : null
+              ) : undefined
             ) : (
               <Icon
                 name='cloud-slash'
@@ -488,7 +452,7 @@ const LanguageSelectScreen = ({
           }
           isDark={isDark}
           isRTL={isRTL}
-          language={screenLanguage}
+          screenLanguage={screenLanguage}
         />
       </Animated.View>
     </SafeAreaView>
@@ -545,7 +509,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LanguageSelectScreen)
+export default LanguageSelectScreen

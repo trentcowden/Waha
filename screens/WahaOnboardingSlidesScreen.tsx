@@ -1,8 +1,7 @@
-import React, { useRef, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import React, { FC, ReactElement, useRef, useState } from 'react'
+import { SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
-import { connect } from 'react-redux'
 import EmojiViewer from '../components/EmojiViewer'
 import GroupNameTextInput from '../components/GroupNameTextInput'
 import OnboardingImage from '../components/OnboardingImage'
@@ -11,73 +10,40 @@ import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
 import { buttonModes, groupNames, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { setHasOnboarded } from '../redux/actions/databaseActions'
 import { editGroup } from '../redux/actions/groupsActions'
+import { setHasOnboarded } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setHasOnboarded: (toSet) => dispatch(setHasOnboarded(toSet)),
-    editGroup: (
-      oldGroupName,
-      newGroupName,
-      emoji,
-      shouldShowMobilizationToolsTab
-    ) =>
-      dispatch(
-        editGroup(
-          oldGroupName,
-          newGroupName,
-          emoji,
-          shouldShowMobilizationToolsTab
-        )
-      ),
-    changeActiveGroup: (groupName) => dispatch(changeActiveGroup(groupName)),
-  }
-}
-
 const numPages = 4
 
+interface Props {}
 /**
  * Screen that takes the user through a couple onboarding slides describing what Waha is and allows them to customize their first group.
  * @param {string} selectedLanguage - The language that the user selected just before going into the onboarding slides.
  */
-const WahaOnboardingSlidesScreen = ({
-  // Props passed from navigation.
+const WahaOnboardingSlidesScreen: FC<Props> = ({
   navigation: { navigate },
   route: {
-    // Props passed from previous screen.
     params: { selectedLanguage },
   },
-  // Props passed from redux.
-  isRTL,
-  isDark,
-  activeGroup,
-  t,
-  setHasOnboarded,
-  editGroup,
-  changeActiveGroup,
-}) => {
-  /** The ref for the pager view. Used to manually swipe pages. */
-  const pagerRef = useRef()
+}): ReactElement => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
 
-  // i18n.locale = selectedLanguage
+  const dispatch = useAppDispatch()
+
+  /** The ref for the pager view. Used to manually swipe pages. */
+  const pagerRef = useRef<PagerView>(null)
 
   /** Ref for the group name text input. */
-  const groupNameInputRef = useRef()
+  const groupNameInputRef = useRef<TextInput>(null)
 
   /** Keeps track of onboarding page we're currently on. */
   const [activePage, setActivePage] = useState(0)
@@ -95,13 +61,15 @@ const WahaOnboardingSlidesScreen = ({
     }
 
     // Change the active group to the newly edited group.
-    changeActiveGroup(groupNameInput)
+    dispatch(changeActiveGroup(groupNameInput))
 
     // Call editGroup() redux function.
-    editGroup(groupNames[selectedLanguage], groupNameInput, emojiInput, true)
+    dispatch(
+      editGroup(groupNames[selectedLanguage], groupNameInput, emojiInput, true)
+    )
 
     // Finish up onboarding and go to the loading screen.
-    setHasOnboarded(true)
+    dispatch(setHasOnboarded(true))
     navigate('Loading', {
       selectedLanguage: selectedLanguage,
     })
@@ -109,10 +77,23 @@ const WahaOnboardingSlidesScreen = ({
 
   /** Skips onboarding and just goes straight to the loading screen. */
   const skipOnboarding = () => {
-    setHasOnboarded(true)
+    dispatch(setHasOnboarded(true))
     navigate('Loading', {
       selectedLanguage: selectedLanguage,
     })
+  }
+
+  const onContinueButtonPress = () => {
+    // This button goes to the next page or finishes onboarding if we're on the last page.
+    if (isRTL) {
+      if (activePage === 0) editGroupAndFinish()
+      else if (pagerRef.current !== null)
+        pagerRef.current.setPage(activePage - 1)
+    } else {
+      if (activePage === 3) editGroupAndFinish()
+      else if (pagerRef.current !== null)
+        pagerRef.current.setPage(activePage + 1)
+    }
   }
 
   // The 4 onboarding pages. These are stored here in an array so that we can call pages.reverse() to reverse the order of the pages for RTL languages.
@@ -178,6 +159,7 @@ const WahaOnboardingSlidesScreen = ({
         activeGroup={activeGroup}
         isDark={isDark}
         t={t}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
   ]
@@ -196,8 +178,9 @@ const WahaOnboardingSlidesScreen = ({
         onPageSelected={(event) => {
           // Focus the group name text input when the user reaches the last page. Note: it's numPages - 1 because the indices for the pages start at 0.
           if (
-            (!isRTL && event.nativeEvent.position === numPages - 1) ||
-            (isRTL && event.nativeEvent.position === 0)
+            groupNameInputRef.current !== null &&
+            ((!isRTL && event.nativeEvent.position === numPages - 1) ||
+              (isRTL && event.nativeEvent.position === 0))
           )
             groupNameInputRef.current.focus()
 
@@ -245,16 +228,7 @@ const WahaOnboardingSlidesScreen = ({
         <View style={{ width: 20 }} />
         <WahaButton
           label={t.general.continue}
-          onPress={
-            // This button goes to the next page or finishes onboarding if we're on the last page.
-            isRTL
-              ? activePage === 0
-                ? editGroupAndFinish
-                : () => pagerRef.current.setPage(activePage - 1)
-              : activePage === 3
-              ? editGroupAndFinish
-              : () => pagerRef.current.setPage(activePage + 1)
-          }
+          onPress={() => onContinueButtonPress()}
           mode={buttonModes.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
@@ -262,7 +236,7 @@ const WahaOnboardingSlidesScreen = ({
           }}
           isDark={isDark}
           isRTL={isRTL}
-          language={activeGroup.language}
+          screenLanguage={activeGroup.language}
         />
       </View>
     </SafeAreaView>
@@ -292,7 +266,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WahaOnboardingSlidesScreen)
+export default WahaOnboardingSlidesScreen

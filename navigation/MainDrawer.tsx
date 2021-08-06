@@ -2,6 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import {
   getFocusedRouteNameFromRoute,
   NavigationContainer,
+  Route,
 } from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
@@ -24,12 +25,10 @@ import WahaDrawer from './WahaDrawer'
 // Create the drawer navigator.
 const Drawer = createDrawerNavigator()
 
-interface Props {}
-
 /**
  * This component renders a drawer navigator that contains Waha's navigation drawer. It's placed around the MainStack navigator. It also contains a ton of logic related to things that happen globally in the background, such as updating the connection status and retrieving updates from Firestore.
  */
-const MainDrawer: FC<Props> = ({}): ReactElement => {
+const MainDrawer: FC = ({}): ReactElement => {
   const isRTL = selector(
     (state) => info(activeGroupSelector(state).language).isRTL
   )
@@ -41,12 +40,6 @@ const MainDrawer: FC<Props> = ({}): ReactElement => {
   )
   const languageCoreFilesToUpdate = selector(
     (state) => state.languageInstallation.languageCoreFilesToUpdate
-  )
-
-  console.log(
-    selector(
-      (state) => state.languageInstallation.languageCoreFilesCreatedTimes
-    )
   )
 
   const downloads = selector((state) => state.downloads)
@@ -101,6 +94,7 @@ const MainDrawer: FC<Props> = ({}): ReactElement => {
               if (shouldWrite) {
                 // Add each Story Set to a temporary set array...
                 var sets: StorySet[] = []
+
                 querySnapshot.forEach((doc) => {
                   var storySetItem: StorySet = {
                     id: doc.id,
@@ -109,6 +103,7 @@ const MainDrawer: FC<Props> = ({}): ReactElement => {
                     subtitle: doc.data().subtitle,
                     iconName: doc.data().iconName,
                     lessons: doc.data().lessons,
+                    tags: doc.data().tags,
                   }
 
                   sets.push(storySetItem)
@@ -163,11 +158,7 @@ const MainDrawer: FC<Props> = ({}): ReactElement => {
               // Set the file extension for the core file we're currently checking.
               var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
 
-              var url =
-                // storageMode === 'test'
-                //   ? `https://firebasestorage.googleapis.com/v0/b/waha-app-test-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
-                //   :
-                `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
+              var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
               // Check the timeCreated of this core file in Firebase storage.
               firebase
@@ -256,6 +247,7 @@ const MainDrawer: FC<Props> = ({}): ReactElement => {
           if (shouldWrite) {
             // Add each Story Set to a temporary set array...
             var sets: StorySet[] = []
+
             querySnapshot.forEach((doc) => {
               var storySetItem: StorySet = {
                 id: doc.id,
@@ -284,7 +276,7 @@ const MainDrawer: FC<Props> = ({}): ReactElement => {
    * @param {string} route - The route passed from the navigation component.
    * @return {boolean} - Whether gestures should be enabled or not.
    */
-  function getGestureEnabled(route) {
+  function getGestureEnabled(route: Route) {
     const routeName = getFocusedRouteNameFromRoute(route)
 
     if (routeName === undefined) return security.securityEnabled ? false : true

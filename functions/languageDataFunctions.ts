@@ -1,14 +1,14 @@
 import * as Localization from 'expo-localization'
 import { Database } from 'interfaces/database'
 import { Group } from 'interfaces/groups'
+import { Translations } from 'interfaces/translations'
 import {
   InfoAndGroupsForAllLanguages,
   InfoAndGroupsForLanguage,
   Language,
   LanguageFamily,
   LanguageInfo
-} from 'interfaces/languages'
-import { Translations } from 'interfaces/translations'
+} from '../interfaces/languages'
 import { languages } from '../languages'
 
 export const info = (languageID: string): LanguageInfo => {

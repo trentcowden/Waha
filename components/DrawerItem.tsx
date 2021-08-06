@@ -1,4 +1,4 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
@@ -6,7 +6,7 @@ import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-interface Props extends CommonProps, AGProps, TProps {
+interface Props extends CommonProps, AGProps {
   onPress: Function
   icon: string
   label: string

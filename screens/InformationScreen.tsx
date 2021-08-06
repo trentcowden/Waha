@@ -7,44 +7,41 @@ import {
   Share,
   StyleSheet,
   Text,
+  TextStyle,
   View,
 } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
-import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
 import InformationItem from '../components/InformationItem'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
+import { logShareApp } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import { appVersion } from '../modeSwitch'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-  }
-}
-
 /**
  * A screen that displays some miscellaneous information for Waha, like its version, with links to the privacy policy, donation page, and app store listing page.
  */
-const InformationScreen = ({
-  navigation: { setOptions, goBack },
-  // Props passed from redux.
-  isRTL,
-  t,
-  isDark,
-  activeGroup,
-}) => {
+const InformationScreen = ({ navigation: { setOptions, goBack } }) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
+
+  const snackBarStyle: TextStyle = {
+    color: colors(isDark).textOnColor,
+    fontSize: 24 * scaleMultiplier,
+    fontFamily: info(activeGroup.language).font + '-Black',
+    textAlign: 'center',
+  }
 
   const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
 
@@ -76,7 +73,7 @@ const InformationScreen = ({
    * Opens up an in-app browser.
    * @param {string} url - The URL to open.
    */
-  const openBrowser = async (url) =>
+  const openBrowser = async (url: string) =>
     await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' })
 
   return (
@@ -199,12 +196,7 @@ const InformationScreen = ({
       <SnackBar
         visible={showSnackbar}
         textMessage={t.general.copied_to_clipboard}
-        messageStyle={{
-          color: colors(isDark).textOnColor,
-          fontSize: 24 * scaleMultiplier,
-          fontFamily: info(activeGroup.language).font + '-Black',
-          textAlign: 'center',
-        }}
+        messageStyle={snackBarStyle}
         backgroundColor={colors(isDark).success}
       />
       <CopyrightsModal
@@ -236,4 +228,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(InformationScreen)
+export default InformationScreen

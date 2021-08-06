@@ -1,14 +1,14 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import * as StoreReview from 'expo-store-review'
-import React, { useEffect, useState } from 'react'
-import { AppState, LogBox, View } from 'react-native'
-import { connect } from 'react-redux'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { AppState, LogBox, Platform, View } from 'react-native'
 import GroupAvatar from '../components/GroupAvatar'
 import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import TestModeDisplay from '../components/TestModeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import SetsTabs from '../navigation/SetsTabs'
 import {
   setHasUsedPlayScreen,
@@ -17,11 +17,7 @@ import {
   setReviewTimeout,
 } from '../redux/actions/persistedPopupsActions'
 import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector,
-} from '../redux/reducers/activeGroup'
-import { AppDispatch, RootState } from '../redux/store'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
@@ -46,71 +42,32 @@ LogBox.ignoreLogs(['Setting a timer'])
 // Create the stack navigator.
 const Stack = createStackNavigator()
 
-function mapStateToProps(state: RootState) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeDatabase: activeDatabaseSelector(state),
-    activeGroup: activeGroupSelector(state),
-    security: state.security,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
-    hasUsedPlayScreen: state.persistedPopups.hasUsedPlayScreen,
-    reviewTimeout: state.persistedPopups.reviewTimeout,
-    lessonCounter: state.persistedPopups.lessonCounter,
-    numLessonsTilReview: state.persistedPopups.numLessonsTilReview,
-    font: info(activeGroupSelector(state).language).font,
-  }
-}
-
-function mapDispatchToProps(dispatch: AppDispatch) {
-  return {
-    setTimer: (ms: number) => {
-      dispatch(setTimer(ms))
-    },
-    setIsTimedOut: (toSet: boolean) => {
-      dispatch(setIsTimedOut(toSet))
-    },
-    setHasUsedPlayScreen: (toSet: boolean) =>
-      dispatch(setHasUsedPlayScreen(toSet)),
-    setLessonCounter: (numLessons: number) => {
-      dispatch(setLessonCounter(numLessons))
-    },
-    setNumLessonsTilReview: (numLessons: number) => {
-      dispatch(setNumLessonsTilReview(numLessons))
-    },
-    setReviewTimeout: (timeout: number) => {
-      dispatch(setReviewTimeout(timeout))
-    },
-  }
-}
-
-/**
- * This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.js is because this component has access to the navigation prop.
+/*
+ This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.js is because this component has access to the navigation prop.
  */
 const MainStack = ({
-  // Props passed from navigation.
   navigation: { navigate, goBack, toggleDrawer },
-  // Props passed from redux.
-  isRTL,
-  isDark,
-  activeDatabase,
-  activeGroup,
-  security,
-  t,
-  font,
-  languageCoreFilesToUpdate,
-  hasUsedPlayScreen,
-  reviewTimeout,
-  lessonCounter,
-  numLessonsTilReview,
-  setTimer,
-  setIsTimedOut,
-  setHasUsedPlayScreen,
-  setLessonCounter,
-  setNumLessonsTilReview,
-  setReviewTimeout,
-}) => {
+}): ReactElement => {
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const isRTL = info(activeGroup.language).isRTL
+  const t = getTranslations(activeGroup.language)
+  const font = info(activeGroup.language).font
+
+  const security = selector((state) => state.security)
+  const languageCoreFilesToUpdate = selector(
+    (state) => state.languageInstallation.languageCoreFilesToUpdate
+  )
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const hasUsedPlayScreen = selector(
+    (state) => state.persistedPopups.hasUsedPlayScreen
+  )
+  const reviewTimeout = selector((state) => state.persistedPopups.reviewTimeout)
+  const lessonCounter = selector((state) => state.persistedPopups.lessonCounter)
+  const numLessonsTilReview = selector(
+    (state) => state.persistedPopups.numLessonsTilReview
+  )
+
+  const dispatch = useAppDispatch()
   /** Keeps track of the current app state. Can be "active", "inactive", or "background". Set by the app state listener function. */
   const [appState, setAppState] = useState('')
 
@@ -127,10 +84,10 @@ const MainStack = ({
 
   // Temporary function to initialize these redux variables for users who are updating.
   useEffect(() => {
-    if (hasUsedPlayScreen === undefined) setHasUsedPlayScreen(true)
-    if (reviewTimeout === undefined) setReviewTimeout(null)
-    if (lessonCounter === undefined) setLessonCounter(0)
-    if (numLessonsTilReview === undefined) setNumLessonsTilReview(2)
+    if (hasUsedPlayScreen === undefined) dispatch(setHasUsedPlayScreen(true))
+    if (reviewTimeout === undefined) dispatch(setReviewTimeout(undefined))
+    if (lessonCounter === undefined) dispatch(setLessonCounter(0))
+    if (numLessonsTilReview === undefined) dispatch(setNumLessonsTilReview(2))
   }, [])
 
   /** useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts. */
@@ -140,12 +97,12 @@ const MainStack = ({
       if (Platform.OS === 'ios') navigate('Splash')
 
       // Store the current time for security mode timeout checking later.
-      setTimer(Date.now())
+      dispatch(setTimer(Date.now()))
     } else if (appState === 'active') {
       // If we're past our review timeout, request a review and reset the timeout.
-      if (reviewTimeout !== null && Date.now() > reviewTimeout) {
+      if (reviewTimeout !== undefined && Date.now() > reviewTimeout) {
         StoreReview.requestReview()
-        setReviewTimeout(null)
+        setReviewTimeout(undefined)
       }
 
       if (security.securityEnabled) {
@@ -156,7 +113,7 @@ const MainStack = ({
         } else {
           // If we are now timed out, set isTimedOut to true and navigate to the piano screen.
           if (Date.now() - security.timer > security.timeoutDuration) {
-            setIsTimedOut(true)
+            dispatch(setIsTimedOut(true))
             navigate('PianoApp')
             // Otherwise, if we haven't timed out yet, on Android, do nothing. On iOS, we will have navigated to the splash screen upon coming back into the app so we have to go back to get back to the screen we were on before.
           } else {
@@ -169,13 +126,6 @@ const MainStack = ({
       }
     }
   }, [appState])
-
-  /** Function for fading out from the piano screen into the normal navigator. */
-  const forFade = ({ current }) => ({
-    cardStyle: {
-      opacity: current.progress,
-    },
-  })
 
   return (
     <View
@@ -227,6 +177,7 @@ const MainStack = ({
                       onPress={() => toggleDrawer()}
                       isActive={true}
                       isDark={isDark}
+                      isRTL={isRTL}
                     />
                     {languageCoreFilesToUpdate.length !== 0 ? (
                       <View
@@ -262,6 +213,7 @@ const MainStack = ({
                       onPress={() => toggleDrawer()}
                       isActive={true}
                       isDark={isDark}
+                      isRTL={isRTL}
                     />
                     {languageCoreFilesToUpdate.length !== 0 && (
                       <View
@@ -365,9 +317,9 @@ const MainStack = ({
                     isDark={isDark}
                   />
                 )
-              : () => {},
+              : () => <View />,
             headerLeft: isRTL
-              ? () => {}
+              ? () => <View />
               : () => (
                   <WahaBackButton
                     onPress={() => goBack()}
@@ -524,7 +476,11 @@ const MainStack = ({
             gestureEnabled: false,
             headerShown: false,
             // Set the transition out of the piano screen to be a fade instead of a swipe.
-            cardStyleInterpolator: forFade,
+            cardStyleInterpolator: ({ current }) => ({
+              cardStyle: {
+                opacity: current.progress,
+              },
+            }),
           }}
         />
         <Stack.Screen
@@ -573,4 +529,4 @@ const MainStack = ({
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainStack)
+export default MainStack

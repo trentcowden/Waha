@@ -1,48 +1,21 @@
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
-import { connect } from 'react-redux'
 import DrawerDownloadUpdateButton from '../components/DrawerDownloadUpdateButton'
 import DrawerItem from '../components/DrawerItem'
 import GroupAvatar from '../components/GroupAvatar'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import {
-  setHasFetchedLanguageData,
-  updateLanguageCoreFiles,
-} from '../redux/actions/databaseActions'
+import { updateLanguageCoreFiles } from '../redux/actions/databaseActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
-import { storeDownloads } from '../redux/actions/storedDownloadsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    isConnected: state.network.isConnected,
-    languageCoreFilesToUpdate: state.database.languageCoreFilesToUpdate,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    updateLanguageCoreFiles: () => dispatch(updateLanguageCoreFiles()),
-    setIsInstallingLanguageInstance: (toSet) =>
-      dispatch(setIsInstallingLanguageInstance(toSet)),
-    storeDownloads: (downloads) => dispatch(storeDownloads(downloads)),
-    setHasFetchedLanguageData: (hasFetchedLanguageData) =>
-      dispatch(setHasFetchedLanguageData(hasFetchedLanguageData)),
-    setIsDarkModeEnabled: (toSet) => dispatch(setIsDarkModeEnabled(toSet)),
-  }
-}
 
 /**
  * A component that acts as the navigation drawer for Waha. Accessible via the SetsTabs screens.
@@ -51,31 +24,31 @@ const WahaDrawer = ({
   // Props passed from navigation.
   navigation: { navigate },
   // Props passed from redux.
-  isRTL,
-  isDark,
-  activeGroup,
-  t,
-  isConnected,
-  languageCoreFilesToUpdate,
-  updateLanguageCoreFiles,
-  setIsInstallingLanguageInstance,
-  storeDownloads,
-  setHasFetchedLanguageData,
-  setIsDarkModeEnabled,
 }) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const isConnected = selector((state) => state.network.isConnected)
+  const languageCoreFilesToUpdate = selector(
+    (state) => state.languageInstallation.languageCoreFilesToUpdate
+  )
+
+  const dispatch = useAppDispatch()
+
   /** Keeps track of whether the edit group modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
   /** Handles the updating of language core files. */
   const updateHandler = () => {
     // Set setIsInstallingLanguageInstance redux variable to true so that the app knows to switch to the loading screen.
-    setIsInstallingLanguageInstance(true)
+    dispatch(setIsInstallingLanguageInstance(true))
 
     // Even though we're not fetching any Firebase data here, set this variable to true anyways just to allow the user to cancel the update if they want.
     // setHasFetchedLanguageData(true)
 
     // Update the language core files.
-    updateLanguageCoreFiles()
+    dispatch(updateLanguageCoreFiles())
   }
 
   return (
@@ -94,6 +67,7 @@ const WahaDrawer = ({
             size={120}
             onPress={() => setShowEditGroupModal(true)}
             isDark={isDark}
+            isRTL={isRTL}
           />
         </View>
         <Text
@@ -179,7 +153,7 @@ const WahaDrawer = ({
         />
         <DrawerItem
           icon={isDark ? 'sun' : 'moon'}
-          onPress={() => setIsDarkModeEnabled(isDark ? false : true)}
+          onPress={() => dispatch(setIsDarkModeEnabled(isDark ? false : true))}
           label={isDark ? t.general.light_mode : t.general.dark_mode}
           isRTL={isRTL}
           isDark={isDark}
@@ -229,4 +203,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(WahaDrawer)
+export default WahaDrawer

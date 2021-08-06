@@ -1,27 +1,33 @@
-import React from 'react'
+import { CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps {
+  onPress: Function
+  color?: string
+}
 
 /**
  * A simple pressable component with a backwards arrow that acts as a back button. Used in almost every header in Waha.
  * @param {Function} onPress - Function to call when the back button is pressed. Almost always navigation.goBack().
  * @param {string} color - The color of the back button icon. Not required.
  */
-const WahaBackButton = ({
+const WahaBackButton: FC<Props> = ({
   // Props passed from a parent component.
   onPress,
-  color = null,
+  color,
   isRTL,
-  isDark
-}) => (
+  isDark,
+}): ReactElement => (
   <TouchableOpacity
     style={{
       ...styles.backButtonContainer,
-      justifyContent: isRTL ? 'flex-end' : 'flex-start'
+      justifyContent: isRTL ? 'flex-end' : 'flex-start',
     }}
-    onPress={onPress}
+    onPress={() => onPress()}
   >
     <Icon
       name={isRTL ? 'arrow-right' : 'arrow-left'}
@@ -34,8 +40,8 @@ const WahaBackButton = ({
 const styles = StyleSheet.create({
   backButtonContainer: {
     flexDirection: 'row',
-    width: 100
-  }
+    width: 100,
+  },
 })
 
 export default WahaBackButton

@@ -1,16 +1,19 @@
-import { Database } from 'interfaces/database'
 import { Group } from 'interfaces/groups'
 import { RootState } from 'redux/store'
 import {
   ActiveGroupActionParams,
   CHANGE_ACTIVE_GROUP
 } from '../actions/activeGroupActions'
+import { DBLanguageData } from '../reducers/database'
 /**
  * The active group redux reducer that stores the name of the currently active group. This state is persisted across app restarts.
  * @param {Object} action - Parameters passed from groupsAction.js functions.
  * @param {string} activeGroup - (state) The name of the active group.
  */
-export function activeGroup (state = null, params: ActiveGroupActionParams) {
+export function activeGroup (
+  state: string = '',
+  params: ActiveGroupActionParams
+) {
   switch (params.type) {
     case CHANGE_ACTIVE_GROUP:
       return params.groupName
@@ -24,7 +27,7 @@ export function activeGroup (state = null, params: ActiveGroupActionParams) {
  */
 export function activeGroupSelector (state: RootState): Group {
   const fallbackGroup: Group = {
-    name: 'Group 1',
+    name: 'No Active Group',
     id: 1,
     language: 'en',
     emoji: 'default',
@@ -68,7 +71,7 @@ export function activeGroupSelector (state: RootState): Group {
  */
 export function activeDatabaseSelector (
   state: RootState
-): Database | undefined {
+): DBLanguageData | undefined {
   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)
   return activeGroup.length !== 0
     ? state.database[activeGroup[0].language]

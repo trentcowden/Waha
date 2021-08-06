@@ -16,7 +16,7 @@ interface SetHasUsedPlayScreenParams {
 
 interface SetReviewTimeoutParams {
   type: 'SET_REVIEW_TIMEOUT'
-  timeout: number
+  timeout: number | undefined
 }
 
 interface SetLessonCounterParams {
@@ -59,7 +59,9 @@ export function setHasUsedPlayScreen (
   }
 }
 
-export function setReviewTimeout (timeout: number): SetReviewTimeoutParams {
+export function setReviewTimeout (
+  timeout: number | undefined
+): SetReviewTimeoutParams {
   return {
     type: SET_REVIEW_TIMEOUT,
     timeout

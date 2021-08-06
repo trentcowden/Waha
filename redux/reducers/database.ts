@@ -26,6 +26,7 @@ export interface StorySet {
   subtitle: string
   iconName: string
   lessons: Lesson[]
+  tags?: string[]
 }
 
 export interface Lesson {

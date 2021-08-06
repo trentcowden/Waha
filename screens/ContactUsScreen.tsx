@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   Alert,
@@ -12,45 +12,34 @@ import {
   View,
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { buttonModes, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import { appVersion } from '../modeSwitch'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector,
-} from '../redux/reducers/activeGroup'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps(state) {
-  return {
-    activeGroup: activeGroupSelector(state),
-    activeDatabase: activeDatabaseSelector(state),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    isConnected: state.network.isConnected,
-  }
-}
+interface Props {}
 
-const ContactUsScreen = ({
+const ContactUsScreen: FC<Props> = ({
   navigation: { setOptions, goBack },
-  // Props passed from redux.
-  activeGroup,
-  activeDatabase,
-  isRTL,
-  t,
-  isDark,
-  isConnected,
-}) => {
+}): ReactElement => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const isConnected = selector((state) => state.network.isConnected)
+
   /** The text for the email input component. */
-  const [emailTextInput, setEmailTextInput] = useState(null)
+  const [emailTextInput, setEmailTextInput] = useState<string | undefined>(
+    undefined
+  )
 
   /** The text for the message input component. */
   const [messageTextInput, setMessageTextInput] = useState('')
@@ -66,7 +55,7 @@ const ContactUsScreen = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   /** Keeps track of whether the email address is valid or not. */
-  const [emailError, setEmailError] = useState(null)
+  const [emailError, setEmailError] = useState<boolean | undefined>(undefined)
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
@@ -101,7 +90,8 @@ const ContactUsScreen = ({
 
   /** Checks whether an email address is valid using a regular expression. If it's valid, set the email error state to false. Otherwise, set it to true.*/
   const checkEmail = () => {
-    if (emailTextInput.match(/^.+@.+\..+$/)) setEmailError(false)
+    if (emailTextInput !== undefined && emailTextInput.match(/^.+@.+\..+$/))
+      setEmailError(false)
     else setEmailError(true)
   }
 
@@ -111,7 +101,7 @@ const ContactUsScreen = ({
     db.collection('feedback')
       .add({
         language: activeGroup.language,
-        contactEmail: activeDatabase.contactEmail,
+        contactEmail: info(activeGroup.language).contactEmail,
         email: emailTextInput,
         message: messageTextInput,
         isABug: isBugChecked,
@@ -283,7 +273,7 @@ const ContactUsScreen = ({
               style={type(
                 activeGroup.language,
                 'h4',
-                'regular',
+                'Regular',
                 'left',
                 messageTextInput.length > 1000
                   ? colors(isDark).error
@@ -402,7 +392,7 @@ const ContactUsScreen = ({
               : buttonModes.SUCCESS
           }
           label={isSubmitting || !isConnected ? '' : t.general.submit}
-          onPress={submit}
+          onPress={() => submit()}
           extraContainerStyles={{
             width: Dimensions.get('window').width / 3,
             alignSelf: isRTL ? 'flex-start' : 'flex-end',
@@ -415,7 +405,7 @@ const ContactUsScreen = ({
                 <View>
                   <ActivityIndicator color={colors(isDark).bg4} />
                 </View>
-              ) : null
+              ) : undefined
             ) : (
               <Icon
                 name='cloud-slash'
@@ -426,7 +416,7 @@ const ContactUsScreen = ({
           }
           isDark={isDark}
           isRTL={isRTL}
-          language={activeGroup.language}
+          screenLanguage={activeGroup.language}
         />
       </ScrollView>
     </SafeAreaView>
@@ -480,4 +470,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(ContactUsScreen)
+export default ContactUsScreen

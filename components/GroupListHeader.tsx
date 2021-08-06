@@ -18,7 +18,7 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps, TProps {
   nativeName: string
   languageID: string
-  isEditing: string
+  isEditing: boolean
   deleteLanguageInstance: Function
 }
 /**

@@ -45,7 +45,7 @@ interface SetTotalLanguageCoreFilesToDownloadParams {
 interface StoreLanguageCoreFileCreatedTimeParams {
   type: 'STORE_LANGUAGE_CORE_FILE_CREATED_TIME'
   fileName: string
-  timeCreated: number
+  timeCreated: string
 }
 
 interface AddLanguageCoreFileToUpdateParams {
@@ -172,7 +172,7 @@ export function setTotalLanguageCoreFilesToDownload (
  */
 export function storeLanguageCoreFileCreatedTime (
   fileName: string,
-  timeCreated: number
+  timeCreated: string
 ): StoreLanguageCoreFileCreatedTimeParams {
   return {
     type: STORE_LANGUAGE_CORE_FILE_CREATED_TIME,

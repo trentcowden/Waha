@@ -1,17 +1,42 @@
 import LottieView from 'lottie-react-native'
-import React, { useEffect, useState } from 'react'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import {
   getLessonInfo,
   isTablet,
   itemHeights,
-  lessonTypes,
-  scaleMultiplier
+  scaleMultiplier,
 } from '../constants'
+import {
+  AGProps,
+  CommonProps,
+  DLProps,
+  NetworkProps,
+} from '../interfaces/common'
+import { LessonType } from '../interfaces/playScreen'
+import { Lesson } from '../redux/reducers/database'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import DownloadStatusIndicator from './DownloadStatusIndicator'
+
+interface Props extends CommonProps, AGProps, DLProps, NetworkProps {
+  thisLesson: Lesson
+  goToPlayScreen: Function
+  isBookmark: boolean
+  isComplete: boolean
+  lessonType: LessonType
+  downloadedLessons: string[]
+  showDownloadLessonModal: Function
+  showDeleteLessonModal: Function
+  scriptureList: string
+  setShowTrailerHighlights: Function
+  removeDownload: Function
+  isInInfoMode: boolean
+  font: string
+  areMobilizationToolsUnlocked: boolean
+  showTrailerHighlights: boolean
+}
 
 /**
  * A list item used to display a single lesson on the LessonsScreen. Shows the title, subtitle, complete status, and download status.
@@ -24,7 +49,7 @@ import DownloadStatusIndicator from './DownloadStatusIndicator'
  * @param {Function} showDownloadLessonModal - Function that shows the download lesson modal.
  * @param {Function} showDeleteLessonModal - Function that shows the delete lesson modal.
  */
-const LessonItem = ({
+const LessonItem: FC<Props> = ({
   // Props passed from a parent component.
   thisLesson,
   goToPlayScreen,
@@ -36,8 +61,6 @@ const LessonItem = ({
   showDeleteLessonModal,
   scriptureList,
   isInInfoMode,
-  animationFinished,
-  // Props passed from redux.
   isRTL,
   isDark,
   activeGroup,
@@ -47,8 +70,8 @@ const LessonItem = ({
   showTrailerHighlights,
   isConnected,
   setShowTrailerHighlights,
-  removeDownload
-}) => {
+  removeDownload,
+}): ReactElement => {
   /** Keeps track of whether this lesson is downloaded or not. */
   const [isFullyDownloaded, setIsFullyDownloaded] = useState(false)
 
@@ -77,15 +100,15 @@ const LessonItem = ({
   /** useEffect function that updates the downloading and downloaded status of a lesson whenever a download gets added or removed from the downloads redux object. */
   useEffect(() => {
     switch (lessonType) {
-      case lessonTypes.STANDARD_DBS:
-      case lessonTypes.AUDIOBOOK:
+      case LessonType.STANDARD_DBS:
+      case LessonType.AUDIOBOOK:
         if (downloadedLessons.includes(thisLesson.id))
           setIsFullyDownloaded(true)
         else setIsFullyDownloaded(false)
         if (downloads[thisLesson.id]) setIsDownloading(true)
         else setIsDownloading(false)
         break
-      case lessonTypes.STANDARD_DMC:
+      case LessonType.STANDARD_DMC:
         if (
           downloadedLessons.includes(thisLesson.id) &&
           downloadedLessons.includes(thisLesson.id + 'v')
@@ -96,7 +119,7 @@ const LessonItem = ({
           setIsDownloading(true)
         else setIsDownloading(false)
         break
-      case lessonTypes.VIDEO_ONLY:
+      case LessonType.VIDEO_ONLY:
         if (downloadedLessons.includes(thisLesson.id + 'v'))
           setIsFullyDownloaded(true)
         else setIsFullyDownloaded(false)
@@ -122,14 +145,14 @@ const LessonItem = ({
           ? null
           : isTablet
           ? itemHeights[font].LessonItem + 15
-          : itemHeights[font].LessonItem
+          : itemHeights[font].LessonItem,
       }}
     >
       <TouchableOpacity
         style={{
           ...styles.touchableAreaContainer,
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          justifyContent: isRTL ? 'flex-end' : 'flex-start'
+          justifyContent: isRTL ? 'flex-end' : 'flex-start',
         }}
         onPress={() => {
           if (areMobilizationToolsUnlocked && showTrailerHighlights)
@@ -143,7 +166,7 @@ const LessonItem = ({
             ),
             isAlreadyDownloading: isDownloading,
             lessonType: lessonType,
-            downloadedLessons: downloadedLessons
+            downloadedLessons: downloadedLessons,
           })
         }}
       >
@@ -170,7 +193,7 @@ const LessonItem = ({
           style={{
             ...styles.titlesContainer,
             marginLeft: isRTL ? (thisLesson.hasAudio ? 0 : 20) : 20,
-            marginRight: isRTL ? 20 : thisLesson.hasAudio ? 0 : 20
+            marginRight: isRTL ? 20 : thisLesson.hasAudio ? 0 : 20,
           }}
         >
           <Text
@@ -249,7 +272,7 @@ const LessonItem = ({
                 top: -15,
                 right: -25,
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               <LottieView
@@ -258,8 +281,8 @@ const LessonItem = ({
                 colorFilters={[
                   {
                     keypath: 'hand 2',
-                    color: colors(isDark, activeGroup.language).accent
-                  }
+                    color: colors(isDark, activeGroup.language).accent,
+                  },
                 ]}
                 resizeMode='cover'
                 style={{ height: '120%' }}
@@ -270,7 +293,7 @@ const LessonItem = ({
       </TouchableOpacity>
       <View
         style={{
-          width: 22 * scaleMultiplier + 40
+          width: 22 * scaleMultiplier + 40,
         }}
       >
         {!isInInfoMode && (
@@ -285,6 +308,7 @@ const LessonItem = ({
             downloads={downloads}
             isDark={isDark}
             removeDownload={removeDownload}
+            isRTL={isRTL}
           />
         )}
       </View>
@@ -295,23 +319,23 @@ const LessonItem = ({
 const styles = StyleSheet.create({
   lessonItemContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   touchableAreaContainer: {
     alignItems: 'center',
     flex: 1,
-    overflow: 'visible'
+    overflow: 'visible',
   },
   completeStatusContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 24 * scaleMultiplier
+    width: 24 * scaleMultiplier,
   },
   titlesContainer: {
     flexDirection: 'column',
     flex: 1,
-    height: '100%'
-  }
+    height: '100%',
+  },
 })
 
 /*
@@ -322,7 +346,7 @@ const styles = StyleSheet.create({
   4. Info mode changes
   5. Show trailer highlights changes
 */
-const areEqual = (prevProps, nextProps) => {
+const areEqual = (prevProps: Props, nextProps: Props) => {
   return (
     prevProps.isBookmark === nextProps.isBookmark &&
     prevProps.isComplete === nextProps.isComplete &&

@@ -13,7 +13,7 @@ export type ActiveGroupActionParams = ChangeActiveGroupParams
  * @param {string} groupName - The name of the group to switch to.
  * @return {Object} - Object to send to the reducer.
  */
-export function changeActiveGroup (groupName: string) {
+export function changeActiveGroup (groupName: string): ChangeActiveGroupParams {
   return {
     type: CHANGE_ACTIVE_GROUP,
     groupName

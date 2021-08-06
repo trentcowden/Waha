@@ -3,25 +3,22 @@ import * as FileSystem from 'expo-file-system'
 import LottieView from 'lottie-react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
-import { SwipeListView } from 'react-native-swipe-list-view'
-import { connect } from 'react-redux'
+import { RowMap, SwipeListView } from 'react-native-swipe-list-view'
+import { Lesson, StorySet } from 'redux/reducers/database'
 import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import OptionsModalButton from '../components/OptionsModalButton'
 import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import SetItem from '../components/SetItem'
 import WahaBackButton from '../components/WahaBackButton'
-import {
-  getLessonInfo,
-  itemHeights,
-  lessonTypes,
-  setItemModes,
-} from '../constants'
+import { getLessonInfo, itemHeights, setItemModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
+import { selector, useAppDispatch } from '../hooks'
+import { LessonType } from '../interfaces/playScreen'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
@@ -35,41 +32,6 @@ import {
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps(state) {
-  return {
-    downloads: state.downloads,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    isDark: state.settings.isDarkModeEnabled,
-    activeDatabase: activeDatabaseSelector(state),
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    showTrailerHighlights: state.persistedPopups.showTrailerHighlights,
-    isConnected: state.network.isConnected,
-    font: info(activeGroupSelector(state).language).font,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    downloadMedia: (type, lessonID, source) => {
-      dispatch(downloadMedia(type, lessonID, source))
-    },
-    toggleComplete: (groupName, set, lessonIndex) => {
-      dispatch(toggleComplete(groupName, set, lessonIndex))
-    },
-    removeDownload: (lessonID) => {
-      dispatch(removeDownload(lessonID))
-    },
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    },
-    setShowTrailerHighlights: (toSet) => {
-      dispatch(setShowTrailerHighlights(toSet))
-    },
-  }
-}
-
 /**
  * Screen that displays a list of lessons for a specific Story Set.
  * @param {Object} thisSet - The object for the set that we're displaying.
@@ -81,33 +43,37 @@ const LessonsScreen = ({
     // Props passed from previous screen.
     params: { setID },
   },
-  // Props passed from redux.
-  downloads,
-  isRTL,
-  isDark,
-  activeDatabase,
-  activeGroup,
-  font,
-  t,
-  areMobilizationToolsUnlocked,
-  isConnected,
-  showTrailerHighlights,
-  downloadMedia,
-  toggleComplete,
-  removeDownload,
-  addSet,
-  setShowTrailerHighlights,
 }) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const activeDatabase = selector((state) => activeDatabaseSelector(state))
+  const font = selector(
+    (state) => info(activeGroupSelector(state).language).font
+  )
+  const areMobilizationToolsUnlocked = selector(
+    (state) => state.areMobilizationToolsUnlocked
+  )
+  const showTrailerHighlights = selector(
+    (state) => state.persistedPopups.showTrailerHighlights
+  )
+  const downloads = selector((state) => state.downloads)
+  const isConnected = selector((state) => state.network.isConnected)
+
+  const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
   /** Keeps track of what lessons are downloaded to the file system. */
-  const [downloadedLessons, setDownloadedLessons] = useState([])
+  const [downloadedLessons, setDownloadedLessons] = useState<string[]>([])
 
   /** Whenever we enable a lesson-specific modal, we also set this state to the specific lesson so we can use its information for whatever action we're doing. */
   const [activeLessonInModal, setActiveLessonInModal] = useState({})
 
   /** Keeps track of the type of the active lesson in a modal. */
-  const [modalLessonType, setModalLessonType] = useState()
+  const [modalLessonType, setModalLessonType] = useState<LessonType>(
+    LessonType.STANDARD_DBS
+  )
 
   /** A whole lot of modal states. */
   const [showDownloadLessonModal, setShowDownloadLessonModal] = useState(false)
@@ -115,8 +81,18 @@ const LessonsScreen = ({
   const [showShareModal, setShowShareModal] = useState(false)
   const [showSetCompleteModal, setShowSetCompleteModal] = useState(false)
 
-  const [thisSet, setThisSet] = useState(
-    activeDatabase.sets.filter((set) => set.id === setID)[0]
+  const [thisSet] = useState<StorySet>(
+    activeDatabase
+      ? activeDatabase.sets.filter((set) => set.id === setID)[0]
+      : {
+          // Pass a dummy filler set in case activeDatabase returns undefined.
+          id: 'en.1.1',
+          languageID: 'en',
+          lessons: [],
+          title: '',
+          subtitle: '',
+          iconName: '',
+        }
   )
 
   const [addedSet, setAddedSet] = useState(
@@ -127,20 +103,6 @@ const LessonsScreen = ({
   const justCompleted = useRef(false)
 
   const [isInInfoMode, setIsInInfoMode] = useState(false)
-
-  const [animationFinished, setAnimationFinished] = useState(false)
-
-  /** Keeps track of the progress of the set that we're displaying. */
-  // const [thisSetProgress, setThisSetProgress] = useState([])
-  // const [progressPercentage, setProgressPercentage] = useState(
-  //   activeGroup.addedSets.filter(addedSet => addedSet.id === thisSet.id)[0]
-  //     .progressPercentage
-  // )
-
-  // const [progressArray, setProgressArray] = useState()
-
-  // /** Keeps track of the bookmark for the set that we're displaying. */
-  // const [thisSetBookmark, setThisSetBookmark] = useState(1)
 
   /** Used to refresh the downloaded lessons. */
   const [refreshDownloadedLessons, setRefreshDownloadedLessons] =
@@ -179,21 +141,22 @@ const LessonsScreen = ({
 
   /** useEffect function that checks which lessons are downloaded to the file system whenever the downloads redux object changes or when we manually refresh. */
   useEffect(() => {
-    var downloadedLessons = []
-    FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then((contents) => {
-        thisSet.lessons.forEach((lesson) => {
-          if (contents.includes(lesson.id + '.mp3'))
-            downloadedLessons.push(lesson.id)
-          if (contents.includes(lesson.id + 'v.mp4')) {
-            downloadedLessons.push(lesson.id + 'v')
-          }
+    var downloadedLessons: string[] = []
+    if (FileSystem.documentDirectory)
+      FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
+        .then((contents) => {
+          thisSet.lessons.forEach((lesson) => {
+            if (contents.includes(lesson.id + '.mp3'))
+              downloadedLessons.push(lesson.id)
+            if (contents.includes(lesson.id + 'v.mp4')) {
+              downloadedLessons.push(lesson.id + 'v')
+            }
+          })
+          return downloadedLessons
         })
-        return downloadedLessons
-      })
-      .then((whichLessonsDownloaded) => {
-        setDownloadedLessons(whichLessonsDownloaded)
-      })
+        .then((whichLessonsDownloaded: string[]) => {
+          setDownloadedLessons(whichLessonsDownloaded)
+        })
   }, [Object.keys(downloads).length, refreshDownloadedLessons])
 
   /** useEffect functino that updates the addedSet state whenever it changes in redux. */
@@ -209,7 +172,8 @@ const LessonsScreen = ({
         addedSet,
         activeGroup,
         activeDatabase,
-        addSet,
+        (groupName: string, groupID: number, set: StorySet) =>
+          dispatch(addSet(groupName, groupID, set)),
         setShowNextSetUnlockedModal
       )
       checkForFullyCompleteSet(thisSet, addedSet, setShowSetCompleteModal)
@@ -220,15 +184,15 @@ const LessonsScreen = ({
    * Gets the type of a specific lesson. See lessonTypes in constants.js. While every lesson's type stays constant, this information isn't stored in the database for single source of truth reasons.
    * @param {Object} lesson - The object for the lesson to get the type of.
    */
-  const getLessonType = (lesson) => {
+  const getLessonType = (lesson: Lesson): LessonType => {
     if (lesson.fellowshipType && lesson.hasAudio && !lesson.hasVideo)
-      return lessonTypes.STANDARD_DBS
+      return LessonType.STANDARD_DBS
     else if (lesson.fellowshipType && lesson.hasAudio && lesson.hasVideo)
-      return lessonTypes.STANDARD_DMC
-    else if (lesson.hasVideo) return lessonTypes.VIDEO_ONLY
-    else if (lesson.fellowshipType) return lessonTypes.STANDARD_NO_AUDIO
-    else if (lesson.text && lesson.hasAudio) return lessonTypes.AUDIOBOOK
-    else return lessonTypes.BOOK
+      return LessonType.STANDARD_DMC
+    else if (lesson.hasVideo) return LessonType.VIDEO_ONLY
+    else if (lesson.fellowshipType) return LessonType.STANDARD_NO_AUDIO
+    else if (lesson.text && lesson.hasAudio) return LessonType.AUDIOBOOK
+    else return LessonType.BOOK
   }
 
   /** Downloads the necessary content for a lesson. */
@@ -237,20 +201,24 @@ const LessonsScreen = ({
       modalLessonType.includes('Audio') &&
       !downloadedLessons.includes(activeLessonInModal.id)
     )
-      downloadMedia(
-        'audio',
-        activeLessonInModal.id,
-        getLessonInfo('audioSource', activeLessonInModal.id)
+      dispatch(
+        downloadMedia(
+          'audio',
+          activeLessonInModal.id,
+          getLessonInfo('audioSource', activeLessonInModal.id)
+        )
       )
 
     if (
       modalLessonType.includes('Video') &&
       !downloadedLessons.includes(activeLessonInModal.id + 'v')
     )
-      downloadMedia(
-        'video',
-        activeLessonInModal.id,
-        getLessonInfo('videoSource', activeLessonInModal.id)
+      dispatch(
+        downloadMedia(
+          'video',
+          activeLessonInModal.id,
+          getLessonInfo('videoSource', activeLessonInModal.id)
+        )
       )
 
     setShowDownloadLessonModal(false)
@@ -297,16 +265,21 @@ const LessonsScreen = ({
   // }
 
   /** Renders the backdrop for the lesson item. This appears when the user swipes the lesson. */
-  const renderLessonSwipeBackdrop = (data, rowMap) => (
+  const renderLessonSwipeBackdrop = (
+    data: { item: Lesson },
+    rowMap: RowMap<Lesson>
+  ) => (
     <LessonSwipeBackdrop
       isComplete={addedSet.progress.includes(
         getLessonInfo('index', data.item.id)
       )}
       toggleComplete={() => {
-        toggleComplete(
-          activeGroup.name,
-          thisSet,
-          getLessonInfo('index', data.item.id)
+        dispatch(
+          toggleComplete(
+            activeGroup.name,
+            thisSet,
+            getLessonInfo('index', data.item.id)
+          )
         )
         justCompleted.current = true
         rowMap[getLessonInfo('index', data.item.id)].closeRow()
@@ -323,7 +296,7 @@ const LessonsScreen = ({
   /** Triggers an action when the user swipes a certain distance to the left. */
   const onLeftActionStatusChange = useCallback((data) => {
     if (!isRTL && data.isActivated) {
-      toggleComplete(activeGroup.name, thisSet, parseInt(data.key))
+      dispatch(toggleComplete(activeGroup.name, thisSet, parseInt(data.key)))
       justCompleted.current = true
     } else if (isRTL && data.isActivated) setShowShareModal(true)
   }, [])
@@ -331,7 +304,7 @@ const LessonsScreen = ({
   /** Triggers an action when the user swipes a certain distance to the right. */
   const onRightActionStatusChange = useCallback((data) => {
     if (isRTL && data.isActivated) {
-      toggleComplete(activeGroup.name, thisSet, parseInt(data.key))
+      dispatch(toggleComplete(activeGroup.name, thisSet, parseInt(data.key)))
       justCompleted.current = true
     } else if (!isRTL && data.isActivated) setShowShareModal(true)
   }, [])
@@ -347,9 +320,10 @@ const LessonsScreen = ({
   )
 
   /** Renders a lesson item. */
-  const renderLessonItem = ({ item }) => {
+  const renderLessonItem = ({ item }: { item: Lesson }) => {
+    var scriptureList = ''
     if (item.scripture) {
-      var scriptureList = item.scripture[0].header
+      scriptureList = item.scripture[0].header
 
       item.scripture.forEach((passage, index) => {
         if (index !== 0) scriptureList += ', ' + passage.header
@@ -382,8 +356,12 @@ const LessonsScreen = ({
         font={font}
         areMobilizationToolsUnlocked={areMobilizationToolsUnlocked}
         showTrailerHighlights={showTrailerHighlights}
-        setShowTrailerHighlights={setShowTrailerHighlights}
-        removeDownload={removeDownload}
+        setShowTrailerHighlights={(toSet: boolean) =>
+          dispatch(setShowTrailerHighlights(toSet))
+        }
+        removeDownload={(lessonID: string) =>
+          dispatch(removeDownload(lessonID))
+        }
         isConnected={isConnected}
       />
     )
@@ -529,4 +507,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LessonsScreen)
+export default LessonsScreen
