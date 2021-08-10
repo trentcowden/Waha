@@ -26,6 +26,7 @@
 	},
 	"general": {
 		"all": "الكل",
+		"bible_version": "",
 		"cancel": "إلغاء",
 		"clear": "إزالة",
 		"close": "إغلاق",

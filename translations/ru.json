@@ -26,6 +26,7 @@
 	},
 	"general": {
 		"all": "Все",
+		"bible_version": "",
 		"cancel": "Отмена",
 		"clear": "Удалить",
 		"close": "Закрыть",
