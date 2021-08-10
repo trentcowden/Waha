@@ -1,27 +1,51 @@
 // import SvgUri from 'expo-svg-uri'
-import React from 'react'
+import React, { FC, MutableRefObject, ReactElement, RefObject } from 'react'
 import {
+  LayoutRectangle,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
+import { Lesson } from 'redux/reducers/database'
 import { gutterSize, scaleMultiplier } from '../constants'
+import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
+import { Layouts, LessonType, SectionOffset } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, TProps, ADBProps, AGProps {
+  lessonTextContentRef: RefObject<ScrollView>
+  thisLesson: Lesson
+  lessonType: LessonType
+  sectionOffsets: MutableRefObject<SectionOffset[]>
+  setShowCopyrightsModal?: Function
+  layouts: MutableRefObject<Layouts>
+  onScroll: Function
+}
+
+interface LessonTextProps extends CommonProps, AGProps {
+  text: string
+  onLayout?: Function
+}
 
 /*
   A simple set of 3 components to display different parts of the lesson text.
 */
 
-const HeaderBig = ({ text, activeGroup, onLayout, isDark }) => (
+const HeaderBig: FC<LessonTextProps> = ({
+  text,
+  activeGroup,
+  onLayout = () => {},
+  isDark,
+  isRTL,
+}) => (
   <View
     style={{
       marginBottom: 10 * scaleMultiplier,
-      paddingHorizontal: gutterSize
+      paddingHorizontal: gutterSize,
     }}
-    onLayout={onLayout}
+    onLayout={({ nativeEvent }) => onLayout(nativeEvent)}
   >
     <Text
       style={type(
@@ -37,7 +61,12 @@ const HeaderBig = ({ text, activeGroup, onLayout, isDark }) => (
   </View>
 )
 
-const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
+const HeaderSmall: FC<LessonTextProps> = ({
+  text,
+  activeGroup,
+  isDark,
+  isRTL,
+}) => (
   <View>
     <Text
       style={{
@@ -49,7 +78,7 @@ const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
           colors(isDark).disabled
         ),
         paddingHorizontal: gutterSize,
-        marginVertical: 5 * scaleMultiplier
+        marginVertical: 5 * scaleMultiplier,
       }}
     >
       {text}
@@ -57,7 +86,12 @@ const HeaderSmall = ({ text, activeGroup, isTablet, isDark }) => (
   </View>
 )
 
-const StandardText = ({ text, activeGroup, isTablet, isDark }) => (
+const StandardText: FC<LessonTextProps> = ({
+  text,
+  activeGroup,
+  isDark,
+  isRTL,
+}) => (
   <View>
     <Text
       style={{
@@ -69,7 +103,7 @@ const StandardText = ({ text, activeGroup, isTablet, isDark }) => (
           colors(isDark).text
         ),
         zIndex: 0,
-        paddingHorizontal: gutterSize
+        paddingHorizontal: gutterSize,
       }}
     >
       {text}
@@ -86,7 +120,7 @@ const StandardText = ({ text, activeGroup, isTablet, isDark }) => (
  * @param {Function} onScroll - Function that triggers on every scroll event.
  * @param {Object[]} sectionOffsets - Stores the different sections of the lesson text and their global scroll offset.
  */
-const LessonTextContent = ({
+const LessonTextContent: FC<Props> = ({
   // Props passed from a parent component.
   lessonTextContentRef,
   thisLesson,
@@ -99,23 +133,26 @@ const LessonTextContent = ({
   activeDatabase,
   isDark,
   isRTL,
-  t
-}) => {
+  t,
+}): ReactElement => {
   /**
    * Adds a section and its offset in the sectionOffsets array.
    * @param {string} sectionTitle
    * @param {Object} nativeEvent
    */
-  const setOffsets = (sectionTitle, nativeEvent) => {
+  const setOffsets = (
+    sectionTitle: string,
+    nativeEvent: { layout: LayoutRectangle }
+  ) => {
     if (nativeEvent) {
       const thisSection = {
         title: sectionTitle,
-        globalOffset: nativeEvent.layout.y
+        globalOffset: nativeEvent.layout.y,
       }
 
       // Find the index of this section (if it has already been added).
       const indexOfThisSection = sectionOffsets.current.findIndex(
-        section => section.title === sectionTitle
+        (section) => section.title === sectionTitle
       )
 
       // If section is already present, replace it so it has the most current global offset value. This is so that if the user rotates their tablet, the sectionOffsets will update with new global offset values.
@@ -132,25 +169,25 @@ const LessonTextContent = ({
   }
 
   /** Adds the text window height to the layouts object. */
-  const onLayout = event => {
-    if (event.nativeEvent)
+  const onLayout = (nativeEvent: { layout: LayoutRectangle }) => {
+    if (nativeEvent)
       layouts.current = {
         ...layouts.current,
-        windowHeight: event.nativeEvent.layout.height
+        windowHeight: nativeEvent.layout.height,
       }
   }
 
   return (
     <ScrollView
       ref={lessonTextContentRef}
-      onScroll={onScroll}
+      onScroll={({ nativeEvent }) => onScroll(nativeEvent)}
       onContentSizeChange={(width, height) =>
         (layouts.current = {
           ...layouts.current,
-          contentHeight: height
+          contentHeight: height,
         })
       }
-      onLayout={onLayout}
+      onLayout={({ nativeEvent }) => onLayout(nativeEvent)}
       removeClippedSubviews={false}
       scrollEventThrottle={256}
       indicatorStyle={isDark ? 'white' : 'black'}
@@ -164,46 +201,55 @@ const LessonTextContent = ({
             }
           />
           {/* Fellowship questions. */}
-          {activeDatabase.questions[thisLesson.fellowshipType].map(
-            (question, index) => (
-              <View key={index}>
-                <HeaderSmall
-                  text={t.play.question + ' ' + (index + 1).toString()}
+          {activeDatabase && thisLesson.fellowshipType
+            ? activeDatabase.questions[thisLesson.fellowshipType].map(
+                (question, index) => (
+                  <View key={index}>
+                    <HeaderSmall
+                      text={t.play.question + ' ' + (index + 1).toString()}
+                      activeGroup={activeGroup}
+                      isDark={isDark}
+                      isRTL={isRTL}
+                    />
+                    <StandardText
+                      text={question + '\n'}
+                      activeGroup={activeGroup}
+                      isDark={isDark}
+                      isRTL={isRTL}
+                    />
+                  </View>
+                )
+              )
+            : ''}
+          {/* Scripture passages. */}
+          {thisLesson.scripture &&
+            thisLesson.scripture.map((scriptureChunk, index) => (
+              <View
+                key={index}
+                onLayout={({ nativeEvent }) => {
+                  setOffsets(scriptureChunk.header, nativeEvent)
+                }}
+              >
+                <HeaderBig
+                  text={scriptureChunk.header}
                   activeGroup={activeGroup}
                   isDark={isDark}
+                  isRTL={isRTL}
                 />
                 <StandardText
-                  text={question + '\n'}
+                  text={scriptureChunk.text}
                   activeGroup={activeGroup}
                   isDark={isDark}
+                  isRTL={isRTL}
                 />
               </View>
-            )
-          )}
-          {/* Scripture passages. */}
-          {thisLesson.scripture.map((scriptureChunk, index) => (
-            <View
-              key={index}
-              onLayout={({ nativeEvent }) => {
-                setOffsets(scriptureChunk.header, nativeEvent)
-              }}
-            >
-              <HeaderBig
-                text={scriptureChunk.header}
-                activeGroup={activeGroup}
-                isDark={isDark}
-              />
-              <StandardText
-                text={scriptureChunk.text}
-                activeGroup={activeGroup}
-                isDark={isDark}
-              />
-            </View>
-          ))}
+            ))}
           {/* <WahaSeparator isDark={isDark} /> */}
           {t.general.copyrights !== '' && (
             <TouchableOpacity
-              onPress={() => setShowCopyrightsModal(true)}
+              onPress={() => {
+                if (setShowCopyrightsModal) setShowCopyrightsModal(true)
+              }}
               style={{
                 width: '100%',
                 paddingVertical: 10 * scaleMultiplier,
@@ -212,7 +258,7 @@ const LessonTextContent = ({
                 alignItems: 'center',
                 paddingHorizontal: gutterSize,
                 marginTop: -20 * scaleMultiplier,
-                marginBottom: 20 * scaleMultiplier
+                marginBottom: 20 * scaleMultiplier,
               }}
             >
               <Text
@@ -245,30 +291,35 @@ const LessonTextContent = ({
           {/* <WahaSeparator isDark={isDark} /> */}
           {/* Header for application section. */}
           <HeaderBig
-            onLayout={({ nativeEvent }) =>
+            onLayout={(nativeEvent: { layout: LayoutRectangle }) =>
               setOffsets(t.play.application, nativeEvent)
             }
             activeGroup={activeGroup}
             text={t.play.application}
             isDark={isDark}
+            isRTL={isRTL}
           />
           {/* Application questions. */}
-          {activeDatabase.questions[thisLesson.applicationType].map(
-            (question, index) => (
-              <View key={index}>
-                <HeaderSmall
-                  text={t.play.question + ' ' + (index + 1).toString()}
-                  activeGroup={activeGroup}
-                  isDark={isDark}
-                />
-                <StandardText
-                  text={question + '\n'}
-                  activeGroup={activeGroup}
-                  isDark={isDark}
-                />
-              </View>
-            )
-          )}
+          {activeDatabase &&
+            thisLesson.applicationType &&
+            activeDatabase.questions[thisLesson.applicationType].map(
+              (question, index) => (
+                <View key={index}>
+                  <HeaderSmall
+                    text={t.play.question + ' ' + (index + 1).toString()}
+                    activeGroup={activeGroup}
+                    isDark={isDark}
+                    isRTL={isRTL}
+                  />
+                  <StandardText
+                    text={question + '\n'}
+                    activeGroup={activeGroup}
+                    isDark={isDark}
+                    isRTL={isRTL}
+                  />
+                </View>
+              )
+            )}
           <View style={{ height: 25 }} />
         </View>
       ) : (
@@ -277,20 +328,24 @@ const LessonTextContent = ({
             text={thisLesson.title}
             activeGroup={activeGroup}
             isDark={isDark}
+            isRTL={isRTL}
           />
-          {thisLesson.text.split('\n').map((paragraph, index) => (
-            <StandardText
-              key={index}
-              activeGroup={activeGroup}
-              text={paragraph + '\n'}
-              isDark={isDark}
-            />
-          ))}
+          {thisLesson.text &&
+            thisLesson.text
+              .split('\n')
+              .map((paragraph, index) => (
+                <StandardText
+                  key={index}
+                  activeGroup={activeGroup}
+                  text={paragraph + '\n'}
+                  isDark={isDark}
+                  isRTL={isRTL}
+                />
+              ))}
         </View>
       )}
     </ScrollView>
   )
 }
-const styles = StyleSheet.create({})
 
 export default LessonTextContent

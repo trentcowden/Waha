@@ -13,3 +13,14 @@ export enum Chapter {
   TRAINING = 3,
   APPLICATION = 4
 }
+
+export interface SectionOffset {
+  title: string
+  globalOffset: number
+  localOffset?: number
+}
+
+export interface Layouts {
+  contentHeight: number
+  windowHeight: number
+}

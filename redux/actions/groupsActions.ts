@@ -200,7 +200,7 @@ export function toggleComplete (
 
     // Get the progress array for the set that we're updating progrses in.
     var thisSetProgress = thisGroup.addedSets.filter(
-      addedSet => addedSet.id === set.id
+      savedSet => savedSet.id === set.id
     )[0].progress
 
     if (

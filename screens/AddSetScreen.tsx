@@ -182,7 +182,7 @@ const AddSetScreen: FC<Props> = ({
             .filter(
               (topicalSet) =>
                 !activeGroup.addedSets.some(
-                  (addedSet) => addedSet.id === topicalSet.id
+                  (savedSet) => savedSet.id === topicalSet.id
                 )
             )
             // Filter for Topical Story Sets that match the currently selected tag (if there is one).
@@ -209,7 +209,7 @@ const AddSetScreen: FC<Props> = ({
             .filter(
               (set) =>
                 !activeGroup.addedSets.some(
-                  (addedSet) => addedSet.id === set.id
+                  (savedSet) => savedSet.id === set.id
                 )
             )
             // Filter for Foundational or Mobilization Tools Story Sets that have all the necessary question set mp3s downloaded.

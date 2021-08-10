@@ -1,9 +1,17 @@
 import Slider from '@react-native-community/slider'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { FC, MutableRefObject, ReactElement } from 'react'
+import { Platform, StyleSheet, View } from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
 import { gutterSize, isTablet } from '../constants'
+import { CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps {
+  playFromLocation: Function
+  shouldThumbUpdate: MutableRefObject<boolean>
+  mediaLength: number
+  mediaProgress: number
+}
 
 /**
  * A component on the Play Screen that shows the current progress through the loaded media and allows the user to "scrub" to a different position.
@@ -12,25 +20,26 @@ import { colors } from '../styles/colors'
  * @param {number} mediaLength - The length of the loaded media in milliseconds.
  * @param {number} mediaProgress - The progress in milliseconds through the current media.
  */
-const Scrubber = ({
+const Scrubber: FC<Props> = ({
   // Props passed from a parent component.
   playFromLocation,
   shouldThumbUpdate,
   mediaLength,
   mediaProgress,
-  isDark
-}) => (
+  isDark,
+  isRTL,
+}): ReactElement => (
   <View
     style={{
       ...styles.scrubberContainer,
       marginTop: isTablet ? 20 : 10,
-      marginBottom: isTablet ? 10 : 0
+      marginBottom: isTablet ? 10 : 0,
     }}
   >
     <View style={styles.sliderContainer}>
       <Slider
         value={mediaProgress}
-        onSlidingComplete={playFromLocation}
+        onSlidingComplete={(value) => playFromLocation(value)}
         onValueChange={() => (shouldThumbUpdate.current = false)}
         minimumValue={0}
         maximumValue={mediaLength}
@@ -68,17 +77,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
   },
   sliderContainer: {
-    width: '100%'
+    width: '100%',
   },
   timeInfoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    paddingHorizontal: Platform.OS === 'ios' ? 5 : 15
-  }
+    paddingHorizontal: Platform.OS === 'ios' ? 5 : 15,
+  },
 })
 
 export default Scrubber

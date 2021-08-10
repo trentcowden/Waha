@@ -134,7 +134,7 @@ const SetsScreen = ({
             .filter((set) => getSetInfo('category', set.id) === category)
             // 2. Filter for sets that have been added to this group.
             .filter((set) =>
-              activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
+              activeGroup.addedSets.some((savedSet) => savedSet.id === set.id)
             )
         )
       // If we're displaying Topical Story Sets...
@@ -145,19 +145,19 @@ const SetsScreen = ({
             .filter((set) => getSetInfo('category', set.id) === category)
             // 2. Filter for sets that have been added to this group.
             .filter((set) =>
-              activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
+              activeGroup.addedSets.some((savedSet) => savedSet.id === set.id)
             )
             // 3. For these sets, we want to sort based on the order they were added, not in the default order (which is order of index).
             .sort((a, b) => {
               return (
                 activeGroup.addedSets.indexOf(
                   activeGroup.addedSets.filter(
-                    (addedSet) => addedSet.id === a.id
+                    (savedSet) => savedSet.id === a.id
                   )[0]
                 ) -
                 activeGroup.addedSets.indexOf(
                   activeGroup.addedSets.filter(
-                    (addedSet) => addedSet.id === b.id
+                    (savedSet) => savedSet.id === b.id
                   )[0]
                 )
               )
@@ -173,7 +173,7 @@ const SetsScreen = ({
             .filter((set) => getSetInfo('category', set.id) === category)
             // 2. Filter for sets that have been added to this group.
             .filter((set) =>
-              activeGroup.addedSets.some((addedSet) => addedSet.id === set.id)
+              activeGroup.addedSets.some((savedSet) => savedSet.id === set.id)
             )
             // 3. Filter for sets that have all necessary files downloaded.
             .filter(filterForDownloadedQuestionSets)
@@ -182,12 +182,12 @@ const SetsScreen = ({
               return (
                 activeGroup.addedSets.indexOf(
                   activeGroup.addedSets.filter(
-                    (addedSet) => addedSet.id === a.id
+                    (savedSet) => savedSet.id === a.id
                   )[0]
                 ) -
                 activeGroup.addedSets.indexOf(
                   activeGroup.addedSets.filter(
-                    (addedSet) => addedSet.id === b.id
+                    (savedSet) => savedSet.id === b.id
                   )[0]
                 )
               )
@@ -288,7 +288,7 @@ const SetsScreen = ({
           navigate('Lessons', { setID: item.id })
         }}
         progressPercentage={
-          activeGroup.addedSets.filter((addedSet) => addedSet.id === item.id)[0]
+          activeGroup.addedSets.filter((savedSet) => savedSet.id === item.id)[0]
             .progress.length / item.lessons.length
         }
         font={font}

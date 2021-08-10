@@ -29,7 +29,7 @@ export const checkForAlmostCompleteSet = (
       if (
         addedSet.progress.length / thisSet.lessons.length > 0.85 &&
         getSetInfo('category', thisSet.id) === 'Foundational' &&
-        !activeGroup.addedSets.some(addedSet => addedSet.id === nextSet.id)
+        !activeGroup.addedSets.some(savedSet => savedSet.id === nextSet.id)
       ) {
         addSet(
           activeGroup.name,

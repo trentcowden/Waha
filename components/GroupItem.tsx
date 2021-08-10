@@ -1,5 +1,4 @@
 import { AGProps, CommonProps, TProps } from 'interfaces/common'
-import { Database } from 'interfaces/database'
 import { Group } from 'interfaces/groups'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
@@ -10,8 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { Lesson, StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { getLessonInfo, scaleMultiplier } from '../constants'
+import { Database } from '../redux/reducers/database'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import GroupAvatar from './GroupAvatar'
@@ -119,17 +120,17 @@ const GroupItem: FC<Props> = ({
     if (thisGroup) {
       // Get the object for the currently bookmarked set.
       var bookmarkSet = database[thisGroup.language].sets.filter(
-        (set) => set.id === thisGroup.setBookmark
+        (set: StorySet) => set.id === thisGroup.setBookmark
       )[0]
 
       // Get the index of the bookmarked lesson within the bookmarked set.
       var bookmarkSetBookmarkLesson = thisGroup.addedSets.filter(
-        (addedSet) => addedSet.id === bookmarkSet.id
+        (savedSet) => savedSet.id === bookmarkSet.id
       )[0].bookmark
 
       // Finally, get the object for the bookmarked lesson. This will be the most useful information to see on the group item.
       var bookmarkLesson = bookmarkSet.lessons.filter(
-        (lesson) =>
+        (lesson: Lesson) =>
           getLessonInfo('index', lesson.id) === bookmarkSetBookmarkLesson
       )[0]
 

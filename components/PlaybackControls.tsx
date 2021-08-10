@@ -1,13 +1,25 @@
-import React from 'react'
+import { Group } from 'interfaces/groups'
+import React, { FC, ReactElement } from 'react'
 import {
   ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
+import { AGProps, CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps, AGProps {
+  isMediaPlaying: boolean
+  isMediaLoaded: boolean
+  playHandler: Function
+  mediaProgress: number
+  playFromLocation: Function
+  isDark: boolean
+  activeGroup: Group
+}
 
 /**
  * A component that shows the play/pause and skip buttons on the Play Screen.
@@ -17,7 +29,7 @@ import { colors } from '../styles/colors'
  * @param {number} mediaProgress - The progress in milliseconds through the current media.
  * @param {Function} playFromLocation - Function that plays the media from a specific location in milliseconds. Used for the skip buttons.
  */
-const PlaybackControls = ({
+const PlaybackControls: FC<Props> = ({
   // Props passed from a parent component.
   isMediaPlaying,
   isMediaLoaded,
@@ -25,8 +37,8 @@ const PlaybackControls = ({
   mediaProgress,
   playFromLocation,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <View style={styles.playbackControlsContainer}>
     <TouchableOpacity
       style={styles.skipButtonContainer}
@@ -44,9 +56,9 @@ const PlaybackControls = ({
         style={{
           ...styles.playButtonContainer,
           width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
-          height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier
+          height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
         }}
-        onPress={playHandler}
+        onPress={() => playHandler()}
       >
         <Icon
           name={isMediaPlaying ? 'pause' : 'play'}
@@ -60,7 +72,7 @@ const PlaybackControls = ({
         style={{
           ...styles.playButtonContainer,
           width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
-          height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier
+          height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
         }}
       >
         <ActivityIndicator size='large' color={colors(isDark).text} />
@@ -86,16 +98,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    marginTop: -15
+    marginTop: -15,
   },
   playButtonContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   skipButtonContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })
 
 export default PlaybackControls

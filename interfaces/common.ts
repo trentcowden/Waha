@@ -1,5 +1,5 @@
-import { Database } from './database'
-import { Download } from './downloads'
+import { Database, DBLanguageData } from 'redux/reducers/database'
+import { Download } from '../redux/reducers/downloads'
 import { Group } from './groups'
 import { Translations } from './translations'
 
@@ -31,5 +31,5 @@ export interface DBProps {
 }
 
 export interface ADBProps {
-  activeDatabase: Object
+  activeDatabase: DBLanguageData | undefined
 }

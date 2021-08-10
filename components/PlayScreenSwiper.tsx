@@ -1,14 +1,40 @@
 // import SvgUri from 'expo-svg-uri'
-import React, { useRef, useState } from 'react'
-import { Animated, StyleSheet, Text, View } from 'react-native'
+import React, {
+  FC,
+  MutableRefObject,
+  ReactElement,
+  RefObject,
+  useRef,
+  useState,
+} from 'react'
+import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
-import { gutterSize, lessonTypes, scaleMultiplier } from '../constants'
+import { Lesson } from 'redux/reducers/database'
+import { gutterSize, scaleMultiplier } from '../constants'
+import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
+import { LessonType, SectionOffset } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import AlbumArt from './AlbumArt'
 import LessonTextViewer from './LessonTextViewer'
 import PageDots from './PageDots'
 import PlayScreenTitle from './PlayScreenTitle'
+
+interface Props extends CommonProps, TProps, ADBProps, AGProps {
+  playScreenSwiperRef: RefObject<PagerView>
+  lessonTextContentRef: RefObject<ScrollView>
+  iconName: string
+  thisLesson: Lesson
+  lessonType: LessonType
+  playHandler: Function
+  playFeedbackOpacity: Animated.Value
+  playFeedbackZIndex: number
+  isMediaPlaying: boolean
+  sectionOffsets: MutableRefObject<SectionOffset[]>
+  markLessonAsComplete: Function
+  isThisLessonComplete: RefObject<boolean>
+  setShowCopyrightsModal: Function
+}
 
 /**
  * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
@@ -24,7 +50,7 @@ import PlayScreenTitle from './PlayScreenTitle'
  * @param {Function} markLessonAsComplete - Marks this lesson as complete.
  * @param {boolean} isThisLessonComplete - Whether or not this lesson is complete.
  */
-const PlayScreenSwiper = ({
+const PlayScreenSwiper: FC<Props> = ({
   // Props passed from a parent component.
   playScreenSwiperRef,
   lessonTextContentRef,
@@ -43,8 +69,8 @@ const PlayScreenSwiper = ({
   activeDatabase,
   isDark,
   isRTL,
-  t
-}) => {
+  t,
+}): ReactElement => {
   /** Keeps track of the active page of the album art swiper. */
   const [activePage, setActivePage] = useState(0)
 
@@ -52,8 +78,8 @@ const PlayScreenSwiper = ({
   const [sectionTitleText, setSectionTitleText] = useState(t.play.fellowship)
 
   /** Keeps track of the opacity and transform value of the section header so it can be animated. */
-  const sectionHeaderOpacity = useRef(new Animated.Value(1)).current
-  const sectionHeaderYTransform = useRef(new Animated.Value(0)).current
+  const sectionTitleOpacity = useRef(new Animated.Value(1))
+  const sectionTitleYTransform = useRef(new Animated.Value(0))
 
   // The pages of the swiper. Stored here so that they can be .reverse()'d later for RTL languages.
   const pages = [
@@ -65,14 +91,14 @@ const PlayScreenSwiper = ({
         width: '100%',
         height: '100%',
         // Background is set here because of some strange issues with the video player flashing during the transition to/from the Training chapter.
-        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
       <PlayScreenTitle
         text={thisLesson.title}
-        backgroundColor={colors(isDark).bg4}
         activeGroup={activeGroup}
         isDark={isDark}
+        isRTL={isRTL}
       />
       <AlbumArt
         iconName={iconName}
@@ -80,8 +106,8 @@ const PlayScreenSwiper = ({
         playFeedbackOpacity={playFeedbackOpacity}
         playFeedbackZIndex={playFeedbackZIndex}
         isMediaPlaying={isMediaPlaying}
-        activeGroup={activeGroup}
         isDark={isDark}
+        isRTL={isRTL}
       />
     </View>,
     <View key='2' style={{ width: '100%', height: '100%' }}>
@@ -92,8 +118,8 @@ const PlayScreenSwiper = ({
             style={{
               ...styles.sectionHeaderContainer,
               flexDirection: isRTL ? 'row-reverse' : 'row',
-              opacity: sectionHeaderOpacity,
-              transform: [{ translateY: sectionHeaderYTransform }]
+              opacity: sectionTitleOpacity.current,
+              transform: [{ translateY: sectionTitleYTransform.current }],
             }}
           >
             <Text
@@ -113,9 +139,7 @@ const PlayScreenSwiper = ({
             thisLesson={thisLesson}
             lessonType={lessonType}
             sectionOffsets={sectionOffsets}
-            setSectionTitleText={setSectionTitleText}
-            sectionTitleOpacity={sectionHeaderOpacity}
-            sectionTitleYTransform={sectionHeaderYTransform}
+            setSectionTitleText={(text: string) => setSectionTitleText(text)}
             markLessonAsComplete={markLessonAsComplete}
             isThisLessonComplete={isThisLessonComplete}
             setShowCopyrightsModal={setShowCopyrightsModal}
@@ -124,6 +148,8 @@ const PlayScreenSwiper = ({
             isDark={isDark}
             t={t}
             isRTL={isRTL}
+            sectionTitleOpacity={sectionTitleOpacity}
+            sectionTitleYTransform={sectionTitleYTransform}
           />
         </View>
       ) : (
@@ -142,7 +168,7 @@ const PlayScreenSwiper = ({
           isRTL={isRTL}
         />
       )}
-    </View>
+    </View>,
   ]
 
   return (
@@ -152,7 +178,7 @@ const PlayScreenSwiper = ({
         style={{ flex: 1 }}
         initialPage={
           // The page order is reversed for RTL languages, so we need to start on the second page instead of the first page. Also, we want to start on the text page for book lessons since the user's only option is to read the text.
-          lessonType === lessonTypes.BOOK ? (isRTL ? 0 : 1) : isRTL ? 1 : 0
+          lessonType === LessonType.BOOK ? (isRTL ? 0 : 1) : isRTL ? 1 : 0
         }
         // scrollEnabled={!isScrollBarDragging.current && !isScrolling.current}
         onPageSelected={({ nativeEvent }) => {
@@ -179,7 +205,7 @@ const styles = StyleSheet.create({
     height: 40 * scaleMultiplier,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   sectionHeaderContainer: {
     width: '100%',
@@ -187,8 +213,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingHorizontal: gutterSize,
     height: 50 * scaleMultiplier,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 })
 
 export default PlayScreenSwiper

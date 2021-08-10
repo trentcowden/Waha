@@ -98,7 +98,7 @@ const LessonsScreen = ({
   )
 
   const [addedSet, setAddedSet] = useState(
-    activeGroup.addedSets.filter((addedSet) => addedSet.id === thisSet.id)[0]
+    activeGroup.addedSets.filter((savedSet) => savedSet.id === thisSet.id)[0]
   )
 
   /** Keeps track of whether this lesson was just completed. */

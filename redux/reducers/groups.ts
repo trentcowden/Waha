@@ -104,31 +104,31 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
             ...group,
 
             // In addedSets, we'll update the progress and bookmark of the set and lesson.
-            addedSets: group.addedSets.map(set => {
+            addedSets: group.addedSets.map(savedSet => {
               // Update only the set that had a lesson completed.
-              if (set.id !== params.set.id) return set
+              if (savedSet.id !== params.set.id) return savedSet
 
               // If the lesson was marked as incomplete, update the set progress and change the bookmark.
-              if (set.progress.includes(params.lessonIndex)) {
+              if (savedSet.progress.includes(params.lessonIndex)) {
                 // Increment the lesson bookmark until we find one that hasn't been completed. It could be the one that just got marked as complete.
                 do indexOfBookmarkedLesson += 1
                 while (
-                  set.progress.includes(indexOfBookmarkedLesson) &&
+                  savedSet.progress.includes(indexOfBookmarkedLesson) &&
                   indexOfBookmarkedLesson !== params.lessonIndex
                 )
 
                 // Return the set with the new bookmark and progress with this lesson removed.
                 return {
-                  ...set,
+                  ...savedSet,
                   bookmark: indexOfBookmarkedLesson,
-                  progress: set.progress.filter(
+                  progress: savedSet.progress.filter(
                     index => index !== params.lessonIndex
                   )
                 }
               } // If we're marking a lesson as complete, check for a fully complete set and update the bookmark and progress.
               else {
                 // If this lesson will complete a set, we have some special things to do.
-                if (set.progress.length + 1 === params.setLength) {
+                if (savedSet.progress.length + 1 === params.setLength) {
                   // If the set that is being completed is a Foundational or Mobilization Tools set, we need to change the set bookmark to the set AFTER the one that just got completed.
                   if (
                     getSetInfo('category', params.set.id) === 'Foundational' ||
@@ -149,15 +149,15 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
                 // Increment the lesson bookmark until we find one that hasn't been completed. The one that just got marked as complete is exempt.
                 do indexOfBookmarkedLesson += 1
                 while (
-                  set.progress.includes(indexOfBookmarkedLesson) ||
+                  savedSet.progress.includes(indexOfBookmarkedLesson) ||
                   indexOfBookmarkedLesson === params.lessonIndex
                 )
 
                 // Return the set with the new bookmark and the completed lesson added to the progress.
                 return {
-                  ...set,
+                  ...savedSet,
                   bookmark: indexOfBookmarkedLesson,
-                  progress: [...set.progress, params.lessonIndex]
+                  progress: [...savedSet.progress, params.lessonIndex]
                 }
               }
             }),

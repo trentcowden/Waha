@@ -1,22 +1,25 @@
 // import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
+import { AGProps, CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+interface Props extends CommonProps, AGProps {
+  text: string
+}
 /**
  * A component that shows the title of a lesson on the Play Screen. Ticks across the screen if it's long and fades out at the edges of the screen.
  * @param {string} text - The text to display.
  * @param {string} backgroundColor - The color behind the Play Screen title. Important because the "fading out" at the edge of this component has to match the color behind it.
  */
-const PlayScreenTitle = ({
-  // Props passed from a parent component.
+const PlayScreenTitle: FC<Props> = ({
   text,
-  backgroundColor,
   activeGroup,
-  isDark
-}) => {
+  isDark,
+  isRTL,
+}): ReactElement => {
   return (
     <View style={styles.titleContainer}>
       <Text
@@ -28,7 +31,7 @@ const PlayScreenTitle = ({
             'center',
             colors(isDark).text
           ),
-          fontSize: 21 * scaleMultiplier
+          fontSize: 21 * scaleMultiplier,
         }}
       >
         {text}
@@ -42,22 +45,22 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 15 * scaleMultiplier
+    marginVertical: 15 * scaleMultiplier,
   },
   rightGradient: {
     position: 'absolute',
     right: 0,
     width: 15,
     height: '100%',
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   leftGradient: {
     position: 'absolute',
     left: 0,
     width: 15,
     height: '100%',
-    marginHorizontal: 10
-  }
+    marginHorizontal: 10,
+  },
 })
 
 export default PlayScreenTitle

@@ -1,9 +1,15 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { FC, ReactElement } from 'react'
+import { View } from 'react-native'
 import { scaleMultiplier } from '../constants'
+import { CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 
-const Dot = ({ isActive, isDark }) => (
+interface Props extends CommonProps {
+  numDots: number
+  activeDot: number
+}
+
+const Dot = ({ isActive, isDark }: { isActive: boolean; isDark: boolean }) => (
   <View
     style={{
       marginHorizontal: 5,
@@ -12,7 +18,7 @@ const Dot = ({ isActive, isDark }) => (
         : colors(isDark).disabled,
       width: isActive ? 9 * scaleMultiplier : 7 * scaleMultiplier,
       height: isActive ? 9 * scaleMultiplier : 7 * scaleMultiplier,
-      borderRadius: isActive ? 4.5 * scaleMultiplier : 3.5 * scaleMultiplier
+      borderRadius: isActive ? 4.5 * scaleMultiplier : 3.5 * scaleMultiplier,
     }}
   />
 )
@@ -23,18 +29,17 @@ const Dot = ({ isActive, isDark }) => (
  * @param {number} activeDot - The currently active dot (i.e. page).
  */
 
-const PageDots = ({
-  // Props passed from a parent component.
+const PageDots: FC<Props> = ({
   numDots,
   activeDot,
   isRTL,
-  isDark
-}) => {
+  isDark,
+}): ReactElement => {
   // Array that holds the many dot components.
   var dots = []
 
   // Add a dot for each page.
-  for (i = 1; i < numDots + 1; i++) {
+  for (var i = 1; i < numDots + 1; i++) {
     dots.push(
       <Dot
         // Whether a dot is active depends on whether the pages go from RTL or LTR. For RTL:
@@ -49,14 +54,12 @@ const PageDots = ({
     <View
       style={{
         flexDirection: isRTL ? 'row-reverse' : 'row',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
       {dots}
     </View>
   )
 }
-
-const styles = StyleSheet.create({})
 
 export default PageDots

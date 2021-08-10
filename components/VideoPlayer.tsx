@@ -1,7 +1,16 @@
+import { Media } from 'classes/media'
 import { Video } from 'expo-av'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { DeviceMotion } from 'expo-sensors'
-import React, { useEffect, useState } from 'react'
+import { CommonProps } from 'interfaces/common'
+import React, {
+  FC,
+  MutableRefObject,
+  ReactElement,
+  RefObject,
+  useEffect,
+  useState,
+} from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import {
@@ -9,22 +18,38 @@ import {
   isTablet,
   lockLandscape,
   lockPortrait,
-  scaleMultiplier
+  scaleMultiplier,
 } from '../constants'
+import { Chapter } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps {
+  videoRef: RefObject<Video>
+  media: Media
+  onVideoPlaybackStatusUpdate: Function
+  isMediaPlaying: boolean
+  setIsMediaPlaying: Function
+  fullscreenStatus: MutableRefObject<number>
+  activeChapter: Chapter
+  isMediaLoaded: boolean
+  isDark: boolean
+}
+
+interface DeviceRotation {
+  alpha: number
+  gamma: number
+  beta: number
+}
 
 /**
  * A component that shows a video. Used on the Play Screen during Training chapters.
- * @param {string} videoSource - The URI source (local or remote) of the .mp4 file to play.
  * @param {ref} videoRef - The ref for the video.
  * @param {Function} onVideoPlaybackStatusUpdate - Function to call whenever the playback status changes. Used for audio and video.
  * @param {Function} setIsMediaPlaying - Function to set the isMediaPlaying state on the Play Screen.
  * @param {number} fullscreenStatus - The current fullscreen status as a number which is a value of an enum used in the Video library.
  * @param {number} activeChapter - The currently active chapter. See chapters in constants.js.
  */
-const VideoPlayer = ({
-  // Props passed from a parent component.
-  videoSource,
+const VideoPlayer: FC<Props> = ({
   videoRef,
   media,
   onVideoPlaybackStatusUpdate,
@@ -33,17 +58,19 @@ const VideoPlayer = ({
   fullscreenStatus,
   activeChapter,
   isMediaLoaded,
-  isDark
-}) => {
-  /** Keeps track of whether to show the overlayed video controls or not. */
+  isDark,
+}): ReactElement => {
+  /** Keeps track of whether to show the overlaid video controls or not. */
   const [shouldShowVideoControls, setShouldShowVideoControls] = useState(false)
 
   /** Keeps track of the device rotation in an object (alpha, beta, and gamma). */
-  const [deviceRotation, setDeviceRotation] = useState({})
+  const [deviceRotation, setDeviceRotation] = useState<
+    DeviceRotation | undefined
+  >()
 
-  const [currentOrientation, setCurrentOrientation] = useState()
+  const [currentOrientation, setCurrentOrientation] = useState<string>()
 
-  const setOrientation = orientation => {
+  const setOrientation = (orientation: ScreenOrientation.Orientation) => {
     switch (orientation) {
       case ScreenOrientation.Orientation.UNKNOWN:
       case ScreenOrientation.Orientation.PORTRAIT_UP:
@@ -58,7 +85,7 @@ const VideoPlayer = ({
   }
 
   useEffect(() => {
-    ScreenOrientation.getOrientationAsync().then(orientation => {
+    ScreenOrientation.getOrientationAsync().then((orientation) => {
       setOrientation(orientation)
     })
 
@@ -66,7 +93,7 @@ const VideoPlayer = ({
       ({ orientationInfo }) => setOrientation(orientationInfo.orientation)
     )
 
-    return async function cleanup () {
+    return function cleanup() {
       ScreenOrientation.removeOrientationChangeListener(orientationListener)
     }
   }, [])
@@ -74,7 +101,7 @@ const VideoPlayer = ({
   /** useEffect function that adds a device motion listener on iOS devices. This is so that the app can automatically enter fullscreen when the user rotates their phone. */
   useEffect(() => {
     if (Platform.OS === 'ios' && activeChapter === chapters.TRAINING)
-      DeviceMotion.isAvailableAsync().then(isAvailable => {
+      DeviceMotion.isAvailableAsync().then((isAvailable) => {
         if (isAvailable) {
           DeviceMotion.setUpdateInterval(1000)
           DeviceMotion.addListener(({ rotation }) => {
@@ -86,7 +113,7 @@ const VideoPlayer = ({
       DeviceMotion.removeAllListeners()
 
     // Cleanup function that cancels the device motion listener.
-    return async function cleanup () {
+    return function cleanup() {
       if (Platform.OS === 'ios') DeviceMotion.removeAllListeners()
     }
   }, [activeChapter])
@@ -122,7 +149,7 @@ const VideoPlayer = ({
         height: '100%',
         paddingVertical: 20,
         alignItems: 'center',
-        flexDirection: currentOrientation === 'portrait' ? 'row' : 'column'
+        flexDirection: currentOrientation === 'portrait' ? 'row' : 'column',
       }}
       onPress={() => {
         // When the user taps on the video component and the video controls are not present, show them for a few seconds.
@@ -137,7 +164,7 @@ const VideoPlayer = ({
           flex: 1,
           aspectRatio: 14 / 9,
           backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).text,
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <Video
@@ -147,16 +174,18 @@ const VideoPlayer = ({
           isMuted={false}
           resizeMode={Video.RESIZE_MODE_CONTAIN}
           style={{
-            flex: 1
+            flex: 1,
           }}
-          onPlaybackStatusUpdate={onVideoPlaybackStatusUpdate}
-          onFullscreenUpdate={({ fullscreenUpdate, status }) => {
+          onPlaybackStatusUpdate={(playbackStatus) =>
+            onVideoPlaybackStatusUpdate(playbackStatus)
+          }
+          onFullscreenUpdate={({ fullscreenUpdate }) => {
             if (Platform.OS === 'android') {
               switch (fullscreenUpdate) {
                 // Lock video to landscape whenever we enter fullscreen.
                 case Video.FULLSCREEN_UPDATE_PLAYER_WILL_PRESENT:
                 case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
-                  !isTablet && lockLandscape(() => {})
+                  !isTablet && lockLandscape()
                   break
                 // Lock video to portrait when we exit fullscreen.
                 case Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS:
@@ -204,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    aspectRatio: 9 / 16
+    aspectRatio: 9 / 16,
   },
   videoControlsOverlayContainer: {
     paddingVertical: 20,
@@ -213,8 +242,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00000060'
-  }
+    backgroundColor: '#00000060',
+  },
 })
 
 export default VideoPlayer
