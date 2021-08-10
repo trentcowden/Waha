@@ -1,29 +1,18 @@
 import * as FileSystem from 'expo-file-system'
+import { InfoAndGroupsForLanguage } from 'interfaces/languages'
 import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
 import LanguageStorageItem from '../components/LanguageStorageItem'
-import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { buttonModes } from '../constants'
 import {
   getInstalledLanguagesData,
   info,
 } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    database: state.database,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    groups: state.groups,
-    activeGroup: activeGroupSelector(state),
-  }
-}
 
 // Regular expression that checks whether a file name is for a lesson mp3 or mp4.
 const isLessonFile = new RegExp('[a-z]{2}.[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}.*')
@@ -31,46 +20,19 @@ const isLessonFile = new RegExp('[a-z]{2}.[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}.*')
 /**
  * A screen that contains storage size information for each language instance and the ability to delete downloaded files.
  */
-const StorageScreen = ({
-  // Props passed from navigation.
-  navigation: { setOptions, goBack },
-  // Props passed from redux.
-  isRTL,
-  isDark,
-  database,
-  t,
-  groups,
-  activeGroup,
-}) => {
+const StorageScreen = ({}) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const database = selector((state) => state.database)
+  const groups = selector((state) => state.groups)
+
   /** Keeps track of the amount of storage each language's downloaded Story and Training chapter mp3s and mp4s take up. */
   const [languageStorageSizes, setLanguageSizes] = useState({})
 
   /** Keeps track of the total storage for all downloaded Story and Training chapter mp3s and mp4s across all languages. */
   const [totalStorage, setTotalStorage] = useState(0)
-
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => <View />,
-      headerLeft: isRTL
-        ? () => <View />
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-    })
-  }, [])
 
   /** useEffect function that gets all the storage used for all the different languages. */
   useEffect(() => {
@@ -82,31 +44,33 @@ const StorageScreen = ({
    * @param {string} language - The language to get the storage size of.
    * @return {number} - The size that the language takes up.
    */
-  const getLanguageStorageSize = async (language) => {
+  const getLanguageStorageSize = async (language: string) => {
     // Stores the size of this language.
     var languageStorageSize = 0
 
     // Read the contents of the FileSystem directory.
-    return await FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then(async (contents) => {
-        for (const item of contents) {
-          // If a file is a lesson...
-          if (isLessonFile.exec(item)) {
-            // ...and it's for the language we're currently checking...
-            if (item.slice(0, 2) === language) {
-              // ...get its size...
-              await FileSystem.getInfoAsync(
-                FileSystem.documentDirectory + item,
-                {}
-              ).then(({ size }) => {
-                // ...and add it to our storage size variable. Note: we divide by 1000000 because we want it to be in megabytes.
-                languageStorageSize += Math.round(size / 1000000)
-              })
+    if (FileSystem.documentDirectory)
+      return await FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
+        .then(async (contents) => {
+          for (const item of contents) {
+            // If a file is a lesson...
+            if (isLessonFile.exec(item)) {
+              // ...and it's for the language we're currently checking...
+              if (item.slice(0, 2) === language) {
+                // ...get its size...
+                await FileSystem.getInfoAsync(
+                  FileSystem.documentDirectory + item,
+                  {}
+                ).then(({ size }) => {
+                  // ...and add it to our storage size variable. Note: we divide by 1000000 because we want it to be in megabytes.
+                  if (size) languageStorageSize += Math.round(size / 1000000)
+                })
+              }
             }
           }
-        }
-      })
-      .then(() => languageStorageSize)
+        })
+        .then(() => languageStorageSize)
+    else return 0
   }
 
   /** Gets all of the individual language storage sizes and the total storage size. */
@@ -137,30 +101,35 @@ const StorageScreen = ({
    * Deletes all of the Story and Training mp3s and mp4s for a specific language. If no language is specified, deletes them for all languages.
    * @param {string} language - (Optional) The language to delete the downloaded content for.
    */
-  const deleteDownloadedLessons = async (language) => {
-    await FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
-      .then((contents) => {
-        for (const item of contents) {
-          // If a file is a lesson...
-          if (isLessonFile.exec(item)) {
-            // If a language hasn't been specificied, delete any lesson file.
-            if (!language)
-              FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-            // Otherwise, delete it only if it matches with the specified language.
-            else if (item.slice(0, 2) === language)
-              FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+  const deleteDownloadedLessons = async (language?: string) => {
+    if (FileSystem.documentDirectory)
+      await FileSystem.readDirectoryAsync(FileSystem.documentDirectory)
+        .then((contents) => {
+          for (const item of contents) {
+            // If a file is a lesson...
+            if (isLessonFile.exec(item)) {
+              // If a language hasn't been specificied, delete any lesson file.
+              if (!language)
+                FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+              // Otherwise, delete it only if it matches with the specified language.
+              else if (item.slice(0, 2) === language)
+                FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+            }
           }
-        }
-      })
-      // After we finish, get the storage used again.
-      .then(() => getTotalStorageAndLanguageSizes())
+        })
+        // After we finish, get the storage used again.
+        .then(() => getTotalStorageAndLanguageSizes())
   }
 
   /**
    * Renders a <LanguageStorageItem />.
    * @param {Object} item - The language instance to render.
    */
-  const renderLanguageStorageItem = ({ item }) => {
+  const renderLanguageStorageItem = ({
+    item,
+  }: {
+    item: InfoAndGroupsForLanguage
+  }) => {
     return (
       <LanguageStorageItem
         nativeName={item.nativeName}
@@ -234,7 +203,7 @@ const StorageScreen = ({
         }
         isDark={isDark}
         isRTL={isRTL}
-        language={activeGroup.language}
+        screenLanguage={activeGroup.language}
       />
     </SafeAreaView>
   )
@@ -246,4 +215,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(StorageScreen)
+export default StorageScreen

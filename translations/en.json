@@ -86,9 +86,14 @@
 	"languages": {
 		"ar": "Arabic",
 		"en": "English",
+		"fr": "French",
 		"ga": "Gulf Arabic",
 		"hi": "Hindi",
-		"ma": "Moroccan Arabic"
+		"ma": "Moroccan Arabic",
+		"mr": "Marathi",
+		"ro": "Romanian",
+		"ru": "Russian",
+		"tr": "Turkish"
 	},
 	"lessons": {
 		"download_lesson": "Download Lesson",

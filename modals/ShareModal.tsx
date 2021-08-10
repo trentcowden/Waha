@@ -1,22 +1,33 @@
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
-import React, { useEffect, useState } from 'react'
+import { LessonType } from 'interfaces/playScreen'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
+import { Lesson } from 'redux/reducers/database'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
 import {
   logShareApp,
   logShareAudio,
-  logShareText
+  logShareText,
 } from '../functions/analyticsFunctions'
+import { AGProps, CommonProps, DLProps, TProps } from '../interfaces/common'
 import OptionsModal from './OptionsModal'
 
-const shareTypes = {
-  APP: 1,
-  TEXT: 2,
-  AUDIO: 3,
-  VIDEO: 4,
-  MOBILIZATION_TOOLS: 5
+enum ShareType {
+  APP = 1,
+  TEXT = 2,
+  AUDIO = 3,
+  VIDEO = 4,
+  MOBILIZATION_TOOLS = 5,
+}
+
+interface Props extends CommonProps, AGProps, DLProps, TProps {
+  isVisible: boolean
+  hideModal: Function
+  closeText: string
+  lesson: Lesson | undefined
+  lessonType: LessonType
 }
 
 /**
@@ -28,83 +39,91 @@ const shareTypes = {
  * @param {string[]} lessonType - The type of the lesson that we're sharing. See lessonTypes in constants.js.
  * @param {Object} set - The object for the set that the lesson that we're sharing is a part of.
  */
-const ShareModal = ({
+const ShareModal: FC<Props> = ({
   // Props passed from a parent component.s
   isVisible,
   hideModal,
   closeText,
   lesson,
   lessonType,
-  set,
   downloads,
   activeGroup,
   isDark,
-  t
-}) => {
+  t,
+  isRTL,
+}): ReactElement => {
   const [isLessonDownloaded, setIsLessonDownloaded] = useState(true)
 
   useEffect(() => {
-    FileSystem.getInfoAsync(
-      FileSystem.documentDirectory + lesson.id + '.mp3'
-    ).then(({ exists }) => {
-      setIsLessonDownloaded(exists)
-    })
+    if (lesson)
+      FileSystem.getInfoAsync(
+        FileSystem.documentDirectory + lesson.id + '.mp3'
+      ).then(({ exists }) => {
+        setIsLessonDownloaded(exists)
+      })
   }, [isVisible])
 
   /**
    * Opens the share sheet to share a piece of content from a lesson.
    * @param {number} type - The type of content to share. See shareTypes at the top of this page.
    */
-  const shareLessonContent = type => {
+  const shareLessonContent = (type: ShareType) => {
     switch (type) {
       // Share links to Waha's app store pages.
-      case shareTypes.APP:
+      case ShareType.APP:
         Share.share({
           message:
-            'iOS: https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294\n\nAndroid: https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha'
+            'iOS: https://apps.apple.com/us/app/waha-discover-gods-story/id1530116294\n\nAndroid: https://play.google.com/store/apps/details?id=com.kingdomstrategies.waha',
         }).then(() => {
           logShareApp(activeGroup.id)
           hideModal()
         })
         break
       // Share the Scripture text for a lesson if it has it.
-      case shareTypes.TEXT:
+      case ShareType.TEXT:
         var scriptureString = ''
-        lesson.scripture.forEach((scripturePiece, index) => {
-          scriptureString += scripturePiece.header + '\n' + scripturePiece.text
-          if (index !== lesson.scripture.length - 1) scriptureString += '\n'
-        })
+        if (lesson && lesson.scripture) {
+          lesson.scripture.forEach((scripturePiece, index) => {
+            scriptureString +=
+              scripturePiece.header + '\n' + scripturePiece.text
+            if (lesson.scripture && index !== lesson.scripture.length - 1)
+              scriptureString += '\n'
+          })
+        }
         Share.share({
-          message: scriptureString
+          message: scriptureString,
         }).then(() => {
           logShareText(lesson, activeGroup.id)
           hideModal()
         })
         break
       // Share the Scripture audio for a lesson if it exists.
-      case shareTypes.AUDIO:
-        Sharing.shareAsync(
-          FileSystem.documentDirectory + lesson.id + '.mp3'
-        ).then(() => {
-          logShareAudio(lesson, activeGroup.id)
-          hideModal()
-        })
+      case ShareType.AUDIO:
+        if (lesson)
+          Sharing.shareAsync(
+            FileSystem.documentDirectory + lesson.id + '.mp3'
+          ).then(() => {
+            logShareAudio(lesson, activeGroup.id)
+            hideModal()
+          })
         break
       // Share a link to the video for this lesson if there is one.
-      case shareTypes.VIDEO:
-        Share.share({
-          message: lesson.videoShareLink
-        }).then(() => {
-          hideModal()
-        })
+      case ShareType.VIDEO:
+        if (lesson)
+          if (lesson.videoShareLink)
+            Share.share({
+              message: lesson.videoShareLink,
+            }).then(() => {
+              hideModal()
+            })
         break
-      case shareTypes.MOBILIZATION_TOOLS:
+      case ShareType.MOBILIZATION_TOOLS:
         Share.share({
           message: `${t.mobilization_tools.share_message_1}\n
             ${t.mobilization_tools.share_message_2}\n
             ${t.mobilization_tools.share_message_3}\n
             ${t.mobilization_tools.share_message_4}\n
-            ${t.mobilization_tools.share_message_5}`
+            ${t.mobilization_tools.share_message_5}`,
         }).then(() => {
           hideModal()
         })
@@ -120,12 +139,14 @@ const ShareModal = ({
       closeText={closeText}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OptionsModalButton
         label={t.general.share_app}
-        onPress={() => shareLessonContent(shareTypes.APP)}
+        onPress={() => shareLessonContent(ShareType.APP)}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       />
       {/* Include a "Share Text" button if a lesson has questions. If it has questions, then it also has Scripture text. */}
       {lessonType.includes('Questions') ? (
@@ -133,48 +154,54 @@ const ShareModal = ({
           <WahaSeparator isDark={isDark} />
           <OptionsModalButton
             label={t.general.share_passage_text}
-            onPress={() => shareLessonContent(shareTypes.TEXT)}
+            onPress={() => shareLessonContent(ShareType.TEXT)}
             isDark={isDark}
             activeGroup={activeGroup}
+            isRTL={isRTL}
           />
         </View>
       ) : null}
       {/* Include a "Share Audio" button if a lesson has audio and it's not currently downloading. */}
-      {lessonType.includes('Audio') &&
+      {lesson &&
+        lessonType.includes('Audio') &&
         !downloads[lesson.id] &&
         isLessonDownloaded && (
           <View>
             <WahaSeparator isDark={isDark} />
             <OptionsModalButton
               label={t.general.share_passage_audio}
-              onPress={() => shareLessonContent(shareTypes.AUDIO)}
+              onPress={() => shareLessonContent(ShareType.AUDIO)}
               isDark={isDark}
               activeGroup={activeGroup}
+              isRTL={isRTL}
             />
           </View>
         )}
       {/* Include a "Share Video" button if a lesson has video, the link to share it exists, and it's not currently downloading. */}
-      {lessonType.includes('Video') &&
+      {lesson &&
+        lessonType.includes('Video') &&
         lesson.videoShareLink &&
         !downloads[lesson.id] && (
           <View>
             <WahaSeparator isDark={isDark} />
             <OptionsModalButton
               label={t.general.share_video_link}
-              onPress={() => shareLessonContent(shareTypes.VIDEO)}
+              onPress={() => shareLessonContent(ShareType.VIDEO)}
               isDark={isDark}
               activeGroup={activeGroup}
+              isRTL={isRTL}
             />
           </View>
         )}
-      {/[a-z]{2}.3.[0-9]+.[0-9]+/.test(lesson.id) && (
+      {lesson && /[a-z]{2}.3.[0-9]+.[0-9]+/.test(lesson.id) && (
         <View>
           <WahaSeparator isDark={isDark} />
           <OptionsModalButton
             label={t.general.share_mobilization_tools}
-            onPress={() => shareLessonContent(shareTypes.MOBILIZATION_TOOLS)}
+            onPress={() => shareLessonContent(ShareType.MOBILIZATION_TOOLS)}
             isDark={isDark}
             activeGroup={activeGroup}
+            isRTL={isRTL}
           />
         </View>
       )}

@@ -68,7 +68,9 @@ const LessonsScreen = ({
   const [downloadedLessons, setDownloadedLessons] = useState<string[]>([])
 
   /** Whenever we enable a lesson-specific modal, we also set this state to the specific lesson so we can use its information for whatever action we're doing. */
-  const [activeLessonInModal, setActiveLessonInModal] = useState({})
+  const [activeLessonInModal, setActiveLessonInModal] = useState<
+    Lesson | undefined
+  >()
 
   /** Keeps track of the type of the active lesson in a modal. */
   const [modalLessonType, setModalLessonType] = useState<LessonType>(
@@ -184,21 +186,24 @@ const LessonsScreen = ({
    * Gets the type of a specific lesson. See lessonTypes in constants.js. While every lesson's type stays constant, this information isn't stored in the database for single source of truth reasons.
    * @param {Object} lesson - The object for the lesson to get the type of.
    */
-  const getLessonType = (lesson: Lesson): LessonType => {
-    if (lesson.fellowshipType && lesson.hasAudio && !lesson.hasVideo)
-      return LessonType.STANDARD_DBS
-    else if (lesson.fellowshipType && lesson.hasAudio && lesson.hasVideo)
-      return LessonType.STANDARD_DMC
-    else if (lesson.hasVideo) return LessonType.VIDEO_ONLY
-    else if (lesson.fellowshipType) return LessonType.STANDARD_NO_AUDIO
-    else if (lesson.text && lesson.hasAudio) return LessonType.AUDIOBOOK
-    else return LessonType.BOOK
+  const getLessonType = (lesson: Lesson | undefined): LessonType => {
+    if (lesson) {
+      if (lesson.fellowshipType && lesson.hasAudio && !lesson.hasVideo)
+        return LessonType.STANDARD_DBS
+      else if (lesson.fellowshipType && lesson.hasAudio && lesson.hasVideo)
+        return LessonType.STANDARD_DMC
+      else if (lesson.hasVideo) return LessonType.VIDEO_ONLY
+      else if (lesson.fellowshipType) return LessonType.STANDARD_NO_AUDIO
+      else if (lesson.text && lesson.hasAudio) return LessonType.AUDIOBOOK
+      else return LessonType.BOOK
+    } else return LessonType.STANDARD_DBS
   }
 
   /** Downloads the necessary content for a lesson. */
   const downloadLessonFromModal = () => {
     if (
       modalLessonType.includes('Audio') &&
+      activeLessonInModal &&
       !downloadedLessons.includes(activeLessonInModal.id)
     )
       dispatch(
@@ -211,6 +216,7 @@ const LessonsScreen = ({
 
     if (
       modalLessonType.includes('Video') &&
+      activeLessonInModal &&
       !downloadedLessons.includes(activeLessonInModal.id + 'v')
     )
       dispatch(
@@ -227,13 +233,13 @@ const LessonsScreen = ({
   /** Deletes a lesson. */
   const deleteLessonFromModal = () => {
     // If a lesson contains audio, delete it and refresh the downloaded lessons.
-    if (modalLessonType.includes('Audio'))
+    if (activeLessonInModal && modalLessonType.includes('Audio'))
       FileSystem.deleteAsync(
         FileSystem.documentDirectory + activeLessonInModal.id + '.mp3'
       ).then(() => setRefreshDownloadedLessons((current) => !current))
 
     // If a lesson contains video, delete it and refresh the downloaded lessons.
-    if (modalLessonType.includes('Video'))
+    if (activeLessonInModal && modalLessonType.includes('Video'))
       FileSystem.deleteAsync(
         FileSystem.documentDirectory + activeLessonInModal.id + 'v.mp4'
       ).then(() => setRefreshDownloadedLessons((current) => !current))
@@ -242,7 +248,7 @@ const LessonsScreen = ({
   }
 
   /** Navigates to the Play screen with some parameters. */
-  const goToPlayScreen = (params) =>
+  const goToPlayScreen = (params: Object) =>
     navigate('Play', { ...params, thisSet: thisSet })
 
   /** Whenever we start swiping a lesson, set the active lesson in modal. */
@@ -424,12 +430,14 @@ const LessonsScreen = ({
         closeText={t.general.cancel}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         <OptionsModalButton
           label={t.lessons.download_lesson}
           onPress={downloadLessonFromModal}
           isDark={isDark}
           activeGroup={activeGroup}
+          isRTL={isRTL}
         />
       </OptionsModal>
       <OptionsModal
@@ -438,12 +446,14 @@ const LessonsScreen = ({
         closeText={t.general.cancel}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         <OptionsModalButton
           label={t.lessons.remove_download}
           onPress={deleteLessonFromModal}
           isDark={isDark}
           activeGroup={activeGroup}
+          isRTL={isRTL}
         />
       </OptionsModal>
       <ShareModal
@@ -452,11 +462,11 @@ const LessonsScreen = ({
         closeText={t.general.close}
         lesson={activeLessonInModal}
         lessonType={getLessonType(activeLessonInModal)}
-        set={thisSet}
         t={t}
         downloads={downloads}
         activeGroup={activeGroup}
         isDark={isDark}
+        isRTL={isRTL}
       />
       <MessageModal
         isVisible={showSetCompleteModal}

@@ -86,9 +86,14 @@
 	"languages": {
 		"ar": "",
 		"en": "",
+		"fr": "",
 		"ga": "",
 		"hi": "",
-		"ma": ""
+		"ma": "",
+		"mr": "",
+		"ro": "",
+		"ru": "",
+		"tr": ""
 	},
 	"lessons": {
 		"download_lesson": "Dersi İndir",

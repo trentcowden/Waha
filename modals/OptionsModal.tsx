@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { scaleMultiplier } from '../constants'
+import { AGProps, CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps {
+  isVisible: boolean
+  hideModal: Function
+  closeText: string
+}
 
 /**
  * A modal component that displays a list of buttons. Very similar to the standard iOS action sheet.
@@ -12,7 +19,7 @@ import { type } from '../styles/typography'
  * @param {string} closeText - The text to display on the button that closes the modal.
  * @param {Component} children - The list of buttons to display in the modal.
  */
-const OptionsModal = ({
+const OptionsModal: FC<Props> = ({
   // Props passed from a parent component.
   isVisible,
   hideModal,
@@ -20,15 +27,15 @@ const OptionsModal = ({
   children,
   // Props passed from redux.
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <Modal
     isVisible={isVisible}
     hasBackdrop={true}
-    onBackdropPress={hideModal}
+    onBackdropPress={() => hideModal()}
     backdropOpacity={0.3}
     style={{ justifyContent: 'flex-end' }}
-    onSwipeComplete={hideModal}
+    onSwipeComplete={() => hideModal()}
     swipeDirection={['down']}
     propagateSwipe={true}
     useNativeDriver
@@ -37,7 +44,7 @@ const OptionsModal = ({
       <View
         style={{
           ...styles.childrenContainer,
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         }}
       >
         {children}
@@ -45,14 +52,14 @@ const OptionsModal = ({
       <View
         style={{
           ...styles.closeButtonContainer,
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         }}
       >
         <TouchableOpacity
-          onPress={hideModal}
+          onPress={() => hideModal()}
           style={{
             ...styles.closeButtonContainer,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           }}
         >
           <Text
@@ -77,15 +84,15 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 500,
     borderRadius: 20,
-    marginVertical: 10
+    marginVertical: 10,
   },
   closeButtonContainer: {
     width: '100%',
     maxWidth: 500,
     height: 70 * scaleMultiplier,
     justifyContent: 'center',
-    borderRadius: 20
-  }
+    borderRadius: 20,
+  },
 })
 
 export default OptionsModal

@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Clipboard,
   Platform,
@@ -13,7 +13,6 @@ import {
 import SnackBar from 'react-native-snackbar-component'
 import Icon from '../assets/fonts/icon_font_config'
 import InformationItem from '../components/InformationItem'
-import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { logShareApp } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
@@ -44,30 +43,6 @@ const InformationScreen = ({ navigation: { setOptions, goBack } }) => {
   }
 
   const [showCopyrightsModal, setShowCopyrightsModal] = useState(false)
-
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => {},
-      headerLeft: isRTL
-        ? () => {}
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-    })
-  }, [])
 
   /**
    * Opens up an in-app browser.

@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Keyboard, StyleSheet, Text, View } from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
-import { connect } from 'react-redux'
-import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { logUnlockMobilizationTools } from '../functions/analyticsFunctions'
-import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import { setAreMobilizationToolsUnlocked } from '../redux/actions/areMobilizationToolsUnlockedActions'
 import { setMTUnlockAttempts } from '../redux/actions/mtUnlockAttemptsActions'
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
@@ -15,86 +13,26 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    security: state.security,
-    mtUnlockAttempts: state.mtUnlockAttempts,
-    database: state.database,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setAreMobilizationToolsUnlocked: (toSet) => {
-      dispatch(setAreMobilizationToolsUnlocked(toSet))
-    },
-    setMTUnlockTimeout: (time) => {
-      dispatch(setMTUnlockTimeout(time))
-    },
-    setMTUnlockAttempts: (numAttempts) => {
-      dispatch(setMTUnlockAttempts(numAttempts))
-    },
-    setShowMTTabAddedSnackbar: (toSet) => {
-      dispatch(setShowMTTabAddedSnackbar(toSet))
-    },
-  }
-}
-
 /**
  * Screen that shows a simple passcode entry and allows the user to unlock the Mobilization Tools.
  */
 const MobilizationToolsUnlockScreen = ({
   // Props passed from navigation.
   navigation: { navigate, setOptions, goBack },
-  // Props passed from redux.
-  isRTL,
-  t,
-  isDark,
-  activeGroup,
-  security,
-  mtUnlockAttempts,
-  database,
-  setAreMobilizationToolsUnlocked,
-  setMTUnlockTimeout,
-  setMTUnlockAttempts,
-  setShowMTTabAddedSnackbar,
 }) => {
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => <View />,
-      headerLeft: isRTL
-        ? () => <View />
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-    })
-  }, [])
-
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const database = selector((state) => state.database)
+  const mtUnlockAttempts = selector((state) => state.mtUnlockAttempts)
+  const security = selector((state) => state.security)
   /** Keeps track of the user input of the passcode entry area. */
   const [passcode, setPasscode] = useState('')
 
-  /** A reference to the passcode entry component. */
-  const pinRef = useRef()
+  const dispatch = useAppDispatch()
 
-  /** Keeps track of whether the unlock success modal is visible. */
-  const [unlockSuccessModal, setUnlockSuccessModal] = useState(false)
+  /** A reference to the passcode entry component. */
+  const pinRef = useRef<SmoothPinCodeInput>(null)
 
   const [pinInputColor, setPinInputColor] = useState(
     isDark ? colors(isDark).bg4 : colors(isDark).bg1
@@ -105,15 +43,10 @@ const MobilizationToolsUnlockScreen = ({
    */
   useEffect(() => {
     if (mtUnlockAttempts === 5) {
-      setMTUnlockAttempts(0)
-      setMTUnlockTimeout(Date.now() + 1800000)
+      dispatch(setMTUnlockAttempts(0))
+      dispatch(setMTUnlockTimeout(Date.now() + 1800000))
     }
   }, [mtUnlockAttempts])
-
-  const checkForMTContent = (languageID) =>
-    database[languageID].sets.some((set) => {
-      return /[a-z]{2}.3.[0-9]+/.test(set.id)
-    })
 
   useEffect(() => {
     pinRef.current.focus()
@@ -122,15 +55,15 @@ const MobilizationToolsUnlockScreen = ({
   /**
    * Checks if the passcode the user enters is correct. If it is, show the success modal. If not, add one to the attempts tracker and show an alert that the code is incorrect.
    */
-  const checkPasscode = (fullPasscode) => {
+  const checkPasscode = (fullPasscode: string) => {
     if (fullPasscode === '281820') {
       Keyboard.dismiss()
-      setAreMobilizationToolsUnlocked(true)
+      dispatch(setAreMobilizationToolsUnlocked(true))
       navigate('SetsTabs', { screen: 'MobilizationTools' })
-      setTimeout(() => setShowMTTabAddedSnackbar(true), 1000)
+      setTimeout(() => dispatch(setShowMTTabAddedSnackbar(true)), 1000)
       logUnlockMobilizationTools(activeGroup.language)
     } else {
-      setMTUnlockAttempts(mtUnlockAttempts + 1)
+      dispatch(setMTUnlockAttempts(mtUnlockAttempts + 1))
 
       // Turn the pin input red for a second to further indicate that the passcode entered was incorrect.
       setPinInputColor(colors(isDark).error)
@@ -197,8 +130,8 @@ const MobilizationToolsUnlockScreen = ({
           'center',
           colors(isDark).text
         )}
-        onTextChange={(passcode) => setPasscode(passcode)}
-        onFulfill={(fullPasscode) => checkPasscode(fullPasscode)}
+        onTextChange={(passcode: string) => setPasscode(passcode)}
+        onFulfill={(fullPasscode: string) => checkPasscode(fullPasscode)}
         onBackspace={() => {}}
         // Disable entry if the user is locked out.
         editable={
@@ -249,7 +182,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MobilizationToolsUnlockScreen)
+export default MobilizationToolsUnlockScreen

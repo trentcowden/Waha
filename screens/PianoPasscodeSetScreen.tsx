@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native'
-import { connect } from 'react-redux'
 import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
@@ -15,31 +14,13 @@ import WahaButton from '../components/WahaButton'
 import { buttonModes } from '../constants'
 import { logEnableSecurityMode } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
 import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    security: state.security,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setSecurityEnabled: (toSet) => dispatch(setSecurityEnabled(toSet)),
-    setCode: (code) => dispatch(setCode(code)),
-    setShowPasscodeSetSnackbar: (toSet) =>
-      dispatch(setShowPasscodeSetSnackbar(toSet)),
-  }
-}
 
 /**
  * A screen that allows the user to set/change/confirm their piano passcode.
@@ -53,16 +34,13 @@ const PianoPasscodeSetScreen = ({
     // Props passed from previous screen.
     params: { passcode } = { passcode: null },
   },
-  // Props passed from redux.
-  security,
-  isRTL,
-  isDark,
-  t,
-  activeGroup,
-  setSecurityEnabled,
-  setCode,
-  setShowPasscodeSetSnackbar,
 }) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const dispatch = useAppDispatch()
+
   /** Keeps track of the passcode that the user is entering into the piano. */
   const [localPasscode, setLocalPasscode] = useState('')
 
@@ -120,13 +98,13 @@ const PianoPasscodeSetScreen = ({
         case 'PianoPasscodeSetConfirm':
           // If passcodes match, pop up an alert, log it, set security enabled, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            setShowPasscodeSetSnackbar(true)
-            setTimeout(() => setShowPasscodeSetSnackbar(false), 2000)
+            dispatch(setShowPasscodeSetSnackbar(true))
+            setTimeout(() => dispatch(setShowPasscodeSetSnackbar(false)), 2000)
             // Log the enabling of Security Mode in Firebase analytics.
             logEnableSecurityMode(activeGroup.id)
 
-            setSecurityEnabled(true)
-            setCode(passcode)
+            dispatch(setSecurityEnabled(true))
+            dispatch(setCode(passcode))
             goBack()
             goBack()
             goBack()
@@ -150,10 +128,10 @@ const PianoPasscodeSetScreen = ({
         case 'PianoPasscodeChangeConfirm':
           // If passcodes match, pop up an alert, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            setShowPasscodeSetSnackbar(true)
-            setTimeout(() => setShowPasscodeSetSnackbar(false), 2000)
-            setSecurityEnabled(true)
-            setCode(localPasscode)
+            dispatch(setShowPasscodeSetSnackbar(true))
+            setTimeout(() => dispatch(setShowPasscodeSetSnackbar(false)), 2000)
+            dispatch(setSecurityEnabled(true))
+            dispatch(setCode(localPasscode))
             goBack()
             goBack()
           } // Otherwise, show an alert that the passcodes don't match.
@@ -205,7 +183,7 @@ const PianoPasscodeSetScreen = ({
           }}
           isDark={isDark}
           isRTL={isRTL}
-          language={activeGroup.language}
+          screenLanguage={activeGroup.language}
         />
       </View>
       <Piano setPlayedNotes={setLocalPasscode} isDark={isDark} />
@@ -223,7 +201,4 @@ const styles = StyleSheet.create({
   instructionTextContainer: { width: '100%', paddingHorizontal: 20 },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PianoPasscodeSetScreen)
+export default PianoPasscodeSetScreen

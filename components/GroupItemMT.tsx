@@ -1,4 +1,4 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import { AGProps, CommonProps } from 'interfaces/common'
 import { Group } from 'interfaces/groups'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native'
@@ -7,7 +7,7 @@ import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-interface Props extends CommonProps, AGProps, TProps {
+interface Props extends CommonProps, AGProps {
   thisGroup: Group
   areMobilizationToolsUnlocked: boolean
   editGroup: Function

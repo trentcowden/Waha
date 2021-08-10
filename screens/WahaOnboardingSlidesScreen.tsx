@@ -8,7 +8,7 @@ import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
-import { buttonModes, groupNames, scaleMultiplier } from '../constants'
+import { buttonModes, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
@@ -65,7 +65,12 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
 
     // Call editGroup() redux function.
     dispatch(
-      editGroup(groupNames[selectedLanguage], groupNameInput, emojiInput, true)
+      editGroup(
+        getTranslations(selectedLanguage).other.default_group_name,
+        groupNameInput,
+        emojiInput,
+        true
+      )
     )
 
     // Finish up onboarding and go to the loading screen.

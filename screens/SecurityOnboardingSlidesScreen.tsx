@@ -1,28 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
-import { connect } from 'react-redux'
 import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
-import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { buttonModes, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    isDark: state.settings.isDarkModeEnabled,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-  }
-}
 
 const numPages = 4
 
@@ -31,41 +21,32 @@ const numPages = 4
  */
 const SecurityOnboardingSlidesScreen = ({
   // Props passed from navigation.
-  navigation: { setOptions, navigate, goBack },
-  isRTL,
-  isDark,
-  t,
-  activeGroup,
+  navigation: { navigate },
 }) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+
   /** The ref for the pager view. Used to manually swipe pages. */
-  const pagerRef = useRef()
+  const pagerRef = useRef<PagerView>(null)
 
   /** Keeps track of onboarding page we're currently on. */
   const [activePage, setActivePage] = useState(0)
 
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => <View />,
-      headerLeft: isRTL
-        ? () => <View />
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-    })
-  }, [])
+  const onContinueButtonPress = () => {
+    if (pagerRef.current !== null) {
+      // This button goes to the next page or finishes onboarding if we're on the last page.
+      if (isRTL)
+        activePage === 0
+          ? navigate('PianoPasscodeSet')
+          : pagerRef.current.setPage(activePage - 1)
+      else
+        activePage === 3
+          ? navigate('PianoPasscodeSet')
+          : pagerRef.current.setPage(activePage + 1)
+    }
+  }
 
   // The 4 onboarding pages. These are stored here in an array so that we can call pages.reverse() to reverse the order of the pages for RTL languages.
   const pages = [
@@ -179,16 +160,7 @@ const SecurityOnboardingSlidesScreen = ({
         <View style={{ width: 20 }} />
         <WahaButton
           label={t.general.continue}
-          onPress={
-            // This button goes to the next page or finishes onboarding if we're on the last page.
-            isRTL
-              ? activePage === 0
-                ? () => navigate('PianoPasscodeSet')
-                : () => pagerRef.current.setPage(activePage - 1)
-              : activePage === 3
-              ? () => navigate('PianoPasscodeSet')
-              : () => pagerRef.current.setPage(activePage + 1)
-          }
+          onPress={onContinueButtonPress}
           mode={buttonModes.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
@@ -196,7 +168,7 @@ const SecurityOnboardingSlidesScreen = ({
           }}
           isDark={isDark}
           isRTL={isRTL}
-          language={activeGroup.language}
+          screenLanguage={activeGroup.language}
         />
       </View>
     </View>
@@ -227,4 +199,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps)(SecurityOnboardingSlidesScreen)
+export default SecurityOnboardingSlidesScreen

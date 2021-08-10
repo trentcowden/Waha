@@ -12,37 +12,16 @@ import {
   View,
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
 import Piano from '../components/Piano'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
 import { setIsMuted, setIsTimedOut } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    security: state.security,
-    isDark: state.settings.isDarkModeEnabled,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setIsMuted: (toSet) => {
-      dispatch(setIsMuted(toSet))
-    },
-    setIsTimedOut: (toSet) => {
-      dispatch(setIsTimedOut(toSet))
-    },
-  }
-}
 
 /**
  * A screen that shows a dummy piano app meant to convince non-users who are looking at the app that it's just a harmless piano app and not a Christian disciple making tool >:)
@@ -50,15 +29,18 @@ function mapDispatchToProps(dispatch) {
 const PianoAppScreen = ({
   // Props passed from navigation.
   navigation: { canGoBack, goBack, reset },
-  // Props passed from redux.
-  security,
-  activeGroup,
-  isRTL,
-  t,
-  isDark,
-  setIsMuted,
-  setIsTimedOut,
 }) => {
+  const security = selector((state) => state.security)
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = selector((state) =>
+    getTranslations(activeGroupSelector(state).language)
+  )
+  const isRTL = selector(
+    (state) => info(activeGroupSelector(state).language).isRTL
+  )
+  const dispatch = useAppDispatch()
+
   /** Keeps track of the passcode that the user is entering on the piano. */
   const [playedNotes, setPlayedNotes] = useState('')
 
@@ -87,11 +69,11 @@ const PianoAppScreen = ({
   /** useEffect function that updates whenever the user plays a piano note. */
   useEffect(() => {
     // If the user has entered in their passcode...
-    if (playedNotes.includes(security.code)) {
+    if (security.code && playedNotes.includes(security.code)) {
       // If the user hasn't muted the piano app sounds, play a little sound effect when they enter their passcode correctly.
       if (!security.isMuted) unlockSound.current.playAsync()
 
-      setIsTimedOut(false)
+      dispatch(setIsTimedOut(false))
 
       // Because this screen is on top of all other screens in terms of the navigation stack, the way we get back to what was on the screen before security mode was activated is to simply go back. If we can't go back, then just reset to the starting screen.
       if (canGoBack()) {
@@ -232,8 +214,8 @@ const PianoAppScreen = ({
           <TouchableOpacity
             onPress={
               security.isMuted
-                ? () => setIsMuted(false)
-                : () => setIsMuted(true)
+                ? () => dispatch(setIsMuted(false))
+                : () => dispatch(setIsMuted(true))
             }
             style={{
               margin: 20,
@@ -283,4 +265,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PianoAppScreen)
+export default PianoAppScreen

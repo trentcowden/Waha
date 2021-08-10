@@ -13,7 +13,6 @@ import {
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from '../assets/fonts/icon_font_config'
-import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
 import { buttonModes, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
@@ -57,33 +56,9 @@ const ContactUsScreen: FC<Props> = ({
   /** Keeps track of whether the email address is valid or not. */
   const [emailError, setEmailError] = useState<boolean | undefined>(undefined)
 
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => {},
-      headerLeft: isRTL
-        ? () => {}
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-    })
-  }, [])
-
   /** useEffect function that checks the validity of an email address any time the email input changes. */
   useEffect(() => {
-    if (emailTextInput !== null) {
+    if (emailTextInput !== undefined) {
       checkEmail()
     }
   }, [emailTextInput])
@@ -166,8 +141,8 @@ const ContactUsScreen: FC<Props> = ({
       {' *'}
     </Text>
   )
-  var leftAsterisk = isRTL ? asteriskComponent : null
-  var rightAsterisk = isRTL ? null : asteriskComponent
+  var leftAsterisk = isRTL ? asteriskComponent : <View />
+  var rightAsterisk = isRTL ? <View /> : asteriskComponent
 
   return (
     <SafeAreaView
@@ -229,7 +204,7 @@ const ContactUsScreen: FC<Props> = ({
               placeholder='name@email.com'
               placeholderTextColor={colors(isDark).disabled}
             />
-            {emailError !== null ? (
+            {emailError !== undefined ? (
               <View style={styles.emailStatusIconContainer}>
                 <Icon
                   name={emailError ? 'cancel' : 'check'}
@@ -241,7 +216,9 @@ const ContactUsScreen: FC<Props> = ({
                   }
                 />
               </View>
-            ) : null}
+            ) : (
+              <View />
+            )}
           </View>
         </View>
         {/* Message input area. */}
@@ -323,7 +300,9 @@ const ContactUsScreen: FC<Props> = ({
           >
             {isBugChecked ? (
               <Icon name='check' size={25} color={colors(isDark).icons} />
-            ) : null}
+            ) : (
+              <View />
+            )}
           </TouchableOpacity>
           <Text
             style={{
@@ -379,13 +358,15 @@ const ContactUsScreen: FC<Props> = ({
               multiline
             />
           </View>
-        ) : null}
+        ) : (
+          <View />
+        )}
         {/* Submit button. */}
         <WahaButton
           mode={
             // Potential error states are if the email is invalid, the email is blank, or the message length is over 1000 characters.
             emailError ||
-            emailTextInput === null ||
+            emailTextInput === undefined ||
             !isConnected ||
             messageTextInput.length > 1000
               ? buttonModes.DISABLED

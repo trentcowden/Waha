@@ -1285,7 +1285,7 @@
                             </translation>
                             <translation>
                                 <language>ar-MA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>
@@ -1645,7 +1645,7 @@
                             </translation>
                             <translation>
                                 <language>ar-MA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>
@@ -2275,7 +2275,7 @@
                             </translation>
                             <translation>
                                 <language>ar-MA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>
@@ -3113,7 +3113,7 @@
                         <translations>
                             <translation>
                                 <language>ar-SA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                             <translation>
                                 <language>en-US</language>
@@ -3137,7 +3137,7 @@
                             </translation>
                             <translation>
                                 <language>ur-PK</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                             <translation>
                                 <language>mr-IN</language>
@@ -3145,7 +3145,7 @@
                             </translation>
                             <translation>
                                 <language>ar-MA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>
@@ -3203,7 +3203,7 @@
                         <translations>
                             <translation>
                                 <language>ar-SA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                             <translation>
                                 <language>en-US</language>
@@ -3227,7 +3227,7 @@
                             </translation>
                             <translation>
                                 <language>ur-PK</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                             <translation>
                                 <language>mr-IN</language>
@@ -3235,7 +3235,7 @@
                             </translation>
                             <translation>
                                 <language>ar-MA</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>
@@ -3380,6 +3380,51 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>fr</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>ar-MA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ar-SA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>hi-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>mr-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ro-RO</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>tr-TR</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ur-PK</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>ga</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -3471,6 +3516,186 @@
                     </concept_node>
                     <concept_node>
                         <name>ma</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>ar-MA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ar-SA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>hi-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>mr-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ro-RO</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>tr-TR</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ur-PK</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>mr</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>ar-MA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ar-SA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>hi-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>mr-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ro-RO</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>tr-TR</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ur-PK</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>ro</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>ar-MA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ar-SA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>hi-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>mr-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ro-RO</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>tr-TR</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ur-PK</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>ru</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>ar-MA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ar-SA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-US</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>hi-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>mr-IN</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ro-RO</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ru-RU</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>tr-TR</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>ur-PK</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>tr</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -4146,7 +4371,7 @@
                             </translation>
                             <translation>
                                 <language>ur-PK</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                             <translation>
                                 <language>ar-MA</language>

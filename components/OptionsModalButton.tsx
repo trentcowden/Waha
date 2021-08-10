@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { scaleMultiplier } from '../constants'
+import { AGProps, CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps {
+  onPress: Function
+  label: string
+}
 
 /**
  * A simple button component that is used inside the <OptionsModal /> component.
@@ -10,18 +16,17 @@ import { type } from '../styles/typography'
  * @param {string} label - The text to display on the button.
  * @param {Component} children - (Optional) An extra component to show on the right side of the button.
  */
-const OptionsModalButton = ({
+const OptionsModalButton: FC<Props> = ({
   // Props passed from a parent component.
   onPress,
-  style,
   label,
-  children = null,
+  children,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <TouchableOpacity
     style={styles.optionsModalButtonContainer}
-    onPress={onPress}
+    onPress={() => onPress()}
   >
     <Text
       style={type(
@@ -43,8 +48,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 70 * scaleMultiplier,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default OptionsModalButton

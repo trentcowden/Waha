@@ -13,7 +13,7 @@ interface SetSecurityEnabledParams {
 
 interface SetCodeParams {
   type: 'SET_CODE'
-  code: number
+  code: string
 }
 
 interface SetIsMutedParams {

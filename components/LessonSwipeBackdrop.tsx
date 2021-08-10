@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
+import { CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
+
+interface Props extends CommonProps {
+  isComplete: boolean
+  toggleComplete: Function
+  showShareModal: Function
+  isRTL: boolean
+  isDark: boolean
+}
 
 /**
  * A component that renders behind the <LessonItem /> component that gets revealed when the user swipes the lesson item.
@@ -10,18 +19,18 @@ import { colors } from '../styles/colors'
  * @param {Function} toggleComplete - Marks this lesson as complete.
  * @param {Function} showShareModal - Shows the share modal.
  */
-const LessonSwipeBackdrop = ({
+const LessonSwipeBackdrop: FC<Props> = ({
   // Props passed from a parent component.
   isComplete,
   toggleComplete,
   showShareModal,
   isRTL,
-  isDark
-}) => (
+  isDark,
+}): ReactElement => (
   <View
     style={{
       ...styles.lessonSwipeBackdropContainer,
-      flexDirection: isRTL ? 'row-reverse' : 'row'
+      flexDirection: isRTL ? 'row-reverse' : 'row',
     }}
   >
     {isComplete ? (
@@ -29,9 +38,9 @@ const LessonSwipeBackdrop = ({
         style={{
           ...styles.buttonContainer,
           backgroundColor: colors(isDark).disabled,
-          alignItems: isRTL ? 'flex-end' : 'flex-start'
+          alignItems: isRTL ? 'flex-end' : 'flex-start',
         }}
-        onPress={toggleComplete}
+        onPress={() => toggleComplete()}
       >
         <View style={styles.iconContainer}>
           <Icon name='cancel-filled' size={20} color={colors(isDark).bg4} />
@@ -42,9 +51,9 @@ const LessonSwipeBackdrop = ({
         style={{
           ...styles.buttonContainer,
           backgroundColor: colors(isDark).success,
-          alignItems: isRTL ? 'flex-end' : 'flex-start'
+          alignItems: isRTL ? 'flex-end' : 'flex-start',
         }}
-        onPress={toggleComplete}
+        onPress={() => toggleComplete()}
       >
         <View style={styles.iconContainer}>
           <Icon name='check-filled' size={20} color={colors(isDark).bg4} />
@@ -55,9 +64,9 @@ const LessonSwipeBackdrop = ({
       style={{
         ...styles.buttonContainer,
         backgroundColor: colors(isDark).highlight,
-        alignItems: isRTL ? 'flex-start' : 'flex-end'
+        alignItems: isRTL ? 'flex-start' : 'flex-end',
       }}
-      onPress={showShareModal}
+      onPress={() => showShareModal()}
     >
       <View style={styles.iconContainer}>
         <Icon
@@ -73,17 +82,17 @@ const LessonSwipeBackdrop = ({
 const styles = StyleSheet.create({
   lessonSwipeBackdropContainer: {
     width: '100%',
-    flex: 1
+    flex: 1,
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   iconContainer: {
     width: 50 * scaleMultiplier,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 
 export default LessonSwipeBackdrop

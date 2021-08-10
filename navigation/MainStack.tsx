@@ -294,6 +294,24 @@ const MainStack = ({
               elevation: 0,
               shadowColor: 'transparent',
             },
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
           }}
         />
         <Stack.Screen
@@ -343,6 +361,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen
@@ -359,6 +395,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen
@@ -375,6 +429,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen
@@ -391,6 +463,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen
@@ -407,6 +497,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen
@@ -506,6 +614,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen
@@ -522,6 +648,24 @@ const MainStack = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
       </Stack.Navigator>

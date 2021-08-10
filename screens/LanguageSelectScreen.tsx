@@ -21,7 +21,7 @@ import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
 import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { buttonModes, groupNames, scaleMultiplier } from '../constants'
+import { buttonModes, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
@@ -112,9 +112,7 @@ const LanguageSelectScreen = ({
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
-    setOptions({
-      headerTitle: t.language_select.add_language,
-    })
+    setOptions({ headerTitle: t.language_select.add_language })
   }, [])
 
   /**
@@ -216,13 +214,17 @@ const LanguageSelectScreen = ({
 
         // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
         if (
-          !groups.some((group) => group.name === groupNames[selectedLanguage])
+          !groups.some(
+            (group) =>
+              group.name ===
+              getTranslations(selectedLanguage).other.default_group_name
+          )
         ) {
           dispatch(incrementGlobalGroupCounter())
 
           dispatch(
             createGroup(
-              groupNames[selectedLanguage],
+              getTranslations(selectedLanguage).other.default_group_name,
               selectedLanguage,
               'default',
               true,
@@ -233,7 +235,11 @@ const LanguageSelectScreen = ({
         }
 
         // Change the active group to the new group we just created.
-        dispatch(changeActiveGroup(groupNames[selectedLanguage]))
+        dispatch(
+          changeActiveGroup(
+            getTranslations(selectedLanguage).other.default_group_name
+          )
+        )
 
         // Set the local isFetchingFirebaseData state to false.
         setIsFetchingFirebaseData(false)

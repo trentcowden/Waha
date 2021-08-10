@@ -81,17 +81,6 @@ export const gutterSize = 15 * scaleMultiplier
 export const isTablet = Dimensions.get('window').width > 500 ? true : false
 
 /**
- * This object stores the default group names for every language instance. Upon installing a language instance, a group is automatically created with the corresponding group name below.
- * @export
- * */
-export const groupNames = {
-  en: 'Group 1',
-  ga: 'المجموعة الأولى',
-  hi: 'समूह 1',
-  ma: 'المجموعة  الأولى'
-}
-
-/**
  * Gets whether the current system language is right-to-left or not.
  * @export
  * @return {boolean} - Whether the current system is RTL.

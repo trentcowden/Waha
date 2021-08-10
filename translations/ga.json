@@ -78,17 +78,22 @@
 		"add_language": "إضافة لغة",
 		"fetch_error_message": "يرجى التحقق من اتصالك وإعادة المحاولة مرة أخرى",
 		"fetch_error_title": "عفواً، حدثت مشكلة.",
-		"multiple_versions": "",
+		"multiple_versions": "لهذه اللغة إصدارات عديدة.",
 		"select_language": "فضلاً اختر لغتك",
-		"select_version": "",
+		"select_version": "قم باختيار الإصدار الذي يناسبك.",
 		"welcome": "أهلاً ومرحباً"
 	},
 	"languages": {
 		"ar": "عربى",
 		"en": "اللغة الإنجليزية",
+		"fr": "",
 		"ga": "الخليج العربي",
 		"hi": "هندي",
-		"ma": "الدارجة المغربية"
+		"ma": "الدارجة المغربية",
+		"mr": "",
+		"ro": "",
+		"ru": "",
+		"tr": ""
 	},
 	"lessons": {
 		"download_lesson": "تنزيل الدرس",

@@ -5,7 +5,6 @@ import SnackBar from 'react-native-snackbar-component'
 import TagGroup from 'react-native-tag-group'
 import { StorySet } from 'redux/reducers/database'
 import SetItem from '../components/SetItem'
-import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier, setItemModes } from '../constants'
 import { info } from '../functions/languageDataFunctions'
@@ -116,27 +115,7 @@ const AddSetScreen: FC<Props> = ({
 
   /** useEffect function that sets the navigation options for this screen. */
   useEffect(() => {
-    setOptions({
-      title: headerTitle,
-      headerLeft: isRTL
-        ? () => <View />
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => <View />,
-    })
+    setOptions({ title: headerTitle })
   }, [headerTitle])
 
   /**

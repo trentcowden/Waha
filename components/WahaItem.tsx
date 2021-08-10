@@ -1,8 +1,14 @@
-import React from 'react'
+import { AGProps, CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps {
+  onPress?: Function
+  title: string
+}
 
 /**
  * A component used for standard list items/buttons throughout Waha.
@@ -11,25 +17,23 @@ import { type } from '../styles/typography'
  * @param {string} title - The text to display in the item.
  * @param {Component} children - Child components to display on the opposite side of the item from the title.
  */
-const WahaItem = ({
+const WahaItem: FC<Props> = ({
   // Props passed from a parent component.s
-  onPress = null,
-  style = {},
+  onPress,
   title,
   children,
   isRTL,
   isDark,
-  activeGroup
-}) =>
+  activeGroup,
+}): ReactElement =>
   onPress ? (
     <TouchableOpacity
       style={{
         ...styles.wahaItemContainer,
         flexDirection: isRTL ? 'row-reverse' : 'row',
         backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-        ...style
       }}
-      onPress={onPress}
+      onPress={() => onPress()}
     >
       <Text
         style={type(
@@ -50,7 +54,6 @@ const WahaItem = ({
         ...styles.wahaItemContainer,
         flexDirection: isRTL ? 'row-reverse' : 'row',
         backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-        style
       }}
     >
       <Text
@@ -74,8 +77,8 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     alignItems: 'center',
     paddingHorizontal: 20,
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 })
 
 export default WahaItem

@@ -11,7 +11,7 @@ import {
 
 export interface SecurityState {
   securityEnabled: boolean
-  code: number | undefined
+  code: string | undefined
   isMuted: boolean
   timeoutDuration: number
   timer: number

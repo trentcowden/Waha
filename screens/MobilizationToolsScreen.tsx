@@ -1,53 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import { Group } from 'interfaces/groups'
+import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
-import { connect } from 'react-redux'
 import Icon from '../assets/fonts/icon_font_config'
 import GroupItemMT from '../components/GroupItemMT'
 import ShareMobilizationToolsButton from '../components/ShareMobilizationToolsButton'
-import WahaBackButton from '../components/WahaBackButton'
 import WahaBlurb from '../components/WahaBlurb'
 import WahaHero from '../components/WahaHero'
 import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
-
-function mapStateToProps(state) {
-  return {
-    database: state.database,
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    areMobilizationToolsUnlocked: state.areMobilizationToolsUnlocked,
-    groups: state.groups,
-    activeGroup: activeGroupSelector(state),
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    editGroup: (
-      oldGroupName,
-      newGroupName,
-      emoji,
-      shouldShowMobilizationToolsTab
-    ) =>
-      dispatch(
-        editGroup(
-          oldGroupName,
-          newGroupName,
-          emoji,
-          shouldShowMobilizationToolsTab
-        )
-      ),
-  }
-}
 
 /**
  * Screen that shows information about the Mobilization Tools and a button to unlock them.
@@ -55,43 +24,19 @@ function mapDispatchToProps(dispatch) {
 const MobilizationToolsScreen = ({
   // Props passed from navigation.
   navigation: { setOptions, goBack, navigate },
-  // Props passed from redux.
-  database,
-  isRTL,
-  isDark,
-  areMobilizationToolsUnlocked,
-  groups,
-  activeGroup,
-  t,
-  editGroup,
 }) => {
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const t = getTranslations(activeGroup.language)
+  const isRTL = info(activeGroup.language).isRTL
+  const areMobilizationToolsUnlocked = selector(
+    (state) => state.areMobilizationToolsUnlocked
+  )
+  const groups = selector((state) => state.groups)
+  const database = selector((state) => state.database)
   const [showSnackbar, setShowSnackbar] = useState(false)
 
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({
-      headerRight: isRTL
-        ? () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          )
-        : () => <View />,
-      headerLeft: isRTL
-        ? () => <View />
-        : () => (
-            <WahaBackButton
-              onPress={() => goBack()}
-              isRTL={isRTL}
-              isDark={isDark}
-            />
-          ),
-    })
-  }, [])
-
-  function renderGroupItem({ item }) {
+  function renderGroupItem({ item }: { item: Group }) {
     return (
       <GroupItemMT
         thisGroup={item}
@@ -134,11 +79,11 @@ const MobilizationToolsScreen = ({
         <FlatList
           bounces={false}
           data={groups
-            .sort((a, b) => a.groupID < b.groupID)
+            .sort((group1, group2) => group1.id - group2.id)
             .sort(
-              (a, b) =>
-                database[a.language].installTime >
-                database[b.language].installTime
+              (group1, group2) =>
+                database[group1.language].installTime -
+                database[group2.language].installTime
             )}
           renderItem={renderGroupItem}
           style={{ width: '100%' }}
@@ -215,7 +160,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MobilizationToolsScreen)
+export default MobilizationToolsScreen
