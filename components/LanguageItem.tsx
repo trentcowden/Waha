@@ -11,10 +11,10 @@ interface Props extends CommonProps {
   languageID: string
   nativeName: string
   localeName: string
-  logos: Language['colors']
-  onPress: Function
+  logos: Language['logos']
+  onLanguageItemPress: () => void
   isSelected: boolean
-  playAudio: Function
+  playAudio: () => void
   screenLanguage: string
 }
 
@@ -34,7 +34,7 @@ const LanguageItem: FC<Props> = ({
   localeName,
   isDark,
   logos,
-  onPress,
+  onLanguageItemPress,
   isSelected,
   playAudio,
   isRTL,
@@ -59,7 +59,7 @@ const LanguageItem: FC<Props> = ({
         </View>
       ) : (
         <TouchableOpacity
-          onPress={() => playAudio()}
+          onPress={playAudio}
           style={{
             height: '100%',
             width: 70,
@@ -75,7 +75,7 @@ const LanguageItem: FC<Props> = ({
           ...styles.touchableAreaContainer,
           flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
-        onPress={() => onPress()}
+        onPress={onLanguageItemPress}
       >
         <View style={styles.namesContainer}>
           <Text

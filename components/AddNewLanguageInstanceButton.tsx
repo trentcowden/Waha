@@ -1,4 +1,3 @@
-import { InfoAndGroupsForAllLanguages } from 'interfaces/languages'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
@@ -9,8 +8,8 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
-  navigate: Function
-  languageAndGroupData: InfoAndGroupsForAllLanguages
+  onAddNewLanguageButtonPress: () => void
+  numInstalledLanguages: number
 }
 
 /**
@@ -18,27 +17,21 @@ interface Props extends CommonProps, AGProps, TProps {
  */
 const AddNewLanguageInstanceButton: FC<Props> = ({
   // Props passed from a parent component.
-  navigate,
-  languageAndGroupData,
+  onAddNewLanguageButtonPress,
+  numInstalledLanguages,
   isRTL,
   isDark,
   t,
   activeGroup,
 }): ReactElement => {
   // Hide this button if every language has already been added.
-  return languageAndGroupData.length !== getTotalNumberOfLanguages() ? (
+  return numInstalledLanguages !== getTotalNumberOfLanguages() ? (
     <TouchableOpacity
       style={{
         ...styles.addNewLanguageButtonContainer,
         flexDirection: isRTL ? 'row-reverse' : 'row',
       }}
-      onPress={() => {
-        // Navigate to the LanguageInstanceInstall screen so that the user can install another language instance.
-        navigate('SubsequentLanguageSelect', {
-          // Send over the currently installed language instances so that we can filter those out from the options.
-          installedLanguageInstances: languageAndGroupData,
-        })
-      }}
+      onPress={onAddNewLanguageButtonPress}
     >
       <View style={styles.iconContainer}>
         <Icon

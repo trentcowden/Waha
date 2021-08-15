@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, ReactElement, useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
@@ -6,23 +8,32 @@ import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
-import { buttonModes, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector } from '../hooks'
+import { WahaButtonMode } from '../interfaces/components'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
+type SecurityOnboardingSlidesScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'SecurityOnboardingSlides'
+>
+
+interface Props {
+  navigation: SecurityOnboardingSlidesScreenNavigationProp
+}
 const numPages = 4
 
 /**
  * A screen that guides the user through what security mode is.
  */
-const SecurityOnboardingSlidesScreen = ({
+const SecurityOnboardingSlidesScreen: FC<Props> = ({
   // Props passed from navigation.
   navigation: { navigate },
-}) => {
+}): ReactElement => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -56,11 +67,13 @@ const SecurityOnboardingSlidesScreen = ({
       message={t.security.onboarding_1_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding1.png')}
         imageType='png'
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
     <OnboardingPage
@@ -69,11 +82,13 @@ const SecurityOnboardingSlidesScreen = ({
       message={t.security.onboarding_2_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding2.png')}
         imageType='png'
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
     <OnboardingPage
@@ -82,11 +97,13 @@ const SecurityOnboardingSlidesScreen = ({
       message={t.security.onboarding_3_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding3.png')}
         imageType='png'
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
     <OnboardingPage
@@ -95,11 +112,13 @@ const SecurityOnboardingSlidesScreen = ({
       message={t.security.onboarding_4_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         source={require('../assets/onboardingImages/security_onboarding4.png')}
         imageType='png'
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
   ]
@@ -161,7 +180,7 @@ const SecurityOnboardingSlidesScreen = ({
         <WahaButton
           label={t.general.continue}
           onPress={onContinueButtonPress}
-          mode={buttonModes.SUCCESS}
+          mode={WahaButtonMode.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
             flex: 2,

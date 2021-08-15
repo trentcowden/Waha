@@ -1,6 +1,7 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { Lesson } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { CommonProps, DLProps, NetworkProps } from '../interfaces/common'
@@ -10,11 +11,12 @@ import { colors } from '../styles/colors'
 interface Props extends CommonProps, NetworkProps, DLProps {
   isFullyDownloaded: boolean
   isDownloading: boolean
-  showDeleteLessonModal: Function
-  showDownloadLessonModal: Function
+  onDownloadButtonPress: (lesson: Lesson) => void
+  onRemoveDownloadButtonPress: (lesson: Lesson) => void
   lessonID: string
   lessonType: LessonType
-  removeDownload: Function
+  removeDownload: (lessonID: string) => void
+  thisLesson: Lesson
 }
 
 /**
@@ -30,14 +32,15 @@ const DownloadStatusIndicator: FC<Props> = ({
   // Props passed from a parent component.
   isFullyDownloaded,
   isDownloading,
-  showDeleteLessonModal,
-  showDownloadLessonModal,
+  onDownloadButtonPress,
+  onRemoveDownloadButtonPress,
   lessonID,
   lessonType,
   isConnected,
   downloads,
   isDark,
   removeDownload,
+  thisLesson,
 }): ReactElement => {
   /** Keeps track of the percentage of the download for this lesson if it's currently downloading. */
   const [downloadPercentage, setDownloadPercentage] = useState(0)
@@ -78,7 +81,7 @@ const DownloadStatusIndicator: FC<Props> = ({
   else if (isFullyDownloaded)
     return (
       <TouchableOpacity
-        onPress={() => showDeleteLessonModal()}
+        onPress={() => onRemoveDownloadButtonPress(thisLesson)}
         style={styles.downloadStatusIndicatorContainer}
       >
         <Icon
@@ -129,7 +132,7 @@ const DownloadStatusIndicator: FC<Props> = ({
   else if (!isDownloading && !isFullyDownloaded && isConnected)
     return (
       <TouchableOpacity
-        onPress={() => showDownloadLessonModal()}
+        onPress={() => onDownloadButtonPress(thisLesson)}
         style={styles.downloadStatusIndicatorContainer}
       >
         <Icon

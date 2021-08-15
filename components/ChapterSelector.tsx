@@ -7,14 +7,14 @@ import {
 } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { chapters, gutterSize, isTablet } from '../constants'
+import { gutterSize, isTablet } from '../constants'
 import { Chapter, LessonType } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 import ChapterButton from './ChapterButton'
 
 interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
   activeChapter: Chapter
-  changeChapter: Function
+  changeChapter: (chapter: Chapter) => void
   lessonType: LessonType
   lessonID?: string
   isAudioDownloaded: boolean
@@ -52,7 +52,7 @@ const ChapterSelector: FC<Props> = ({
     }}
   >
     <ChapterButton
-      chapter={chapters.FELLOWSHIP}
+      chapter={Chapter.FELLOWSHIP}
       activeChapter={activeChapter}
       lessonType={lessonType}
       changeChapter={changeChapter}
@@ -66,7 +66,7 @@ const ChapterSelector: FC<Props> = ({
     <View style={{ width: isTablet ? 8 : 4 }} />
     {/* <ChapterSeparator /> */}
     <ChapterButton
-      chapter={chapters.STORY}
+      chapter={Chapter.STORY}
       activeChapter={activeChapter}
       changeChapter={changeChapter}
       lessonType={lessonType}
@@ -86,7 +86,7 @@ const ChapterSelector: FC<Props> = ({
     null}
     {lessonType === LessonType.STANDARD_DMC ? (
       <ChapterButton
-        chapter={chapters.TRAINING}
+        chapter={Chapter.TRAINING}
         activeChapter={activeChapter}
         changeChapter={changeChapter}
         lessonType={lessonType}
@@ -103,7 +103,7 @@ const ChapterSelector: FC<Props> = ({
     <View style={{ width: isTablet ? 8 : 4 }} />
     {/* <ChapterSeparator /> */}
     <ChapterButton
-      chapter={chapters.APPLICATION}
+      chapter={Chapter.APPLICATION}
       activeChapter={activeChapter}
       changeChapter={changeChapter}
       lessonType={lessonType}

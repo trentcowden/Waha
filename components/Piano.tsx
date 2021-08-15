@@ -1,5 +1,5 @@
 import { Audio } from 'expo-av'
-import React, { useRef } from 'react'
+import React, { FC, ReactElement, useRef } from 'react'
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'
@@ -17,20 +17,26 @@ const pianoNotes = [
   require('../assets/pianoNotes/Ab.mp3'),
   require('../assets/pianoNotes/A.mp3'),
   require('../assets/pianoNotes/Bb.mp3'),
-  require('../assets/pianoNotes/B.mp3')
+  require('../assets/pianoNotes/B.mp3'),
 ]
+
+interface Props {
+  setPlayedNotes: (pattern: (oldPattern: string) => string) => void
+  isMuted?: boolean
+  isDark: boolean
+}
 
 /**
  * A component that shows a playable piano. Used on the PianoApp screen for Security mode.
  * @param {Function} setPlayedNotes - Function that sets the played notes state. This state keeps track of what notes the user has played on the piano.
  * @param {boolean} isMuted - (Optional) Whether the piano sounds should be muted. Defaults to false.
  */
-const Piano = ({
+const Piano: FC<Props> = ({
   // Props passed from a parent component.
   setPlayedNotes,
   isMuted = false,
-  isDark
-}) => {
+  isDark,
+}): ReactElement => {
   /** Ref to store the audio object. */
   const note = useRef(new Audio.Sound())
   const shouldPlayNote = useRef(true)
@@ -39,7 +45,7 @@ const Piano = ({
    * Plays a specific piano note.
    * @param {number} number - The key number to play the note of. Each piano key is numbered.
    */
-  const playNote = async number => {
+  const playNote = async (number: number) => {
     if (!isMuted && shouldPlayNote.current) {
       shouldPlayNote.current = false
       await note.current
@@ -61,12 +67,12 @@ const Piano = ({
     backgroundColor: isDark ? colors(isDark).text : colors(isDark).bg4,
     borderColor: colors(isDark).text,
     borderWidth: isDark ? 0 : 2,
-    borderBottomWidth: isDark ? 0 : 5
+    borderBottomWidth: isDark ? 0 : 5,
   }
 
   const extraBlackKeyStyles = {
     height: Dimensions.get('window').height / 4,
-    backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).text
+    backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).text,
   }
 
   return (
@@ -76,7 +82,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '01')
+            setPlayedNotes((pattern) => pattern + '01')
             playNote(1)
           }}
         >
@@ -89,7 +95,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '03')
+            setPlayedNotes((pattern) => pattern + '03')
             playNote(3)
           }}
         >
@@ -103,7 +109,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '06')
+            setPlayedNotes((pattern) => pattern + '06')
             playNote(6)
           }}
         >
@@ -116,7 +122,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '08')
+            setPlayedNotes((pattern) => pattern + '08')
             playNote(8)
           }}
         >
@@ -129,7 +135,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.blackKey, ...extraBlackKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '10')
+            setPlayedNotes((pattern) => pattern + '10')
             playNote(10)
           }}
         >
@@ -145,7 +151,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '00')
+            setPlayedNotes((pattern) => pattern + '00')
             playNote(0)
           }}
         >
@@ -158,7 +164,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '02')
+            setPlayedNotes((pattern) => pattern + '02')
             playNote(2)
           }}
         >
@@ -171,7 +177,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '04')
+            setPlayedNotes((pattern) => pattern + '04')
             playNote(4)
           }}
         >
@@ -184,7 +190,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '05')
+            setPlayedNotes((pattern) => pattern + '05')
             playNote(5)
           }}
         >
@@ -197,7 +203,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '07')
+            setPlayedNotes((pattern) => pattern + '07')
             playNote(7)
           }}
         >
@@ -210,7 +216,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '09')
+            setPlayedNotes((pattern) => pattern + '09')
             playNote(9)
           }}
         >
@@ -223,7 +229,7 @@ const Piano = ({
         <TouchableOpacity
           style={{ ...styles.whiteKey, ...extraWhiteKeyStyles }}
           onPress={() => {
-            setPlayedNotes(pattern => pattern + '11')
+            setPlayedNotes((pattern) => pattern + '11')
             playNote(11)
           }}
         >
@@ -241,7 +247,7 @@ const Piano = ({
 const styles = StyleSheet.create({
   pianoContainer: {
     width: '100%',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   whiteKey: {
     flex: 1,
@@ -249,17 +255,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    zIndex: 0
+    zIndex: 0,
   },
   blackKeysContainer: {
     flexDirection: 'row',
     width: '100%',
     position: 'absolute',
-    zIndex: 2
+    zIndex: 2,
   },
   whiteKeysContainer: {
     flexDirection: 'row',
-    width: '100%'
+    width: '100%',
   },
   blackKey: {
     flex: 1,
@@ -267,8 +273,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
 })
 
 export default Piano

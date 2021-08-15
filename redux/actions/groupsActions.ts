@@ -1,11 +1,16 @@
-import { StorySet } from 'interfaces/database'
+import { AnyAction } from 'redux'
+import { ThunkAction } from 'redux-thunk'
 import { AppDispatch, RootState } from 'redux/store'
-import { getLessonInfo, getSetInfo } from '../../constants'
 import {
   logAddStorySet,
   logCompleteStorySet,
   logCreateGroup
 } from '../../functions/analyticsFunctions'
+import {
+  getLessonInfo,
+  getSetInfo
+} from '../../functions/setAndLessonInfoFunctions'
+import { StorySet } from '../reducers/database'
 
 export const CREATE_GROUP = 'CREATE_GROUP'
 export const EDIT_GROUP = 'EDIT_GROUP'
@@ -172,7 +177,7 @@ export function toggleComplete (
   groupName: string,
   set: StorySet,
   lessonIndex: number
-) {
+): ThunkAction<void, RootState, unknown, AnyAction> {
   // Set up a thunk function so we can get state and dispatch other actions from within this action.
   return (dispatch: AppDispatch, getState: () => RootState) => {
     // Firstly, get the language for the group we're editing the progress of.

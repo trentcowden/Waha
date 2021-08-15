@@ -6,7 +6,7 @@ import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
-  onPress: Function
+  onPress: () => void
   color?: string
 }
 
@@ -27,7 +27,7 @@ const WahaBackButton: FC<Props> = ({
       ...styles.backButtonContainer,
       justifyContent: isRTL ? 'flex-end' : 'flex-start',
     }}
-    onPress={() => onPress()}
+    onPress={onPress}
   >
     <Icon
       name={isRTL ? 'arrow-right' : 'arrow-left'}

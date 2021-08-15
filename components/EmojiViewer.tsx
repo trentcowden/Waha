@@ -15,7 +15,7 @@ import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
   emojiInput: string
-  setEmojiInput: Function
+  onEmojiPress: (emoji: string) => void
 }
 
 /**
@@ -25,7 +25,7 @@ interface Props extends CommonProps, AGProps, TProps {
  */
 const EmojiViewer: FC<Props> = ({
   emojiInput,
-  setEmojiInput,
+  onEmojiPress,
   activeGroup,
   isDark,
   t,
@@ -44,7 +44,7 @@ const EmojiViewer: FC<Props> = ({
           backgroundColor:
             item === emojiInput ? colors(isDark).highlight + '38' : undefined,
         }}
-        onPress={() => setEmojiInput(item)}
+        onPress={() => onEmojiPress(item)}
       >
         <Image
           style={{

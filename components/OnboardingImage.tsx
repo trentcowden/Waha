@@ -1,10 +1,16 @@
+import { CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { isTablet } from '../constants'
 import { colors } from '../styles/colors'
 
-const OnboardingImage = ({ source, imageType, isDark }) => {
+interface Props extends CommonProps {
+  source: string
+  imageType: 'lottie' | 'png'
+}
+
+const OnboardingImage: FC<Props> = ({ source, imageType, isDark }) => {
   return (
     <View
       style={{
@@ -15,20 +21,20 @@ const OnboardingImage = ({ source, imageType, isDark }) => {
             ? isDark
               ? colors(isDark).bg2
               : colors(isDark).bg4
-            : null,
+            : undefined,
         maxWidth: isTablet
           ? Dimensions.get('window').width * 0.7
           : Dimensions.get('window').width - 40,
         maxHeight: isTablet
           ? Dimensions.get('window').width * 0.7
-          : Dimensions.get('window').width - 40
+          : Dimensions.get('window').width - 40,
       }}
     >
       {imageType === 'lottie' ? (
         <LottieView
           style={{
             ...styles.image,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
           }}
           autoPlay
           loop
@@ -53,12 +59,12 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     overflow: 'hidden',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 })
 
 export default OnboardingImage

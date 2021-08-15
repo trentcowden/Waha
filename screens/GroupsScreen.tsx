@@ -1,7 +1,9 @@
+import { StackNavigationProp } from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
 import { Group } from 'interfaces/groups'
 import { InfoAndGroupsForLanguage } from 'interfaces/languages'
-import React, { FC, ReactElement, useEffect, useState } from 'react'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { SectionList, StyleSheet, View } from 'react-native'
 import AddNewGroupButton from '../components/AddNewGroupButton'
 import AddNewLanguageInstanceButton from '../components/AddNewLanguageInstanceButton'
@@ -24,29 +26,52 @@ import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
-interface Props {}
+type GroupsScreenScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'Groups'
+>
 
-/**
- * A screen that displays all of the installed language instances and the groups in those language instances. Allows for switching the active group and  editing, deleting, and adding groups & languages.
- */
+interface Props {
+  navigation: GroupsScreenScreenNavigationProp
+}
+
+/* 
+  A screen that displays all of the installed language instances and the groups in those language instances. Allows for switching the active group and  editing, deleting, and adding groups & languages.
+*/
 const GroupsScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { setOptions, goBack, navigate },
-  // Props passed from redux.
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
   const isRTL = info(activeGroup.language).isRTL
   const database = selector((state) => state.database)
   const groups = selector((state) => state.groups)
-
   const dispatch = useAppDispatch()
 
-  /** Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen. */
+  // Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen.
   const [isEditing, setIsEditing] = useState(false)
 
-  /** useEffect function that sets the navigation options for this screen. Unlock similar functions in other screens, this one is updated more often since the header must update whenever the active group changes and when editingMode changes. */
+  // When adding a new group, this state keeps track of the language instance that the user is adding a group in so it can be passed into the CreateGroup() function.
+  const [languageID, setLanguageID] = useState(activeGroup.language)
+
+  // When editing a specific group, this component stores the object for the group that is being edited.
+  const [editingGroup, setEditingGroup] = useState(activeGroup)
+
+  // Keeps track of whether the add group modal is visible.
+  const [showAddGroupModal, setShowAddGroupModal] = useState(false)
+
+  // Keeps track of whether the edit group modal is visible.
+  const [showEditGroupModal, setShowEditGroupModal] = useState(false)
+
+  // Memoize the group data so that the expensive function isn't run on every re-render.
+  const groupData = useMemo(
+    () => getInstalledLanguagesData(database, groups),
+    [database, groups]
+  )
+
+  // Update header whenever the active group changes and when isEditing changes.
   useEffect(() => {
     setOptions({
       headerStyle: {
@@ -105,20 +130,7 @@ const GroupsScreen: FC<Props> = ({
     })
   }, [isEditing, isRTL, activeGroup])
 
-  /** When adding a new group, this state keeps track of the language instance that the user is adding a group in so it can be passed into the CreateGroup() function. */
-  const [languageID, setLanguageID] = useState(activeGroup.language)
-
-  /** When editing a specific group, this component stores the object for the group that is being edited. */
-  const [editingGroup, setEditingGroup] = useState(activeGroup)
-
-  /** Keeps track of whether the add group modal is visible. */
-  const [showAddGroupModal, setShowAddGroupModal] = useState(false)
-
-  /** Keeps track of whether the edit group modal is visible. */
-  const [showEditGroupModal, setShowEditGroupModal] = useState(false)
-
-  /** Deletes an entire language instance. This involves deleting every group, every downloaded file, and all data stored in redux for a language instance. Triggered by pressing the trash can icon next to the langauge's name in editing mode. */
-  const deleteLanguageInstance = (languageID: string) => {
+  const handleDeleteLanguageButtonPress = (languageID: string) => {
     // Delete every group for this language instance.
     groups.map((group) => {
       if (group.language === languageID) {
@@ -126,8 +138,8 @@ const GroupsScreen: FC<Props> = ({
       }
     })
 
+    // Delete all downloaded files for this language instance.
     if (FileSystem.documentDirectory !== null)
-      // Delete all downloaded files for this language instance.
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
         (contents) => {
           for (const item of contents) {
@@ -143,47 +155,53 @@ const GroupsScreen: FC<Props> = ({
     dispatch(deleteLanguageData(languageID))
   }
 
-  /**
-   * Renders a GroupListHeader component used for the Groups SectionList section header.
-   * @param {Object} languageInstance - The object for the language instance to render.
-   * @return {Component} - The GroupListHeader component.
-   */
-  const renderGroupListHeader = (language: InfoAndGroupsForLanguage) => (
+  const handleAddNewLanguageButtonPress = () => {
+    navigate('SubsequentLanguageSelect', {
+      // Send over the currently installed language instances so that we can filter those out from the options.
+      installedLanguageInstances: getInstalledLanguagesData(database, groups),
+    })
+  }
+
+  const handleDeleteGroupButtonPress = (groupName: string) => {
+    dispatch(deleteGroup(groupName))
+  }
+
+  const handleGroupItemPress = (group: Group) => {
+    if (isEditing) {
+      setEditingGroup(group)
+      setShowEditGroupModal(true)
+    } else dispatch(changeActiveGroup(group.name))
+  }
+
+  const renderGroupListHeader = ({
+    section,
+  }: {
+    section: InfoAndGroupsForLanguage
+  }) => (
     <GroupListHeader
-      nativeName={language.nativeName}
-      languageID={language.languageID}
+      nativeName={section.nativeName}
+      languageID={section.languageID}
       isEditing={isEditing}
       isRTL={isRTL}
       t={t}
       isDark={isDark}
       activeGroup={activeGroup}
-      deleteLanguageInstance={deleteLanguageInstance}
+      onDeleteLanguageButtonPress={handleDeleteLanguageButtonPress}
     />
   )
 
-  /**
-   * Renders a GroupItem component used for the Groups SectionList item.
-   * @param {Object} group - The object for the group to render.
-   * @return {Component} - The GroupItem component.
-   */
-  const renderGroupItem = (group: Group) => (
+  const renderGroupItem = ({ item }: { item: Group }) => (
     <GroupItem
-      thisGroup={group}
+      thisGroup={item}
       isEditing={isEditing}
-      openEditModal={() => {
-        setEditingGroup(group)
-        setShowEditGroupModal(true)
-      }}
       database={database}
       isRTL={isRTL}
       isDark={isDark}
       groups={groups}
       t={t}
       activeGroup={activeGroup}
-      deleteGroup={(groupName: string) => dispatch(deleteGroup(groupName))}
-      changeActiveGroup={(groupName: string) =>
-        dispatch(changeActiveGroup(groupName))
-      }
+      onDeleteGroupButtonPress={handleDeleteGroupButtonPress}
+      onGroupItemPress={handleGroupItemPress}
     />
   )
 
@@ -195,9 +213,9 @@ const GroupsScreen: FC<Props> = ({
       }}
     >
       <SectionList
-        sections={getInstalledLanguagesData(database, groups)}
-        renderItem={({ item }) => renderGroupItem(item)}
-        renderSectionHeader={({ section }) => renderGroupListHeader(section)}
+        sections={groupData}
+        renderItem={renderGroupItem}
+        renderSectionHeader={renderGroupListHeader}
         keyExtractor={(item) => item.name}
         extraData={isRTL}
         ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
@@ -220,10 +238,10 @@ const GroupsScreen: FC<Props> = ({
         )}
         ListFooterComponent={
           <AddNewLanguageInstanceButton
-            navigate={(screen: string, params: Object) =>
-              navigate(screen, params)
+            onAddNewLanguageButtonPress={handleAddNewLanguageButtonPress}
+            numInstalledLanguages={
+              getInstalledLanguagesData(database, groups).length
             }
-            languageAndGroupData={getInstalledLanguagesData(database, groups)}
             isRTL={isRTL}
             isDark={isDark}
             t={t}

@@ -8,7 +8,7 @@ import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps {
   isVisible: boolean
-  hideModal: Function
+  hideModal: () => void
   closeText: string
 }
 

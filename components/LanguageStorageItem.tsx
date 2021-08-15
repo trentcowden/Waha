@@ -1,7 +1,8 @@
 import * as FileSystem from 'expo-file-system'
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import { buttonModes, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
+import { WahaButtonMode } from '../interfaces/components'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import WahaButton from './WahaButton'
@@ -23,7 +24,7 @@ const LanguageStorageItem = ({
   isRTL,
   isDark,
   t,
-  activeGroup
+  activeGroup,
 }) => {
   return (
     <View style={styles.languageStorageItemContainer}>
@@ -31,7 +32,7 @@ const LanguageStorageItem = ({
         style={{
           ...styles.languageStorageHeaderContainer,
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
         }}
       >
         <Text
@@ -50,7 +51,7 @@ const LanguageStorageItem = ({
           source={{
             uri: isDark
               ? FileSystem.documentDirectory + languageID + '-header-dark.png'
-              : FileSystem.documentDirectory + languageID + '-header.png'
+              : FileSystem.documentDirectory + languageID + '-header.png',
           }}
         />
       </View>
@@ -59,7 +60,7 @@ const LanguageStorageItem = ({
         style={{
           ...styles.mainAreaContainer,
           flexDirection: isRTL ? 'row-reverse' : 'row',
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
         }}
       >
         <Text
@@ -83,18 +84,18 @@ const LanguageStorageItem = ({
               colors(isDark).icons
             ),
             flex: 1,
-            paddingHorizontal: 20
+            paddingHorizontal: 20,
           }}
         >
           {t.storage.storage_used}
         </Text>
         <WahaButton
-          mode={buttonModes.ERROR_SECONDARY}
+          mode={WahaButtonMode.ERROR_SECONDARY}
           label={t.general.clear}
           onPress={clearDownloads}
           extraContainerStyles={{
             width: 92 * scaleMultiplier,
-            height: 45 * scaleMultiplier
+            height: 45 * scaleMultiplier,
           }}
           extraLabelStyles={{ fontSize: 14 * scaleMultiplier }}
           isDark={isDark}
@@ -109,27 +110,27 @@ const LanguageStorageItem = ({
 
 const styles = StyleSheet.create({
   languageStorageItemContainer: {
-    width: '100%'
+    width: '100%',
   },
   languageStorageHeaderContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
     height: 40 * scaleMultiplier,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   languageLogo: {
     resizeMode: 'contain',
     width: 120 * scaleMultiplier,
-    height: 16.8 * scaleMultiplier
+    height: 16.8 * scaleMultiplier,
   },
   mainAreaContainer: {
     width: '100%',
     height: 80 * scaleMultiplier,
     alignItems: 'center',
     paddingHorizontal: 20,
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 })
 
 export default LanguageStorageItem

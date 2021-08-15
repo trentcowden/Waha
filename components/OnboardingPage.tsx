@@ -1,8 +1,14 @@
-import React from 'react'
+import { AGProps, CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps {
+  title: string
+  message: string
+}
 
 /**
  * A component that's used for a single onboarding page in the various onboarding slides used in Waha.
@@ -10,18 +16,18 @@ import { type } from '../styles/typography'
  * @param {string} message - The message to display on the page.
  * @param {Component} children - Child components to render on the page.
  */
-const OnboardingPage = ({
+const OnboardingPage: FC<Props> = ({
   // Props passed from a parent component.
   title,
   message,
   children,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <View
     style={{
       ...styles.onboardingPageContainer,
-      backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+      backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
     }}
   >
     <View style={styles.textContainer}>
@@ -34,7 +40,7 @@ const OnboardingPage = ({
             'center',
             colors(isDark).text
           ),
-          fontSize: 24 * scaleMultiplier
+          fontSize: 24 * scaleMultiplier,
         }}
       >
         {title}
@@ -62,21 +68,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textContainer: {
     justifyContent: 'space-around',
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 25 * scaleMultiplier
+    paddingVertical: 25 * scaleMultiplier,
   },
   childrenContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: 'green'
-  }
+    backgroundColor: 'green',
+  },
 })
 
 export default OnboardingPage

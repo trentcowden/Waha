@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { Keyboard, StyleSheet, Text, View } from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { scaleMultiplier } from '../constants'
@@ -13,17 +15,25 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
+type MobilizationToolsUnlockScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'MobilizationToolsUnlock'
+>
+
+interface Props {
+  navigation: MobilizationToolsUnlockScreenNavigationProp
+}
+
 /**
  * Screen that shows a simple passcode entry and allows the user to unlock the Mobilization Tools.
  */
-const MobilizationToolsUnlockScreen = ({
+const MobilizationToolsUnlockScreen: FC<Props> = ({
   // Props passed from navigation.
-  navigation: { navigate, setOptions, goBack },
+  navigation: { navigate },
 }) => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
-  const database = selector((state) => state.database)
   const mtUnlockAttempts = selector((state) => state.mtUnlockAttempts)
   const security = selector((state) => state.security)
   /** Keeps track of the user input of the passcode entry area. */

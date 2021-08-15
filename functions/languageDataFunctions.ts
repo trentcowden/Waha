@@ -1,5 +1,4 @@
 import * as Localization from 'expo-localization'
-import { Database } from 'interfaces/database'
 import { Group } from 'interfaces/groups'
 import { Translations } from 'interfaces/translations'
 import {
@@ -10,6 +9,7 @@ import {
   LanguageInfo
 } from '../interfaces/languages'
 import { languages } from '../languages'
+import { Database } from '../redux/reducers/database'
 
 export const info = (languageID: string): LanguageInfo => {
   // Default values in case the language can't be found.

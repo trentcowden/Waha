@@ -1,11 +1,27 @@
 import Constants from 'expo-constants'
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AGProps, CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import Modal from 'react-native-modal'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps {
+  isVisible: boolean
+  hideModal: () => void
+  topRightComponent?: ReactElement
+  onCancelPress?: () => void
+  onModalWillShow?: () => void
+  title: string
+}
 
 /**
  * A component that renders a fullscreen modal with a header.
@@ -17,20 +33,20 @@ import { type } from '../styles/typography'
  * @param {string} title - The title of the screen to display at the very top of the component.
  * @param {Component} children - The component to display as the content of the modal screen.
  */
-const ModalScreen = ({
+const ModalScreen: FC<Props> = ({
   // Props passed from a parent component.
   isVisible,
   hideModal,
   topRightComponent = null,
-  onCancelPress = () => {},
+  onCancelPress,
   onModalWillShow,
   title,
   children,
   // Props passed from redux.
   isRTL,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   // Outer view is here because of some weird scrolling issues that occur when there's nested scrollable content inside the modal.
   <View>
     <Modal
@@ -54,25 +70,25 @@ const ModalScreen = ({
             ? Constants.statusBarHeight > 40
               ? 60
               : 30
-            : 20
+            : 20,
       }}
       onModalWillShow={onModalWillShow}
     >
       <View
         style={{
           ...styles.contentContainer,
-          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3
+          backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
         }}
       >
         <View
           style={{
             ...styles.headerContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row'
+            flexDirection: isRTL ? 'row-reverse' : 'row',
           }}
         >
           <TouchableOpacity
             onPress={() => {
-              onCancelPress()
+              if (onCancelPress) onCancelPress()
               hideModal()
             }}
             style={styles.headerButtonContainer}
@@ -109,19 +125,19 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerContainer: {
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 10 * scaleMultiplier
+    paddingVertical: 10 * scaleMultiplier,
   },
   headerTitleContainer: { flex: 1 },
   headerButtonContainer: {
     width: 45 * scaleMultiplier,
-    height: 45 * scaleMultiplier
-  }
+    height: 45 * scaleMultiplier,
+  },
 })
 
 export default ModalScreen

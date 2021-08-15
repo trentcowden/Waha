@@ -14,9 +14,9 @@ import { colors } from '../styles/colors'
 interface Props extends CommonProps, AGProps {
   isMediaPlaying: boolean
   isMediaLoaded: boolean
-  playHandler: Function
+  playHandler: () => void
   mediaProgress: number
-  playFromLocation: Function
+  playFromLocation: (value: number) => void
   isDark: boolean
   activeGroup: Group
 }
@@ -58,7 +58,7 @@ const PlaybackControls: FC<Props> = ({
           width: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
           height: isTablet ? 130 * scaleMultiplier : 100 * scaleMultiplier,
         }}
-        onPress={() => playHandler()}
+        onPress={playHandler}
       >
         <Icon
           name={isMediaPlaying ? 'pause' : 'play'}

@@ -1,5 +1,6 @@
 import { Media } from 'classes/media'
 import { Video } from 'expo-av'
+import { AVPlaybackStatus } from 'expo-av/build/AV'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { DeviceMotion } from 'expo-sensors'
 import { CommonProps } from 'interfaces/common'
@@ -13,22 +14,17 @@ import React, {
 } from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import {
-  chapters,
-  isTablet,
-  lockLandscape,
-  lockPortrait,
-  scaleMultiplier,
-} from '../constants'
+import { isTablet, scaleMultiplier } from '../constants'
+import { lockLandscape, lockPortrait } from '../functions/orientationFunctions'
 import { Chapter } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
   videoRef: RefObject<Video>
   media: Media
-  onVideoPlaybackStatusUpdate: Function
+  onVideoPlaybackStatusUpdate: (playbackStatus: AVPlaybackStatus) => void
   isMediaPlaying: boolean
-  setIsMediaPlaying: Function
+  setIsMediaPlaying: (isPlaying: boolean) => void
   fullscreenStatus: MutableRefObject<number>
   activeChapter: Chapter
   isMediaLoaded: boolean
@@ -42,7 +38,7 @@ interface DeviceRotation {
 }
 
 /**
- * A component that shows a video. Used on the Play Screen during Training chapters.
+ * A component that shows a video. Used on the Play Screen during Training Chapter.
  * @param {ref} videoRef - The ref for the video.
  * @param {Function} onVideoPlaybackStatusUpdate - Function to call whenever the playback status changes. Used for audio and video.
  * @param {Function} setIsMediaPlaying - Function to set the isMediaPlaying state on the Play Screen.
@@ -100,7 +96,7 @@ const VideoPlayer: FC<Props> = ({
 
   /** useEffect function that adds a device motion listener on iOS devices. This is so that the app can automatically enter fullscreen when the user rotates their phone. */
   useEffect(() => {
-    if (Platform.OS === 'ios' && activeChapter === chapters.TRAINING)
+    if (Platform.OS === 'ios' && activeChapter === Chapter.TRAINING)
       DeviceMotion.isAvailableAsync().then((isAvailable) => {
         if (isAvailable) {
           DeviceMotion.setUpdateInterval(1000)
@@ -109,7 +105,7 @@ const VideoPlayer: FC<Props> = ({
           })
         }
       })
-    else if (Platform.OS === 'ios' && activeChapter !== chapters.TRAINING)
+    else if (Platform.OS === 'ios' && activeChapter !== Chapter.TRAINING)
       DeviceMotion.removeAllListeners()
 
     // Cleanup function that cancels the device motion listener.
@@ -134,7 +130,7 @@ const VideoPlayer: FC<Props> = ({
   useEffect(() => {
     // If the user's phone is in landscape position, the video is on screen, and they're not in full screen mode, activate full screen mode.
     if (
-      activeChapter === chapters.TRAINING &&
+      activeChapter === Chapter.TRAINING &&
       fullscreenStatus.current === Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS &&
       isLandscape()
     )
@@ -189,11 +185,11 @@ const VideoPlayer: FC<Props> = ({
                   break
                 // Lock video to portrait when we exit fullscreen.
                 case Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS:
-                  !isTablet && lockPortrait(() => {})
+                  !isTablet && lockPortrait()
                   break
                 // After exiting fullscreen, automatically start playing the video. This is because of strange Android behavior where upon exiting fullscreen while paused, the layout of the whole Play Screen gets messed up.
                 case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
-                  !isTablet && lockPortrait(() => {})
+                  !isTablet && lockPortrait()
                   if (!isMediaPlaying) media.play(activeChapter)
                   setIsMediaPlaying(true)
                   break

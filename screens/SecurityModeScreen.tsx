@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, useState } from 'react'
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import Icon from '../assets/fonts/icon_font_config'
@@ -18,10 +20,20 @@ import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
+
+type SecurityModeScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'SecurityMode'
+>
+
+interface Props {
+  navigation: SecurityModeScreenNavigationProp
+}
+
 /**
  * A screen that displays the configuration options for security mode. Allows for turning it on/off, changing the timeout, and updating your passcode.
  */
-const SecurityModeScreen = ({
+const SecurityModeScreen: FC<Props> = ({
   // Props passed from navigation.
   navigation: { navigate },
 }) => {
@@ -64,11 +76,13 @@ const SecurityModeScreen = ({
         <WahaHero
           source={require('../assets/lotties/security_mode.json')}
           isDark={isDark}
+          isRTL={isRTL}
         />
         <WahaBlurb
           text={t.security.security_mode_blurb}
           isDark={isDark}
           activeGroup={activeGroup}
+          isRTL={isRTL}
         />
         <WahaSeparator isDark={isDark} />
         <WahaItem
@@ -161,8 +175,9 @@ const SecurityModeScreen = ({
         isDark={isDark}
         t={t}
         activeGroup={activeGroup}
-        setSecurityEnabled={setSecurityEnabled}
-        setTimeoutDuration={setTimeoutDuration}
+        setTimeoutDuration={(duration: number) =>
+          dispatch(setTimeoutDuration(duration))
+        }
       />
       <SnackBar
         visible={showPasscodeSetSnackbar}

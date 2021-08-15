@@ -1,4 +1,7 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
+import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { FlatList, LogBox, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
@@ -6,10 +9,12 @@ import TagGroup from 'react-native-tag-group'
 import { StorySet } from 'redux/reducers/database'
 import SetItem from '../components/SetItem'
 import WahaSeparator from '../components/WahaSeparator'
-import { scaleMultiplier, setItemModes } from '../constants'
+import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetInfo } from '../functions/setOrLessonInfoFunctions'
+import { getSetData, getSetInfo } from '../functions/setAndLessonInfoFunctions'
 import { selector } from '../hooks'
+import { SetItemMode } from '../interfaces/components'
+import { SetCategory } from '../interfaces/setAndLessonInfo'
 import SetInfoModal from '../modals/SetInfoModal'
 import {
   activeDatabaseSelector,
@@ -21,7 +26,13 @@ import { getTranslations } from '../translations/translationsConfig'
 
 LogBox.ignoreLogs(['Animated: `useNativeDriver`', 'Warning: Cannot update'])
 
-interface Props {}
+type AddSetScreenNavigationProp = StackNavigationProp<MainStackParams, 'AddSet'>
+type AddSetScreenRouteProp = RouteProp<MainStackParams, 'AddSet'>
+
+interface Props {
+  navigation: AddSetScreenNavigationProp
+  route: AddSetScreenRouteProp
+}
 
 /**
  * Screen that shows a list of available Story Sets to add in a specific category.
@@ -29,7 +40,7 @@ interface Props {}
  */
 const AddSetScreen: FC<Props> = ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack },
+  navigation: { setOptions },
   route: {
     // Props passed from previous screen.
     params: { category },
@@ -57,7 +68,7 @@ const AddSetScreen: FC<Props> = ({
   const [showSetInfoModal, setShowSetInfoModal] = useState(false)
 
   /** Keeps track of the Story Set that the user selects and that populates the <SetInfoModal />. */
-  const [setInModal, setSetInModal] = useState({})
+  const [setInModal, setSetInModal] = useState<StorySet>()
 
   /** Keeps track of all the downloaded question set mp3s. We need this to verify that all the required question set mp3s are installed for the various Story Sets.*/
   const [downloadedFiles, setDownloadedFiles] = useState<string[]>([])
@@ -65,10 +76,10 @@ const AddSetScreen: FC<Props> = ({
   /** useEffect function that sets the headerTitle state as well as fetching the tags if we're displaying Topical Story Sets. */
   useEffect(() => {
     switch (category) {
-      case 'Foundational':
+      case SetCategory.FOUNDATIONAL:
         setHeaderTitle(t.sets.add_foundational_set)
         break
-      case 'Topical':
+      case SetCategory.TOPICAL:
         setHeaderTitle(t.sets.add_topical_set)
 
         // Start off array of tags with the 'All' label since we always display that option.
@@ -77,7 +88,9 @@ const AddSetScreen: FC<Props> = ({
         // Go through each Topical Story Set and add all the various tags to our tag array.
         if (activeDatabase !== undefined)
           activeDatabase.sets
-            .filter((set) => getSetInfo('category', set.id) === 'Topical')
+            .filter(
+              (set) => getSetInfo('category', set.id) === SetCategory.TOPICAL
+            )
             .forEach((topicalSet) => {
               console.log(topicalSet.tags)
               if (topicalSet.tags !== undefined) {
@@ -90,7 +103,7 @@ const AddSetScreen: FC<Props> = ({
             })
         setTags(tags)
         break
-      case 'MobilizationTools':
+      case SetCategory.MOBILIZATION_TOOLS:
         setHeaderTitle(t.sets.add_mobilization_tool)
         break
     }
@@ -118,111 +131,18 @@ const AddSetScreen: FC<Props> = ({
     setOptions({ title: headerTitle })
   }, [headerTitle])
 
-  /**
-   * Goes through a set and verifies that all of the necessary question set mp3s have been downloaded for that set. This gets passed through the filter function below.
-   * @param {Object} set - The object for the set that we're checking.
-   * @return {boolean} - Whether every necessary file has been downloaded for the set.
-   */
-  const filterForDownloadedQuestionSets = (set: StorySet) => {
-    // Create an array to store the necessary question set mp3s for this set.
-    var requiredQuestionSets: string[] = []
-
-    // Go through each set and add all necessary question set mp3s to requiredQuestionSets array.
-    set.lessons.forEach((lesson) => {
-      // Only filter if the lessons have a fellowship/application chapter. For sets like 3.1 which only has video lessons, we don't want to filter.
-      if (lesson.fellowshipType) {
-        if (!requiredQuestionSets.includes(lesson.fellowshipType)) {
-          requiredQuestionSets.push(lesson.fellowshipType)
-        }
-      }
-      if (lesson.applicationType) {
-        if (!requiredQuestionSets.includes(lesson.applicationType)) {
-          requiredQuestionSets.push(lesson.applicationType)
-        }
-      }
-    })
-
-    // If every required file is present, return true. Otherwise, return false.
-    if (
-      requiredQuestionSets.every((questionSet) =>
-        downloadedFiles.includes(
-          activeGroup.language + '-' + questionSet + '.mp3'
-        )
-      )
-    )
-      return true
-    else return false
-  }
-
-  /**
-   * Gets a list of sets to display on this screen depending on the category.
-   * @return {Object[]} - An array of set objects to display.
-   */
-  const getSetData = () => {
-    const sortByID = (storySet1: StorySet, storySet2: StorySet) => {
-      const storySet1IDMatches = storySet1.id.match(/[0-9]*$/)
-      const storySet2IDMatches = storySet2.id.match(/[0-9]*$/)
-
-      if (storySet1IDMatches && storySet2IDMatches)
-        return parseInt(storySet1IDMatches[0]) -
-          parseInt(storySet2IDMatches[0]) <
-          0
-          ? -1
-          : 1
-      else return 1
-    }
-
-    if (activeDatabase !== undefined) {
-      if (category === 'Topical')
-        return (
-          activeDatabase.sets
-            // Filter for Topical Story Sets.
-            .filter((set) => getSetInfo('category', set.id) === category)
-            // Filter for Topical Story Sets that haven't already been added.
-            .filter(
-              (topicalSet) =>
-                !activeGroup.addedSets.some(
-                  (savedSet) => savedSet.id === topicalSet.id
-                )
-            )
-            // Filter for Topical Story Sets that match the currently selected tag (if there is one).
-            .filter((topicalAddedSet) => {
-              if (topicalAddedSet.tags !== undefined) {
-                console.log(selectedTag)
-                // If the selected tag is blank (meaning nothing has been selected) or 'All' is selected, show all the Topical Story Sets. Otherwise, filter by the selected tag.
-                return selectedTag === '' || selectedTag === t.general.all
-                  ? true
-                  : topicalAddedSet.tags.some((tag) => selectedTag === tag)
-              } else return true
-            })
-            // Filter for Topical Sets that have all the necessary question set mp3s downloaded.
-            .filter(filterForDownloadedQuestionSets)
-            // Sort by ID, just in case they aren't added in order in the database.
-            .sort(sortByID)
-        )
-      else
-        return (
-          activeDatabase.sets
-            // Filter for Foundational or Mobilization Tools Story Sets.
-            .filter((set) => getSetInfo('category', set.id) === category)
-            // Filter for Foundational or Mobilization Tools Story Sets that haven't already been added.
-            .filter(
-              (set) =>
-                !activeGroup.addedSets.some(
-                  (savedSet) => savedSet.id === set.id
-                )
-            )
-            // Filter for Foundational or Mobilization Tools Story Sets that have all the necessary question set mp3s downloaded.
-            .filter(filterForDownloadedQuestionSets)
-            // Sort by ID, just in case they aren't added in order in the database.
-            .sort(sortByID)
-        )
-    } else return undefined
-  }
-
   /** Set data stored in a useMemo so we don't have to get it on every re-render. */
   const setData = useMemo(
-    () => getSetData(),
+    () =>
+      getSetData(
+        activeDatabase,
+        activeGroup,
+        category,
+        'unsaved',
+        downloadedFiles,
+        selectedTag,
+        t
+      ),
     [activeGroup.addedSets, selectedTag, downloadedFiles]
   )
 
@@ -230,8 +150,8 @@ const AddSetScreen: FC<Props> = ({
   const renderSetItem = ({ item }: { item: StorySet }) => (
     <SetItem
       thisSet={item}
-      mode={setItemModes.ADD_SET_SCREEN}
-      onSetSelect={() => {
+      mode={SetItemMode.ADD_SET_SCREEN}
+      onSetItemSelect={() => {
         setSetInModal(item)
         setShowSetInfoModal(true)
       }}
@@ -249,7 +169,7 @@ const AddSetScreen: FC<Props> = ({
         backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg4,
       }}
     >
-      {category === 'Topical' && (
+      {category === SetCategory.TOPICAL && (
         <TagGroup
           source={tags}
           singleChoiceMode
@@ -327,7 +247,7 @@ const AddSetScreen: FC<Props> = ({
       <SetInfoModal
         isVisible={showSetInfoModal}
         hideModal={() => setShowSetInfoModal(false)}
-        thisSet={setInModal}
+        thisSet={setInModal ? setInModal : undefined}
         showSnackbar={() => {
           setShowSnackbar(true)
           setTimeout(() => setShowSnackbar(false), 2000)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, ReactElement } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { connect } from 'react-redux'
+import { Lesson, ScripturePassage, StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import SetItem from '../components/SetItem'
 import WahaButton from '../components/WahaButton'
-import { buttonModes, scaleMultiplier, setItemModes } from '../constants'
+import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector, useAppDispatch } from '../hooks'
+import { SetItemMode, WahaButtonMode } from '../interfaces/components'
 import { addSet } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
@@ -20,22 +22,11 @@ import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 import ModalScreen from './ModalScreen'
 
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-    font: info(activeGroupSelector(state).language).font,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    addSet: (groupName, groupID, set) => {
-      dispatch(addSet(groupName, groupID, set))
-    },
-  }
+interface Props {
+  isVisible: boolean
+  hideModal: () => void
+  thisSet: StorySet | undefined
+  showSnackbar: () => void
 }
 
 /**
@@ -45,30 +36,30 @@ function mapDispatchToProps(dispatch) {
  * @param {Object} thisSet - The object for the set we're displaying the information about.
  * @param {boolean} showSnackbar - Whether to show the "Set Added!" Snackbar component or not.
  */
-const SetInfoModal = ({
-  // Props passed from a parent component.
+const SetInfoModal: FC<Props> = ({
   isVisible,
   hideModal,
   thisSet,
   showSnackbar,
-  // Props passed from redux.
-  isRTL,
-  t,
-  isDark,
-  activeGroup,
-  font,
-  addSet,
-}) => {
+}): ReactElement => {
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const isRTL = info(activeGroup.language).isRTL
+  const t = getTranslations(activeGroup.language)
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+  const font = info(activeGroup.language).font
+  const dispatch = useAppDispatch()
+
   /**
    * Renders a item with the information for a lesson.
    * @param {Object} item - The lesson to render.
    * */
-  const renderLessonInfoItem = ({ item }) => {
+  const renderLessonInfoItem = ({ item }: { item: Lesson }) => {
     // If lesson has scripture, format the list of scripture to be a string with the Scripture addresses separated by commas.
+    var scriptureList = ''
     if (item.scripture) {
-      var scriptureList = item.scripture[0].header
+      scriptureList += item.scripture[0].header
 
-      item.scripture.forEach((passage, index) => {
+      item.scripture.forEach((passage: ScripturePassage, index: number) => {
         if (index !== 0) scriptureList += ', ' + passage.header
       })
     }
@@ -124,44 +115,50 @@ const SetInfoModal = ({
       activeGroup={activeGroup}
       isDark={isDark}
     >
-      <View style={styles.setItemContainer}>
-        <SetItem
-          thisSet={thisSet}
-          mode={setItemModes.SET_INFO_MODAL}
-          font={font}
-          isRTL={isRTL}
-          isDark={isDark}
-          activeGroup={activeGroup}
-        />
-      </View>
-      <WahaButton
-        mode={buttonModes.SUCCESS}
-        onPress={() => {
-          addSet(activeGroup.name, activeGroup.id, thisSet)
-          showSnackbar()
-          hideModal()
-        }}
-        extraContainerStyles={{ marginVertical: 10 }}
-        label={t.sets.add_new_story_set}
-        extraComponent={
-          <Icon
-            style={{ marginHorizontal: 10 }}
-            color={colors(isDark).bg4}
-            size={36 * scaleMultiplier}
-            name='playlist-add'
+      {thisSet ? (
+        <View>
+          <View style={styles.setItemContainer}>
+            <SetItem
+              thisSet={thisSet}
+              mode={SetItemMode.SET_INFO_MODAL}
+              font={font}
+              isRTL={isRTL}
+              isDark={isDark}
+              activeGroup={activeGroup}
+            />
+          </View>
+          <WahaButton
+            mode={WahaButtonMode.SUCCESS}
+            onPress={() => {
+              dispatch(addSet(activeGroup.name, activeGroup.id, thisSet))
+              showSnackbar()
+              hideModal()
+            }}
+            extraContainerStyles={{ marginVertical: 10 }}
+            label={t.sets.add_new_story_set}
+            extraComponent={
+              <Icon
+                style={{ marginHorizontal: 10 }}
+                color={colors(isDark).bg4}
+                size={36 * scaleMultiplier}
+                name='playlist-add'
+              />
+            }
+            isDark={isDark}
+            isRTL={isRTL}
+            screenLanguage={activeGroup.language}
           />
-        }
-        isDark={isDark}
-        isRTL={isRTL}
-        language={activeGroup.language}
-      />
-      <FlatList
-        keyExtractor={(item) => item.id}
-        data={thisSet.lessons}
-        renderItem={renderLessonInfoItem}
-        contentContainerStyle={{ flexGrow: 1 }}
-        style={{ flex: 1 }}
-      />
+          <FlatList
+            keyExtractor={(item) => item.id}
+            data={thisSet.lessons}
+            renderItem={renderLessonInfoItem}
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ flex: 1 }}
+          />
+        </View>
+      ) : (
+        <View />
+      )}
     </ModalScreen>
   )
 }
@@ -173,4 +170,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SetInfoModal)
+export default SetInfoModal

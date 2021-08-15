@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { AsyncStorage } from 'react-native'
 import { persistReducer, persistStore } from 'redux-persist'
-import thunkMiddleware from 'redux-thunk'
+import reduxThunk, { ThunkMiddleware } from 'redux-thunk'
 import { reduxMode } from '../modeSwitch'
 import rootReducer from './combiner'
 
@@ -46,7 +46,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 // Create the redux store and apply middleware. Here, we apply the thunk middleware so that we can dispatch actions and get the state in a few action functions.
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: [thunkMiddleware]
+  middleware: [reduxThunk as ThunkMiddleware]
 })
 
 // Finally, create our store with the persistor.

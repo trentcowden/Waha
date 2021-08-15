@@ -3,7 +3,9 @@ export const REMOVE_DOWNLOAD = 'REMOVE_DOWNLOAD'
 
 import * as FileSystem from 'expo-file-system'
 import { DownloadResumable } from 'expo-file-system'
-import { AppDispatch } from 'redux/store'
+import { AnyAction } from 'redux'
+import { ThunkAction } from 'redux-thunk'
+import { AppDispatch, RootState } from 'redux/store'
 
 interface AddUpdateDownloadParams {
   type: 'ADD_UPDATE_DOWNLOAD'
@@ -62,7 +64,11 @@ export function removeDownload (lessonID: string): RemoveDownloadParams {
  * @param {string} source - The firebase URI for the file to download.
  * @return {Object} - Thunk object that allows us to get the state and dispatch actions.
  */
-export function downloadMedia (type: string, lessonID: string, source: string) {
+export function downloadMedia (
+  type: string,
+  lessonID: string,
+  source: string
+): ThunkAction<void, RootState, unknown, AnyAction> {
   var counter = 0
 
   // All video files are named the same as the audio files except with a 'v' at the end, so if we're downloading a video file we need to add that to the file name that we're wanting to download. We also want to adjust the file extension depending on the media type: .mp3 for audio and .mp4 for video. This is used for the name of the file as it will be saved as on the device.

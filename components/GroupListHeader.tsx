@@ -19,7 +19,7 @@ interface Props extends CommonProps, AGProps, TProps {
   nativeName: string
   languageID: string
   isEditing: boolean
-  deleteLanguageInstance: Function
+  onDeleteLanguageButtonPress: (languageID: string) => void
 }
 /**
  * The header for the groups section list used on the Groups screen. Displays the name of the language and the language instance's logo.
@@ -36,7 +36,7 @@ const GroupListHeader: FC<Props> = ({
   t,
   isDark,
   activeGroup,
-  deleteLanguageInstance,
+  onDeleteLanguageButtonPress,
 }): ReactElement => {
   /** Keeps track of the animated position of the left icon, in this case the trash can icon. */
   const [leftIconXPos, setLeftIconXPos] = useState(
@@ -88,7 +88,7 @@ const GroupListHeader: FC<Props> = ({
               },
               {
                 text: t.general.ok,
-                onPress: () => deleteLanguageInstance(languageID),
+                onPress: () => onDeleteLanguageButtonPress(languageID),
                 style: 'destructive',
               },
             ]

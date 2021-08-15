@@ -8,8 +8,18 @@ import LoadingScreen from '../screens/LoadingScreen'
 import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
 import { colors } from '../styles/colors'
 
+export type OnboardingParams = {
+  InitialLanguageSelect: undefined
+  WahaOnboardingSlides: {
+    selectedLanguage: string
+  }
+  Loading: {
+    selectedLanguage: string
+  }
+}
+
 // Create the stack navigator.
-const Stack = createStackNavigator()
+const Stack = createStackNavigator<OnboardingParams>()
 
 /*
   This component renders the stack navigator used for the initial onboarding screens. This navigator is the first thing the user sees when they open the app for the first time. It contains the language instance install screen, the onboarding slides screen, and the loading screen.

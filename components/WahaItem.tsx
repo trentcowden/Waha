@@ -6,7 +6,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps {
-  onPress?: Function
+  onPress?: () => void
   title: string
 }
 

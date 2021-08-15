@@ -1,6 +1,8 @@
 import { useBackHandler } from '@react-native-community/hooks'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { Audio } from 'expo-av'
-import React, { useEffect, useRef, useState } from 'react'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import {
   Dimensions,
   Image,
@@ -23,10 +25,18 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
+type PianoAppScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'PianoApp'
+>
+
+interface Props {
+  navigation: PianoAppScreenNavigationProp
+}
 /**
  * A screen that shows a dummy piano app meant to convince non-users who are looking at the app that it's just a harmless piano app and not a Christian disciple making tool >:)
  */
-const PianoAppScreen = ({
+const PianoAppScreen: FC<Props> = ({
   // Props passed from navigation.
   navigation: { canGoBack, goBack, reset },
 }) => {

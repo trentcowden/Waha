@@ -1,3 +1,5 @@
+import { StackNavigationProp } from '@react-navigation/stack'
+import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
@@ -14,20 +16,28 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from '../assets/fonts/icon_font_config'
 import WahaButton from '../components/WahaButton'
-import { buttonModes, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
 import { selector } from '../hooks'
+import { WahaButtonMode } from '../interfaces/components'
 import { appVersion } from '../modeSwitch'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
-interface Props {}
+type ContactUsScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'ContactUs'
+>
+
+interface Props {
+  navigation: ContactUsScreenNavigationProp
+}
 
 const ContactUsScreen: FC<Props> = ({
-  navigation: { setOptions, goBack },
+  navigation: { goBack },
 }): ReactElement => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
@@ -369,8 +379,8 @@ const ContactUsScreen: FC<Props> = ({
             emailTextInput === undefined ||
             !isConnected ||
             messageTextInput.length > 1000
-              ? buttonModes.DISABLED
-              : buttonModes.SUCCESS
+              ? WahaButtonMode.DISABLED
+              : WahaButtonMode.SUCCESS
           }
           label={isSubmitting || !isConnected ? '' : t.general.submit}
           onPress={() => submit()}

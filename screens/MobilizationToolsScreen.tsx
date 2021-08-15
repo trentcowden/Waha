@@ -1,5 +1,7 @@
+import { StackNavigationProp } from '@react-navigation/stack'
 import { Group } from 'interfaces/groups'
-import React, { useState } from 'react'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import Icon from '../assets/fonts/icon_font_config'
@@ -11,19 +13,28 @@ import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
+import { selector, useAppDispatch } from '../hooks'
 import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
+type MobilizationToolsScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'MobilizationTools'
+>
+
+interface Props {
+  navigation: MobilizationToolsScreenNavigationProp
+}
+
 /**
  * Screen that shows information about the Mobilization Tools and a button to unlock them.
  */
-const MobilizationToolsScreen = ({
+const MobilizationToolsScreen: FC<Props> = ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack, navigate },
+  navigation: { navigate },
 }) => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
@@ -34,7 +45,25 @@ const MobilizationToolsScreen = ({
   )
   const groups = selector((state) => state.groups)
   const database = selector((state) => state.database)
+  const dispatch = useAppDispatch()
+
   const [showSnackbar, setShowSnackbar] = useState(false)
+
+  const handleSwitchChange = (
+    oldGroupName: string,
+    newGroupName: string,
+    emoji: string,
+    shouldShowMobilizationToolsTab: boolean
+  ) => {
+    dispatch(
+      editGroup(
+        oldGroupName,
+        newGroupName,
+        emoji,
+        shouldShowMobilizationToolsTab
+      )
+    )
+  }
 
   function renderGroupItem({ item }: { item: Group }) {
     return (
@@ -44,7 +73,7 @@ const MobilizationToolsScreen = ({
         isDark={isDark}
         areMobilizationToolsUnlocked={areMobilizationToolsUnlocked}
         activeGroup={activeGroup}
-        editGroup={editGroup}
+        onSwitchChange={handleSwitchChange}
       />
     )
   }
@@ -54,6 +83,7 @@ const MobilizationToolsScreen = ({
       <WahaHero
         source={require('../assets/lotties/mob_tools_unlocked.json')}
         isDark={isDark}
+        isRTL={isRTL}
       />
       <WahaBlurb
         text={
@@ -63,6 +93,7 @@ const MobilizationToolsScreen = ({
         }
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       />
     </View>
   )
@@ -95,6 +126,7 @@ const MobilizationToolsScreen = ({
                 t={t}
                 activeGroup={activeGroup}
                 setShowSnackbar={setShowSnackbar}
+                isRTL={isRTL}
               />
               <Text
                 style={{

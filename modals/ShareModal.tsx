@@ -24,7 +24,7 @@ enum ShareType {
 
 interface Props extends CommonProps, AGProps, DLProps, TProps {
   isVisible: boolean
-  hideModal: Function
+  hideModal: () => void
   closeText: string
   lesson: Lesson | undefined
   lessonType: LessonType
@@ -93,7 +93,7 @@ const ShareModal: FC<Props> = ({
         Share.share({
           message: scriptureString,
         }).then(() => {
-          logShareText(lesson, activeGroup.id)
+          if (lesson) logShareText(lesson, activeGroup.id)
           hideModal()
         })
         break

@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Alert,
   Dimensions,
@@ -11,10 +14,10 @@ import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaButton from '../components/WahaButton'
-import { buttonModes } from '../constants'
 import { logEnableSecurityMode } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
+import { WahaButtonMode } from '../interfaces/components'
 import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
 import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
@@ -22,11 +25,27 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
+type PianoPasscodeSetScreenNavigationProp = StackNavigationProp<
+  MainStackParams,
+  'PianoPasscodeSet'
+>
+
+type PianoPasscodeSetScreenRouteProp =
+  | RouteProp<MainStackParams, 'PianoPasscodeSet'>
+  | RouteProp<MainStackParams, 'PianoPasscodeSetConfirm'>
+  | RouteProp<MainStackParams, 'PianoPasscodeChange'>
+  | RouteProp<MainStackParams, 'PianoPasscodeChangeConfirm'>
+
+interface Props {
+  navigation: PianoPasscodeSetScreenNavigationProp
+  route: PianoPasscodeSetScreenRouteProp
+}
+
 /**
  * A screen that allows the user to set/change/confirm their piano passcode.
  * @param {string} passcode - (Optional) If the user is confirming their passcode, this is the passcode already entered so we can verify that they match.
  */
-const PianoPasscodeSetScreen = ({
+const PianoPasscodeSetScreen: FC<Props> = ({
   // Props passed from navigation.
   navigation: { setOptions, navigate, goBack },
   route: {
@@ -34,7 +53,7 @@ const PianoPasscodeSetScreen = ({
     // Props passed from previous screen.
     params: { passcode } = { passcode: null },
   },
-}) => {
+}): ReactElement => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -174,7 +193,7 @@ const PianoPasscodeSetScreen = ({
           isDark={isDark}
         />
         <WahaButton
-          mode={buttonModes.ERROR_SECONDARY}
+          mode={WahaButtonMode.ERROR_SECONDARY}
           onPress={() => setLocalPasscode('')}
           label={t.general.clear}
           extraContainerStyles={{

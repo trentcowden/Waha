@@ -28,10 +28,10 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
   thisLesson: Lesson
   lessonType: LessonType
   sectionOffsets: MutableRefObject<SectionOffset[]>
-  markLessonAsComplete: Function
+  markLessonAsComplete: () => void
   isThisLessonComplete: RefObject<boolean>
-  setShowCopyrightsModal?: Function
-  setSectionTitleText?: Function
+  setShowCopyrightsModal?: (toSet: boolean) => void
+  setSectionTitleText?: (text: string) => void
   sectionTitleOpacity?: MutableRefObject<Animated.Value>
   sectionTitleYTransform?: MutableRefObject<Animated.Value>
 }

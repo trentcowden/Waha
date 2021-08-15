@@ -17,8 +17,8 @@ import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { incrementGlobalGroupCounter } from '../redux/actions/databaseActions'
 import { createGroup, editGroup } from '../redux/actions/groupsActions'
+import { incrementGlobalGroupCounter } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -26,7 +26,7 @@ import { getTranslations } from '../translations/translationsConfig'
 
 interface Props {
   isVisible: boolean
-  hideModal: Function
+  hideModal: () => void
   // Whether the user is editing an existing group or adding a new group. Possible options are 'EditGroup' or 'AddGroup'.
   mode: string
   // If editing a group, this is the object for that group.
@@ -51,7 +51,7 @@ const AddEditGroupModal: FC<Props> = ({
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
 
   const globalGroupCounter = selector(
-    (state) => state.database.globalGroupCounter
+    (state) => state.languageInstallation.globalGroupCounter
   )
   const areMobilizationToolsUnlocked = selector(
     (state) => state.areMobilizationToolsUnlocked
@@ -157,6 +157,14 @@ const AddEditGroupModal: FC<Props> = ({
     hideModal()
   }
 
+  const handleGroupNameInputChangeText = (text: string) => {
+    setGroupNameInput(text)
+  }
+
+  const handleEmojiPress = (emoji: string) => {
+    setEmojiInput(emoji)
+  }
+
   return (
     <ModalScreen
       isVisible={isVisible}
@@ -195,10 +203,14 @@ const AddEditGroupModal: FC<Props> = ({
               setEmojiInput('default')
             }
           : () => {
-              // If we're editing a group, populate our state with the name and emoji of that group.
-              setGroupNameInput(thisGroup.name)
-              setEmojiInput(thisGroup.emoji)
-              setShouldShowMTTabInput(thisGroup.shouldShowMobilizationToolsTab)
+              if (thisGroup) {
+                // If we're editing a group, populate our state with the name and emoji of that group.
+                setGroupNameInput(thisGroup.name)
+                setEmojiInput(thisGroup.emoji)
+                setShouldShowMTTabInput(
+                  thisGroup.shouldShowMobilizationToolsTab
+                )
+              }
             }
       }
       title={mode === 'AddGroup' ? t.groups.new_group : t.groups.edit_group}
@@ -214,11 +226,12 @@ const AddEditGroupModal: FC<Props> = ({
           emoji={emojiInput}
           size={120}
           isDark={isDark}
+          isRTL={isRTL}
         />
       </View>
       <GroupNameTextInput
         groupNameInput={groupNameInput}
-        setGroupNameInput={setGroupNameInput}
+        onGroupNameInputChangeText={handleGroupNameInputChangeText}
         isDuplicate={isGroupNameDuplicate}
         activeGroup={activeGroup}
         isRTL={isRTL}
@@ -260,10 +273,11 @@ const AddEditGroupModal: FC<Props> = ({
       )}
       <EmojiViewer
         emojiInput={emojiInput}
-        setEmojiInput={setEmojiInput}
+        onEmojiPress={handleEmojiPress}
         activeGroup={activeGroup}
         isDark={isDark}
         t={t}
+        isRTL={isRTL}
       />
     </ModalScreen>
   )

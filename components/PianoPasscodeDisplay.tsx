@@ -1,32 +1,35 @@
-import React from 'react'
+import { CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'
 
+interface Props extends CommonProps {
+  passcode: string
+}
+
 /**
  * A component that shows the passcode that is currently entered on the piano.
  * @param {string} passcode - The current passcode.
  */
-const PianoPasscodeDisplay = ({
-  // Props passed from a parent component.s
+const PianoPasscodeDisplay: FC<Props> = ({
   passcode,
   isRTL,
-  isDark
-}) => {
+  isDark,
+}): ReactElement => {
   const extraKeyPlaceholderStyles = {
     backgroundColor: colors(isDark).bg2,
-    borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1
+    borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
   }
 
   return (
     <View
       style={{
         width: '100%',
-        flexDirection: 'row',
         justifyContent: 'center',
         padding: 20,
-        flexDirection: isRTL ? 'row-reverse' : 'row'
+        flexDirection: isRTL ? 'row-reverse' : 'row',
       }}
     >
       <View style={{ ...styles.keyPlaceholder, ...extraKeyPlaceholderStyles }}>
@@ -103,8 +106,8 @@ const styles = StyleSheet.create({
     margin: 5 * scaleMultiplier,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2
-  }
+    borderWidth: 2,
+  },
 })
 
 export default PianoPasscodeDisplay

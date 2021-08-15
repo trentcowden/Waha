@@ -8,7 +8,7 @@ import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
   groupNameInput: string
-  setGroupNameInput: Function
+  onGroupNameInputChangeText: (text: string) => void
   groupNameInputRef?: RefObject<TextInput>
   isDuplicate?: boolean
 }
@@ -16,7 +16,7 @@ interface Props extends CommonProps, AGProps, TProps {
 const GroupNameTextInput: FC<Props> = ({
   // Props passed from a parent component.
   groupNameInput,
-  setGroupNameInput,
+  onGroupNameInputChangeText,
   groupNameInputRef = null,
   isDuplicate = false,
   // Props passed from redux.
@@ -59,7 +59,7 @@ const GroupNameTextInput: FC<Props> = ({
               colors(isDark).text
             ),
           }}
-          onChangeText={(text) => setGroupNameInput(text)}
+          onChangeText={(text) => onGroupNameInputChangeText(text)}
           value={groupNameInput}
           autoCapitalize='words'
           autoCorrect={false}

@@ -18,7 +18,7 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
   chapter: Chapter
   activeChapter: Chapter
-  changeChapter: Function
+  changeChapter: (chapter: Chapter) => void
   lessonType: LessonType
   lessonID?: string
   isAudioDownloaded?: boolean

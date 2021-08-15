@@ -1,5 +1,13 @@
 import * as React from 'react'
+import { FC, ReactElement } from 'react'
 import Svg, { Defs, G, Image, Path, Use } from 'react-native-svg'
+
+interface Props {
+  name: string
+  width: number
+  height: number
+  color: string
+}
 
 /*
   When adding new svgs, don't forget to:
@@ -19,13 +27,13 @@ import Svg, { Defs, G, Image, Path, Use } from 'react-native-svg'
  * @param {number} height - The height of the svg.
  * @param {string} color - The hex code for the color of the svg. Note: for the <Svg> component, color is called "fill". In every <Svg> below, the color prop passed from the parent is used for the "fill" prop.
  */
-const SVG = ({
+const SVG: FC<Props> = ({
   // Passed from a parent component.
   name,
   width,
   height,
-  color
-}) => {
+  color,
+}): ReactElement => {
   // Render an svg based on the name prop.
   switch (name) {
     case 'globe':

@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React, { useState } from 'react'
+import React, { FC, ReactElement, useState } from 'react'
 import {
   Clipboard,
   Platform,
@@ -23,10 +23,11 @@ import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
+
 /**
  * A screen that displays some miscellaneous information for Waha, like its version, with links to the privacy policy, donation page, and app store listing page.
  */
-const InformationScreen = ({ navigation: { setOptions, goBack } }) => {
+const InformationScreen: FC = ({}): ReactElement => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)

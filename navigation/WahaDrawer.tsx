@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { DrawerContentComponentProps } from '@react-navigation/drawer'
+import React, { FC, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import DrawerDownloadUpdateButton from '../components/DrawerDownloadUpdateButton'
@@ -20,7 +21,7 @@ import { getTranslations } from '../translations/translationsConfig'
 /**
  * A component that acts as the navigation drawer for Waha. Accessible via the SetsTabs screens.
  */
-const WahaDrawer = ({
+const WahaDrawer: FC<DrawerContentComponentProps> = ({
   // Props passed from navigation.
   navigation: { navigate },
   // Props passed from redux.
@@ -40,7 +41,7 @@ const WahaDrawer = ({
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
   /** Handles the updating of language core files. */
-  const updateHandler = () => {
+  const handleUpdateButtonPress = () => {
     // Set setIsInstallingLanguageInstance redux variable to true so that the app knows to switch to the loading screen.
     dispatch(setIsInstallingLanguageInstance(true))
 
@@ -92,7 +93,7 @@ const WahaDrawer = ({
       >
         {/* Show an update button if we have any core files to update. */}
         <DrawerDownloadUpdateButton
-          updateHandler={updateHandler}
+          onUpdateButtonPress={handleUpdateButtonPress}
           activeGroup={activeGroup}
           isRTL={isRTL}
           t={t}

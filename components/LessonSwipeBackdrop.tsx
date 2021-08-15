@@ -7,8 +7,8 @@ import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
   isComplete: boolean
-  toggleComplete: Function
-  showShareModal: Function
+  onCompleteButtonPress: () => void
+  onShareButtonPress: () => void
   isRTL: boolean
   isDark: boolean
 }
@@ -22,8 +22,8 @@ interface Props extends CommonProps {
 const LessonSwipeBackdrop: FC<Props> = ({
   // Props passed from a parent component.
   isComplete,
-  toggleComplete,
-  showShareModal,
+  onCompleteButtonPress,
+  onShareButtonPress,
   isRTL,
   isDark,
 }): ReactElement => (
@@ -40,7 +40,7 @@ const LessonSwipeBackdrop: FC<Props> = ({
           backgroundColor: colors(isDark).disabled,
           alignItems: isRTL ? 'flex-end' : 'flex-start',
         }}
-        onPress={() => toggleComplete()}
+        onPress={onCompleteButtonPress}
       >
         <View style={styles.iconContainer}>
           <Icon name='cancel-filled' size={20} color={colors(isDark).bg4} />
@@ -53,7 +53,7 @@ const LessonSwipeBackdrop: FC<Props> = ({
           backgroundColor: colors(isDark).success,
           alignItems: isRTL ? 'flex-end' : 'flex-start',
         }}
-        onPress={() => toggleComplete()}
+        onPress={onCompleteButtonPress}
       >
         <View style={styles.iconContainer}>
           <Icon name='check-filled' size={20} color={colors(isDark).bg4} />
@@ -66,7 +66,7 @@ const LessonSwipeBackdrop: FC<Props> = ({
         backgroundColor: colors(isDark).highlight,
         alignItems: isRTL ? 'flex-start' : 'flex-end',
       }}
-      onPress={() => showShareModal()}
+      onPress={onShareButtonPress}
     >
       <View style={styles.iconContainer}>
         <Icon

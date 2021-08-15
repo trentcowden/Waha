@@ -1,20 +1,28 @@
-import { chapters } from '../constants'
+import { Audio, AVPlaybackStatus, Video } from 'expo-av'
+import { Chapter } from '../interfaces/playScreen'
 
 export class Media {
-	public audio: any;
-	public video: any;
+  public audio: Audio.Sound
+  public video: Video | null
 
-  constructor (audio) {
+  constructor (audio: Audio.Sound) {
     this.audio = audio
     this.video = null
   }
 
-  addVideo (video) {
+  addVideo (video: Video) {
     this.video = video
   }
 
-  load (source, shouldAutoPlay, activeChapter) {
-    const media = activeChapter === chapters.TRAINING ? this.video : this.audio
+  load (
+    source: string,
+    shouldAutoPlay: boolean,
+    activeChapter: Chapter | undefined
+  ): Promise<AVPlaybackStatus> {
+    if (!activeChapter)
+      return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
+
+    const media = activeChapter === Chapter.TRAINING ? this.video : this.audio
     if (media !== null)
       return media.loadAsync(
         { uri: source },
@@ -25,28 +33,47 @@ export class Media {
           progressUpdateIntervalMillis: 1000
         }
       )
+    else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
-  play (activeChapter) {
-    const media = activeChapter === chapters.TRAINING ? this.video : this.audio
+  play (activeChapter: Chapter | undefined): Promise<AVPlaybackStatus> {
+    if (!activeChapter)
+      return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
+
+    const media = activeChapter === Chapter.TRAINING ? this.video : this.audio
     if (media !== null) return media.playAsync()
+    else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
-  pause (activeChapter) {
-    const media = activeChapter === chapters.TRAINING ? this.video : this.audio
+  pause (activeChapter: Chapter | undefined): Promise<AVPlaybackStatus> {
+    if (!activeChapter)
+      return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
+
+    const media = activeChapter === Chapter.TRAINING ? this.video : this.audio
     if (media !== null) return media.pauseAsync()
+    else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
-  playFromLocation (location, isMediaPlaying, activeChapter) {
-    const media = activeChapter === chapters.TRAINING ? this.video : this.audio
+  playFromLocation (
+    location: number,
+    isMediaPlaying: boolean,
+    activeChapter: Chapter | undefined
+  ): Promise<AVPlaybackStatus> {
+    if (!activeChapter)
+      return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
+
+    const media = activeChapter === Chapter.TRAINING ? this.video : this.audio
     if (media !== null)
       return media.setStatusAsync({
         shouldPlay: isMediaPlaying ? true : false,
         positionMillis: location
       })
+    else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
-  setAudioOnStatusUpdate (onStatusUpdate) {
+  setAudioOnStatusUpdate (
+    onStatusUpdate: (playbackStatus: AVPlaybackStatus) => void
+  ) {
     if (this.audio !== null)
       this.audio.setOnPlaybackStatusUpdate(onStatusUpdate)
   }

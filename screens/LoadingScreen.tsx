@@ -1,5 +1,7 @@
+import { StackNavigationProp } from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
 import LottieView from 'lottie-react-native'
+import { OnboardingParams } from 'navigation/Onboarding'
 import React, { FC, ReactElement } from 'react'
 import {
   Dimensions,
@@ -25,8 +27,14 @@ import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
+type LoadingScreenNavigationProp = StackNavigationProp<
+  OnboardingParams,
+  'Loading'
+>
 
-interface Props {}
+interface Props {
+  navigation?: LoadingScreenNavigationProp
+}
 
 /**
  * A screen that shows the download progress of a language's core files. The user sits on this screen if they finish onboarding before the downloads are done.
@@ -79,10 +87,11 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
     // If we're adding a language for the first time, set hasOnboarded to false so that the user must go through onboarding again and reset them back to the language instance install screen.
     if (!hasInstalledFirstLanguageInstance) {
       dispatch(setHasOnboarded(false))
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'InitialLanguageSelect' }],
-      })
+      if (navigation)
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'InitialLanguageSelect' }],
+        })
     }
 
     // If this is a subsequent language instance install, if we cancel, we need to switch back to our most recent active group since we're going to delete all the groups for the language we cancelled the installation of.

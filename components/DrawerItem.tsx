@@ -7,7 +7,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps {
-  onPress: Function
+  onPress: () => void
   icon: string
   label: string
 }
@@ -31,7 +31,7 @@ const DrawerItem: FC<Props> = ({
       ...styles.drawerItemContainer,
       flexDirection: isRTL ? 'row-reverse' : 'row',
     }}
-    onPress={() => onPress()}
+    onPress={onPress}
   >
     <View style={styles.iconContainer}>
       <Icon

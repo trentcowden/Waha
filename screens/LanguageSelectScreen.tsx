@@ -1,7 +1,10 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import { Audio } from 'expo-av'
 import * as Localization from 'expo-localization'
 import { Language, LanguageFamily } from 'interfaces/languages'
-import React, { useEffect, useState } from 'react'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   Alert,
@@ -21,10 +24,12 @@ import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
 import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { buttonModes, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
+import { WahaButtonMode } from '../interfaces/components'
+import { OnboardingParams } from '../navigation/Onboarding'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
   deleteLanguageData,
@@ -45,6 +50,21 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 
+type LanguageSelectScreenNavigationProp = StackNavigationProp<
+  OnboardingParams,
+  'InitialLanguageSelect'
+> &
+  StackNavigationProp<MainStackParams, 'SubsequentLanguageSelect'>
+
+type LanguageSelectScreenRouteProp =
+  | RouteProp<OnboardingParams, 'InitialLanguageSelect'>
+  | RouteProp<MainStackParams, 'SubsequentLanguageSelect'>
+
+interface Props {
+  navigation: LanguageSelectScreenNavigationProp
+  route: LanguageSelectScreenRouteProp
+}
+
 /**
  * A screen that displays a list of language instances to install. This appears as the first screen the user sees when they open the app for the first time, as well as later if they want to install another language instance.
  * @param {string} routeName - The name of the screen variant. In this case, can either be "InitialLanguageInstanceInstall" or "SubsequentLanguageInstanceInstall" since this screen component is used twice.
@@ -52,9 +72,9 @@ import { getTranslations } from '../translations/translationsConfig'
  * @param {string} installedLanguageInstances[].languageID - The ID of the language.
  * @param {string} installedLanguageInstances[].languageName - The name of the language.
  */
-const LanguageSelectScreen = ({
+const LanguageSelectScreen: FC<Props> = ({
   // Props passed from navigation.
-  navigation: { setOptions, goBack, reset, navigate },
+  navigation: { setOptions, navigate },
   route: {
     name: routeName,
     // Props passed from previous screen.
@@ -271,6 +291,16 @@ const LanguageSelectScreen = ({
       })
   }
 
+  const handleLanguageItemPress = (language: Language) => {
+    if (!selectedLanguage) {
+      Animated.spring(buttonYPos, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start()
+    }
+    setSelectedLanguage(language.languageID)
+  }
+
   /**
    * Renders a LanguageSelectItem component used for the Languages SectionList item.
    * @param {Object} language - The object for the language to render.
@@ -283,15 +313,7 @@ const LanguageSelectScreen = ({
       nativeName={language.nativeName}
       localeName={t.languages[language.languageID]}
       logos={language.logos}
-      onPress={() => {
-        if (!selectedLanguage) {
-          Animated.spring(buttonYPos, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start()
-        }
-        setSelectedLanguage(language.languageID)
-      }}
+      onLanguageItemPress={() => handleLanguageItemPress(language)}
       isSelected={selectedLanguage === language.languageID ? true : false}
       playAudio={() => playAudio(language.languageID)}
       isDark={isDark}
@@ -430,7 +452,7 @@ const LanguageSelectScreen = ({
         }}
       >
         <WahaButton
-          mode={isConnected ? buttonModes.SUCCESS : buttonModes.DISABLED}
+          mode={isConnected ? WahaButtonMode.SUCCESS : WahaButtonMode.DISABLED}
           label={
             isConnected
               ? isFetchingFirebaseData

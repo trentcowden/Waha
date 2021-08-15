@@ -10,8 +10,8 @@ import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
   section: InfoAndGroupsForLanguage
-  setLanguageID: Function
-  setShowAddGroupModal: Function
+  setLanguageID: (languageID: string) => void
+  setShowAddGroupModal: (toShow: boolean) => void
 }
 
 /**

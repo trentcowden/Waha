@@ -1,7 +1,18 @@
-import { createStackNavigator } from '@react-navigation/stack'
+import { DrawerNavigationProp } from '@react-navigation/drawer'
+import {
+  CompositeNavigationProp,
+  NavigatorScreenParams,
+} from '@react-navigation/native'
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack'
 import * as StoreReview from 'expo-store-review'
-import React, { ReactElement, useEffect, useState } from 'react'
+import { InfoAndGroupsForAllLanguages } from 'interfaces/languages'
+import { LessonType } from 'interfaces/playScreen'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { AppState, LogBox, Platform, View } from 'react-native'
+import { Lesson, StorySet } from 'redux/reducers/database'
 import GroupAvatar from '../components/GroupAvatar'
 import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import TestModeDisplay from '../components/TestModeDisplay'
@@ -9,7 +20,8 @@ import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
-import SetsTabs from '../navigation/SetsTabs'
+import { SetCategory } from '../interfaces/setAndLessonInfo'
+import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
 import {
   setHasUsedPlayScreen,
   setLessonCounter,
@@ -35,17 +47,58 @@ import SplashScreen from '../screens/SplashScreen'
 import StorageScreen from '../screens/StorageScreen'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
+import { MainDrawerParams } from './MainDrawer'
 
 // Ignore the Android timer warning because it's annoying.
 LogBox.ignoreLogs(['Setting a timer'])
 
+export type MainStackParams = {
+  SetsTabs: NavigatorScreenParams<SetsTabsParams>
+  Lessons: { setID: string }
+  Play: {
+    thisLesson: Lesson
+    thisSet: StorySet
+    isAudioAlreadyDownloaded: boolean
+    isVideoAlreadyDownloaded: boolean
+    isAlreadyDownloading: boolean
+    lessonType: LessonType
+  }
+  Groups: undefined
+  AddSet: { category: SetCategory }
+  SubsequentLanguageSelect: {
+    installedLanguageInstances: InfoAndGroupsForAllLanguages
+  }
+  Storage: undefined
+  MobilizationTools: undefined
+  MobilizationToolsUnlock: undefined
+  SecurityMode: undefined
+  SecurityOnboardingSlides: undefined
+  PianoPasscodeSet: undefined
+  PianoPasscodeSetConfirm: { passcode?: string }
+  PianoPasscodeChange: undefined
+  PianoPasscodeChangeConfirm: { passcode?: string }
+  PianoApp: undefined
+  Splash: undefined
+  Information: undefined
+  ContactUs: undefined
+}
+
 // Create the stack navigator.
-const Stack = createStackNavigator()
+const Stack = createStackNavigator<MainStackParams>()
+
+type MainStackNavigationProp = CompositeNavigationProp<
+  DrawerNavigationProp<MainDrawerParams, 'MainStack'>,
+  StackNavigationProp<MainStackParams>
+>
+
+interface Props {
+  navigation: MainStackNavigationProp
+}
 
 /*
  This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.js is because this component has access to the navigation prop.
  */
-const MainStack = ({
+const MainStack: FC<Props> = ({
   navigation: { navigate, goBack, toggleDrawer },
 }): ReactElement => {
   const activeGroup = selector((state) => activeGroupSelector(state))
@@ -162,11 +215,19 @@ const MainStack = ({
               shadowColor: 'transparent',
             },
             headerTitle: () => (
-              <ScreenHeaderImage isDark={isDark} activeGroup={activeGroup} />
+              <ScreenHeaderImage
+                isDark={isDark}
+                activeGroup={activeGroup}
+                isRTL={isRTL}
+              />
             ),
             headerLeft: isRTL
               ? () => (
-                  <TestModeDisplay isDark={isDark} activeGroup={activeGroup} />
+                  <TestModeDisplay
+                    isDark={isDark}
+                    activeGroup={activeGroup}
+                    isRTL={isRTL}
+                  />
                 )
               : () => (
                   <View style={{ paddingHorizontal: 10 }}>
@@ -174,7 +235,7 @@ const MainStack = ({
                       style={{ backgroundColor: colors(isDark).bg4, zIndex: 0 }}
                       emoji={activeGroup.emoji}
                       size={35}
-                      onPress={() => toggleDrawer()}
+                      onPress={toggleDrawer}
                       isActive={true}
                       isDark={isDark}
                       isRTL={isRTL}
@@ -210,7 +271,7 @@ const MainStack = ({
                       style={{ backgroundColor: colors(isDark).bg4 }}
                       emoji={activeGroup.emoji}
                       size={35}
-                      onPress={() => toggleDrawer()}
+                      onPress={toggleDrawer}
                       isActive={true}
                       isDark={isDark}
                       isRTL={isRTL}
@@ -240,7 +301,11 @@ const MainStack = ({
                   </View>
                 )
               : () => (
-                  <TestModeDisplay isDark={isDark} activeGroup={activeGroup} />
+                  <TestModeDisplay
+                    isDark={isDark}
+                    activeGroup={activeGroup}
+                    isRTL={isRTL}
+                  />
                 ),
           }}
         />
@@ -254,6 +319,31 @@ const MainStack = ({
               shadowColor: 'transparent',
             },
             headerTitleAlign: 'center',
+            headerTitle: () => (
+              <ScreenHeaderImage
+                isDark={isDark}
+                activeGroup={activeGroup}
+                isRTL={isRTL}
+              />
+            ),
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
           }}
         />
         <Stack.Screen

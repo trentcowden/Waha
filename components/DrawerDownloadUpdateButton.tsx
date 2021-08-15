@@ -7,7 +7,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps, NetworkProps {
-  updateHandler: Function
+  onUpdateButtonPress: () => void
   languageCoreFilesToUpdate: string[]
 }
 
@@ -17,7 +17,7 @@ interface Props extends CommonProps, AGProps, TProps, NetworkProps {
  */
 const DrawerDownloadUpdateButton: FC<Props> = ({
   // Props passed from a parent component.
-  updateHandler,
+  onUpdateButtonPress,
   activeGroup,
   isRTL,
   t,
@@ -40,7 +40,7 @@ const DrawerDownloadUpdateButton: FC<Props> = ({
             },
             {
               text: t.general.ok,
-              onPress: () => updateHandler(),
+              onPress: onUpdateButtonPress,
             },
           ]
         )

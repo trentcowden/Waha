@@ -1,5 +1,7 @@
-import React from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet } from 'react-native'
+import { SecurityState } from 'redux/reducers/security'
 import Icon from '../assets/fonts/icon_font_config'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
@@ -7,12 +9,18 @@ import { scaleMultiplier } from '../constants'
 import OptionsModal from '../modals/OptionsModal'
 import { colors } from '../styles/colors'
 
+interface Props extends CommonProps, AGProps, TProps {
+  isVisible: boolean
+  hideModal: () => void
+  security: SecurityState
+  setTimeoutDuration: (duration: number) => void
+}
 /**
  * A modal that allows the user to change the security timeout. Displays a list of options using the OptionsModal component.
  * @param {boolean} isVisible - Whether the modal should be visible or not.
  * @param {Function} hideModal - Function to hide the modal.
  */
-const SecurityTimeoutPickerModal = ({
+const SecurityTimeoutPickerModal: FC<Props> = ({
   isVisible,
   hideModal,
   // Props passed from redux.
@@ -21,14 +29,13 @@ const SecurityTimeoutPickerModal = ({
   isDark,
   t,
   activeGroup,
-  setSecurityEnabled,
-  setTimeoutDuration
-}) => {
+  setTimeoutDuration,
+}): ReactElement => {
   const checkIconStyle = {
     position: 'absolute',
     paddingHorizontal: 20,
     right: isRTL ? null : 0,
-    left: isRTL ? 0 : null
+    left: isRTL ? 0 : null,
   }
 
   return (
@@ -38,6 +45,7 @@ const SecurityTimeoutPickerModal = ({
       closeText={t.general.cancel}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       {/* Button to set the timeout duration to instant. */}
       <OptionsModalButton
@@ -47,6 +55,7 @@ const SecurityTimeoutPickerModal = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         {security.timeoutDuration === 0 ? (
           <Icon
@@ -66,6 +75,7 @@ const SecurityTimeoutPickerModal = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         {security.timeoutDuration === 60000 ? (
           <Icon
@@ -85,6 +95,7 @@ const SecurityTimeoutPickerModal = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         {security.timeoutDuration === 300000 ? (
           <Icon
@@ -104,6 +115,7 @@ const SecurityTimeoutPickerModal = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         {security.timeoutDuration === 900000 ? (
           <Icon
@@ -123,6 +135,7 @@ const SecurityTimeoutPickerModal = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         {security.timeoutDuration === 3600000 ? (
           <Icon
@@ -138,7 +151,7 @@ const SecurityTimeoutPickerModal = ({
 }
 
 const styles = StyleSheet.create({
-  checkIcon: {}
+  checkIcon: {},
 })
 
 export default SecurityTimeoutPickerModal

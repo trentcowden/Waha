@@ -16,7 +16,7 @@ interface Props extends CommonProps {
   style: Object
   emoji: string
   size: number
-  onPress?: Function
+  onPress?: () => void
   isActive?: boolean
 }
 
@@ -32,7 +32,7 @@ const GroupAvatar: FC<Props> = ({
   style,
   emoji,
   size,
-  onPress = undefined,
+  onPress,
   isActive = false,
   isDark,
   isRTL,
@@ -79,7 +79,7 @@ const GroupAvatar: FC<Props> = ({
   return onPress ? (
     <TouchableOpacity
       style={{ ...style, ...groupAvatarContainerStyle }}
-      onPress={() => onPress()}
+      onPress={onPress}
     >
       {emojiComponent}
     </TouchableOpacity>

@@ -6,7 +6,8 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
-import { isTablet, lockPortrait } from './constants'
+import { isTablet } from './constants'
+import { lockPortrait } from './functions/orientationFunctions'
 import Root from './navigation/Root'
 import { persistor, store } from './redux/store'
 
@@ -35,7 +36,7 @@ export default function App() {
     // Load up all the fonts.
     loadFonts()
 
-    isTablet ? ScreenOrientation.unlockAsync() : lockPortrait(() => {})
+    isTablet ? ScreenOrientation.unlockAsync() : lockPortrait()
 
     // Set up some config options for app audio.
     Audio.setAudioModeAsync({

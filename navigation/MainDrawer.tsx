@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import {
   getFocusedRouteNameFromRoute,
   NavigationContainer,
-  Route,
+  RouteProp,
 } from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
@@ -22,8 +22,12 @@ import { StorySet } from '../redux/reducers/database'
 import MainStack from './MainStack'
 import WahaDrawer from './WahaDrawer'
 
+export type MainDrawerParams = {
+  MainStack: undefined
+}
+
 // Create the drawer navigator.
-const Drawer = createDrawerNavigator()
+const Drawer = createDrawerNavigator<MainDrawerParams>()
 
 /**
  * This component renders a drawer navigator that contains Waha's navigation drawer. It's placed around the MainStack navigator. It also contains a ton of logic related to things that happen globally in the background, such as updating the connection status and retrieving updates from Firestore.
@@ -256,6 +260,7 @@ const MainDrawer: FC = ({}): ReactElement => {
                 subtitle: doc.data().subtitle,
                 iconName: doc.data().iconName,
                 lessons: doc.data().lessons,
+                tags: doc.data().tags,
               }
 
               sets.push(storySetItem)
@@ -276,7 +281,7 @@ const MainDrawer: FC = ({}): ReactElement => {
    * @param {string} route - The route passed from the navigation component.
    * @return {boolean} - Whether gestures should be enabled or not.
    */
-  function getGestureEnabled(route: Route) {
+  function getGestureEnabled(route: RouteProp<MainDrawerParams, 'MainStack'>) {
     const routeName = getFocusedRouteNameFromRoute(route)
 
     if (routeName === undefined) return security.securityEnabled ? false : true

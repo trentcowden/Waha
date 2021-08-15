@@ -15,12 +15,7 @@ import {
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
-import {
-  isTablet,
-  itemHeights,
-  scaleMultiplier,
-  setItemModes,
-} from '../constants'
+import { isTablet, itemHeights, scaleMultiplier } from '../constants'
 import { SetItemMode } from '../interfaces/components'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -30,9 +25,9 @@ interface Props extends CommonProps, AGProps {
   thisSet: StorySet
   mode: SetItemMode
   font: string
-  onSetSelect?: Function
+  onSetItemSelect?: (set: StorySet) => void
   progressPercentage?: number
-  setIsInInfoMode?: Function
+  setIsInInfoMode?: (toSet: boolean) => void
   isInInfoMode?: boolean
   areMobilizationToolsUnlocked?: boolean
   showTrailerHighlights?: boolean
@@ -51,7 +46,7 @@ const SetItem: FC<Props> = ({
   // Props passed from a parent component.
   thisSet,
   mode,
-  onSetSelect,
+  onSetItemSelect,
   progressPercentage = null,
   setIsInInfoMode = null,
   isInInfoMode = null,
@@ -65,7 +60,7 @@ const SetItem: FC<Props> = ({
   // console.log(`${Date.now()} Set ${thisSet.id} is re-rendering.`)
 
   useEffect(() => {
-    if (Platform.OS === 'android' && mode === setItemModes.LESSONS_SCREEN) {
+    if (Platform.OS === 'android' && mode === SetItemMode.LESSONS_SCREEN) {
       if (UIManager.setLayoutAnimationEnabledExperimental) {
         UIManager.setLayoutAnimationEnabledExperimental(true)
       }
@@ -98,7 +93,7 @@ const SetItem: FC<Props> = ({
    */
   useEffect(() => {
     switch (mode) {
-      case setItemModes.SETS_SCREEN:
+      case SetItemMode.SETS_SCREEN:
         // Primary icon for the SetItem on the Sets screen is a circular progress bar with the set's SVG inside.
         setPrimaryIcon(
           <View style={styles.primaryIconContainer}>
@@ -173,7 +168,7 @@ const SetItem: FC<Props> = ({
           )
         )
         break
-      case setItemModes.LESSONS_SCREEN:
+      case SetItemMode.LESSONS_SCREEN:
         // Primary icon for the SetItem on the Lessons screen is the same as on the Sets screen: a circular progress bar with the set's SVG inside.
         setPrimaryIcon(
           <View style={styles.primaryIconContainer}>
@@ -272,7 +267,7 @@ const SetItem: FC<Props> = ({
           </Animated.View>
         )
         break
-      case setItemModes.ADD_SET_SCREEN:
+      case SetItemMode.ADD_SET_SCREEN:
         // Primary icon for the SetItem on the AddSet screen is a slightly altered version of the set's SVG without any progress shown.
         setPrimaryIcon(
           <View
@@ -306,7 +301,7 @@ const SetItem: FC<Props> = ({
           </View>
         )
         break
-      case setItemModes.SET_INFO_MODAL:
+      case SetItemMode.SET_INFO_MODAL:
         // Primary icon for the SetItem on the SetInfo modal screen is similar to the one on the AddSet screen, with some slightly style variations.
         setPrimaryIcon(
           <View
@@ -349,9 +344,9 @@ const SetItem: FC<Props> = ({
           ? itemHeights[font].SetItem + 15
           : itemHeights[font].SetItem,
       }}
-      onPress={onSetSelect ? () => onSetSelect() : undefined}
+      onPress={onSetItemSelect ? () => onSetItemSelect(thisSet) : undefined}
       // Disable the touch feedback if there's no onSetSelect function.
-      activeOpacity={onSetSelect ? 0.2 : 1}
+      activeOpacity={onSetItemSelect ? 0.2 : 1}
     >
       {primaryIcon}
       <View
@@ -400,7 +395,7 @@ const SetItem: FC<Props> = ({
       </View>
       {secondaryIcon}
       {thisSet.id.includes('3.1') &&
-        mode === setItemModes.SETS_SCREEN &&
+        mode === SetItemMode.SETS_SCREEN &&
         areMobilizationToolsUnlocked &&
         showTrailerHighlights && (
           <View

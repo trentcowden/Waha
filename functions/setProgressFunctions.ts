@@ -1,5 +1,6 @@
-import { getSetInfo } from '../constants'
+import { getSetInfo } from '../functions/setAndLessonInfoFunctions'
 import { Group, SavedSet } from '../interfaces/groups'
+import { SetCategory } from '../interfaces/setAndLessonInfo'
 import { DBLanguageData, StorySet } from '../redux/reducers/database'
 
 /** Checks to see if a set is almost complete and adds the next set if all the conditions are met. The conditions are:
@@ -13,14 +14,14 @@ export const checkForAlmostCompleteSet = (
   addedSet: SavedSet,
   activeGroup: Group,
   activeDatabase: DBLanguageData | undefined,
-  addSet: Function,
-  setShowNextSetUnlockedModal: Function
+  addSet: (groupName: string, groupID: number, set: StorySet) => void,
+  setShowNextSetUnlockedModal: (toSet: boolean) => void
 ) => {
   // Firstly, we need to get the set after this one before we can do anything else.
   if (activeDatabase) {
     var nextSet = activeDatabase.sets.filter(
       dbSet =>
-        getSetInfo('category', dbSet.id) === 'Foundational' &&
+        getSetInfo('category', dbSet.id) === SetCategory.FOUNDATIONAL &&
         getSetInfo('index', dbSet.id) === getSetInfo('index', thisSet.id) + 1
     )[0]
 
@@ -28,14 +29,16 @@ export const checkForAlmostCompleteSet = (
     if (nextSet) {
       if (
         addedSet.progress.length / thisSet.lessons.length > 0.85 &&
-        getSetInfo('category', thisSet.id) === 'Foundational' &&
+        getSetInfo('category', thisSet.id) === SetCategory.FOUNDATIONAL &&
         !activeGroup.addedSets.some(savedSet => savedSet.id === nextSet.id)
       ) {
         addSet(
           activeGroup.name,
           activeGroup.id,
           activeDatabase.sets
-            .filter(set => getSetInfo('category', set.id) === 'Foundational')
+            .filter(
+              set => getSetInfo('category', set.id) === SetCategory.FOUNDATIONAL
+            )
             .filter(
               set =>
                 getSetInfo('index', set.id) ===
@@ -53,7 +56,7 @@ export const checkForAlmostCompleteSet = (
 export const checkForFullyCompleteSet = (
   thisSet: StorySet,
   addedSet: SavedSet,
-  setShowSetCompleteModal: Function
+  setShowSetCompleteModal: (toSet: boolean) => void
 ) => {
   if (addedSet.progress.length === thisSet.lessons.length) {
     setShowSetCompleteModal(true)

@@ -2,12 +2,8 @@ import LottieView from 'lottie-react-native'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import {
-  getLessonInfo,
-  isTablet,
-  itemHeights,
-  scaleMultiplier,
-} from '../constants'
+import { isTablet, itemHeights, scaleMultiplier } from '../constants'
+import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
 import {
   AGProps,
   CommonProps,
@@ -22,16 +18,22 @@ import DownloadStatusIndicator from './DownloadStatusIndicator'
 
 interface Props extends CommonProps, AGProps, DLProps, NetworkProps {
   thisLesson: Lesson
-  goToPlayScreen: Function
+  onLessonItemPress: (params: {
+    thisLesson: Lesson
+    isAudioAlreadyDownloaded: boolean
+    isVideoAlreadyDownloaded: boolean
+    isAlreadyDownloading: boolean
+    lessonType: LessonType
+  }) => void
   isBookmark: boolean
   isComplete: boolean
   lessonType: LessonType
   downloadedLessons: string[]
-  showDownloadLessonModal: Function
-  showDeleteLessonModal: Function
+  onDownloadButtonPress: (lesson: Lesson) => void
+  onRemoveDownloadButtonPress: (lesson: Lesson) => void
   scriptureList: string
-  setShowTrailerHighlights: Function
-  removeDownload: Function
+  setShowTrailerHighlights: (toSet: boolean) => void
+  removeDownload: (lessonID: string) => void
   isInInfoMode: boolean
   font: string
   areMobilizationToolsUnlocked: boolean
@@ -52,13 +54,13 @@ interface Props extends CommonProps, AGProps, DLProps, NetworkProps {
 const LessonItem: FC<Props> = ({
   // Props passed from a parent component.
   thisLesson,
-  goToPlayScreen,
+  onLessonItemPress,
   isBookmark,
   isComplete,
   lessonType,
   downloadedLessons,
-  showDownloadLessonModal,
-  showDeleteLessonModal,
+  onDownloadButtonPress,
+  onRemoveDownloadButtonPress,
   scriptureList,
   isInInfoMode,
   isRTL,
@@ -158,7 +160,7 @@ const LessonItem: FC<Props> = ({
           if (areMobilizationToolsUnlocked && showTrailerHighlights)
             setShowTrailerHighlights(false)
 
-          goToPlayScreen({
+          onLessonItemPress({
             thisLesson: thisLesson,
             isAudioAlreadyDownloaded: downloadedLessons.includes(thisLesson.id),
             isVideoAlreadyDownloaded: downloadedLessons.includes(
@@ -166,7 +168,6 @@ const LessonItem: FC<Props> = ({
             ),
             isAlreadyDownloading: isDownloading,
             lessonType: lessonType,
-            downloadedLessons: downloadedLessons,
           })
         }}
       >
@@ -300,8 +301,8 @@ const LessonItem: FC<Props> = ({
           <DownloadStatusIndicator
             isFullyDownloaded={isFullyDownloaded}
             isDownloading={isDownloading}
-            showDeleteLessonModal={showDeleteLessonModal}
-            showDownloadLessonModal={showDownloadLessonModal}
+            onDownloadButtonPress={onDownloadButtonPress}
+            onRemoveDownloadButtonPress={onRemoveDownloadButtonPress}
             lessonID={thisLesson.id}
             lessonType={lessonType}
             isConnected={isConnected}
@@ -309,6 +310,7 @@ const LessonItem: FC<Props> = ({
             isDark={isDark}
             removeDownload={removeDownload}
             isRTL={isRTL}
+            thisLesson={thisLesson}
           />
         )}
       </View>

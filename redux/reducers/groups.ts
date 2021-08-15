@@ -1,5 +1,6 @@
-import { getSetInfo } from '../../constants'
+import { getSetInfo } from '../../functions/setAndLessonInfoFunctions'
 import { Group } from '../../interfaces/groups'
+import { SetCategory } from '../../interfaces/setAndLessonInfo'
 import {
   ADD_SET,
   CREATE_GROUP,
@@ -83,8 +84,8 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
 
       // If the set that had a lesson completed is a Foundational or Mobilization Tools one, update the recentCoreOrTool variable.
       if (
-        getSetInfo('category', params.set.id) === 'Foundational' ||
-        getSetInfo('category', params.set.id) === 'MobilizationTools'
+        getSetInfo('category', params.set.id) === SetCategory.FOUNDATIONAL ||
+        getSetInfo('category', params.set.id) === SetCategory.MOBILIZATION_TOOLS
       )
         mostRecentlyUpdatedFoundationalOrMTSet = params.set.id
 
@@ -131,9 +132,10 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
                 if (savedSet.progress.length + 1 === params.setLength) {
                   // If the set that is being completed is a Foundational or Mobilization Tools set, we need to change the set bookmark to the set AFTER the one that just got completed.
                   if (
-                    getSetInfo('category', params.set.id) === 'Foundational' ||
                     getSetInfo('category', params.set.id) ===
-                      'MobilizationTools'
+                      SetCategory.FOUNDATIONAL ||
+                    getSetInfo('category', params.set.id) ===
+                      SetCategory.MOBILIZATION_TOOLS
                   ) {
                     idOfBookmarkedSet = params.nextSet
                       ? params.nextSet.id

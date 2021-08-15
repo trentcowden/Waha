@@ -1,4 +1,5 @@
-import React from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import {
   Clipboard,
   Platform,
@@ -6,34 +7,37 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-const ShareMobilizationToolsButton = ({
-  // Props passed from a parent component.
+interface Props extends CommonProps, TProps, AGProps {
+  setShowSnackbar: (toSet: boolean) => void
+}
+
+const ShareMobilizationToolsButton: FC<Props> = ({
   isDark,
   t,
   activeGroup,
-  setShowSnackbar
-}) => {
+  setShowSnackbar,
+}): ReactElement => {
   return (
     <View
       style={{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 25 * scaleMultiplier
+        marginBottom: 25 * scaleMultiplier,
       }}
     >
       <View style={{ justifyContent: 'center' }}>
         <TouchableOpacity
           style={{
             borderRadius: 15,
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}
           onPress={() => {
             setShowSnackbar(true)
@@ -54,7 +58,7 @@ const ShareMobilizationToolsButton = ({
               borderBottomWidth: 4,
               borderBottomColor: isDark
                 ? colors(isDark).bg2
-                : colors(isDark).bg1Shadow
+                : colors(isDark).bg1Shadow,
             }}
           >
             <Text
@@ -86,11 +90,11 @@ const ShareMobilizationToolsButton = ({
             alignItems: 'center',
             justifyContent: 'center',
             position: 'absolute',
-            right: -45 * scaleMultiplier
+            right: -45 * scaleMultiplier,
           }}
           onPress={() =>
             Share.share({
-              message: `${t.mobilization_tools.share_message_1}\n${t.mobilization_tools.share_message_2}\n${t.mobilization_tools.share_message_3}\n${t.mobilization_tools.share_message_4}\n${t.mobilization_tools.share_message_5}`
+              message: `${t.mobilization_tools.share_message_1}\n${t.mobilization_tools.share_message_2}\n${t.mobilization_tools.share_message_3}\n${t.mobilization_tools.share_message_4}\n${t.mobilization_tools.share_message_5}`,
             })
           }
         >
@@ -110,15 +114,15 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   iconContainer: {
     width: 55 * scaleMultiplier,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 20
-  }
+    marginHorizontal: 20,
+  },
 })
 
 export default ShareMobilizationToolsButton

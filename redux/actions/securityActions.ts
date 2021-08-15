@@ -69,7 +69,7 @@ export function setSecurityEnabled (toSet: boolean): SetSecurityEnabledParams {
  * @param {string} code - The unlock code.
  * @return {Object} - Object to send to the reducer.
  */
-export function setCode (code: number): SetCodeParams {
+export function setCode (code: string): SetCodeParams {
   return {
     type: SET_CODE,
     code

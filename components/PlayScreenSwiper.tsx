@@ -26,14 +26,14 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
   iconName: string
   thisLesson: Lesson
   lessonType: LessonType
-  playHandler: Function
+  playHandler: () => void
   playFeedbackOpacity: Animated.Value
   playFeedbackZIndex: number
   isMediaPlaying: boolean
   sectionOffsets: MutableRefObject<SectionOffset[]>
-  markLessonAsComplete: Function
+  markLessonAsComplete: () => void
   isThisLessonComplete: RefObject<boolean>
-  setShowCopyrightsModal: Function
+  setShowCopyrightsModal?: (toSet: boolean) => void
 }
 
 /**

@@ -5,7 +5,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
-  onPress: Function
+  onPress: () => void
   isEditing: boolean
 }
 /**
@@ -21,10 +21,7 @@ const GroupsScreenEditButton: FC<Props> = ({
   t,
 }): ReactElement => {
   return (
-    <TouchableOpacity
-      style={styles.editButtonContainer}
-      onPress={() => onPress()}
-    >
+    <TouchableOpacity style={styles.editButtonContainer} onPress={onPress}>
       <Text
         style={{
           ...type(

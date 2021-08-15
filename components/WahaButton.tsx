@@ -18,7 +18,7 @@ interface Props extends CommonProps {
   label?: string
   extraContainerStyles?: ViewStyle
   extraLabelStyles?: TextStyle
-  onPress?: Function
+  onPress?: () => void
   extraComponent?: ReactElement
   screenLanguage: string
 }
@@ -71,7 +71,7 @@ const WahaButton: FC<Props> = ({
     case WahaButtonMode.SUCCESS:
       return (
         <TouchableOpacity
-          onPress={onPress !== undefined ? () => onPress() : undefined}
+          onPress={onPress !== undefined ? onPress : undefined}
           style={{
             ...containerStyles,
             backgroundColor: colors(isDark).success,
@@ -84,7 +84,7 @@ const WahaButton: FC<Props> = ({
     case WahaButtonMode.ERROR:
       return (
         <TouchableOpacity
-          onPress={onPress !== undefined ? () => onPress() : undefined}
+          onPress={onPress !== undefined ? onPress : undefined}
           style={{
             ...containerStyles,
             backgroundColor: colors(isDark).error,
@@ -97,7 +97,7 @@ const WahaButton: FC<Props> = ({
     case WahaButtonMode.ERROR_SECONDARY:
       return (
         <TouchableOpacity
-          onPress={onPress !== undefined ? () => onPress() : undefined}
+          onPress={onPress !== undefined ? onPress : undefined}
           style={{
             ...containerStyles,
             borderColor: colors(isDark).error,

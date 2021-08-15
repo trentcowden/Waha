@@ -3,7 +3,7 @@ import React, { FC, ReactElement } from 'react'
 import { Dimensions } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetInfo } from '../functions/setOrLessonInfoFunctions'
+import { getSetInfo } from '../functions/setAndLessonInfoFunctions'
 import { selector } from '../hooks'
 import {
   activeDatabaseSelector,
@@ -13,13 +13,20 @@ import SetsScreen from '../screens/SetsScreen'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
+export type SetsTabsParams = {
+  Foundational: undefined
+  Topical: undefined
+  MobilizationTools: undefined
+}
+
 // Create the top tab navigator.
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator<SetsTabsParams>()
 
 /**
  * This component renders the tab navigator that is used to display the 3 differnet Story Set tabs.
  */
 const SetsTabs: FC = ({}): ReactElement => {
+  // Redux state.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const activeDatabase = selector((state) => activeDatabaseSelector(state))

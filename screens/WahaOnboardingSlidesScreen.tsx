@@ -1,3 +1,6 @@
+import { RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { OnboardingParams } from 'navigation/Onboarding'
 import React, { FC, ReactElement, useRef, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -8,9 +11,10 @@ import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
 import WahaButton from '../components/WahaButton'
-import { buttonModes, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
+import { WahaButtonMode } from '../interfaces/components'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { editGroup } from '../redux/actions/groupsActions'
 import { setHasOnboarded } from '../redux/actions/languageInstallationActions'
@@ -21,7 +25,20 @@ import { getTranslations } from '../translations/translationsConfig'
 
 const numPages = 4
 
-interface Props {}
+type WahaOnboardingSlidesScreenNavigationProp = StackNavigationProp<
+  OnboardingParams,
+  'WahaOnboardingSlides'
+>
+type WahaOnboardingSlidesScreenRouteProp = RouteProp<
+  OnboardingParams,
+  'WahaOnboardingSlides'
+>
+
+interface Props {
+  navigation: WahaOnboardingSlidesScreenNavigationProp
+  route: WahaOnboardingSlidesScreenRouteProp
+}
+
 /**
  * Screen that takes the user through a couple onboarding slides describing what Waha is and allows them to customize their first group.
  * @param {string} selectedLanguage - The language that the user selected just before going into the onboarding slides.
@@ -101,6 +118,14 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     }
   }
 
+  const handleGroupNameInputChangeText = (text: string) => {
+    setGroupNameInput(text)
+  }
+
+  const handleEmojiPress = (emoji: string) => {
+    setEmojiInput(emoji)
+  }
+
   // The 4 onboarding pages. These are stored here in an array so that we can call pages.reverse() to reverse the order of the pages for RTL languages.
   const pages = [
     <OnboardingPage
@@ -109,11 +134,13 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
       message={t.onboarding.onboarding_1_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         imageType='lottie'
         source={require('../assets/lotties/onboarding1.json')}
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
     <OnboardingPage
@@ -122,11 +149,13 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
       message={t.onboarding.onboarding_2_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         imageType='lottie'
         source={require('../assets/lotties/onboarding2.json')}
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
     <OnboardingPage
@@ -135,11 +164,13 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
       message={t.onboarding.onboarding_3_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <OnboardingImage
         imageType='lottie'
         source={require('../assets/lotties/onboarding3.json')}
         isDark={isDark}
+        isRTL={isRTL}
       />
     </OnboardingPage>,
     <OnboardingPage
@@ -148,10 +179,11 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
       message={t.onboarding.onboarding_4_message}
       isDark={isDark}
       activeGroup={activeGroup}
+      isRTL={isRTL}
     >
       <GroupNameTextInput
         groupNameInput={groupNameInput}
-        setGroupNameInput={setGroupNameInput}
+        onGroupNameInputChangeText={handleGroupNameInputChangeText}
         groupNameInputRef={groupNameInputRef}
         activeGroup={activeGroup}
         isRTL={isRTL}
@@ -160,7 +192,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
       />
       <EmojiViewer
         emojiInput={emojiInput}
-        setEmojiInput={setEmojiInput}
+        onEmojiPress={handleEmojiPress}
         activeGroup={activeGroup}
         isDark={isDark}
         t={t}
@@ -234,7 +266,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
         <WahaButton
           label={t.general.continue}
           onPress={() => onContinueButtonPress()}
-          mode={buttonModes.SUCCESS}
+          mode={WahaButtonMode.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.
             flex: 2,

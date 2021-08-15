@@ -7,7 +7,7 @@ import { CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
-  playFromLocation: Function
+  playFromLocation: (value: number) => void
   shouldThumbUpdate: MutableRefObject<boolean>
   mediaLength: number
   mediaProgress: number

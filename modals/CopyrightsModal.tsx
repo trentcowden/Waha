@@ -1,21 +1,17 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
+import React, { FC, ReactElement } from 'react'
+import { Text, View } from 'react-native'
 import { gutterSize } from '../constants'
 import { info } from '../functions/languageDataFunctions'
+import { selector } from '../hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
 import ModalScreen from './ModalScreen'
 
-function mapStateToProps(state) {
-  return {
-    isRTL: info(activeGroupSelector(state).language).isRTL,
-    activeGroup: activeGroupSelector(state),
-    t: getTranslations(activeGroupSelector(state).language),
-    isDark: state.settings.isDarkModeEnabled,
-  }
+interface Props {
+  isVisible: boolean
+  hideModal: () => void
 }
 
 /**
@@ -23,16 +19,12 @@ function mapStateToProps(state) {
  * @param {boolean} isVisible - Whether the modal is visible.
  * @param {Function} hideModal - Function to hide the modal.
  */
-const CopyrightsModal = ({
-  // Props passed from a parent component.
-  isVisible,
-  hideModal,
-  // Props passed from redux.
-  isRTL,
-  activeGroup,
-  isDark,
-  t,
-}) => {
+const CopyrightsModal: FC<Props> = ({ isVisible, hideModal }): ReactElement => {
+  const activeGroup = selector((state) => activeGroupSelector(state))
+  const isRTL = info(activeGroup.language).isRTL
+  const t = getTranslations(activeGroup.language)
+  const isDark = selector((state) => state.settings.isDarkModeEnabled)
+
   return (
     <ModalScreen
       title={t.general.view_copyright}
@@ -60,12 +52,4 @@ const CopyrightsModal = ({
   )
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.white,
-    paddingTop: 10,
-  },
-})
-
-export default connect(mapStateToProps)(CopyrightsModal)
+export default CopyrightsModal

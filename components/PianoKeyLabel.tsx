@@ -1,7 +1,14 @@
-import React from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import React, { FC, ReactElement } from 'react'
+import { Dimensions, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props {
+  backgroundColor: string
+  style?: ViewStyle
+  number: string
+  isDark: boolean
+}
 
 /**
  * Component that displays a simple circle with a number. Used to label the various keys of the piano.
@@ -9,13 +16,12 @@ import { type } from '../styles/typography'
  * @param {string} style - Extra styles to apply to the label.
  * @param {string} number - The number to display on the label.
  */
-const PianoKeyLabel = ({
-  // Props passed from a parent component.
+const PianoKeyLabel: FC<Props> = ({
   backgroundColor,
   style,
   number,
-  isDark
-}) => {
+  isDark,
+}): ReactElement => {
   return (
     <View
       style={{ ...styles.circle, backgroundColor: backgroundColor, ...style }}
@@ -40,8 +46,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     zIndex: 3,
     marginBottom: 10,
-    padding: 5
-  }
+    padding: 5,
+  },
 })
 
 export default PianoKeyLabel

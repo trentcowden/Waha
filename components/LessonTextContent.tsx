@@ -2,6 +2,7 @@
 import React, { FC, MutableRefObject, ReactElement, RefObject } from 'react'
 import {
   LayoutRectangle,
+  NativeScrollEvent,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -19,14 +20,14 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
   thisLesson: Lesson
   lessonType: LessonType
   sectionOffsets: MutableRefObject<SectionOffset[]>
-  setShowCopyrightsModal?: Function
+  setShowCopyrightsModal?: (toSet: boolean) => void
   layouts: MutableRefObject<Layouts>
-  onScroll: Function
+  onScroll: (nativeEvent: NativeScrollEvent) => void
 }
 
 interface LessonTextProps extends CommonProps, AGProps {
   text: string
-  onLayout?: Function
+  onLayout?: (layoutEvent: { layout: LayoutRectangle }) => void
 }
 
 /*

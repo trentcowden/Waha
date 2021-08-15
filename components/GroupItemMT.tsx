@@ -10,7 +10,12 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps {
   thisGroup: Group
   areMobilizationToolsUnlocked: boolean
-  editGroup: Function
+  onSwitchChange: (
+    oldGroupName: string,
+    newGroupName: string,
+    emoji: string,
+    shouldShowMobilizationToolsTab: boolean
+  ) => void
 }
 
 /**
@@ -23,7 +28,7 @@ const GroupItemMT: FC<Props> = ({
   isDark,
   areMobilizationToolsUnlocked,
   activeGroup,
-  editGroup,
+  onSwitchChange,
 }): ReactElement => {
   return (
     <View
@@ -78,7 +83,7 @@ const GroupItemMT: FC<Props> = ({
           ios_backgroundColor={colors(isDark).disabled}
           onValueChange={() => {
             // Toggle the visibility of the Mobilization Tools tab for this group on or off.
-            editGroup(
+            onSwitchChange(
               thisGroup.name,
               thisGroup.name,
               thisGroup.emoji,

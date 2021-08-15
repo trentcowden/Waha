@@ -1,24 +1,29 @@
-import React from 'react'
+import { AGProps, CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+interface Props extends CommonProps, AGProps {
+  text: string
+}
+
 /**
  * A component to show a nicely styled blurb (section of text). Used on the Mobilization Tools and Security Mode screens.
  * @param {string} text - The text of the blurb to display.
  */
-const WahaBlurb = ({
+const WahaBlurb: FC<Props> = ({
   // Props passed from a parent component.
   text,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <View
     style={{
       width: '100%',
       paddingHorizontal: 20,
-      paddingVertical: 20 * scaleMultiplier
+      paddingVertical: 20 * scaleMultiplier,
     }}
   >
     <Text

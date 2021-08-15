@@ -15,7 +15,7 @@ import SVG from './SVG'
 
 interface Props extends CommonProps {
   iconName: string
-  playHandler: Function
+  playHandler: () => void
   playFeedbackOpacity: Animated.Value
   playFeedbackZIndex: number
   isMediaPlaying: boolean
@@ -54,7 +54,7 @@ const AlbumArt: FC<Props> = ({
   >
     <TouchableHighlight
       style={styles.touchableContainer}
-      onPress={() => playHandler()}
+      onPress={playHandler}
       underlayColor={colors(isDark).bg4 + '00'}
       activeOpacity={1}
     >

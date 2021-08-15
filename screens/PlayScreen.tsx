@@ -1,9 +1,15 @@
+import { RouteProp } from '@react-navigation/native'
+import {
+  StackNavigationOptions,
+  StackNavigationProp,
+} from '@react-navigation/stack'
 import { Audio, Video } from 'expo-av'
 import { AVPlaybackStatus } from 'expo-av/build/AV'
 import * as FileSystem from 'expo-file-system'
 import { useKeepAwake } from 'expo-keep-awake'
 import LottieView from 'lottie-react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { MainStackParams } from 'navigation/MainStack'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Platform,
@@ -24,15 +30,11 @@ import PlayScreenSwiper from '../components/PlayScreenSwiper'
 import Scrubber from '../components/Scrubber'
 import VideoPlayer from '../components/VideoPlayer'
 import WahaBackButton from '../components/WahaBackButton'
-import {
-  getLessonInfo,
-  gutterSize,
-  isTablet,
-  lockPortrait,
-  scaleMultiplier,
-} from '../constants'
+import { gutterSize, isTablet, scaleMultiplier } from '../constants'
 import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
+import { lockPortrait } from '../functions/orientationFunctions'
+import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
@@ -57,6 +59,14 @@ import {
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
+
+type PlayScreenNavigationProp = StackNavigationProp<MainStackParams, 'Play'>
+type PlayScreenRouteProp = RouteProp<MainStackParams, 'Play'>
+
+interface Props {
+  navigation: PlayScreenNavigationProp
+  route: PlayScreenRouteProp
+}
 
 // Controls whether a piece of content in the middle area is visible or not.
 const middleAreaVisibility = {
@@ -83,7 +93,7 @@ const path = FileSystem.documentDirectory
  * @param {boolean} isVideoAlreadyDownloaded - Whether this lesson has its Training video file already downloaded or not.
  * @param {boolean} isAlreadyDownloading - Whether any content for this lesson is currently downloading.
  */
-const PlayScreen = ({
+const PlayScreen: FC<Props> = ({
   // Props passed from navigation.
   navigation: { goBack, setOptions, isFocused },
   route: {
@@ -95,10 +105,10 @@ const PlayScreen = ({
       isVideoAlreadyDownloaded,
       isAlreadyDownloading,
       lessonType,
-      downloadedLessons,
     },
   },
 }) => {
+  // Redux state/dispatch.
   const activeGroup = selector((state) => activeGroupSelector(state))
   const activeDatabase = selector((state) => activeDatabaseSelector(state))
   const downloads = selector((state) => state.downloads)
@@ -115,6 +125,7 @@ const PlayScreen = ({
     (state) => state.persistedPopups.numLessonsTilReview
   )
   const dispatch = useAppDispatch()
+
   /*
     STATE
   */
@@ -131,7 +142,7 @@ const PlayScreen = ({
   })
 
   /** State for the audio and video refs. */
-  const videoRef = useRef(null)
+  const videoRef = useRef<Video>(null)
 
   const [media] = useState(new Media(new Audio.Sound()))
 
@@ -220,8 +231,8 @@ const PlayScreen = ({
   }, [activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0]])
 
   /** Sets the navigation options for this screen. */
-  const getNavOptions = () => ({
-    headerTitle: (
+  const getNavOptions = (): StackNavigationOptions => ({
+    headerTitle: () => (
       <View
         style={{
           justifyContent: 'center',
@@ -450,7 +461,7 @@ const PlayScreen = ({
   const changeChapter = async (chapter: Chapter) => {
     if (!isMediaLoaded) return
     /* Pause audio or video before changing chapters. This is here because of some jank android-only error where the onPlaybackStatusUpdate function was being called continuously when switching from the Training chapter to a different chapter, even when media wasn't loaded, which caused the app to constantly switch between being loaded and not loaded. Pausing the audio or video before switching fixes this issue. */
-    if (isMediaPlaying && isMediaLoaded) {
+    if (activeChapter && isMediaPlaying && isMediaLoaded) {
       // if (activeChapter === chapters.TRAINING) videoRef.current.pauseAsync()
       // else audioRef.current.pauseAsync()
       media.pause(activeChapter)
@@ -464,6 +475,7 @@ const PlayScreen = ({
     // Scroll the text to the appropriate position.
     if (
       lessonTextContentRef.current !== null &&
+      thisLesson.scripture &&
       sectionOffsets.current.length === thisLesson.scripture.length + 3
     ) {
       if (chapter === Chapter.FELLOWSHIP)
@@ -516,7 +528,7 @@ const PlayScreen = ({
 
     // If we're switching to anything but the Training chapter, fade in the <AlbumArtSwiper/> and fade out the <VideoPlayer/>. If the <AlbumArtSwiper/> is already present, this animation does nothing.
     if (activeChapter !== Chapter.TRAINING) {
-      !isTablet && lockPortrait(() => {})
+      !isTablet && lockPortrait()
       Animated.parallel([
         Animated.timing(playScreenSwiperOpacity, {
           toValue: 1,
@@ -557,7 +569,11 @@ const PlayScreen = ({
    */
   const loadMedia = async (source: string) => {
     media
-      .load(source, shouldAutoPlay, activeChapter)
+      .load(
+        source,
+        shouldAutoPlay,
+        activeChapter ? activeChapter : Chapter.FELLOWSHIP
+      )
       .then((playbackStatus: AVPlaybackStatus) => {
         // Set the length of this media. Used for the <Scrubber/>.
         if (playbackStatus.isLoaded) {
@@ -695,7 +711,7 @@ const PlayScreen = ({
     if (
       fullscreenStatus.current === Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT
     ) {
-      !isTablet && lockPortrait(() => {})
+      !isTablet && lockPortrait()
       media.closeFullscreen()
     }
     switch (lessonType) {
@@ -750,9 +766,11 @@ const PlayScreen = ({
     shouldThumbUpdate.current = false
     setMediaProgress(value)
 
-    media.playFromLocation(value, isMediaPlaying, activeChapter).then(() => {
-      shouldThumbUpdate.current = true
-    })
+    media
+      .playFromLocation(value, isMediaPlaying, activeChapter)
+      .then((playbackStatus: AVPlaybackStatus) => {
+        if (playbackStatus.isLoaded) shouldThumbUpdate.current = true
+      })
   }
 
   /*
@@ -847,18 +865,14 @@ const PlayScreen = ({
    * Gets called when the user pressed the back button. Shows any necessary modals before going back as well.
    */
   const onBackButtonPress = async () => {
-    // Lock to portrait orientaiton.
-    !isTablet && lockPortrait(() => {})
+    // Lock to portrait orientation.
+    !isTablet && lockPortrait()
 
     // Unload all the media.
-    // if (audioRef.current) await audioRef.current.unloadAsync()
-    // if (videoRef.current) await videoRef.current.unloadAsync()
-    // audioRef.current = null
-    // videoRef.current = null
     media.unload()
     media.cleanup()
 
-    // Here is where any modals that appear after a lesson is completed for the first time should appear. This will be useful when the gamification update is implemented.
+    // Here is where any modals that appear after a lesson is completed for the first time should appear.
     if (justCompleted.current) {
       if (
         // Check to see if we should automatically add the next Story Set if this set is now 85% or more of the way completed.
@@ -1035,6 +1049,7 @@ const PlayScreen = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         <LottieView
           style={{ width: '100%' }}
@@ -1059,6 +1074,7 @@ const PlayScreen = ({
         }}
         isDark={isDark}
         activeGroup={activeGroup}
+        isRTL={isRTL}
       >
         <LottieView
           style={{ width: '100%' }}

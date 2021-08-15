@@ -8,10 +8,10 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps {
-  label: string,
-  secondaryLabel?: string,
-  icon: string,
-  onPress: Function
+  label: string
+  secondaryLabel?: string
+  icon: string
+  onPress: () => void
 }
 
 const InformationItem: FC<Props> = ({
@@ -21,14 +21,14 @@ const InformationItem: FC<Props> = ({
   label,
   secondaryLabel,
   icon,
-  onPress
+  onPress,
 }): ReactElement => (
   <TouchableOpacity
     style={{
       ...styles.informationItem,
-      flexDirection: isRTL ? 'row-reverse' : 'row'
+      flexDirection: isRTL ? 'row-reverse' : 'row',
     }}
-    onPress={() => onPress()}
+    onPress={onPress}
   >
     <View>
       <Text
@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     height: 60 * scaleMultiplier,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20
-  }
+    paddingHorizontal: 20,
+  },
 })
 
 export default InformationItem

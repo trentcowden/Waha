@@ -393,7 +393,12 @@ export function downloadLanguageCoreFiles (
  * Very similar to downloadLanguageCoreFiles, but with a few key differences. This function is used to update core files in an already-installed language instance instead of downloading core files for a new one. We download any files stored in languageCoreFilesToUpdate instead of every core file for a language instance. Note: there's no language parameter as this function can update core files for multiple language instances at the same time if need be.
  * @export
  */
-export function updateLanguageCoreFiles () {
+export function updateLanguageCoreFiles (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  AnyAction
+> {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     // Set the totalDownloaded variable to 0. This is our update progress tracking variable. We add one to this variable whenever we finish downloading a file.
     var totalDownloaded = 0

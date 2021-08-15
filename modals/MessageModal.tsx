@@ -1,9 +1,19 @@
-import React from 'react'
+import { AGProps, CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+interface Props extends CommonProps, AGProps {
+  isVisible: boolean
+  hideModal: () => void
+  title: string
+  message: string
+  confirmText: string
+  confirmOnPress: () => void
+}
 
 /**
  * A modal component that shows an image, a title, a message, and a button to dismiss.
@@ -15,7 +25,7 @@ import { type } from '../styles/typography'
  * @param {Function} confirmOnPress - Function to fire when the user presses the button to close the modal.
  * @param {Component} children - Component to show at the top of the modal. Usualy an image/gif.
  */
-const MessageModal = ({
+const MessageModal: FC<Props> = ({
   // Props passed from a parent component.
   isVisible,
   hideModal,
@@ -25,8 +35,8 @@ const MessageModal = ({
   confirmOnPress,
   children,
   isDark,
-  activeGroup
-}) => (
+  activeGroup,
+}): ReactElement => (
   <Modal
     isVisible={isVisible}
     hasBackdrop={true}
@@ -40,7 +50,7 @@ const MessageModal = ({
     <View
       style={{
         ...styles.contentContainer,
-        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4
+        backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
       }}
     >
       {children}
@@ -53,7 +63,7 @@ const MessageModal = ({
             'center',
             colors(isDark).text
           ),
-          marginVertical: 10
+          marginVertical: 10,
         }}
       >
         {title}
@@ -95,13 +105,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 10,
-    paddingTop: 10
+    paddingTop: 10,
   },
   buttonContainer: {
     width: '100%',
     height: 80 * scaleMultiplier,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 })
 
 export default MessageModal

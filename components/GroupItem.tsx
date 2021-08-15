@@ -11,7 +11,8 @@ import {
 } from 'react-native'
 import { Lesson, StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
-import { getLessonInfo, scaleMultiplier } from '../constants'
+import { scaleMultiplier } from '../constants'
+import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
 import { Database } from '../redux/reducers/database'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -26,11 +27,10 @@ enum AnimatedPosition {
 interface Props extends CommonProps, AGProps, TProps {
   thisGroup: Group
   isEditing: boolean
-  openEditModal: Function
   database: Database
   groups: Group[]
-  deleteGroup: Function
-  changeActiveGroup: Function
+  onDeleteGroupButtonPress: (groupName: string) => void
+  onGroupItemPress: (group: Group) => void
 }
 
 /**
@@ -43,15 +43,14 @@ const GroupItem: FC<Props> = ({
   // Props passed from a parent component.
   thisGroup,
   isEditing,
-  openEditModal,
   database,
   isRTL,
   isDark,
   groups,
   t,
   activeGroup,
-  deleteGroup,
-  changeActiveGroup,
+  onDeleteGroupButtonPress,
+  onGroupItemPress,
 }): ReactElement => {
   /** Keeps track of the components for the left button and the right icon of the group item. These get switched when isRTL is true. */
   const [leftButton, setLeftButton] = useState(<View />)
@@ -163,7 +162,7 @@ const GroupItem: FC<Props> = ({
                   },
                   {
                     text: t.general.ok,
-                    onPress: () => deleteGroup(thisGroup.name),
+                    onPress: () => onDeleteGroupButtonPress(thisGroup.name),
                     style: 'destructive',
                   },
                 ]
@@ -249,12 +248,7 @@ const GroupItem: FC<Props> = ({
           ...styles.touchableAreaContainer,
           flexDirection: isRTL ? 'row-reverse' : 'row',
         }}
-        onPress={
-          // Tapping on a group while not in edit mode switches the active group; in edit mode, it opens the edit group modal.
-          isEditing
-            ? () => openEditModal()
-            : () => changeActiveGroup(thisGroup.name)
-        }
+        onPress={() => onGroupItemPress(thisGroup)}
       >
         <Animated.View
           style={{

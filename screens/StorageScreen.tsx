@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaButton from '../components/WahaButton'
-import { buttonModes } from '../constants'
 import {
   getInstalledLanguagesData,
   info,
 } from '../functions/languageDataFunctions'
 import { selector } from '../hooks'
+import { WahaButtonMode } from '../interfaces/components'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -181,7 +181,7 @@ const StorageScreen = ({}) => {
         )}
       />
       <WahaButton
-        mode={buttonModes.ERROR}
+        mode={WahaButtonMode.ERROR}
         label={`${t.storage.clear_all_downloaded_lessons} (${totalStorage} ${t.storage.megabyte})`}
         onPress={() =>
           Alert.alert(

@@ -1,24 +1,22 @@
-import React from 'react'
+import { AGProps, CommonProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+interface Props extends CommonProps, AGProps {}
 /**
  * This component displays some simple text that says "TEST MODE" whenever any of the modes in modeSwitch.js are set to "test". This is displayed in the corner on the opposite side of the group avatar on the SetsTabs screen.
  */
-const TestModeDisplay = ({
-  // Props passed from redux.
-  isDark,
-  activeGroup
-}) => {
+const TestModeDisplay: FC<Props> = ({ isDark, activeGroup }): ReactElement => {
   return (
     <View
       style={{
         backgroundColor: colors(isDark).error,
         paddingVertical: 5,
         borderRadius: 15,
-        marginHorizontal: 20
+        marginHorizontal: 20,
       }}
     >
       {dbMode === 'test' || reduxMode === 'test' || analyticsMode === 'test' ? (
@@ -31,7 +29,7 @@ const TestModeDisplay = ({
               'center',
               colors(isDark).textOnColor
             ),
-            paddingHorizontal: 10
+            paddingHorizontal: 10,
           }}
         >
           Test
