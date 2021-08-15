@@ -9,24 +9,20 @@ import { type } from '../styles/typography'
 
 interface Props extends CommonProps {
   languageID: string
+  // The name of the language in its native script.
   nativeName: string
+  // The name of the language in the active group's language.
   localeName: string
   logos: Language['logos']
   onLanguageItemPress: () => void
   isSelected: boolean
   playAudio: () => void
+  // Function that plays audio of the name of the language.
   screenLanguage: string
 }
 
 /**
  * A pressable item used to display a language instance on the LanguageInstanceInstallScreen.
- * @param {string} nativeName - The name of the language in its native script, e.g. Español.
- * @param {string} localeName - The name of the language in the current phone language, e.g. Spanish.
- * @param {string} font - The font to display the text in. Either the font for the system language or the font from the active language. See typography.js for more info.
- * @param {string} logoSource - The URL for the logo for this language instance.
- * @param {Function} onPress - Function to fire when the user presses the item.
- * @param {boolean} isSelected - Whether this language instance is selected or not.
- * @param {Function} playAudio - Function that plays audio of the name of the language.
  */
 const LanguageItem: FC<Props> = ({
   languageID,

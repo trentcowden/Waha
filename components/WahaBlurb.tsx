@@ -13,12 +13,7 @@ interface Props extends CommonProps, AGProps {
  * A component to show a nicely styled blurb (section of text). Used on the Mobilization Tools and Security Mode screens.
  * @param {string} text - The text of the blurb to display.
  */
-const WahaBlurb: FC<Props> = ({
-  // Props passed from a parent component.
-  text,
-  isDark,
-  activeGroup,
-}): ReactElement => (
+const WahaBlurb: FC<Props> = ({ text, isDark, activeGroup }): ReactElement => (
   <View
     style={{
       width: '100%',

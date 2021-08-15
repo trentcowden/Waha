@@ -34,7 +34,6 @@ interface Props extends CommonProps, AGProps {
  * @param {Component} children - The component to display as the content of the modal screen.
  */
 const ModalScreen: FC<Props> = ({
-  // Props passed from a parent component.
   isVisible,
   hideModal,
   topRightComponent = null,
@@ -42,7 +41,6 @@ const ModalScreen: FC<Props> = ({
   onModalWillShow,
   title,
   children,
-  // Props passed from redux.
   isRTL,
   isDark,
   activeGroup,

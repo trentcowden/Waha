@@ -14,14 +14,13 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
+  // The name of the currently selected emoji.
   emojiInput: string
   onEmojiPress: (emoji: string) => void
 }
 
 /**
  * A component that shows a list of emojis available to be set for a group's avatar.
- * @param {string} emojiInput - The name of the currently selected emoji.
- * @param {Function} setEmojiInput - Sets the name of the currently selected emoji.
  */
 const EmojiViewer: FC<Props> = ({
   emojiInput,

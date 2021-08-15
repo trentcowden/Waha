@@ -1,4 +1,3 @@
-// import SvgUri from 'expo-svg-uri'
 import React, { FC, ReactElement } from 'react'
 import {
   Animated,
@@ -14,8 +13,11 @@ import { colors } from '../styles/colors'
 import SVG from './SVG'
 
 interface Props extends CommonProps {
+  // The name of the icon associated with the set this lesson is a part of to display as the album art.
   iconName: string
+  // Plays/pauses a lesson. Needed because the user can tap on the album art pane to play/pause the lesson.
   playHandler: () => void
+  // Opacity and Z-index for the play/pause animation feedback that appears whenever the lesson is played or paused.
   playFeedbackOpacity: Animated.Value
   playFeedbackZIndex: number
   isMediaPlaying: boolean
@@ -23,14 +25,8 @@ interface Props extends CommonProps {
 
 /**
  * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
- * @param {string} iconName - The name of the icon associated with the set this lesson is a part of.
- * @param {Function} playHandler - Plays/pauses a lesson. Needed because the user can tap on the album art pane to play/pause the lesson.
- * @param {number} playFeedbackOpacity - Opacity for the play/pause animation feedback that appears whenever the lesson is played or paused.
- * @param {number} playFeedbackZIndex - Z-index for the play/pause animation feedback that appears whenever the lesson is played or paused.
- * @param {boolean} isMediaPlaying - Whether the current media (audio or video) is currently playing.
  */
 const AlbumArt: FC<Props> = ({
-  // Props passed from a parent component.
   iconName,
   playHandler,
   playFeedbackOpacity,

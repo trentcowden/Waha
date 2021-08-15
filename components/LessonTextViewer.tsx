@@ -32,24 +32,15 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
   isThisLessonComplete: RefObject<boolean>
   setShowCopyrightsModal?: (toSet: boolean) => void
   setSectionTitleText?: (text: string) => void
+  // Animation values for the section title.
   sectionTitleOpacity?: MutableRefObject<Animated.Value>
   sectionTitleYTransform?: MutableRefObject<Animated.Value>
 }
 
 /**
- * Displays all of the text for the different lesson sections.
- * @param {ref} lessonTextContentRef - The ref for the carousel component of the AlbumArtSwiper. Used to manually jump to specific pages.
- * @param {Object} thisLesson - The object for the lesson that the user has selected to do.
- * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
- * @param {Object[]} sectionOffsets - Stores the different sections of the lesson text and their global scroll offset.
- * @param {Function} setSectionTitleText - Sets the section title text.
- * @param {number} setSectionTitleOpacity - The opacity of the section title.
- * @param {number} sectionTitleYTransform - The y transform value for the section title.
- * @param {Function} markLessonAsComplete - Marks this lesson as complete.
- * @param {boolean} isThisLessonComplete - Whether or not this lesson is complete.
+ * Component for the view that contains a lesson's text content. It handles the scrolling logic and animation.
  */
 const LessonTextViewer: FC<Props> = ({
-  // Props passed from a parent component.
   lessonTextContentRef,
   thisLesson,
   lessonType,

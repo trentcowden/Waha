@@ -8,14 +8,13 @@ interface Props extends CommonProps, AGProps, TProps {
   onPress: () => void
   isEditing: boolean
 }
+
 /**
  * The edit button that is displayed in the header on the Groups screen. Switches editingMode on or off when pressed.
  */
 const GroupsScreenEditButton: FC<Props> = ({
-  // Props passed from a parent component.
   onPress,
   isEditing,
-  // Props passed from redux.
   isDark,
   activeGroup,
   t,

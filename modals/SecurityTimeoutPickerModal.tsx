@@ -23,7 +23,6 @@ interface Props extends CommonProps, AGProps, TProps {
 const SecurityTimeoutPickerModal: FC<Props> = ({
   isVisible,
   hideModal,
-  // Props passed from redux.
   security,
   isRTL,
   isDark,

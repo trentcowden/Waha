@@ -46,13 +46,8 @@ interface Props {
  * @param {string} passcode - (Optional) If the user is confirming their passcode, this is the passcode already entered so we can verify that they match.
  */
 const PianoPasscodeSetScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { setOptions, navigate, goBack },
-  route: {
-    name: routeName,
-    // Props passed from previous screen.
-    params: { passcode } = { passcode: null },
-  },
+  route: { name: routeName, params: { passcode } = { passcode: null } },
 }): ReactElement => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))

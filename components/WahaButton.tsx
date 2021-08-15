@@ -35,14 +35,12 @@ interface Props extends CommonProps {
  * @param {Component} extraComponent - (Optional) An extra RN component to put in the button. Usually an icon.
  */
 const WahaButton: FC<Props> = ({
-  // Props passed from a parent component.s
   mode,
   label,
   extraContainerStyles,
   extraLabelStyles,
   onPress,
   extraComponent,
-  // Props passed from redux.
   isDark,
   isRTL,
   screenLanguage,

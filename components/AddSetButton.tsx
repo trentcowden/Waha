@@ -11,8 +11,10 @@ interface Props extends CommonProps, AGProps {
   onPress: () => void
 }
 
+/**
+ * A pressable component that is used to add a new set. It's rendered as the list footer for the Story Sets list on the <SetsScreen />.
+ */
 const AddNewGroupButton: FC<Props> = ({
-  // Props passed from a parent component.
   label,
   onPress,
   isRTL,

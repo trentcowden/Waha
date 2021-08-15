@@ -20,12 +20,10 @@ interface Props extends CommonProps, AGProps {
  * @param {Component} children - The list of buttons to display in the modal.
  */
 const OptionsModal: FC<Props> = ({
-  // Props passed from a parent component.
   isVisible,
   hideModal,
   closeText,
   children,
-  // Props passed from redux.
   isDark,
   activeGroup,
 }): ReactElement => (

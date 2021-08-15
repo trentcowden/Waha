@@ -23,15 +23,8 @@ interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
 
 /**
  * Component that displays the various 3 or 4 chapter buttons on the PlayScreen.
- * @param {string} activeChapter - The currently active chapter. See chapters in constants.js.
- * @param {Function} changeChapter - Changes the active chapter.
- * @param {boolean} isAudioDownloaded - Whether this lesson has its audio file downloaded or not.
- * @param {boolean} isVideoDownloaded - Whether this lesson has its video file downloaded or not. Only relevant to STANDARD_DMC or VIDEO_ONLY lesson types.
- * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
- * @param {string} lessonID - The ID for the active lesson.
  */
 const ChapterSelector: FC<Props> = ({
-  // Props passed from a parent component.
   activeChapter,
   changeChapter,
   isAudioDownloaded,

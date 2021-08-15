@@ -25,7 +25,9 @@ enum AnimatedPosition {
 }
 
 interface Props extends CommonProps, AGProps, TProps {
+  // The object for the group that we're displaying in this component.
   thisGroup: Group
+  // Whether we're in "editing" mode or not.
   isEditing: boolean
   database: Database
   groups: Group[]
@@ -35,12 +37,8 @@ interface Props extends CommonProps, AGProps, TProps {
 
 /**
  * A pressable item used on the Group screen to display a group in the groups section list. It shows the name of the group, the icon, whether it's active or not, and the current bookmark, and allows for editing and deleting.
- * @param {Object} thisGroup - The object for the group that we're displaying in this component.
- * @param {boolean} isEditing - Whether we're in "editing" mode or not.
- * @param {Function} openEditModal - A function that opens the modal that allows us to edit the information for a group.
  */
 const GroupItem: FC<Props> = ({
-  // Props passed from a parent component.
   thisGroup,
   isEditing,
   database,

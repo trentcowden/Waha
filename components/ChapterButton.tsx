@@ -16,6 +16,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
+  // The chapter to display on this button.
   chapter: Chapter
   activeChapter: Chapter
   changeChapter: (chapter: Chapter) => void
@@ -26,17 +27,9 @@ interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
 }
 
 /**
- * Pressable component for a single chapter button used in ChapterSeparator. Has a variety of possible styles based on its current mode.
- * @param {number} chapter - The chapter to display on this button. See chapters in constants.js.
- * @param {number} activeChapter - The currently active chapter of the current lesson. See chapters in constants.js.
- * @param {Function} changeChapter - Changes the currently active chapter.
- * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
- * @param {string} lessonID - The ID of the current lesson. Only needed for the Story and Training Chapter.
- * @param {boolean} isAudioDownloaded - Whether this lesson has its audio file downloaded or not. Only needed for the Story chapter button.
- * @param {boolean} isVideoDownloaded - Whether this lesson has its video file downloaded or not. Only needed for the Training chapter button.
+ * Pressable component for a single chapter button used in <ChapterSeparator />. Has a variety of possible styles based on its current mode.
  */
 const ChapterButton: FC<Props> = ({
-  // Props passed from a parent component.
   chapter,
   activeChapter,
   changeChapter,

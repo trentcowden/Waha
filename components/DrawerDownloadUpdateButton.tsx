@@ -13,10 +13,8 @@ interface Props extends CommonProps, AGProps, TProps, NetworkProps {
 
 /**
  * Button that prompts the user to download new language core files should they be available/needed.
- * @param {Function} updateHandler - Handles the updating of language core files.
  */
 const DrawerDownloadUpdateButton: FC<Props> = ({
-  // Props passed from a parent component.
   onUpdateButtonPress,
   activeGroup,
   isRTL,

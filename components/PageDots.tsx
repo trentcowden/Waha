@@ -4,11 +4,6 @@ import { scaleMultiplier } from '../constants'
 import { CommonProps } from '../interfaces/common'
 import { colors } from '../styles/colors'
 
-interface Props extends CommonProps {
-  numDots: number
-  activeDot: number
-}
-
 const Dot = ({ isActive, isDark }: { isActive: boolean; isDark: boolean }) => (
   <View
     style={{
@@ -23,12 +18,16 @@ const Dot = ({ isActive, isDark }: { isActive: boolean; isDark: boolean }) => (
   />
 )
 
+interface Props extends CommonProps {
+  // The total number of dots (i.e. number of pages) to display.
+  numDots: number
+  // The currently active dot (i.e. page).
+  activeDot: number
+}
+
 /**
  * Displays a number of dots corresponding to pages in a PagerView.
- * @param {number} numDots - The number of dots (i.e. number of pages) to display.
- * @param {number} activeDot - The currently active dot (i.e. page).
  */
-
 const PageDots: FC<Props> = ({
   numDots,
   activeDot,

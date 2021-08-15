@@ -22,9 +22,7 @@ import { getTranslations } from '../translations/translationsConfig'
  * A component that acts as the navigation drawer for Waha. Accessible via the SetsTabs screens.
  */
 const WahaDrawer: FC<DrawerContentComponentProps> = ({
-  // Props passed from navigation.
   navigation: { navigate },
-  // Props passed from redux.
 }) => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))

@@ -12,12 +12,8 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A component that's used for a single onboarding page in the various onboarding slides used in Waha.
- * @param {string} title - The title to display on the page.
- * @param {string} message - The message to display on the page.
- * @param {Component} children - Child components to render on the page.
  */
 const OnboardingPage: FC<Props> = ({
-  // Props passed from a parent component.
   title,
   message,
   children,

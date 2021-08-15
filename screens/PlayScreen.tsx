@@ -94,10 +94,8 @@ const path = FileSystem.documentDirectory
  * @param {boolean} isAlreadyDownloading - Whether any content for this lesson is currently downloading.
  */
 const PlayScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { goBack, setOptions, isFocused },
   route: {
-    // Props passed from previous screen.
     params: {
       thisLesson,
       thisSet,

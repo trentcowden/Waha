@@ -15,12 +15,8 @@ interface Props extends CommonProps {
 
 /**
  * A component that renders behind the <LessonItem /> component that gets revealed when the user swipes the lesson item.
- * @param {boolean} isComplete - Whether this lesson is complete or not.
- * @param {Function} toggleComplete - Marks this lesson as complete.
- * @param {Function} showShareModal - Shows the share modal.
  */
 const LessonSwipeBackdrop: FC<Props> = ({
-  // Props passed from a parent component.
   isComplete,
   onCompleteButtonPress,
   onShareButtonPress,

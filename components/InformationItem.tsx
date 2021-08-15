@@ -14,6 +14,9 @@ interface Props extends CommonProps, AGProps {
   onPress: () => void
 }
 
+/**
+ * A list item to show on the <InformationScreen />.
+ */
 const InformationItem: FC<Props> = ({
   isRTL,
   isDark,

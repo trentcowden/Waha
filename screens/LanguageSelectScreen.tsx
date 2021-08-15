@@ -73,11 +73,9 @@ interface Props {
  * @param {string} installedLanguageInstances[].languageName - The name of the language.
  */
 const LanguageSelectScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { setOptions, navigate },
   route: {
     name: routeName,
-    // Props passed from previous screen.
     params: { installedLanguageInstances } = {
       installedLanguageInstances: [],
     },

@@ -21,7 +21,6 @@ interface Props extends CommonProps {
  * @param {number} mediaProgress - The progress in milliseconds through the current media.
  */
 const Scrubber: FC<Props> = ({
-  // Props passed from a parent component.
   playFromLocation,
   shouldThumbUpdate,
   mediaLength,

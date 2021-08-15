@@ -21,6 +21,7 @@ const pianoNotes = [
 ]
 
 interface Props {
+  // Function that sets the played notes state. This state keeps track of what notes the user has played on the piano.
   setPlayedNotes: (pattern: (oldPattern: string) => string) => void
   isMuted?: boolean
   isDark: boolean
@@ -28,11 +29,8 @@ interface Props {
 
 /**
  * A component that shows a playable piano. Used on the PianoApp screen for Security mode.
- * @param {Function} setPlayedNotes - Function that sets the played notes state. This state keeps track of what notes the user has played on the piano.
- * @param {boolean} isMuted - (Optional) Whether the piano sounds should be muted. Defaults to false.
  */
 const Piano: FC<Props> = ({
-  // Props passed from a parent component.
   setPlayedNotes,
   isMuted = false,
   isDark,

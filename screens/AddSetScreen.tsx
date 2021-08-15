@@ -39,10 +39,8 @@ interface Props {
  * @param {string} category - The category of Story Sets to display.
  */
 const AddSetScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { setOptions },
   route: {
-    // Props passed from previous screen.
     params: { category },
   },
 }): ReactElement => {

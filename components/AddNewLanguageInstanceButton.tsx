@@ -13,10 +13,9 @@ interface Props extends CommonProps, AGProps, TProps {
 }
 
 /**
- * A pressable component that is used to add a new language instance. It's rendered as the list footer for the Groups SectionList on the Groups screen.
+ * A pressable component that is used to add a new language instance. It's rendered as the list footer for the Groups SectionList on the <Groups /> screen.
  */
 const AddNewLanguageInstanceButton: FC<Props> = ({
-  // Props passed from a parent component.
   onAddNewLanguageButtonPress,
   numInstalledLanguages,
   isRTL,

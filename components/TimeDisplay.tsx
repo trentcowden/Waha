@@ -16,13 +16,7 @@ interface Props extends CommonProps {
  * @param {number} time - The time to display in milliseconds.
  * @param {string} side - The side that this time display goes on. Either 'right' or 'left'.
  */
-const TimeDisplay: FC<Props> = ({
-  // Props passed from a parent component.
-  max,
-  time,
-  side,
-  isDark,
-}): ReactElement => {
+const TimeDisplay: FC<Props> = ({ max, time, side, isDark }): ReactElement => {
   /**
    * Converts a time in milliseconds to a nicely formatted time in the format HH:MM:SS.
    * @param {number} time - The time in milliseconds to convert.

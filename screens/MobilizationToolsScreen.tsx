@@ -32,10 +32,7 @@ interface Props {
 /**
  * Screen that shows information about the Mobilization Tools and a button to unlock them.
  */
-const MobilizationToolsScreen: FC<Props> = ({
-  // Props passed from navigation.
-  navigation: { navigate },
-}) => {
+const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)

@@ -21,6 +21,7 @@ import PageDots from './PageDots'
 import PlayScreenTitle from './PlayScreenTitle'
 
 interface Props extends CommonProps, TProps, ADBProps, AGProps {
+  // The ref for the pager view that contains the album art area and the lesson text area. Used to switch pages.
   playScreenSwiperRef: RefObject<PagerView>
   lessonTextContentRef: RefObject<ScrollView>
   iconName: string
@@ -38,20 +39,8 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
 
 /**
  * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
- * @param {ref} lessonTextContentRef - The ref for the area that contains the lesson text. Used to jump to specific points when the active chapter changes.
- * @param {string} iconName - The name of the icon associated with the set this lesson is a part of.
- * @param {Object} thisLesson - The object for the lesson that the user has selected to do.
- * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
- * @param {Function} playHandler - Plays/pauses a lesson. Needed because the user can tap on the album art pane to play/pause the lesson.
- * @param {number} playFeedbackOpacity - Opacity for the play/pause animation feedback that appears whenever the lesson is played or paused.
- * @param {number} playFeedbackZIndex - Z-index for the play/pause animation feedback that appears whenever the lesson is played or paused.
- * @param {boolean} isMediaPlaying - Whether the current media (audio or video) is currently playing.
- * @param {Object[]} sectionOffsets - Stores the different sections of the lesson text and their global scroll offset.
- * @param {Function} markLessonAsComplete - Marks this lesson as complete.
- * @param {boolean} isThisLessonComplete - Whether or not this lesson is complete.
  */
 const PlayScreenSwiper: FC<Props> = ({
-  // Props passed from a parent component.
   playScreenSwiperRef,
   lessonTextContentRef,
   iconName,

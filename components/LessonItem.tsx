@@ -17,6 +17,7 @@ import { type } from '../styles/typography'
 import DownloadStatusIndicator from './DownloadStatusIndicator'
 
 interface Props extends CommonProps, AGProps, DLProps, NetworkProps {
+  // The object for the lesson to display.
   thisLesson: Lesson
   onLessonItemPress: (params: {
     thisLesson: Lesson
@@ -25,12 +26,15 @@ interface Props extends CommonProps, AGProps, DLProps, NetworkProps {
     isAlreadyDownloading: boolean
     lessonType: LessonType
   }) => void
+  // Whether or not this lesson is bookmarked.
   isBookmark: boolean
   isComplete: boolean
   lessonType: LessonType
+  // A list of downloaded lesson media.
   downloadedLessons: string[]
   onDownloadButtonPress: (lesson: Lesson) => void
   onRemoveDownloadButtonPress: (lesson: Lesson) => void
+  // The scripture list for this lesson.
   scriptureList: string
   setShowTrailerHighlights: (toSet: boolean) => void
   removeDownload: (lessonID: string) => void
@@ -42,17 +46,8 @@ interface Props extends CommonProps, AGProps, DLProps, NetworkProps {
 
 /**
  * A list item used to display a single lesson on the LessonsScreen. Shows the title, subtitle, complete status, and download status.
- * @param {Object} thisLesson - The object for the lesson to display.
- * @param {Function} goToPlayScreen - Navigates to the play screen with some custom parameters.
- * @param {boolean} thisSetBookmark - The bookmark for the set this lesson is a part of.
- * @param {string} lessonType - The type of this lesson. See getLessonType() from LessonsScreen.js for more info.
- * @param {number[]} thisSetProgress - The progress for the set this lesson is a part of.
- * @param {Object[]} downloadedLessons - An array of the downloaded lessons
- * @param {Function} showDownloadLessonModal - Function that shows the download lesson modal.
- * @param {Function} showDeleteLessonModal - Function that shows the delete lesson modal.
  */
 const LessonItem: FC<Props> = ({
-  // Props passed from a parent component.
   thisLesson,
   onLessonItemPress,
   isBookmark,

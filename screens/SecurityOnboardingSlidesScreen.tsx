@@ -31,7 +31,6 @@ const numPages = 4
  * A screen that guides the user through what security mode is.
  */
 const SecurityOnboardingSlidesScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { navigate },
 }): ReactElement => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)

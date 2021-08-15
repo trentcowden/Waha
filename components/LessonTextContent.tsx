@@ -15,16 +15,6 @@ import { Layouts, LessonType, SectionOffset } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
-interface Props extends CommonProps, TProps, ADBProps, AGProps {
-  lessonTextContentRef: RefObject<ScrollView>
-  thisLesson: Lesson
-  lessonType: LessonType
-  sectionOffsets: MutableRefObject<SectionOffset[]>
-  setShowCopyrightsModal?: (toSet: boolean) => void
-  layouts: MutableRefObject<Layouts>
-  onScroll: (nativeEvent: NativeScrollEvent) => void
-}
-
 interface LessonTextProps extends CommonProps, AGProps {
   text: string
   onLayout?: (layoutEvent: { layout: LayoutRectangle }) => void
@@ -112,17 +102,22 @@ const StandardText: FC<LessonTextProps> = ({
   </View>
 )
 
+interface Props extends CommonProps, TProps, ADBProps, AGProps {
+  lessonTextContentRef: RefObject<ScrollView>
+  thisLesson: Lesson
+  lessonType: LessonType
+  // Stores the different sections of the lesson text and their global scroll offset.
+  sectionOffsets: MutableRefObject<SectionOffset[]>
+  setShowCopyrightsModal?: (toSet: boolean) => void
+  // The heights of the text content and text window.
+  layouts: MutableRefObject<Layouts>
+  onScroll: (nativeEvent: NativeScrollEvent) => void
+}
+
 /**
- * Displays all of the text for the different lesson sections.
- * @param {ref} lessonTextContentRef - The ref for the carousel component of the AlbumArtSwiper. Used to manually jump to specific pages.
- * @param {Object} thisLesson - The object for the lesson that the user has selected to do.
- * @param {string} lessonType - The type of the current lesson. See lessonTypes in constants.js.
- * @param {Object} layouts - The heights of the text content and text window.
- * @param {Function} onScroll - Function that triggers on every scroll event.
- * @param {Object[]} sectionOffsets - Stores the different sections of the lesson text and their global scroll offset.
+ * Displays all of the text for the different lesson chapters.
  */
 const LessonTextContent: FC<Props> = ({
-  // Props passed from a parent component.
   lessonTextContentRef,
   thisLesson,
   lessonType,

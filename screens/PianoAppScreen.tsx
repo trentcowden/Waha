@@ -37,7 +37,6 @@ interface Props {
  * A screen that shows a dummy piano app meant to convince non-users who are looking at the app that it's just a harmless piano app and not a Christian disciple making tool >:)
  */
 const PianoAppScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { canGoBack, goBack, reset },
 }) => {
   const security = selector((state) => state.security)

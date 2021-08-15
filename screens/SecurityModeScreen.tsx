@@ -33,10 +33,7 @@ interface Props {
 /**
  * A screen that displays the configuration options for security mode. Allows for turning it on/off, changing the timeout, and updating your passcode.
  */
-const SecurityModeScreen: FC<Props> = ({
-  // Props passed from navigation.
-  navigation: { navigate },
-}) => {
+const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const showPasscodeSetSnackbar = selector(

@@ -43,7 +43,6 @@ interface Props extends CommonProps, AGProps {
  */
 
 const SetItem: FC<Props> = ({
-  // Props passed from a parent component.
   thisSet,
   mode,
   onSetItemSelect,

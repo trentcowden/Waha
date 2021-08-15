@@ -9,19 +9,17 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
+  // The section of the SectionList that this button is being rendered as the footer of.
   section: InfoAndGroupsForLanguage
+  // Sets the languageID state variable on the Groups screen.
   setLanguageID: (languageID: string) => void
   setShowAddGroupModal: (toShow: boolean) => void
 }
 
 /**
  * A pressable component that is used to add a new group. It's styled after the Group item component and is rendered as the section footer for the Groups SectionList on the Groups screen.
- * @param {Object} section - The section of the SectionList that this button is being rendered as the footer of.
- * @param {Function} setLanguageID - Sets the languageID state variable on the Groups screen.
- * @param {Function} setShowAddGroupModal - Shows the add group modal.
  */
 const AddNewGroupButton: FC<Props> = ({
-  // Props passed from a parent component.
   section,
   setLanguageID,
   setShowAddGroupModal,

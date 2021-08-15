@@ -12,12 +12,8 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A simple button component that is used inside the <OptionsModal /> component.
- * @param {Function} onPress - Function to fire when the button is pressed.
- * @param {string} label - The text to display on the button.
- * @param {Component} children - (Optional) An extra component to show on the right side of the button.
  */
 const OptionsModalButton: FC<Props> = ({
-  // Props passed from a parent component.
   onPress,
   label,
   children,

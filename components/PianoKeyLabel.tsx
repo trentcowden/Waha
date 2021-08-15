@@ -12,9 +12,6 @@ interface Props {
 
 /**
  * Component that displays a simple circle with a number. Used to label the various keys of the piano.
- * @param {string} backgroundColor - The background color of the label.
- * @param {string} style - Extra styles to apply to the label.
- * @param {string} number - The number to display on the label.
  */
 const PianoKeyLabel: FC<Props> = ({
   backgroundColor,

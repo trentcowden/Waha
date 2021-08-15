@@ -9,27 +9,23 @@ import { LessonType } from '../interfaces/playScreen'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps, NetworkProps, DLProps {
+  // Whether the media for this lesson is fully downloaded or not. Fully downloaded means that all of the media for a lesson is downloaded. For lessons that audio, it means the audio is downloaded. For lessons that have audio and video, it means both the audio and video are downloaded.
   isFullyDownloaded: boolean
+  // Whether any media for this lesson is actively downloading.
   isDownloading: boolean
   onDownloadButtonPress: (lesson: Lesson) => void
   onRemoveDownloadButtonPress: (lesson: Lesson) => void
   lessonID: string
   lessonType: LessonType
+  // Removes a download from the redux downloads tracker.
   removeDownload: (lessonID: string) => void
   thisLesson: Lesson
 }
 
 /**
- * A component that shows the status of the download for a lesson as a button which allows the user to do an action related to the download, like start it or delete it.
- * @param {boolean} isFullyDownloaded - Whether the media for this lesson is fully downloaded or not.
- * @param {boolean} isDownloading - Whether the media for this lesson is actively downloading or not.
- * @param {Function} showDeleteLessonModal - Function which shows the delete lesson modal.
- * @param {Function} showDownloadLessonModal - Function which shows the download lesson modal.
- * @param {string} lessonID - The ID for the lesson this is showing the download status of.
- * @param {boolean} lessonType - The type of the lesson this is showing the download status of.
+ * A component on a <LessonItem /> that shows the status of the download for a lesson as a button which allows the user to do an action related to the download, like start it or delete it.
  */
 const DownloadStatusIndicator: FC<Props> = ({
-  // Props passed from a parent component.
   isFullyDownloaded,
   isDownloading,
   onDownloadButtonPress,

@@ -7,19 +7,19 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
+  // The current inputted group name for the group name text input.
   groupNameInput: string
   onGroupNameInputChangeText: (text: string) => void
   groupNameInputRef?: RefObject<TextInput>
+  // Whether the inputted group name is a duplicate of another existing group.
   isDuplicate?: boolean
 }
 
 const GroupNameTextInput: FC<Props> = ({
-  // Props passed from a parent component.
   groupNameInput,
   onGroupNameInputChangeText,
   groupNameInputRef = null,
   isDuplicate = false,
-  // Props passed from redux.
   activeGroup,
   isRTL,
   isDark,

@@ -23,14 +23,8 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A component that shows the play/pause and skip buttons on the Play Screen.
- * @param {boolean} isMediaPlaying - Whether the current media (audio or video) is currently playing.
- * @param {boolean} isMediaLoaded - Whether the current media is loaded.
- * @param {Function} playHandler - Function to call when the user presses the play/pause button.
- * @param {number} mediaProgress - The progress in milliseconds through the current media.
- * @param {Function} playFromLocation - Function that plays the media from a specific location in milliseconds. Used for the skip buttons.
  */
 const PlaybackControls: FC<Props> = ({
-  // Props passed from a parent component.
   isMediaPlaying,
   isMediaLoaded,
   playHandler,

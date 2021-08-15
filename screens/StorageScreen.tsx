@@ -94,9 +94,6 @@ const StorageScreen = ({}) => {
     )
   }
 
-  // deletes all downloaded chapter 2s for a specific language
-  // note: if no language specified, deletes all chapter 2s
-
   /**
    * Deletes all of the Story and Training mp3s and mp4s for a specific language. If no language is specified, deletes them for all languages.
    * @param {string} language - (Optional) The language to delete the downloaded content for.
@@ -121,6 +118,46 @@ const StorageScreen = ({}) => {
         .then(() => getTotalStorageAndLanguageSizes())
   }
 
+  const handleClearAllDownloadsButtonPress = () => {
+    Alert.alert(
+      t.storage.clear_all_downloaded_lessons_title,
+      t.storage.clear_all_downloaded_lessons_message,
+      [
+        {
+          text: t.general.cancel,
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: t.general.ok,
+          onPress: () => deleteDownloadedLessons(),
+          style: 'destructive',
+        },
+      ]
+    )
+  }
+
+  const handleClearLanguageDownloadsButtonPress = (
+    item: InfoAndGroupsForLanguage
+  ) => {
+    Alert.alert(
+      t.storage.clear_all_downloaded_lessons_for_a_language_title,
+      t.storage.clear_all_downloaded_lessons_for_a_language_message,
+      [
+        {
+          text: t.general.cancel,
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: t.general.ok,
+          onPress: () => deleteDownloadedLessons(item.languageID),
+          style: 'destructive',
+        },
+      ]
+    )
+  }
+
   /**
    * Renders a <LanguageStorageItem />.
    * @param {Object} item - The language instance to render.
@@ -135,24 +172,9 @@ const StorageScreen = ({}) => {
         nativeName={item.nativeName}
         languageID={item.languageID}
         megabytes={languageStorageSizes[item.languageID]}
-        clearDownloads={() => {
-          Alert.alert(
-            t.storage.clear_all_downloaded_lessons_for_a_language_title,
-            t.storage.clear_all_downloaded_lessons_for_a_language_message,
-            [
-              {
-                text: t.general.cancel,
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: t.general.ok,
-                onPress: () => deleteDownloadedLessons(item.languageID),
-                style: 'destructive',
-              },
-            ]
-          )
-        }}
+        onClearLanguageDownloadsButtonPress={() =>
+          handleClearLanguageDownloadsButtonPress(item)
+        }
         isRTL={isRTL}
         isDark={isDark}
         t={t}
@@ -183,24 +205,7 @@ const StorageScreen = ({}) => {
       <WahaButton
         mode={WahaButtonMode.ERROR}
         label={`${t.storage.clear_all_downloaded_lessons} (${totalStorage} ${t.storage.megabyte})`}
-        onPress={() =>
-          Alert.alert(
-            t.storage.clear_all_downloaded_lessons_title,
-            t.storage.clear_all_downloaded_lessons_message,
-            [
-              {
-                text: t.general.cancel,
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: t.general.ok,
-                onPress: () => deleteDownloadedLessons(),
-                style: 'destructive',
-              },
-            ]
-          )
-        }
+        onPress={handleClearAllDownloadsButtonPress}
         isDark={isDark}
         isRTL={isRTL}
         screenLanguage={activeGroup.language}

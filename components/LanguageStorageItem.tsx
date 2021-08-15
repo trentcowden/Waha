@@ -10,25 +10,26 @@ import WahaButton from './WahaButton'
 import WahaSeparator from './WahaSeparator'
 
 interface Props extends CommonProps, TProps, AGProps {
+  // The name of the language in its native script.
   nativeName: string
   languageID: string
+  // The number of megabytes this language's downloaded lessons take up.
   megabytes: number
-  clearDownloads: () => void
+  onClearLanguageDownloadsButtonPress: () => void
 }
 
 /**
  * A list item used to display a language and the amount of storage all of its downloaded lessons take up. Used on the StorageScreen.
  * @param {string} languageName - The name of the language.
  * @param {string} languageID - The ID of the language.
- * @param {number} megabytes - The number of megabytes this language's downloaded lessons take up.
+ * @param {number} megabytes -
  * @param {Function} clearDownloads - Function that clears all of the downloaded lessons for this language.
  */
 const LanguageStorageItem: FC<Props> = ({
-  // Props passed from a parent component.
   nativeName,
   languageID,
   megabytes,
-  clearDownloads,
+  onClearLanguageDownloadsButtonPress,
   isRTL,
   isDark,
   t,
@@ -100,7 +101,7 @@ const LanguageStorageItem: FC<Props> = ({
         <WahaButton
           mode={WahaButtonMode.ERROR_SECONDARY}
           label={t.general.clear}
-          onPress={clearDownloads}
+          onPress={onClearLanguageDownloadsButtonPress}
           extraContainerStyles={{
             width: 92 * scaleMultiplier,
             height: 45 * scaleMultiplier,

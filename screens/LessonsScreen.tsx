@@ -62,10 +62,8 @@ interface Props {
  * @param {Object} thisSet - The object for the set that we're displaying.
  */
 const LessonsScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { navigate },
   route: {
-    // Props passed from previous screen.
     params: { setID },
   },
 }): ReactElement => {

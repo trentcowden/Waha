@@ -28,7 +28,6 @@ interface Props {
  * Screen that shows a simple passcode entry and allows the user to unlock the Mobilization Tools.
  */
 const MobilizationToolsUnlockScreen: FC<Props> = ({
-  // Props passed from navigation.
   navigation: { navigate },
 }) => {
   const isDark = selector((state) => state.settings.isDarkModeEnabled)

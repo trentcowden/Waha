@@ -16,7 +16,6 @@ interface Props extends CommonProps {
  * @param {string} color - The color of the back button icon. Not required.
  */
 const WahaBackButton: FC<Props> = ({
-  // Props passed from a parent component.
   onPress,
   color,
   isRTL,

@@ -16,19 +16,18 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps, TProps {
+  // The native name of the language.
   nativeName: string
   languageID: string
+  // Whether we're in 'editing' mode or not.
   isEditing: boolean
   onDeleteLanguageButtonPress: (languageID: string) => void
 }
+
 /**
  * The header for the groups section list used on the Groups screen. Displays the name of the language and the language instance's logo.
- * @param {string} languageName - The name of the language.
- * @param {string} languageID - The ID for the language instance.
- * @param {boolean} isEditing - Whether the Groups screen is in editing mode or not.
  */
 const GroupListHeader: FC<Props> = ({
-  // Props passed from a parent component.
   nativeName,
   languageID,
   isEditing,

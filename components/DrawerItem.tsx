@@ -8,15 +8,13 @@ import { type } from '../styles/typography'
 
 interface Props extends CommonProps, AGProps {
   onPress: () => void
+  // The name of the icon to display on the drawer item.
   icon: string
   label: string
 }
 
 /**
  * A pressable item used in Waha's navigation drawer.
- * @param {Function} onPress - The function to call when the user presses the drawer item.
- * @param {string} icon - The name of the icon to display on the drawer item.
- * @param {string} label - The label to display on the drawer item.
  */
 const DrawerItem: FC<Props> = ({
   onPress,

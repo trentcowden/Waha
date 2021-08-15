@@ -16,6 +16,9 @@ interface Props extends CommonProps {
   imageType: 'lottie' | 'png'
 }
 
+/**
+ * Displays an image for an onboarding page.
+ */
 const OnboardingImage: FC<Props> = ({ source, imageType, isDark }) => {
   return (
     <View

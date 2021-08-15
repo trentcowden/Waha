@@ -26,7 +26,6 @@ interface Props extends CommonProps, AGProps {
  * @param {Component} children - Component to show at the top of the modal. Usualy an image/gif.
  */
 const MessageModal: FC<Props> = ({
-  // Props passed from a parent component.
   isVisible,
   hideModal,
   title,
