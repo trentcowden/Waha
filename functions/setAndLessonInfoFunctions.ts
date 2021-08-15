@@ -1,6 +1,5 @@
 import * as FileSystem from 'expo-file-system'
 import { DBLanguageData, Lesson, StorySet } from 'redux/reducers/database'
-import { Group } from '../interfaces/groups'
 import { LessonType } from '../interfaces/playScreen'
 import {
   LessonInfo,
@@ -10,6 +9,7 @@ import {
   SetInfoRequest
 } from '../interfaces/setAndLessonInfo'
 import { Translations } from '../interfaces/translations'
+import { Group } from '../redux/reducers/groups'
 
 export const getSetInfo = <T extends SetInfoRequest>(
   type: T,

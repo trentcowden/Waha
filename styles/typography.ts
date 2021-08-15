@@ -1,3 +1,4 @@
+import { TextStyle } from 'react-native'
 import { isTablet, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { languages } from '../languages'
@@ -24,7 +25,7 @@ export const type = (
   fontFamily: 'Regular' | 'Bold' | 'Black',
   textAlign: 'left' | 'center',
   color: string
-): Object => {
+): TextStyle => {
   var languageInfo = info(languageID)
 
   // A font size modifier that makes all Arabic script a point smaller and increases the font size on tablets.
@@ -50,7 +51,10 @@ export const type = (
   }
 
   // The options for font alignments.
-  const alignments = {
+  const alignments: {
+    left: 'left' | 'right'
+    center: 'center'
+  } = {
     left: languageInfo.isRTL ? 'right' : 'left',
     center: 'center'
   }
@@ -58,7 +62,7 @@ export const type = (
   // Return the completed style object.
   return {
     fontSize: sizes[fontSize] + fontSizeModifier,
-    fontFamily: languageInfo.font ? families[fontFamily] : null,
+    fontFamily: languageInfo.font ? families[fontFamily] : undefined,
     textAlign: alignments[textAlign],
     color: color
   }
@@ -84,7 +88,7 @@ export const type = (
  * @export
  * @return {string} - The name of the font to use.
  */
-export const getLanguageFont = languageID => {
+export const getLanguageFont = (languageID: string) => {
   var languageFont
   languages.forEach(languageFamily => {
     if (

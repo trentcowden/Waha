@@ -1,5 +1,9 @@
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs/lib/typescript/src/types'
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
 import LottieView from 'lottie-react-native'
+import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { StorySet } from 'redux/reducers/database'
@@ -10,12 +14,9 @@ import { info } from '../functions/languageDataFunctions'
 import { getSetData } from '../functions/setAndLessonInfoFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { SetItemMode } from '../interfaces/components'
-import {
-  SetsScreenNavigationProp,
-  SetsScreenRouteProp,
-} from '../interfaces/navigation'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
+import { SetsTabsParams } from '../navigation/SetsTabs'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import {
@@ -25,6 +26,28 @@ import {
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
+
+export type SetsScreenNavigationProp =
+  | CompositeNavigationProp<
+      MaterialTopTabNavigationProp<SetsTabsParams, SetCategory.FOUNDATIONAL>,
+      StackNavigationProp<MainStackParams>
+    >
+  | CompositeNavigationProp<
+      MaterialTopTabNavigationProp<SetsTabsParams, SetCategory.TOPICAL>,
+      StackNavigationProp<MainStackParams>
+    >
+  | CompositeNavigationProp<
+      MaterialTopTabNavigationProp<
+        SetsTabsParams,
+        SetCategory.MOBILIZATION_TOOLS
+      >,
+      StackNavigationProp<MainStackParams>
+    >
+
+export type SetsScreenRouteProp =
+  | RouteProp<SetsTabsParams, SetCategory.FOUNDATIONAL>
+  | RouteProp<SetsTabsParams, SetCategory.TOPICAL>
+  | RouteProp<SetsTabsParams, SetCategory.MOBILIZATION_TOOLS>
 
 interface Props {
   navigation: SetsScreenNavigationProp

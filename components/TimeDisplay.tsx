@@ -49,9 +49,9 @@ const TimeDisplay: FC<Props> = ({
             ? '0' + minutesNumber.toString()
             : minutesNumber.toString()
         hoursString =
-          secondsNumber < 10
-            ? '0' + secondsNumber.toString()
-            : secondsNumber.toString()
+          hoursNumber < 10
+            ? '0' + hoursNumber.toString()
+            : hoursNumber.toString()
 
         return `${hoursString}:${minutesString}:${secondsString}`
       } else {

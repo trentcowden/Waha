@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system'
-import React from 'react'
+import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { WahaButtonMode } from '../interfaces/components'
@@ -8,6 +9,13 @@ import { type } from '../styles/typography'
 import WahaButton from './WahaButton'
 import WahaSeparator from './WahaSeparator'
 
+interface Props extends CommonProps, TProps, AGProps {
+  nativeName: string
+  languageID: string
+  megabytes: number
+  clearDownloads: () => void
+}
+
 /**
  * A list item used to display a language and the amount of storage all of its downloaded lessons take up. Used on the StorageScreen.
  * @param {string} languageName - The name of the language.
@@ -15,7 +23,7 @@ import WahaSeparator from './WahaSeparator'
  * @param {number} megabytes - The number of megabytes this language's downloaded lessons take up.
  * @param {Function} clearDownloads - Function that clears all of the downloaded lessons for this language.
  */
-const LanguageStorageItem = ({
+const LanguageStorageItem: FC<Props> = ({
   // Props passed from a parent component.
   nativeName,
   languageID,
@@ -25,7 +33,7 @@ const LanguageStorageItem = ({
   isDark,
   t,
   activeGroup,
-}) => {
+}): ReactElement => {
   return (
     <View style={styles.languageStorageItemContainer}>
       <View
@@ -100,7 +108,7 @@ const LanguageStorageItem = ({
           extraLabelStyles={{ fontSize: 14 * scaleMultiplier }}
           isDark={isDark}
           isRTL={isRTL}
-          language={activeGroup.language}
+          screenLanguage={activeGroup.language}
         />
       </View>
       <WahaSeparator isDark={isDark} />

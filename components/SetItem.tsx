@@ -159,7 +159,7 @@ const SetItem: FC<Props> = ({
                     ? isRTL
                       ? 'triangle-left'
                       : 'triangle-right'
-                    : null
+                    : ''
                 }
                 size={30 * scaleMultiplier}
                 color={colors(isDark, activeGroup.language).accent}

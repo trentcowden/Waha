@@ -1,4 +1,3 @@
-import { Group } from 'interfaces/groups'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Dimensions,
@@ -20,6 +19,7 @@ import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { createGroup, editGroup } from '../redux/actions/groupsActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'

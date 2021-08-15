@@ -1,5 +1,4 @@
 import { getSetInfo } from '../../functions/setAndLessonInfoFunctions'
-import { Group } from '../../interfaces/groups'
 import { SetCategory } from '../../interfaces/setAndLessonInfo'
 import {
   ADD_SET,
@@ -10,6 +9,23 @@ import {
   SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB,
   UPDATE_PROGRESS
 } from '../actions/groupsActions'
+
+export interface Group {
+  name: string
+  id: number
+  language: string
+  emoji: string
+  recentCoreOrTool: string
+  setBookmark: string
+  shouldShowMobilizationToolsTab: boolean
+  addedSets: SavedSet[]
+}
+
+export interface SavedSet {
+  id: string
+  progress: number[]
+  bookmark: number
+}
 
 export function groups (state: Group[] = [], params: GroupsActionParams) {
   switch (params.type) {

@@ -59,12 +59,14 @@ const Scrubber: FC<Props> = ({
         max={mediaLength}
         side='left'
         isDark={isDark}
+        isRTL={isRTL}
       />
       <TimeDisplay
         time={mediaLength}
         max={mediaLength}
         side='right'
         isDark={isDark}
+        isRTL={isRTL}
       />
     </View>
   </View>

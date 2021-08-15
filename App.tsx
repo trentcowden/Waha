@@ -11,8 +11,6 @@ import { lockPortrait } from './functions/orientationFunctions'
 import Root from './navigation/Root'
 import { persistor, store } from './redux/store'
 
-import('./ReactotronConfig').then(() => {})
-
 // These are only here because of some wack errors. Please do not delete.
 if (!global.btoa) {
   global.btoa = encode

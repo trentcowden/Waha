@@ -14,6 +14,7 @@ import React, {
 import { Dimensions, StyleSheet, View } from 'react-native'
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view'
 import { Lesson, StorySet } from 'redux/reducers/database'
+import { SavedSet } from 'redux/reducers/groups'
 import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import OptionsModalButton from '../components/OptionsModalButton'
@@ -128,7 +129,9 @@ const LessonsScreen: FC<Props> = ({
 
   // The saved set, which includes the set's progress, to display the lessons for.
   const [thisSavedSet, setThisSavedSet] = useState(
-    activeGroup.addedSets.filter((savedSet) => savedSet.id === thisSet.id)[0]
+    activeGroup.addedSets.filter(
+      (savedSet: SavedSet) => savedSet.id === thisSet.id
+    )[0]
   )
 
   // Keeps track of whether this lesson was just completed.
@@ -151,9 +154,15 @@ const LessonsScreen: FC<Props> = ({
   // Update the thisSavedSet state whenever it changes in redux. This will likely happen when a lesson is marked as complete.
   useEffect(() => {
     setThisSavedSet(
-      activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0]
+      activeGroup.addedSets.filter(
+        (savedSet: SavedSet) => savedSet.id === thisSet.id
+      )[0]
     )
-  }, [activeGroup.addedSets.filter((set) => set.id === thisSet.id)[0]])
+  }, [
+    activeGroup.addedSets.filter(
+      (savedSet: SavedSet) => savedSet.id === thisSet.id
+    )[0],
+  ])
 
   // Check if this set is mostly or fully complete.
   useEffect(() => {

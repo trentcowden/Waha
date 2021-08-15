@@ -2,7 +2,7 @@ import { Audio, AVPlaybackStatus, Video } from 'expo-av'
 import { Chapter } from '../interfaces/playScreen'
 
 export class Media {
-  public audio: Audio.Sound
+  public audio: Audio.Sound | null
   public video: Video | null
 
   constructor (audio: Audio.Sound) {
@@ -80,10 +80,12 @@ export class Media {
 
   closeFullscreen () {
     if (this.video !== null) return this.video.dismissFullscreenPlayer()
+    else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
   openFullscreen () {
     if (this.video !== null) return this.video.presentFullscreenPlayer()
+    else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
   unload () {

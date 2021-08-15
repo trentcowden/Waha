@@ -4,7 +4,7 @@
     "lib": [
       "ES6"
     ],
-    "isolatedModules": true,
+    "isolatedModules": false,
     "allowUnreachableCode": false,
     "module": "commonjs",
     "allowJs": true,
@@ -19,8 +19,8 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",

@@ -265,7 +265,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
         <View style={{ width: 20 }} />
         <WahaButton
           label={t.general.continue}
-          onPress={() => onContinueButtonPress()}
+          onPress={onContinueButtonPress}
           mode={WahaButtonMode.SUCCESS}
           extraContainerStyles={{
             // Make the continue button twice as big as the skip button.

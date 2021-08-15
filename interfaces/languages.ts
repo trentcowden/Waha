@@ -1,4 +1,4 @@
-import { Group } from './groups'
+import { Group } from '../redux/reducers/groups'
 
 export interface Language {
   languageID: string

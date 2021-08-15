@@ -1,10 +1,10 @@
-import { Group } from 'interfaces/groups'
 import { RootState } from 'redux/store'
 import {
   ActiveGroupActionParams,
   CHANGE_ACTIVE_GROUP
 } from '../actions/activeGroupActions'
 import { DBLanguageData } from '../reducers/database'
+import { Group } from '../reducers/groups'
 /**
  * The active group redux reducer that stores the name of the currently active group. This state is persisted across app restarts.
  * @param {Object} action - Parameters passed from groupsAction.js functions.

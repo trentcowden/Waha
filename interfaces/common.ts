@@ -1,6 +1,6 @@
 import { Database, DBLanguageData } from 'redux/reducers/database'
 import { Download } from '../redux/reducers/downloads'
-import { Group } from './groups'
+import { Group } from '../redux/reducers/groups'
 import { Translations } from './translations'
 
 export interface CommonProps {

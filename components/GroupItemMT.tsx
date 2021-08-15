@@ -1,9 +1,9 @@
 import { AGProps, CommonProps } from 'interfaces/common'
-import { Group } from 'interfaces/groups'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
+import { Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

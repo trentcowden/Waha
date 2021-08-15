@@ -1,5 +1,4 @@
 import { AGProps, CommonProps, TProps } from 'interfaces/common'
-import { Group } from 'interfaces/groups'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Alert,
@@ -14,6 +13,7 @@ import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
 import { Database } from '../redux/reducers/database'
+import { Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import GroupAvatar from './GroupAvatar'

@@ -4,7 +4,6 @@ import {
   Clipboard,
   Platform,
   Share,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -108,21 +107,5 @@ const ShareMobilizationToolsButton: FC<Props> = ({
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  touchableAreaContainer: {
-    height: 80 * scaleMultiplier,
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    width: 55 * scaleMultiplier,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 20,
-  },
-})
 
 export default ShareMobilizationToolsButton

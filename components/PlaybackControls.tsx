@@ -1,4 +1,3 @@
-import { Group } from 'interfaces/groups'
 import React, { FC, ReactElement } from 'react'
 import {
   ActivityIndicator,
@@ -9,6 +8,7 @@ import {
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
 import { AGProps, CommonProps } from '../interfaces/common'
+import { Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps, AGProps {

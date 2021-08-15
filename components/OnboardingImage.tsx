@@ -1,7 +1,13 @@
 import { CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
 import React, { FC } from 'react'
-import { Dimensions, Image, StyleSheet, View } from 'react-native'
+import {
+  Dimensions,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  View,
+} from 'react-native'
 import { isTablet } from '../constants'
 import { colors } from '../styles/colors'
 
@@ -44,7 +50,7 @@ const OnboardingImage: FC<Props> = ({ source, imageType, isDark }) => {
       ) : (
         <Image
           style={{ ...styles.image, resizeMode: 'contain' }}
-          source={source}
+          source={source as ImageSourcePropType}
         />
       )}
     </View>

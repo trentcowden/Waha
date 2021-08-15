@@ -1,7 +1,7 @@
 import { getSetInfo } from '../functions/setAndLessonInfoFunctions'
-import { Group, SavedSet } from '../interfaces/groups'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
 import { DBLanguageData, StorySet } from '../redux/reducers/database'
+import { Group, SavedSet } from '../redux/reducers/groups'
 
 /** Checks to see if a set is almost complete and adds the next set if all the conditions are met. The conditions are:
  * 1) The Foundational set after this one exists.

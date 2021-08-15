@@ -37,7 +37,7 @@ const PianoPasscodeDisplay: FC<Props> = ({
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(0, 2).replace(/^0/, '')]}
             number={passcode.substr(0, 2).replace(/^0/, '')}
-            style={{ alignSelf: null, marginBottom: 0 }}
+            style={{ alignSelf: undefined, marginBottom: 0 }}
             isDark={isDark}
           />
         )}
@@ -47,7 +47,7 @@ const PianoPasscodeDisplay: FC<Props> = ({
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(2, 2).replace(/^0/, '')]}
             number={passcode.substr(2, 2).replace(/^0/, '')}
-            style={{ alignSelf: null, marginBottom: 0 }}
+            style={{ alignSelf: undefined, marginBottom: 0 }}
             isDark={isDark}
           />
         )}
@@ -57,7 +57,7 @@ const PianoPasscodeDisplay: FC<Props> = ({
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(4, 2).replace(/^0/, '')]}
             number={passcode.substr(4, 2).replace(/^0/, '')}
-            style={{ alignSelf: null, marginBottom: 0 }}
+            style={{ alignSelf: undefined, marginBottom: 0 }}
             isDark={isDark}
           />
         )}
@@ -67,7 +67,7 @@ const PianoPasscodeDisplay: FC<Props> = ({
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(6, 2).replace(/^0/, '')]}
             number={passcode.substr(6, 2).replace(/^0/, '')}
-            style={{ alignSelf: null, marginBottom: 0 }}
+            style={{ alignSelf: undefined, marginBottom: 0 }}
             isDark={isDark}
           />
         )}
@@ -77,7 +77,7 @@ const PianoPasscodeDisplay: FC<Props> = ({
           <PianoKeyLabel
             backgroundColor={keyColors[passcode.substr(8, 2).replace(/^0/, '')]}
             number={passcode.substr(8, 2).replace(/^0/, '')}
-            style={{ alignSelf: null, marginBottom: 0 }}
+            style={{ alignSelf: undefined, marginBottom: 0 }}
             isDark={isDark}
           />
         )}
@@ -89,7 +89,7 @@ const PianoPasscodeDisplay: FC<Props> = ({
               keyColors[passcode.substr(10, 2).replace(/^0/, '')]
             }
             number={passcode.substr(10, 2).replace(/^0/, '')}
-            style={{ alignSelf: null, marginBottom: 0 }}
+            style={{ alignSelf: undefined, marginBottom: 0 }}
             isDark={isDark}
           />
         )}

@@ -1,6 +1,6 @@
 import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
-import { StyleSheet } from 'react-native'
+import { ViewStyle } from 'react-native'
 import { SecurityState } from 'redux/reducers/security'
 import Icon from '../assets/fonts/icon_font_config'
 import OptionsModalButton from '../components/OptionsModalButton'
@@ -31,11 +31,11 @@ const SecurityTimeoutPickerModal: FC<Props> = ({
   activeGroup,
   setTimeoutDuration,
 }): ReactElement => {
-  const checkIconStyle = {
+  const checkIconStyle: ViewStyle = {
     position: 'absolute',
     paddingHorizontal: 20,
-    right: isRTL ? null : 0,
-    left: isRTL ? 0 : null,
+    right: isRTL ? undefined : 0,
+    left: isRTL ? 0 : undefined,
   }
 
   return (
@@ -149,9 +149,5 @@ const SecurityTimeoutPickerModal: FC<Props> = ({
     </OptionsModal>
   )
 }
-
-const styles = StyleSheet.create({
-  checkIcon: {},
-})
 
 export default SecurityTimeoutPickerModal
