@@ -32,23 +32,25 @@ const Root: FC<Props> = ({}): ReactElement => {
   const dispatch = useAppDispatch()
 
   // (TEMP) Since we're transferring over some of the language installation information from the database reducer to the new language installation reducer, we need to compare the old and new to make sure we transfer everything over.
-  const oldGlobalGroupCounter = selector(
+  const oldGlobalGroupCounter: unknown = selector(
     (state) => state.database.globalGroupCounter
   )
   const newGlobalGroupCounter = selector(
     (state) => state.languageInstallation.globalGroupCounter
   )
-  const oldHasOnboarded = selector((state) => state.database.hasOnboarded)
+  const oldHasOnboarded: unknown = selector(
+    (state) => state.database.hasOnboarded
+  )
   const newHasOnboarded = selector(
     (state) => state.languageInstallation.hasOnboarded
   )
-  const oldHasInstalledFirstLanguageInstance = selector(
+  const oldHasInstalledFirstLanguageInstance: unknown = selector(
     (state) => state.database.hasInstalledFirstLanguageInstance
   )
   const newHasInstalledFirstLanguageInstance = selector(
     (state) => state.languageInstallation.hasInstalledFirstLanguageInstance
   )
-  const oldLanguageCoreFilesCreatedTimes = selector(
+  const oldLanguageCoreFilesCreatedTimes: unknown = selector(
     (state) => state.database.languageCoreFilesCreatedTimes
   )
   const newLanguageCoreFilesCreatedTimes = selector(
@@ -57,12 +59,12 @@ const Root: FC<Props> = ({}): ReactElement => {
 
   useEffect(() => {
     if (oldHasOnboarded !== undefined) {
-      if (oldGlobalGroupCounter !== newGlobalGroupCounter) {
-        dispatch(setGlobalGroupCounter(oldGlobalGroupCounter))
+      if ((oldGlobalGroupCounter as unknown) !== newGlobalGroupCounter) {
+        dispatch(setGlobalGroupCounter(oldGlobalGroupCounter as number))
       }
 
-      if (oldHasOnboarded !== newHasOnboarded)
-        dispatch(setHasOnboarded(oldHasOnboarded))
+      if ((oldHasOnboarded as unknown) !== newHasOnboarded)
+        dispatch(setHasOnboarded(oldHasOnboarded as boolean))
 
       if (
         oldHasInstalledFirstLanguageInstance !==
@@ -70,11 +72,13 @@ const Root: FC<Props> = ({}): ReactElement => {
       )
         dispatch(
           setHasInstalledFirstLanguageInstance(
-            oldHasInstalledFirstLanguageInstance
+            oldHasInstalledFirstLanguageInstance as boolean
           )
         )
 
-      Object.keys(oldLanguageCoreFilesCreatedTimes).forEach((fileName) => {
+      Object.keys(
+        oldLanguageCoreFilesCreatedTimes as Record<string, string>
+      ).forEach((fileName) => {
         if (newLanguageCoreFilesCreatedTimes[fileName] === undefined) {
           dispatch(
             storeLanguageCoreFileCreatedTime(
