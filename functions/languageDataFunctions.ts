@@ -103,7 +103,7 @@ export const getAllLanguagesData = (
             language.nativeName
               .toLowerCase()
               .includes(searchTextInput.toLowerCase()) ||
-            t.languages[languageFamily.languageFamilyID]
+            t.languages[language.languageID]
               .toLowerCase()
               .includes(searchTextInput.toLowerCase()) ||
             language.brandName

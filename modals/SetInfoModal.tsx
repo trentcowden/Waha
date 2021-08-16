@@ -154,6 +154,7 @@ const SetInfoModal: FC<Props> = ({
             renderItem={renderLessonInfoItem}
             contentContainerStyle={{ flexGrow: 1 }}
             style={{ flex: 1 }}
+            ListFooterComponent={() => <View style={{ height: 80 }} />}
           />
         </View>
       ) : (

@@ -90,10 +90,8 @@ const AddSetScreen: FC<Props> = ({
               (set) => getSetInfo('category', set.id) === SetCategory.TOPICAL
             )
             .forEach((topicalSet) => {
-              console.log(topicalSet.tags)
               if (topicalSet.tags !== undefined) {
                 topicalSet.tags.forEach((tag) => {
-                  console.log(tag)
                   // If we find a tag that hasn't been added yet, add it.
                   if (!tags.includes(tag)) tags.push(tag)
                 })

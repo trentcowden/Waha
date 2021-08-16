@@ -96,7 +96,11 @@ const MessageModal: FC<Props> = ({
 )
 
 const styles = StyleSheet.create({
-  modalContainer: { justifyContent: 'flex-end', flex: 1, margin: 0 },
+  modalContainer: {
+    justifyContent: 'flex-end',
+    flex: 1,
+    margin: 0,
+  },
   contentContainer: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,

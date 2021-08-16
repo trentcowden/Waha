@@ -467,7 +467,7 @@ const LessonsScreen: FC<Props> = ({
         isRTL={isRTL}
       >
         <LottieView
-          style={{ width: '100%' }}
+          style={{ width: '100%', maxWidth: 500 }}
           autoPlay
           loop
           resizeMode='cover'
@@ -486,7 +486,7 @@ const LessonsScreen: FC<Props> = ({
         isRTL={isRTL}
       >
         <LottieView
-          style={{ width: '100%' }}
+          style={{ width: '100%', maxWidth: 500 }}
           autoPlay
           loop
           resizeMode='cover'

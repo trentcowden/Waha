@@ -268,8 +268,7 @@ export function deleteLanguageData (
 export function downloadLanguageCoreFiles (
   language: string
 ): ThunkAction<void, RootState, unknown, AnyAction> {
-  return async (dispatch: AppDispatch, getState) => {
-    console.log('in download function')
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     // Store the ID of the language that we're downloading core files for so that if we cancel the install, we know what language to delete from the database.
     dispatch(storeActingLanguageID(language))
 
@@ -359,7 +358,10 @@ export function downloadLanguageCoreFiles (
     Promise.all(downloadFunctions)
       .then(() => {
         // Once all the downloads have finished...
-        if (totalDownloaded === getState().database[language].files.length) {
+        if (
+          getState().database[language] &&
+          totalDownloaded === getState().database[language].files.length
+        ) {
           // Log the language install in firebase for firebase analytics.
           logInstallLanguage(language, Localization.locale)
 

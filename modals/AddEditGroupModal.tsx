@@ -1,12 +1,5 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react'
-import {
-  Dimensions,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import EmojiViewer from '../components/EmojiViewer'
 import GroupAvatar from '../components/GroupAvatar'
@@ -194,7 +187,7 @@ const AddEditGroupModal: FC<Props> = ({
         // Clear out the inputs when we close the modal.
         setGroupNameInput('')
         setEmojiInput('default')
-        setShouldShowMTTabInput(false)
+        setShouldShowMTTabInput(areMobilizationToolsUnlocked ? false : true)
       }}
       onModalWillShow={
         mode === 'AddGroup'
@@ -239,36 +232,40 @@ const AddEditGroupModal: FC<Props> = ({
         t={t}
       />
       {areMobilizationToolsUnlocked && (
-        <View
-          style={{
-            ...styles.shouldShowMTTabInputContainer,
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-          }}
-        >
-          <Text
-            style={type(
-              activeGroup.language,
-              'h3',
-              'Regular',
-              'left',
-              colors(isDark).text
-            )}
-          >
-            {t.mobilization_tools.show_mobilization_tab}
-          </Text>
-          <Switch
-            trackColor={{
-              false: colors(isDark).disabled,
-              true: colors(isDark).success,
+        <View style={{ width: '100%', paddingHorizontal: 20, maxWidth: 500 }}>
+          <View
+            style={{
+              ...styles.shouldShowMTTabInputContainer,
+              flexDirection: isRTL ? 'row-reverse' : 'row',
+              borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+              backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
             }}
-            thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
-            ios_backgroundColor={colors(isDark).disabled}
-            onValueChange={() => setShouldShowMTTabInput((current) => !current)}
-            value={shouldShowMTTabInput}
-            disabled={areMobilizationToolsUnlocked ? false : true}
-          />
+          >
+            <Text
+              style={type(
+                activeGroup.language,
+                'h3',
+                'Regular',
+                'left',
+                colors(isDark).text
+              )}
+            >
+              {t.mobilization_tools.show_mobilization_tab}
+            </Text>
+            <Switch
+              trackColor={{
+                false: colors(isDark).disabled,
+                true: colors(isDark).success,
+              }}
+              thumbColor={isDark ? colors(isDark).icons : colors(isDark).bg4}
+              ios_backgroundColor={colors(isDark).disabled}
+              onValueChange={() =>
+                setShouldShowMTTabInput((current) => !current)
+              }
+              value={shouldShowMTTabInput}
+              disabled={areMobilizationToolsUnlocked ? false : true}
+            />
+          </View>
         </View>
       )}
       <EmojiViewer
@@ -291,7 +288,7 @@ const styles = StyleSheet.create({
     marginVertical: 20 * scaleMultiplier,
   },
   shouldShowMTTabInputContainer: {
-    width: Dimensions.get('window').width - 40,
+    width: '100%',
     paddingHorizontal: 10,
     height: 60 * scaleMultiplier,
     maxWidth: 500,

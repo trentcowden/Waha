@@ -206,7 +206,6 @@ const ChapterButton: FC<Props> = ({
         })
         setTextStyle({ color: colors(isDark).disabled })
         setIconName('')
-        setIconColor('')
         break
       case ChapterButtonMode.DISABLED:
         setExtraButtonStyle({

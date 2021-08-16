@@ -21,7 +21,7 @@ import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsAction
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector,
+  activeGroupSelector
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -115,7 +115,9 @@ const SetsScreen: FC<Props> = ({
   useEffect(() => {
     if (FileSystem.documentDirectory)
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-        (contents) => setDownloadedFiles(contents)
+        (contents) => {
+          setDownloadedFiles(contents)
+        }
       )
   }, [])
 
@@ -223,7 +225,7 @@ const SetsScreen: FC<Props> = ({
           loop
           resizeMode='cover'
           source={require('../assets/lotties/mob_tools_unlocked.json')}
-          style={{ width: '100%' }}
+          style={{ width: '100%', maxWidth: 500 }}
         />
       </MessageModal>
     </View>
