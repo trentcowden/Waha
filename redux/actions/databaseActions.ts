@@ -1,23 +1,6 @@
 export const STORE_LANGUAGE_DATA = 'STORE_LANGUAGE_DATA'
 export const STORE_LANGUAGE_SETS = 'STORE_LANGUAGE_SETS'
-export const SET_HAS_ONBOARDED = 'SET_HAS_ONBOARDED'
-export const SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE =
-  'SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE'
 export const DELETE_LANGUAGE_DATA = 'DELETE_LANGUAGE_DATA'
-export const SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS =
-  'SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS'
-export const SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD =
-  'SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD'
-export const SET_HAS_FETCHED_LANGUAGE_DATA = 'SET_HAS_FETCHED_LANGUAGE_DATA'
-export const STORE_LANGUAGE_CORE_FILE_CREATED_TIME =
-  'STORE_LANGUAGE_CORE_FILE_CREATED_TIME'
-export const ADD_LANGUAGE_CORE_FILE_TO_UPDATE =
-  'ADD_LANGUAGE_CORE_FILE_TO_UPDATE'
-export const CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE =
-  'CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE'
-export const STORE_ACTING_LANGUAGE_ID = 'STORE_ACTING_LANGUAGE_ID'
-export const INCREMENT_GLOBAL_GROUP_COUNTER = 'INCREMENT_GLOBAL_GROUP_COUNTER'
-export const SET_RECENT_ACTIVE_GROUP = 'SET_RECENT_ACTIVE_GROUP'
 
 import * as FileSystem from 'expo-file-system'
 import { DownloadResumable } from 'expo-file-system'
@@ -63,17 +46,6 @@ export type DatabaseActionParams =
   | DeleteLanguageDataParams
 
 /**
- * Increments the global group counter redux variable by 1.
- * @export
- * @return {Object} - Object to send to the reducer.
- */
-// export function incrementGlobalGroupCounter () {
-//   return {
-//     type: INCREMENT_GLOBAL_GROUP_COUNTER
-//   }
-// }
-
-/**
  * Stores the language data for a language instance in redux. This includes the display name, the bible ID, whether this language is RTL, the primary color of this language instance, the list of core files to download, the questions for every question set, and all the app t.
  * @export
  * @param {Object} languageData - All the data for a language.
@@ -110,77 +82,6 @@ export function storeLanguageSets (
 }
 
 /**
- * Sets whether the user has completed the initial onboarding or not.
- * @export
- * @param {boolean} hasOnboarded - Whether the user has onboarded.
- * @return {Object} - Object to send to the reducer.
- */
-// export function setHasOnboarded (hasOnboarded) {
-//   return {
-//     type: SET_HAS_ONBOARDED,
-//     hasOnboarded
-//   }
-// }
-
-/**
- * Sets whether the user has installed their first language instance or not.
- * @export
- * @param {boolean} hasInstalledFirstLanguageInstance - Whether the user has installed their first language instance.
- * @return {Object} - Object to send to the reducer.
- */
-// export function setHasInstalledFirstLanguageInstance (
-//   hasInstalledFirstLanguageInstance
-// ) {
-//   return {
-//     type: SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE,
-//     hasInstalledFirstLanguageInstance
-//   }
-// }
-
-/**
- * Sets whether the app has fetched the necessary Firebase data for a language instance install.
- * @export
- * @param {boolean} hasFetchedLanguageData
- * @return {Object} - Object to send to the reducer.
- */
-// export function setHasFetchedLanguageData (hasFetchedLanguageData) {
-//   return {
-//     type: SET_HAS_FETCHED_LANGUAGE_DATA,
-//     hasFetchedLanguageData
-//   }
-// }
-
-/**
- * Sets the progress of downloading the core files for a language.
- * @export
- * @param {number} languageCoreFilesDownloadProgress - The number of core files that have been downloaded.
- * @return {Object} - Object to send to the reducer.
- */
-// export function setLanguageCoreFilesDownloadProgress (
-//   languageCoreFilesDownloadProgress
-// ) {
-//   return {
-//     type: SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS,
-//     languageCoreFilesDownloadProgress
-//   }
-// }
-
-/**
- * Sets the total number of language core files to download. Used in tandem with languageCoreFilesDownloadProgress to calculate the progress through the downloads.
- * @export
- * @param {number} totalLanguageCoreFilesToDownload - The number of core files to download.
- * @return {Object} - Object to send to the reducer.
- */
-// export function setTotalLanguageCoreFilesToDownload (
-//   totalLanguageCoreFilesToDownload
-// ) {
-//   return {
-//     type: SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD,
-//     totalLanguageCoreFilesToDownload
-//   }
-// }
-
-/**
  * Deletes all of the redux data for a language instance. This includes language data and language sets.
  * @export
  * @param {string} languageInstanceID - The ID of the language instance to delete.
@@ -194,71 +95,6 @@ export function deleteLanguageData (
     languageInstanceID
   }
 }
-
-/**
- * Stores the created time of a specific file.
- * @export
- * @param {string} fileName - The name of the file to store the time created of.
- * @param {string} timeCreated - The time the file was created.
- * @return {Object} - Object to send to the reducer.
- */
-// export function storeLanguageCoreFileCreatedTime (fileName, timeCreated) {
-//   return {
-//     type: STORE_LANGUAGE_CORE_FILE_CREATED_TIME,
-//     fileName,
-//     timeCreated
-//   }
-// }
-
-/**
- * Adds a file name to be stored in the core files to update array.
- * @export
- * @param {string} fileName - The name of the file that needs to be updated.
- * @return {Object} - Object to send to the reducer.
- */
-// export function addLanguageCoreFileToUpdate (fileName) {
-//   return {
-//     type: ADD_LANGUAGE_CORE_FILE_TO_UPDATE,
-//     fileName
-//   }
-// }
-
-/**
- * Clears the core files to update array.
- * @export
- * @return {Object} - Object to send to the reducer.
- */
-// export function clearLanguageCoreFilesToUpdate () {
-//   return {
-//     type: CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE
-//   }
-// }
-
-/**
- * Stores the langauge that is actively installing.
- * @export
- * @param {string} languageID - The ID of the language instance to delete.
- * @return {Object} - Object to send to the reducer.
- */
-// export function storeActingLanguageID (languageID) {
-//   return {
-//     type: STORE_ACTING_LANGUAGE_ID,
-//     languageID: languageID
-//   }
-// }
-
-/**
- * Sets the most recent active group so that if we cancel a language install, we know what group to go back to.
- * @export
- * @param {string} groupName - The name of the most recent active group.
- * @return {Object} - Object to send to the reducer.
- */
-// export function setRecentActiveGroup (groupName) {
-//   return {
-//     type: SET_RECENT_ACTIVE_GROUP,
-//     groupName: groupName
-//   }
-// }
 
 /**
  * Downloads all the core files for a single language instance and does a whole bunch of stuff once they're done downloading. The core files include the header image, the dummy story mp3, and every question set mp3.
