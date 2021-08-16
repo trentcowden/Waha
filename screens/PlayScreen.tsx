@@ -317,7 +317,7 @@ const PlayScreen: FC<Props> = ({
       reviewTimeout === null
     ) {
       dispatch(setHasUsedPlayScreen(true))
-      dispatch(setReviewTimeout(Date.now() + 30000))
+      dispatch(setReviewTimeout(Date.now() + 1800000))
     }
 
     // Start downloading any necessary lesson files.
@@ -852,7 +852,7 @@ const PlayScreen: FC<Props> = ({
     dispatch(setLessonCounter(lessonCounter + 1))
 
     if (reviewTimeout === null && lessonCounter >= numLessonsTilReview - 1) {
-      dispatch(setReviewTimeout(Date.now() + 30000))
+      dispatch(setReviewTimeout(Date.now() + 1800000))
       dispatch(setLessonCounter(0))
       if (numLessonsTilReview === 2) dispatch(setNumLessonsTilReview(5))
       else if (numLessonsTilReview === 5) dispatch(setNumLessonsTilReview(10))

@@ -153,9 +153,10 @@ const MainStack: FC<Props> = ({
       dispatch(setTimer(Date.now()))
     } else if (appState === 'active') {
       // If we're past our review timeout, request a review and reset the timeout.
+      console.log(reviewTimeout)
       if (reviewTimeout !== undefined && Date.now() > reviewTimeout) {
         StoreReview.requestReview()
-        setReviewTimeout(undefined)
+        dispatch(setReviewTimeout(undefined))
       }
 
       if (security.securityEnabled) {
