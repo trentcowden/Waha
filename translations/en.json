@@ -26,6 +26,7 @@
 	},
 	"general": {
 		"all": "All",
+		"bible_version": "NLT",
 		"cancel": "Cancel",
 		"clear": "Clear",
 		"close": "Close",

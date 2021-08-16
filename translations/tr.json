@@ -26,6 +26,7 @@
 	},
 	"general": {
 		"all": "Tümü",
+		"bible_version": "",
 		"cancel": "İptal",
 		"clear": "Temizle",
 		"close": "Kapat",

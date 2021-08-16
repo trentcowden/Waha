@@ -266,6 +266,17 @@ const LessonTextContent: FC<Props> = ({
                   colors(isDark).disabled
                 )}
               >
+                {`${t.general.bible_version} • `}
+              </Text>
+              <Text
+                style={type(
+                  activeGroup.language,
+                  'h4',
+                  'Regular',
+                  'left',
+                  colors(isDark).disabled
+                )}
+              >
                 {t.general.view_copyright}
               </Text>
               {/* <View
