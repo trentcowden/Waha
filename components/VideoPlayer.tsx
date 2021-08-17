@@ -213,7 +213,7 @@ const VideoPlayer: FC<Props> = ({
               <Icon
                 name='fullscreen-enter'
                 size={100 * scaleMultiplier}
-                color={colors(isDark).bg4}
+                color={colors(false).bg4}
               />
             </TouchableOpacity>
           </View>
