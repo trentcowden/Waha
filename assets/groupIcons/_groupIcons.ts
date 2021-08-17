@@ -1,0 +1,342 @@
+/**
+ * This file contains the information necessary to use the various group icons. These icons are used as the user's group avatar. The way to display a specific group icon in the app is `groupIconSources[groupIconName]`, where the groupIconName is one of the names listed in the groupIcons array.
+ */
+
+// An array of all of the group icon names.
+export const groupIcons: Emoji[] = [
+  'default',
+  // People
+  'beaming-face-with-smiling-eyes',
+  'cowboy-hat-face',
+  'face-with-tears-of-joy',
+  'partying-face',
+  'relieved-face',
+  'brain',
+  // Hand symbols
+  'call-me-hand',
+  'clapping-hands',
+  'flexed-biceps',
+  'folded-hands',
+  'handshake',
+  'love-you-gesture',
+  'ok-hand',
+  'oncoming-fist',
+  'open-hands',
+  'palms-up-together',
+  // Animals
+  'bird',
+  'camel',
+  'cat',
+  'dove',
+  'monkey-face',
+  'robot',
+  'turtle',
+  // Food
+  'avocado',
+  'baguette-bread',
+  'bell-pepper',
+  'bento-box',
+  'bowl-with-spoon',
+  'bread',
+  'burrito',
+  'cheese-wedge',
+  'chopsticks',
+  'cooked-rice',
+  'cooking',
+  'ear-of-corn',
+  'hamburger',
+  'salt',
+  'teacup-without-handle',
+  'teapot',
+  // Sports
+  'soccer-ball',
+  'baseball',
+  'basketball',
+  'tennis',
+  'american-football',
+  'cricket-game',
+  'goal-net',
+  '1st-place-medal',
+  'ice-skate',
+  'man-lifting-weights',
+  'man-rowing-boat',
+  'martial-arts-uniform',
+  'men-wrestling',
+  'trophy',
+  // Hobbies
+  'drum',
+  'guitar',
+  'headphone',
+  'microphone',
+  'musical-keyboard',
+  'radio',
+  'performing-arts',
+  'crayon',
+  'artist-palette',
+  'hammer-and-pick',
+  'camera',
+  'compass',
+  'circus-tent',
+  'kite',
+  'pool-8-ball',
+  'chess-pawn',
+  'skateboard',
+  'computer-mouse',
+  'desktop-computer',
+  'video-game',
+  'joystick',
+  // Household
+  'door',
+  'electric-plug',
+  'flashlight',
+  'baby-bottle',
+  'bouquet',
+  'plunger',
+  'luggage',
+  'umbrella-with-rain-drops',
+  'alarm-clock',
+  'high-heeled-shoe',
+  'lipstick',
+  // Misc
+  'man-in-manual-wheelchair',
+  'atom-symbol',
+  'briefcase',
+  'clamp',
+  'crown',
+  'dna',
+  'firecracker',
+  'gear',
+  'stethoscope',
+  'test-tube',
+  'black-nib',
+  'bomb',
+  'sparkles',
+  'star',
+  'ring',
+  'snowman-without-snow',
+  'balloon',
+  'glowing-star',
+  'graduation-cap',
+  'magnet',
+  'magnifying-glass-tilted-left'
+]
+
+export type Emoji =
+  | 'default'
+  | 'beaming-face-with-smiling-eyes'
+  | 'cowboy-hat-face'
+  | 'face-with-tears-of-joy'
+  | 'partying-face'
+  | 'relieved-face'
+  | 'brain'
+  | 'call-me-hand'
+  | 'clapping-hands'
+  | 'flexed-biceps'
+  | 'folded-hands'
+  | 'handshake'
+  | 'love-you-gesture'
+  | 'ok-hand'
+  | 'oncoming-fist'
+  | 'open-hands'
+  | 'palms-up-together'
+  | 'bird'
+  | 'camel'
+  | 'cat'
+  | 'dove'
+  | 'monkey-face'
+  | 'robot'
+  | 'turtle'
+  | 'avocado'
+  | 'baguette-bread'
+  | 'bell-pepper'
+  | 'bento-box'
+  | 'bowl-with-spoon'
+  | 'bread'
+  | 'burrito'
+  | 'cheese-wedge'
+  | 'chopsticks'
+  | 'cooked-rice'
+  | 'cooking'
+  | 'ear-of-corn'
+  | 'hamburger'
+  | 'salt'
+  | 'teacup-without-handle'
+  | 'teapot'
+  | 'soccer-ball'
+  | 'baseball'
+  | 'basketball'
+  | 'tennis'
+  | 'american-football'
+  | 'cricket-game'
+  | 'goal-net'
+  | '1st-place-medal'
+  | 'ice-skate'
+  | 'man-lifting-weights'
+  | 'man-rowing-boat'
+  | 'martial-arts-uniform'
+  | 'men-wrestling'
+  | 'trophy'
+  | 'drum'
+  | 'guitar'
+  | 'headphone'
+  | 'microphone'
+  | 'musical-keyboard'
+  | 'radio'
+  | 'performing-arts'
+  | 'crayon'
+  | 'artist-palette'
+  | 'hammer-and-pick'
+  | 'camera'
+  | 'compass'
+  | 'circus-tent'
+  | 'kite'
+  | 'pool-8-ball'
+  | 'chess-pawn'
+  | 'skateboard'
+  | 'computer-mouse'
+  | 'desktop-computer'
+  | 'video-game'
+  | 'joystick'
+  | 'door'
+  | 'electric-plug'
+  | 'flashlight'
+  | 'baby-bottle'
+  | 'bouquet'
+  | 'plunger'
+  | 'luggage'
+  | 'umbrella-with-rain-drops'
+  | 'alarm-clock'
+  | 'high-heeled-shoe'
+  | 'lipstick'
+  | 'man-in-manual-wheelchair'
+  | 'atom-symbol'
+  | 'briefcase'
+  | 'clamp'
+  | 'crown'
+  | 'dna'
+  | 'firecracker'
+  | 'gear'
+  | 'stethoscope'
+  | 'test-tube'
+  | 'black-nib'
+  | 'bomb'
+  | 'sparkles'
+  | 'star'
+  | 'ring'
+  | 'snowman-without-snow'
+  | 'balloon'
+  | 'glowing-star'
+  | 'graduation-cap'
+  | 'magnet'
+  | 'magnifying-glass-tilted-left'
+
+// An object containing all of the require statements for all of the group icon image files. The keys all match up with names in the groupIcons array.
+export const groupIconSources = {
+  default: require('./default.png'),
+  '1st-place-medal': require('./1st-place-medal.png'),
+  'alarm-clock': require('./alarm-clock.png'),
+  'american-football': require('./american-football.png'),
+  'artist-palette': require('./artist-palette.png'),
+  'atom-symbol': require('./atom-symbol.png'),
+  avocado: require('./avocado.png'),
+  'baby-bottle': require('./baby-bottle.png'),
+  'baguette-bread': require('./baguette-bread.png'),
+  balloon: require('./balloon.png'),
+  baseball: require('./baseball.png'),
+  basketball: require('./basketball.png'),
+  'beaming-face-with-smiling-eyes': require('./beaming-face-with-smiling-eyes.png'),
+  'bell-pepper': require('./bell-pepper.png'),
+  'bento-box': require('./bento-box.png'),
+  bird: require('./bird.png'),
+  'black-nib': require('./black-nib.png'),
+  bomb: require('./bomb.png'),
+  bouquet: require('./bouquet.png'),
+  'bowl-with-spoon': require('./bowl-with-spoon.png'),
+  brain: require('./brain.png'),
+  bread: require('./bread.png'),
+  briefcase: require('./briefcase.png'),
+  burrito: require('./burrito.png'),
+  'call-me-hand': require('./call-me-hand.png'),
+  camel: require('./camel.png'),
+  camera: require('./camera.png'),
+  cat: require('./cat.png'),
+  'cheese-wedge': require('./cheese-wedge.png'),
+  'chess-pawn': require('./chess-pawn.png'),
+  chopsticks: require('./chopsticks.png'),
+  'circus-tent': require('./circus-tent.png'),
+  clamp: require('./clamp.png'),
+  'clapping-hands': require('./clapping-hands.png'),
+  compass: require('./compass.png'),
+  'computer-mouse': require('./computer-mouse.png'),
+  'cooked-rice': require('./cooked-rice.png'),
+  cooking: require('./cooking.png'),
+  'cowboy-hat-face': require('./cowboy-hat-face.png'),
+  crayon: require('./crayon.png'),
+  'cricket-game': require('./cricket-game.png'),
+  crown: require('./crown.png'),
+  'desktop-computer': require('./desktop-computer.png'),
+  dna: require('./dna.png'),
+  door: require('./door.png'),
+  dove: require('./dove.png'),
+  drum: require('./drum.png'),
+  'ear-of-corn': require('./ear-of-corn.png'),
+  'electric-plug': require('./electric-plug.png'),
+  'face-with-tears-of-joy': require('./face-with-tears-of-joy.png'),
+  firecracker: require('./firecracker.png'),
+  flashlight: require('./flashlight.png'),
+  'flexed-biceps': require('./flexed-biceps.png'),
+  'folded-hands': require('./folded-hands.png'),
+  gear: require('./gear.png'),
+  'glowing-star': require('./glowing-star.png'),
+  'goal-net': require('./goal-net.png'),
+  'graduation-cap': require('./graduation-cap.png'),
+  guitar: require('./guitar.png'),
+  hamburger: require('./hamburger.png'),
+  'hammer-and-pick': require('./hammer-and-pick.png'),
+  handshake: require('./handshake.png'),
+  headphone: require('./headphone.png'),
+  'high-heeled-shoe': require('./high-heeled-shoe.png'),
+  'ice-skate': require('./ice-skate.png'),
+  joystick: require('./joystick.png'),
+  kite: require('./kite.png'),
+  lipstick: require('./lipstick.png'),
+  'love-you-gesture': require('./love-you-gesture.png'),
+  luggage: require('./luggage.png'),
+  magnet: require('./magnet.png'),
+  'magnifying-glass-tilted-left': require('./magnifying-glass-tilted-left.png'),
+  'man-in-manual-wheelchair': require('./man-in-manual-wheelchair.png'),
+  'man-lifting-weights': require('./man-lifting-weights.png'),
+  'man-rowing-boat': require('./man-rowing-boat.png'),
+  'martial-arts-uniform': require('./martial-arts-uniform.png'),
+  'men-wrestling': require('./men-wrestling.png'),
+  microphone: require('./microphone.png'),
+  'monkey-face': require('./monkey-face.png'),
+  'musical-keyboard': require('./musical-keyboard.png'),
+  'ok-hand': require('./ok-hand.png'),
+  'oncoming-fist': require('./oncoming-fist.png'),
+  'open-hands': require('./open-hands.png'),
+  'palms-up-together': require('./palms-up-together.png'),
+  'partying-face': require('./partying-face.png'),
+  'performing-arts': require('./performing-arts.png'),
+  plunger: require('./plunger.png'),
+  'pool-8-ball': require('./pool-8-ball.png'),
+  radio: require('./radio.png'),
+  'relieved-face': require('./relieved-face.png'),
+  ring: require('./ring.png'),
+  robot: require('./robot.png'),
+  salt: require('./salt.png'),
+  skateboard: require('./skateboard.png'),
+  'snowman-without-snow': require('./snowman-without-snow.png'),
+  'soccer-ball': require('./soccer-ball.png'),
+  sparkles: require('./sparkles.png'),
+  star: require('./star.png'),
+  stethoscope: require('./stethoscope.png'),
+  'teacup-without-handle': require('./teacup-without-handle.png'),
+  teapot: require('./teapot.png'),
+  tennis: require('./tennis.png'),
+  'test-tube': require('./test-tube.png'),
+  trophy: require('./trophy.png'),
+  turtle: require('./turtle.png'),
+  'umbrella-with-rain-drops': require('./umbrella-with-rain-drops.png'),
+  'video-game': require('./video-game.png')
+}

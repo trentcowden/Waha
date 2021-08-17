@@ -26,7 +26,7 @@ In the descriptions below, navigators are **`bolded`** and any other files/scree
         - `Play`: Screen that plays the lesson and allows audio control.
         - `Groups`: Screen that shows a list of groups separated by language instance. 
         - `AddSet`: Screen that shows a list of Story Sets in a specific category that are available to add to the `SetsScreen`.
-        - `SubsequentlLanguageInstanceInstall`: Screen that shows a list of available language instances to install.
+        - `SubsequentlLanguageSelect`: Screen that shows a list of available language instances to install.
         - `Storage`: Screen that shows each language instance and how much space its downloaded Story chapters are taking up.
         - `MobilizationTools`: Screen that, before unlocking, allows the user to unlock, and after unlocking, shows a list of groups and options to show the Mobilization Tools tab on all of them.
         - `MobilizationToolsUnlock`: A simple screen that allows the user to input a 6-digit code to unlock the Mobilization Tools.

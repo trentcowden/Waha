@@ -1,0 +1,97 @@
+import { decode, encode } from 'base-64'
+import { Audio } from 'expo-av'
+import * as Font from 'expo-font'
+import * as ScreenOrientation from 'expo-screen-orientation'
+import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/lib/integration/react'
+import { isTablet } from './constants'
+import { lockPortrait } from './functions/orientationFunctions'
+import Root from './navigation/Root'
+import { persistor, store } from './redux/store'
+
+// These are only here because of some wack errors. Please do not delete.
+if (!global.btoa) {
+  global.btoa = encode
+}
+if (!global.atob) {
+  global.atob = decode
+}
+
+/**
+ * App.js is the most root level component and is the start of all rendering for Waha.
+ */
+export default function App() {
+  /**  Keeps track of whether all the fonts are loaded. */
+  const [fontsLoaded, setFontsLoaded] = useState(false)
+
+  /**
+   * Take care of a few tasks we always need to do when we start up the app.
+   */
+  useEffect(() => {
+    // Load up all the fonts.
+    loadFonts()
+
+    // Lock orientation to portrait if we're not using a tablet.
+    isTablet ? ScreenOrientation.unlockAsync() : lockPortrait()
+
+    // Set up some config options for app audio.
+    Audio.setAudioModeAsync({
+      playsInSilentModeIOS: true,
+      allowsRecordingIOS: false,
+      staysActiveInBackground: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+      playThroughEarpieceAndroid: false,
+    })
+  }, [])
+
+  /**
+   * Loads all of the fonts to be used across all languages in Waha.
+   */
+  async function loadFonts() {
+    // Load the icon font.
+    await Font.loadAsync({
+      waha: require('./assets/fonts/waha_icon_font.ttf'),
+    })
+
+    // Load the language-specific fonts.
+    await Font.loadAsync({
+      'Roboto-Black': require('./assets/fonts/Roboto/Roboto-Black.ttf'),
+    })
+    await Font.loadAsync({
+      'Roboto-Bold': require('./assets/fonts/Roboto/Roboto-Medium.ttf'),
+    })
+    await Font.loadAsync({
+      'Roboto-Regular': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+    })
+    await Font.loadAsync({
+      'NotoSansArabic-Black': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedBlack.ttf'),
+    })
+    await Font.loadAsync({
+      'NotoSansArabic-Bold': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensedSemiBold.ttf'),
+    })
+    await Font.loadAsync({
+      'NotoSansArabic-Regular': require('./assets/fonts/NotoSansArabic/NotoSansArabic-SemiCondensed.ttf'),
+    })
+
+    // Once we finish loading every font, set our fontsLoaded state to true so we know we can render the app now.
+    setFontsLoaded(true)
+  }
+
+  if (fontsLoaded) {
+    return (
+      // The provider passes the redux store to every component in Waha.
+      <Provider store={store}>
+        {/* The persist gate allows the redux data to persist across restarts. */}
+        <PersistGate loading={<View></View>} persistor={persistor}>
+          <Root />
+        </PersistGate>
+      </Provider>
+    )
+  } else {
+    return null
+  }
+}

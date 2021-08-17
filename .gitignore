@@ -12,7 +12,7 @@ web-report/
 app.json
 # macOS
 .DS_Store
-firebase/testConfig.js
-firebase/prodConfig.js
+firebase/testConfig.ts
+firebase/prodConfig.ts
 firebase/google-services.json
 firebase/GoogleService-Info.plist
