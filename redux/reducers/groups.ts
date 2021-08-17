@@ -1,4 +1,6 @@
-import { getSetInfo } from '../../functions/setAndLessonInfoFunctions'
+import { Emoji } from 'assets/groupIcons/_groupIcons'
+import { LanguageID } from 'languages'
+import { getSetInfo } from '../../functions/setAndLessonDataFunctions'
 import { SetCategory } from '../../interfaces/setAndLessonInfo'
 import {
   ADD_SET,
@@ -12,9 +14,10 @@ import {
 
 export interface Group {
   name: string
+  // A unique ID for the group used only for Analytics purposes.
   id: number
-  language: string
-  emoji: string
+  language: LanguageID
+  emoji: Emoji
   recentCoreOrTool: string
   setBookmark: string
   shouldShowMobilizationToolsTab: boolean
@@ -157,7 +160,7 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
                       ? params.nextSet.id
                       : group.setBookmark
 
-                    // We also need to update the recent Foundataionl/MT set to the new one.
+                    // We also need to update the recent Foundational/MT set to the new one.
                     mostRecentlyUpdatedFoundationalOrMTSet = idOfBookmarkedSet
                   } // If the set that is being completed is a Topical, change the set bookmark to the most recently updated Foundational/MT set.
                   else
@@ -187,7 +190,7 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
         }
       )
     /**
-     * DEPECRATED. Resets the progress for a group.
+     * DEPRECATED. Resets the progress for a group.
      */
     // case RESET_PROGRESS:
     //   return state.map(group => {

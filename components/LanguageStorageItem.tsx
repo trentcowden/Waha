@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
@@ -12,7 +13,7 @@ import WahaSeparator from './WahaSeparator'
 interface Props extends CommonProps, TProps, AGProps {
   // The name of the language in its native script.
   nativeName: string
-  languageID: string
+  languageID: LanguageID
   // The number of megabytes this language's downloaded lessons take up.
   megabytes: number
   onClearLanguageDownloadsButtonPress: () => void

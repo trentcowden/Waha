@@ -3,14 +3,14 @@ import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, itemHeights, scaleMultiplier } from '../constants'
-import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
+import { getLessonInfo } from '../functions/setAndLessonDataFunctions'
 import {
   AGProps,
   CommonProps,
   DLProps,
   NetworkProps,
 } from '../interfaces/common'
-import { LessonType } from '../interfaces/playScreen'
+import { LessonType } from '../interfaces/setAndLessonInfo'
 import { Lesson } from '../redux/reducers/database'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'

@@ -1,3 +1,4 @@
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import {
   Dimensions,
@@ -20,11 +21,11 @@ interface Props extends CommonProps {
   extraLabelStyles?: TextStyle
   onPress?: () => void
   extraComponent?: ReactElement
-  screenLanguage: string
+  screenLanguage: LanguageID
 }
 /**
  * Standard button component used throughout Waha.
- * @param {string} type - The type of the button. Possible options are 'filled' which renders a fully filled button, 'outline' which renders a butotn with a transparent background and a border, or 'inactive' which renders a filled un-clickable button with grayed out text.
+ * @param {string} type - The type of the button. Possible options are 'filled' which renders a fully filled button, 'outline' which renders a button with a transparent background and a border, or 'inactive' which renders a filled un-clickable button with grayed out text.
  * @param {string} color - The color of the button.
  * @param {string} label - The label to display on the button.
  * @param {Object} style - (Optional) Extra style to apply to the button container.

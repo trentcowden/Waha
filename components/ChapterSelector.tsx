@@ -8,7 +8,7 @@ import {
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { gutterSize, isTablet } from '../constants'
-import { Chapter, LessonType } from '../interfaces/playScreen'
+import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
 import { colors } from '../styles/colors'
 import ChapterButton from './ChapterButton'
 

@@ -1,18 +1,70 @@
-import { LanguageFamily } from 'interfaces/languages'
+import { Group } from './redux/reducers/groups'
+
+// All of the available language IDs. Languages that are actually live are marked as such.
+export type LanguageID =
+  | 'en' // English, live
+  | 'ga' // Gulf Arabic, live
+  | 'ma' // Moroccan Arabic, in-progress
+  | 'hc' // Hindi (Muslim version), in-progress
+  | 'hi' // Hindi (Hindu version), in-progress
+  | 'mr' // Marathi, in-progress
+  | 'ro' // Romanian, in-progress
+  | 'ru' // Russian, in-progress
+  | 'tr' // Turkish, in-progress
+  | 'tu' // Tunisian Arabic, in-progress
+  | 'ta' // Tarifit, in-progress
+
+export interface LanguageMetadata {
+  // The ID for a language.
+  languageID: LanguageID
+  // The name of a language in its own script, i.e. "English".
+  nativeName: string
+  // The name of the language's brand, i.e. "Discovering God".
+  brandName: string
+  // An email to send feedback to for users who are using a language.
+  contactEmail: string
+  // Accent colors for light mode and dark mode for a language in hex form.
+  colors: {
+    light: string
+    dark: string
+  }
+  // Links to the headers for light mode and dark mode for a language. Thought we download these with a language install, we need the links to display them on the <LanguageSelectScreen /> before the user has selected a language.
+  headers: {
+    light: string
+    dark: string
+  }
+  // For languages that have multiple versions to choose from.
+  versions?: LanguageMetadata[]
+  // If this object is in the "versions" key for a language, the note would contain a brief description of who that version is targeted to. This helps users decide which version is best for them.
+  note?: string
+}
+
+// Language families contain multiple languages as well as an ID, a font to be used for all languages in the family, and whether or not the languages in the family are right-to-left.
+export interface LanguageFamilyMetadata {
+  languageFamilyID: string
+  font: string
+  isRTL: boolean
+  data: LanguageMetadata[]
+}
+
+// We want to combine the data for a language family and a language because when we're getting information about a language, we usually need information about its family as well.
+export type LanguageInfoIntersection = LanguageMetadata & LanguageFamilyMetadata
+
+// Because LanguageInfo is only for one language, we don't need all the data (array of languages) from the LanguageFamily.
+export type LanguageInfo = Omit<LanguageInfoIntersection, 'data'>
+
+// Used for populating screens that have lists of Groups on them, this combines the info for a language with a "data" key which contains an array of Groups for that language.
+export type InfoAndGroupsForLanguage = LanguageInfo & {
+  data: Group[]
+}
+
+// This is an array of info and groups for multiple languages.
+export type InfoAndGroupsForAllLanguages = InfoAndGroupsForLanguage[]
 
 /**
- * This file contains all of the language families and languages in Waha. This is used to populate the LanguageInstanceInstall screen, get the i18n keys for translation, and get the font and RTL status of a language family or language.
- * @param {string} languages[].i18nKey - This is the key that i18n will use to get the translation of this language family’s name in a different language.
- * @param {string} languages[].languageFamilyID - This is language code for this language family. Must be the same as the code for this language used in i18n.
- * @param {string} languages[].font - This is the name of the font that this language family uses.
- * @param {boolean} languages[].isRTL - Whether this language family’s script is RTL or not.
- * @param {Object[]} languages[].data - This is an array of the language instances that are in this language family.
- * @param {string} languages[].data[].nativeName - This is the same as the displayName key in Firestore and will be how the language instance is displayed in-app.
- * @param {string} languages[].data[].languageID - This is the language instance’s 2-letter ID. Must match up with the ID used in Firestore.
- * @param {string} languages[].data[].i18nKey - This is the key that i18n will use to get the translation of this language’s name in a different language. For instance, if the user’s app is set to Arabic, the app will look for an Arabic translation of the “English” language instance in the ar.json translations object (which is the language family, not the language instance) using the i18nKey property in the english language instance object.
- * @param {string} languages[].data[].logoSource - This is the Firebase URL for this language instance’s logo. This is used only to display the logo on the LanguageSelectScreen before any logos have been downloaded to the user’s device.
+ * This is the actual array of languages and language families. Languages that are testing but not live could be commented out.
  */
-export const languages: LanguageFamily[] = [
+export const languages: LanguageFamilyMetadata[] = [
   {
     languageFamilyID: 'en',
     font: 'Roboto',
@@ -27,7 +79,7 @@ export const languages: LanguageFamily[] = [
           light: '#E74D3D',
           dark: '#EA8E84'
         },
-        logos: {
+        headers: {
           light:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
           dark:
@@ -51,7 +103,7 @@ export const languages: LanguageFamily[] = [
           light: '#DAA520',
           dark: '#DBBA69'
         },
-        logos: {
+        headers: {
           light:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media',
           dark:
@@ -112,7 +164,7 @@ export const languages: LanguageFamily[] = [
   //           contactEmail: 'zach@quikmail.org',
   //           note: 'Recommended for Muslim backgrounds',
   //           colors: {
-  //             light: '2C7A1F',
+  //             light: '#2C7A1F',
   //             dark: '#89C17F'
   //           },
   //           logos: {

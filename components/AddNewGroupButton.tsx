@@ -1,10 +1,11 @@
 import { AGProps, CommonProps, TProps } from 'interfaces/common'
-import { InfoAndGroupsForLanguage } from 'interfaces/languages'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
+import { InfoAndGroupsForLanguage } from '../languages'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -12,7 +13,7 @@ interface Props extends CommonProps, AGProps, TProps {
   // The section of the SectionList that this button is being rendered as the footer of.
   section: InfoAndGroupsForLanguage
   // Sets the languageID state variable on the Groups screen.
-  setLanguageID: (languageID: string) => void
+  setLanguageID: (languageID: LanguageID) => void
   setShowAddGroupModal: (toShow: boolean) => void
 }
 

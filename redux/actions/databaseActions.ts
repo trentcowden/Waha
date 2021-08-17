@@ -6,10 +6,11 @@ import * as FileSystem from 'expo-file-system'
 import { DownloadResumable } from 'expo-file-system'
 import * as Localization from 'expo-localization'
 import firebase from 'firebase'
+import { LanguageID } from 'languages'
 import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { logInstallLanguage } from '../../functions/analyticsFunctions'
-import { LanguageData, StorySet } from '../reducers/database'
+import { FirestoreLanguageData, StorySet } from '../reducers/database'
 import { AppDispatch, RootState } from '../store'
 import { setIsInstallingLanguageInstance } from './isInstallingLanguageInstanceActions'
 import {
@@ -23,69 +24,60 @@ import {
 } from './languageInstallationActions'
 import { storeDownloads } from './storedDownloadsActions'
 
-interface StoreLanguageDataParams {
-  type: 'STORE_LANGUAGE_DATA'
-  languageData: LanguageData
-  languageInstanceID: string
-}
-
-interface StoreLanguageSetsParams {
-  type: 'STORE_LANGUAGE_SETS'
-  languageSets: StorySet[]
-  languageInstanceID: string
-}
-
-interface DeleteLanguageDataParams {
-  type: 'DELETE_LANGUAGE_DATA'
-  languageInstanceID: string
-}
-
 export type DatabaseActionParams =
   | StoreLanguageDataParams
   | StoreLanguageSetsParams
   | DeleteLanguageDataParams
 
+interface StoreLanguageDataParams {
+  type: 'STORE_LANGUAGE_DATA'
+  languageData: FirestoreLanguageData
+  // The ID of the language instance that we're storing data for.
+  languageID: LanguageID
+}
 /**
- * Stores the language data for a language instance in redux. This includes the display name, the bible ID, whether this language is RTL, the primary color of this language instance, the list of core files to download, the questions for every question set, and all the app t.
- * @export
- * @param {Object} languageData - All the data for a language.
- * @param {string} languageInstanceID - The ID of the language instance that we're storing data for.
- * @return {Object} - Object to send to the reducer.
+ * Stores the language data for a language instance in redux.
  */
 export function storeLanguageData (
-  languageData: LanguageData,
-  languageInstanceID: string
+  languageData: FirestoreLanguageData,
+  languageID: LanguageID
 ): StoreLanguageDataParams {
   return {
     type: STORE_LANGUAGE_DATA,
     languageData,
-    languageInstanceID
+    languageID
   }
+}
+
+interface StoreLanguageSetsParams {
+  type: 'STORE_LANGUAGE_SETS'
+  languageSets: StorySet[]
+  // The ID of the language instance that we're storing Story Sets for.
+  languageID: LanguageID
 }
 
 /**
  * Stores all the sets for a language instance. The sets are stored as individual objects in Firestore but are combined before getting to this action. Then, they are stored as the "sets" key in the language data object.
- * @export
- * @param {Object[]} languageSets - An array of all the sets to store in redux.
- * @param {string} languageInstanceID - The ID of the language instance that we're storing data for.
- * @return {Object} - Object to send to the reducer.
  */
 export function storeLanguageSets (
   languageSets: StorySet[],
-  languageInstanceID: string
+  languageID: LanguageID
 ): StoreLanguageSetsParams {
   return {
     type: STORE_LANGUAGE_SETS,
     languageSets,
-    languageInstanceID
+    languageID
   }
+}
+
+interface DeleteLanguageDataParams {
+  type: 'DELETE_LANGUAGE_DATA'
+  // The ID of the language instance that we're deleting.
+  languageInstanceID: string
 }
 
 /**
  * Deletes all of the redux data for a language instance. This includes language data and language sets.
- * @export
- * @param {string} languageInstanceID - The ID of the language instance to delete.
- * @return {Object} - Object to send to the reducer.
  */
 export function deleteLanguageData (
   languageInstanceID: string
@@ -98,11 +90,9 @@ export function deleteLanguageData (
 
 /**
  * Downloads all the core files for a single language instance and does a whole bunch of stuff once they're done downloading. The core files include the header image, the dummy story mp3, and every question set mp3.
- * @export
- * @param {string} language - The ID for the language instance that we're downloading the core files for.
  */
 export function downloadLanguageCoreFiles (
-  language: string
+  language: LanguageID
 ): ThunkAction<void, RootState, unknown, AnyAction> {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     // Store the ID of the language that we're downloading core files for so that if we cancel the install, we know what language to delete from the database.
@@ -118,24 +108,21 @@ export function downloadLanguageCoreFiles (
       )
     )
 
-    // 1. Add all the download resumables into one array.
+    // This array is used to store the various Expo DownloadResumable objects for the core files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
     var filesToDownload: DownloadResumable[] = []
 
-    // Run some code for each file we have to download for a language instance. The files we have to download are stored in our redux database (which we fetched from firebase).
-    getState().database[language].files.forEach(fileName => {
-      // Create download object.
+    // Run some code for each file we have to download for a language instance. The names for the files we have to download are stored in our redux database (which we fetched from Firestore).
+    getState().database[language].files.forEach((fileName: string) => {
+      // Create a new download object.
       var download: DownloadResumable
 
-      // Set the file extension based on what type of file we're downloading. Every language core file is an mp3 except for the header image which is a png.
-
+      // Set the file extension based on what type of file we're downloading. Every language core file is an mp3 except for the header and header-dark images which are png's.
       var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
 
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
-
       var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
       // Set the local storage path to download to and the name of the file. The format is simple: FileSystem/languageID-fileName.extension.
-
       var localPath = `${FileSystem.documentDirectory}${language}-${fileName}.${fileExtension}`
 
       // Create the download object. Uses url and localPath from above, an empty parameters object, and an empty callback function.
@@ -146,10 +133,10 @@ export function downloadLanguageCoreFiles (
         () => {}
       )
 
-      // Add this download to the filesToDownload object.
+      // Add this download to the filesToDownload array.
       filesToDownload.push(download)
 
-      // Add the time created of this file to our createdTimes redux object so that we know later if a file gets updated.
+      // Add the created time of this file to our createdTimes redux object so that we know later if a file gets updated.
       firebase
         .storage()
         .refFromURL(url)
@@ -164,14 +151,11 @@ export function downloadLanguageCoreFiles (
         )
     })
 
-    // 2. Store out download resumables array in redux.
+    // Store our download resumables array in redux so that we can cancel them later if necessary.
     dispatch(storeDownloads(filesToDownload))
-
-    // 3. Start all the downloads in the download resumables array in parallel.
 
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
-     * @param {Object} resumable - The download resumable object.
      */
     function downloadFile (resumable: DownloadResumable) {
       return resumable
@@ -190,7 +174,7 @@ export function downloadLanguageCoreFiles (
       downloadFile(resumable)
     )
 
-    // Start all of our downloads at once.
+    // Start all the downloads in the download resumables array in parallel.
     Promise.all(downloadFunctions)
       .then(() => {
         // Once all the downloads have finished...
@@ -219,7 +203,7 @@ export function downloadLanguageCoreFiles (
           // Clear stored downloads.
           dispatch(storeDownloads([]))
 
-          // Set the setTotalLanguageCoreFilesToDownload to the number of files to download for this language. I think this is only here to avoid divide-by-zero erros but I'm not sure. I'm just too scared to delete it.
+          // Set the setTotalLanguageCoreFilesToDownload to the number of files to download for this language. I think this is only here to avoid divide-by-zero errors but I'm not sure. I'm just too scared to delete it.
           dispatch(setTotalLanguageCoreFilesToDownload(1))
         }
       })
@@ -254,12 +238,12 @@ export function updateLanguageCoreFiles (): ThunkAction<
       setTotalLanguageCoreFilesToDownload(languageCoreFilesToUpdate.length)
     )
 
-    // 1. Add all the download resumables into one array.
+    // This array is used to store the various Expo DownloadResumable objects for the core files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
     var filesToDownload: DownloadResumable[] = []
 
-    // Run some code for each file we have to download for a language instance. The files we have to download are stored in our redux database (which we fetched from firebase).
+    // Run some code for each file we have to download for a language instance. The names for the files we have to download are stored in our redux database (which we fetched from Firestore).
     languageCoreFilesToUpdate.forEach(fileName => {
-      // This is here because I'm a fool and didn't automatically include the language ID in the file names in Firebase. Therefore, we have to remove the language ID here. Will be fixed soon.
+      // This is here because I'm a fool and didn't automatically include the language ID in the file names in Firebase. Therefore, we have to remove the language ID here.
       var languageID = fileName.slice(0, 2)
 
       // The shortened file name is the file name without the language ID. So en-header.png would be header.png.
@@ -272,7 +256,6 @@ export function updateLanguageCoreFiles (): ThunkAction<
       var fileExtension = shortenedFileName.includes('header') ? 'png' : 'mp3'
 
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
-
       var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${languageID}%2Fother%2F${shortenedFileName}.${fileExtension}?alt=media`
 
       // Set the local storage path to download to and the name of the file. The format is simple: "FileSystem/languageID-localFileName.extension".
@@ -301,14 +284,11 @@ export function updateLanguageCoreFiles (): ThunkAction<
         )
     })
 
-    // 2. Store out download resumables array in redux.
+    // Store out download resumables array in redux.
     dispatch(storeDownloads(filesToDownload))
-
-    // 3. Start all the downloads in the download resumables array in parallel.
 
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
-     * @param {Object} resumable - The download resumable object.
      */
     function downloadFile (resumable: DownloadResumable) {
       return resumable
@@ -327,7 +307,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
       downloadFile(resumable)
     )
 
-    // Start all of our downloads at once.
+    // Start all the downloads in the download resumables array in parallel.
     Promise.all(downloadFunctions).then(() => {
       // Once all the downloads have finished...
       if (totalDownloaded === languageCoreFilesToUpdate.length) {
@@ -346,7 +326,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
         // Clear stored downloads.
         dispatch(storeDownloads([]))
 
-        // I think this is only here to avoid divide-by-zero erros but I'm not sure. I'm just too scared to delete it.
+        // I think this is only here to avoid divide-by-zero errors but I'm not sure. I'm just too scared to delete it.
         dispatch(setTotalLanguageCoreFilesToDownload(1))
       }
     })

@@ -1,4 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack'
+import { Emoji } from 'assets/groupIcons/_groupIcons'
 import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
@@ -49,7 +50,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
   const handleSwitchChange = (
     oldGroupName: string,
     newGroupName: string,
-    emoji: string,
+    emoji: Emoji,
     shouldShowMobilizationToolsTab: boolean
   ) => {
     dispatch(

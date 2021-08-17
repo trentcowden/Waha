@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { Audio } from 'expo-av'
 import * as Localization from 'expo-localization'
-import { Language, LanguageFamily } from 'interfaces/languages'
+import { LanguageID } from 'languages'
 import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, useEffect, useState } from 'react'
 import {
@@ -29,6 +29,7 @@ import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
+import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import {
@@ -91,16 +92,18 @@ const LanguageSelectScreen: FC<Props> = ({
   const isConnected = selector((state) => state.network.isConnected)
   const isRTL =
     activeGroup.name === 'No Active Group'
-      ? info(Localization.locale.slice(0, 2)).isRTL
+      ? info(Localization.locale.slice(0, 2) as LanguageID).isRTL
       : info(activeGroup.language).isRTL
   const screenLanguage =
     activeGroup.name === 'No Active Group'
-      ? info(Localization.locale.slice(0, 2)).languageID
+      ? info(Localization.locale.slice(0, 2) as LanguageID).languageID
       : activeGroup.language
   const languageInstallation = selector((state) => state.languageInstallation)
 
   /** Keeps track of the language that is currently selected. */
-  const [selectedLanguage, setSelectedLanguage] = useState('')
+  const [selectedLanguage, setSelectedLanguage] = useState<
+    LanguageID | undefined
+  >()
 
   const dispatch = useAppDispatch()
 
@@ -137,7 +140,7 @@ const LanguageSelectScreen: FC<Props> = ({
    * Plays the text-to-speech audio file for a language.
    * @param {string} languageID - The ID of the language to play.
    */
-  const playAudio = async (languageID: string) => {
+  const playAudio = async (languageID: LanguageID) => {
     audio.unloadAsync()
     await audio.loadAsync(languageT2S[languageID]).then(() => {
       audio.playAsync()
@@ -148,14 +151,14 @@ const LanguageSelectScreen: FC<Props> = ({
    * Fetches all the data for a language from Firebase. This includes the various Story Sets from the 'sets' collection and the language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
    * @param {string} language - The language to fetch the firebase data for.
    */
-  const fetchFirebaseData = async (language: string) => {
+  const fetchFirebaseData = async (language: LanguageID) => {
     // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
     dispatch(setIsInstallingLanguageInstance(true))
 
     // Set the isFetchingFirebaseData local state to true so that the continue button shows the activity indicator.
     setIsFetchingFirebaseData(true)
 
-    // Fetch all the Story Sets whith the language ID of the selected language and store them in redux.
+    // Fetch all the Story Sets with the language ID of the selected language and store them in redux.
     await db
       .collection('sets')
       .where('languageID', '==', language)
@@ -219,77 +222,78 @@ const LanguageSelectScreen: FC<Props> = ({
 
   /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to navigate to the onboarding slides too. */
   const onStartPress = () => {
-    fetchFirebaseData(selectedLanguage)
-      .then(() => {
-        // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
-        dispatch(setHasFetchedLanguageData(true))
+    if (selectedLanguage)
+      fetchFirebaseData(selectedLanguage)
+        .then(() => {
+          // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
+          dispatch(setHasFetchedLanguageData(true))
 
-        // If we're adding a subsequent language instance, then we need to store the active group's language
-        if (activeGroup) dispatch(setRecentActiveGroup(activeGroup.name))
+          // If we're adding a subsequent language instance, then we need to store the active group's language
+          if (activeGroup) dispatch(setRecentActiveGroup(activeGroup.name))
 
-        // Start downloading the core files for this language.
-        dispatch(downloadLanguageCoreFiles(selectedLanguage))
+          // Start downloading the core files for this language.
+          dispatch(downloadLanguageCoreFiles(selectedLanguage))
 
-        // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
-        if (
-          !groups.some(
-            (group) =>
-              group.name ===
-              getTranslations(selectedLanguage).other.default_group_name
-          )
-        ) {
-          dispatch(incrementGlobalGroupCounter())
+          // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
+          if (
+            !groups.some(
+              (group) =>
+                group.name ===
+                getTranslations(selectedLanguage).other.default_group_name
+            )
+          ) {
+            dispatch(incrementGlobalGroupCounter())
 
+            dispatch(
+              createGroup(
+                getTranslations(selectedLanguage).other.default_group_name,
+                selectedLanguage,
+                'default',
+                true,
+                languageInstallation.globalGroupCounter,
+                groups.length + 1
+              )
+            )
+          }
+
+          // Change the active group to the new group we just created.
           dispatch(
-            createGroup(
-              getTranslations(selectedLanguage).other.default_group_name,
-              selectedLanguage,
-              'default',
-              true,
-              languageInstallation.globalGroupCounter,
-              groups.length + 1
+            changeActiveGroup(
+              getTranslations(selectedLanguage).other.default_group_name
             )
           )
-        }
 
-        // Change the active group to the new group we just created.
-        dispatch(
-          changeActiveGroup(
-            getTranslations(selectedLanguage).other.default_group_name
+          // Set the local isFetchingFirebaseData state to false.
+          setIsFetchingFirebaseData(false)
+
+          // Navigate to the onboarding slides if this is the first language instance install.
+          if (routeName === 'InitialLanguageSelect') {
+            navigate('WahaOnboardingSlides', {
+              selectedLanguage: selectedLanguage,
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+
+          // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
+          setIsFetchingFirebaseData(false)
+          dispatch(deleteLanguageData(selectedLanguage))
+
+          Alert.alert(
+            t.language_select.fetch_error_title,
+            t.language_select.fetch_error_message,
+            [
+              {
+                text: t.general.ok,
+                onPress: () => {},
+              },
+            ]
           )
-        )
-
-        // Set the local isFetchingFirebaseData state to false.
-        setIsFetchingFirebaseData(false)
-
-        // Navigate to the onboarding slides if this is the first language instance install.
-        if (routeName === 'InitialLanguageSelect') {
-          navigate('WahaOnboardingSlides', {
-            selectedLanguage: selectedLanguage,
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-
-        // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
-        setIsFetchingFirebaseData(false)
-        dispatch(deleteLanguageData(selectedLanguage))
-
-        Alert.alert(
-          t.language_select.fetch_error_title,
-          t.language_select.fetch_error_message,
-          [
-            {
-              text: t.general.ok,
-              onPress: () => {},
-            },
-          ]
-        )
-      })
+        })
   }
 
-  const handleLanguageItemPress = (language: Language) => {
+  const handleLanguageItemPress = (language: LanguageMetadata) => {
     if (!selectedLanguage) {
       Animated.spring(buttonYPos, {
         toValue: 0,
@@ -305,12 +309,12 @@ const LanguageSelectScreen: FC<Props> = ({
    * @param {Object} languageFamily - The object for the language family that this language is a part of.
    * @return {Component} - The LanguageSelectItem component.
    */
-  const renderLanguageItem = (language: Language) => (
+  const renderLanguageItem = (language: LanguageMetadata) => (
     <LanguageItem
       languageID={language.languageID}
       nativeName={language.nativeName}
       localeName={t.languages[language.languageID]}
-      logos={language.logos}
+      headers={language.headers}
       onLanguageItemPress={() => handleLanguageItemPress(language)}
       isSelected={selectedLanguage === language.languageID ? true : false}
       playAudio={() => playAudio(language.languageID)}
@@ -326,7 +330,7 @@ const LanguageSelectScreen: FC<Props> = ({
    * @param {Object} languageFamily - The object for the language family that this language is a part of.
    * @return {Component} - The LanguageSelectItem component.
    */
-  const renderLanguageHeader = (languageFamily: LanguageFamily) => (
+  const renderLanguageHeader = (languageFamily: LanguageFamilyMetadata) => (
     <View
       style={{
         ...styles.languageHeaderContainer,
@@ -512,7 +516,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 50 * scaleMultiplier,
     paddingHorizontal: 5,
-    flexDirection: info(Localization.locale).isRTL ? 'row-reverse' : 'row',
+    flexDirection: info(Localization.locale as LanguageID).isRTL
+      ? 'row-reverse'
+      : 'row',
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'flex-start',

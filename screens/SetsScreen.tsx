@@ -11,7 +11,7 @@ import AddSetButton from '../components/AddSetButton'
 import SetItem from '../components/SetItem'
 import { itemHeights, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetData } from '../functions/setAndLessonInfoFunctions'
+import { getSetData } from '../functions/setAndLessonDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { SetItemMode } from '../interfaces/components'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
@@ -21,7 +21,7 @@ import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsAction
 import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import {
   activeDatabaseSelector,
-  activeGroupSelector
+  activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'

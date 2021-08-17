@@ -3,7 +3,7 @@ import React, { FC, ReactElement } from 'react'
 import { Dimensions } from 'react-native'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetInfo } from '../functions/setAndLessonInfoFunctions'
+import { getSetInfo } from '../functions/setAndLessonDataFunctions'
 import { selector } from '../hooks'
 import {
   activeDatabaseSelector,

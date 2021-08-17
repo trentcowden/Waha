@@ -1,3 +1,5 @@
+import { LanguageID } from 'languages'
+
 export const SET_HAS_ONBOARDED = 'SET_HAS_ONBOARDED'
 export const SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE =
   'SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE'
@@ -59,7 +61,7 @@ interface ClearLanguageCoreFilesToUpdateParams {
 
 interface StoreActingLanguageIDParams {
   type: 'STORE_ACTING_LANGUAGE_ID'
-  languageID: string | undefined
+  languageID: LanguageID | undefined
 }
 
 interface SetRecentActiveGroupParams {
@@ -214,7 +216,7 @@ export function clearLanguageCoreFilesToUpdate (): ClearLanguageCoreFilesToUpdat
  * @return {Object} - Object to send to the reducer.
  */
 export function storeActingLanguageID (
-  languageID: string | undefined
+  languageID: LanguageID | undefined
 ): StoreActingLanguageIDParams {
   return {
     type: STORE_ACTING_LANGUAGE_ID,

@@ -1,23 +1,14 @@
 import * as Analytics from 'expo-firebase-analytics'
+import { LanguageID } from 'languages'
 import { Lesson, StorySet } from 'redux/reducers/database'
-import {
-  getLessonInfo,
-  getSetInfo
-} from '../functions/setAndLessonInfoFunctions'
 import { analyticsMode } from '../modeSwitch'
-
-/**
- * This file contains a bunch of functions that send log events to Firebase analytics. This allows us to keep track of useful information.
- */
+import { getLessonInfo, getSetInfo } from './setAndLessonDataFunctions'
 
 /**
  * Logs the installation of a new language instance.
- * @export
- * @param {string} languageID - The ID of the language instance.
- * @param {string} phoneLanguageID - The ID of the phone language.
  */
 export async function logInstallLanguage (
-  languageID: string,
+  languageID: LanguageID,
   phoneLanguageID: string
 ) {
   console.log(
@@ -32,18 +23,11 @@ export async function logInstallLanguage (
 
 /**
  * Logs the completion of a lesson.
- * @export
- * @param {Object} lesson - The lesson object of the lesson that was completed.
- * @param {string} groupID - The ID of the currently active group.
  */
 export async function logCompleteLesson (lesson: Lesson, groupID: number) {
   console.log(
     `CompleteLesson logged with lessonID: ${lesson.id} and groupID: ${groupID}.`
   )
-  // If the lesson that is completed is the very first one, then request that the user submit a review on the App Store/Play Store.
-  // if (lesson.id.includes('1.1.1') && lesson.id.length === 8) {
-  //   StoreReview.requestReview()
-  // }
   if (analyticsMode !== 'test')
     await Analytics.logEvent('CompleteLesson', {
       languageID: getLessonInfo('language', lesson.id),
@@ -58,9 +42,6 @@ export async function logCompleteLesson (lesson: Lesson, groupID: number) {
 
 /**
  * Logs the completion of a Story Set.
- * @export
- * @param {Object} set - The set object for the set that was completed.
- * @param {string} groupID - The ID of the currently active group.
  */
 export async function logCompleteStorySet (set: StorySet, groupID: number) {
   console.log(
@@ -79,13 +60,9 @@ export async function logCompleteStorySet (set: StorySet, groupID: number) {
 
 /**
  * Logs the creation of a new group.
- * @export
- * @param {string} languageID - The ID of the active group's language.
- * @param {string} groupID - The ID of the new group.
- * @param {number} groupNumber - The number of the new group.
  */
 export async function logCreateGroup (
-  languageID: string,
+  languageID: LanguageID,
   groupID: number,
   groupNumber: number
 ) {
@@ -102,10 +79,8 @@ export async function logCreateGroup (
 
 /**
  * Logs unlocking the Mobilization Tools.
- * @export
- * @param {string} languageID - The ID of the active group's language.
  */
-export async function logUnlockMobilizationTools (languageID: string) {
+export async function logUnlockMobilizationTools (languageID: LanguageID) {
   console.log(`UnlockMobilizationTools logged with languageID: ${languageID}.`)
   if (analyticsMode !== 'test')
     await Analytics.logEvent('UnlockMobilizationTools', {
@@ -114,10 +89,7 @@ export async function logUnlockMobilizationTools (languageID: string) {
 }
 
 /**
- * Logs adding a new story set.
- * @export
- * @param {Object} set - The set object for the set that was added.
- * @param {string} groupID - The ID of the group that is having sets added.
+ * Logs adding a new Story Set.
  */
 export async function logAddStorySet (set: StorySet, groupID: number) {
   console.log(
@@ -135,8 +107,6 @@ export async function logAddStorySet (set: StorySet, groupID: number) {
 
 /**
  * Logs sharing the app URL.
- * @export
- * @param {string} groupID - The ID of the currently active group.
  */
 export async function logShareApp (groupID: number) {
   console.log(`ShareApp logged with groupID: ${groupID}.`)
@@ -148,9 +118,6 @@ export async function logShareApp (groupID: number) {
 
 /**
  * Logs sharing the scripture text for a lesson.
- * @export
- * @param {Object} lesson - The lesson object for the lesson the user is doing when they share the scripture text.
- * @param {string} groupID - The ID of the currently active group.
  */
 export async function logShareText (lesson: Lesson, groupID: number) {
   console.log(
@@ -165,9 +132,6 @@ export async function logShareText (lesson: Lesson, groupID: number) {
 
 /**
  * Logs sharing the app Story chapter mp3.
- * @export
- * @param {Object} lesson - The lesson object for the lesson the user is doing when they share the Story chapter mp3.
- * @param {string} groupID - The ID of the currently active group.
  */
 export async function logShareAudio (lesson: Lesson, groupID: number) {
   console.log(
@@ -182,8 +146,6 @@ export async function logShareAudio (lesson: Lesson, groupID: number) {
 
 /**
  * Logs the first enabling of Security Mode.
- * @exports
- * @param {string} groupID - The ID of the currently active group.
  */
 export async function logEnableSecurityMode (groupID: number) {
   console.log(`EnableSecurityMode logged with groupID: ${groupID}.`)

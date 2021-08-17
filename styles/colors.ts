@@ -1,13 +1,18 @@
-import { languages } from '../languages'
+import { LanguageID, languages } from '../languages'
+
+type ColorName = string
+type Color = string
 
 /**
- * Returns a specific color for light mode or dark mode.
- * @param {boolean} isDark - Whether dark mode is enabled or not.
- * @param {string} languageID - If trying to get an accent color, the ID of the language to get the color for is required.
+ * Gets a set of colors for either light mode or dark mode.
  */
-export const colors = (isDark: boolean, languageID?: string) => {
+export const colors = (
+  isDark: boolean,
+  languageID?: LanguageID
+): Record<ColorName, Color> => {
   // Get the accent color if languageID was provided as an argument.
   var accentColor = ''
+
   if (languageID !== null)
     // Go through each language in each language family until we find the one that matches with our ID, then set accentColor to the accent color of that language.
     languages.forEach(languageFamily => {

@@ -1,3 +1,5 @@
+import { Emoji } from 'assets/groupIcons/_groupIcons'
+import { LanguageID } from 'languages'
 import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { AppDispatch, RootState } from 'redux/store'
@@ -9,7 +11,7 @@ import {
 import {
   getLessonInfo,
   getSetInfo
-} from '../../functions/setAndLessonInfoFunctions'
+} from '../../functions/setAndLessonDataFunctions'
 import { StorySet } from '../reducers/database'
 
 export const CREATE_GROUP = 'CREATE_GROUP'
@@ -25,8 +27,8 @@ interface CreateGroupParams {
   type: 'CREATE_GROUP'
   groupName: string
   groupID: number
-  language: string
-  emoji: string
+  language: LanguageID
+  emoji: Emoji
   shouldShowMobilizationToolsTab: boolean
 }
 
@@ -34,7 +36,7 @@ interface EditGroupParams {
   type: 'EDIT_GROUP'
   oldGroupName: string
   newGroupName: string
-  emoji: string
+  emoji: Emoji
   shouldShowMobilizationToolsTab: boolean
 }
 
@@ -85,8 +87,8 @@ export type GroupsActionParams =
  */
 export function createGroup (
   groupName: string,
-  language: string,
-  emoji: string,
+  language: LanguageID,
+  emoji: Emoji,
   shouldShowMobilizationToolsTab: boolean,
   groupID: number,
   groupNumber: number
@@ -114,7 +116,7 @@ export function createGroup (
 export function editGroup (
   oldGroupName: string,
   newGroupName: string,
-  emoji: string,
+  emoji: Emoji,
   shouldShowMobilizationToolsTab: boolean
 ): EditGroupParams {
   return {
@@ -203,7 +205,7 @@ export function toggleComplete (
     // Get the object for the group that we're updating the progress in.
     var thisGroup = getState().groups.filter(item => item.name === groupName)[0]
 
-    // Get the progress array for the set that we're updating progrses in.
+    // Get the progress array for the set that we're updating progress in.
     var thisSetProgress = thisGroup.addedSets.filter(
       savedSet => savedSet.id === set.id
     )[0].progress
@@ -258,7 +260,7 @@ export function addSet (
 /**
  * Sets whether this group should show the mobilization tools tab or not.
  * @export
- * @param {string} groupName - The name of the group we want to show/hide the mobilzation tools tab on/from.
+ * @param {string} groupName - The name of the group we want to show/hide the mobilization tools tab on/from.
  * @param {boolean} toSet - What to set to. True = show, false = don't show.
  * @return {Object} - Object to send to the reducer.
  */

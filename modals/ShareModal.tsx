@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
-import { LessonType } from 'interfaces/playScreen'
+import { LessonType } from 'interfaces/setAndLessonInfo'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
 import { Lesson } from 'redux/reducers/database'

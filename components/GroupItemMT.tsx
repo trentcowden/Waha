@@ -1,3 +1,4 @@
+import { Emoji } from 'assets/groupIcons/_groupIcons'
 import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native'
@@ -14,7 +15,7 @@ interface Props extends CommonProps, AGProps {
   onSwitchChange: (
     oldGroupName: string,
     newGroupName: string,
-    emoji: string,
+    emoji: Emoji,
     shouldShowMobilizationToolsTab: boolean
   ) => void
 }

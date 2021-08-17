@@ -11,7 +11,8 @@ import {
 import { Lesson } from 'redux/reducers/database'
 import { gutterSize, scaleMultiplier } from '../constants'
 import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
-import { Layouts, LessonType, SectionOffset } from '../interfaces/playScreen'
+import { Layouts, SectionOffset } from '../interfaces/components'
+import { LessonType } from '../interfaces/setAndLessonInfo'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

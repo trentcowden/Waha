@@ -1,5 +1,5 @@
 import { Audio, AVPlaybackStatus, Video } from 'expo-av'
-import { Chapter } from '../interfaces/playScreen'
+import { Chapter } from '../interfaces/setAndLessonInfo'
 
 export class Media {
   public audio: Audio.Sound | null

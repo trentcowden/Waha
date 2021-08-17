@@ -16,7 +16,7 @@ import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
 import { lockLandscape, lockPortrait } from '../functions/orientationFunctions'
-import { Chapter } from '../interfaces/playScreen'
+import { Chapter } from '../interfaces/setAndLessonInfo'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {

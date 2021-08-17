@@ -3,17 +3,21 @@ import { Translations } from 'interfaces/translations'
 import {
   InfoAndGroupsForAllLanguages,
   InfoAndGroupsForLanguage,
-  Language,
-  LanguageFamily,
-  LanguageInfo
-} from '../interfaces/languages'
-import { languages } from '../languages'
+  LanguageFamilyMetadata,
+  LanguageID,
+  LanguageInfo,
+  LanguageMetadata,
+  languages
+} from '../languages'
 import { Database } from '../redux/reducers/database'
 import { Group } from '../redux/reducers/groups'
 
-export const info = (languageID: string): LanguageInfo => {
+/**
+ * Gets various information about a language.
+ */
+export const info = (languageID: LanguageID): LanguageInfo => {
   // Default values in case the language can't be found.
-  var languageInfo = {
+  var languageInfo: LanguageInfo = {
     languageFamilyID: 'en',
     font: 'Roboto',
     isRTL: false,
@@ -25,7 +29,7 @@ export const info = (languageID: string): LanguageInfo => {
       light: '#E74D3D',
       dark: '#EA8E84'
     },
-    logos: {
+    headers: {
       light:
         'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
       dark:
@@ -33,7 +37,9 @@ export const info = (languageID: string): LanguageInfo => {
     }
   }
 
+  // Go through each language family to try and find the language we're looking for.
   languages.forEach(languageFamily => {
+    // If we're passing in a language family ID for some reason, return the info for the first language in the family.
     if (languageFamily.languageFamilyID === languageID) {
       languageInfo = {
         ...languageFamily.data[0],
@@ -49,12 +55,9 @@ export const info = (languageID: string): LanguageInfo => {
             if (version.languageID === languageID) {
               languageInfo = {
                 ...version,
-                // Extra keys to return from the language family.
                 languageFamilyID: languageFamily.languageFamilyID,
                 font: languageFamily.font,
-                isRTL: languageFamily.isRTL,
-                // Extra keys to return from the language.
-                nativeName: language.nativeName
+                isRTL: languageFamily.isRTL
               }
             }
           })
@@ -72,8 +75,7 @@ export const info = (languageID: string): LanguageInfo => {
 }
 
 /**
- * Gets a list of all the languages and language families available in Waha. These are stored in the languages.js file.
- * @return {Object[]} - An array of language family objects.
+ * Gets a list of all the languages and language families available in Waha after passing the data through some filters. All languages are stored in the languages.ts file.
  */
 export const getAllLanguagesData = (
   t: Translations,
@@ -81,14 +83,17 @@ export const getAllLanguagesData = (
   searchTextInput: string
 ) => {
   // Sort the languages to put the language family of the phone's current locale at the top.
-  const sortByLocale = (a: LanguageFamily, b: LanguageFamily) => {
-    if (Localization.locale.includes(a.languageFamilyID)) return -1
-    else if (Localization.locale.includes(b.languageFamilyID)) return 1
+  const sortByLocale = (
+    language1: LanguageFamilyMetadata,
+    language2: LanguageFamilyMetadata
+  ) => {
+    if (Localization.locale.includes(language1.languageFamilyID)) return -1
+    else if (Localization.locale.includes(language2.languageFamilyID)) return 1
     else return 0
   }
 
   // If search text matches with a language family name, show the whole language family. If it doesn't, show the specific languages it matches with.
-  const filterBySearch = (languageFamily: LanguageFamily) => {
+  const filterBySearch = (languageFamily: LanguageFamilyMetadata) => {
     if (
       t.languages[languageFamily.languageFamilyID]
         .toLowerCase()
@@ -114,14 +119,14 @@ export const getAllLanguagesData = (
   }
 
   // Filter out language instances that are already installed. Only on SubsequentLanguageInstanceInstallScreen.
-  const filterInstalledLanguages = (languageFamily: LanguageFamily) => {
+  const filterInstalledLanguages = (languageFamily: LanguageFamilyMetadata) => {
     if (installedLanguageInstances)
       return {
         ...languageFamily,
         data: languageFamily.data.filter(language => {
           if (
             installedLanguageInstances.some(
-              (installedLanguage: Language) =>
+              (installedLanguage: LanguageMetadata) =>
                 installedLanguage.languageID === language.languageID
             )
           ) {
@@ -135,7 +140,9 @@ export const getAllLanguagesData = (
   }
 
   // Filter our language families that are empty.
-  const filterEmptyLanguageFamilies = (languageFamily: LanguageFamily) => {
+  const filterEmptyLanguageFamilies = (
+    languageFamily: LanguageFamilyMetadata
+  ) => {
     if (languageFamily.data.length !== 0) return true
     else return false
   }
@@ -153,7 +160,10 @@ export const getAllLanguagesData = (
   return sections
 }
 
-export const getInstalledLanguagesData = (
+/**
+ * Gets the info and groups for all installed languages. Used for populating the <GroupsScreen /> and <MobilizationToolsScreen /> since both of those display lists of Groups.
+ */
+export const getInstalledLanguagesInfoAndGroups = (
   database: Database,
   groups: Group[]
 ): InfoAndGroupsForAllLanguages => {
@@ -163,11 +173,12 @@ export const getInstalledLanguagesData = (
     if (key.length === 2)
       // Add all of this to the installedLanguageInstances array.
       installedLanguageInstances.push({
-        ...info(key),
+        ...info(key as LanguageID),
         data: groups.filter(group => group.language === key)
       })
   })
 
+  // If we have the install times stored, sort the languages by the time installed.
   installedLanguageInstances = installedLanguageInstances.some(
     key => database[key.languageID].installTime === undefined
   )
@@ -178,10 +189,12 @@ export const getInstalledLanguagesData = (
           database[b.languageID].installTime
       )
 
-  // If we have the install times stored, sort the languages by the time installed.
   return installedLanguageInstances
 }
 
+/**
+ * Gets the total number of languages currently installed on the user's phone.
+ */
 export const getTotalNumberOfLanguages = () => {
   var numLanguages = 0
 

@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import { AGProps, CommonProps, TProps } from 'interfaces/common'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   Alert,
@@ -18,10 +19,10 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps, TProps {
   // The native name of the language.
   nativeName: string
-  languageID: string
+  languageID: LanguageID
   // Whether we're in 'editing' mode or not.
   isEditing: boolean
-  onDeleteLanguageButtonPress: (languageID: string) => void
+  onDeleteLanguageButtonPress: (languageID: LanguageID) => void
 }
 
 /**

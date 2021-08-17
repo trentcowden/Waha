@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement, useEffect } from 'react'
 import { isTablet, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
@@ -54,12 +55,13 @@ const MainDrawer: FC = ({}): ReactElement => {
   useEffect(() => {
     Object.keys(database).forEach((key) => {
       if (key.length === 2 && key !== activeGroup.language) {
+        var languageID = key as LanguageID
         // Whether the app should write the new Firestore changes to redux or not. The only reason that it wouldn't is if the app version is behind the database version.
         var shouldWrite = false
 
         // Fetch data from the languages Firestore collection.
         db.collection('languages')
-          .doc(key)
+          .doc(languageID)
           .get()
           .then(async (doc) => {
             var languageData = doc.data()
@@ -77,7 +79,7 @@ const MainDrawer: FC = ({}): ReactElement => {
                       files: languageData.files,
                       questions: languageData.questions,
                     },
-                    key
+                    languageID
                   )
                 )
               }
@@ -90,7 +92,7 @@ const MainDrawer: FC = ({}): ReactElement => {
 
         // Fetch data from the Story Sets Firestore collection. Get all Story Sets of the current language.
         db.collection('sets')
-          .where('languageID', '==', key)
+          .where('languageID', '==', languageID)
           .get()
           .then((querySnapshot) => {
             // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
@@ -113,7 +115,7 @@ const MainDrawer: FC = ({}): ReactElement => {
                   sets.push(storySetItem)
                 })
                 /// ...and write all of them to redux.
-                dispatch(storeLanguageSets(sets, key))
+                dispatch(storeLanguageSets(sets, languageID))
               }
             }
           })

@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack'
 import * as FileSystem from 'expo-file-system'
-import { InfoAndGroupsForLanguage } from 'interfaces/languages'
+import { LanguageID } from 'languages'
 import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { SectionList, StyleSheet, View } from 'react-native'
@@ -12,10 +12,11 @@ import GroupsScreenEditButton from '../components/GroupsScreenEditButton'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
 import {
-  getInstalledLanguagesData,
+  getInstalledLanguagesInfoAndGroups,
   info,
 } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
+import { InfoAndGroupsForLanguage } from '../languages'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { deleteLanguageData } from '../redux/actions/databaseActions'
@@ -67,7 +68,7 @@ const GroupsScreen: FC<Props> = ({
 
   // Memoize the group data so that the expensive function isn't run on every re-render.
   const groupData = useMemo(
-    () => getInstalledLanguagesData(database, groups),
+    () => getInstalledLanguagesInfoAndGroups(database, groups),
     [database, groups]
   )
 
@@ -130,7 +131,7 @@ const GroupsScreen: FC<Props> = ({
     })
   }, [isEditing, isRTL, activeGroup])
 
-  const handleDeleteLanguageButtonPress = (languageID: string) => {
+  const handleDeleteLanguageButtonPress = (languageID: LanguageID) => {
     // Delete every group for this language instance.
     groups.map((group) => {
       if (group.language === languageID) {
@@ -158,7 +159,10 @@ const GroupsScreen: FC<Props> = ({
   const handleAddNewLanguageButtonPress = () => {
     navigate('SubsequentLanguageSelect', {
       // Send over the currently installed language instances so that we can filter those out from the options.
-      installedLanguageInstances: getInstalledLanguagesData(database, groups),
+      installedLanguageInstances: getInstalledLanguagesInfoAndGroups(
+        database,
+        groups
+      ),
     })
   }
 
@@ -223,7 +227,9 @@ const GroupsScreen: FC<Props> = ({
         renderSectionFooter={({ section }) => (
           <AddNewGroupButton
             section={section}
-            setLanguageID={(languageID: string) => setLanguageID(languageID)}
+            setLanguageID={(languageID: LanguageID) =>
+              setLanguageID(languageID)
+            }
             setShowAddGroupModal={(toSet: boolean) =>
               setShowAddGroupModal(toSet)
             }
@@ -240,7 +246,7 @@ const GroupsScreen: FC<Props> = ({
           <AddNewLanguageInstanceButton
             onAddNewLanguageButtonPress={handleAddNewLanguageButtonPress}
             numInstalledLanguages={
-              getInstalledLanguagesData(database, groups).length
+              getInstalledLanguagesInfoAndGroups(database, groups).length
             }
             isRTL={isRTL}
             isDark={isDark}

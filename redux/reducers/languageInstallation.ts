@@ -1,3 +1,4 @@
+import { LanguageID } from 'languages'
 import {
   ADD_LANGUAGE_CORE_FILE_TO_UPDATE,
   CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE,
@@ -23,7 +24,7 @@ export type LanguageInstallationState = {
   hasInstalledFirstLanguageInstance: boolean
   languageCoreFilesDownloadProgress: number
   languageCoreFilesToUpdate: string[]
-  actingLanguageID: string | undefined
+  actingLanguageID: LanguageID | undefined
   recentActiveGroup: string | undefined
   languageCoreFilesCreatedTimes: Record<string, string>
   totalLanguageCoreFilesToDownload: number

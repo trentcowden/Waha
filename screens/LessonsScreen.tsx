@@ -25,14 +25,14 @@ import {
   getDownloadedLessons,
   getLessonInfo,
   getLessonType,
-} from '../functions/setAndLessonInfoFunctions'
+} from '../functions/setAndLessonDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { SetItemMode } from '../interfaces/components'
-import { LessonType } from '../interfaces/playScreen'
+import { LessonType } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'

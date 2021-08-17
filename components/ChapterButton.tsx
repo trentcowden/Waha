@@ -11,7 +11,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
 import { ChapterButtonMode } from '../interfaces/components'
-import { Chapter, LessonType } from '../interfaces/playScreen'
+import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

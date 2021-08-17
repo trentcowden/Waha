@@ -1,5 +1,6 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { Emoji } from 'assets/groupIcons/_groupIcons'
 import { OnboardingParams } from 'navigation/Onboarding'
 import React, { FC, ReactElement, useRef, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
@@ -67,7 +68,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
 
   /** Keeps track of the user's group name input and emoji selection. */
   const [groupNameInput, setGroupNameInput] = useState('')
-  const [emojiInput, setEmojiInput] = useState('default')
+  const [emojiInput, setEmojiInput] = useState<Emoji>('default')
 
   /** Edits a group and sets it as the active group. */
   const editGroupAndFinish = () => {
@@ -122,7 +123,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     setGroupNameInput(text)
   }
 
-  const handleEmojiPress = (emoji: string) => {
+  const handleEmojiPress = (emoji: Emoji) => {
     setEmojiInput(emoji)
   }
 

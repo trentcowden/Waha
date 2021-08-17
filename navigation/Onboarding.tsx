@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { View } from 'react-native'
 import { selector } from '../hooks'
@@ -11,10 +12,10 @@ import { colors } from '../styles/colors'
 export type OnboardingParams = {
   InitialLanguageSelect: undefined
   WahaOnboardingSlides: {
-    selectedLanguage: string
+    selectedLanguage: LanguageID
   }
   Loading: {
-    selectedLanguage: string
+    selectedLanguage: LanguageID
   }
 }
 

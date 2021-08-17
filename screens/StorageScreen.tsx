@@ -1,15 +1,16 @@
 import * as FileSystem from 'expo-file-system'
-import { InfoAndGroupsForLanguage } from 'interfaces/languages'
+import { LanguageID } from 'languages'
 import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native'
 import LanguageStorageItem from '../components/LanguageStorageItem'
 import WahaButton from '../components/WahaButton'
 import {
-  getInstalledLanguagesData,
+  getInstalledLanguagesInfoAndGroups,
   info,
 } from '../functions/languageDataFunctions'
 import { selector } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
+import { InfoAndGroupsForLanguage } from '../languages'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -44,7 +45,7 @@ const StorageScreen = ({}) => {
    * @param {string} language - The language to get the storage size of.
    * @return {number} - The size that the language takes up.
    */
-  const getLanguageStorageSize = async (language: string) => {
+  const getLanguageStorageSize = async (language: LanguageID) => {
     // Stores the size of this language.
     var languageStorageSize = 0
 
@@ -79,8 +80,8 @@ const StorageScreen = ({}) => {
     setTotalStorage(0)
     setLanguageSizes({})
 
-    // Get the currently installed langauges.
-    var languages = getInstalledLanguagesData(database, groups)
+    // Get the currently installed languages.
+    var languages = getInstalledLanguagesInfoAndGroups(database, groups)
 
     // Go through each language and get its storage size.
     languages.forEach((language) =>
@@ -105,7 +106,7 @@ const StorageScreen = ({}) => {
           for (const item of contents) {
             // If a file is a lesson...
             if (isLessonFile.exec(item)) {
-              // If a language hasn't been specificied, delete any lesson file.
+              // If a language hasn't been specified, delete any lesson file.
               if (!language)
                 FileSystem.deleteAsync(FileSystem.documentDirectory + item)
               // Otherwise, delete it only if it matches with the specified language.
@@ -192,7 +193,7 @@ const StorageScreen = ({}) => {
     >
       <FlatList
         style={{ flex: 1 }}
-        data={getInstalledLanguagesData(database, groups)}
+        data={getInstalledLanguagesInfoAndGroups(database, groups)}
         renderItem={renderLanguageStorageItem}
         keyExtractor={(item) => item.languageID}
         ItemSeparatorComponent={() => (

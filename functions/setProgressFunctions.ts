@@ -1,9 +1,10 @@
-import { getSetInfo } from '../functions/setAndLessonInfoFunctions'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
 import { DBLanguageData, StorySet } from '../redux/reducers/database'
 import { Group, SavedSet } from '../redux/reducers/groups'
+import { getSetInfo } from './setAndLessonDataFunctions'
 
-/** Checks to see if a set is almost complete and adds the next set if all the conditions are met. The conditions are:
+/**
+ * Checks to see if a set is almost complete and adds the next set if all the conditions are met. The conditions are:
  * 1) The Foundational set after this one exists.
  * 2) This set is 85% or more complete.
  * 3) This set is Foundational.
@@ -53,6 +54,9 @@ export const checkForAlmostCompleteSet = (
   } else return false
 }
 
+/**
+ * Checks if a Story Set is fully complete and shows a modal if it is.
+ */
 export const checkForFullyCompleteSet = (
   thisSet: StorySet,
   addedSet: SavedSet,

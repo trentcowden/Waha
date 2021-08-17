@@ -11,7 +11,7 @@ import {
 import { Lesson, StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
+import { getLessonInfo } from '../functions/setAndLessonDataFunctions'
 import { Database } from '../redux/reducers/database'
 import { Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'

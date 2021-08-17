@@ -1,3 +1,5 @@
+import { Emoji } from 'assets/groupIcons/_groupIcons'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
@@ -25,7 +27,7 @@ interface Props {
   // If editing a group, this is the object for that group.
   thisGroup?: Group
   // If creating a new group, we need the langaugeID for when we call the CreateGroup() redux function.
-  languageID?: string
+  languageID?: LanguageID
 }
 
 // Modal that allows the user to add or edit a group. Uses the <ModalScreen /> component under the hood.
@@ -56,7 +58,7 @@ const AddEditGroupModal: FC<Props> = ({
   const [groupNameInput, setGroupNameInput] = useState('')
 
   /** Keeps track of the user selection for the group emoji. */
-  const [emojiInput, setEmojiInput] = useState('default')
+  const [emojiInput, setEmojiInput] = useState<Emoji>('default')
 
   const [shouldShowMTTabInput, setShouldShowMTTabInput] = useState(
     areMobilizationToolsUnlocked ? false : true
@@ -154,7 +156,7 @@ const AddEditGroupModal: FC<Props> = ({
     setGroupNameInput(text)
   }
 
-  const handleEmojiPress = (emoji: string) => {
+  const handleEmojiPress = (emoji: Emoji) => {
     setEmojiInput(emoji)
   }
 

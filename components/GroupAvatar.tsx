@@ -8,14 +8,14 @@ import {
   ViewStyle,
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import { groupIconSources } from '../assets/groupIcons/_groupIcons'
+import { Emoji, groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
   // Extra style props for the component. Generally used to set the background color.
   style: ViewStyle
-  emoji: string
+  emoji: Emoji
   size: number
   onPress?: () => void
   // Whether the group that this component is displaying the avatar for is the active group.

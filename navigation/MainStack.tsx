@@ -8,8 +8,7 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack'
 import * as StoreReview from 'expo-store-review'
-import { InfoAndGroupsForAllLanguages } from 'interfaces/languages'
-import { LessonType } from 'interfaces/playScreen'
+import { LessonType } from 'interfaces/setAndLessonInfo'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { AppState, LogBox, Platform, View } from 'react-native'
 import { Lesson, StorySet } from 'redux/reducers/database'
@@ -21,6 +20,7 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
+import { InfoAndGroupsForAllLanguages } from '../languages'
 import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
 import {
   setHasUsedPlayScreen,

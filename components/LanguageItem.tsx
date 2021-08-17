@@ -1,24 +1,25 @@
 import { CommonProps } from 'interfaces/common'
-import { Language } from 'interfaces/languages'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
+import { LanguageMetadata } from '../languages'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps {
-  languageID: string
+  languageID: LanguageID
   // The name of the language in its native script.
   nativeName: string
   // The name of the language in the active group's language.
   localeName: string
-  logos: Language['logos']
+  headers: LanguageMetadata['headers']
   onLanguageItemPress: () => void
   isSelected: boolean
   playAudio: () => void
   // Function that plays audio of the name of the language.
-  screenLanguage: string
+  screenLanguage: LanguageID
 }
 
 /**
@@ -29,7 +30,7 @@ const LanguageItem: FC<Props> = ({
   nativeName,
   localeName,
   isDark,
-  logos,
+  headers,
   onLanguageItemPress,
   isSelected,
   playAudio,
@@ -99,7 +100,7 @@ const LanguageItem: FC<Props> = ({
         </View>
         <Image
           style={styles.headerImage}
-          source={{ uri: isDark ? logos.dark : logos.light }}
+          source={{ uri: isDark ? headers.dark : headers.light }}
         />
       </TouchableOpacity>
     </View>

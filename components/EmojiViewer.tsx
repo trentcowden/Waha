@@ -8,7 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { groupIcons, groupIconSources } from '../assets/groupIcons/_groupIcons'
+import {
+  Emoji,
+  groupIcons,
+  groupIconSources,
+} from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -16,7 +20,7 @@ import { type } from '../styles/typography'
 interface Props extends CommonProps, AGProps, TProps {
   // The name of the currently selected emoji.
   emojiInput: string
-  onEmojiPress: (emoji: string) => void
+  onEmojiPress: (emoji: Emoji) => void
 }
 
 /**
@@ -32,7 +36,7 @@ const EmojiViewer: FC<Props> = ({
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)
 
   /** Renders an emoji for the emoji select <FlatList />. */
-  const renderEmoji = ({ item }: { item: string }) => {
+  const renderEmoji = ({ item }: { item: Emoji }) => {
     return (
       <TouchableOpacity
         style={{

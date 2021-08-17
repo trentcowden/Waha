@@ -34,13 +34,14 @@ import { gutterSize, isTablet, scaleMultiplier } from '../constants'
 import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { lockPortrait } from '../functions/orientationFunctions'
-import { getLessonInfo } from '../functions/setAndLessonInfoFunctions'
+import { getLessonInfo } from '../functions/setAndLessonDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
 import { selector, useAppDispatch } from '../hooks'
-import { Chapter, LessonType, SectionOffset } from '../interfaces/playScreen'
+import { SectionOffset } from '../interfaces/components'
+import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'

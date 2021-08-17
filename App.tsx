@@ -27,13 +27,13 @@ export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false)
 
   /**
-   * useEffect function that acts as a constructor and takes care of a few tasks we always need to do when we start up the app.
-   * @function
+   * Take care of a few tasks we always need to do when we start up the app.
    */
   useEffect(() => {
     // Load up all the fonts.
     loadFonts()
 
+    // Lock orientation to portrait if we're not using a tablet.
     isTablet ? ScreenOrientation.unlockAsync() : lockPortrait()
 
     // Set up some config options for app audio.
@@ -87,7 +87,6 @@ export default function App() {
       <Provider store={store}>
         {/* The persist gate allows the redux data to persist across restarts. */}
         <PersistGate loading={<View></View>} persistor={persistor}>
-          {/* Set a few settings related to the status bar. */}
           <Root />
         </PersistGate>
       </Provider>
