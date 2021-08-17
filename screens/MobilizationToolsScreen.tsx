@@ -146,7 +146,12 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
             </View>
           )}
           keyExtractor={(item) => item.name}
-          ListFooterComponent={() => <WahaSeparator isDark={isDark} />}
+          ListFooterComponent={() => (
+            <View>
+              <WahaSeparator isDark={isDark} />
+              <View style={{ height: 60 * scaleMultiplier }} />
+            </View>
+          )}
           ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
         />
       ) : (
