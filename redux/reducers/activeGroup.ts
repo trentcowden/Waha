@@ -7,8 +7,6 @@ import { DBLanguageData } from '../reducers/database'
 import { Group } from '../reducers/groups'
 /**
  * The active group redux reducer that stores the name of the currently active group. This state is persisted across app restarts.
- * @param {Object} action - Parameters passed from groupsAction.js functions.
- * @param {string} activeGroup - (state) The name of the active group.
  */
 export function activeGroup (
   state: string = '',
@@ -26,6 +24,7 @@ export function activeGroup (
  * Takes in state and returns an object for the active group.
  */
 export function activeGroupSelector (state: RootState): Group {
+  // Fallback group so that, in case a group isn't found, we can still return something and not have the app be unusable.
   const fallbackGroup: Group = {
     name: 'No Active Group',
     id: 1,
@@ -59,6 +58,7 @@ export function activeGroupSelector (state: RootState): Group {
       }
     ]
   }
+
   // Get the active group by finding the group with the matching name.
   var activeGroup = state.groups.filter(item => item.name === state.activeGroup)
 

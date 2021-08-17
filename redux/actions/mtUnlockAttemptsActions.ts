@@ -9,9 +9,6 @@ export type MTUnlockAttemptsActionParams = SetMTUnlockAttemptsParams
 
 /**
  * Sets the number of times the user has tried unsucessfully to unlock the Mobilization Tools.
- * @export
- * @param {number} numAttempts - The number of times the user has tried unsucessfully to unlock the Mobilization Tools.
- * @return {Object} - Object to send to the reducer.
  */
 export function setMTUnlockAttempts (
   numAttempts: number

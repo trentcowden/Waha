@@ -52,9 +52,6 @@ export type SecurityActionParams =
 
 /**
  * Sets whether Security Mode is enabled or not.
- * @export
- * @param {boolean} toSet - Whether Security Mode should be enabled or not.
- * @return {Object} - Object to send to the reducer.
  */
 export function setSecurityEnabled (toSet: boolean): SetSecurityEnabledParams {
   return {
@@ -65,9 +62,6 @@ export function setSecurityEnabled (toSet: boolean): SetSecurityEnabledParams {
 
 /**
  * Sets the code to play on the piano to unlock Waha from the Piano Screen.
- * @export
- * @param {string} code - The unlock code.
- * @return {Object} - Object to send to the reducer.
  */
 export function setCode (code: string): SetCodeParams {
   return {
@@ -78,9 +72,6 @@ export function setCode (code: string): SetCodeParams {
 
 /**
  * Sets whether the piano on the Piano Screen should be muted or not.
- * @export
- * @param {boolean} toSet - Whether the piano should be muted or not.
- * @return {Object} - Object to send to the reducer.
  */
 export function setIsMuted (toSet: boolean): SetIsMutedParams {
   return {
@@ -91,9 +82,6 @@ export function setIsMuted (toSet: boolean): SetIsMutedParams {
 
 /**
  * Set the timeout duration for Security Mode to activate.
- * @export
- * @param {boolean} ms - The timeout duration in milliseconds.
- * @return {Object} - Object to send to the reducer.
  */
 export function setTimeoutDuration (ms: number): SetTimeoutDurationParams {
   return {
@@ -104,9 +92,6 @@ export function setTimeoutDuration (ms: number): SetTimeoutDurationParams {
 
 /**
  * Sets the Security Mode timer.
- * @export
- * @param {boolean} ms - The amount of time in milliseconds since the app switched to "inactive".
- * @return {Object} - Object to send to the reducer.
  */
 export function setTimer (ms: number): SetTimerParams {
   return {
@@ -117,9 +102,6 @@ export function setTimer (ms: number): SetTimerParams {
 
 /**
  * Sets whether Security Mode is "timed out" or not.
- * @export
- * @param {boolean} toSet - Whether Security Mode is "timed out" or not.
- * @return {Object} - Object to send to the reducer.
  */
 export function setIsTimedOut (toSet: boolean): SetIsTimedOutParams {
   return {
@@ -130,9 +112,6 @@ export function setIsTimedOut (toSet: boolean): SetIsTimedOutParams {
 
 /**
  * Sets the Mobilization Tools unlock timeout.
- * @export
- * @param {boolean} time - The amount of time the user has to wait before they can try and unlock the Mobilization Tools again in milliseconds.
- * @return {Object} - Object to send to the reducer.
  */
 export function setMTUnlockTimeout (time: number): SetMTUnlockTimeoutParams {
   return {

@@ -17,9 +17,6 @@ export type PopupsActionParams =
 
 /**
  * Sets whether the MTTabAdded Snackbar should be visible or not.
- * @export
- * @param {boolean} toSet - Whether the snackbar should be visible.
- * @return {Object} - Object to send to the reducer.
  */
 export function setShowMTTabAddedSnackbar (
   toSet: boolean
@@ -32,9 +29,6 @@ export function setShowMTTabAddedSnackbar (
 
 /**
  * Sets whether the passcode set snackbar should be visible or not.
- * @export
- * @param {boolean} toSet - Whether the snackbar should be visible.
- * @return {Object} - Object to send to the reducer.
  */
 export function setShowPasscodeSetSnackbar (
   toSet: boolean

@@ -1,5 +1,4 @@
 import * as Localization from 'expo-localization'
-import { Translations } from 'interfaces/translations'
 import {
   InfoAndGroupsForAllLanguages,
   InfoAndGroupsForLanguage,
@@ -11,6 +10,7 @@ import {
 } from '../languages'
 import { Database } from '../redux/reducers/database'
 import { Group } from '../redux/reducers/groups'
+import { Translations } from '../translations/translationsConfig'
 
 /**
  * Gets various information about a language.

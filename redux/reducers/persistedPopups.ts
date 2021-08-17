@@ -17,8 +17,6 @@ export interface PersistedPopupsState {
 
 /**
  * The popups reducer stores various states for any modals or snackbars that need to be triggered globally. This state is persisted across app restarts.
- * @param {Object} params - Parameters passed from popupsActions.js functions.
- * @param {boolean} popups - (state) The boolean values for whether modals/snackbars that need to be triggered globally are visible.
  */
 export function persistedPopups (
   state: PersistedPopupsState = {

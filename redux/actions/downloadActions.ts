@@ -7,28 +7,19 @@ import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { AppDispatch, RootState } from 'redux/store'
 
+export type DownloadActionParams =
+  | AddUpdateDownloadParams
+  | RemoveDownloadParams
+
 interface AddUpdateDownloadParams {
   type: 'ADD_UPDATE_DOWNLOAD'
   progress: number
   resumable: DownloadResumable
   lessonID: string
 }
-interface RemoveDownloadParams {
-  type: 'REMOVE_DOWNLOAD'
-  lessonID: string
-}
-
-export type DownloadActionParams =
-  | AddUpdateDownloadParams
-  | RemoveDownloadParams
 
 /**
  * Adds or updates the progress for a download in the downloads state.
- * @export
- * @param {number} progress - The progress of the lesson's download to update.
- * @param {Object} resumable - The resumable object of the download in case we want to cancel it.
- * @param {string} lessonID - The ID of the lessson to add or update the download for. If we're adding, we add a new key to the downloads object. If we're updating, we update the progress for the existing lesson's key.
- * @return {Object} - Object to send to the reducer.
  */
 export function addUpdateDownload (
   progress: number,
@@ -43,11 +34,13 @@ export function addUpdateDownload (
   }
 }
 
+interface RemoveDownloadParams {
+  type: 'REMOVE_DOWNLOAD'
+  lessonID: string
+}
+
 /**
  * Removes a download from the downloads object.
- * @export
- * @param {string} lessonID - The ID of the lesson whose download we want to remove from the downloads state.
- * @return {Object} - Object to send to the reducer.
  */
 export function removeDownload (lessonID: string): RemoveDownloadParams {
   return {
@@ -58,11 +51,6 @@ export function removeDownload (lessonID: string): RemoveDownloadParams {
 
 /**
  * Downloads the scripture mp3 for a lesson or the video for a lesson. This is a thunk function, so it dispatches other actions, in this case addUpdateDownload() above.
- * @export
- * @param {string} type - The type of media to download. The two options are 'audio' or 'video'.
- * @param {string} lessonID - The ID of the lesson to start downloading the scripture mp3 for.
- * @param {string} source - The firebase URI for the file to download.
- * @return {Object} - Thunk object that allows us to get the state and dispatch actions.
  */
 export function downloadMedia (
   type: string,

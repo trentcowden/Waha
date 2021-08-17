@@ -19,65 +19,6 @@ export const INCREMENT_GLOBAL_GROUP_COUNTER = 'INCREMENT_GLOBAL_GROUP_COUNTER'
 export const SET_RECENT_ACTIVE_GROUP = 'SET_RECENT_ACTIVE_GROUP'
 export const SET_GLOBAL_GROUP_COUNTER = 'SET_GLOBAL_GROUP_COUNTER'
 
-interface SetHasOnboardedParams {
-  type: 'SET_HAS_ONBOARDED'
-  hasOnboarded: boolean
-}
-
-interface SetHasInstalledFirstLanguageInstanceParams {
-  type: 'SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE'
-  hasInstalledFirstLanguageInstance: boolean
-}
-
-interface SetHasFetchedLanguageDataParams {
-  type: 'SET_HAS_FETCHED_LANGUAGE_DATA'
-  hasFetchedLanguageData: boolean
-}
-
-interface SetLanguageCoreFilesDownloadProgressParams {
-  type: 'SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS'
-  languageCoreFilesDownloadProgress: number
-}
-
-interface SetTotalLanguageCoreFilesToDownloadParams {
-  type: 'SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD'
-  totalLanguageCoreFilesToDownload: number
-}
-
-interface StoreLanguageCoreFileCreatedTimeParams {
-  type: 'STORE_LANGUAGE_CORE_FILE_CREATED_TIME'
-  fileName: string
-  timeCreated: string
-}
-
-interface AddLanguageCoreFileToUpdateParams {
-  type: 'ADD_LANGUAGE_CORE_FILE_TO_UPDATE'
-  fileName: string
-}
-
-interface ClearLanguageCoreFilesToUpdateParams {
-  type: 'CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE'
-}
-
-interface StoreActingLanguageIDParams {
-  type: 'STORE_ACTING_LANGUAGE_ID'
-  languageID: LanguageID | undefined
-}
-
-interface SetRecentActiveGroupParams {
-  type: 'SET_RECENT_ACTIVE_GROUP'
-  groupName: string
-}
-
-interface IncrementGlobalGroupCounterParams {
-  type: 'INCREMENT_GLOBAL_GROUP_COUNTER'
-}
-
-interface SetGlobalGroupCounterParams {
-  type: 'SET_GLOBAL_GROUP_COUNTER'
-  toSet: number
-}
-
 export type LanguageInstallationActionParams =
   | SetHasOnboardedParams
   | SetHasInstalledFirstLanguageInstanceParams
@@ -92,11 +33,13 @@ export type LanguageInstallationActionParams =
   | IncrementGlobalGroupCounterParams
   | SetGlobalGroupCounterParams
 
+interface SetHasOnboardedParams {
+  type: 'SET_HAS_ONBOARDED'
+  hasOnboarded: boolean
+}
+
 /**
  * Sets whether the user has completed the initial onboarding or not.
- * @export
- * @param {boolean} hasOnboarded - Whether the user has onboarded.
- * @return {Object} - Object to send to the reducer.
  */
 export function setHasOnboarded (hasOnboarded: boolean): SetHasOnboardedParams {
   return {
@@ -104,12 +47,13 @@ export function setHasOnboarded (hasOnboarded: boolean): SetHasOnboardedParams {
     hasOnboarded
   }
 }
+interface SetHasInstalledFirstLanguageInstanceParams {
+  type: 'SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE'
+  hasInstalledFirstLanguageInstance: boolean
+}
 
 /**
  * Sets whether the user has installed their first language instance or not.
- * @export
- * @param {boolean} hasInstalledFirstLanguageInstance - Whether the user has installed their first language instance.
- * @return {Object} - Object to send to the reducer.
  */
 export function setHasInstalledFirstLanguageInstance (
   hasInstalledFirstLanguageInstance: boolean
@@ -119,12 +63,13 @@ export function setHasInstalledFirstLanguageInstance (
     hasInstalledFirstLanguageInstance
   }
 }
+interface SetHasFetchedLanguageDataParams {
+  type: 'SET_HAS_FETCHED_LANGUAGE_DATA'
+  hasFetchedLanguageData: boolean
+}
 
 /**
  * Sets whether the app has fetched the necessary Firebase data for a language instance install.
- * @export
- * @param {boolean} hasFetchedLanguageData
- * @return {Object} - Object to send to the reducer.
  */
 export function setHasFetchedLanguageData (
   hasFetchedLanguageData: boolean
@@ -135,11 +80,13 @@ export function setHasFetchedLanguageData (
   }
 }
 
+interface SetLanguageCoreFilesDownloadProgressParams {
+  type: 'SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS'
+  languageCoreFilesDownloadProgress: number
+}
+
 /**
  * Sets the progress of downloading the core files for a language.
- * @export
- * @param {number} languageCoreFilesDownloadProgress - The number of core files that have been downloaded.
- * @return {Object} - Object to send to the reducer.
  */
 export function setLanguageCoreFilesDownloadProgress (
   languageCoreFilesDownloadProgress: number
@@ -150,11 +97,13 @@ export function setLanguageCoreFilesDownloadProgress (
   }
 }
 
+interface SetTotalLanguageCoreFilesToDownloadParams {
+  type: 'SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD'
+  totalLanguageCoreFilesToDownload: number
+}
+
 /**
  * Sets the total number of language core files to download. Used in tandem with languageCoreFilesDownloadProgress to calculate the progress through the downloads.
- * @export
- * @param {number} totalLanguageCoreFilesToDownload - The number of core files to download.
- * @return {Object} - Object to send to the reducer.
  */
 export function setTotalLanguageCoreFilesToDownload (
   totalLanguageCoreFilesToDownload: number
@@ -165,12 +114,14 @@ export function setTotalLanguageCoreFilesToDownload (
   }
 }
 
+interface StoreLanguageCoreFileCreatedTimeParams {
+  type: 'STORE_LANGUAGE_CORE_FILE_CREATED_TIME'
+  fileName: string
+  timeCreated: string
+}
+
 /**
  * Stores the created time of a specific file.
- * @export
- * @param {string} fileName - The name of the file to store the time created of.
- * @param {string} timeCreated - The time the file was created.
- * @return {Object} - Object to send to the reducer.
  */
 export function storeLanguageCoreFileCreatedTime (
   fileName: string,
@@ -183,11 +134,13 @@ export function storeLanguageCoreFileCreatedTime (
   }
 }
 
+interface AddLanguageCoreFileToUpdateParams {
+  type: 'ADD_LANGUAGE_CORE_FILE_TO_UPDATE'
+  fileName: string
+}
+
 /**
  * Adds a file name to be stored in the core files to update array.
- * @export
- * @param {string} fileName - The name of the file that needs to be updated.
- * @return {Object} - Object to send to the reducer.
  */
 export function addLanguageCoreFileToUpdate (
   fileName: string
@@ -198,10 +151,12 @@ export function addLanguageCoreFileToUpdate (
   }
 }
 
+interface ClearLanguageCoreFilesToUpdateParams {
+  type: 'CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE'
+}
+
 /**
  * Clears the core files to update array.
- * @export
- * @return {Object} - Object to send to the reducer.
  */
 export function clearLanguageCoreFilesToUpdate (): ClearLanguageCoreFilesToUpdateParams {
   return {
@@ -209,11 +164,13 @@ export function clearLanguageCoreFilesToUpdate (): ClearLanguageCoreFilesToUpdat
   }
 }
 
+interface StoreActingLanguageIDParams {
+  type: 'STORE_ACTING_LANGUAGE_ID'
+  languageID: LanguageID | undefined
+}
+
 /**
  * Stores the language that is actively installing.
- * @export
- * @param {string} languageID - The ID of the language instance to delete.
- * @return {Object} - Object to send to the reducer.
  */
 export function storeActingLanguageID (
   languageID: LanguageID | undefined
@@ -224,11 +181,13 @@ export function storeActingLanguageID (
   }
 }
 
+interface SetRecentActiveGroupParams {
+  type: 'SET_RECENT_ACTIVE_GROUP'
+  groupName: string
+}
+
 /**
  * Sets the most recent active group so that if we cancel a language install, we know what group to go back to.
- * @export
- * @param {string} groupName - The name of the most recent active group.
- * @return {Object} - Object to send to the reducer.
  */
 export function setRecentActiveGroup (
   groupName: string
@@ -239,10 +198,12 @@ export function setRecentActiveGroup (
   }
 }
 
+interface IncrementGlobalGroupCounterParams {
+  type: 'INCREMENT_GLOBAL_GROUP_COUNTER'
+}
+
 /**
  * Increments the global group counter redux variable by 1.
- * @export
- * @return {Object} - Object to send to the reducer.
  */
 export function incrementGlobalGroupCounter (): IncrementGlobalGroupCounterParams {
   return {
@@ -250,6 +211,14 @@ export function incrementGlobalGroupCounter (): IncrementGlobalGroupCounterParam
   }
 }
 
+interface SetGlobalGroupCounterParams {
+  type: 'SET_GLOBAL_GROUP_COUNTER'
+  toSet: number
+}
+
+/**
+ * Shortcut for setting the group counter to a specific number in case we need to manually change it.
+ */
 export function setGlobalGroupCounter (
   toSet: number
 ): SetGlobalGroupCounterParams {

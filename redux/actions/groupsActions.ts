@@ -8,10 +8,7 @@ import {
   logCompleteStorySet,
   logCreateGroup
 } from '../../functions/analyticsFunctions'
-import {
-  getLessonInfo,
-  getSetInfo
-} from '../../functions/setAndLessonDataFunctions'
+import { getSetInfo } from '../../functions/setAndLessonDataFunctions'
 import { StorySet } from '../reducers/database'
 
 export const CREATE_GROUP = 'CREATE_GROUP'
@@ -23,6 +20,14 @@ export const ADD_SET = 'ADD_SET'
 export const SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB =
   'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
 
+export type GroupsActionParams =
+  | CreateGroupParams
+  | EditGroupParams
+  | UpdateProgressParams
+  | DeleteGroupParams
+  | AddSetParams
+  | SetShouldShowMobilizationToolsTabParams
+
 interface CreateGroupParams {
   type: 'CREATE_GROUP'
   groupName: string
@@ -32,58 +37,8 @@ interface CreateGroupParams {
   shouldShowMobilizationToolsTab: boolean
 }
 
-interface EditGroupParams {
-  type: 'EDIT_GROUP'
-  oldGroupName: string
-  newGroupName: string
-  emoji: Emoji
-  shouldShowMobilizationToolsTab: boolean
-}
-
-interface UpdateProgressParams {
-  type: 'UPDATE_PROGRESS'
-  groupName: string
-  set: StorySet
-  nextSet: StorySet
-  lessonIndex: number
-  setLength: number
-}
-
-interface DeleteGroupParams {
-  type: 'DELETE_GROUP'
-  groupName: string
-}
-
-interface AddSetParams {
-  type: 'ADD_SET'
-  groupName: string
-  groupID: number
-  set: StorySet
-}
-
-interface SetShouldShowMobilizationToolsTabParams {
-  type: 'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
-  groupName: string
-  toSet: boolean
-}
-
-export type GroupsActionParams =
-  | CreateGroupParams
-  | EditGroupParams
-  | UpdateProgressParams
-  | DeleteGroupParams
-  | AddSetParams
-  | SetShouldShowMobilizationToolsTabParams
-
 /**
  * Creates a new group.
- * @export
- * @param {string} groupName - The name of the new group.
- * @param {string} language - The language ID of the new group.
- * @param {string} emoji - The name of the emoji for the new group's avatar.
- * @param {number} groupID - A unique ID for this group. Taken from the globalGroupCounter redux variable.
- * @param {number} groupNumber - The number this group is in relation to the total number of groups already created.
- * @return {Object} - Object to send to the reducer.
  */
 export function createGroup (
   groupName: string,
@@ -94,7 +49,6 @@ export function createGroup (
   groupNumber: number
 ): CreateGroupParams {
   logCreateGroup(language, groupID, groupNumber)
-  // console.log(groupID)
   return {
     type: CREATE_GROUP,
     groupName,
@@ -105,13 +59,16 @@ export function createGroup (
   }
 }
 
+interface EditGroupParams {
+  type: 'EDIT_GROUP'
+  oldGroupName: string
+  newGroupName: string
+  emoji: Emoji
+  shouldShowMobilizationToolsTab: boolean
+}
+
 /**
  * Edits the information for a group.
- * @export
- * @param {string} oldGroupName - The name of the group to edit.
- * @param {string} newGroupName - The new name to replace oldGroupName.
- * @param {string} emoji - The name of the emoji for the group's avatar.
- * @return {Object} - Object to send to the reducer.
  */
 export function editGroup (
   oldGroupName: string,
@@ -128,11 +85,13 @@ export function editGroup (
   }
 }
 
+interface DeleteGroupParams {
+  type: 'DELETE_GROUP'
+  groupName: string
+}
+
 /**
  * Deletes a group.
- * @export
- * @param {string} groupName - The name of the group to delete.
- * @return {Object} - Object to send to the reducer.
  */
 export function deleteGroup (groupName: string): DeleteGroupParams {
   return {
@@ -141,14 +100,19 @@ export function deleteGroup (groupName: string): DeleteGroupParams {
   }
 }
 
+interface UpdateProgressParams {
+  type: 'UPDATE_PROGRESS'
+  groupName: string
+  set: StorySet
+  // The set after the one to update the progress in. We need this in case the lesson we're marking as complete finishes a set and the bookmark needs to move onto the next set.
+  nextSet: StorySet
+  // The index of the lesson within the set we need to mark/unmark as complete.
+  lessonIndex: number
+  setLength: number
+}
+
 /**
  * Update the progress of a set for a group, i.e. marking a lesson within a set complete or incomplete. Only called within the toggleComplete function below.
- * @param {string} groupName - The name of the group to update the progress in.
- * @param {Object} set - The set to update the progress in.
- * @param {Object} nextSet - The set after the one to update the progress in. We need this in case the lesson we're marking as complete finishes a set and the bookmark needs to move onto the next set. This only happens for foundational and mobilization tools sets.
- * @param {number} lessonIndex - The index of the lesson within the set we need to mark/unmark as complete.
- * @param {number} setLength - The length of the set that the lesson we're updating the progress in is a part of.
- * @return {Object} - Object to send to the reducer.
  */
 function updateProgress (
   groupName: string,
@@ -169,11 +133,6 @@ function updateProgress (
 
 /**
  * Toggles the complete status of a lesson. This function acts a bridge function. It's called in components but doesn't send anything to the reducer itself. Its purpose is only to use state to get some more information that the above updateProgress function needs in order to work and then dispatch the updateProgress action.
- * @export
- * @param {string} groupName - The name of the group to update the progress in.
- * @param {Object} set - The set to update the progress in.
- * @param {number} lessonIndex - The index of the lesson within the set we need to mark/unmark as complete.
- * @return {Object} - Thunk object that allows us to get the state and dispatch actions.
  */
 export function toggleComplete (
   groupName: string,
@@ -192,11 +151,6 @@ export function toggleComplete (
       dbSet =>
         getSetInfo('category', dbSet.id) === getSetInfo('category', set.id) &&
         getSetInfo('index', dbSet.id) === getSetInfo('index', set.id) + 1
-    )[0]
-
-    // Get the object for the lesson that we're updating the progress of.
-    var thisLesson = set.lessons.filter(
-      lesson => getLessonInfo('index', lesson.id) === lessonIndex
     )[0]
 
     // Get the length of the set that the lesson we're updating the progress of is in.
@@ -235,13 +189,15 @@ export function toggleComplete (
 //   }
 // }
 
+interface AddSetParams {
+  type: 'ADD_SET'
+  groupName: string
+  groupID: number
+  set: StorySet
+}
+
 /**
  * Adds a new set to a specified group.
- * @export
- * @param {string} groupName - The name of the group to add a set in.
- * @param {number} groupID - The ID of the group to add a set in. Used for analytics.
- * @param {Object} set - The object for the set that we are adding to this group.
- * @return {Object} - Object to send to the reducer.
  */
 export function addSet (
   groupName: string,
@@ -257,12 +213,14 @@ export function addSet (
   }
 }
 
+interface SetShouldShowMobilizationToolsTabParams {
+  type: 'SET_SHOULD_SHOW_MOBILIZATION_TOOLS_TAB'
+  groupName: string
+  toSet: boolean
+}
+
 /**
  * Sets whether this group should show the mobilization tools tab or not.
- * @export
- * @param {string} groupName - The name of the group we want to show/hide the mobilization tools tab on/from.
- * @param {boolean} toSet - What to set to. True = show, false = don't show.
- * @return {Object} - Object to send to the reducer.
  */
 export function setShouldShowMobilizationToolsTab (
   groupName: string,

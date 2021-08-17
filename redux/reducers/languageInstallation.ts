@@ -18,16 +18,26 @@ import {
 export type CoreFileCreatedTimes = Record<string, number>
 
 export type LanguageInstallationState = {
+  // Stores a global Group counter that goes up by 1 whenever a new Group is created. This is so that each Group and have a unique ID.
   globalGroupCounter: number
+  // Whether the user has completed the onboarding slides after selecting a language.
   hasOnboarded: boolean
+  // Whether the app has finished fetching Language data from Firestore.
   hasFetchedLanguageData: boolean
+  // Whether the user has finished installing their first language instance, including selecting their language, going through the onboarding, and downloading all of the necessary core files.
   hasInstalledFirstLanguageInstance: boolean
-  languageCoreFilesDownloadProgress: number
-  languageCoreFilesToUpdate: string[]
-  actingLanguageID: LanguageID | undefined
-  recentActiveGroup: string | undefined
-  languageCoreFilesCreatedTimes: Record<string, string>
+  // The total number of core files to download for a language.
   totalLanguageCoreFilesToDownload: number
+  // The progress of the core files download from 0 to the number of total files to download.
+  languageCoreFilesDownloadProgress: number
+  // An array of file names that need to be updated because they're outdated or missing.
+  languageCoreFilesToUpdate: string[]
+  // The ID of the language that is currently downloading or updating.
+  actingLanguageID: LanguageID | undefined
+  // When adding a subsequent language, we need to keep track of which Group the user was on before installing a subsequent one in case they cancel and we need to revert back to the original Group.
+  recentActiveGroup: string | undefined
+  // Stores the created times of the core files so that we know if we need have updated versions to download.
+  languageCoreFilesCreatedTimes: Record<string, string>
 }
 
 export function languageInstallation (

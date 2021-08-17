@@ -8,8 +8,8 @@ import {
   SetInfo,
   SetInfoRequest
 } from '../interfaces/setAndLessonInfo'
-import { Translations } from '../interfaces/translations'
 import { Group } from '../redux/reducers/groups'
+import { Translations } from '../translations/translationsConfig'
 
 /**
  * Gets specific information about a Story Set.

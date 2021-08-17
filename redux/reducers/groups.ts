@@ -13,20 +13,31 @@ import {
 } from '../actions/groupsActions'
 
 export interface Group {
+  // The name of a Group.
   name: string
-  // A unique ID for the group used only for Analytics purposes.
+  // A unique ID for a Group used only for Analytics purposes.
   id: number
+  // The language a Group is a part of.
   language: LanguageID
+  // The emoji used as a Group's avatar.
   emoji: Emoji
+  // The most recently used Foundational or Mobilization Tools Set.
   recentCoreOrTool: string
+  // The ID for the Story Set that is bookmarked.
   setBookmark: string
+  // Whether or not the Mobilization Tools tab should be visible when a Group is selected.
   shouldShowMobilizationToolsTab: boolean
+  // An array of Saved Sets that have been saved.
   addedSets: SavedSet[]
 }
 
+// A SavedSet differs from the StorySet type in that it represents a set that has been "saved" or "added" by the user and needs its progress tracked locally. Saved Sets are stored in a Group whereas Story Sets are stored in the local database.
 export interface SavedSet {
+  // The ID of a Story Set that is saved. Must match up with a Story Set in the local database.
   id: string
+  // An array of numbers which contains the indices of completed lessons in a Story Set. For instance, if lesson 1.1.1 and 1.1.2 are completed, this would array would contain 1 and 2.
   progress: number[]
+  // The index of the lesson in a Story Set that is bookmarked.
   bookmark: number
 }
 
@@ -76,7 +87,7 @@ export function groups (state: Group[] = [], params: GroupsActionParams) {
           if (group.name === params.oldGroupName) {
             return {
               ...group,
-              // Only allowable changes are to the group name and the emoji.
+              // Only allowable changes are to the group name, emoji, and Mobilization Tools status.
               name: params.newGroupName,
               emoji: params.emoji,
               shouldShowMobilizationToolsTab:
