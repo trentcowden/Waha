@@ -15,7 +15,6 @@ import { scaleMultiplier } from '../constants'
 import { selector, useAppDispatch } from '../hooks'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { deleteLanguageData } from '../redux/actions/databaseActions'
-import { deleteGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import {
   setHasFetchedLanguageData,
@@ -24,6 +23,7 @@ import {
   setTotalLanguageCoreFilesToDownload,
 } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { deleteGroup } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -102,7 +102,7 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
     // Delete any groups from the cancelled language.
     groups.forEach((group) => {
       if (group.language === actingLanguageID) {
-        dispatch(deleteGroup(group.name))
+        dispatch(deleteGroup({ groupName: group.name }))
       }
     })
 

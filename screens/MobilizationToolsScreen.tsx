@@ -14,9 +14,8 @@ import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
-import { editGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { Group } from '../redux/reducers/groups'
+import { editGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -54,12 +53,12 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
     shouldShowMobilizationToolsTab: boolean
   ) => {
     dispatch(
-      editGroup(
+      editGroup({
         oldGroupName,
         newGroupName,
         emoji,
-        shouldShowMobilizationToolsTab
-      )
+        shouldShowMobilizationToolsTab,
+      })
     )
   }
 

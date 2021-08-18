@@ -38,7 +38,6 @@ import {
   storeLanguageData,
   storeLanguageSets,
 } from '../redux/actions/databaseActions'
-import { createGroup } from '../redux/actions/groupsActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import {
   incrementGlobalGroupCounter,
@@ -47,6 +46,7 @@ import {
 } from '../redux/actions/languageInstallationActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { createGroup } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -245,14 +245,15 @@ const LanguageSelectScreen: FC<Props> = ({
             dispatch(incrementGlobalGroupCounter())
 
             dispatch(
-              createGroup(
-                getTranslations(selectedLanguage).other.default_group_name,
-                selectedLanguage,
-                'default',
-                true,
-                languageInstallation.globalGroupCounter,
-                groups.length + 1
-              )
+              createGroup({
+                groupName:
+                  getTranslations(selectedLanguage).other.default_group_name,
+                language: selectedLanguage,
+                emoji: 'default',
+                shouldShowMobilizationToolsTab: true,
+                groupID: languageInstallation.globalGroupCounter,
+                groupNumber: groups.length + 1,
+              })
             )
           }
 

@@ -21,9 +21,8 @@ import AddEditGroupModal from '../modals/AddEditGroupModal'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { deleteLanguageData } from '../redux/actions/databaseActions'
 import { removeDownload } from '../redux/actions/downloadActions'
-import { deleteGroup } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { Group } from '../redux/reducers/groups'
+import { deleteGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
@@ -135,7 +134,7 @@ const GroupsScreen: FC<Props> = ({
     // Delete every group for this language instance.
     groups.map((group) => {
       if (group.language === languageID) {
-        dispatch(deleteGroup(group.name))
+        dispatch(deleteGroup({ groupName: group.name }))
       }
     })
 
@@ -167,7 +166,7 @@ const GroupsScreen: FC<Props> = ({
   }
 
   const handleDeleteGroupButtonPress = (groupName: string) => {
-    dispatch(deleteGroup(groupName))
+    dispatch(deleteGroup({ groupName }))
   }
 
   const handleGroupItemPress = (group: Group) => {

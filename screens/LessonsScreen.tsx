@@ -37,12 +37,12 @@ import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
-import { addSet, toggleComplete } from '../redux/actions/groupsActions'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { addSet, toggleComplete } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
@@ -171,7 +171,7 @@ const LessonsScreen: FC<Props> = ({
         activeGroup,
         activeDatabase,
         (groupName: string, groupID: number, set: StorySet) =>
-          dispatch(addSet(groupName, groupID, set)),
+          dispatch(addSet({ groupName, groupID, set })),
         setShowNextSetUnlockedModal
       )
       checkForFullyCompleteSet(thisSet, thisSavedSet, setShowSetCompleteModal)

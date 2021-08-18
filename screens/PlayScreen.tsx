@@ -46,7 +46,6 @@ import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
-import { addSet, toggleComplete } from '../redux/actions/groupsActions'
 import {
   setHasUsedPlayScreen,
   setLessonCounter,
@@ -57,6 +56,7 @@ import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { addSet, toggleComplete } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -881,7 +881,7 @@ const PlayScreen: FC<Props> = ({
           activeGroup,
           activeDatabase,
           (groupName: string, groupID: number, set: StorySet) =>
-            dispatch(addSet(groupName, groupID, set)),
+            dispatch(addSet({ groupName, groupID, set })),
           setShowNextSetUnlockedModal
         ) &&
         // If completing this lesson completes the whole set, show a celebratory modal.

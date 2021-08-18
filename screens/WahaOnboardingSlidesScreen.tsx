@@ -17,9 +17,9 @@ import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { editGroup } from '../redux/actions/groupsActions'
 import { setHasOnboarded } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { editGroup } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -83,12 +83,13 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
 
     // Call editGroup() redux function.
     dispatch(
-      editGroup(
-        getTranslations(selectedLanguage).other.default_group_name,
-        groupNameInput,
-        emojiInput,
-        true
-      )
+      editGroup({
+        oldGroupName:
+          getTranslations(selectedLanguage).other.default_group_name,
+        newGroupName: groupNameInput,
+        emoji: emojiInput,
+        shouldShowMobilizationToolsTab: true,
+      })
     )
 
     // Finish up onboarding and go to the loading screen.

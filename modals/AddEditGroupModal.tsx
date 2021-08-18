@@ -11,10 +11,9 @@ import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import ModalScreen from '../modals/ModalScreen'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { createGroup, editGroup } from '../redux/actions/groupsActions'
 import { incrementGlobalGroupCounter } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { Group } from '../redux/reducers/groups'
+import { createGroup, editGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -111,14 +110,14 @@ const AddEditGroupModal: FC<Props> = ({
     if (languageID !== undefined)
       // Call createGroup() redux function.
       dispatch(
-        createGroup(
-          groupNameInput,
-          languageID,
-          emojiInput,
-          shouldShowMTTabInput,
-          globalGroupCounter + 1,
-          groups.length + 1
-        )
+        createGroup({
+          groupName: groupNameInput,
+          language: languageID,
+          emoji: emojiInput,
+          shouldShowMobilizationToolsTab: shouldShowMTTabInput,
+          groupID: globalGroupCounter + 1,
+          groupNumber: groups.length + 1,
+        })
       )
 
     // Change the active group to the newly created group.
@@ -140,12 +139,12 @@ const AddEditGroupModal: FC<Props> = ({
     // Call editGroup() redux function.
     if (thisGroup !== undefined)
       dispatch(
-        editGroup(
-          thisGroup.name,
-          groupNameInput,
-          emojiInput,
-          shouldShowMTTabInput
-        )
+        editGroup({
+          oldGroupName: thisGroup.name,
+          newGroupName: groupNameInput,
+          emoji: emojiInput,
+          shouldShowMobilizationToolsTab: shouldShowMTTabInput,
+        })
       )
 
     // Hide this modal.

@@ -15,8 +15,8 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { SetItemMode, WahaButtonMode } from '../interfaces/components'
-import { addSet } from '../redux/actions/groupsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { addSet } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -130,7 +130,13 @@ const SetInfoModal: FC<Props> = ({
           <WahaButton
             mode={WahaButtonMode.SUCCESS}
             onPress={() => {
-              dispatch(addSet(activeGroup.name, activeGroup.id, thisSet))
+              dispatch(
+                addSet({
+                  groupName: activeGroup.name,
+                  groupID: activeGroup.id,
+                  set: thisSet,
+                })
+              )
               showSnackbar()
               hideModal()
             }}
