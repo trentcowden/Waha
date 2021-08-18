@@ -17,9 +17,9 @@ import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { setHasOnboarded } from '../redux/actions/languageInstallationActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { editGroup } from '../redux/reducers/groups'
+import { setHasOnboarded } from '../redux/reducers/languageInstallation'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -93,7 +93,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     )
 
     // Finish up onboarding and go to the loading screen.
-    dispatch(setHasOnboarded(true))
+    dispatch(setHasOnboarded({ toSet: true }))
     navigate('Loading', {
       selectedLanguage: selectedLanguage,
     })
@@ -101,7 +101,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
 
   /** Skips onboarding and just goes straight to the loading screen. */
   const skipOnboarding = () => {
-    dispatch(setHasOnboarded(true))
+    dispatch(setHasOnboarded({ toSet: true }))
     navigate('Loading', {
       selectedLanguage: selectedLanguage,
     })

@@ -19,9 +19,9 @@ import { selector, useAppDispatch } from '../hooks'
 import { InfoAndGroupsForLanguage } from '../languages'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { deleteLanguageData } from '../redux/actions/databaseActions'
 import { removeDownload } from '../redux/actions/downloadActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { deleteLanguageData } from '../redux/reducers/database'
 import { deleteGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -152,7 +152,7 @@ const GroupsScreen: FC<Props> = ({
       )
 
     // Delete redux data for this language instance.
-    dispatch(deleteLanguageData(languageID))
+    dispatch(deleteLanguageData({ languageID }))
   }
 
   const handleAddNewLanguageButtonPress = () => {

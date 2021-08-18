@@ -3,13 +3,13 @@ import { StatusBar as StatusBarExpo } from 'expo-status-bar'
 import React, { FC, ReactElement, useEffect } from 'react'
 import { StatusBar as StatusBarRN, View } from 'react-native'
 import { selector, useAppDispatch } from '../hooks'
+import { updateConnectionStatus } from '../redux/actions/networkActions'
 import {
   setGlobalGroupCounter,
   setHasInstalledFirstLanguageInstance,
   setHasOnboarded,
   storeLanguageCoreFileCreatedTime,
-} from '../redux/actions/languageInstallationActions'
-import { updateConnectionStatus } from '../redux/actions/networkActions'
+} from '../redux/reducers/languageInstallation'
 import LoadingScreen from '../screens/LoadingScreen'
 import { colors } from '../styles/colors'
 import MainDrawer from './MainDrawer'
@@ -60,20 +60,22 @@ const Root: FC<Props> = ({}): ReactElement => {
   useEffect(() => {
     if (oldHasOnboarded !== undefined) {
       if ((oldGlobalGroupCounter as unknown) !== newGlobalGroupCounter) {
-        dispatch(setGlobalGroupCounter(oldGlobalGroupCounter as number))
+        dispatch(
+          setGlobalGroupCounter({ counter: oldGlobalGroupCounter as number })
+        )
       }
 
       if ((oldHasOnboarded as unknown) !== newHasOnboarded)
-        dispatch(setHasOnboarded(oldHasOnboarded as boolean))
+        dispatch(setHasOnboarded({ toSet: oldHasOnboarded as boolean }))
 
       if (
         oldHasInstalledFirstLanguageInstance !==
         newHasInstalledFirstLanguageInstance
       )
         dispatch(
-          setHasInstalledFirstLanguageInstance(
-            oldHasInstalledFirstLanguageInstance as boolean
-          )
+          setHasInstalledFirstLanguageInstance({
+            toSet: oldHasInstalledFirstLanguageInstance as boolean,
+          })
         )
 
       Object.keys(
@@ -81,10 +83,10 @@ const Root: FC<Props> = ({}): ReactElement => {
       ).forEach((fileName) => {
         if (newLanguageCoreFilesCreatedTimes[fileName] === undefined) {
           dispatch(
-            storeLanguageCoreFileCreatedTime(
+            storeLanguageCoreFileCreatedTime({
               fileName,
-              oldLanguageCoreFilesCreatedTimes[fileName]
-            )
+              createdTime: oldLanguageCoreFilesCreatedTimes[fileName],
+            })
           )
         }
       })

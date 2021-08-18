@@ -32,21 +32,21 @@ import { WahaButtonMode } from '../interfaces/components'
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
 import { changeActiveGroup } from '../redux/actions/activeGroupActions'
+import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   deleteLanguageData,
   downloadLanguageCoreFiles,
   storeLanguageData,
   storeLanguageSets,
-} from '../redux/actions/databaseActions'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+} from '../redux/reducers/database'
+import { createGroup } from '../redux/reducers/groups'
 import {
   incrementGlobalGroupCounter,
   setHasFetchedLanguageData,
   setRecentActiveGroup,
-} from '../redux/actions/languageInstallationActions'
-import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { createGroup } from '../redux/reducers/groups'
+} from '../redux/reducers/languageInstallation'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -149,9 +149,9 @@ const LanguageSelectScreen: FC<Props> = ({
 
   /**
    * Fetches all the data for a language from Firebase. This includes the various Story Sets from the 'sets' collection and the language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
-   * @param {string} language - The language to fetch the firebase data for.
+   * @param {string} languageID - The language to fetch the firebase data for.
    */
-  const fetchFirebaseData = async (language: LanguageID) => {
+  const fetchFirebaseData = async (languageID: LanguageID) => {
     // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
     dispatch(setIsInstallingLanguageInstance(true))
 
@@ -161,7 +161,7 @@ const LanguageSelectScreen: FC<Props> = ({
     // Fetch all the Story Sets with the language ID of the selected language and store them in redux.
     await db
       .collection('sets')
-      .where('languageID', '==', language)
+      .where('languageID', '==', languageID)
       .get()
       .then((querySnapshot) => {
         // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
@@ -183,7 +183,7 @@ const LanguageSelectScreen: FC<Props> = ({
             sets.push(storySetItem)
           })
           /// ...and write all of them to redux.
-          dispatch(storeLanguageSets(sets, language))
+          dispatch(storeLanguageSets({ sets, languageID }))
         }
       })
       .catch((error) => {
@@ -194,7 +194,7 @@ const LanguageSelectScreen: FC<Props> = ({
     // Fetch the language info for the selected language and store it in redux.
     await db
       .collection('languages')
-      .doc(language)
+      .doc(languageID)
       .get()
       .then(async (doc) => {
         var languageData = doc.data()
@@ -202,13 +202,13 @@ const LanguageSelectScreen: FC<Props> = ({
         if (doc.exists && languageData !== undefined) {
           // Store our language info in redux.
           dispatch(
-            storeLanguageData(
-              {
+            storeLanguageData({
+              languageData: {
                 files: languageData.files,
                 questions: languageData.questions,
               },
-              language
-            )
+              languageID,
+            })
           )
         }
       })
@@ -226,10 +226,11 @@ const LanguageSelectScreen: FC<Props> = ({
       fetchFirebaseData(selectedLanguage)
         .then(() => {
           // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
-          dispatch(setHasFetchedLanguageData(true))
+          dispatch(setHasFetchedLanguageData({ toSet: true }))
 
           // If we're adding a subsequent language instance, then we need to store the active group's language
-          if (activeGroup) dispatch(setRecentActiveGroup(activeGroup.name))
+          if (activeGroup)
+            dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
 
           // Start downloading the core files for this language.
           dispatch(downloadLanguageCoreFiles(selectedLanguage))
@@ -279,7 +280,7 @@ const LanguageSelectScreen: FC<Props> = ({
 
           // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
           setIsFetchingFirebaseData(false)
-          dispatch(deleteLanguageData(selectedLanguage))
+          dispatch(deleteLanguageData({ languageID: selectedLanguage }))
 
           Alert.alert(
             t.language_select.fetch_error_title,

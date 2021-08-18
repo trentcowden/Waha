@@ -13,13 +13,13 @@ import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { appVersion } from '../modeSwitch'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   storeLanguageData,
   storeLanguageSets,
-} from '../redux/actions/databaseActions'
-import { addLanguageCoreFileToUpdate } from '../redux/actions/languageInstallationActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { StorySet } from '../redux/reducers/database'
+  StorySet,
+} from '../redux/reducers/database'
+import { addLanguageCoreFileToUpdate } from '../redux/reducers/languageInstallation'
 import MainStack from './MainStack'
 import WahaDrawer from './WahaDrawer'
 
@@ -74,13 +74,13 @@ const MainDrawer: FC = ({}): ReactElement => {
 
                 // Store our language info in redux.
                 dispatch(
-                  storeLanguageData(
-                    {
+                  storeLanguageData({
+                    languageData: {
                       files: languageData.files,
                       questions: languageData.questions,
                     },
-                    languageID
-                  )
+                    languageID,
+                  })
                 )
               }
             }
@@ -115,7 +115,7 @@ const MainDrawer: FC = ({}): ReactElement => {
                   sets.push(storySetItem)
                 })
                 /// ...and write all of them to redux.
-                dispatch(storeLanguageSets(sets, languageID))
+                dispatch(storeLanguageSets({ sets, languageID }))
               }
             }
           })
@@ -150,13 +150,13 @@ const MainDrawer: FC = ({}): ReactElement => {
             // console.log(t.groups)
             // Store our language info in redux.
             dispatch(
-              storeLanguageData(
-                {
+              storeLanguageData({
+                languageData: {
                   files: languageData.files,
                   questions: languageData.questions,
                 },
-                activeGroup.language
-              )
+                languageID: activeGroup.language,
+              })
             )
 
             // Check if we need replacements for already downloaded core files by comparing the created times of downloaded core files in redux with the created times of the current Firebase storage core files. If the created times don't match, it means a core file has been updated and we need to queue the new core file to download.
@@ -190,9 +190,9 @@ const MainDrawer: FC = ({}): ReactElement => {
                     ) {
                       console.log(`${fileName} needs to be replaced.\n`)
                       dispatch(
-                        addLanguageCoreFileToUpdate(
-                          `${activeGroup.language}-${fileName}`
-                        )
+                        addLanguageCoreFileToUpdate({
+                          fileName: `${activeGroup.language}-${fileName}`,
+                        })
                       )
                     }
                   }
@@ -223,9 +223,9 @@ const MainDrawer: FC = ({}): ReactElement => {
                         ) {
                           console.log(`${fileName} needs to be added.`)
                           dispatch(
-                            addLanguageCoreFileToUpdate(
-                              `${activeGroup.language}-${fileName}`
-                            )
+                            addLanguageCoreFileToUpdate({
+                              fileName: `${activeGroup.language}-${fileName}`,
+                            })
                           )
                         }
                       }
@@ -268,7 +268,9 @@ const MainDrawer: FC = ({}): ReactElement => {
               sets.push(storySetItem)
             })
             /// ...and write all of them to redux.
-            dispatch(storeLanguageSets(sets, activeGroup.language))
+            dispatch(
+              storeLanguageSets({ sets, languageID: activeGroup.language })
+            )
           }
         }
       })
