@@ -10,10 +10,10 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { updateLanguageCoreFiles } from '../redux/reducers/database'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -41,7 +41,7 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
   /** Handles the updating of language core files. */
   const handleUpdateButtonPress = () => {
     // Set setIsInstallingLanguageInstance redux variable to true so that the app knows to switch to the loading screen.
-    dispatch(setIsInstallingLanguageInstance(true))
+    dispatch(setIsInstallingLanguageInstance({ toSet: true }))
 
     // Even though we're not fetching any Firebase data here, set this variable to true anyways just to allow the user to cancel the update if they want.
     // setHasFetchedLanguageData(true)

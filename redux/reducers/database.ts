@@ -7,8 +7,8 @@ import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { logInstallLanguage } from '../../functions/analyticsFunctions'
 import { LanguageID } from '../../languages'
-import { setIsInstallingLanguageInstance } from '../actions/isInstallingLanguageInstanceActions'
 import { storeDownloads } from '../actions/storedDownloadsActions'
+import { setIsInstallingLanguageInstance } from '../reducers/isInstallingLanguageInstance'
 import {
   clearLanguageCoreFilesToUpdate,
   setHasFetchedLanguageData,
@@ -240,7 +240,7 @@ export function downloadLanguageCoreFiles (
           dispatch(storeActingLanguageID({ languageID: undefined }))
 
           // Set the isInstallingLanguageInstance redux variable to false since we're no longer actively installing a language instance.
-          dispatch(setIsInstallingLanguageInstance(false))
+          dispatch(setIsInstallingLanguageInstance({ toSet: false }))
 
           // Set the hasInstalledFirstLanguageInstance redux variable to true because we've finished installing our first language instance.
           dispatch(setHasInstalledFirstLanguageInstance({ toSet: true }))
@@ -372,7 +372,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
       // Once all the downloads have finished...
       if (totalDownloaded === languageCoreFilesToUpdate.length) {
         // Set the isInstallingLanguageInstance redux variable to false since we're no longer actively installing a language instance.
-        dispatch(setIsInstallingLanguageInstance(false))
+        dispatch(setIsInstallingLanguageInstance({ toSet: false }))
 
         // Set the hasFetchedLanguageData variable to false so that on the next language install, it starts out as false.
         dispatch(setHasFetchedLanguageData({ toSet: false }))

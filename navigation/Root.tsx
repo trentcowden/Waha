@@ -3,13 +3,13 @@ import { StatusBar as StatusBarExpo } from 'expo-status-bar'
 import React, { FC, ReactElement, useEffect } from 'react'
 import { StatusBar as StatusBarRN, View } from 'react-native'
 import { selector, useAppDispatch } from '../hooks'
-import { updateConnectionStatus } from '../redux/actions/networkActions'
 import {
   setGlobalGroupCounter,
   setHasInstalledFirstLanguageInstance,
   setHasOnboarded,
   storeLanguageCoreFileCreatedTime,
 } from '../redux/reducers/languageInstallation'
+import { setIsConnected } from '../redux/reducers/network'
 import LoadingScreen from '../screens/LoadingScreen'
 import { colors } from '../styles/colors'
 import MainDrawer from './MainDrawer'
@@ -98,7 +98,7 @@ const Root: FC<Props> = ({}): ReactElement => {
     // Add a listener for connection status and update the redux state accordingly.
     const netInfoUnsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected !== null)
-        dispatch(updateConnectionStatus(state.isConnected))
+        dispatch(setIsConnected({ toSet: state.isConnected }))
     })
 
     return function cleanup() {

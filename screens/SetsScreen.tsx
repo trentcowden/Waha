@@ -17,12 +17,12 @@ import { SetItemMode } from '../interfaces/components'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
 import { SetsTabsParams } from '../navigation/SetsTabs'
-import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
-import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { setShowTrailerHighlights } from '../redux/reducers/persistedPopups'
+import { setShowMTTabAddedSnackbar } from '../redux/reducers/popups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -127,7 +127,7 @@ const SetsScreen: FC<Props> = ({
       showTrailerHighlights &&
       !set.id.includes('3.1')
     ) {
-      dispatch(setShowTrailerHighlights(false))
+      dispatch(setShowTrailerHighlights({ toSet: false }))
     }
     navigate('Lessons', { setID: set.id })
   }
@@ -211,11 +211,13 @@ const SetsScreen: FC<Props> = ({
       />
       <MessageModal
         isVisible={showMTTabAddedSnackbar}
-        hideModal={() => dispatch(setShowMTTabAddedSnackbar(false))}
+        hideModal={() => dispatch(setShowMTTabAddedSnackbar({ toSet: false }))}
         title={t.mobilization_tools.unlock_successful_title}
         message={t.mobilization_tools.unlock_successful_message}
         confirmText={t.general.got_it}
-        confirmOnPress={() => dispatch(setShowMTTabAddedSnackbar(false))}
+        confirmOnPress={() =>
+          dispatch(setShowMTTabAddedSnackbar({ toSet: false }))
+        }
         isDark={isDark}
         activeGroup={activeGroup}
         isRTL={isRTL}

@@ -6,11 +6,11 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { scaleMultiplier } from '../constants'
 import { logUnlockMobilizationTools } from '../functions/analyticsFunctions'
 import { selector, useAppDispatch } from '../hooks'
-import { setMTUnlockAttempts } from '../redux/actions/mtUnlockAttemptsActions'
-import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
 import { setMTUnlockTimeout } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { setAreMobilizationToolsUnlocked } from '../redux/reducers/areMobilizationToolsUnlocked'
+import { setMTUnlockAttempts } from '../redux/reducers/mtUnlockAttempts'
+import { setShowMTTabAddedSnackbar } from '../redux/reducers/popups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -52,7 +52,7 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
    */
   useEffect(() => {
     if (mtUnlockAttempts === 5) {
-      dispatch(setMTUnlockAttempts(0))
+      dispatch(setMTUnlockAttempts({ numAttempts: 0 }))
       dispatch(setMTUnlockTimeout(Date.now() + 1800000))
     }
   }, [mtUnlockAttempts])
@@ -69,10 +69,13 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
       Keyboard.dismiss()
       dispatch(setAreMobilizationToolsUnlocked({ toSet: true }))
       navigate('SetsTabs', { screen: 'MobilizationTools' })
-      setTimeout(() => dispatch(setShowMTTabAddedSnackbar(true)), 1000)
+      setTimeout(
+        () => dispatch(setShowMTTabAddedSnackbar({ toSet: true })),
+        1000
+      )
       logUnlockMobilizationTools(activeGroup.language)
     } else {
-      dispatch(setMTUnlockAttempts(mtUnlockAttempts + 1))
+      dispatch(setMTUnlockAttempts({ numAttempts: mtUnlockAttempts + 1 }))
 
       // Turn the pin input red for a second to further indicate that the passcode entered was incorrect.
       setPinInputColor(colors(isDark).error)

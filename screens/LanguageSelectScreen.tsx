@@ -31,7 +31,6 @@ import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import {
   activeGroupSelector,
@@ -44,6 +43,7 @@ import {
   storeLanguageSets,
 } from '../redux/reducers/database'
 import { createGroup } from '../redux/reducers/groups'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
 import {
   incrementGlobalGroupCounter,
   setHasFetchedLanguageData,
@@ -155,7 +155,7 @@ const LanguageSelectScreen: FC<Props> = ({
    */
   const fetchFirebaseData = async (languageID: LanguageID) => {
     // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
-    dispatch(setIsInstallingLanguageInstance(true))
+    dispatch(setIsInstallingLanguageInstance({ toSet: true }))
 
     // Set the isFetchingFirebaseData local state to true so that the continue button shows the activity indicator.
     setIsFetchingFirebaseData(true)

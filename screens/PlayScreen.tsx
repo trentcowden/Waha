@@ -46,17 +46,17 @@ import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
 import {
-  setHasUsedPlayScreen,
-  setLessonCounter,
-  setNumLessonsTilReview,
-  setReviewTimeout,
-} from '../redux/actions/persistedPopupsActions'
-import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { downloadMedia, removeDownload } from '../redux/reducers/downloads'
 import { addSet, toggleComplete } from '../redux/reducers/groups'
+import {
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout,
+} from '../redux/reducers/persistedPopups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -317,8 +317,8 @@ const PlayScreen: FC<Props> = ({
       (!hasUsedPlayScreen || hasUsedPlayScreen === null) &&
       reviewTimeout === null
     ) {
-      dispatch(setHasUsedPlayScreen(true))
-      dispatch(setReviewTimeout(Date.now() + 1800000))
+      dispatch(setHasUsedPlayScreen({ toSet: true }))
+      dispatch(setReviewTimeout({ timeout: Date.now() + 1800000 }))
     }
 
     // Start downloading any necessary lesson files.
@@ -850,13 +850,15 @@ const PlayScreen: FC<Props> = ({
     // Track analytics.
     logCompleteLesson(thisLesson, activeGroup.id)
 
-    dispatch(setLessonCounter(lessonCounter + 1))
+    dispatch(setLessonCounter({ counter: lessonCounter + 1 }))
 
     if (reviewTimeout === null && lessonCounter >= numLessonsTilReview - 1) {
-      dispatch(setReviewTimeout(Date.now() + 1800000))
-      dispatch(setLessonCounter(0))
-      if (numLessonsTilReview === 2) dispatch(setNumLessonsTilReview(5))
-      else if (numLessonsTilReview === 5) dispatch(setNumLessonsTilReview(10))
+      dispatch(setReviewTimeout({ timeout: Date.now() + 1800000 }))
+      dispatch(setLessonCounter({ counter: 0 }))
+      if (numLessonsTilReview === 2)
+        dispatch(setNumLessonsTilReview({ numLessons: 5 }))
+      else if (numLessonsTilReview === 5)
+        dispatch(setNumLessonsTilReview({ numLessons: 10 }))
     }
   }
 

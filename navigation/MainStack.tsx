@@ -22,14 +22,14 @@ import { selector, useAppDispatch } from '../hooks'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
 import { InfoAndGroupsForAllLanguages } from '../languages'
 import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
+import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
   setReviewTimeout,
-} from '../redux/actions/persistedPopupsActions'
-import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+} from '../redux/reducers/persistedPopups'
 import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
@@ -137,10 +137,13 @@ const MainStack: FC<Props> = ({
 
   // Temporary function to initialize these redux variables for users who are updating.
   useEffect(() => {
-    if (hasUsedPlayScreen === undefined) dispatch(setHasUsedPlayScreen(true))
-    if (reviewTimeout === undefined) dispatch(setReviewTimeout(undefined))
-    if (lessonCounter === undefined) dispatch(setLessonCounter(0))
-    if (numLessonsTilReview === undefined) dispatch(setNumLessonsTilReview(2))
+    if (hasUsedPlayScreen === undefined)
+      dispatch(setHasUsedPlayScreen({ toSet: true }))
+    if (reviewTimeout === undefined)
+      dispatch(setReviewTimeout({ timeout: undefined }))
+    if (lessonCounter === undefined) dispatch(setLessonCounter({ counter: 0 }))
+    if (numLessonsTilReview === undefined)
+      dispatch(setNumLessonsTilReview({ numLessons: 2 }))
   }, [])
 
   /** useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts. */
@@ -155,7 +158,7 @@ const MainStack: FC<Props> = ({
       // If we're past our review timeout, request a review and reset the timeout.
       if (reviewTimeout !== undefined && Date.now() > reviewTimeout) {
         StoreReview.requestReview()
-        dispatch(setReviewTimeout(undefined))
+        dispatch(setReviewTimeout({ timeout: undefined }))
       }
 
       if (security.securityEnabled) {

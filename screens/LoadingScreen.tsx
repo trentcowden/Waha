@@ -13,13 +13,13 @@ import {
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { selector, useAppDispatch } from '../hooks'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import {
   activeGroupSelector,
   changeActiveGroup,
 } from '../redux/reducers/activeGroup'
 import { deleteLanguageData } from '../redux/reducers/database'
 import { deleteGroup } from '../redux/reducers/groups'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
 import {
   setHasFetchedLanguageData,
   setHasOnboarded,
@@ -78,7 +78,7 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
     dispatch(setTotalLanguageCoreFilesToDownload({ filesToDownload: 1 }))
 
     // Set the isInstalling and hasFetched redux states to false since we're no longer installing.
-    dispatch(setIsInstallingLanguageInstance(false))
+    dispatch(setIsInstallingLanguageInstance({ toSet: false }))
     dispatch(setHasFetchedLanguageData({ toSet: false }))
 
     // Cancel all of the downloads.

@@ -18,9 +18,9 @@ import { logEnableSecurityMode } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
-import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
 import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { setShowPasscodeSetSnackbar } from '../redux/reducers/popups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -112,8 +112,11 @@ const PianoPasscodeSetScreen: FC<Props> = ({
         case 'PianoPasscodeSetConfirm':
           // If passcodes match, pop up an alert, log it, set security enabled, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            dispatch(setShowPasscodeSetSnackbar(true))
-            setTimeout(() => dispatch(setShowPasscodeSetSnackbar(false)), 2000)
+            dispatch(setShowPasscodeSetSnackbar({ toSet: true }))
+            setTimeout(
+              () => dispatch(setShowPasscodeSetSnackbar({ toSet: false })),
+              2000
+            )
             // Log the enabling of Security Mode in Firebase analytics.
             logEnableSecurityMode(activeGroup.id)
 
@@ -142,8 +145,11 @@ const PianoPasscodeSetScreen: FC<Props> = ({
         case 'PianoPasscodeChangeConfirm':
           // If passcodes match, pop up an alert, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            dispatch(setShowPasscodeSetSnackbar(true))
-            setTimeout(() => dispatch(setShowPasscodeSetSnackbar(false)), 2000)
+            dispatch(setShowPasscodeSetSnackbar({ toSet: true }))
+            setTimeout(
+              () => dispatch(setShowPasscodeSetSnackbar({ toSet: false })),
+              2000
+            )
             dispatch(setSecurityEnabled(true))
             dispatch(setCode(localPasscode))
             goBack()

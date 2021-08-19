@@ -36,13 +36,13 @@ import { LessonType } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
-import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
 import { downloadMedia, removeDownload } from '../redux/reducers/downloads'
 import { addSet, toggleComplete } from '../redux/reducers/groups'
+import { setShowTrailerHighlights } from '../redux/reducers/persistedPopups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
@@ -356,7 +356,7 @@ const LessonsScreen: FC<Props> = ({
         areMobilizationToolsUnlocked={areMobilizationToolsUnlocked}
         showTrailerHighlights={showTrailerHighlights}
         setShowTrailerHighlights={(toSet: boolean) =>
-          dispatch(setShowTrailerHighlights(toSet))
+          dispatch(setShowTrailerHighlights({ toSet }))
         }
         removeDownload={(lessonID: string) =>
           dispatch(removeDownload({ lessonID: lessonID }))
