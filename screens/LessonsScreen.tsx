@@ -36,12 +36,12 @@ import { LessonType } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
-import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
 import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { downloadMedia, removeDownload } from '../redux/reducers/downloads'
 import { addSet, toggleComplete } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -359,7 +359,7 @@ const LessonsScreen: FC<Props> = ({
           dispatch(setShowTrailerHighlights(toSet))
         }
         removeDownload={(lessonID: string) =>
-          dispatch(removeDownload(lessonID))
+          dispatch(removeDownload({ lessonID: lessonID }))
         }
         isConnected={isConnected}
       />

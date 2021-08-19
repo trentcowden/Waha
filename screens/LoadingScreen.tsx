@@ -13,9 +13,11 @@ import {
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { selector, useAppDispatch } from '../hooks'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
 import { deleteLanguageData } from '../redux/reducers/database'
 import { deleteGroup } from '../redux/reducers/groups'
 import {
@@ -95,9 +97,10 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
     }
 
     // If this is a subsequent language instance install, if we cancel, we need to switch back to our most recent active group since we're going to delete all the groups for the language we cancelled the installation of.
-    if (recentActiveGroup) dispatch(changeActiveGroup(recentActiveGroup))
+    if (recentActiveGroup)
+      dispatch(changeActiveGroup({ groupName: recentActiveGroup }))
     // If this is the initial language instance install, set active group back to null since there should be no active group before you install your first language instance.
-    else dispatch(changeActiveGroup(''))
+    else dispatch(changeActiveGroup({ groupName: '' }))
 
     // Delete any groups from the cancelled language.
     groups.forEach((group) => {

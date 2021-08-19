@@ -31,10 +31,12 @@ import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
 import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
 import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
 import {
   deleteLanguageData,
   downloadLanguageCoreFiles,
@@ -260,9 +262,10 @@ const LanguageSelectScreen: FC<Props> = ({
 
           // Change the active group to the new group we just created.
           dispatch(
-            changeActiveGroup(
-              getTranslations(selectedLanguage).other.default_group_name
-            )
+            changeActiveGroup({
+              groupName:
+                getTranslations(selectedLanguage).other.default_group_name,
+            })
           )
 
           // Set the local isFetchingFirebaseData state to false.

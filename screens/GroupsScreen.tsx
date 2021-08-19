@@ -18,10 +18,12 @@ import {
 import { selector, useAppDispatch } from '../hooks'
 import { InfoAndGroupsForLanguage } from '../languages'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { removeDownload } from '../redux/actions/downloadActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
 import { deleteLanguageData } from '../redux/reducers/database'
+import { removeDownload } from '../redux/reducers/downloads'
 import { deleteGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -145,7 +147,7 @@ const GroupsScreen: FC<Props> = ({
           for (const item of contents) {
             if (item.slice(0, 2) === languageID) {
               FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-              dispatch(removeDownload(item.slice(0, 5)))
+              dispatch(removeDownload({ lessonID: item.slice(0, 5) }))
             }
           }
         }
@@ -173,7 +175,7 @@ const GroupsScreen: FC<Props> = ({
     if (isEditing) {
       setEditingGroup(group)
       setShowEditGroupModal(true)
-    } else dispatch(changeActiveGroup(group.name))
+    } else dispatch(changeActiveGroup({ groupName: group.name }))
   }
 
   const renderGroupListHeader = ({

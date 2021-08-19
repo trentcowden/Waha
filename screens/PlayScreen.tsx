@@ -45,7 +45,6 @@ import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
-import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
 import {
   setHasUsedPlayScreen,
   setLessonCounter,
@@ -56,6 +55,7 @@ import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { downloadMedia, removeDownload } from '../redux/reducers/downloads'
 import { addSet, toggleComplete } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -803,7 +803,7 @@ const PlayScreen: FC<Props> = ({
           isAudioDownloading.current &&
           downloads[thisLesson.id].progress === 1
         )
-          dispatch(removeDownload(thisLesson.id))
+          dispatch(removeDownload({ lessonID: thisLesson.id }))
         break
       case LessonType.STANDARD_DMC:
         if (
@@ -812,8 +812,8 @@ const PlayScreen: FC<Props> = ({
           downloads[thisLesson.id].progress === 1 &&
           downloads[thisLesson.id + 'v'].progress === 1
         ) {
-          dispatch(removeDownload(thisLesson.id))
-          dispatch(removeDownload(thisLesson.id + 'v'))
+          dispatch(removeDownload({ lessonID: thisLesson.id }))
+          dispatch(removeDownload({ lessonID: thisLesson.id + 'v' }))
         }
         break
       case LessonType.VIDEO_ONLY:
@@ -821,7 +821,7 @@ const PlayScreen: FC<Props> = ({
           isVideoDownloading.current &&
           downloads[thisLesson.id + 'v'].progress === 1
         )
-          dispatch(removeDownload(thisLesson.id + 'v'))
+          dispatch(removeDownload({ lessonID: thisLesson.id + 'v' }))
         break
     }
   }, [downloads[thisLesson.id], downloads[thisLesson.id + 'v']])

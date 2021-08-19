@@ -1,24 +1,25 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from 'redux/store'
-import {
-  ActiveGroupActionParams,
-  CHANGE_ACTIVE_GROUP
-} from '../actions/activeGroupActions'
 import { DBLanguageData } from '../reducers/database'
 import { Group } from '../reducers/groups'
-/**
- * The active group redux reducer that stores the name of the currently active group. This state is persisted across app restarts.
- */
-export function activeGroup (
-  state: string = '',
-  params: ActiveGroupActionParams
-) {
-  switch (params.type) {
-    case CHANGE_ACTIVE_GROUP:
-      return params.groupName
-    default:
-      return state
+
+const initialState = ''
+
+const activeGroup = createSlice({
+  name: 'activeGroup',
+  initialState,
+  reducers: {
+    changeActiveGroup: (
+      state,
+      action: PayloadAction<{ groupName: string }>
+    ) => {
+      return action.payload.groupName
+    }
   }
-}
+})
+
+export const { changeActiveGroup } = activeGroup.actions
+export default activeGroup.reducer
 
 /**
  * Takes in state and returns an object for the active group.

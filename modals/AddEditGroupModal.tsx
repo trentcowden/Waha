@@ -10,8 +10,10 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import ModalScreen from '../modals/ModalScreen'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
 import { createGroup, editGroup, Group } from '../redux/reducers/groups'
 import { incrementGlobalGroupCounter } from '../redux/reducers/languageInstallation'
 import { colors } from '../styles/colors'
@@ -121,7 +123,7 @@ const AddEditGroupModal: FC<Props> = ({
       )
 
     // Change the active group to the newly created group.
-    dispatch(changeActiveGroup(groupNameInput))
+    dispatch(changeActiveGroup({ groupName: groupNameInput }))
 
     // Increment the global group counter redux variable.
     dispatch(incrementGlobalGroupCounter())
@@ -134,7 +136,7 @@ const AddEditGroupModal: FC<Props> = ({
   const editGroupHandler = () => {
     // Change the active group to the newly edited group.
     if (thisGroup !== undefined && thisGroup.name === activeGroup.name)
-      dispatch(changeActiveGroup(groupNameInput))
+      dispatch(changeActiveGroup({ groupName: groupNameInput }))
 
     // Call editGroup() redux function.
     if (thisGroup !== undefined)

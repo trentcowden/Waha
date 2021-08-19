@@ -16,8 +16,10 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
 import { editGroup } from '../redux/reducers/groups'
 import { setHasOnboarded } from '../redux/reducers/languageInstallation'
 import { colors } from '../styles/colors'
@@ -79,7 +81,7 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     }
 
     // Change the active group to the newly edited group.
-    dispatch(changeActiveGroup(groupNameInput))
+    dispatch(changeActiveGroup({ groupName: groupNameInput }))
 
     // Call editGroup() redux function.
     dispatch(
