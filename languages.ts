@@ -13,6 +13,7 @@ export type LanguageID =
   | 'tr' // Turkish, in-progress
   | 'tu' // Tunisian Arabic, in-progress
   | 'ta' // Tarifit, in-progress
+  | 'fr' // French, in-progress
 
 export interface LanguageMetadata {
   // The ID for a language.
@@ -110,24 +111,48 @@ export const languages: LanguageFamilyMetadata[] = [
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
         },
         versions: undefined
+      },
+      {
+        languageID: 'ma',
+        nativeName: 'الدارجة المغربية',
+        brandName: 'معرفة الله',
+        contactEmail: 'hello@waha.app',
+        colors: {
+          light: '#006233',
+          dark: '#76B798'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+        },
+        versions: undefined
       }
-      // {
-      //   languageID: 'ma',
-      //   nativeName: 'الدارجة المغربية',
-      //   brandName: 'معرفة الله',
-      //   contactEmail: 'hello@waha.app',
-      //   colors: {
-      //     light: '#006233',
-      //     dark: '#76B798'
-      //   },
-      //   logos: {
-      //     light:
-      //       'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
-      //     dark:
-      //       'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
-      //   },
-      //   versions: undefined
-      // }
+    ]
+  },
+  {
+    languageFamilyID: 'fr',
+    font: 'Roboto',
+    isRTL: false,
+    data: [
+      {
+        languageID: 'fr',
+        nativeName: 'Français',
+        brandName: 'Découvrir Dieu',
+        contactEmail: 'developer@waha.app',
+        colors: {
+          light: '#318CE7',
+          dark: '#70AAE4'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/fr%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/fr%2Fother%2Fheader-dark.png?alt=media'
+        },
+        versions: undefined
+      }
     ]
   }
   // {

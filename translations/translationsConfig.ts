@@ -1,4 +1,5 @@
 import en from './en.json'
+import fr from './fr.json'
 import ga from './ga.json'
 import hc from './hc.json'
 import hi from './hi.json'
@@ -36,6 +37,8 @@ export const getTranslations = (languageID: string): Translations => {
       return ru
     case 'tr':
       return tr
+    case 'fr':
+      return fr
     default:
       return en
   }
