@@ -3470,7 +3470,7 @@
                             </translation>
                             <translation>
                                 <language>fr-FR</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>
@@ -3720,7 +3720,7 @@
                             </translation>
                             <translation>
                                 <language>fr-FR</language>
-                                <approved>false</approved>
+                                <approved>true</approved>
                             </translation>
                         </translations>
                     </concept_node>

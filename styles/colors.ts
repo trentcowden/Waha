@@ -1,6 +1,25 @@
 import { LanguageID, languages } from '../languages'
 
-type ColorName = string
+type ColorName =
+  | 'accent'
+  | 'brand'
+  | 'text'
+  | 'secondaryText'
+  | 'textOnColor'
+  | 'icons'
+  | 'disabled'
+  | 'bg1'
+  | 'bg2'
+  | 'bg3'
+  | 'bg4'
+  | 'success'
+  | 'successShadow'
+  | 'error'
+  | 'errorShadow'
+  | 'highlight'
+  | 'highlightShadow'
+  | 'bg1Shadow'
+
 type Color = string
 
 /**
@@ -20,9 +39,7 @@ export const colors = (
         if (language.versions !== undefined) {
           language.versions.forEach(version => {
             if (version.languageID === languageID) {
-              accentColor = isDark
-                ? language.colors.dark
-                : language.colors.light
+              accentColor = isDark ? version.colors.dark : version.colors.light
             }
           })
         } else {

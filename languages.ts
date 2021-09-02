@@ -15,40 +15,29 @@ export type LanguageID =
   | 'ta' // Tarifit, in-progress
   | 'fr' // French, in-progress
 
-export type LanguageMetadata =
-  // For a language that has versions.
-  | {
-      // The ID for a language.
-      languageID: LanguageID
-      // The name of a language in its own script, i.e. "English".
-      nativeName: string
-      // For languages that have multiple versions to choose from.
-      versions: LanguageMetadata[]
-    }
-  // For languages that don't have versions or languages that ARE versions.
-  | {
-      // The ID for a language.
-      languageID: LanguageID
-      // The name of a language in its own script, i.e. "English".
-      nativeName: string
-      // The name of the language's brand, i.e. "Discovering God".
-      brandName: string
-      // An email to send feedback to for users who are using a language.
-      contactEmail: string
-      // Accent colors for light mode and dark mode for a language in hex form.
-      colors: {
-        light: string
-        dark: string
-      }
-      // Links to the headers for light mode and dark mode for a language. Thought we download these with a language install, we need the links to display them on the <LanguageSelectScreen /> before the user has selected a language.
-      headers: {
-        light: string
-        dark: string
-      }
-      versions: undefined
-      // If this object is in the "versions" key for a language, the note would contain a brief description of who that version is targeted to. This helps users decide which version is best for them.
-      note?: string
-    }
+export type LanguageMetadata = {
+  // The ID for a language.
+  languageID: LanguageID
+  // The name of a language in its own script, i.e. "English".
+  nativeName: string
+  // The name of the language's brand, i.e. "Discovering God".
+  brandName: string
+  // An email to send feedback to for users who are using a language.
+  contactEmail: string
+  // Accent colors for light mode and dark mode for a language in hex form.
+  colors: {
+    light: string
+    dark: string
+  }
+  // Links to the headers for light mode and dark mode for a language. Thought we download these with a language install, we need the links to display them on the <LanguageSelectScreen /> before the user has selected a language.
+  headers: {
+    light: string
+    dark: string
+  }
+  versions?: LanguageMetadata[]
+  // If this object is in the "versions" key for a language, the note would contain a brief description of who that version is targeted to. This helps users decide which version is best for them.
+  note?: string
+}
 
 // Language families contain multiple languages as well as an ID, a font to be used for all languages in the family, and whether or not the languages in the family are right-to-left.
 export interface LanguageFamilyMetadata {
@@ -197,13 +186,24 @@ export const languages: LanguageFamilyMetadata[] = [
       {
         languageID: 'hi',
         nativeName: 'हिन्दी',
+        brandName: 'परमेश्वर को खोजना',
+        contactEmail: 'zach@quikmail.org',
+        colors: {
+          light: '#FF9933',
+          dark: '#FFC58B'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader-dark.png?alt=media'
+        },
         versions: [
           {
             languageID: 'hi',
             nativeName: 'हिन्दी',
             brandName: 'परमेश्वर को खोजना',
             contactEmail: 'zach@quikmail.org',
-            note: '',
             colors: {
               light: '#FF9933',
               dark: '#FFC58B'
@@ -211,16 +211,16 @@ export const languages: LanguageFamilyMetadata[] = [
             headers: {
               light:
                 'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
-              dark: ''
+              dark:
+                'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader-dark.png?alt=media'
             },
-            versions: undefined
+            note: 'उन लोगों के लिए जो हिंदी के साथ अधिक सहज हैं।'
           },
           {
             languageID: 'hc',
             nativeName: 'हिन्दी',
             brandName: 'इब्राहीम की औलाद',
             contactEmail: 'zach@quikmail.org',
-            note: '',
             colors: {
               light: '#2C7A1F',
               dark: '#89C17F'
@@ -228,9 +228,10 @@ export const languages: LanguageFamilyMetadata[] = [
             headers: {
               light:
                 'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
-              dark: ''
+              dark:
+                'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader-dark.png?alt=media'
             },
-            versions: undefined
+            note: 'उन लोगों के लिए जो उर्दू के साथ अधिक सहज हैं।'
           }
         ]
       }

@@ -15,6 +15,7 @@ interface Props extends CommonProps {
   // The name of the language in the active group's language.
   localeName: string
   headers: LanguageMetadata['headers']
+  versions: LanguageMetadata['versions']
   onLanguageItemPress: () => void
   isSelected: boolean
   playAudio: () => void
@@ -31,6 +32,7 @@ const LanguageItem: FC<Props> = ({
   localeName,
   isDark,
   headers,
+  versions,
   onLanguageItemPress,
   isSelected,
   playAudio,
@@ -47,6 +49,11 @@ const LanguageItem: FC<Props> = ({
           : isDark
           ? colors(isDark).bg2
           : colors(isDark).bg4,
+        height:
+          versions !== undefined
+            ? 80 * scaleMultiplier +
+              (versions.length - 1) * 20 * scaleMultiplier
+            : 80 * scaleMultiplier,
       }}
     >
       {/* The icon component is either a check mark if the language item is selected or a touchable volume icon which plays the name of the language if the language item isn't selected. */}
@@ -98,10 +105,24 @@ const LanguageItem: FC<Props> = ({
             {localeName}
           </Text>
         </View>
-        <Image
-          style={styles.headerImage}
-          source={{ uri: isDark ? headers.dark : headers.light }}
-        />
+        <View>
+          {versions !== undefined ? (
+            versions.map((version, index) => (
+              <Image
+                key={index}
+                style={styles.headerImage}
+                source={{
+                  uri: isDark ? version.headers.dark : version.headers.light,
+                }}
+              />
+            ))
+          ) : (
+            <Image
+              style={styles.headerImage}
+              source={{ uri: isDark ? headers.dark : headers.light }}
+            />
+          )}
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -109,7 +130,6 @@ const LanguageItem: FC<Props> = ({
 
 const styles = StyleSheet.create({
   languageItemContainer: {
-    height: 80 * scaleMultiplier,
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -126,6 +146,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     resizeMode: 'contain',
+    marginVertical: 10,
     width: 120 * scaleMultiplier,
     height: 16.8 * scaleMultiplier,
     marginHorizontal: 20,

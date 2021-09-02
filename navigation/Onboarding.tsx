@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { LanguageID } from 'languages'
+import { LanguageID, LanguageMetadata } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { View } from 'react-native'
 import { selector } from '../hooks'
@@ -11,6 +11,9 @@ import { colors } from '../styles/colors'
 
 export type OnboardingParams = {
   InitialLanguageSelect: undefined
+  InitialLanguageVersionSelect: {
+    languageWithVersions: LanguageMetadata
+  }
   WahaOnboardingSlides: {
     selectedLanguage: LanguageID
   }
@@ -49,6 +52,10 @@ const Onboarding: FC = ({}): ReactElement => {
         >
           <Stack.Screen
             name='InitialLanguageSelect'
+            component={LanguageSelectScreen}
+          />
+          <Stack.Screen
+            name='InitialLanguageVersionSelect'
             component={LanguageSelectScreen}
           />
           <Stack.Screen
