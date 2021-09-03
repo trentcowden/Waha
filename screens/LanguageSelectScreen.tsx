@@ -117,7 +117,7 @@ const LanguageSelectScreen: FC<Props> = ({
       ? info(Localization.locale.slice(0, 2) as LanguageID).languageID
       : activeGroup.language
   const languageInstallation = selector((state) => state.languageInstallation)
-
+  console.log(isConnected)
   type RouteConfigs = Record<typeof routeName, RouteConfig>
 
   const getRouteConfigs = (): RouteConfigs => {
@@ -517,7 +517,7 @@ const LanguageSelectScreen: FC<Props> = ({
           </TouchableOpacity>
         </SafeAreaView>
       )}
-      {routeConfig[routeName].heading1 !== null && (
+      {routeConfig[routeName].heading1 !== undefined && (
         <SafeAreaView style={styles.headerTextContainer}>
           <Text
             style={{

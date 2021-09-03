@@ -135,6 +135,7 @@ const SetInfoModal: FC<Props> = ({
               hideModal()
             }}
             extraContainerStyles={{ marginVertical: 10 }}
+            extraLabelStyles={{ flex: 1 }}
             label={t.sets.add_new_story_set}
             extraComponent={
               <Icon
