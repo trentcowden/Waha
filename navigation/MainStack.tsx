@@ -20,7 +20,7 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
-import { InfoAndGroupsForAllLanguages } from '../languages'
+import { InfoAndGroupsForAllLanguages, LanguageMetadata } from '../languages'
 import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
 import {
   setHasUsedPlayScreen,
@@ -66,6 +66,10 @@ export type MainStackParams = {
   Groups: undefined
   AddSet: { category: SetCategory }
   SubsequentLanguageSelect: {
+    installedLanguageInstances: InfoAndGroupsForAllLanguages
+  }
+  SubsequentLanguageVersionSelect: {
+    languageWithVersions: LanguageMetadata
     installedLanguageInstances: InfoAndGroupsForAllLanguages
   }
   Storage: undefined
@@ -406,6 +410,39 @@ const MainStack: FC<Props> = ({
         />
         <Stack.Screen
           name='SubsequentLanguageSelect'
+          component={LanguageSelectScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
+              elevation: 0,
+              shadowColor: 'transparent',
+            },
+            headerTitleStyle: {
+              color: colors(isDark).text,
+              fontFamily: font + '-Bold',
+            },
+            headerRight: isRTL
+              ? () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                )
+              : () => <View />,
+            headerLeft: isRTL
+              ? () => <View />
+              : () => (
+                  <WahaBackButton
+                    onPress={() => goBack()}
+                    isRTL={isRTL}
+                    isDark={isDark}
+                  />
+                ),
+          }}
+        />
+        <Stack.Screen
+          name='SubsequentLanguageVersionSelect'
           component={LanguageSelectScreen}
           options={{
             headerStyle: {

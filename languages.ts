@@ -1,5 +1,12 @@
 import { Group } from './redux/reducers/groups'
 
+/*
+  When adding a new language:
+    1. Add the language ID to the LanguageID type below.
+    2. If necessary, create a new language family for the language. 
+    3. Add the new language as an object in the data array of an existing or the new language family.
+*/
+
 // All of the available language IDs. Languages that are actually live are marked as such.
 export type LanguageID =
   | 'en' // English, live
@@ -13,8 +20,9 @@ export type LanguageID =
   | 'tr' // Turkish, in-progress
   | 'tu' // Tunisian Arabic, in-progress
   | 'ta' // Tarifit, in-progress
+  | 'fr' // French, in-progress
 
-export interface LanguageMetadata {
+export type LanguageMetadata = {
   // The ID for a language.
   languageID: LanguageID
   // The name of a language in its own script, i.e. "English".
@@ -33,7 +41,7 @@ export interface LanguageMetadata {
     light: string
     dark: string
   }
-  // For languages that have multiple versions to choose from.
+  // Some languages have multiple versions. This is basically a nested array of languages within a language.
   versions?: LanguageMetadata[]
   // If this object is in the "versions" key for a language, the note would contain a brief description of who that version is targeted to. This helps users decide which version is best for them.
   note?: string
@@ -84,8 +92,7 @@ export const languages: LanguageFamilyMetadata[] = [
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
           dark:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
-        },
-        versions: undefined
+        }
       }
     ]
   },
@@ -108,8 +115,7 @@ export const languages: LanguageFamilyMetadata[] = [
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader.png?alt=media',
           dark:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/ga%2Fother%2Fheader-dark.png?alt=media'
-        },
-        versions: undefined
+        }
       }
       // {
       //   languageID: 'ma',
@@ -120,62 +126,119 @@ export const languages: LanguageFamilyMetadata[] = [
       //     light: '#006233',
       //     dark: '#76B798'
       //   },
-      //   logos: {
+      //   headers: {
       //     light:
       //       'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
       //     dark:
       //       'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
-      //   },
-      //   versions: undefined
+      //   }
       // }
     ]
+  },
+  {
+    languageFamilyID: 'fr',
+    font: 'Roboto',
+    isRTL: false,
+    data: [
+      {
+        languageID: 'fr',
+        nativeName: 'Français',
+        brandName: 'Découvrir Dieu',
+        contactEmail: 'developer@waha.app',
+        colors: {
+          light: '#318CE7',
+          dark: '#70AAE4'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/fr%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/fr%2Fother%2Fheader-dark.png?alt=media'
+        }
+      }
+    ]
+  },
+  {
+    languageFamilyID: 'mr',
+    font: 'Roboto',
+    isRTL: false,
+    data: [
+      {
+        languageID: 'mr',
+        nativeName: 'मराठी',
+        brandName: 'देवाची शोध',
+        contactEmail: 'zach@quikmail.org',
+        colors: {
+          light: '#ff9933',
+          dark: '#FFC58B'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/mr%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/mr%2Fother%2Fheader-dark.png?alt=media'
+        }
+      }
+    ]
+  },
+  {
+    languageFamilyID: 'hi',
+    font: 'Roboto',
+    isRTL: false,
+    data: [
+      {
+        languageID: 'hi',
+        nativeName: 'हिन्दी',
+        // Some of this info is redundant due to Hindi having multiple versions. For instance, the brandName, contactEmail, colors, and headers will never be used here because only the 2 different versions will be used to get the language information. They're mostly here so that TypeScript doesn't freak out.
+        brandName: 'परमेश्वर को खोजना',
+        contactEmail: 'zach@quikmail.org',
+        colors: {
+          light: '#FF9933',
+          dark: '#FFC58B'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader-dark.png?alt=media'
+        },
+        versions: [
+          {
+            languageID: 'hi',
+            nativeName: 'हिन्दी',
+            brandName: 'परमेश्वर को खोजना',
+            contactEmail: 'zach@quikmail.org',
+            colors: {
+              light: '#FF9933',
+              dark: '#FFC58B'
+            },
+            headers: {
+              light:
+                'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
+              dark:
+                'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader-dark.png?alt=media'
+            },
+            note: 'उन लोगों के लिए जो हिंदी के साथ अधिक सहज हैं।'
+          },
+          {
+            languageID: 'hc',
+            nativeName: 'हिन्दी',
+            brandName: 'इब्राहीम की औलाद',
+            contactEmail: 'zach@quikmail.org',
+            colors: {
+              light: '#2C7A1F',
+              dark: '#89C17F'
+            },
+            headers: {
+              light:
+                'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
+              dark:
+                'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader-dark.png?alt=media'
+            },
+            note: 'उन लोगों के लिए जो उर्दू के साथ अधिक सहज हैं।'
+          }
+        ]
+      }
+    ]
   }
-  // {
-  //   languageFamilyID: 'hi',
-  //   i18nKey: 'hindi',
-  //   font: 'Roboto',
-  //   isRTL: false,
-  //   data: [
-  //     {
-  //       languageID: 'hi',
-  //       i18nKey: 'hindi',
-  //       nativeName: 'हिन्दी',
-  //       font: 'Roboto',
-  //       versions: [
-  //         {
-  //           languageID: 'hi',
-  //           brandName: 'परमेश्वर को खोजना',
-  //           contactEmail: 'zach@quikmail.org',
-  //           note: 'Recommended for Hindi backgrounds',
-  //           colors: {
-  //             light: '#FF9933',
-  //             dark: '#FFC58B'
-  //           },
-  //           logos: {
-  //             light:
-  //               'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hi%2Fother%2Fheader.png?alt=media',
-  //             dark: ''
-  //           },
-  //           versions: null
-  //         },
-  //         {
-  //           languageID: 'hc',
-  //           brandName: 'इब्राहीम की औलाद',
-  //           contactEmail: 'zach@quikmail.org',
-  //           note: 'Recommended for Muslim backgrounds',
-  //           colors: {
-  //             light: '#2C7A1F',
-  //             dark: '#89C17F'
-  //           },
-  //           logos: {
-  //             light:
-  //               'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/hc%2Fother%2Fheader.png?alt=media',
-  //             dark: ''
-  //           },
-  //           versions: null
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // }
 ]

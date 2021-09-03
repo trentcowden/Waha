@@ -242,7 +242,7 @@ const LessonTextContent: FC<Props> = ({
               </View>
             ))}
           {/* <WahaSeparator isDark={isDark} /> */}
-          {t.general.copyrights !== '' && (
+          {t.general.copyrights !== '' ? (
             <TouchableOpacity
               onPress={() => {
                 if (setShowCopyrightsModal) setShowCopyrightsModal(true)
@@ -295,6 +295,8 @@ const LessonTextContent: FC<Props> = ({
               />
             </View> */}
             </TouchableOpacity>
+          ) : (
+            <View style={{ height: 25 }} />
           )}
           {/* <WahaSeparator isDark={isDark} /> */}
           {/* Header for application section. */}
