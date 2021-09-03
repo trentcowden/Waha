@@ -6,11 +6,11 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { scaleMultiplier } from '../constants'
 import { logUnlockMobilizationTools } from '../functions/analyticsFunctions'
 import { selector, useAppDispatch } from '../hooks'
-import { setMTUnlockTimeout } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { setAreMobilizationToolsUnlocked } from '../redux/reducers/areMobilizationToolsUnlocked'
 import { setMTUnlockAttempts } from '../redux/reducers/mtUnlockAttempts'
 import { setShowMTTabAddedSnackbar } from '../redux/reducers/popups'
+import { setMTUnlockTimeout } from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -53,7 +53,7 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
   useEffect(() => {
     if (mtUnlockAttempts === 5) {
       dispatch(setMTUnlockAttempts({ numAttempts: 0 }))
-      dispatch(setMTUnlockTimeout(Date.now() + 1800000))
+      dispatch(setMTUnlockTimeout({ time: Date.now() + 1800000 }))
     }
   }, [mtUnlockAttempts])
 

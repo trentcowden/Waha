@@ -22,7 +22,6 @@ import { selector, useAppDispatch } from '../hooks'
 import { SetCategory } from '../interfaces/setAndLessonInfo'
 import { InfoAndGroupsForAllLanguages, LanguageMetadata } from '../languages'
 import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
-import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setHasUsedPlayScreen,
@@ -30,6 +29,7 @@ import {
   setNumLessonsTilReview,
   setReviewTimeout,
 } from '../redux/reducers/persistedPopups'
+import { setIsTimedOut, setTimer } from '../redux/reducers/security'
 import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
@@ -157,7 +157,7 @@ const MainStack: FC<Props> = ({
       if (Platform.OS === 'ios') navigate('Splash')
 
       // Store the current time for security mode timeout checking later.
-      dispatch(setTimer(Date.now()))
+      dispatch(setTimer({ ms: Date.now() }))
     } else if (appState === 'active') {
       // If we're past our review timeout, request a review and reset the timeout.
       if (reviewTimeout !== undefined && Date.now() > reviewTimeout) {
@@ -173,7 +173,7 @@ const MainStack: FC<Props> = ({
         } else {
           // If we are now timed out, set isTimedOut to true and navigate to the piano screen.
           if (Date.now() - security.timer > security.timeoutDuration) {
-            dispatch(setIsTimedOut(true))
+            dispatch(setIsTimedOut({ toSet: true }))
             navigate('PianoApp')
             // Otherwise, if we haven't timed out yet, on Android, do nothing. On iOS, we will have navigated to the splash screen upon coming back into the app so we have to go back to get back to the screen we were on before.
           } else {

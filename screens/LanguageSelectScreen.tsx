@@ -34,7 +34,6 @@ import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
-import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import {
   activeGroupSelector,
   changeActiveGroup,
@@ -52,6 +51,7 @@ import {
   setHasFetchedLanguageData,
   setRecentActiveGroup,
 } from '../redux/reducers/languageInstallation'
+import { setIsDarkModeEnabled } from '../redux/reducers/settings'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -196,8 +196,9 @@ const LanguageSelectScreen: FC<Props> = ({
       // Create our first group.
 
       // Set color mode to the phone's current setting (light or dark mode).
-      if (colorScheme === 'dark') dispatch(setIsDarkModeEnabled(true))
-      else dispatch(setIsDarkModeEnabled(false))
+      if (colorScheme === 'dark')
+        dispatch(setIsDarkModeEnabled({ toSet: true }))
+      else dispatch(setIsDarkModeEnabled({ toSet: false }))
     }
   }, [])
 

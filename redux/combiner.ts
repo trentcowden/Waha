@@ -10,9 +10,9 @@ import mtUnlockAttempts from './reducers/mtUnlockAttempts'
 import network from './reducers/network'
 import persistedPopups from './reducers/persistedPopups'
 import popups from './reducers/popups'
-import { security } from './reducers/security'
-import { settings } from './reducers/settings'
-import { storedDownloads } from './reducers/storedDownloads'
+import security from './reducers/security'
+import settings from './reducers/settings'
+import storedDownloads from './reducers/storedDownloads'
 
 /**
  * Combines all the different reducers together using the combineReducers redux function.

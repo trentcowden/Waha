@@ -19,8 +19,8 @@ import Piano from '../components/Piano'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
-import { setIsMuted, setIsTimedOut } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { setIsMuted, setIsTimedOut } from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -82,7 +82,7 @@ const PianoAppScreen: FC<Props> = ({
       // If the user hasn't muted the piano app sounds, play a little sound effect when they enter their passcode correctly.
       if (!security.isMuted) unlockSound.current.playAsync()
 
-      dispatch(setIsTimedOut(false))
+      dispatch(setIsTimedOut({ toSet: false }))
 
       // Because this screen is on top of all other screens in terms of the navigation stack, the way we get back to what was on the screen before security mode was activated is to simply go back. If we can't go back, then just reset to the starting screen.
       if (canGoBack()) {
@@ -223,8 +223,8 @@ const PianoAppScreen: FC<Props> = ({
           <TouchableOpacity
             onPress={
               security.isMuted
-                ? () => dispatch(setIsMuted(false))
-                : () => dispatch(setIsMuted(true))
+                ? () => dispatch(setIsMuted({ toSet: false }))
+                : () => dispatch(setIsMuted({ toSet: true }))
             }
             style={{
               margin: 20,

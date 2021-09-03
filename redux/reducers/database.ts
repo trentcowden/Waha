@@ -7,7 +7,6 @@ import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { logInstallLanguage } from '../../functions/analyticsFunctions'
 import { LanguageID } from '../../languages'
-import { storeDownloads } from '../actions/storedDownloadsActions'
 import { setIsInstallingLanguageInstance } from '../reducers/isInstallingLanguageInstance'
 import {
   clearLanguageCoreFilesToUpdate,
@@ -18,6 +17,7 @@ import {
   storeActingLanguageID,
   storeLanguageCoreFileCreatedTime
 } from '../reducers/languageInstallation'
+import { storeDownloads } from '../reducers/storedDownloads'
 import { AppDispatch, RootState } from '../store'
 
 // Waha's local database is an object where the 2-character language ID's are keys and the language's data are the values.
@@ -199,7 +199,7 @@ export function downloadLanguageCoreFiles (
     })
 
     // Store our download resumables array in redux so that we can cancel them later if necessary.
-    dispatch(storeDownloads(filesToDownload))
+    dispatch(storeDownloads({ resumables: filesToDownload }))
 
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
@@ -252,7 +252,7 @@ export function downloadLanguageCoreFiles (
           dispatch(setLanguageCoreFilesDownloadProgress({ progress: 0 }))
 
           // Clear stored downloads.
-          dispatch(storeDownloads([]))
+          dispatch(storeDownloads({ resumables: [] }))
 
           // Set the setTotalLanguageCoreFilesToDownload to the number of files to download for this language. I think this is only here to avoid divide-by-zero errors but I'm not sure. I'm just too scared to delete it.
           dispatch(setTotalLanguageCoreFilesToDownload({ filesToDownload: 1 }))
@@ -341,7 +341,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
     })
 
     // Store out download resumables array in redux.
-    dispatch(storeDownloads(filesToDownload))
+    dispatch(storeDownloads({ resumables: filesToDownload }))
 
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
@@ -384,7 +384,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
         dispatch(setLanguageCoreFilesDownloadProgress({ progress: 0 }))
 
         // Clear stored downloads.
-        dispatch(storeDownloads([]))
+        dispatch(storeDownloads({ resumables: [] }))
 
         // I think this is only here to avoid divide-by-zero errors but I'm not sure. I'm just too scared to delete it.
         dispatch(setTotalLanguageCoreFilesToDownload({ filesToDownload: 1 }))

@@ -12,11 +12,11 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setSecurityEnabled,
   setTimeoutDuration,
-} from '../redux/actions/securityActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+} from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -99,8 +99,8 @@ const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
               // If we have never enabled security mode before (meaning we have never set a code), then navigate to the security onboarding slides. Otherwise, toggle security mode on or off.
               if (security.code)
                 if (security.securityEnabled)
-                  dispatch(setSecurityEnabled(false))
-                else dispatch(setSecurityEnabled(true))
+                  dispatch(setSecurityEnabled({ toSet: false }))
+                else dispatch(setSecurityEnabled({ toSet: true }))
               else navigate('SecurityOnboardingSlides')
             }}
             value={security.securityEnabled}
@@ -173,7 +173,7 @@ const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
         t={t}
         activeGroup={activeGroup}
         setTimeoutDuration={(duration: number) =>
-          dispatch(setTimeoutDuration(duration))
+          dispatch(setTimeoutDuration({ ms: duration }))
         }
       />
       <SnackBar

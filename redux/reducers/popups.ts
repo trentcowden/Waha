@@ -5,7 +5,7 @@ export interface PopupsState {
   showPasscodeSetSnackbar: boolean
 }
 
-const initialState = {
+const initialState: PopupsState = {
   showMTTabAddedSnackbar: false,
   showPasscodeSetSnackbar: false
 }

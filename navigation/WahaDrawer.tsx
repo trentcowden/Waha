@@ -10,10 +10,10 @@ import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { updateLanguageCoreFiles } from '../redux/reducers/database'
 import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
+import { setIsDarkModeEnabled } from '../redux/reducers/settings'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -152,7 +152,9 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
         />
         <DrawerItem
           icon={isDark ? 'sun' : 'moon'}
-          onPress={() => dispatch(setIsDarkModeEnabled(isDark ? false : true))}
+          onPress={() =>
+            dispatch(setIsDarkModeEnabled({ toSet: isDark ? false : true }))
+          }
           label={isDark ? t.general.light_mode : t.general.dark_mode}
           isRTL={isRTL}
           isDark={isDark}

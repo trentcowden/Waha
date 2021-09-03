@@ -18,9 +18,9 @@ import { logEnableSecurityMode } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { selector, useAppDispatch } from '../hooks'
 import { WahaButtonMode } from '../interfaces/components'
-import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { setShowPasscodeSetSnackbar } from '../redux/reducers/popups'
+import { setCode, setSecurityEnabled } from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -120,8 +120,8 @@ const PianoPasscodeSetScreen: FC<Props> = ({
             // Log the enabling of Security Mode in Firebase analytics.
             logEnableSecurityMode(activeGroup.id)
 
-            dispatch(setSecurityEnabled(true))
-            dispatch(setCode(passcode))
+            dispatch(setSecurityEnabled({ toSet: true }))
+            dispatch(setCode({ code: passcode }))
             goBack()
             goBack()
             goBack()
@@ -150,8 +150,8 @@ const PianoPasscodeSetScreen: FC<Props> = ({
               () => dispatch(setShowPasscodeSetSnackbar({ toSet: false })),
               2000
             )
-            dispatch(setSecurityEnabled(true))
-            dispatch(setCode(localPasscode))
+            dispatch(setSecurityEnabled({ toSet: true }))
+            dispatch(setCode({ code: localPasscode }))
             goBack()
             goBack()
           } // Otherwise, show an alert that the passcodes don't match.

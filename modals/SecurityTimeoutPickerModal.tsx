@@ -13,8 +13,9 @@ interface Props extends CommonProps, AGProps, TProps {
   isVisible: boolean
   hideModal: () => void
   security: SecurityState
-  setTimeoutDuration: (duration: number) => void
+  setTimeoutDuration: (ms: number) => void
 }
+
 /**
  * A modal that allows the user to change the security timeout. Displays a list of options using the OptionsModal component.
  * @param {boolean} isVisible - Whether the modal should be visible or not.
