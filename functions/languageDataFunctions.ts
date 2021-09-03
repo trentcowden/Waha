@@ -5,7 +5,6 @@ import {
   LanguageFamilyMetadata,
   LanguageID,
   LanguageInfo,
-  LanguageMetadata,
   languages
 } from '../languages'
 import { Database } from '../redux/reducers/database'
@@ -124,9 +123,17 @@ export const getAllLanguagesData = (
       return {
         ...languageFamily,
         data: languageFamily.data.filter(language => {
+          if (language.versions !== undefined) {
+            return !language.versions.every(version =>
+              installedLanguageInstances.some(
+                installedLanguage =>
+                  installedLanguage.languageID === version.languageID
+              )
+            )
+          }
           if (
             installedLanguageInstances.some(
-              (installedLanguage: LanguageMetadata) =>
+              installedLanguage =>
                 installedLanguage.languageID === language.languageID
             )
           ) {

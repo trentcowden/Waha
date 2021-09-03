@@ -1,4 +1,5 @@
 import en from './en.json'
+import fr from './fr.json'
 import ga from './ga.json'
 import hc from './hc.json'
 import hi from './hi.json'
@@ -10,7 +11,23 @@ import tr from './tr.json'
 
 export type TranslationGroup = Record<string, string>
 
-export type Translations = Record<string, TranslationGroup>
+export type Translations = Record<
+  | 'contact_us'
+  | 'general'
+  | 'groups'
+  | 'information'
+  | 'language_select'
+  | 'languages'
+  | 'lessons'
+  | 'mobilization_tools'
+  | 'onboarding'
+  | 'other'
+  | 'play'
+  | 'security'
+  | 'sets'
+  | 'storage',
+  TranslationGroup
+>
 
 /**
  * Gets the translation object for a language given its ID. Note: the parameter is not of type LanguageID because it's possible this function will be called with a language that isn't on Waha. When this happens, we want to return English. There are also keys in the switch statement below that aren't actual languages in Waha. This is because we sometimes need translations based off of a user's phone language. For instance, if a user's phone is set to Arabic, or "ar", we want to return a relevant translations object even though Arabic isn't a language on Waha. Instead, we return the Gulf Arabic translations object.
@@ -36,6 +53,8 @@ export const getTranslations = (languageID: string): Translations => {
       return ru
     case 'tr':
       return tr
+    case 'fr':
+      return fr
     default:
       return en
   }

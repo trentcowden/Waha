@@ -10,11 +10,13 @@ import {
   Alert,
   Animated,
   Dimensions,
+  FlatList,
   SafeAreaView,
   SectionList,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native'
 import { useColorScheme } from 'react-native-appearance'
@@ -22,6 +24,7 @@ import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
+import LanguageVersionItem from '../components/LanguageVersionItem'
 import WahaButton from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
@@ -57,15 +60,29 @@ type LanguageSelectScreenNavigationProp = StackNavigationProp<
   OnboardingParams,
   'InitialLanguageSelect'
 > &
-  StackNavigationProp<MainStackParams, 'SubsequentLanguageSelect'>
+  StackNavigationProp<OnboardingParams, 'InitialLanguageVersionSelect'> &
+  StackNavigationProp<MainStackParams, 'SubsequentLanguageSelect'> &
+  StackNavigationProp<MainStackParams, 'SubsequentLanguageVersionSelect'>
 
 type LanguageSelectScreenRouteProp =
   | RouteProp<OnboardingParams, 'InitialLanguageSelect'>
+  | RouteProp<OnboardingParams, 'InitialLanguageVersionSelect'>
   | RouteProp<MainStackParams, 'SubsequentLanguageSelect'>
+  | RouteProp<MainStackParams, 'SubsequentLanguageVersionSelect'>
 
 interface Props {
   navigation: LanguageSelectScreenNavigationProp
   route: LanguageSelectScreenRouteProp
+}
+
+interface RouteConfig {
+  shouldShowHeaderTitle: boolean
+  heading1: string | undefined
+  heading2: string | undefined
+  shouldShowSearchBar: boolean
+  shouldShowTopMessages: boolean
+  shouldGoToOnboarding: boolean
+  contentToShow: 'languages' | 'versions'
 }
 
 /**
@@ -76,11 +93,12 @@ interface Props {
  * @param {string} installedLanguageInstances[].languageName - The name of the language.
  */
 const LanguageSelectScreen: FC<Props> = ({
-  navigation: { setOptions, navigate },
+  navigation: { setOptions, navigate, goBack },
   route: {
     name: routeName,
-    params: { installedLanguageInstances } = {
+    params: { installedLanguageInstances, languageWithVersions } = {
       installedLanguageInstances: [],
+      languageWithVersions: {},
     },
   },
 }) => {
@@ -101,10 +119,60 @@ const LanguageSelectScreen: FC<Props> = ({
       ? info(Localization.locale.slice(0, 2) as LanguageID).languageID
       : activeGroup.language
   const languageInstallation = selector((state) => state.languageInstallation)
+  console.log(isConnected)
+  type RouteConfigs = Record<typeof routeName, RouteConfig>
 
+  const getRouteConfigs = (): RouteConfigs => {
+    return {
+      InitialLanguageSelect: {
+        shouldShowHeaderTitle: false,
+        heading1: t.language_select.welcome,
+        heading2: t.language_select.select_language,
+        shouldShowTopMessages: true,
+        shouldShowSearchBar: true,
+        shouldGoToOnboarding: true,
+        contentToShow: 'languages',
+      },
+      SubsequentLanguageSelect: {
+        shouldShowHeaderTitle: true,
+        heading1: undefined,
+        heading2: undefined,
+        shouldShowTopMessages: false,
+        shouldShowSearchBar: true,
+        shouldGoToOnboarding: false,
+        contentToShow: 'languages',
+      },
+      InitialLanguageVersionSelect: {
+        shouldShowHeaderTitle: false,
+        heading1: t.language_select.multiple_versions,
+        heading2: t.language_select.select_version,
+        shouldShowTopMessages: true,
+        shouldShowSearchBar: false,
+        shouldGoToOnboarding: true,
+        contentToShow: 'versions',
+      },
+      SubsequentLanguageVersionSelect: {
+        shouldShowHeaderTitle: true,
+        heading1: t.language_select.multiple_versions,
+        heading2: t.language_select.select_version,
+        shouldShowTopMessages: true,
+        shouldShowSearchBar: false,
+        shouldGoToOnboarding: false,
+        contentToShow: 'versions',
+      },
+    }
+  }
+
+  const [routeConfig, setRouteConfig] = useState<RouteConfigs>(
+    getRouteConfigs()
+  )
+
+  useEffect(() => {
+    setRouteConfig(getRouteConfigs())
+  }, [screenLanguage, routeName])
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState<
-    LanguageID | undefined
+    LanguageMetadata | undefined
   >()
 
   const dispatch = useAppDispatch()
@@ -142,11 +210,19 @@ const LanguageSelectScreen: FC<Props> = ({
    * Plays the text-to-speech audio file for a language.
    * @param {string} languageID - The ID of the language to play.
    */
-  const playAudio = async (languageID: LanguageID) => {
+  const playAudio = async (
+    languageID: LanguageID,
+    type: 'language' | 'brand'
+  ) => {
     audio.unloadAsync()
-    await audio.loadAsync(languageT2S[languageID]).then(() => {
-      audio.playAsync()
-    })
+    if (type === 'brand') {
+      await audio.loadAsync(languageT2S[`${languageID}_brandname`]).then(() => {
+        audio.playAsync()
+      })
+    } else
+      await audio.loadAsync(languageT2S[languageID]).then(() => {
+        audio.playAsync()
+      })
   }
 
   /**
@@ -224,78 +300,95 @@ const LanguageSelectScreen: FC<Props> = ({
 
   /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to navigate to the onboarding slides too. */
   const onStartPress = () => {
-    if (selectedLanguage)
-      fetchFirebaseData(selectedLanguage)
-        .then(() => {
-          // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
-          dispatch(setHasFetchedLanguageData({ toSet: true }))
+    if (selectedLanguage) {
+      const selectedLanguageID = selectedLanguage.languageID
+      if (selectedLanguage.versions !== undefined) {
+        if (routeName === 'InitialLanguageSelect')
+          navigate('InitialLanguageVersionSelect', {
+            languageWithVersions: selectedLanguage,
+          })
+        else if (routeName === 'SubsequentLanguageSelect')
+          navigate('SubsequentLanguageVersionSelect', {
+            languageWithVersions: selectedLanguage,
+            installedLanguageInstances: installedLanguageInstances,
+          })
+      } else
+        fetchFirebaseData(selectedLanguageID)
+          .then(() => {
+            // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
+            dispatch(setHasFetchedLanguageData({ toSet: true }))
 
-          // If we're adding a subsequent language instance, then we need to store the active group's language
-          if (activeGroup)
-            dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
+            // If we're adding a subsequent language instance, then we need to store the active group's language
+            if (activeGroup)
+              dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
 
-          // Start downloading the core files for this language.
-          dispatch(downloadLanguageCoreFiles(selectedLanguage))
+            // Start downloading the core files for this language.
+            dispatch(downloadLanguageCoreFiles(selectedLanguageID))
 
-          // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
-          if (
-            !groups.some(
-              (group) =>
-                group.name ===
-                getTranslations(selectedLanguage).other.default_group_name
-            )
-          ) {
-            dispatch(incrementGlobalGroupCounter())
+            // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
+            if (
+              !groups.some(
+                (group) =>
+                  group.name ===
+                  getTranslations(selectedLanguageID).other.default_group_name
+              )
+            ) {
+              dispatch(incrementGlobalGroupCounter())
 
+              dispatch(
+                createGroup({
+                  groupName:
+                    getTranslations(selectedLanguageID).other
+                      .default_group_name,
+                  language: selectedLanguageID,
+                  emoji: 'default',
+                  shouldShowMobilizationToolsTab: true,
+                  groupID: languageInstallation.globalGroupCounter,
+                  groupNumber: groups.length + 1,
+                })
+              )
+            }
+
+            // Change the active group to the new group we just created.
             dispatch(
-              createGroup({
+              changeActiveGroup({
                 groupName:
-                  getTranslations(selectedLanguage).other.default_group_name,
-                language: selectedLanguage,
-                emoji: 'default',
-                shouldShowMobilizationToolsTab: true,
-                groupID: languageInstallation.globalGroupCounter,
-                groupNumber: groups.length + 1,
+                  getTranslations(selectedLanguageID).other.default_group_name,
               })
             )
-          }
 
-          // Change the active group to the new group we just created.
-          dispatch(
-            changeActiveGroup({
-              groupName:
-                getTranslations(selectedLanguage).other.default_group_name,
-            })
-          )
+            // Set the local isFetchingFirebaseData state to false.
+            setIsFetchingFirebaseData(false)
 
-          // Set the local isFetchingFirebaseData state to false.
-          setIsFetchingFirebaseData(false)
+            // Navigate to the onboarding slides if this is the first language instance install.
+            if (
+              routeName === 'InitialLanguageSelect' ||
+              routeName === 'InitialLanguageVersionSelect'
+            ) {
+              navigate('WahaOnboardingSlides', {
+                selectedLanguage: selectedLanguageID,
+              })
+            }
+          })
+          .catch((error) => {
+            console.log(error)
 
-          // Navigate to the onboarding slides if this is the first language instance install.
-          if (routeName === 'InitialLanguageSelect') {
-            navigate('WahaOnboardingSlides', {
-              selectedLanguage: selectedLanguage,
-            })
-          }
-        })
-        .catch((error) => {
-          console.log(error)
+            // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
+            setIsFetchingFirebaseData(false)
+            dispatch(deleteLanguageData({ languageID: selectedLanguageID }))
 
-          // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
-          setIsFetchingFirebaseData(false)
-          dispatch(deleteLanguageData({ languageID: selectedLanguage }))
-
-          Alert.alert(
-            t.language_select.fetch_error_title,
-            t.language_select.fetch_error_message,
-            [
-              {
-                text: t.general.ok,
-                onPress: () => {},
-              },
-            ]
-          )
-        })
+            Alert.alert(
+              t.language_select.fetch_error_title,
+              t.language_select.fetch_error_message,
+              [
+                {
+                  text: t.general.ok,
+                  onPress: () => {},
+                },
+              ]
+            )
+          })
+    }
   }
 
   const handleLanguageItemPress = (language: LanguageMetadata) => {
@@ -305,7 +398,21 @@ const LanguageSelectScreen: FC<Props> = ({
         useNativeDriver: true,
       }).start()
     }
-    setSelectedLanguage(language.languageID)
+    setSelectedLanguage(language)
+  }
+
+  const getLanguageVersions = (language: LanguageMetadata) => {
+    if (language.versions) {
+      if (installedLanguageInstances)
+        return language.versions.filter(
+          (version) =>
+            !installedLanguageInstances.some(
+              (installedLanguage) =>
+                installedLanguage.languageID === version.languageID
+            )
+        )
+      else return language.versions
+    } else return []
   }
 
   /**
@@ -321,11 +428,18 @@ const LanguageSelectScreen: FC<Props> = ({
       localeName={t.languages[language.languageID]}
       headers={language.headers}
       onLanguageItemPress={() => handleLanguageItemPress(language)}
-      isSelected={selectedLanguage === language.languageID ? true : false}
-      playAudio={() => playAudio(language.languageID)}
+      isSelected={
+        selectedLanguage
+          ? selectedLanguage.languageID === language.languageID
+            ? true
+            : false
+          : false
+      }
+      playAudio={() => playAudio(language.languageID, 'language')}
       isDark={isDark}
       isRTL={isRTL}
       screenLanguage={screenLanguage}
+      versions={language.versions}
     />
   )
 
@@ -357,15 +471,60 @@ const LanguageSelectScreen: FC<Props> = ({
     </View>
   )
 
+  const renderLanguageVersionItem = ({ item }: { item: LanguageMetadata }) => (
+    <LanguageVersionItem
+      languageID={item.languageID}
+      headers={item.headers}
+      brandName={item.brandName}
+      note={item.note ? item.note : ''}
+      isSelected={
+        selectedLanguage
+          ? selectedLanguage.languageID === item.languageID
+            ? true
+            : false
+          : false
+      }
+      onPress={() => {
+        if (!selectedLanguage) {
+          Animated.spring(buttonYPos, {
+            toValue: 0,
+            useNativeDriver: true,
+          }).start()
+        }
+        setSelectedLanguage(item)
+      }}
+      playAudio={() => playAudio(item.languageID, 'brand')}
+      isRTL={isRTL}
+      isDark={isDark}
+    />
+  )
   return (
-    <SafeAreaView
+    <View
       style={{
         ...styles.screen,
         backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
-      {routeName === 'InitialLanguageSelect' && (
-        <View style={styles.headerTextContainer}>
+      {routeName === 'InitialLanguageVersionSelect' && (
+        <SafeAreaView style={{ width: '100%' }}>
+          <TouchableOpacity
+            style={{
+              alignSelf: isRTL ? 'flex-end' : 'flex-start',
+              width: 100,
+              alignItems: isRTL ? 'flex-end' : 'flex-start',
+            }}
+            onPress={() => goBack()}
+          >
+            <Icon
+              name={isRTL ? 'arrow-right' : 'arrow-left'}
+              size={45 * scaleMultiplier}
+              color={colors(isDark).icons}
+            />
+          </TouchableOpacity>
+        </SafeAreaView>
+      )}
+      {routeConfig[routeName].heading1 !== undefined && (
+        <SafeAreaView style={styles.headerTextContainer}>
           <Text
             style={{
               ...type(
@@ -378,7 +537,7 @@ const LanguageSelectScreen: FC<Props> = ({
               fontSize: 28 * scaleMultiplier,
             }}
           >
-            {t.language_select.welcome}
+            {routeConfig[routeName].heading1}
           </Text>
           <View style={{ height: 5 }} />
           <Text
@@ -390,67 +549,85 @@ const LanguageSelectScreen: FC<Props> = ({
               colors(isDark).text
             )}
           >
-            {t.language_select.select_language}
+            {routeConfig[routeName].heading2}
           </Text>
-        </View>
+        </SafeAreaView>
       )}
-      <View
-        style={{
-          ...styles.searchBarContainer,
-          flexDirection: isRTL ? 'row-reverse' : 'row',
-          width: Dimensions.get('window').width - 40,
-          maxWidth: 500,
-          borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
-          backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
-        }}
-      >
-        <View style={styles.searchIconContainer}>
-          <Icon
-            name='search'
-            size={25 * scaleMultiplier}
-            color={colors(isDark).disabled}
+      {routeConfig[routeName].shouldShowSearchBar && (
+        <View
+          style={{
+            ...styles.searchBarContainer,
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            width: Dimensions.get('window').width - 40,
+            maxWidth: 500,
+            borderColor: isDark ? colors(isDark).bg4 : colors(isDark).bg1,
+            backgroundColor: isDark ? colors(isDark).bg2 : colors(isDark).bg4,
+          }}
+        >
+          <View style={styles.searchIconContainer}>
+            <Icon
+              name='search'
+              size={25 * scaleMultiplier}
+              color={colors(isDark).disabled}
+            />
+          </View>
+          <TextInput
+            style={{
+              ...type(
+                screenLanguage,
+                'h3',
+                'Regular',
+                'left',
+                colors(isDark).text
+              ),
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onChangeText={(text) => setSearchTextInput(text)}
+            autoCorrect={false}
+            autoCapitalize='none'
+            placeholder={t.general.search}
+            placeholderTextColor={colors(isDark).secondaryText}
           />
         </View>
-        <TextInput
-          style={{
-            ...type(
-              screenLanguage,
-              'h3',
-              'Regular',
-              'left',
-              colors(isDark).text
-            ),
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onChangeText={(text) => setSearchTextInput(text)}
-          autoCorrect={false}
-          autoCapitalize='none'
-          placeholder={t.general.search}
-          placeholderTextColor={colors(isDark).secondaryText}
-        />
-      </View>
+      )}
       <View style={styles.languageListContainer}>
-        <SectionList
-          style={{ height: '100%' }}
-          sections={getAllLanguagesData(
-            t,
-            installedLanguageInstances,
-            searchTextInput
-          )}
-          ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
-          SectionSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
-          keyExtractor={(item) => item.languageID}
-          renderItem={({ item }) => renderLanguageItem(item)}
-          renderSectionHeader={({ section }) => renderLanguageHeader(section)}
-          renderSectionFooter={() => (
-            <View style={{ height: 20 * scaleMultiplier, width: '100%' }} />
-          )}
-          ListFooterComponent={() => (
-            <View style={{ width: '100%', height: 100 * scaleMultiplier }} />
-          )}
-        />
+        {routeConfig[routeName].contentToShow === 'languages' ? (
+          <SectionList
+            style={{ height: '100%' }}
+            sections={getAllLanguagesData(
+              t,
+              installedLanguageInstances,
+              searchTextInput
+            )}
+            ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
+            SectionSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
+            keyExtractor={(item) => item.languageID}
+            renderItem={({ item }) => renderLanguageItem(item)}
+            renderSectionHeader={({ section }) => renderLanguageHeader(section)}
+            renderSectionFooter={() => (
+              <View style={{ height: 20 * scaleMultiplier, width: '100%' }} />
+            )}
+            ListFooterComponent={() => (
+              <View style={{ width: '100%', height: 100 * scaleMultiplier }} />
+            )}
+          />
+        ) : (
+          <FlatList
+            style={{
+              height: '100%',
+              width: '100%',
+              paddingVertical: 20 * scaleMultiplier,
+            }}
+            keyExtractor={(item) => item.languageID}
+            data={getLanguageVersions(languageWithVersions)}
+            renderItem={renderLanguageVersionItem}
+            ItemSeparatorComponent={() => (
+              <View style={{ height: 20 * scaleMultiplier }} />
+            )}
+          />
+        )}
       </View>
       <Animated.View
         style={{
@@ -490,7 +667,7 @@ const LanguageSelectScreen: FC<Props> = ({
           screenLanguage={screenLanguage}
         />
       </Animated.View>
-    </SafeAreaView>
+    </View>
   )
 }
 
