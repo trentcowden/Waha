@@ -10,10 +10,10 @@ import React, {
 import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import { Lesson } from 'redux/reducers/database'
+import { SectionOffset } from '../components/LessonTextContent'
 import { gutterSize, scaleMultiplier } from '../constants'
-import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
-import { SectionOffset } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { ADBProps, AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import AlbumArt from './AlbumArt'
@@ -39,7 +39,7 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
 }
 
 /**
- * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
+ * A component that renders a <PagerView /> containing a Lesson's title and Album Art on one page, and its text content on the other.
  */
 const PlayScreenSwiper: FC<Props> = ({
   playScreenSwiperRef,

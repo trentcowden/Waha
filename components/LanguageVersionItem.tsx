@@ -1,4 +1,3 @@
-import { CommonProps } from 'interfaces/common'
 import { LanguageID, LanguageMetadata } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import {
@@ -9,11 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+// The following should use the attributes from the Language Version, not its parent Language.
 interface Props extends CommonProps {
   languageID: LanguageID
   headers: LanguageMetadata['headers']
@@ -24,6 +25,9 @@ interface Props extends CommonProps {
   playAudio: () => void
 }
 
+/**
+ * Component that shows a specific version available for a Language.
+ */
 const LanguageVersionItem: FC<Props> = ({
   languageID,
   headers,

@@ -1,6 +1,6 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement, RefObject } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
@@ -15,6 +15,9 @@ interface Props extends CommonProps, AGProps, TProps {
   isDuplicate?: boolean
 }
 
+/**
+ * Component that renders a form and allows the user to type in a Group name.
+ */
 const GroupNameTextInput: FC<Props> = ({
   groupNameInput,
   onGroupNameInputChangeText,

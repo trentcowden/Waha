@@ -1,9 +1,11 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { AnyAction } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
-import { AppDispatch, RootState } from './redux/store'
+import { AppDispatch, RootState } from './store'
 
-// Use throughout your app instead of plain `useDispatch` and `useSelector`
+/**
+ * Used throughout Waha instead of plain `useDispatch` and `useSelector` to access redux state and dispatch redux actions. I'm not exactly sure how this works, but the redux docs say to do it!
+ */
 export const useAppDispatch = () =>
   useDispatch<AppDispatch & ThunkDispatch<RootState, undefined, AnyAction>>()
 export const useThunkDispatch = () =>

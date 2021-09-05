@@ -1,26 +1,24 @@
-import { CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Text, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
 interface Props extends CommonProps {
+  // The maximum number that this time can go up to.
   max: number
+  // The time to display in milliseconds.
   time: number
+  // The side of the <Scrubber /> component that this time display will go under.
   side: 'right' | 'left'
 }
 
 /**
- * A simple component to display a specific time in a nice format. Used for the current time and total time of a piece of media on the Play Screen and displayed in the <Scrubber /> component.
- * @param {number} max - The maximum number that this time can go up to.
- * @param {number} time - The time to display in milliseconds.
- * @param {string} side - The side that this time display goes on. Either 'right' or 'left'.
+ * A simple component to display a specific time in a nice format. Used for the current time and total time of a piece of media on the <PlayScreen /> and displayed in the <Scrubber /> component.
  */
 const TimeDisplay: FC<Props> = ({ max, time, side, isDark }): ReactElement => {
   /**
    * Converts a time in milliseconds to a nicely formatted time in the format HH:MM:SS.
-   * @param {number} time - The time in milliseconds to convert.
-   * @return {string} - The nicely formatted time.
    */
   const convertTime = (time: number): string => {
     var secondsNumber: number

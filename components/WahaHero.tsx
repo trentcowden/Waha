@@ -1,7 +1,7 @@
-import { CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import WahaSeparator from './WahaSeparator'
@@ -12,7 +12,6 @@ interface Props extends CommonProps {
 
 /**
  * A component that displays a full-width image. Used to display gifs on the Mobilization Tools and Security Mode screens.
- * @param {string} source - The source for the image to display.
  */
 const WahaHero: FC<Props> = ({ source, isDark }): ReactElement => {
   return (

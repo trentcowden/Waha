@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system'
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import { LanguageID } from 'languages'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
@@ -11,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
@@ -45,7 +45,9 @@ const GroupListHeader: FC<Props> = ({
     )
   )
 
-  /** useEffect function used to update the animated value of the left icon position. The default value must update whenever isRTL changes.*/
+  /**
+   * Updates the animated value of the left icon position. The default value must update whenever isRTL changes.
+   */
   useEffect(() => {
     if (activeGroup.language !== languageID)
       setLeftIconXPos(
@@ -55,7 +57,9 @@ const GroupListHeader: FC<Props> = ({
       )
   }, [activeGroup, isRTL])
 
-  /** Animated the position of the trash icon whenever isEditing changes. This pushes the whole component over to the right. */
+  /**
+   * Animates the position of the trash icon whenever isEditing changes. This pushes the whole component over to the right.
+   */
   useEffect(() => {
     if (isEditing && activeGroup.language !== languageID) {
       Animated.spring(leftIconXPos, {
@@ -71,6 +75,7 @@ const GroupListHeader: FC<Props> = ({
   }, [activeGroup, isEditing])
 
   var trashButtonComponent = <View />
+
   // The trash button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
   if (!(activeGroup.language === languageID))
     trashButtonComponent = (

@@ -1,6 +1,6 @@
-import { CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { scaleMultiplier } from '../constants'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'
@@ -10,7 +10,7 @@ interface Props extends CommonProps {
 }
 
 /**
- * A component that shows the passcode that is currently entered on the piano in a series of dots.
+ * A component that shows the passcode that is currently entered on the piano in a series of <PianoKeyLabel />s.
  */
 const PianoPasscodeDisplay: FC<Props> = ({
   passcode,

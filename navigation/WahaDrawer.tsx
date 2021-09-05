@@ -8,12 +8,12 @@ import GroupAvatar from '../components/GroupAvatar'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
-import { updateLanguageCoreFiles } from '../redux/actions/databaseActions'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
-import { setIsDarkModeEnabled } from '../redux/actions/settingsActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { updateLanguageCoreFiles } from '../redux/reducers/database'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
+import { setIsDarkModeEnabled } from '../redux/reducers/settings'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -38,15 +38,15 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
   /** Keeps track of whether the edit group modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
-  /** Handles the updating of language core files. */
+  /** Handles the updating of language Core Files. */
   const handleUpdateButtonPress = () => {
     // Set setIsInstallingLanguageInstance redux variable to true so that the app knows to switch to the loading screen.
-    dispatch(setIsInstallingLanguageInstance(true))
+    dispatch(setIsInstallingLanguageInstance({ toSet: true }))
 
     // Even though we're not fetching any Firebase data here, set this variable to true anyways just to allow the user to cancel the update if they want.
     // setHasFetchedLanguageData(true)
 
-    // Update the language core files.
+    // Update the language Core Files.
     dispatch(updateLanguageCoreFiles())
   }
 
@@ -89,7 +89,7 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
           flex: 1,
         }}
       >
-        {/* Show an update button if we have any core files to update. */}
+        {/* Show an update button if we have any Core Files to update. */}
         <DrawerDownloadUpdateButton
           onUpdateButtonPress={handleUpdateButtonPress}
           activeGroup={activeGroup}
@@ -152,7 +152,9 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
         />
         <DrawerItem
           icon={isDark ? 'sun' : 'moon'}
-          onPress={() => dispatch(setIsDarkModeEnabled(isDark ? false : true))}
+          onPress={() =>
+            dispatch(setIsDarkModeEnabled({ toSet: isDark ? false : true }))
+          }
           label={isDark ? t.general.light_mode : t.general.dark_mode}
           isRTL={isRTL}
           isDark={isDark}

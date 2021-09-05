@@ -25,6 +25,7 @@ import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { Media } from '../classes/media'
 import ChapterSelector from '../components/ChapterSelector'
+import { SectionOffset } from '../components/LessonTextContent'
 import PlaybackControls from '../components/PlaybackControls'
 import PlayScreenSwiper from '../components/PlayScreenSwiper'
 import Scrubber from '../components/Scrubber'
@@ -34,29 +35,31 @@ import { gutterSize, isTablet, scaleMultiplier } from '../constants'
 import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { lockPortrait } from '../functions/orientationFunctions'
-import { getLessonInfo } from '../functions/setAndLessonDataFunctions'
+import {
+  Chapter,
+  getLessonInfo,
+  LessonType,
+} from '../functions/setAndLessonDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SectionOffset } from '../interfaces/components'
-import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
-import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
-import { addSet, toggleComplete } from '../redux/actions/groupsActions'
+import { selector, useAppDispatch } from '../redux/hooks'
+import {
+  activeDatabaseSelector,
+  activeGroupSelector,
+} from '../redux/reducers/activeGroup'
+import { downloadMedia, removeDownload } from '../redux/reducers/downloads'
+import { addSet, toggleComplete } from '../redux/reducers/groups'
 import {
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
   setReviewTimeout,
-} from '../redux/actions/persistedPopupsActions'
-import {
-  activeDatabaseSelector,
-  activeGroupSelector,
-} from '../redux/reducers/activeGroup'
+} from '../redux/reducers/persistedPopups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -317,8 +320,8 @@ const PlayScreen: FC<Props> = ({
       (!hasUsedPlayScreen || hasUsedPlayScreen === null) &&
       reviewTimeout === null
     ) {
-      dispatch(setHasUsedPlayScreen(true))
-      dispatch(setReviewTimeout(Date.now() + 1800000))
+      dispatch(setHasUsedPlayScreen({ toSet: true }))
+      dispatch(setReviewTimeout({ timeout: Date.now() + 1800000 }))
     }
 
     // Start downloading any necessary lesson files.
@@ -803,7 +806,7 @@ const PlayScreen: FC<Props> = ({
           isAudioDownloading.current &&
           downloads[thisLesson.id].progress === 1
         )
-          dispatch(removeDownload(thisLesson.id))
+          dispatch(removeDownload({ lessonID: thisLesson.id }))
         break
       case LessonType.STANDARD_DMC:
         if (
@@ -812,8 +815,8 @@ const PlayScreen: FC<Props> = ({
           downloads[thisLesson.id].progress === 1 &&
           downloads[thisLesson.id + 'v'].progress === 1
         ) {
-          dispatch(removeDownload(thisLesson.id))
-          dispatch(removeDownload(thisLesson.id + 'v'))
+          dispatch(removeDownload({ lessonID: thisLesson.id }))
+          dispatch(removeDownload({ lessonID: thisLesson.id + 'v' }))
         }
         break
       case LessonType.VIDEO_ONLY:
@@ -821,7 +824,7 @@ const PlayScreen: FC<Props> = ({
           isVideoDownloading.current &&
           downloads[thisLesson.id + 'v'].progress === 1
         )
-          dispatch(removeDownload(thisLesson.id + 'v'))
+          dispatch(removeDownload({ lessonID: thisLesson.id + 'v' }))
         break
     }
   }, [downloads[thisLesson.id], downloads[thisLesson.id + 'v']])
@@ -850,13 +853,15 @@ const PlayScreen: FC<Props> = ({
     // Track analytics.
     logCompleteLesson(thisLesson, activeGroup.id)
 
-    dispatch(setLessonCounter(lessonCounter + 1))
+    dispatch(setLessonCounter({ counter: lessonCounter + 1 }))
 
     if (reviewTimeout === null && lessonCounter >= numLessonsTilReview - 1) {
-      dispatch(setReviewTimeout(Date.now() + 1800000))
-      dispatch(setLessonCounter(0))
-      if (numLessonsTilReview === 2) dispatch(setNumLessonsTilReview(5))
-      else if (numLessonsTilReview === 5) dispatch(setNumLessonsTilReview(10))
+      dispatch(setReviewTimeout({ timeout: Date.now() + 1800000 }))
+      dispatch(setLessonCounter({ counter: 0 }))
+      if (numLessonsTilReview === 2)
+        dispatch(setNumLessonsTilReview({ numLessons: 5 }))
+      else if (numLessonsTilReview === 5)
+        dispatch(setNumLessonsTilReview({ numLessons: 10 }))
     }
   }
 
@@ -881,7 +886,7 @@ const PlayScreen: FC<Props> = ({
           activeGroup,
           activeDatabase,
           (groupName: string, groupID: number, set: StorySet) =>
-            dispatch(addSet(groupName, groupID, set)),
+            dispatch(addSet({ groupName, groupID, set })),
           setShowNextSetUnlockedModal
         ) &&
         // If completing this lesson completes the whole set, show a celebratory modal.

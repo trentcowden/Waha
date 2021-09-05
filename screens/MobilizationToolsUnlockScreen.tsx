@@ -5,12 +5,12 @@ import { Keyboard, StyleSheet, Text, View } from 'react-native'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { scaleMultiplier } from '../constants'
 import { logUnlockMobilizationTools } from '../functions/analyticsFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { setAreMobilizationToolsUnlocked } from '../redux/actions/areMobilizationToolsUnlockedActions'
-import { setMTUnlockAttempts } from '../redux/actions/mtUnlockAttemptsActions'
-import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
-import { setMTUnlockTimeout } from '../redux/actions/securityActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { setAreMobilizationToolsUnlocked } from '../redux/reducers/areMobilizationToolsUnlocked'
+import { setMTUnlockAttempts } from '../redux/reducers/mtUnlockAttempts'
+import { setShowMTTabAddedSnackbar } from '../redux/reducers/popups'
+import { setMTUnlockTimeout } from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -30,15 +30,16 @@ interface Props {
 const MobilizationToolsUnlockScreen: FC<Props> = ({
   navigation: { navigate },
 }) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
   const mtUnlockAttempts = selector((state) => state.mtUnlockAttempts)
   const security = selector((state) => state.security)
+  const dispatch = useAppDispatch()
+
   /** Keeps track of the user input of the passcode entry area. */
   const [passcode, setPasscode] = useState('')
-
-  const dispatch = useAppDispatch()
 
   /** A reference to the passcode entry component. */
   const pinRef = useRef<SmoothPinCodeInput>(null)
@@ -48,15 +49,18 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
   )
 
   /**
-   * useEffect function that updates every time the passcode input changes. If the user gets to 5 attempts without unlocking successfully, the app will lock them out from attempting to unlock again for 30 minutes.
+   * Updates every time the passcode input changes. If the user gets to 5 attempts without unlocking successfully, the app will lock them out from attempting to unlock again for 30 minutes.
    */
   useEffect(() => {
     if (mtUnlockAttempts === 5) {
-      dispatch(setMTUnlockAttempts(0))
-      dispatch(setMTUnlockTimeout(Date.now() + 1800000))
+      dispatch(setMTUnlockAttempts({ numAttempts: 0 }))
+      dispatch(setMTUnlockTimeout({ time: Date.now() + 1800000 }))
     }
   }, [mtUnlockAttempts])
 
+  /**
+   * Focuses the pin input when the screen renders which opens the keyboard.
+   */
   useEffect(() => {
     pinRef.current.focus()
   }, [])
@@ -67,12 +71,15 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
   const checkPasscode = (fullPasscode: string) => {
     if (fullPasscode === '281820') {
       Keyboard.dismiss()
-      dispatch(setAreMobilizationToolsUnlocked(true))
+      dispatch(setAreMobilizationToolsUnlocked({ toSet: true }))
       navigate('SetsTabs', { screen: 'MobilizationTools' })
-      setTimeout(() => dispatch(setShowMTTabAddedSnackbar(true)), 1000)
+      setTimeout(
+        () => dispatch(setShowMTTabAddedSnackbar({ toSet: true })),
+        1000
+      )
       logUnlockMobilizationTools(activeGroup.language)
     } else {
-      dispatch(setMTUnlockAttempts(mtUnlockAttempts + 1))
+      dispatch(setMTUnlockAttempts({ numAttempts: mtUnlockAttempts + 1 }))
 
       // Turn the pin input red for a second to further indicate that the passcode entered was incorrect.
       setPinInputColor(colors(isDark).error)
@@ -88,7 +95,6 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
 
   /**
    * Gets a string of the amount of attempts the user has left OR, if they're already locked out, the time they have left until they can attempt again.
-   * @return {string} - The text to display.
    */
   const getTimeoutText = () => {
     if (Date.now() - security.mtUnlockTimeout < 0)

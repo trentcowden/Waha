@@ -3,7 +3,6 @@ import { Video } from 'expo-av'
 import { AVPlaybackStatus } from 'expo-av/build/AV'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { DeviceMotion } from 'expo-sensors'
-import { CommonProps } from 'interfaces/common'
 import React, {
   FC,
   MutableRefObject,
@@ -13,14 +12,17 @@ import React, {
   useState,
 } from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
 import { lockLandscape, lockPortrait } from '../functions/orientationFunctions'
-import { Chapter } from '../interfaces/setAndLessonInfo'
+import { Chapter } from '../functions/setAndLessonDataFunctions'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
+  // The ref for the Expo video.
   videoRef: RefObject<Video>
+  // The object of the currently playing media (audio or video).
   media: Media
   onVideoPlaybackStatusUpdate: (playbackStatus: AVPlaybackStatus) => void
   isMediaPlaying: boolean
@@ -38,12 +40,7 @@ interface DeviceRotation {
 }
 
 /**
- * A component that shows a video. Used on the Play Screen during Training Chapter.
- * @param {ref} videoRef - The ref for the video.
- * @param {Function} onVideoPlaybackStatusUpdate - Function to call whenever the playback status changes. Used for audio and video.
- * @param {Function} setIsMediaPlaying - Function to set the isMediaPlaying state on the Play Screen.
- * @param {number} fullscreenStatus - The current fullscreen status as a number which is a value of an enum used in the Video library.
- * @param {number} activeChapter - The currently active chapter. See chapters in constants.js.
+ * A component that shows a video. Used on the Play Screen during the Training Chapter.
  */
 const VideoPlayer: FC<Props> = ({
   videoRef,
@@ -64,8 +61,12 @@ const VideoPlayer: FC<Props> = ({
     DeviceRotation | undefined
   >()
 
+  /** Keeps track of the current screen orientation of the user's phone. */
   const [currentOrientation, setCurrentOrientation] = useState<string>()
 
+  /**
+   * Locks the orientation to a desired state.
+   */
   const setOrientation = (orientation: ScreenOrientation.Orientation) => {
     switch (orientation) {
       case ScreenOrientation.Orientation.UNKNOWN:
@@ -80,6 +81,9 @@ const VideoPlayer: FC<Props> = ({
     }
   }
 
+  /**
+   * Sets up a listener for screen orientation changes.
+   */
   useEffect(() => {
     ScreenOrientation.getOrientationAsync().then((orientation) => {
       setOrientation(orientation)
@@ -94,7 +98,9 @@ const VideoPlayer: FC<Props> = ({
     }
   }, [])
 
-  /** useEffect function that adds a device motion listener on iOS devices. This is so that the app can automatically enter fullscreen when the user rotates their phone. */
+  /**
+   * Adds a device motion listener on iOS devices. This is so that the app can automatically enter fullscreen when the user rotates their phone. Unfortunately doesn't work on Android.
+   */
   useEffect(() => {
     if (Platform.OS === 'ios' && activeChapter === Chapter.TRAINING)
       DeviceMotion.isAvailableAsync().then((isAvailable) => {
@@ -116,7 +122,6 @@ const VideoPlayer: FC<Props> = ({
 
   /**
    * Checks if the current device rotation is within the bounds of being considered landscape.
-   * @returns - Whether the current device rotation satisfies the requirements for landscape.
    */
   const isLandscape = () =>
     deviceRotation
@@ -126,7 +131,9 @@ const VideoPlayer: FC<Props> = ({
         deviceRotation.beta < 0.2
       : false
 
-  /** useEffect function that enters fullscreen mode when we're on the Training chapter, we're not already in fullscreen, and the user's phone is in landscape orientation. */
+  /**
+   * Enters fullscreen mode when we're on the Training chapter, we're not already in fullscreen, and the user's phone is in landscape orientation.
+   */
   useEffect(() => {
     // If the user's phone is in landscape position, the video is on screen, and they're not in full screen mode, activate full screen mode.
     if (

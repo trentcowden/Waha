@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { gutterSize } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
+import { selector } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -16,10 +16,9 @@ interface Props {
 
 /**
  * A modal that displays the various copyright attributions for a language. Uses <ModalScreen /> under the hood.
- * @param {boolean} isVisible - Whether the modal is visible.
- * @param {Function} hideModal - Function to hide the modal.
  */
 const CopyrightsModal: FC<Props> = ({ isVisible, hideModal }): ReactElement => {
+  // Redux state/dispatch.
   const activeGroup = selector((state) => activeGroupSelector(state))
   const isRTL = info(activeGroup.language).isRTL
   const t = getTranslations(activeGroup.language)

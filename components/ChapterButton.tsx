@@ -1,19 +1,26 @@
+import React, { FC, ReactElement, useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import {
   AGProps,
   CommonProps,
   DLProps,
   NetworkProps,
   TProps,
-} from 'interfaces/common'
-import React, { FC, ReactElement, useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { AnimatedCircularProgress } from 'react-native-circular-progress'
+} from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
-import { ChapterButtonMode } from '../interfaces/components'
-import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
+import { Chapter, LessonType } from '../functions/setAndLessonDataFunctions'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+export enum ChapterButtonMode {
+  INCOMPLETE = 1,
+  COMPLETE = 2,
+  ACTIVE = 3,
+  DOWNLOADING = 4,
+  DISABLED = 5,
+}
 
 interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
   // The chapter to display on this button.
@@ -80,23 +87,31 @@ const ChapterButton: FC<Props> = ({
     colors(isDark, activeGroup.language).accent
   )
 
-  // Whenever the active chapter or the user's internet connection status changes, get the most updated mode.
+  /**
+   * Gets the most updated mode whenever the Active Chapter or the user's internet connection status changes.
+   */
   useEffect(() => {
     setChapterButtonMode()
   }, [activeChapter, isConnected])
 
-  // Also get the most updated mode whenever the download progress changes for this lesson.
+  /**
+   * Gets the most updated mode whenever the download progress changes for this lesson AND we're in the Story or Training chapter.
+   */
   useEffect(() => {
     if (chapter === Chapter.STORY || chapter === Chapter.TRAINING)
       setChapterButtonMode()
   }, [downloads[lessonID], downloads[lessonID + 'v']])
 
-  // Every time the mode changes, reset the styles for the button.
+  /**
+   * Resets the styles for the button every time the mode changes.
+   */
   useEffect(() => {
     setStyles()
   }, [mode])
 
-  /** Sets the mode for this chapter button. */
+  /**
+   * Sets the mode for this chapter button.
+   */
   const setChapterButtonMode = () => {
     switch (chapter) {
       case Chapter.FELLOWSHIP:
@@ -145,7 +160,9 @@ const ChapterButton: FC<Props> = ({
     }
   }
 
-  /** Sets the various style states based on the current mode. */
+  /**
+   * Sets the various style states based on the current mode.
+   */
   const setStyles = () => {
     switch (mode) {
       case ChapterButtonMode.ACTIVE:

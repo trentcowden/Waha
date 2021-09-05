@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { getTotalNumberOfLanguages } from '../functions/languageDataFunctions'
-import { AGProps, CommonProps, TProps } from '../interfaces/common'
+import { AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

@@ -13,10 +13,9 @@ import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { editGroup } from '../redux/actions/groupsActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
-import { Group } from '../redux/reducers/groups'
+import { editGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -34,6 +33,7 @@ interface Props {
  * Screen that shows information about the Mobilization Tools and a button to unlock them.
  */
 const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -45,8 +45,13 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
   const database = selector((state) => state.database)
   const dispatch = useAppDispatch()
 
-  const [showSnackbar, setShowSnackbar] = useState(false)
+  /** Keeps track of whether the */
+  const [showCopiedToClipboardSnackbar, setShowCopiedToClipboardSnackbar] =
+    useState(false)
 
+  /**
+   * Handles when the user taps the switch that shows/hides the Mobilization Tools tab for a Group.
+   */
   const handleSwitchChange = (
     oldGroupName: string,
     newGroupName: string,
@@ -54,16 +59,19 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
     shouldShowMobilizationToolsTab: boolean
   ) => {
     dispatch(
-      editGroup(
-        oldGroupName,
-        newGroupName,
-        emoji,
-        shouldShowMobilizationToolsTab
-      )
+      editGroup({
+        oldGroupName: oldGroupName,
+        newGroupName: newGroupName,
+        emoji: emoji,
+        shouldShowMobilizationToolsTab: shouldShowMobilizationToolsTab,
+      })
     )
   }
 
-  function renderGroupItem({ item }: { item: Group }) {
+  /**
+   * Renders a <GroupItemMT /> component.
+   */
+  const renderGroupItem = ({ item }: { item: Group }) => {
     return (
       <GroupItemMT
         thisGroup={item}
@@ -76,6 +84,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
     )
   }
 
+  // The components to display at the top of the <MobilizationToolsScreen /> only after it's unlocked.
   const topComponents = (
     <View style={{ width: '100%' }}>
       <WahaHero
@@ -108,7 +117,11 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
         <FlatList
           bounces={false}
           data={groups
-            .sort((group1, group2) => group1.id - group2.id)
+            .slice()
+            .sort((group1, group2) => {
+              if (group1.id && group2.id) return group1.id - group2.id
+              else return 1
+            })
             .sort(
               (group1, group2) =>
                 database[group1.language].installTime -
@@ -123,7 +136,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
                 isDark={isDark}
                 t={t}
                 activeGroup={activeGroup}
-                setShowSnackbar={setShowSnackbar}
+                setShowSnackbar={setShowCopiedToClipboardSnackbar}
                 isRTL={isRTL}
               />
               <Text
@@ -174,7 +187,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
         </View>
       )}
       <SnackBar
-        visible={showSnackbar}
+        visible={showCopiedToClipboardSnackbar}
         textMessage={t.general.copied_to_clipboard}
         messageStyle={{
           color: colors(isDark).textOnColor,

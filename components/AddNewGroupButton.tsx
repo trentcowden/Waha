@@ -1,7 +1,7 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'

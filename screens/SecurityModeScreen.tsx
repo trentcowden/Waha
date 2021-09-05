@@ -10,13 +10,13 @@ import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
 import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
+import { selector, useAppDispatch } from '../redux/hooks'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setSecurityEnabled,
   setTimeoutDuration,
-} from '../redux/actions/securityActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+} from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -34,6 +34,7 @@ interface Props {
  * A screen that displays the configuration options for security mode. Allows for turning it on/off, changing the timeout, and updating your passcode.
  */
 const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const showPasscodeSetSnackbar = selector(
@@ -49,7 +50,6 @@ const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
 
   /**
    * Converts milliseconds into a label that says how long the security timeout is.
-   * @return {string} - The label to display next to the timeout button that says how long the current security timeout is.
    */
   const getTimeoutText = () => {
     if (security.timeoutDuration === 60000) return t.security.one_minute
@@ -99,8 +99,8 @@ const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
               // If we have never enabled security mode before (meaning we have never set a code), then navigate to the security onboarding slides. Otherwise, toggle security mode on or off.
               if (security.code)
                 if (security.securityEnabled)
-                  dispatch(setSecurityEnabled(false))
-                else dispatch(setSecurityEnabled(true))
+                  dispatch(setSecurityEnabled({ toSet: false }))
+                else dispatch(setSecurityEnabled({ toSet: true }))
               else navigate('SecurityOnboardingSlides')
             }}
             value={security.securityEnabled}
@@ -173,7 +173,7 @@ const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
         t={t}
         activeGroup={activeGroup}
         setTimeoutDuration={(duration: number) =>
-          dispatch(setTimeoutDuration(duration))
+          dispatch(setTimeoutDuration({ ms: duration }))
         }
       />
       <SnackBar

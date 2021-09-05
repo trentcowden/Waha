@@ -1,21 +1,5 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LanguageID } from 'languages'
-import {
-  ADD_LANGUAGE_CORE_FILE_TO_UPDATE,
-  CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE,
-  INCREMENT_GLOBAL_GROUP_COUNTER,
-  LanguageInstallationActionParams,
-  SET_GLOBAL_GROUP_COUNTER,
-  SET_HAS_FETCHED_LANGUAGE_DATA,
-  SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE,
-  SET_HAS_ONBOARDED,
-  SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS,
-  SET_RECENT_ACTIVE_GROUP,
-  SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD,
-  STORE_ACTING_LANGUAGE_ID,
-  STORE_LANGUAGE_CORE_FILE_CREATED_TIME
-} from '../actions/languageInstallationActions'
-
-export type CoreFileCreatedTimes = Record<string, number>
 
 export type LanguageInstallationState = {
   // Stores a global Group counter that goes up by 1 whenever a new Group is created. This is so that each Group and have a unique ID.
@@ -24,11 +8,11 @@ export type LanguageInstallationState = {
   hasOnboarded: boolean
   // Whether the app has finished fetching Language data from Firestore.
   hasFetchedLanguageData: boolean
-  // Whether the user has finished installing their first language instance, including selecting their language, going through the onboarding, and downloading all of the necessary core files.
+  // Whether the user has finished installing their first language instance, including selecting their language, going through the onboarding, and downloading all of the necessary Core Files.
   hasInstalledFirstLanguageInstance: boolean
-  // The total number of core files to download for a language.
+  // The total number of Core Files to download for a language.
   totalLanguageCoreFilesToDownload: number
-  // The progress of the core files download from 0 to the number of total files to download.
+  // The progress of the Core Files download from 0 to the number of total files to download.
   languageCoreFilesDownloadProgress: number
   // An array of file names that need to be updated because they're outdated or missing.
   languageCoreFilesToUpdate: string[]
@@ -36,90 +20,111 @@ export type LanguageInstallationState = {
   actingLanguageID: LanguageID | undefined
   // When adding a subsequent language, we need to keep track of which Group the user was on before installing a subsequent one in case they cancel and we need to revert back to the original Group.
   recentActiveGroup: string | undefined
-  // Stores the created times of the core files so that we know if we need have updated versions to download.
+  // Stores the created times of the Core Files so that we know if we need have updated versions to download.
   languageCoreFilesCreatedTimes: Record<string, string>
 }
 
-export function languageInstallation (
-  state: LanguageInstallationState = {
-    globalGroupCounter: 0,
-    hasOnboarded: false,
-    hasFetchedLanguageData: false,
-    hasInstalledFirstLanguageInstance: false,
-    languageCoreFilesDownloadProgress: 0,
-    languageCoreFilesToUpdate: [],
-    actingLanguageID: undefined,
-    recentActiveGroup: undefined,
-    languageCoreFilesCreatedTimes: {},
-    totalLanguageCoreFilesToDownload: 0
-  },
-  params: LanguageInstallationActionParams
-) {
-  switch (params.type) {
-    case INCREMENT_GLOBAL_GROUP_COUNTER:
-      return {
-        ...state,
-        globalGroupCounter: state.globalGroupCounter + 1
-      }
-    case SET_GLOBAL_GROUP_COUNTER:
-      return {
-        ...state,
-        globalGroupCounter: params.toSet
-      }
-    case SET_HAS_ONBOARDED:
-      return { ...state, hasOnboarded: params.hasOnboarded }
-    case SET_HAS_INSTALLED_FIRST_LANGUAGE_INSTANCE:
-      return {
-        ...state,
-        hasInstalledFirstLanguageInstance:
-          params.hasInstalledFirstLanguageInstance
-      }
-    case SET_LANGUAGE_CORE_FILES_DOWNLOAD_PROGRESS:
-      return {
-        ...state,
-        languageCoreFilesDownloadProgress:
-          params.languageCoreFilesDownloadProgress
-      }
-    case SET_TOTAL_LANGUAGE_CORE_FILES_TO_DOWNLOAD:
-      return {
-        ...state,
-        totalLanguageCoreFilesToDownload:
-          params.totalLanguageCoreFilesToDownload
-      }
-    case STORE_LANGUAGE_CORE_FILE_CREATED_TIME:
-      return {
-        ...state,
-        languageCoreFilesCreatedTimes: {
-          ...state.languageCoreFilesCreatedTimes,
-          [params.fileName]: params.timeCreated
-        }
-      }
-    case ADD_LANGUAGE_CORE_FILE_TO_UPDATE:
-      return {
-        ...state,
-        languageCoreFilesToUpdate: [
-          ...state.languageCoreFilesToUpdate,
-          params.fileName
-        ]
-      }
-    case CLEAR_LANGUAGE_CORE_FILES_TO_UPDATE:
-      return {
-        ...state,
-        languageCoreFilesToUpdate: []
-      }
-    case SET_HAS_FETCHED_LANGUAGE_DATA:
-      return { ...state, hasFetchedLanguageData: params.hasFetchedLanguageData }
-    case STORE_ACTING_LANGUAGE_ID:
-      return {
-        ...state,
-        actingLanguageID: params.languageID
-      }
-    case SET_RECENT_ACTIVE_GROUP:
-      return {
-        ...state,
-        recentActiveGroup: params.groupName
-      }
-    default:
-      return state
-  }
+const initialState: LanguageInstallationState = {
+  globalGroupCounter: 0,
+  hasOnboarded: false,
+  hasFetchedLanguageData: false,
+  hasInstalledFirstLanguageInstance: false,
+  languageCoreFilesDownloadProgress: 0,
+  languageCoreFilesToUpdate: [],
+  actingLanguageID: undefined,
+  recentActiveGroup: undefined,
+  languageCoreFilesCreatedTimes: {},
+  totalLanguageCoreFilesToDownload: 0
 }
+
+/**
+ * This reducer stores a bunch of info related to the installation of a language.
+ */
+const languageInstallation = createSlice({
+  name: 'languageInstallation',
+  initialState,
+  reducers: {
+    setHasOnboarded: (state, action: PayloadAction<{ toSet: boolean }>) => {
+      state.hasOnboarded = action.payload.toSet
+    },
+    setHasInstalledFirstLanguageInstance: (
+      state,
+      action: PayloadAction<{ toSet: boolean }>
+    ) => {
+      state.hasInstalledFirstLanguageInstance = action.payload.toSet
+    },
+    setHasFetchedLanguageData: (
+      state,
+      action: PayloadAction<{ toSet: boolean }>
+    ) => {
+      state.hasFetchedLanguageData = action.payload.toSet
+    },
+    setLanguageCoreFilesDownloadProgress: (
+      state,
+      action: PayloadAction<{ progress: number }>
+    ) => {
+      state.languageCoreFilesDownloadProgress = action.payload.progress
+    },
+    setTotalLanguageCoreFilesToDownload: (
+      state,
+      action: PayloadAction<{ filesToDownload: number }>
+    ) => {
+      state.totalLanguageCoreFilesToDownload = action.payload.filesToDownload
+    },
+    storeLanguageCoreFileCreatedTime: (
+      state,
+      action: PayloadAction<{ fileName: string; createdTime: string }>
+    ) => {
+      state.languageCoreFilesCreatedTimes = {
+        ...state.languageCoreFilesCreatedTimes,
+        [action.payload.fileName]: action.payload.createdTime
+      }
+    },
+    addLanguageCoreFileToUpdate: (
+      state,
+      action: PayloadAction<{ fileName: string }>
+    ) => {
+      state.languageCoreFilesToUpdate.push(action.payload.fileName)
+    },
+    clearLanguageCoreFilesToUpdate: state => {
+      state.languageCoreFilesToUpdate = []
+    },
+    storeActingLanguageID: (
+      state,
+      action: PayloadAction<{ languageID: LanguageID | undefined }>
+    ) => {
+      state.actingLanguageID = action.payload.languageID
+    },
+    setRecentActiveGroup: (
+      state,
+      action: PayloadAction<{ groupName: string }>
+    ) => {
+      state.recentActiveGroup = action.payload.groupName
+    },
+    incrementGlobalGroupCounter: state => {
+      state.globalGroupCounter += 1
+    },
+    setGlobalGroupCounter: (
+      state,
+      action: PayloadAction<{ counter: number }>
+    ) => {
+      state.globalGroupCounter = action.payload.counter
+    }
+  }
+})
+
+export const {
+  setHasOnboarded,
+  setHasInstalledFirstLanguageInstance,
+  setHasFetchedLanguageData,
+  setLanguageCoreFilesDownloadProgress,
+  setTotalLanguageCoreFilesToDownload,
+  storeLanguageCoreFileCreatedTime,
+  addLanguageCoreFileToUpdate,
+  clearLanguageCoreFilesToUpdate,
+  storeActingLanguageID,
+  setRecentActiveGroup,
+  incrementGlobalGroupCounter,
+  setGlobalGroupCounter
+} = languageInstallation.actions
+export default languageInstallation.reducer

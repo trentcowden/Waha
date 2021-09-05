@@ -1,5 +1,4 @@
 import Constants from 'expo-constants'
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import {
   Platform,
@@ -9,6 +8,7 @@ import {
   View,
 } from 'react-native'
 import Modal from 'react-native-modal'
+import { AGProps, CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
@@ -25,13 +25,6 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A component that renders a fullscreen modal with a header.
- * @param {boolean} isVisible - Whether the modal is visible or not.
- * @param {Function} hideMopdal - Function to hide the modal.
- * @param {Component} topRightComponent - (Optional) Component to display in the upper right corner of the modal. The upper left is always the x button to close.
- * @param {Function} onCancelPress - (Optional) Function to fire when the user presses the upper-left close button. Supplements closing the modal.
- * @param {Function} onModalWillShow - Function to fire when the modal first opens.
- * @param {string} title - The title of the screen to display at the very top of the component.
- * @param {Component} children - The component to display as the content of the modal screen.
  */
 const ModalScreen: FC<Props> = ({
   isVisible,

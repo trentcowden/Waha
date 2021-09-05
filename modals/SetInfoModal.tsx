@@ -9,14 +9,13 @@ import {
 } from 'react-native'
 import { Lesson, ScripturePassage, StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
-import SetItem from '../components/SetItem'
-import WahaButton from '../components/WahaButton'
+import SetItem, { SetItemMode } from '../components/SetItem'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetItemMode, WahaButtonMode } from '../interfaces/components'
-import { addSet } from '../redux/actions/groupsActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { addSet } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -31,10 +30,6 @@ interface Props {
 
 /**
  * A modal that displays the various lessons in a set and their scripture references. Uses <ModalScreen /> under the hood.
- * @param {boolean} isVisible - Whether the modal is visible.
- * @param {Function} hideModal - Function to hide the modal.
- * @param {Object} thisSet - The object for the set we're displaying the information about.
- * @param {boolean} showSnackbar - Whether to show the "Set Added!" Snackbar component or not.
  */
 const SetInfoModal: FC<Props> = ({
   isVisible,
@@ -42,6 +37,7 @@ const SetInfoModal: FC<Props> = ({
   thisSet,
   showSnackbar,
 }): ReactElement => {
+  // Redux state/dispatch.
   const activeGroup = selector((state) => activeGroupSelector(state))
   const isRTL = info(activeGroup.language).isRTL
   const t = getTranslations(activeGroup.language)
@@ -130,7 +126,13 @@ const SetInfoModal: FC<Props> = ({
           <WahaButton
             mode={WahaButtonMode.SUCCESS}
             onPress={() => {
-              dispatch(addSet(activeGroup.name, activeGroup.id, thisSet))
+              dispatch(
+                addSet({
+                  groupName: activeGroup.name,
+                  groupID: activeGroup.id,
+                  set: thisSet,
+                })
+              )
               showSnackbar()
               hideModal()
             }}

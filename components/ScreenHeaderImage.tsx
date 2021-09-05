@@ -1,11 +1,13 @@
 import * as FileSystem from 'expo-file-system'
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Image } from 'react-native'
+import { AGProps, CommonProps } from 'redux/common'
 
 interface Props extends CommonProps, AGProps {}
 
-/** A component that displays the logo for a language instance. Used in the headers for the Sets Screen and the Lessons Screen. */
+/**
+ * A component that displays the header (or logo) for a Language. Used in the headers for the <SetsScreen /> and the <LessonsScreen />.
+ */
 const ScreenHeaderImage: FC<Props> = ({
   activeGroup,
   isDark,

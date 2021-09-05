@@ -1,5 +1,5 @@
 import { Audio, AVPlaybackStatus, Video } from 'expo-av'
-import { Chapter } from '../interfaces/setAndLessonInfo'
+import { Chapter } from '../functions/setAndLessonDataFunctions'
 
 /**
  * Class for media used on the <PlayScreen />. This just removes some code on the <PlayScreen /> and simplifies media usage.

@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
-import { LessonType } from 'interfaces/setAndLessonInfo'
+import { LessonType } from 'functions/setAndLessonDataFunctions'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
@@ -11,7 +11,7 @@ import {
   logShareAudio,
   logShareText,
 } from '../functions/analyticsFunctions'
-import { AGProps, CommonProps, DLProps, TProps } from '../interfaces/common'
+import { AGProps, CommonProps, DLProps, TProps } from '../redux/common'
 import OptionsModal from './OptionsModal'
 
 enum ShareType {
@@ -32,15 +32,8 @@ interface Props extends CommonProps, AGProps, DLProps, TProps {
 
 /**
  * A modal component that gives the user options to share various parts of a lesson.
- * @param {boolean} isVisible - Whether the modal is visible.
- * @param {Function} hideModal - Function to hide the modal.
- * @param {string} closeText - The text to display on the button that closes the modal.
- * @param {Object} lesson - The object for the lesson that we're sharing.
- * @param {string[]} lessonType - The type of the lesson that we're sharing. See lessonTypes in constants.js.
- * @param {Object} set - The object for the set that the lesson that we're sharing is a part of.
  */
 const ShareModal: FC<Props> = ({
-  // Props passed from a parent component.s
   isVisible,
   hideModal,
   closeText,

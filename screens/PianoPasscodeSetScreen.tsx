@@ -13,14 +13,13 @@ import {
 import Piano from '../components/Piano'
 import PianoPasscodeDisplay from '../components/PianoPasscodeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import { logEnableSecurityMode } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
-import { setShowPasscodeSetSnackbar } from '../redux/actions/popupsActions'
-import { setCode, setSecurityEnabled } from '../redux/actions/securityActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { setShowPasscodeSetSnackbar } from '../redux/reducers/popups'
+import { setCode, setSecurityEnabled } from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -43,12 +42,18 @@ interface Props {
 
 /**
  * A screen that allows the user to set/change/confirm their piano passcode.
- * @param {string} passcode - (Optional) If the user is confirming their passcode, this is the passcode already entered so we can verify that they match.
  */
 const PianoPasscodeSetScreen: FC<Props> = ({
   navigation: { setOptions, navigate, goBack },
-  route: { name: routeName, params: { passcode } = { passcode: null } },
+  route: {
+    name: routeName,
+    params: {
+      // If the user is confirming their passcode, this is the passcode already entered so we can verify that they match.
+      passcode,
+    } = { passcode: null },
+  },
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -66,7 +71,9 @@ const PianoPasscodeSetScreen: FC<Props> = ({
     PianoPasscodeChangeConfirm: t.security.confirm_passcode,
   }
 
-  /** useEffect function that sets the navigation options for this screen. */
+  /**
+   * Sets the navigation options for this screen.
+   */
   useEffect(() => {
     setOptions({
       title: t.security.security,
@@ -97,7 +104,9 @@ const PianoPasscodeSetScreen: FC<Props> = ({
     })
   }, [])
 
-  /** useEffect function that triggers whenever the user's passcode input changes and handles all necessary situations. */
+  /**
+   * Handles all necessary situations whenever the user's passcode input changes.
+   */
   useEffect(() => {
     // If the user has entered in a full 6-digit passcode (each digit takes up 2 characters in the passcode string)...
     if (localPasscode.length === 12)
@@ -112,13 +121,16 @@ const PianoPasscodeSetScreen: FC<Props> = ({
         case 'PianoPasscodeSetConfirm':
           // If passcodes match, pop up an alert, log it, set security enabled, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            dispatch(setShowPasscodeSetSnackbar(true))
-            setTimeout(() => dispatch(setShowPasscodeSetSnackbar(false)), 2000)
+            dispatch(setShowPasscodeSetSnackbar({ toSet: true }))
+            setTimeout(
+              () => dispatch(setShowPasscodeSetSnackbar({ toSet: false })),
+              2000
+            )
             // Log the enabling of Security Mode in Firebase analytics.
             logEnableSecurityMode(activeGroup.id)
 
-            dispatch(setSecurityEnabled(true))
-            dispatch(setCode(passcode))
+            dispatch(setSecurityEnabled({ toSet: true }))
+            dispatch(setCode({ code: passcode }))
             goBack()
             goBack()
             goBack()
@@ -142,10 +154,13 @@ const PianoPasscodeSetScreen: FC<Props> = ({
         case 'PianoPasscodeChangeConfirm':
           // If passcodes match, pop up an alert, set the passcode in redux, and go back.
           if (localPasscode === passcode) {
-            dispatch(setShowPasscodeSetSnackbar(true))
-            setTimeout(() => dispatch(setShowPasscodeSetSnackbar(false)), 2000)
-            dispatch(setSecurityEnabled(true))
-            dispatch(setCode(localPasscode))
+            dispatch(setShowPasscodeSetSnackbar({ toSet: true }))
+            setTimeout(
+              () => dispatch(setShowPasscodeSetSnackbar({ toSet: false })),
+              2000
+            )
+            dispatch(setSecurityEnabled({ toSet: true }))
+            dispatch(setCode({ code: localPasscode }))
             goBack()
             goBack()
           } // Otherwise, show an alert that the passcodes don't match.

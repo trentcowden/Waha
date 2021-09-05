@@ -8,21 +8,19 @@ import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { StorySet } from 'redux/reducers/database'
 import AddSetButton from '../components/AddSetButton'
-import SetItem from '../components/SetItem'
+import SetItem, { SetItemMode } from '../components/SetItem'
 import { itemHeights, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetData } from '../functions/setAndLessonDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetItemMode } from '../interfaces/components'
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import { getSetData, SetCategory } from '../functions/setAndLessonDataFunctions'
 import MessageModal from '../modals/MessageModal'
 import { SetsTabsParams } from '../navigation/SetsTabs'
-import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
-import { setShowMTTabAddedSnackbar } from '../redux/actions/popupsActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { setShowTrailerHighlights } from '../redux/reducers/persistedPopups'
+import { setShowMTTabAddedSnackbar } from '../redux/reducers/popups'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -81,13 +79,13 @@ const SetsScreen: FC<Props> = ({
   )
   const dispatch = useAppDispatch()
 
-  // Keeps track of the text displayed on the add set button. Changes depending on what category we're in.
+  /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
 
-  // Keeps track of all of the files the user has downloaded to the user's device. This is used to verify that all the required question set mp3s are downloaded for the sets that have been added.
+  /** Keeps track of all of the files the user has downloaded to the user's device. This is used to verify that all the required question set mp3s are downloaded for the sets that have been added. */
   const [downloadedFiles, setDownloadedFiles] = useState<string[]>([])
 
-  // Memoize the set data so that the expensive function isn't run on every re-render.
+  /** Memoize the set data so that the expensive function isn't run on every re-render. */
   const setData = useMemo(
     () =>
       getSetData(
@@ -100,7 +98,9 @@ const SetsScreen: FC<Props> = ({
     [activeGroup.addedSets, downloadedFiles]
   )
 
-  // Update the <AddNewSetButton /> label whenever the active group changes.
+  /**
+   * Updates the <AddNewSetButton /> label whenever the active group changes.
+   */
   useEffect(() => {
     setAddNewSetLabel(
       category === 'Foundational'
@@ -111,7 +111,9 @@ const SetsScreen: FC<Props> = ({
     )
   }, [activeGroup])
 
-  // Retrieve all downloaded files and store in state.
+  /**
+   * Retrieves all downloaded files and store in state.
+   */
   useEffect(() => {
     if (FileSystem.documentDirectory)
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
@@ -121,17 +123,23 @@ const SetsScreen: FC<Props> = ({
       )
   }, [])
 
+  /**
+   * Handles pressing a <SetItem />.
+   */
   const handleSetItemSelect = (set: StorySet) => {
     if (
       areMobilizationToolsUnlocked &&
       showTrailerHighlights &&
       !set.id.includes('3.1')
     ) {
-      dispatch(setShowTrailerHighlights(false))
+      dispatch(setShowTrailerHighlights({ toSet: false }))
     }
     navigate('Lessons', { setID: set.id })
   }
 
+  /**
+   * Renders a <SetItem /> component.
+   */
   const renderSetItem = ({ item }: { item: StorySet }) => {
     return (
       <SetItem
@@ -152,7 +160,9 @@ const SetsScreen: FC<Props> = ({
     )
   }
 
-  // We know the height of these items ahead of time so we can use getItemLayout to make our FlatList perform better.
+  /**
+   * We know the height of these items ahead of time so we can use getItemLayout to make our FlatList perform better.
+   */
   const getItemLayout = (data: any, index: number) => ({
     length: itemHeights[font].SetItem,
     offset: itemHeights[font].SetItem * index,
@@ -211,11 +221,13 @@ const SetsScreen: FC<Props> = ({
       />
       <MessageModal
         isVisible={showMTTabAddedSnackbar}
-        hideModal={() => dispatch(setShowMTTabAddedSnackbar(false))}
+        hideModal={() => dispatch(setShowMTTabAddedSnackbar({ toSet: false }))}
         title={t.mobilization_tools.unlock_successful_title}
         message={t.mobilization_tools.unlock_successful_message}
         confirmText={t.general.got_it}
-        confirmOnPress={() => dispatch(setShowMTTabAddedSnackbar(false))}
+        confirmOnPress={() =>
+          dispatch(setShowMTTabAddedSnackbar({ toSet: false }))
+        }
         isDark={isDark}
         activeGroup={activeGroup}
         isRTL={isRTL}

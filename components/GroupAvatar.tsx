@@ -1,4 +1,3 @@
-import { CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import {
   Image,
@@ -7,6 +6,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
+import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { Emoji, groupIconSources } from '../assets/groupIcons/_groupIcons'
 import { scaleMultiplier } from '../constants'

@@ -17,10 +17,10 @@ import {
   View,
 } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
+import { Layouts, SectionOffset } from '../components/LessonTextContent'
 import { scaleMultiplier } from '../constants'
-import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
-import { Layouts, SectionOffset } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { ADBProps, AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import LessonTextContent from './LessonTextContent'
 
@@ -39,7 +39,7 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
 }
 
 /**
- * Component for the view that contains a lesson's text content. It handles the scrolling logic and animation.
+ * Component that acts as a wrapper for the <LessonTextContent /> component. It handles the scrolling logic and animation of the text.
  */
 const LessonTextViewer: FC<Props> = ({
   lessonTextContentRef,
@@ -70,7 +70,9 @@ const LessonTextViewer: FC<Props> = ({
   /** Keeps track of the section that the user is currently in. */
   const [currentSection, setCurrentSection] = useState<SectionOffset>()
 
-  /** Gets fired whenever the user scrolls the lesson text content. */
+  /**
+   * Handles the user scrolling the <LessonTextContent />.
+   */
   const onScroll = (nativeEvent: NativeScrollEvent) => {
     if (nativeEvent) {
       // Check if the section header needs to be updated.
@@ -116,7 +118,9 @@ const LessonTextViewer: FC<Props> = ({
     }
   }
 
-  /** useEffect function that sets the initial section once all of the sections have been added. */
+  /**
+   * Sets the initial section once all of the sections have been added.
+   */
   useEffect(() => {
     if (
       lessonType.includes('Questions') &&
@@ -127,14 +131,15 @@ const LessonTextViewer: FC<Props> = ({
       setCurrentSection(sectionOffsets.current[0])
   }, [sectionOffsets.current])
 
-  /** useEffect function that sets and animates the section header text whenever the current section changes. */
+  /**
+   * Sets and animates the section header text whenever the current section changes.
+   */
   useEffect(() => {
     currentSection && setAndAnimateSectionHeaderText(currentSection.title)
   }, [currentSection])
 
   /**
    * Animates the current section title out and sets it to the new title..
-   * @param {string} newTitle - The new title to set.
    */
   const setAndAnimateSectionHeaderText = (newTitle: string) => {
     if (sectionTitleOpacity && sectionTitleYTransform)
@@ -155,7 +160,9 @@ const LessonTextViewer: FC<Props> = ({
       })
   }
 
-  /** useEffect function that animates the section title back in after it's been changed. */
+  /**
+   * Animates the section title back in after it's been changed.
+   */
   useEffect(() => {
     if (
       currentSection !== null &&

@@ -1,19 +1,25 @@
-import {
-  IsInstallingLanguageInstanceActionParams,
-  SET_IS_INSTALLING_LANGUAGE_INSTANCE
-} from '../actions/isInstallingLanguageInstanceActions'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+const initialState = false
 
 /**
- * This reducer simply stores whether the app is currently installing a language instance or not. This is stored in a separate reducer from languageInstallation.ts so that it isn't persisted.
+ * This reducer simply stores whether the app is currently installing a language instance or not. This is stored in a separate reducer from languageInstallation.ts because we don't want to persist it.
  */
-export function isInstallingLanguageInstance (
-  state: boolean = false,
-  params: IsInstallingLanguageInstanceActionParams
-) {
-  switch (params.type) {
-    case SET_IS_INSTALLING_LANGUAGE_INSTANCE:
-      return params.isInstallingLanguageInstance
-    default:
-      return state
+const isInstallingLanguageInstance = createSlice({
+  name: 'isInstallingLanguageInstance',
+  initialState,
+  reducers: {
+    setIsInstallingLanguageInstance: (
+      state,
+      action: PayloadAction<{ toSet: boolean }>
+    ) => {
+      return action.payload.toSet
+    }
   }
-}
+})
+
+export const {
+  setIsInstallingLanguageInstance
+} = isInstallingLanguageInstance.actions
+
+export default isInstallingLanguageInstance.reducer

@@ -6,6 +6,7 @@ interface Props {
   name: string
   width: number | string
   height: number | string
+  // For the <Svg> component, color is called "fill". In every <Svg /> below, the color prop passed from the parent is used for the "fill" prop.
   color: string
 }
 
@@ -13,7 +14,6 @@ interface Props {
   When adding new svgs, don't forget to:
     1. Remove the {...props} from the SVG component
     2. Add the following props to the SVG component:
-      
       width={width}
       height={height}
       fill={color}
@@ -21,11 +21,7 @@ interface Props {
 */
 
 /**
- * This component renders a custom react native Svg component. Note: all <Svg> components below are converted from standard .svg files using `https://react-svgr.com/playground/`.
- * @param {string} name - The name of the svg to render.
- * @param {number} width - The width of the svg.
- * @param {number} height - The height of the svg.
- * @param {string} color - The hex code for the color of the svg. Note: for the <Svg> component, color is called "fill". In every <Svg> below, the color prop passed from the parent is used for the "fill" prop.
+ * This component renders a custom react native Svg component used to show a Story Set's Album Art. All <Svg> components below are converted from standard .svg files using `https://react-svgr.com/playground/`.
  */
 const SVG: FC<Props> = ({
   // Passed from a parent component.

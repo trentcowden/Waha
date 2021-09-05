@@ -1,14 +1,16 @@
 import React from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
-import { selector } from '../hooks'
+import { selector } from '../redux/hooks'
 import { colors } from '../styles/colors'
 
 /**
  * Screen that gets navigated to whenever the app enters "background" mode on iOS. This is so the app preview is hidden in the iOS multitasking view.
  */
 const SplashScreen = ({}) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
+
   return (
     <View style={{ ...styles.screen, backgroundColor: colors(isDark).brand }}>
       <Image

@@ -1,4 +1,3 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement, useState } from 'react'
 import {
   FlatList,
@@ -8,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import {
   Emoji,
   groupIcons,
@@ -33,9 +33,12 @@ const EmojiViewer: FC<Props> = ({
   isDark,
   t,
 }): ReactElement => {
+  /** Keeps track of the width of this component. Necessary to set the right number of columns for the <FlatList />. */
   const [emojiViewerWidth, setEmojiViewerWidth] = useState(0)
 
-  /** Renders an emoji for the emoji select <FlatList />. */
+  /**
+   * Renders an emoji for the emoji select <FlatList />.
+   */
   const renderEmoji = ({ item }: { item: Emoji }) => {
     return (
       <TouchableOpacity
@@ -61,6 +64,7 @@ const EmojiViewer: FC<Props> = ({
       </TouchableOpacity>
     )
   }
+
   return (
     <View style={styles.emojiViewerContainer}>
       <Text

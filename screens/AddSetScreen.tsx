@@ -7,15 +7,17 @@ import { FlatList, LogBox, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import TagGroup from 'react-native-tag-group'
 import { StorySet } from 'redux/reducers/database'
-import SetItem from '../components/SetItem'
+import SetItem, { SetItemMode } from '../components/SetItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetData, getSetInfo } from '../functions/setAndLessonDataFunctions'
-import { selector } from '../hooks'
-import { SetItemMode } from '../interfaces/components'
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import {
+  getSetData,
+  getSetInfo,
+  SetCategory,
+} from '../functions/setAndLessonDataFunctions'
 import SetInfoModal from '../modals/SetInfoModal'
+import { selector } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
@@ -36,20 +38,24 @@ interface Props {
 
 /**
  * Screen that shows a list of available Story Sets to add in a specific category.
- * @param {string} category - The category of Story Sets to display.
  */
 const AddSetScreen: FC<Props> = ({
   navigation: { setOptions },
   route: {
-    params: { category },
+    params: {
+      // The category of Story Sets to display.
+      category,
+    },
   },
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeDatabase = selector((state) => activeDatabaseSelector(state))
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
   const isRTL = info(activeGroup.language).isRTL
   const font = info(activeGroup.language).font
+
   /** Whether the snackbar that pops up upon adding a set is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -71,7 +77,7 @@ const AddSetScreen: FC<Props> = ({
   /** Keeps track of all the downloaded question set mp3s. We need this to verify that all the required question set mp3s are installed for the various Story Sets.*/
   const [downloadedFiles, setDownloadedFiles] = useState<string[]>([])
 
-  /** useEffect function that sets the headerTitle state as well as fetching the tags if we're displaying Topical Story Sets. */
+  /** Sets the headerTitle state as well as fetching the tags if we're displaying Topical Story Sets. */
   useEffect(() => {
     switch (category) {
       case SetCategory.FOUNDATIONAL:
@@ -105,7 +111,7 @@ const AddSetScreen: FC<Props> = ({
     }
   }, [])
 
-  /** useEffect function that checks what files are downloaded to local storage. */
+  /** Checks what files are downloaded to local storage. */
   useEffect(() => {
     if (FileSystem.documentDirectory !== null)
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
@@ -115,14 +121,18 @@ const AddSetScreen: FC<Props> = ({
       )
   }, [])
 
-  /** useEffect function that hides the Snackbar if we leave the screen before it auto-dismisses. */
+  /**
+   * Hides the Snackbar if we leave the screen before it auto-dismisses.
+   */
   useEffect(() => {
     return function cleanup() {
       setShowSnackbar(false)
     }
   }, [])
 
-  /** useEffect function that sets the navigation options for this screen. */
+  /**
+   * Sets the navigation options for this screen.
+   */
   useEffect(() => {
     setOptions({ title: headerTitle })
   }, [headerTitle])
@@ -142,7 +152,9 @@ const AddSetScreen: FC<Props> = ({
     [activeGroup.addedSets, selectedTag, downloadedFiles]
   )
 
-  /** Renders a <SetItem /> for the list of sets available to add. */
+  /**
+   * Renders a <SetItem /> for the list of Story Sets available to add.
+   */
   const renderSetItem = ({ item }: { item: StorySet }) => (
     <SetItem
       thisSet={item}

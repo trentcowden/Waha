@@ -1,29 +1,26 @@
-import {
-  SettingsActionParams,
-  SET_IS_DARK_MODE_ENABLED
-} from '../actions/settingsActions'
-
-/**
- * The mobilization tools unlock redux reducer that stores whether the mobilization tools are unlocked globally. This is different from whether a group should show the mobilization tools tab or not. Before the user is able to show or hide the tab for a group, they have to enable the mobilization tools globally via this reducer. This state is persisted across app restarts.
- */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface SettingsState {
   isDarkModeEnabled: boolean
 }
 
-export function settings (
-  state: SettingsState = {
-    isDarkModeEnabled: false
-  },
-  params: SettingsActionParams
-) {
-  switch (params.type) {
-    case SET_IS_DARK_MODE_ENABLED:
-      return {
-        ...state,
-        isDarkModeEnabled: params.toSet
-      }
-    default:
-      return state
-  }
+const initialState: SettingsState = {
+  isDarkModeEnabled: false
 }
+
+const settings = createSlice({
+  name: 'settings',
+  initialState,
+  reducers: {
+    setIsDarkModeEnabled: (
+      state,
+      action: PayloadAction<{ toSet: boolean }>
+    ) => {
+      state.isDarkModeEnabled = action.payload.toSet
+    }
+  }
+})
+
+export const { setIsDarkModeEnabled } = settings.actions
+
+export default settings.reducer

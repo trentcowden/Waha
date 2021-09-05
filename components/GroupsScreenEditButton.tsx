@@ -1,6 +1,6 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -10,7 +10,7 @@ interface Props extends CommonProps, AGProps, TProps {
 }
 
 /**
- * The edit button that is displayed in the header on the Groups screen. Switches editingMode on or off when pressed.
+ * The edit button that is displayed in the header on the <GroupsScreen />.
  */
 const GroupsScreenEditButton: FC<Props> = ({
   onPress,

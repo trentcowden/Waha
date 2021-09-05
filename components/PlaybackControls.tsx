@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
-import { AGProps, CommonProps } from '../interfaces/common'
+import { AGProps, CommonProps } from '../redux/common'
 import { Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 
@@ -22,7 +22,7 @@ interface Props extends CommonProps, AGProps {
 }
 
 /**
- * A component that shows the play/pause and skip buttons on the Play Screen.
+ * A component that shows the play/pause and skip buttons on the <PlayScreen />.
  */
 const PlaybackControls: FC<Props> = ({
   isMediaPlaying,

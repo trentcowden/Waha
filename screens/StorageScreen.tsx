@@ -3,14 +3,13 @@ import { LanguageID } from 'languages'
 import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native'
 import LanguageStorageItem from '../components/LanguageStorageItem'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import {
   getInstalledLanguagesInfoAndGroups,
   info,
 } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
 import { InfoAndGroupsForLanguage } from '../languages'
+import { selector } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -22,6 +21,7 @@ const isLessonFile = new RegExp('[a-z]{2}.[0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}.*')
  * A screen that contains storage size information for each language instance and the ability to delete downloaded files.
  */
 const StorageScreen = ({}) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -35,15 +35,15 @@ const StorageScreen = ({}) => {
   /** Keeps track of the total storage for all downloaded Story and Training chapter mp3s and mp4s across all languages. */
   const [totalStorage, setTotalStorage] = useState(0)
 
-  /** useEffect function that gets all the storage used for all the different languages. */
+  /**
+   * Gets all the storage used for all the different languages.
+   */
   useEffect(() => {
     getTotalStorageAndLanguageSizes()
   }, [])
 
   /**
    * Gets the megabytes that the downloaded Story and Training chapter mp3s and mp4s take up for a single language.
-   * @param {string} language - The language to get the storage size of.
-   * @return {number} - The size that the language takes up.
    */
   const getLanguageStorageSize = async (language: LanguageID) => {
     // Stores the size of this language.
@@ -74,7 +74,9 @@ const StorageScreen = ({}) => {
     else return 0
   }
 
-  /** Gets all of the individual language storage sizes and the total storage size. */
+  /**
+   * Gets all of the individual language storage sizes and the total storage size.
+   */
   const getTotalStorageAndLanguageSizes = () => {
     // Reset states to empty.
     setTotalStorage(0)
@@ -97,7 +99,6 @@ const StorageScreen = ({}) => {
 
   /**
    * Deletes all of the Story and Training mp3s and mp4s for a specific language. If no language is specified, deletes them for all languages.
-   * @param {string} language - (Optional) The language to delete the downloaded content for.
    */
   const deleteDownloadedLessons = async (language?: string) => {
     if (FileSystem.documentDirectory)
@@ -119,6 +120,9 @@ const StorageScreen = ({}) => {
         .then(() => getTotalStorageAndLanguageSizes())
   }
 
+  /**
+   * Handles pressing the clear all downloads button.
+   */
   const handleClearAllDownloadsButtonPress = () => {
     Alert.alert(
       t.storage.clear_all_downloaded_lessons_title,
@@ -138,6 +142,9 @@ const StorageScreen = ({}) => {
     )
   }
 
+  /**
+   * Handles pressing of the clear language downloads button.
+   */
   const handleClearLanguageDownloadsButtonPress = (
     item: InfoAndGroupsForLanguage
   ) => {
@@ -160,8 +167,7 @@ const StorageScreen = ({}) => {
   }
 
   /**
-   * Renders a <LanguageStorageItem />.
-   * @param {Object} item - The language instance to render.
+   * Renders a <LanguageStorageItem /> component.
    */
   const renderLanguageStorageItem = ({
     item,

@@ -1,7 +1,7 @@
 import { Database, DBLanguageData } from 'redux/reducers/database'
-import { Download } from '../redux/reducers/downloads'
-import { Group } from '../redux/reducers/groups'
 import { Translations } from '../translations/translationsConfig'
+import { Download } from './reducers/downloads'
+import { Group } from './reducers/groups'
 
 /**
  * This file contains a bunch of the most common redux props that are passed as props to components. Having our component props "extend" these means we don't have to write them out every time.

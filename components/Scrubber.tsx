@@ -3,7 +3,7 @@ import React, { FC, MutableRefObject, ReactElement } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
 import { gutterSize, isTablet } from '../constants'
-import { CommonProps } from '../interfaces/common'
+import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {
@@ -14,11 +14,7 @@ interface Props extends CommonProps {
 }
 
 /**
- * A component on the Play Screen that shows the current progress through the loaded media and allows the user to "scrub" to a different position.
- * @param {Function} playFromLocation - Function that plays the media from a specific location in milliseconds.
- * @param {boolean} shouldThumbUpdate - Whether the "thumb", or draggable circle, of the scrubber should update (i.e. "tick").
- * @param {number} mediaLength - The length of the loaded media in milliseconds.
- * @param {number} mediaProgress - The progress in milliseconds through the current media.
+ * A component on the <PlayScreen /> that shows the current progress through the loaded media and allows the user to "scrub" to a different position.
  */
 const Scrubber: FC<Props> = ({
   playFromLocation,

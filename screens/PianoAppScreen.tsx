@@ -18,9 +18,9 @@ import Icon from '../assets/fonts/icon_font_config'
 import Piano from '../components/Piano'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { setIsMuted, setIsTimedOut } from '../redux/actions/securityActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { setIsMuted, setIsTimedOut } from '../redux/reducers/security'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -33,12 +33,14 @@ type PianoAppScreenNavigationProp = StackNavigationProp<
 interface Props {
   navigation: PianoAppScreenNavigationProp
 }
+
 /**
  * A screen that shows a dummy piano app meant to convince non-users who are looking at the app that it's just a harmless piano app and not a Christian disciple making tool >:)
  */
 const PianoAppScreen: FC<Props> = ({
   navigation: { canGoBack, goBack, reset },
 }) => {
+  // Redux state/dispatch.
   const security = selector((state) => state.security)
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
@@ -62,7 +64,9 @@ const PianoAppScreen: FC<Props> = ({
   /** Ref for the unlock sound. */
   const unlockSound = useRef(new Audio.Sound())
 
-  /** useEffect function that dismisses the keyboard on first render in case the user had the keyboard open before exiting the app and enabling security mode. It also loads/unloads the unlock sound. */
+  /**
+   * Dismisses the keyboard on first render in case the user had the keyboard open before exiting the app and enabling security mode. It also loads/unloads the unlock sound.
+   */
   useEffect(() => {
     Keyboard.dismiss()
 
@@ -75,14 +79,16 @@ const PianoAppScreen: FC<Props> = ({
     }
   }, [])
 
-  /** useEffect function that updates whenever the user plays a piano note. */
+  /**
+   * Checks for the right code entered whenever the user plays a piano note.
+   */
   useEffect(() => {
     // If the user has entered in their passcode...
     if (security.code && playedNotes.includes(security.code)) {
       // If the user hasn't muted the piano app sounds, play a little sound effect when they enter their passcode correctly.
       if (!security.isMuted) unlockSound.current.playAsync()
 
-      dispatch(setIsTimedOut(false))
+      dispatch(setIsTimedOut({ toSet: false }))
 
       // Because this screen is on top of all other screens in terms of the navigation stack, the way we get back to what was on the screen before security mode was activated is to simply go back. If we can't go back, then just reset to the starting screen.
       if (canGoBack()) {
@@ -96,7 +102,7 @@ const PianoAppScreen: FC<Props> = ({
     }
   }, [playedNotes])
 
-  /** Disables the back button in this screen */
+  // Disables the back button in this screen.
   useBackHandler(() => true)
 
   return (
@@ -223,8 +229,8 @@ const PianoAppScreen: FC<Props> = ({
           <TouchableOpacity
             onPress={
               security.isMuted
-                ? () => dispatch(setIsMuted(false))
-                : () => dispatch(setIsMuted(true))
+                ? () => dispatch(setIsMuted({ toSet: false }))
+                : () => dispatch(setIsMuted({ toSet: true }))
             }
             style={{
               margin: 20,

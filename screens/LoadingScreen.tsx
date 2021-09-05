@@ -12,18 +12,20 @@ import {
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { selector, useAppDispatch } from '../hooks'
-import { changeActiveGroup } from '../redux/actions/activeGroupActions'
-import { deleteLanguageData } from '../redux/actions/databaseActions'
-import { deleteGroup } from '../redux/actions/groupsActions'
-import { setIsInstallingLanguageInstance } from '../redux/actions/isInstallingLanguageInstanceActions'
+import { selector, useAppDispatch } from '../redux/hooks'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
+import { deleteLanguageData } from '../redux/reducers/database'
+import { deleteGroup } from '../redux/reducers/groups'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
 import {
   setHasFetchedLanguageData,
   setHasOnboarded,
   setLanguageCoreFilesDownloadProgress,
   setTotalLanguageCoreFilesToDownload,
-} from '../redux/actions/languageInstallationActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+} from '../redux/reducers/languageInstallation'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -37,9 +39,10 @@ interface Props {
 }
 
 /**
- * A screen that shows the download progress of a language's core files. The user sits on this screen if they finish onboarding before the downloads are done.
+ * A screen that shows the download progress of a Language's Core Files. The user sits on this screen if they finish onboarding before the Core File downloads are done.
  */
 const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -64,20 +67,21 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
   const recentActiveGroup = selector(
     (state) => state.languageInstallation.recentActiveGroup
   )
-
   const dispatch = useAppDispatch()
 
-  /** Cancels the language core files downloads, does a few cleanup actions, and sends the user back to the language instance install screen. */
+  /**
+   * Cancels the language Core Files downloads, does a few cleanup actions, and sends the user back to the language instance install screen.
+   */
   const cancelDownloads = () => {
-    // Set the core files download progress to 0.
-    dispatch(setLanguageCoreFilesDownloadProgress(0))
+    // Set the Core Files download progress to 0.
+    dispatch(setLanguageCoreFilesDownloadProgress({ progress: 0 }))
 
     // Set this to 1 to avoid strange divide by zero errors.
-    dispatch(setTotalLanguageCoreFilesToDownload(1))
+    dispatch(setTotalLanguageCoreFilesToDownload({ filesToDownload: 1 }))
 
     // Set the isInstalling and hasFetched redux states to false since we're no longer installing.
-    dispatch(setIsInstallingLanguageInstance(false))
-    dispatch(setHasFetchedLanguageData(false))
+    dispatch(setIsInstallingLanguageInstance({ toSet: false }))
+    dispatch(setHasFetchedLanguageData({ toSet: false }))
 
     // Cancel all of the downloads.
     storedDownloads.forEach((download) =>
@@ -86,7 +90,7 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
 
     // If we're adding a language for the first time, set hasOnboarded to false so that the user must go through onboarding again and reset them back to the language instance install screen.
     if (!hasInstalledFirstLanguageInstance) {
-      dispatch(setHasOnboarded(false))
+      dispatch(setHasOnboarded({ toSet: false }))
       if (navigation)
         navigation.reset({
           index: 0,
@@ -95,19 +99,21 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
     }
 
     // If this is a subsequent language instance install, if we cancel, we need to switch back to our most recent active group since we're going to delete all the groups for the language we cancelled the installation of.
-    if (recentActiveGroup) dispatch(changeActiveGroup(recentActiveGroup))
+    if (recentActiveGroup)
+      dispatch(changeActiveGroup({ groupName: recentActiveGroup }))
     // If this is the initial language instance install, set active group back to null since there should be no active group before you install your first language instance.
-    else dispatch(changeActiveGroup(''))
+    else dispatch(changeActiveGroup({ groupName: '' }))
 
     // Delete any groups from the cancelled language.
     groups.forEach((group) => {
       if (group.language === actingLanguageID) {
-        dispatch(deleteGroup(group.name))
+        dispatch(deleteGroup({ groupName: group.name }))
       }
     })
 
     // Delete the language data of the cancelled language.
-    if (actingLanguageID) dispatch(deleteLanguageData(actingLanguageID))
+    if (actingLanguageID)
+      dispatch(deleteLanguageData({ languageID: actingLanguageID }))
 
     // Delete any files that have already finished downloading for the cancelled language.
     if (FileSystem.documentDirectory)

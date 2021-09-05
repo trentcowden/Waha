@@ -16,7 +16,7 @@ Finally, I’d also love to generally just find more bugs and issues since I kno
 ### Performance
 Waha’s target audience is people with low to mid quality Android phones. Because of that, performance is a significant factor. Right now, performance on low-end Android phones isn’t great. Obviously, being built with React Native and using Expo comes with some performance costs at the benefit of convenience and being on both platforms, but I’d love to be able to go through the app and do a performance check. I’ve done a little of this myself, but I’m certain there are many more things that can be done to boost performance. A couple areas that I’ve specifically noticed JS frame dips are:
 * When downloading an mp3 or mp4 for a lesson (either from the `<LessonsScreen/>` or the `<PlayScreen/>`.
-* When switching groups from the `<GroupsScreen/>`.
+* When switching Groups from the `<GroupsScreen/>`.
 * When marking a lesson as complete from the `<LessonsScreen/>`.
 
 ### Expo

@@ -4,8 +4,8 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { Lesson } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { CommonProps, DLProps, NetworkProps } from '../interfaces/common'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { CommonProps, DLProps, NetworkProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps, NetworkProps, DLProps {
@@ -41,16 +41,18 @@ const DownloadStatusIndicator: FC<Props> = ({
   /** Keeps track of the percentage of the download for this lesson if it's currently downloading. */
   const [downloadPercentage, setDownloadPercentage] = useState(0)
 
-  /** useEffect function that updates the percentage of the download for this lesson based on what the lesson type is. */
+  /**
+   * Updates the percentage of the download for this Lesson based on what the Lesson Type is.
+   */
   useEffect(() => {
     if (downloads[lessonID] || downloads[lessonID + 'v'])
       switch (lessonType) {
         case LessonType.STANDARD_DBS:
         case LessonType.AUDIOBOOK:
-          // For audio only lessons, the progress is just the progress of the video download.
+          // For audio-only Lessons, the progress is just the progress of the audio download.
           setDownloadPercentage(downloads[lessonID].progress * 100)
           break
-        // Special case. When we're in a DMC lesson, the download progress should be the audio and video download progress combined. If one has already finished and has been removed from the downloads redux object, use 1 for its progress instead.
+        // Special case. When we're in a DMC lesson, the download progress should be the audio and video download progresses combined. If one has already finished and has been removed from the downloads redux object, use 1 for its progress instead.
         case LessonType.STANDARD_DMC:
           var audioPercentage = downloads[lessonID]
             ? downloads[lessonID].progress
@@ -61,19 +63,19 @@ const DownloadStatusIndicator: FC<Props> = ({
           setDownloadPercentage(((audioPercentage + videoPercentage) / 2) * 100)
           break
         case LessonType.VIDEO_ONLY:
-          // For video only lessons, the progress is just the progress of the video download.
+          // For video-only Lessons, the progress is just the progress of the video download.
           setDownloadPercentage(downloads[lessonID + 'v'].progress * 100)
           break
       }
   }, [downloads[lessonID], downloads[lessonID + 'v']])
 
-  // If our lesson has no media to download, return nothing.
+  // If our Lesson has no media to download, return nothing.
   if (
     lessonType === LessonType.STANDARD_NO_AUDIO ||
     lessonType === LessonType.BOOK
   )
     return <View />
-  // If all the media for the lesson is downloaded, show the checkmark icon. Pressing on this deletes the media.
+  // If all the media for the Lesson is downloaded, show the checkmark icon. Pressing on this deletes the media.
   else if (isFullyDownloaded)
     return (
       <TouchableOpacity
@@ -87,7 +89,7 @@ const DownloadStatusIndicator: FC<Props> = ({
         />
       </TouchableOpacity>
     )
-  // If we're actively downloading the media for the lesson, show a progress bar of the download. Pressing on it stops the download.
+  // If we're actively downloading the media for the Lesson, show a progress bar of the download. Pressing on it stops the download.
   else if (isDownloading && isConnected)
     return (
       <TouchableOpacity
@@ -124,7 +126,7 @@ const DownloadStatusIndicator: FC<Props> = ({
         </AnimatedCircularProgress>
       </TouchableOpacity>
     )
-  // If we're not actively downloading the media for this lesson, it's not already downloaded, and we're connected to the internet, show the download icon which starts downloading the media when pressed.
+  // If we're not actively downloading the media for this Lesson, it's not already downloaded, and we're connected to the internet, show the download icon which starts downloading the media when pressed.
   else if (!isDownloading && !isFullyDownloaded && isConnected)
     return (
       <TouchableOpacity
@@ -140,7 +142,7 @@ const DownloadStatusIndicator: FC<Props> = ({
         />
       </TouchableOpacity>
     )
-  // Lastly, if the media isn't downloaded and we have no connection, show a slash icon which indicates the lesson can't be downloaded right now.
+  // Lastly, if the media isn't downloaded and we have no connection, show a slash icon which indicates the Lesson can't be downloaded right now.
   else if (!isFullyDownloaded && !isConnected)
     return (
       <View style={styles.downloadStatusIndicatorContainer}>

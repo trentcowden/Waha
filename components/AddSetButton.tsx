@@ -1,6 +1,12 @@
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
+import { AGProps, CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
@@ -76,7 +82,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    margin: 20,
+    // These are different because of some strange behavior between ios and android and text wrapping of this button.
+    padding: Platform.OS === 'android' ? 20 : undefined,
+    marginHorizontal: Platform.OS === 'ios' ? 20 : undefined,
   },
 })
 

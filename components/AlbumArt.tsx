@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { gutterSize, isTablet, scaleMultiplier } from '../constants'
-import { CommonProps } from '../interfaces/common'
+import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import SVG from './SVG'
 

@@ -1,19 +1,23 @@
-import {
-  MTUnlockAttemptsActionParams,
-  SET_MT_UNLOCK_ATTEMPTS
-} from '../actions/mtUnlockAttemptsActions'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+const initialState = 0
 
 /**
  * This reducer stores the number of times that the user has unsuccessfully attempted to unlock the Mobilization Tools. After a few attempts, the app will lock out the user from attempting to unlock them for 30 minutes. This state is NOT persisted across app restarts.
  */
-export function mtUnlockAttempts (
-  state: number = 0,
-  params: MTUnlockAttemptsActionParams
-) {
-  switch (params.type) {
-    case SET_MT_UNLOCK_ATTEMPTS:
-      return params.numAttempts
-    default:
-      return state
+const mtUnlockAttempts = createSlice({
+  name: 'mtUnlockAttempts',
+  initialState,
+  reducers: {
+    setMTUnlockAttempts: (
+      state,
+      action: PayloadAction<{ numAttempts: number }>
+    ) => {
+      return action.payload.numAttempts
+    }
   }
-}
+})
+
+export const { setMTUnlockAttempts } = mtUnlockAttempts.actions
+
+export default mtUnlockAttempts.reducer

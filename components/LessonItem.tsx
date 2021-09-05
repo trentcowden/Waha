@@ -3,14 +3,11 @@ import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, itemHeights, scaleMultiplier } from '../constants'
-import { getLessonInfo } from '../functions/setAndLessonDataFunctions'
 import {
-  AGProps,
-  CommonProps,
-  DLProps,
-  NetworkProps,
-} from '../interfaces/common'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+  getLessonInfo,
+  LessonType,
+} from '../functions/setAndLessonDataFunctions'
+import { AGProps, CommonProps, DLProps, NetworkProps } from '../redux/common'
 import { Lesson } from '../redux/reducers/database'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -75,7 +72,9 @@ const LessonItem: FC<Props> = ({
   /** Keeps track of whether this lesson is currently downloading or not. */
   const [isDownloading, setIsDownloading] = useState(false)
 
-  /** useEffect function that removes an active download from the downloads redux object after it finishes. */
+  /**
+   * Removes an active download from the downloads redux object after it finishes.
+   */
   useEffect(() => {
     // Remove finished audio downloads.
     if (
@@ -94,7 +93,9 @@ const LessonItem: FC<Props> = ({
       removeDownload(thisLesson.id + 'v')
   }, [downloads[thisLesson.id], downloads[thisLesson.id + 'v']])
 
-  /** useEffect function that updates the downloading and downloaded status of a lesson whenever a download gets added or removed from the downloads redux object. */
+  /**
+   * Updates the downloading and downloaded status of a lesson whenever a download gets added or removed from the downloads redux object.
+   */
   useEffect(() => {
     switch (lessonType) {
       case LessonType.STANDARD_DBS:

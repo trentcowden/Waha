@@ -1,7 +1,7 @@
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
+import { AGProps, CommonProps } from 'redux/common'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -17,13 +17,6 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A modal component that shows an image, a title, a message, and a button to dismiss.
- * @param {boolean} isVisible - Whether the modal is visible.
- * @param {Function} hideModal - Function to hide the modal.
- * @param {string} title - Text to display as the title.
- * @param {string} message - Text to display as the message.
- * @param {string} confirmText - Text to display on the button to close the modal.
- * @param {Function} confirmOnPress - Function to fire when the user presses the button to close the modal.
- * @param {Component} children - Component to show at the top of the modal. Usualy an image/gif.
  */
 const MessageModal: FC<Props> = ({
   isVisible,

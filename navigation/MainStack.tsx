@@ -8,7 +8,7 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack'
 import * as StoreReview from 'expo-store-review'
-import { LessonType } from 'interfaces/setAndLessonInfo'
+import { LessonType } from 'functions/setAndLessonDataFunctions'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { AppState, LogBox, Platform, View } from 'react-native'
 import { Lesson, StorySet } from 'redux/reducers/database'
@@ -18,18 +18,18 @@ import TestModeDisplay from '../components/TestModeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import { SetCategory } from '../functions/setAndLessonDataFunctions'
 import { InfoAndGroupsForAllLanguages, LanguageMetadata } from '../languages'
 import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
+import { selector, useAppDispatch } from '../redux/hooks'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setHasUsedPlayScreen,
   setLessonCounter,
   setNumLessonsTilReview,
   setReviewTimeout,
-} from '../redux/actions/persistedPopupsActions'
-import { setIsTimedOut, setTimer } from '../redux/actions/securityActions'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+} from '../redux/reducers/persistedPopups'
+import { setIsTimedOut, setTimer } from '../redux/reducers/security'
 import AddSetScreen from '../screens/AddSetScreen'
 import ContactUsScreen from '../screens/ContactUsScreen'
 import GroupsScreen from '../screens/GroupsScreen'
@@ -100,7 +100,7 @@ interface Props {
 }
 
 /*
- This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.js is because this component has access to the navigation prop.
+ This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.tsx is because this component has access to the navigation prop.
  */
 const MainStack: FC<Props> = ({
   navigation: { navigate, goBack, toggleDrawer },
@@ -141,10 +141,13 @@ const MainStack: FC<Props> = ({
 
   // Temporary function to initialize these redux variables for users who are updating.
   useEffect(() => {
-    if (hasUsedPlayScreen === undefined) dispatch(setHasUsedPlayScreen(true))
-    if (reviewTimeout === undefined) dispatch(setReviewTimeout(undefined))
-    if (lessonCounter === undefined) dispatch(setLessonCounter(0))
-    if (numLessonsTilReview === undefined) dispatch(setNumLessonsTilReview(2))
+    if (hasUsedPlayScreen === undefined)
+      dispatch(setHasUsedPlayScreen({ toSet: true }))
+    if (reviewTimeout === undefined)
+      dispatch(setReviewTimeout({ timeout: undefined }))
+    if (lessonCounter === undefined) dispatch(setLessonCounter({ counter: 0 }))
+    if (numLessonsTilReview === undefined)
+      dispatch(setNumLessonsTilReview({ numLessons: 2 }))
   }, [])
 
   /** useEffect function that reacts to changes in app state changes. This is used to display the splash screen to hide the app preview in multitasking as well as keeping track of security mode timeouts. */
@@ -154,12 +157,12 @@ const MainStack: FC<Props> = ({
       if (Platform.OS === 'ios') navigate('Splash')
 
       // Store the current time for security mode timeout checking later.
-      dispatch(setTimer(Date.now()))
+      dispatch(setTimer({ ms: Date.now() }))
     } else if (appState === 'active') {
       // If we're past our review timeout, request a review and reset the timeout.
       if (reviewTimeout !== undefined && Date.now() > reviewTimeout) {
         StoreReview.requestReview()
-        dispatch(setReviewTimeout(undefined))
+        dispatch(setReviewTimeout({ timeout: undefined }))
       }
 
       if (security.securityEnabled) {
@@ -170,7 +173,7 @@ const MainStack: FC<Props> = ({
         } else {
           // If we are now timed out, set isTimedOut to true and navigate to the piano screen.
           if (Date.now() - security.timer > security.timeoutDuration) {
-            dispatch(setIsTimedOut(true))
+            dispatch(setIsTimedOut({ toSet: true }))
             navigate('PianoApp')
             // Otherwise, if we haven't timed out yet, on Android, do nothing. On iOS, we will have navigated to the splash screen upon coming back into the app so we have to go back to get back to the screen we were on before.
           } else {
@@ -421,6 +424,7 @@ const MainStack: FC<Props> = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerTitle: t.language_select.add_language,
             headerRight: isRTL
               ? () => (
                   <WahaBackButton
@@ -454,6 +458,7 @@ const MainStack: FC<Props> = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerTitle: t.language_select.add_language,
             headerRight: isRTL
               ? () => (
                   <WahaBackButton

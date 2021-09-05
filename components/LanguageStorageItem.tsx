@@ -1,10 +1,10 @@
 import * as FileSystem from 'expo-file-system'
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
+import { WahaButtonMode } from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
-import { WahaButtonMode } from '../interfaces/components'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import WahaButton from './WahaButton'
@@ -20,11 +20,7 @@ interface Props extends CommonProps, TProps, AGProps {
 }
 
 /**
- * A list item used to display a language and the amount of storage all of its downloaded lessons take up. Used on the StorageScreen.
- * @param {string} languageName - The name of the language.
- * @param {string} languageID - The ID of the language.
- * @param {number} megabytes -
- * @param {Function} clearDownloads - Function that clears all of the downloaded lessons for this language.
+ * A list item used to display a Language and the amount of storage all of its downloaded Lessons take up. Used on the <StorageScreen />.
  */
 const LanguageStorageItem: FC<Props> = ({
   nativeName,

@@ -2,9 +2,9 @@ import { Group } from './redux/reducers/groups'
 
 /*
   When adding a new language:
-    1. Add the language ID to the LanguageID type below.
-    2. If necessary, create a new language family for the language. 
-    3. Add the new language as an object in the data array of an existing or the new language family.
+    1. Add the Language ID to the LanguageID type below.
+    2. If necessary, create a new Language Family for the Language. 
+    3. Add the new Language as an object in the data array of an existing or the new Language Family.
 */
 
 // All of the available language IDs. Languages that are actually live are marked as such.

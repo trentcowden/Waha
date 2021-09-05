@@ -1,6 +1,6 @@
-import { AGProps, CommonProps, NetworkProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AGProps, CommonProps, NetworkProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
@@ -12,7 +12,7 @@ interface Props extends CommonProps, AGProps, TProps, NetworkProps {
 }
 
 /**
- * Button that prompts the user to download new language core files should they be available/needed.
+ * Button that prompts the user to download new language Core Files should they be available/needed.
  */
 const DrawerDownloadUpdateButton: FC<Props> = ({
   onUpdateButtonPress,

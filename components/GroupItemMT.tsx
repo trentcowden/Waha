@@ -1,7 +1,7 @@
 import { Emoji } from 'assets/groupIcons/_groupIcons'
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native'
+import { AGProps, CommonProps } from 'redux/common'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
 import { Group } from '../redux/reducers/groups'
@@ -21,7 +21,7 @@ interface Props extends CommonProps, AGProps {
 }
 
 /**
- * A pressable item used on the MobilizationTools screen to display a group. Similar to the GroupItem component, but a lot simpler. It still displays the group name, but just allows the user to show the Mobilization Tools tab for a specific group.
+ * A pressable item used on the MobilizationTools screen to display a Group. Similar to the <GroupItem /> component, but a lot simpler. It still displays the Group's name, but just allows the user to show or hide the Mobilization Tools tab for a Group.
  */
 const GroupItemMT: FC<Props> = ({
   thisGroup,

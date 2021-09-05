@@ -1,13 +1,4 @@
-import {
-  SecurityActionParams,
-  SET_CODE,
-  SET_IS_MUTED,
-  SET_IS_TIMED_OUT,
-  SET_MT_UNLOCK_TIMEOUT,
-  SET_SECURITY_ENABLED,
-  SET_TIMEOUT_DURATION,
-  SET_TIMER
-} from '../actions/securityActions'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface SecurityState {
   // Whether Security Mode is enabled or not.
@@ -26,59 +17,55 @@ export interface SecurityState {
   mtUnlockTimeout: number
 }
 
+const initialState: SecurityState = {
+  securityEnabled: false,
+  code: undefined,
+  isMuted: false,
+  timeoutDuration: 0,
+  timer: 0,
+  isTimedOut: false,
+  mtUnlockTimeout: 0
+}
+
 /**
  * The security redux reducer stores all the information related to Waha's Security Mode, except for the Mobilization Tools unlock attempts, which is stored in a separate reducer so that it isn't persisted.
  */
-export function security (
-  state: SecurityState = {
-    securityEnabled: false,
-    code: undefined,
-    isMuted: false,
-    timeoutDuration: 0,
-    timer: 0,
-    isTimedOut: false,
-    mtUnlockTimeout: 0
-  },
-  params: SecurityActionParams
-) {
-  switch (params.type) {
-    case SET_SECURITY_ENABLED:
-      return {
-        ...state,
-        securityEnabled: params.toSet
-      }
-
-    case SET_CODE:
-      return {
-        ...state,
-        code: params.code
-      }
-    case SET_IS_MUTED:
-      return {
-        ...state,
-        isMuted: params.toSet
-      }
-    case SET_TIMEOUT_DURATION:
-      return {
-        ...state,
-        timeoutDuration: params.ms
-      }
-    case SET_TIMER:
-      return {
-        ...state,
-        timer: params.ms
-      }
-    case SET_IS_TIMED_OUT:
-      return {
-        ...state,
-        isTimedOut: params.toSet
-      }
-    case SET_MT_UNLOCK_TIMEOUT:
-      return {
-        ...state,
-        mtUnlockTimeout: params.time
-      }
-    default:
-      return state
+const security = createSlice({
+  name: 'security',
+  initialState,
+  reducers: {
+    setSecurityEnabled: (state, action: PayloadAction<{ toSet: boolean }>) => {
+      state.securityEnabled = action.payload.toSet
+    },
+    setCode: (state, action: PayloadAction<{ code: string }>) => {
+      state.code = action.payload.code
+    },
+    setIsMuted: (state, action: PayloadAction<{ toSet: boolean }>) => {
+      state.isMuted = action.payload.toSet
+    },
+    setTimeoutDuration: (state, action: PayloadAction<{ ms: number }>) => {
+      state.timeoutDuration = action.payload.ms
+    },
+    setTimer: (state, action: PayloadAction<{ ms: number }>) => {
+      state.timer = action.payload.ms
+    },
+    setIsTimedOut: (state, action: PayloadAction<{ toSet: boolean }>) => {
+      state.isTimedOut = action.payload.toSet
+    },
+    setMTUnlockTimeout: (state, action: PayloadAction<{ time: number }>) => {
+      state.mtUnlockTimeout = action.payload.time
+    }
   }
-}
+})
+
+export const {
+  setSecurityEnabled,
+  setCode,
+  setIsMuted,
+  setTimeoutDuration,
+  setTimer,
+  setIsTimedOut,
+  setMTUnlockTimeout
+} = security.actions
+
+export default security.reducer

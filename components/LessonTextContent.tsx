@@ -10,98 +10,22 @@ import {
 } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
 import { gutterSize, scaleMultiplier } from '../constants'
-import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
-import { Layouts, SectionOffset } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { ADBProps, AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+import { HeaderBig, HeaderSmall, StandardText } from './LessonTexts'
 
-interface LessonTextProps extends CommonProps, AGProps {
-  text: string
-  onLayout?: (layoutEvent: { layout: LayoutRectangle }) => void
+export interface SectionOffset {
+  title: string
+  globalOffset: number
+  localOffset?: number
 }
 
-/*
-  A simple set of 3 components to display different parts of the lesson text.
-*/
-
-const HeaderBig: FC<LessonTextProps> = ({
-  text,
-  activeGroup,
-  onLayout = () => {},
-  isDark,
-  isRTL,
-}) => (
-  <View
-    style={{
-      marginBottom: 10 * scaleMultiplier,
-      paddingHorizontal: gutterSize,
-    }}
-    onLayout={({ nativeEvent }) => onLayout(nativeEvent)}
-  >
-    <Text
-      style={type(
-        activeGroup.language,
-        'h2',
-        'Black',
-        'left',
-        colors(isDark).icons
-      )}
-    >
-      {text}
-    </Text>
-  </View>
-)
-
-const HeaderSmall: FC<LessonTextProps> = ({
-  text,
-  activeGroup,
-  isDark,
-  isRTL,
-}) => (
-  <View>
-    <Text
-      style={{
-        ...type(
-          activeGroup.language,
-          'h3',
-          'Regular',
-          'left',
-          colors(isDark).disabled
-        ),
-        paddingHorizontal: gutterSize,
-        marginVertical: 5 * scaleMultiplier,
-      }}
-    >
-      {text}
-    </Text>
-  </View>
-)
-
-const StandardText: FC<LessonTextProps> = ({
-  text,
-  activeGroup,
-  isDark,
-  isRTL,
-}) => (
-  <View>
-    <Text
-      style={{
-        ...type(
-          activeGroup.language,
-          'h3',
-          'Regular',
-          'left',
-          colors(isDark).text
-        ),
-        zIndex: 0,
-        paddingHorizontal: gutterSize,
-      }}
-    >
-      {text}
-    </Text>
-  </View>
-)
+export interface Layouts {
+  contentHeight: number
+  windowHeight: number
+}
 
 interface Props extends CommonProps, TProps, ADBProps, AGProps {
   lessonTextContentRef: RefObject<ScrollView>
@@ -116,7 +40,7 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
 }
 
 /**
- * Displays all of the text for the different lesson chapters.
+ * Component that displays all of the text for the Fellowship, Story, and Application Chapters in the <LessonTextViewer />.
  */
 const LessonTextContent: FC<Props> = ({
   lessonTextContentRef,
@@ -133,9 +57,7 @@ const LessonTextContent: FC<Props> = ({
   t,
 }): ReactElement => {
   /**
-   * Adds a section and its offset in the sectionOffsets array.
-   * @param {string} sectionTitle
-   * @param {Object} nativeEvent
+   * Adds a section and its offset to the sectionOffsets array declared way back on the <PlayScreen />.
    */
   const setOffsets = (
     sectionTitle: string,
@@ -165,7 +87,9 @@ const LessonTextContent: FC<Props> = ({
     }
   }
 
-  /** Adds the text window height to the layouts object. */
+  /**
+   * Adds the text window height to the layouts object.
+   */
   const onLayout = (nativeEvent: { layout: LayoutRectangle }) => {
     if (nativeEvent)
       layouts.current = {
@@ -199,7 +123,7 @@ const LessonTextContent: FC<Props> = ({
           />
           {/* Fellowship questions. */}
           {activeDatabase && thisLesson.fellowshipType
-            ? activeDatabase.questions[thisLesson.fellowshipType].map(
+            ? activeDatabase.questionSets[thisLesson.fellowshipType].map(
                 (question, index) => (
                   <View key={index}>
                     <HeaderSmall
@@ -312,7 +236,7 @@ const LessonTextContent: FC<Props> = ({
           {/* Application questions. */}
           {activeDatabase &&
             thisLesson.applicationType &&
-            activeDatabase.questions[thisLesson.applicationType].map(
+            activeDatabase.questionSets[thisLesson.applicationType].map(
               (question, index) => (
                 <View key={index}>
                   <HeaderSmall

@@ -1,6 +1,6 @@
-import { CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
+import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
@@ -12,8 +12,6 @@ interface Props extends CommonProps {
 
 /**
  * A simple pressable component with a backwards arrow that acts as a back button. Used in almost every header in Waha.
- * @param {Function} onPress - Function to call when the back button is pressed. Almost always navigation.goBack().
- * @param {string} color - The color of the back button icon. Not required.
  */
 const WahaBackButton: FC<Props> = ({
   onPress,

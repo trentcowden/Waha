@@ -15,13 +15,12 @@ import {
 } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from '../assets/fonts/icon_font_config'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
 import { appVersion } from '../modeSwitch'
+import { selector } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -36,9 +35,13 @@ interface Props {
   navigation: ContactUsScreenNavigationProp
 }
 
+/**
+ * A screen that allows the user to submit feedback to the Waha team with some simple forms.
+ */
 const ContactUsScreen: FC<Props> = ({
   navigation: { goBack },
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -66,22 +69,28 @@ const ContactUsScreen: FC<Props> = ({
   /** Keeps track of whether the email address is valid or not. */
   const [emailError, setEmailError] = useState<boolean | undefined>(undefined)
 
-  /** useEffect function that checks the validity of an email address any time the email input changes. */
+  /**
+   * Checks the validity of an email address any time the email input changes.
+   */
   useEffect(() => {
     if (emailTextInput !== undefined) {
       checkEmail()
     }
   }, [emailTextInput])
 
-  /** Checks whether an email address is valid using a regular expression. If it's valid, set the email error state to false. Otherwise, set it to true.*/
+  /**
+   * Checks whether an email address is valid using a regular expression. If it's valid, set the email error state to false. Otherwise, set it to true.
+   */
   const checkEmail = () => {
     if (emailTextInput !== undefined && emailTextInput.match(/^.+@.+\..+$/))
       setEmailError(false)
     else setEmailError(true)
   }
 
-  /** Sends the form information to Firestore and pops up an appropriate alert. */
-  const submit = () => {
+  /**
+   * Sends the form information to Firestore and pops up an appropriate alert.
+   */
+  const handleSubmit = () => {
     setIsSubmitting(true)
     db.collection('feedback')
       .add({
@@ -383,7 +392,7 @@ const ContactUsScreen: FC<Props> = ({
               : WahaButtonMode.SUCCESS
           }
           label={isSubmitting || !isConnected ? '' : t.general.submit}
-          onPress={() => submit()}
+          onPress={() => handleSubmit()}
           extraContainerStyles={{
             width: Dimensions.get('window').width / 3,
             alignSelf: isRTL ? 'flex-start' : 'flex-end',

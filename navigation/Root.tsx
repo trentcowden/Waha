@@ -2,14 +2,14 @@ import NetInfo from '@react-native-community/netinfo'
 import { StatusBar as StatusBarExpo } from 'expo-status-bar'
 import React, { FC, ReactElement, useEffect } from 'react'
 import { StatusBar as StatusBarRN, View } from 'react-native'
-import { selector, useAppDispatch } from '../hooks'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   setGlobalGroupCounter,
   setHasInstalledFirstLanguageInstance,
   setHasOnboarded,
   storeLanguageCoreFileCreatedTime,
-} from '../redux/actions/languageInstallationActions'
-import { updateConnectionStatus } from '../redux/actions/networkActions'
+} from '../redux/reducers/languageInstallation'
+import { setIsConnected } from '../redux/reducers/network'
 import LoadingScreen from '../screens/LoadingScreen'
 import { colors } from '../styles/colors'
 import MainDrawer from './MainDrawer'
@@ -60,20 +60,22 @@ const Root: FC<Props> = ({}): ReactElement => {
   useEffect(() => {
     if (oldHasOnboarded !== undefined) {
       if ((oldGlobalGroupCounter as unknown) !== newGlobalGroupCounter) {
-        dispatch(setGlobalGroupCounter(oldGlobalGroupCounter as number))
+        dispatch(
+          setGlobalGroupCounter({ counter: oldGlobalGroupCounter as number })
+        )
       }
 
       if ((oldHasOnboarded as unknown) !== newHasOnboarded)
-        dispatch(setHasOnboarded(oldHasOnboarded as boolean))
+        dispatch(setHasOnboarded({ toSet: oldHasOnboarded as boolean }))
 
       if (
         oldHasInstalledFirstLanguageInstance !==
         newHasInstalledFirstLanguageInstance
       )
         dispatch(
-          setHasInstalledFirstLanguageInstance(
-            oldHasInstalledFirstLanguageInstance as boolean
-          )
+          setHasInstalledFirstLanguageInstance({
+            toSet: oldHasInstalledFirstLanguageInstance as boolean,
+          })
         )
 
       Object.keys(
@@ -81,10 +83,10 @@ const Root: FC<Props> = ({}): ReactElement => {
       ).forEach((fileName) => {
         if (newLanguageCoreFilesCreatedTimes[fileName] === undefined) {
           dispatch(
-            storeLanguageCoreFileCreatedTime(
+            storeLanguageCoreFileCreatedTime({
               fileName,
-              oldLanguageCoreFilesCreatedTimes[fileName]
-            )
+              createdTime: oldLanguageCoreFilesCreatedTimes[fileName],
+            })
           )
         }
       })
@@ -96,7 +98,7 @@ const Root: FC<Props> = ({}): ReactElement => {
     // Add a listener for connection status and update the redux state accordingly.
     const netInfoUnsubscribe = NetInfo.addEventListener((state) => {
       if (state.isConnected !== null)
-        dispatch(updateConnectionStatus(state.isConnected))
+        dispatch(setIsConnected({ toSet: state.isConnected }))
     })
 
     return function cleanup() {
@@ -114,6 +116,7 @@ const Root: FC<Props> = ({}): ReactElement => {
   const languageCoreFilesToUpdate = selector(
     (state) => state.database.languageCoreFilesToUpdate
   )
+  const groups = selector((state) => state.groups)
 
   useEffect(() => {
     // Below are some logs for testing.
@@ -126,14 +129,15 @@ const Root: FC<Props> = ({}): ReactElement => {
     //     key => key.length === 2
     //   )}`
     // )
-    // Log the language core files to update to the console.
-    // console.log(`Language core files to update: ${languageCoreFilesToUpdate}\n`)
-    // Log the language core file created times to the console.
+    // Log the language Core Files to update to the console.
+    // console.log(`Language Core Files to update: ${languageCoreFilesToUpdate}\n`)
+    // Log the language Core File created times to the console.
     // console.log(
-    //   `Language core files created times: ${JSON.stringify(
+    //   `Language Core Files created times: ${JSON.stringify(
     //     languageCoreFilesCreatedTimes
     //   )}\n`
     // )
+    // console.log(groups)
   }, [])
 
   /*

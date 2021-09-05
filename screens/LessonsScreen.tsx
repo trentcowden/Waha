@@ -18,31 +18,30 @@ import { SavedSet } from 'redux/reducers/groups'
 import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import OptionsModalButton from '../components/OptionsModalButton'
-import SetItem from '../components/SetItem'
+import SetItem, { SetItemMode } from '../components/SetItem'
 import { itemHeights } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import {
   getDownloadedLessons,
   getLessonInfo,
   getLessonType,
+  LessonType,
 } from '../functions/setAndLessonDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetItemMode } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
-import { downloadMedia, removeDownload } from '../redux/actions/downloadActions'
-import { addSet, toggleComplete } from '../redux/actions/groupsActions'
-import { setShowTrailerHighlights } from '../redux/actions/persistedPopupsActions'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,
 } from '../redux/reducers/activeGroup'
+import { downloadMedia, removeDownload } from '../redux/reducers/downloads'
+import { addSet, toggleComplete } from '../redux/reducers/groups'
+import { setShowTrailerHighlights } from '../redux/reducers/persistedPopups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
 
@@ -58,13 +57,15 @@ interface Props {
 }
 
 /**
- * Screen that displays a list of lessons for a specific Story Set.
- * @param {Object} thisSet - The object for the set that we're displaying.
+ * A screen that displays a list of Lessons for a specific Story Set.
  */
 const LessonsScreen: FC<Props> = ({
   navigation: { navigate },
   route: {
-    params: { setID },
+    params: {
+      // The ID for the Story Set that we're displaying.
+      setID,
+    },
   },
 }): ReactElement => {
   // Redux state/dispatch.
@@ -89,20 +90,20 @@ const LessonsScreen: FC<Props> = ({
   // Gets whether the screen is focused or not.
   const isFocused = useIsFocused()
 
-  // Keeps track of what lessons are downloaded to the file system.
+  /** Keeps track of what lessons are downloaded to the file system. */
   const [downloadedLessons, setDownloadedLessons] = useState<string[]>([])
 
-  // Whenever we enable a lesson-specific modal, we also set this state to the specific lesson so we can use its information for whatever action we're doing.
+  /** Whenever we show a Lesson-specific modal, we also set this state to the specific lesson so we can use its information for whatever action we're doing. */
   const [activeLessonInModal, setActiveLessonInModal] = useState<
     Lesson | undefined
   >()
 
-  // Keeps track of the type of the active lesson in a modal.
+  /** Keeps track of the type of the active lesson in a modal. */
   const [modalLessonType, setModalLessonType] = useState<LessonType>(
     LessonType.STANDARD_DBS
   )
 
-  // A whole lot of modal states.
+  /** A whole lot of modal states. */
   const [showDownloadLessonModal, setShowDownloadLessonModal] = useState(false)
   const [showDeleteLessonModal, setShowDeleteLessonModal] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
@@ -110,12 +111,12 @@ const LessonsScreen: FC<Props> = ({
   const [showNextSetUnlockedModal, setShowNextSetUnlockedModal] =
     useState(false)
 
-  // The set to display the lessons for.
+  /** The Story Set to display the Lessons for. */
   const [thisSet] = useState<StorySet>(
     activeDatabase
       ? activeDatabase.sets.filter((set) => set.id === setID)[0]
       : {
-          // Pass a dummy filler set in case activeDatabase returns undefined.
+          // Pass a dummy filler Story Set in case activeDatabase returns undefined.
           id: 'en.1.1',
           languageID: 'en',
           lessons: [],
@@ -125,31 +126,37 @@ const LessonsScreen: FC<Props> = ({
         }
   )
 
-  // The saved set, which includes the set's progress, to display the lessons for.
+  /**
+   * The Saved Set, which includes the Story Set's progress, to display the lessons for.
+   */
   const [thisSavedSet, setThisSavedSet] = useState(
     activeGroup.addedSets.filter(
       (savedSet: SavedSet) => savedSet.id === thisSet.id
     )[0]
   )
 
-  // Keeps track of whether this lesson was just completed.
+  /** Keeps track of whether this lesson was just completed. */
   const justCompleted = useRef(false)
 
-  // Keeps track of whether the screen is in "info" mode or not. Info mode shows the scripture references for each lesson.
+  /** Keeps track of whether the screen is in "info" mode or not. Info mode shows the scripture references for each lesson. */
   const [isInInfoMode, setIsInInfoMode] = useState(false)
 
-  // Used to refresh the downloaded lessons.
+  /** Used to refresh the downloaded lessons. */
   const [refreshDownloadedLessons, setRefreshDownloadedLessons] =
     useState(false)
 
-  // Get the currently downloaded lessons for this set.
+  /**
+   * Gets the currently downloaded lessons for this set.
+   */
   useEffect(() => {
     getDownloadedLessons(thisSet).then((whichLessonsDownloaded: string[]) => {
       setDownloadedLessons(whichLessonsDownloaded)
     })
   }, [Object.keys(downloads).length, refreshDownloadedLessons])
 
-  // Update the thisSavedSet state whenever it changes in redux. This will likely happen when a lesson is marked as complete.
+  /**
+   * Updates the thisSavedSet state whenever it changes in redux. This will likely happen when a lesson is marked as complete.
+   */
   useEffect(() => {
     setThisSavedSet(
       activeGroup.addedSets.filter(
@@ -162,7 +169,9 @@ const LessonsScreen: FC<Props> = ({
     )[0],
   ])
 
-  // Check if this set is mostly or fully complete.
+  /**
+   * Checks if this set is mostly or fully complete.
+   */
   useEffect(() => {
     if (isFocused && justCompleted.current) {
       checkForAlmostCompleteSet(
@@ -171,13 +180,16 @@ const LessonsScreen: FC<Props> = ({
         activeGroup,
         activeDatabase,
         (groupName: string, groupID: number, set: StorySet) =>
-          dispatch(addSet(groupName, groupID, set)),
+          dispatch(addSet({ groupName, groupID, set })),
         setShowNextSetUnlockedModal
       )
       checkForFullyCompleteSet(thisSet, thisSavedSet, setShowSetCompleteModal)
     }
   }, [thisSavedSet.progress])
 
+  /**
+   * Downloads the content for a Lesson.
+   */
   const downloadLessonFromModal = () => {
     if (
       modalLessonType.includes('Audio') &&
@@ -208,6 +220,9 @@ const LessonsScreen: FC<Props> = ({
     setShowDownloadLessonModal(false)
   }
 
+  /**
+   * Deletes the content for a Lesson.
+   */
   const deleteLessonFromModal = () => {
     // If a lesson contains audio, delete it and refresh the downloaded lessons.
     if (activeLessonInModal && modalLessonType.includes('Audio'))
@@ -224,7 +239,9 @@ const LessonsScreen: FC<Props> = ({
     setShowDeleteLessonModal(false)
   }
 
-  // Navigates to the Play screen with some parameters.
+  /**
+   * Navigates to the Play screen with some parameters.
+   */
   const handleLessonItemPress = (params: {
     thisLesson: Lesson
     isAudioAlreadyDownloaded: boolean
@@ -246,6 +263,9 @@ const LessonsScreen: FC<Props> = ({
     )
   }, [])
 
+  /**
+   * Marks a Lesson as complete/incomplete.
+   */
   const handleCompleteButtonPress = (
     lesson: Lesson,
     rowMap: RowMap<Lesson>
@@ -261,12 +281,17 @@ const LessonsScreen: FC<Props> = ({
     rowMap[getLessonInfo('index', lesson.id)].closeRow()
   }
 
+  /**
+   * Opens the share modal for a Lesson.
+   */
   const handleShareButtonPress = (lesson: Lesson, rowMap: RowMap<Lesson>) => {
     setShowShareModal(true)
     rowMap[getLessonInfo('index', lesson.id)].closeRow()
   }
 
-  // Renders the backdrop for the lesson item. This appears when the user swipes the lesson.
+  /**
+   * Renders the backdrop for the lesson item. This appears when the user swipes the lesson.
+   */
   const renderLessonSwipeBackdrop = (
     data: { item: Lesson },
     rowMap: RowMap<Lesson>
@@ -282,7 +307,9 @@ const LessonsScreen: FC<Props> = ({
     />
   )
 
-  // Triggers an action when the user swipes a certain distance to the left.
+  /**
+   * Triggers an action when the user swipes a certain distance to the left.
+   */
   const handleLeftActionStatusChange = (data: {
     isActivated: boolean
     key: string
@@ -293,7 +320,9 @@ const LessonsScreen: FC<Props> = ({
     } else if (isRTL && data.isActivated) setShowShareModal(true)
   }
 
-  // Triggers an action when the user swipes a certain distance to the right.
+  /**
+   * Triggers an action when the user swipes a certain distance to the right.
+   */
   const handleRightActionStatusChange = (data: {
     isActivated: boolean
     key: string
@@ -304,26 +333,36 @@ const LessonsScreen: FC<Props> = ({
     } else if (!isRTL && data.isActivated) setShowShareModal(true)
   }
 
-  // We know the height of these items ahead of time so we can use getItemLayout to make our FlatList perform better.
+  /**
+   * We know the height of these items ahead of time so we can use getItemLayout to make our FlatList perform better.
+   */
   const getItemLayout = (data: any, index: number) => ({
     length: itemHeights[font].LessonItem,
     offset: itemHeights[font].LessonItem * index,
     index,
   })
 
+  /**
+   * Handles the pressing of the download button.
+   */
   const handleDownloadButtonPress = (lesson: Lesson) => {
     setActiveLessonInModal(lesson)
     setModalLessonType(getLessonType(lesson))
     setShowDownloadLessonModal(true)
   }
 
+  /**
+   * Handles the pressing of the remove download button.
+   */
   const handleRemoveDownloadButtonPress = (lesson: Lesson) => {
     setActiveLessonInModal(lesson)
     setModalLessonType(getLessonType(lesson))
     setShowDeleteLessonModal(true)
   }
 
-  /** Renders a lesson item. */
+  /**
+   * Renders a lesson item.
+   */
   const renderLessonItem = ({ item }: { item: Lesson }) => {
     var scriptureList = ''
     if (item.scripture) {
@@ -356,10 +395,10 @@ const LessonsScreen: FC<Props> = ({
         areMobilizationToolsUnlocked={areMobilizationToolsUnlocked}
         showTrailerHighlights={showTrailerHighlights}
         setShowTrailerHighlights={(toSet: boolean) =>
-          dispatch(setShowTrailerHighlights(toSet))
+          dispatch(setShowTrailerHighlights({ toSet }))
         }
         removeDownload={(lessonID: string) =>
-          dispatch(removeDownload(lessonID))
+          dispatch(removeDownload({ lessonID: lessonID }))
         }
         isConnected={isConnected}
       />

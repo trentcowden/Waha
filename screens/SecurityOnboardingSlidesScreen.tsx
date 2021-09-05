@@ -7,11 +7,10 @@ import PagerView from 'react-native-pager-view'
 import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
+import { selector } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -33,6 +32,7 @@ const numPages = 4
 const SecurityOnboardingSlidesScreen: FC<Props> = ({
   navigation: { navigate },
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -44,6 +44,9 @@ const SecurityOnboardingSlidesScreen: FC<Props> = ({
   /** Keeps track of onboarding page we're currently on. */
   const [activePage, setActivePage] = useState(0)
 
+  /**
+   * Handles pressing the continue button.
+   */
   const onContinueButtonPress = () => {
     if (pagerRef.current !== null) {
       // This button goes to the next page or finishes onboarding if we're on the last page.

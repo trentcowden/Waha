@@ -1,24 +1,29 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from 'redux/store'
-import {
-  ActiveGroupActionParams,
-  CHANGE_ACTIVE_GROUP
-} from '../actions/activeGroupActions'
 import { DBLanguageData } from '../reducers/database'
 import { Group } from '../reducers/groups'
+
+// No active group exists at the start.
+const initialState = ''
+
 /**
- * The active group redux reducer that stores the name of the currently active group. This state is persisted across app restarts.
+ * This reducer stores the name of the active group. It's used in combination with some functions below to get the whole active Group object, including name, progress, emoji, etc.
  */
-export function activeGroup (
-  state: string = '',
-  params: ActiveGroupActionParams
-) {
-  switch (params.type) {
-    case CHANGE_ACTIVE_GROUP:
-      return params.groupName
-    default:
-      return state
+const activeGroup = createSlice({
+  name: 'activeGroup',
+  initialState,
+  reducers: {
+    changeActiveGroup: (
+      state,
+      action: PayloadAction<{ groupName: string }>
+    ) => {
+      return action.payload.groupName
+    }
   }
-}
+})
+
+export const { changeActiveGroup } = activeGroup.actions
+export default activeGroup.reducer
 
 /**
  * Takes in state and returns an object for the active group.
@@ -67,7 +72,7 @@ export function activeGroupSelector (state: RootState): Group {
 }
 
 /**
- * Takes in state and returns the database of the active group's language.
+ * Takes in state and returns the database language data of the active group's language.
  */
 export function activeDatabaseSelector (
   state: RootState

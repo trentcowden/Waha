@@ -40,7 +40,7 @@ const persistConfig = {
   blacklist: blacklist
 }
 
-// Create the persisted reducer using our config file and the combined reducer taken from ./combiner.js which is all of our reducers combined into one.
+// Create the persisted reducer using our config file and the combined reducer taken from ./combiner.ts which is all of our reducers combined into one.
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 // Create the redux store and apply middleware. Here, we apply the thunk middleware so that we can dispatch actions and get the state in a few action functions.

@@ -1,14 +1,14 @@
+import React, { FC, ReactElement } from 'react'
+import { StyleSheet, View } from 'react-native'
 import {
   AGProps,
   CommonProps,
   DLProps,
   NetworkProps,
   TProps,
-} from 'interfaces/common'
-import React, { FC, ReactElement } from 'react'
-import { StyleSheet, View } from 'react-native'
+} from 'redux/common'
 import { gutterSize, isTablet } from '../constants'
-import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
+import { Chapter, LessonType } from '../functions/setAndLessonDataFunctions'
 import { colors } from '../styles/colors'
 import ChapterButton from './ChapterButton'
 
