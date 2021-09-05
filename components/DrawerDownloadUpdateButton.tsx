@@ -12,7 +12,7 @@ interface Props extends CommonProps, AGProps, TProps, NetworkProps {
 }
 
 /**
- * Button that prompts the user to download new language core files should they be available/needed.
+ * Button that prompts the user to download new language Core Files should they be available/needed.
  */
 const DrawerDownloadUpdateButton: FC<Props> = ({
   onUpdateButtonPress,

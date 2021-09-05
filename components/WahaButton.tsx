@@ -26,20 +26,14 @@ interface Props extends CommonProps {
   extraContainerStyles?: ViewStyle
   extraLabelStyles?: TextStyle
   onPress?: () => void
+  // An extra RN component to put in the button. Usually an icon.
   extraComponent?: ReactElement
+  // The Language to display the button in. Usually the Active Group's language but sometimes different, like when an Active Group hasn't been created yet.
   screenLanguage: LanguageID
 }
+
 /**
  * Standard button component used throughout Waha.
- * @param {string} type - The type of the button. Possible options are 'filled' which renders a fully filled button, 'outline' which renders a button with a transparent background and a border, or 'inactive' which renders a filled un-clickable button with grayed out text.
- * @param {string} color - The color of the button.
- * @param {string} label - The label to display on the button.
- * @param {Object} style - (Optional) Extra style to apply to the button container.
- * @param {Object} textStyle - (Optional) Extra style to apply to the label of the button.
- * @param {number} width - (Optional) How wide the button should be.
- * @param {Function} onPress - Function to call when the button gets pressed.
- * @param {boolean} useDefaultFont - (Optional) Whether the button label should use the Standard or System typography. Defaults to false.
- * @param {Component} extraComponent - (Optional) An extra RN component to put in the button. Usually an icon.
  */
 const WahaButton: FC<Props> = ({
   mode,

@@ -76,31 +76,37 @@ interface Props {
 
 interface RouteConfig {
   shouldShowHeaderTitle: boolean
+  // The text for the primary heading.
   heading1: string | undefined
+  // The text for the secondary heading.
   heading2: string | undefined
+  // Whether the Language search bar should be visible.
   shouldShowSearchBar: boolean
-  shouldShowTopMessages: boolean
+  // Whether, upon tapping continue, the user should be taken to the onboarding slides.
   shouldGoToOnboarding: boolean
+  // Whether we're showing a list of Languages or a list of versions within a Language.
   contentToShow: 'languages' | 'versions'
 }
 
 /**
  * A screen that displays a list of language instances to install. This appears as the first screen the user sees when they open the app for the first time, as well as later if they want to install another language instance.
- * @param {string} routeName - The name of the screen variant. In this case, can either be "InitialLanguageInstanceInstall" or "SubsequentLanguageInstanceInstall" since this screen component is used twice.
- * @param {Object[]} installedLanguageInstances - (Optional) An array of languages instances that are currently installed. Defaults to null since there aren't any installed language instances when the user opens the app for the first time. This variable is only relevant when the user is installing a subsequent language instance.
- * @param {string} installedLanguageInstances[].languageID - The ID of the language.
- * @param {string} installedLanguageInstances[].languageName - The name of the language.
  */
 const LanguageSelectScreen: FC<Props> = ({
   navigation: { setOptions, navigate, goBack },
   route: {
     name: routeName,
-    params: { installedLanguageInstances, languageWithVersions } = {
+    params: {
+      // An array of Languages that are currently installed. Defaults to an empty array since there aren't any installed Languages when the user opens the app for the first time.
+      installedLanguageInstances,
+      // If a Language is selected that has multiple versions, this screen is rendered again, this time with a list of the versions to select. This param is the object for the Language that has multiple versions.
+      languageWithVersions,
+    } = {
       installedLanguageInstances: [],
       languageWithVersions: {},
     },
   },
 }) => {
+  // Redux state/dispatch.
   const groups = selector((state) => state.groups)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
@@ -118,63 +124,12 @@ const LanguageSelectScreen: FC<Props> = ({
       ? info(Localization.locale.slice(0, 2) as LanguageID).languageID
       : activeGroup.language
   const languageInstallation = selector((state) => state.languageInstallation)
-  console.log(isConnected)
-  type RouteConfigs = Record<typeof routeName, RouteConfig>
+  const dispatch = useAppDispatch()
 
-  const getRouteConfigs = (): RouteConfigs => {
-    return {
-      InitialLanguageSelect: {
-        shouldShowHeaderTitle: false,
-        heading1: t.language_select.welcome,
-        heading2: t.language_select.select_language,
-        shouldShowTopMessages: true,
-        shouldShowSearchBar: true,
-        shouldGoToOnboarding: true,
-        contentToShow: 'languages',
-      },
-      SubsequentLanguageSelect: {
-        shouldShowHeaderTitle: true,
-        heading1: undefined,
-        heading2: undefined,
-        shouldShowTopMessages: false,
-        shouldShowSearchBar: true,
-        shouldGoToOnboarding: false,
-        contentToShow: 'languages',
-      },
-      InitialLanguageVersionSelect: {
-        shouldShowHeaderTitle: false,
-        heading1: t.language_select.multiple_versions,
-        heading2: t.language_select.select_version,
-        shouldShowTopMessages: true,
-        shouldShowSearchBar: false,
-        shouldGoToOnboarding: true,
-        contentToShow: 'versions',
-      },
-      SubsequentLanguageVersionSelect: {
-        shouldShowHeaderTitle: true,
-        heading1: t.language_select.multiple_versions,
-        heading2: t.language_select.select_version,
-        shouldShowTopMessages: true,
-        shouldShowSearchBar: false,
-        shouldGoToOnboarding: false,
-        contentToShow: 'versions',
-      },
-    }
-  }
-
-  const [routeConfig, setRouteConfig] = useState<RouteConfigs>(
-    getRouteConfigs()
-  )
-
-  useEffect(() => {
-    setRouteConfig(getRouteConfigs())
-  }, [screenLanguage, routeName])
   /** Keeps track of the language that is currently selected. */
   const [selectedLanguage, setSelectedLanguage] = useState<
     LanguageMetadata | undefined
   >()
-
-  const dispatch = useAppDispatch()
 
   /** Keeps track of the Y position of the start button for animating. */
   const [buttonYPos] = useState(new Animated.Value(68 * scaleMultiplier + 20))
@@ -188,12 +143,68 @@ const LanguageSelectScreen: FC<Props> = ({
   /** Keeps track of whether we're actively fetching Firebase data or not. */
   const [isFetchingFirebaseData, setIsFetchingFirebaseData] = useState(false)
 
+  // Gets whether the user's phone is in dark mode or light mode.
   const colorScheme = useColorScheme()
 
+  type RouteConfigs = Record<typeof routeName, RouteConfig>
+
+  /**
+   * Returns an object that has a bunch of parameters that determine what to display on the screen based on the route name.
+   */
+  const getRouteConfigs = (): RouteConfigs => {
+    return {
+      InitialLanguageSelect: {
+        shouldShowHeaderTitle: false,
+        heading1: t.language_select.welcome,
+        heading2: t.language_select.select_language,
+        shouldShowSearchBar: true,
+        shouldGoToOnboarding: true,
+        contentToShow: 'languages',
+      },
+      SubsequentLanguageSelect: {
+        shouldShowHeaderTitle: true,
+        heading1: undefined,
+        heading2: undefined,
+        shouldShowSearchBar: true,
+        shouldGoToOnboarding: false,
+        contentToShow: 'languages',
+      },
+      InitialLanguageVersionSelect: {
+        shouldShowHeaderTitle: false,
+        heading1: t.language_select.multiple_versions,
+        heading2: t.language_select.select_version,
+        shouldShowSearchBar: false,
+        shouldGoToOnboarding: true,
+        contentToShow: 'versions',
+      },
+      SubsequentLanguageVersionSelect: {
+        shouldShowHeaderTitle: true,
+        heading1: t.language_select.multiple_versions,
+        heading2: t.language_select.select_version,
+        shouldShowSearchBar: false,
+        shouldGoToOnboarding: false,
+        contentToShow: 'versions',
+      },
+    }
+  }
+
+  /** Keeps track of the route config. */
+  const [routeConfig, setRouteConfig] = useState<RouteConfigs>(
+    getRouteConfigs()
+  )
+
+  /**
+   * Sets the route config based on the routeName, or if the Language changes.
+   */
+  useEffect(() => {
+    setRouteConfig(getRouteConfigs())
+  }, [screenLanguage, routeName])
+
+  /**
+   * Sets Waha to whatever mode the user's phone is set to, either dark mode or light mode.
+   */
   useEffect(() => {
     if (routeName === 'InitialLanguageSelect') {
-      // Create our first group.
-
       // Set color mode to the phone's current setting (light or dark mode).
       if (colorScheme === 'dark')
         dispatch(setIsDarkModeEnabled({ toSet: true }))
@@ -201,21 +212,16 @@ const LanguageSelectScreen: FC<Props> = ({
     }
   }, [])
 
-  /** useEffect function that sets the navigation options for this screen. */
-  useEffect(() => {
-    setOptions({ headerTitle: t.language_select.add_language })
-  }, [])
-
   /**
    * Plays the text-to-speech audio file for a language.
-   * @param {string} languageID - The ID of the language to play.
    */
   const playAudio = async (
     languageID: LanguageID,
-    type: 'language' | 'brand'
+    // Whether the audio that should be played is for the name of Language or the name of a version (which is the brand name).
+    type: 'language' | 'version'
   ) => {
     audio.unloadAsync()
-    if (type === 'brand') {
+    if (type === 'version') {
       await audio.loadAsync(languageT2S[`${languageID}_brandname`]).then(() => {
         audio.playAsync()
       })
@@ -226,10 +232,9 @@ const LanguageSelectScreen: FC<Props> = ({
   }
 
   /**
-   * Fetches all the data for a language from Firebase. This includes the various Story Sets from the 'sets' collection and the language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
-   * @param {string} languageID - The language to fetch the firebase data for.
+   * Fetches all the data for a language from the Firestore Database. This includes the various Story Sets from the 'sets' collection and the Language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
    */
-  const fetchFirebaseData = async (languageID: LanguageID) => {
+  const fetchFirestoreData = async (languageID: LanguageID) => {
     // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
     dispatch(setIsInstallingLanguageInstance({ toSet: true }))
 
@@ -244,9 +249,10 @@ const LanguageSelectScreen: FC<Props> = ({
       .then((querySnapshot) => {
         // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
         if (!querySnapshot.empty) {
-          // Add each Story Set to a temporary set array...
+          // Create a temp array to hold Story Sets.
           var sets: StorySet[] = []
 
+          // Add Story Sets to our temp array.
           querySnapshot.forEach((doc) => {
             var storySetItem: StorySet = {
               id: doc.id,
@@ -257,10 +263,10 @@ const LanguageSelectScreen: FC<Props> = ({
               lessons: doc.data().lessons,
               tags: doc.data().tags,
             }
-
             sets.push(storySetItem)
           })
-          /// ...and write all of them to redux.
+
+          // Write all of the Story Sets to redux.
           dispatch(storeLanguageSets({ sets, languageID }))
         }
       })
@@ -269,16 +275,17 @@ const LanguageSelectScreen: FC<Props> = ({
         throw error
       })
 
-    // Fetch the language info for the selected language and store it in redux.
+    // Fetch the Language info for the selected language and store it in redux.
     await db
       .collection('languages')
       .doc(languageID)
       .get()
       .then(async (doc) => {
         var languageData = doc.data()
+
         // If we get some legitimate data back...
         if (doc.exists && languageData !== undefined) {
-          // Store our language info in redux.
+          // Store our Language info in redux.
           dispatch(
             storeOtherLanguageContent({
               files: languageData.files,
@@ -292,14 +299,19 @@ const LanguageSelectScreen: FC<Props> = ({
         console.log(error)
         throw error
       })
-
     return
   }
 
-  /** Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language core files. If this is the first language instance they've installed, we want to navigate to the onboarding slides too. */
-  const onStartPress = () => {
+  /**
+   * Handles the user pressing the start button after they select a language instance to install. Involves fetching the necessary Firebase data, setting the hasFetchedLanguageData to true, creating a group for the language, and starting the download of the language Core Files. If this is the first language instance they've installed, we want to navigate to the onboarding slides too.
+   */
+  const handleContinuePress = () => {
+    // Only do something if the user has actually selected a Language or version.
     if (selectedLanguage) {
+      // For convenience.
       const selectedLanguageID = selectedLanguage.languageID
+
+      // If a Language has versions, navigate to the relevant version select screen.
       if (selectedLanguage.versions !== undefined) {
         if (routeName === 'InitialLanguageSelect')
           navigate('InitialLanguageVersionSelect', {
@@ -310,8 +322,9 @@ const LanguageSelectScreen: FC<Props> = ({
             languageWithVersions: selectedLanguage,
             installedLanguageInstances: installedLanguageInstances,
           })
+        // Otherwise, get the data for a Language.
       } else
-        fetchFirebaseData(selectedLanguageID)
+        fetchFirestoreData(selectedLanguageID)
           .then(() => {
             // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
             dispatch(setHasFetchedLanguageData({ toSet: true }))
@@ -320,7 +333,7 @@ const LanguageSelectScreen: FC<Props> = ({
             if (activeGroup)
               dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
 
-            // Start downloading the core files for this language.
+            // Start downloading the Core Files for this language.
             dispatch(downloadLanguageCoreFiles(selectedLanguageID))
 
             // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
@@ -333,6 +346,7 @@ const LanguageSelectScreen: FC<Props> = ({
             ) {
               dispatch(incrementGlobalGroupCounter())
 
+              // Create the default Group for the new Language.
               dispatch(
                 createGroup({
                   groupName:
@@ -347,7 +361,7 @@ const LanguageSelectScreen: FC<Props> = ({
               )
             }
 
-            // Change the active group to the new group we just created.
+            // Change the Active Group to the new Group we just created.
             dispatch(
               changeActiveGroup({
                 groupName:
@@ -389,6 +403,9 @@ const LanguageSelectScreen: FC<Props> = ({
     }
   }
 
+  /**
+   * Animates the continue button in and sets the selectedLanguage state when a Language is selected.
+   */
   const handleLanguageItemPress = (language: LanguageMetadata) => {
     if (!selectedLanguage) {
       Animated.spring(buttonYPos, {
@@ -399,6 +416,9 @@ const LanguageSelectScreen: FC<Props> = ({
     setSelectedLanguage(language)
   }
 
+  /**
+   * Gets the versions for a specific Language.
+   */
   const getLanguageVersions = (language: LanguageMetadata) => {
     if (language.versions) {
       if (installedLanguageInstances)
@@ -414,10 +434,7 @@ const LanguageSelectScreen: FC<Props> = ({
   }
 
   /**
-   * Renders a LanguageSelectItem component used for the Languages SectionList item.
-   * @param {Object} language - The object for the language to render.
-   * @param {Object} languageFamily - The object for the language family that this language is a part of.
-   * @return {Component} - The LanguageSelectItem component.
+   * Renders a <LanguageItem /> component.
    */
   const renderLanguageItem = (language: LanguageMetadata) => (
     <LanguageItem
@@ -443,9 +460,6 @@ const LanguageSelectScreen: FC<Props> = ({
 
   /**
    * Renders a component used for the Languages SectionList header.
-   * @param {Object} language - The object for the language to render.
-   * @param {Object} languageFamily - The object for the language family that this language is a part of.
-   * @return {Component} - The LanguageSelectItem component.
    */
   const renderLanguageHeader = (languageFamily: LanguageFamilyMetadata) => (
     <View
@@ -469,6 +483,9 @@ const LanguageSelectScreen: FC<Props> = ({
     </View>
   )
 
+  /**
+   * Renders a <LanguageVersionItem /> component.
+   */
   const renderLanguageVersionItem = ({ item }: { item: LanguageMetadata }) => (
     <LanguageVersionItem
       languageID={item.languageID}
@@ -491,7 +508,7 @@ const LanguageSelectScreen: FC<Props> = ({
         }
         setSelectedLanguage(item)
       }}
-      playAudio={() => playAudio(item.languageID, 'brand')}
+      playAudio={() => playAudio(item.languageID, 'version')}
       isRTL={isRTL}
       isDark={isDark}
     />
@@ -503,6 +520,7 @@ const LanguageSelectScreen: FC<Props> = ({
         backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
     >
+      {/* Render a back button only if we're selecting a version for our first Language. If we're selecting a version for a subsequent Language, the header will already contain a back button. */}
       {routeName === 'InitialLanguageVersionSelect' && (
         <SafeAreaView style={{ width: '100%' }}>
           <TouchableOpacity
@@ -645,7 +663,9 @@ const LanguageSelectScreen: FC<Props> = ({
               : ''
           }
           onPress={
-            isConnected && !isFetchingFirebaseData ? onStartPress : undefined
+            isConnected && !isFetchingFirebaseData
+              ? handleContinuePress
+              : undefined
           }
           extraComponent={
             isConnected ? (

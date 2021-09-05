@@ -14,6 +14,7 @@ import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
+// The following should use the attributes from the Language Version, not its parent Language.
 interface Props extends CommonProps {
   languageID: LanguageID
   headers: LanguageMetadata['headers']
@@ -24,6 +25,9 @@ interface Props extends CommonProps {
   playAudio: () => void
 }
 
+/**
+ * Component that shows a specific version available for a Language.
+ */
 const LanguageVersionItem: FC<Props> = ({
   languageID,
   headers,

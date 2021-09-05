@@ -12,10 +12,6 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A component used for standard list items/buttons throughout Waha.
- * @param {Function} onPress - (Optional) Function to fire when the item is pressed.
- * @param {Object} style - (Optional) Any extra style props to attach to the component.
- * @param {string} title - The text to display in the item.
- * @param {Component} children - Child components to display on the opposite side of the item from the title.
  */
 const WahaItem: FC<Props> = ({
   // Props passed from a parent component.s

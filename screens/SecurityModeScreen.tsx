@@ -34,6 +34,7 @@ interface Props {
  * A screen that displays the configuration options for security mode. Allows for turning it on/off, changing the timeout, and updating your passcode.
  */
 const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const showPasscodeSetSnackbar = selector(
@@ -49,7 +50,6 @@ const SecurityModeScreen: FC<Props> = ({ navigation: { navigate } }) => {
 
   /**
    * Converts milliseconds into a label that says how long the security timeout is.
-   * @return {string} - The label to display next to the timeout button that says how long the current security timeout is.
    */
   const getTimeoutText = () => {
     if (security.timeoutDuration === 60000) return t.security.one_minute

@@ -80,24 +80,25 @@ Waha is currently available on iOS and Android. You can download it here:
 
 # Directory Structure
 
-- `assets/`: Contains all images and sound effects.
-- `classes/`: Contains any classes that are used in Waha.
-- `components/`: Contains all of the React Native components.
-- `firebase/`: Contains the file `db.js` which exports the Firestore database object to be used throughout the app. This is where you'll put the extra Firebase configuration files as well.
-- `functions/`: Contains various files of grouped-together functions that are used around Waha.
-- `modals/`: Contains all of the modal React Native components.
-- `navigation`: Contains all of the different `react-navigation` navigators.
-- `redux/`: Contains the redux store, combiner, and all of the action and reducer files.
-- `screens/`: Contains all of the screen React Native components.
-- `styles/`: Contains a few files for global styles, notably typography and colors.
-- `translations/`: Contains `.json` objects of translations for all supported languages, the Babel-Edit application file used to add and update translations, and the config file used by components to retrieve translations.
-- `app.json`: Expo configuration file.
-- `App.tsx`: The most top-level navigation component and the start of all rendering for Waha.
-- `constants.ts`: Some miscellaneous constant variables used throughout Waha.
-- `COPYING.txt`: Waha's license.
-- `languages.ts`: Contains metadata for all the languages available in Waha.
-- `modeSwitch.ts`: Controls whether the app is in `prod` or `test` mode. Also used to store the current version number.
-- `tsconfig.json`: The configuration file for TypeScript.
+- `/appStoreLocales/`: Contains small json files that simply make languages show up under "Supported Languages" on the App Store.
+- `/assets/`: Contains all images and sound effects.
+- `/classes/`: Contains any classes that are used in Waha.
+- `/components/`: Contains all of the React Native components.
+- `/firebase/`: Contains the file `db.js` which exports the Firestore database object to be used throughout the app. This is where you'll put the extra Firebase configuration files as well.
+- `/functions/`: Contains various files of grouped-together functions that are used around Waha.
+- `/modals/`: Contains all of the modal React Native components.
+- `/navigation`: Contains all of the different `react-navigation` navigators.
+- `/redux/`: Contains the redux store, combiner, and all of the action and reducer files.
+- `/screens/`: Contains all of the screen React Native components.
+- `/styles/`: Contains a few files for global styles, notably typography and colors.
+- `/translations/`: Contains `.json` objects of translations for all supported languages, the Babel-Edit application file used to add and update translations, and the config file used by components to retrieve translations.
+- `/app.json`: Expo configuration file.
+- `/App.tsx`: The most top-level navigation component and the start of all rendering for Waha.
+- `/constants.ts`: Some miscellaneous constant variables used throughout Waha.
+- `/COPYING.txt`: Waha's license.
+- `/languages.ts`: Contains metadata for all the languages available in Waha.
+- `/modeSwitch.ts`: Controls whether the app is in `prod` or `test` mode. Also used to store the current version number.
+- `/tsconfig.json`: The configuration file for TypeScript.
 
 # Glossary
 
@@ -105,11 +106,11 @@ Waha has a lot of confusing and specific terminology! This document exists to be
 
 ## What is Waha?
 
-**Waha** is an multi-language audio-based Bible study app designed to be used in a group.
+**Waha** is an multi-language audio-based Bible study app designed to be used in a Group.
 
 ## Languages
 
-Waha contains many **Languages**, also called Language Instances. Each Language has a unique 2-letter ID. Usually, this ID is the ISO language code for the Language. For example, the ID for English is `en`. All the data for the installed Languages on a user's phone is stored in a local database called redux. See `redux/README.md` for more info.
+Waha contains many **Languages**, also called Language Instances. Each Language has a unique 2-letter ID. Usually, this ID is the ISO language code for the Language. For example, the ID for English is `en`. All the data for the installed Languages on a user's phone is stored in a local database called redux. See `/redux/README.md` for more info.
 
 We have partners for each Language which are in charge of translating and recording content for their Language. These people are **Language Instance Partners**, or LIPs for short.
 
@@ -120,14 +121,14 @@ Waha's Bible studies, or **Lessons** as they will be called from now on, are org
 Story Sets are organized into 3 categories:
 
 1. **Foundational**: The standard curriculum which is designed to lead someone into learning and understanding the Bible and who Jesus is, making a decision to follow Him, and growing as a Disciple, Leader, and member of His Church. They are meant to be done in order.
-2. **Topical**: These Story Sets are groups of Scriptures about a specific topic. Examples include Courage, Love, or Teachings of Jesus. They can be done in any order and are meant to allow groups to dive into specific relevant Biblical topics should they choose.
-3. **Mobilization** Tools: These Sets are designed to create a simple, decentralized, & reproducible way of getting people moving forward in disciple-making practices that lead to movement and are designed for existing believers. These lessons sometimes contain videos. They have to be unlocked by a specific code (281820) that is passed from user to user. For unlock functionality, see `redux/reducers/areMobilizationToolsUnlocked.ts` and `redux/reducers/mtUnlockAttempts.ts`.
+2. **Topical**: These Story Sets are groups of Scriptures about a specific topic. Examples include Courage, Love, or Teachings of Jesus. They can be done in any order and are meant to allow Groups to dive into specific relevant Biblical topics should they choose.
+3. **Mobilization** Tools: These Sets are designed to create a simple, decentralized, & reproducible way of getting people moving forward in disciple-making practices that lead to movement and are designed for existing believers. These lessons sometimes contain videos. They have to be unlocked by a specific code (281820) that is passed from user to user. For unlock functionality, see `/redux/reducers/areMobilizationToolsUnlocked.ts` and `/redux/reducers/mtUnlockAttempts.ts`.
 
-These categories are separated by 3 tabs on the main screen of the app. The tabs are called **Foundations**, **Topics**, and **Mobilization** respectively. See `navigation/SetsTabs.tsx` for how this is laid out in code.
+These categories are separated by 3 tabs on the main screen of the app. The tabs are called **Foundations**, **Topics**, and **Mobilization** respectively. See `/navigation/SetsTabs.tsx` for how this is laid out in code.
 
 To give Story Sets a bit more character, each one has a graphic that represents it. We refer to these as the **Album Arts** for a Story Set. They are displayed with the Lesson Title on the Play Screen.
 
-Story Sets and Lessons are fetched from Firestore, the database used with Waha, and stored in redux. For type definitions for Story Sets and Lessons which list and explain all of their specific attributes, see `redux/reducers/database.ts`.
+Story Sets and Lessons are fetched from Firestore, the database used with Waha, and stored in redux. For type definitions for Story Sets and Lessons which list and explain all of their specific attributes, see `/redux/reducers/database.ts`.
 
 ## Helpful Story Set Types
 
@@ -148,14 +149,14 @@ Lesson ID's have 4 parts. The first 3 are the ID of the Story Set the Lesson is 
 
 A Lesson is organized into 3 or 4 sections, called **Chapters**. Each chapter is an individual audio file but Waha switches between them seamlessly so that the lessons feel continuous. Additionally, each Chapter is displayed on the Play Screen in text form in the **Lesson Text Viewer** component as well for those that like to read along. The chapters are as follows:
 
-1. **Fellowship**: A series of questions, called a **Question Set**, designed to help the group connect, remember what they committed to during their last meeting, pray for each other, and prepare to listen to the Scripture.
+1. **Fellowship**: A series of questions, called a **Question Set**, designed to help the Group connect, remember what they committed to during their last meeting, pray for each other, and prepare to listen to the Scripture.
 2. **Story**: A reading of Scripture.
-3. **Training**: Used only in some Mobilization Tools lessons, this chapter contains a video that the group watches together.
-4. **Application**: Another Question Set designed to lead the group through discussing and applying what they heard/read in the Story chapter and potentially the Training Chapter.
+3. **Training**: Used only in some Mobilization Tools lessons, this chapter contains a video that the Group watches together.
+4. **Application**: Another Question Set designed to lead the Group through discussing and applying what they heard/read in the Story chapter and potentially the Training Chapter.
 
 The Chapters fall into 1 of two categories: a Question Set or a piece of Lesson Content.
 
-The Fellowship and Application Chapters are Question Sets. Question Sets are reused across multiple lessons since they aren't dependent on specific Scripture. However, there are still some Question Set variants for each of the 2 Chapters. All of these variants are downloaded when the user installs a new Language. See `downloadLanguageCoreFiles` in `redux/reducers/database.ts` and `redux/reducers/storedDownloads.ts`. They are named by a simple convention. We'll take the standard Fellowship Chapter Question Set name as an example: `ft-f-standard`. `ft` refers to a Question Set that is used in a Foundational or Topical lesson. The other option is `mt` which means it's used in Mobilization Tools lessons. `f` means this Question Set is used for Fellowship Chapters. The other option is `a` which means it's used for Application Chapters. Finally, `standard` means this Question Set is the Question Set that the other variants are based off of. For other Question Sets, this part is unique to how a variant differs from its standard. As an example, Story Set en.1.4 focuses on Growing as a Disciple of Jesus and contains one additional question related to that. Though it only differs in that one question, a fully separate Question Set (and audio file) is necessary. There are 11 different Question Sets used in the Standard Waha curriculum. These names are also the file names used for the mp3s for these Question Sets.
+The Fellowship and Application Chapters are Question Sets. Question Sets are reused across multiple lessons since they aren't dependent on specific Scripture. However, there are still some Question Set variants for each of the 2 Chapters. All of these variants are downloaded when the user installs a new Language. See `downloadLanguageCoreFiles` in `/redux/reducers/database.ts` and `/redux/reducers/storedDownloads.ts`. They are named by a simple convention. We'll take the standard Fellowship Chapter Question Set name as an example: `ft-f-standard`. `ft` refers to a Question Set that is used in a Foundational or Topical lesson. The other option is `mt` which means it's used in Mobilization Tools lessons. `f` means this Question Set is used for Fellowship Chapters. The other option is `a` which means it's used for Application Chapters. Finally, `standard` means this Question Set is the Question Set that the other variants are based off of. For other Question Sets, this part is unique to how a variant differs from its standard. As an example, Story Set en.1.4 focuses on Growing as a Disciple of Jesus and contains one additional question related to that. Though it only differs in that one question, a fully separate Question Set (and audio file) is necessary. There are 11 different Question Sets used in the Standard Waha curriculum. These names are also the file names used for the mp3s for these Question Sets.
 
 - `ft-f-standard`: DBS Standard Fellowship Questions used in all Foundational and all Topical Story Sets.
 - `ft-a-standard`: DBS Standard Application Questions used in all Topical Story Sets and Foundational Story Sets 1.1, 1.2, and 1.3.
@@ -169,21 +170,21 @@ The Fellowship and Application Chapters are Question Sets. Question Sets are reu
 - `mt-a-no-engagement`: DMC Application Questions Part 2 w/o “Engaging Lost?” used in Mobilization Tools lessons 3.2.1, 3.2.2, and 3.2.3.
 - `mt-a-no-video`: DMC Full Application Questions w/o “Training Video" used in all future Mobilization Tools Story Sets that do not contain training videos (4 story sets are currently in development).
 
-The Story and Training Chapters are pieces of Lesson Content. These are audio/video files that are unique to a specific Lesson. They are downloaded on a lesson-by-lesson basis when the user manually decides to download them. See `redux/reducers/downloads.ts`. They are also downloaded automatically whenever the user opens up a lesson whose content isn't downloaded yet. These are not downloaded with a Language installation like the Question Set mp3s because there are potentially hundreds of them and they would take up way too much memory on a user's device. Story Chapters are named by the ID of the Lesson they are a part of and Training Chapters are the same with a "v" attached at the end. For example, the Story Chapter mp3 for Lesson `en.1.3.4` would be called `en.1.3.4.mp3`, and the Training Chapter mp4 for Lesson `en.3.2.2` would be called `en.3.2.2v.mp4`.
+The Story and Training Chapters are pieces of Lesson Content. These are audio/video files that are unique to a specific Lesson. They are downloaded on a lesson-by-lesson basis when the user manually decides to download them. See `/redux/reducers/downloads.ts`. They are also downloaded automatically whenever the user opens up a lesson whose content isn't downloaded yet. These are not downloaded with a Language installation like the Question Set mp3s because there are potentially hundreds of them and they would take up way too much memory on a user's device. Story Chapters are named by the ID of the Lesson they are a part of and Training Chapters are the same with a "v" attached at the end. For example, the Story Chapter mp3 for Lesson `en.1.3.4` would be called `en.1.3.4.mp3`, and the Training Chapter mp4 for Lesson `en.3.2.2` would be called `en.3.2.2v.mp4`.
 
 Relevant files:  
 
-- `redux/reducers/database.ts`
-- `redux/reducers/storedDownloads.ts`
-- `redux/reducers/downloads.ts`
-- `screens/GroupsScreen.tsx`
-- `modals/AddEditGroupModal.tsx`
-- `components/ChapterSelector.tsx`
-- `components/ChapterButton.tsx`
-- `components/GroupItem.tsx`
-- `components/GroupAvatar.tsx`
-- `components/GroupListHeader.tsx`
-- `components/GroupItemMT.tsx`
+- `/redux/reducers/database.ts`
+- `/redux/reducers/storedDownloads.ts`
+- `/redux/reducers/downloads.ts`
+- `/screens/GroupsScreen.tsx`
+- `/modals/AddEditGroupModal.tsx`
+- `/components/ChapterSelector.tsx`
+- `/components/ChapterButton.tsx`
+- `/components/GroupItem.tsx`
+- `/components/GroupAvatar.tsx`
+- `/components/GroupListHeader.tsx`
+- `/components/GroupItemMT.tsx`
 
 ## Lesson Types
 
@@ -207,27 +208,27 @@ These types are used all over the place in Waha's code as a way to download the 
 
 Relevant files:  
 
-- `interfaces/setAndLessonInfo.ts`
-- `components/VideoPlayer.tsx`
-- `components/AlbumArt.tsx`
-- `components/PlayScreenTitle.tsx`
+- `/functions/setAndLessonDataFunctions.ts`
+- `/components/VideoPlayer.tsx`
+- `/components/AlbumArt.tsx`
+- `/components/PlayScreenTitle.tsx`
 
 ## Groups
 
-Waha is designed to be used in a group! Groups are stored locally in the app using redux. See `redux/reducers/groups.ts` for the type definition for a Group which lists all of its attributes. The important aspect of them for this document is that each group has a specific Language associated with it, and this is how the Language to be displayed in the app is decided. Waha has an **Active Group** at all times, and the Language that the app is in is determined by the Active Group.
+Waha is designed to be used in a group! Groups are stored locally in the app using redux. See `redux/reducers/groups.ts` for the type definition for a Group which lists all of its attributes. The important aspect of them for this document is that each Group has a specific Language associated with it, and this is how the Language to be displayed in the app is decided. Waha has an **Active Group** at all times, and the Language that the app is in is determined by the Active Group.
 
 Relevant files:  
 
-- `redux/reducers/activeGroup.ts`
-- `redux/reducers/groups.ts`
-- `screens/GroupsScreen.tsx`
-- `modals/AddEditGroupModal.tsx`
-- `components/GroupNameTextInput.tsx`
-- `components/EmojiViewer.tsx`
-- `components/GroupItem.tsx`
-- `components/GroupAvatar.tsx`
-- `components/GroupListHeader.tsx`
-- `components/GroupItemMT.tsx`
+- `/redux/reducers/activeGroup.ts`
+- `/redux/reducers/groups.ts`
+- `/screens/GroupsScreen.tsx`
+- `/modals/AddEditGroupModal.tsx`
+- `/components/GroupNameTextInput.tsx`
+- `/components/EmojiViewer.tsx`
+- `/components/GroupItem.tsx`
+- `/components/GroupAvatar.tsx`
+- `/components/GroupListHeader.tsx`
+- `/components/GroupItemMT.tsx`
 
 ## Progress
 
@@ -241,7 +242,7 @@ Each Group has a single **Story Set Bookmark** which usually refers to the last 
 
 Each Story Set within a Group has a **Lesson Bookmark**, which refers to the next Lesson in a Story Set that the user should do. It is always the earliest incomplete Lesson in a Story Set, so it always starts at the first Lesson in a Story Set.
 
-For more information on how the logic behind updating these bookmarks works, see the `UpdateProgress` action in `redux/reducers/groups.ts`.
+For more information on how the logic behind updating these bookmarks works, see the `UpdateProgress` action in `/redux/reducers/groups.ts`.
 
 ## Security Mode
 

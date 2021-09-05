@@ -72,7 +72,9 @@ const LessonItem: FC<Props> = ({
   /** Keeps track of whether this lesson is currently downloading or not. */
   const [isDownloading, setIsDownloading] = useState(false)
 
-  /** useEffect function that removes an active download from the downloads redux object after it finishes. */
+  /**
+   * Removes an active download from the downloads redux object after it finishes.
+   */
   useEffect(() => {
     // Remove finished audio downloads.
     if (
@@ -91,7 +93,9 @@ const LessonItem: FC<Props> = ({
       removeDownload(thisLesson.id + 'v')
   }, [downloads[thisLesson.id], downloads[thisLesson.id + 'v']])
 
-  /** useEffect function that updates the downloading and downloaded status of a lesson whenever a download gets added or removed from the downloads redux object. */
+  /**
+   * Updates the downloading and downloaded status of a lesson whenever a download gets added or removed from the downloads redux object.
+   */
   useEffect(() => {
     switch (lessonType) {
       case LessonType.STANDARD_DBS:

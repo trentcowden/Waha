@@ -17,6 +17,9 @@ interface Props extends CommonProps, TProps, AGProps {
   setShowSnackbar: (toSet: boolean) => void
 }
 
+/**
+ * A component that allows the user to share the Mobilization Tools either by tapping on the unlock code to copy it to their clipboard or share instructions by tapping the share button.
+ */
 const ShareMobilizationToolsButton: FC<Props> = ({
   isDark,
   t,

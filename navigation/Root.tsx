@@ -129,11 +129,11 @@ const Root: FC<Props> = ({}): ReactElement => {
     //     key => key.length === 2
     //   )}`
     // )
-    // Log the language core files to update to the console.
-    // console.log(`Language core files to update: ${languageCoreFilesToUpdate}\n`)
-    // Log the language core file created times to the console.
+    // Log the language Core Files to update to the console.
+    // console.log(`Language Core Files to update: ${languageCoreFilesToUpdate}\n`)
+    // Log the language Core File created times to the console.
     // console.log(
-    //   `Language core files created times: ${JSON.stringify(
+    //   `Language Core Files created times: ${JSON.stringify(
     //     languageCoreFilesCreatedTimes
     //   )}\n`
     // )

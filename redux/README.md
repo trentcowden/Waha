@@ -23,4 +23,4 @@ For information about what each reducer does and what data it stores, see each i
 
 ## Accessing Data in Components/Screens
 
-Screens, modal screens, and navigators all access/update the redux store using the selector hook and useDispatch hooks outlined in `hooks/`. Child components do not access the redux state on their own but have the necessary redux data passed as props by their parent components in order to keep the child components light.
+Screens, modal screens, and navigators all access/update the redux store using the selector hook and useDispatch hooks outlined in `/redux/hooks.ts`. Child components do not access the redux state on their own but have the necessary redux data passed as props by their parent components in order to keep the child components light.

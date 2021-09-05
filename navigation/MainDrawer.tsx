@@ -155,20 +155,20 @@ const MainDrawer: FC = ({}): ReactElement => {
               })
             )
 
-            // Check if we need replacements for already downloaded core files by comparing the created times of downloaded core files in redux with the created times of the current Firebase storage core files. If the created times don't match, it means a core file has been updated and we need to queue the new core file to download.
+            // Check if we need replacements for already downloaded Core Files by comparing the created times of downloaded Core Files in redux with the created times of the current Firebase storage Core Files. If the created times don't match, it means a Core File has been updated and we need to queue the new Core File to download.
             languageData.files.forEach((fileName: string) => {
-              // Set the file extension for the core file we're currently checking.
+              // Set the file extension for the Core File we're currently checking.
               var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
 
               var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
-              // Check the timeCreated of this core file in Firebase storage.
+              // Check the timeCreated of this Core File in Firebase storage.
               firebase
                 .storage()
                 .refFromURL(url)
                 .getMetadata()
                 .then(({ timeCreated }) => {
-                  // If the created time of this core file has already been stored previously AND the created time of the core file in Firebase is different from the created time that's stored in redux...
+                  // If the created time of this Core File has already been stored previously AND the created time of the Core File in Firebase is different from the created time that's stored in redux...
                   if (
                     languageCoreFilesCreatedTimes[
                       `${activeGroup.language}-${fileName}`
@@ -178,7 +178,7 @@ const MainDrawer: FC = ({}): ReactElement => {
                         `${activeGroup.language}-${fileName}`
                       ]
                   ) {
-                    // Add the core file to our redux array of files to update, assuming that it hasn't already been added.
+                    // Add the Core File to our redux array of files to update, assuming that it hasn't already been added.
                     if (
                       !languageCoreFilesToUpdate.includes(
                         `${activeGroup.language}-${fileName}`
@@ -196,11 +196,11 @@ const MainDrawer: FC = ({}): ReactElement => {
             })
 
             if (FileSystem.documentDirectory !== null) {
-              // Read the contents of Waha's file directory to check which core files are downloaded.
+              // Read the contents of Waha's file directory to check which Core Files are downloaded.
               FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
                 (contents) => {
                   // console.log(contents)
-                  // For each core file listed in Firestore, verify that it's already downloaded.
+                  // For each Core File listed in Firestore, verify that it's already downloaded.
                   if (languageData !== undefined)
                     languageData.files.forEach((fileName: string) => {
                       var fileExtension = fileName.includes('header')
@@ -212,7 +212,7 @@ const MainDrawer: FC = ({}): ReactElement => {
                           `${activeGroup.language}-${fileName}.${fileExtension}`
                         )
                       ) {
-                        // Add the core file to our redux array of files to download, assuming that it hasn't already been added.
+                        // Add the Core File to our redux array of files to download, assuming that it hasn't already been added.
                         if (
                           !languageCoreFilesToUpdate.includes(
                             `${activeGroup.language}-${fileName}`

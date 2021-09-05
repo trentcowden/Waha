@@ -424,6 +424,7 @@ const MainStack: FC<Props> = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerTitle: t.language_select.add_language,
             headerRight: isRTL
               ? () => (
                   <WahaBackButton
@@ -457,6 +458,7 @@ const MainStack: FC<Props> = ({
               color: colors(isDark).text,
               fontFamily: font + '-Bold',
             },
+            headerTitle: t.language_select.add_language,
             headerRight: isRTL
               ? () => (
                   <WahaBackButton

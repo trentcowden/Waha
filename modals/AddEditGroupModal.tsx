@@ -39,20 +39,18 @@ const AddEditGroupModal: FC<Props> = ({
   thisGroup,
   languageID,
 }): ReactElement => {
-  // Redux variables.
+  // Redux state/dispatch.
   const activeGroup = selector((state) => activeGroupSelector(state))
   const isRTL = info(activeGroup.language).isRTL
   const t = getTranslations(activeGroup.language)
   const groups = selector((state) => state.groups)
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
-
   const globalGroupCounter = selector(
     (state) => state.languageInstallation.globalGroupCounter
   )
   const areMobilizationToolsUnlocked = selector(
     (state) => state.areMobilizationToolsUnlocked
   )
-
   const dispatch = useAppDispatch()
 
   /** Keeps track of the user input for the group name <TextInput />. */
@@ -61,16 +59,22 @@ const AddEditGroupModal: FC<Props> = ({
   /** Keeps track of the user selection for the group emoji. */
   const [emojiInput, setEmojiInput] = useState<Emoji>('default')
 
+  /** Whether the slider for showing/hiding the Mobilization Tools tab should be visible or not. */
   const [shouldShowMTTabInput, setShouldShowMTTabInput] = useState(
     areMobilizationToolsUnlocked ? false : true
   )
 
+  /** Whether the <GroupNameTextInput /> is blank. */
   const [isGroupNameBlank, setIsGroupNameBlank] = useState(
     mode === 'EditGroup' ? false : true
   )
 
+  /** Whether the name the user types into the <GroupNameTextInput /> is the same as a Group name that already exists. */
   const [isGroupNameDuplicate, setIsGroupNameDuplicate] = useState(false)
 
+  /**
+   * Checks for duplicates and blanks whenever the group name input changes.
+   */
   useEffect(() => {
     checkForDuplicate()
     checkForBlank()
@@ -78,7 +82,6 @@ const AddEditGroupModal: FC<Props> = ({
 
   /**
    * Checks if a user-inputted group name is a duplicate of another group. The process for checking is different if we're editing vs. adding a group.
-   * @return {boolean} - Whether the group name is a duplicate or not.
    */
   const checkForDuplicate = () => {
     // If we're adding a new group, simply check if the group name already exists in another group.
@@ -100,14 +103,15 @@ const AddEditGroupModal: FC<Props> = ({
 
   /**
    * Checks if a user-inputted group name is blank.
-   * @return {boolean} - Whether the group name is blank or not.
    */
   const checkForBlank = () => {
     if (groupNameInput === '') setIsGroupNameBlank(true)
     else setIsGroupNameBlank(false)
   }
 
-  /** Creates a new group and sets it as the active group. */
+  /**
+   * Creates a new group and sets it as the active group.
+   */
   const createGroupHandler = () => {
     if (languageID !== undefined)
       // Call createGroup() redux function.
@@ -132,7 +136,9 @@ const AddEditGroupModal: FC<Props> = ({
     hideModal()
   }
 
-  /** Edits a group and sets it as the active group. */
+  /**
+   * Edits a group and sets it as the active group.
+   */
   const editGroupHandler = () => {
     // Change the active group to the newly edited group.
     if (thisGroup !== undefined && thisGroup.name === activeGroup.name)
@@ -153,10 +159,16 @@ const AddEditGroupModal: FC<Props> = ({
     hideModal()
   }
 
+  /**
+   * Handles the changing of the <GroupNameTextInput />.
+   */
   const handleGroupNameInputChangeText = (text: string) => {
     setGroupNameInput(text)
   }
 
+  /**
+   * Handles the changing of the selected emoji in the <EmojiViewer />.
+   */
   const handleEmojiPress = (emoji: Emoji) => {
     setEmojiInput(emoji)
   }

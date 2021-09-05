@@ -45,7 +45,9 @@ const GroupListHeader: FC<Props> = ({
     )
   )
 
-  /** useEffect function used to update the animated value of the left icon position. The default value must update whenever isRTL changes.*/
+  /**
+   * Updates the animated value of the left icon position. The default value must update whenever isRTL changes.
+   */
   useEffect(() => {
     if (activeGroup.language !== languageID)
       setLeftIconXPos(
@@ -55,7 +57,9 @@ const GroupListHeader: FC<Props> = ({
       )
   }, [activeGroup, isRTL])
 
-  /** Animated the position of the trash icon whenever isEditing changes. This pushes the whole component over to the right. */
+  /**
+   * Animates the position of the trash icon whenever isEditing changes. This pushes the whole component over to the right.
+   */
   useEffect(() => {
     if (isEditing && activeGroup.language !== languageID) {
       Animated.spring(leftIconXPos, {
@@ -71,6 +75,7 @@ const GroupListHeader: FC<Props> = ({
   }, [activeGroup, isEditing])
 
   var trashButtonComponent = <View />
+
   // The trash button shows up next to the name of the language in editing mode only. Only language instance's that don't contain the currently active group have this button.
   if (!(activeGroup.language === languageID))
     trashButtonComponent = (

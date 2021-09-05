@@ -69,12 +69,16 @@ const GroupItem: FC<Props> = ({
     )
   )
 
-  /** Animated the position of the delete icon whenever isEditing, isRTL, or isLastGroupInLanguageInstance changes. This pushes the whole component over to the right or left to reveal the hidden buttons. */
+  /**
+   * Animate the position of the delete icon whenever isEditing, isRTL, or isLastGroupInLanguageInstance changes. This pushes the whole component over to the right or left to reveal the hidden buttons.
+   */
   useEffect(() => {
     animateGroupItem()
   }, [isEditing, isLastGroupInLanguageInstance, isRTL])
 
-  /** Animates the X position of the group item. */
+  /**
+   * Animates the X position of the group item.
+   */
   const animateGroupItem = () => {
     // If a group is the last in a language instance and isn't the active group, it should always stay in the non-edit-mode position.
     if (isLastGroupInLanguageInstance && activeGroup.name !== thisGroup.name) {
@@ -98,7 +102,9 @@ const GroupItem: FC<Props> = ({
     }
   }
 
-  /** useEffect function that determines whether this group is the last in a language instance. */
+  /**
+   * Determine whether this Group is the last in a Language whenever the editing status or the Groups array change.
+   */
   useEffect(() => {
     if (
       groups.filter((group) => group.language === thisGroup.language).length ===
@@ -109,8 +115,7 @@ const GroupItem: FC<Props> = ({
   }, [isEditing, groups])
 
   /**
-   * Gets the bookmark for this group and returns it in a nicely formatted string.
-   * @return {string} - The bookmarked lesson.
+   * Gets the Set and Lesson Bookmarks for this Group and returns them in a nicely formatted string.
    */
   const getBookmarkLesson = () => {
     // If for some reason no group got passed, return an empty string.
@@ -140,7 +145,9 @@ const GroupItem: FC<Props> = ({
     } else return ''
   }
 
-  /** useEffect function that sets the left and right buttons of the group item appropriately when necessary. */
+  /**
+   * Sets the left and right buttons of the <GroupItem /> appropriately when necessary.
+   */
   useEffect(() => {
     // Determine what to render for the delete button. This button shows up next to groups in editing mode if that group is able to be deleted. Exceptions are that you can't delete the active group and that you can't delete a group that's the last in a language instance.
     if (activeGroup.name !== thisGroup.name && !isLastGroupInLanguageInstance)

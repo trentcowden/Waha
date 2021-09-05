@@ -39,9 +39,10 @@ interface Props {
 }
 
 /**
- * A screen that shows the download progress of a language's core files. The user sits on this screen if they finish onboarding before the downloads are done.
+ * A screen that shows the download progress of a Language's Core Files. The user sits on this screen if they finish onboarding before the Core File downloads are done.
  */
 const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -66,12 +67,13 @@ const LoadingScreen: FC<Props> = ({ navigation }): ReactElement => {
   const recentActiveGroup = selector(
     (state) => state.languageInstallation.recentActiveGroup
   )
-
   const dispatch = useAppDispatch()
 
-  /** Cancels the language core files downloads, does a few cleanup actions, and sends the user back to the language instance install screen. */
+  /**
+   * Cancels the language Core Files downloads, does a few cleanup actions, and sends the user back to the language instance install screen.
+   */
   const cancelDownloads = () => {
-    // Set the core files download progress to 0.
+    // Set the Core Files download progress to 0.
     dispatch(setLanguageCoreFilesDownloadProgress({ progress: 0 }))
 
     // Set this to 1 to avoid strange divide by zero errors.

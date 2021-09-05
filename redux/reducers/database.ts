@@ -41,7 +41,7 @@ export interface DBLanguageData {
 }
 
 /**
- * The core files that must be downloaded to the device when a language is installed. Each string in the array is the name of a file.
+ * The Core Files that must be downloaded to the device when a language is installed. Each string in the array is the name of a file.
  */
 export type LanguageCoreFiles = string[]
 
@@ -158,13 +158,13 @@ export const {
 export default database.reducer
 
 /**
- * Downloads all the core files for a single language instance and does a whole bunch of stuff once they're done downloading. The core files include the header image, the dummy story mp3, and every Question Set mp3.
+ * Downloads all the Core Files for a single language instance and does a whole bunch of stuff once they're done downloading. The Core Files include the header image, the dummy story mp3, and every Question Set mp3.
  */
 export function downloadLanguageCoreFiles (
   language: LanguageID
 ): ThunkAction<void, RootState, unknown, AnyAction> {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    // Store the ID of the language that we're downloading core files for so that if we cancel the install, we know what language to delete from the database.
+    // Store the ID of the language that we're downloading Core Files for so that if we cancel the install, we know what language to delete from the database.
     dispatch(storeActingLanguageID({ languageID: language }))
 
     // Set the totalDownloaded variable to 0. This is our download progress tracking variable. We add one to this variable whenever we finish downloading a file.
@@ -177,7 +177,7 @@ export function downloadLanguageCoreFiles (
       })
     )
 
-    // This array is used to store the various Expo DownloadResumable objects for the core files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
+    // This array is used to store the various Expo DownloadResumable objects for the Core Files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
     var filesToDownload: DownloadResumable[] = []
 
     // Run some code for each file we have to download for a language instance. The names for the files we have to download are stored in our redux database (which we fetched from Firestore).
@@ -185,7 +185,7 @@ export function downloadLanguageCoreFiles (
       // Create a new download object.
       var download: DownloadResumable
 
-      // Set the file extension based on what type of file we're downloading. Every language core file is an mp3 except for the header and header-dark images which are png's.
+      // Set the file extension based on what type of file we're downloading. Every language Core File is an mp3 except for the header and header-dark images which are png's.
       var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
 
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
@@ -285,7 +285,7 @@ export function downloadLanguageCoreFiles (
 }
 
 /**
- * Very similar to downloadLanguageCoreFiles, but with a few key differences. This function is used to update core files in an already-installed language instance instead of downloading core files for a new one. We download any files stored in languageCoreFilesToUpdate instead of every core file for a language instance. Note: there's no language parameter as this function can update core files for multiple language instances at the same time if need be.
+ * Very similar to downloadLanguageCoreFiles, but with a few key differences. This function is used to update Core Files in an already-installed language instance instead of downloading Core Files for a new one. We download any files stored in languageCoreFilesToUpdate instead of every Core File for a language instance. Note: there's no language parameter as this function can update Core Files for multiple language instances at the same time if need be.
  * @export
  */
 export function updateLanguageCoreFiles (): ThunkAction<
@@ -313,7 +313,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
       })
     )
 
-    // This array is used to store the various Expo DownloadResumable objects for the core files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
+    // This array is used to store the various Expo DownloadResumable objects for the Core Files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
     var filesToDownload: DownloadResumable[] = []
 
     // Run some code for each file we have to download for a language instance. The names for the files we have to download are stored in our redux database (which we fetched from Firestore).
@@ -327,7 +327,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
       // Create the download object.
       var download
 
-      // Set the file extension based on what type of file we're downloading. Every language core file is an mp3 except for the header image which is a png.
+      // Set the file extension based on what type of file we're downloading. Every language Core File is an mp3 except for the header image which is a png.
       var fileExtension = shortenedFileName.includes('header') ? 'png' : 'mp3'
 
       // Set the firebase storage URL to download from. The file structure in firebase must be set up exactly right for this link to work.
@@ -347,7 +347,7 @@ export function updateLanguageCoreFiles (): ThunkAction<
       // Add this download resumable to the filesToDownload object.
       filesToDownload.push(download)
 
-      // Add the new created time of this core file to our createdTimes redux object so that we know later if a core file gets updated.
+      // Add the new created time of this Core File to our createdTimes redux object so that we know later if a Core File gets updated.
       firebase
         .storage()
         .refFromURL(url)

@@ -30,15 +30,16 @@ interface Props {
 const MobilizationToolsUnlockScreen: FC<Props> = ({
   navigation: { navigate },
 }) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
   const mtUnlockAttempts = selector((state) => state.mtUnlockAttempts)
   const security = selector((state) => state.security)
+  const dispatch = useAppDispatch()
+
   /** Keeps track of the user input of the passcode entry area. */
   const [passcode, setPasscode] = useState('')
-
-  const dispatch = useAppDispatch()
 
   /** A reference to the passcode entry component. */
   const pinRef = useRef<SmoothPinCodeInput>(null)
@@ -48,7 +49,7 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
   )
 
   /**
-   * useEffect function that updates every time the passcode input changes. If the user gets to 5 attempts without unlocking successfully, the app will lock them out from attempting to unlock again for 30 minutes.
+   * Updates every time the passcode input changes. If the user gets to 5 attempts without unlocking successfully, the app will lock them out from attempting to unlock again for 30 minutes.
    */
   useEffect(() => {
     if (mtUnlockAttempts === 5) {
@@ -57,6 +58,9 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
     }
   }, [mtUnlockAttempts])
 
+  /**
+   * Focuses the pin input when the screen renders which opens the keyboard.
+   */
   useEffect(() => {
     pinRef.current.focus()
   }, [])
@@ -91,7 +95,6 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
 
   /**
    * Gets a string of the amount of attempts the user has left OR, if they're already locked out, the time they have left until they can attempt again.
-   * @return {string} - The text to display.
    */
   const getTimeoutText = () => {
     if (Date.now() - security.mtUnlockTimeout < 0)

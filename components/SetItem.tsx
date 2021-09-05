@@ -20,6 +20,7 @@ import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import SVG from './SVG'
 
+// The mode names are just the screens that they appear on.
 export enum SetItemMode {
   SETS_SCREEN = 1,
   LESSONS_SCREEN = 2,
@@ -28,33 +29,30 @@ export enum SetItemMode {
 }
 
 interface Props extends CommonProps, AGProps {
+  // The object for the set to display.
   thisSet: StorySet
   mode: SetItemMode
   font: string
+  // A function to fire when the <SetItem /> is pressed. Can be undefined to make the item non-pressable.
   onSetItemSelect?: (set: StorySet) => void
+  // How far through the Story Set the user is.
   progressPercentage?: number
-  setIsInInfoMode?: (toSet: boolean) => void
   isInInfoMode?: boolean
+  setIsInInfoMode?: (toSet: boolean) => void
   areMobilizationToolsUnlocked?: boolean
   showTrailerHighlights?: boolean
 }
 
 /**
- * A component that displays a set. Used on a variety of screens and displayed in a variety of ways depending on the mode prop.
- * @param {Object} props
- * @param {Object} props.thisSet - The object for the set to display.
- * @param {string} props.mode - The mode of the set item. The set item is rendered slightly different on all the different screens it's used in. See setItemModes in constants.js.
- * @param {Function} props.onSetSelect - A function to fire when the set item is pressed. Can be null to make the item non-pressable.
- * @param {number} props.progressPercentage - The percentage of this set that has been completed.
+ * A component that displays a Story Set's Album Art, progress, title, subtitle, and bookmark status. Used on a variety of screens and displayed in a variety of ways depending on the mode prop.
  */
-
 const SetItem: FC<Props> = ({
   thisSet,
   mode,
   onSetItemSelect,
   progressPercentage = null,
-  setIsInInfoMode = null,
   isInInfoMode = null,
+  setIsInInfoMode = null,
   font,
   isRTL,
   isDark,
@@ -62,8 +60,9 @@ const SetItem: FC<Props> = ({
   areMobilizationToolsUnlocked = false,
   showTrailerHighlights = false,
 }): ReactElement => {
-  // console.log(`${Date.now()} Set ${thisSet.id} is re-rendering.`)
-
+  /**
+   * This is to allow the SetItem to animate when switching to and from info mode. Not exactly sure what it does but it's necessary.
+   */
   useEffect(() => {
     if (Platform.OS === 'android' && mode === SetItemMode.LESSONS_SCREEN) {
       if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -72,14 +71,18 @@ const SetItem: FC<Props> = ({
     }
   }, [])
 
-  /** Stores the dynamic primary icon portion of the SetItem component. This contains a unique SVG that represents the set and changes between modes. */
-  const [primaryIcon, setPrimaryIcon] = useState(<View />)
+  /** Stores a dynamic Album Art component of the SetItem component. This contains a unique SVG that represents the Story Set and its style changes between modes. */
+  const [albumArt, setAlbumArt] = useState(<View />)
 
   /** Stores the dynamic secondary icon portion of the SetItem component. This is a smaller icon on the opposite side from the primary icon and changes between modes as well. */
   const [secondaryIcon, setSecondaryIcon] = useState(<View />)
 
+  /** The rotation of the info mode button. It spins when pressed. */
   const [iconRotation] = useState(new Animated.Value(0))
 
+  /**
+   * Animates the rotation of the info mode icon whenever isInInfoMode changes.
+   */
   useEffect(() => {
     if (isInInfoMode)
       Animated.spring(iconRotation, {
@@ -94,13 +97,13 @@ const SetItem: FC<Props> = ({
   }, [isInInfoMode])
 
   /**
-   * useEffect function that sets the dynamic primary and secondary icon components of the set item based on the screen prop. Updated whenever the active group or progress changes.
+   * Sets the dynamic Album Art and secondary icon components of the set item based on the screen prop. Updated whenever the Active Group or progress changes.
    */
   useEffect(() => {
     switch (mode) {
       case SetItemMode.SETS_SCREEN:
-        // Primary icon for the SetItem on the Sets screen is a circular progress bar with the set's SVG inside.
-        setPrimaryIcon(
+        // Album Art is a circular progress bar with the set's SVG inside.
+        setAlbumArt(
           <View style={styles.primaryIconContainer}>
             <AnimatedCircularProgress
               size={78 * scaleMultiplier}
@@ -146,7 +149,7 @@ const SetItem: FC<Props> = ({
             </AnimatedCircularProgress>
           </View>
         )
-        // Secondary icon for the SetItem on the Sets screen is a checkmark if the set is fully completed, a orange marker if this set is the bookmarked set, or nothing.
+        // Secondary icon is a checkmark if the set is fully completed, a orange marker if this set is the bookmarked set, or nothing.
         setSecondaryIcon(
           progressPercentage === 1 ? (
             <View style={styles.secondaryIconContainer}>
@@ -174,8 +177,8 @@ const SetItem: FC<Props> = ({
         )
         break
       case SetItemMode.LESSONS_SCREEN:
-        // Primary icon for the SetItem on the Lessons screen is the same as on the Sets screen: a circular progress bar with the set's SVG inside.
-        setPrimaryIcon(
+        // Album Art is the same as on the Sets screen: a circular progress bar with the set's SVG inside.
+        setAlbumArt(
           <View style={styles.primaryIconContainer}>
             <AnimatedCircularProgress
               size={78 * scaleMultiplier}
@@ -221,7 +224,7 @@ const SetItem: FC<Props> = ({
             </AnimatedCircularProgress>
           </View>
         )
-        // There is no secondary icon for the SetItem on the Lessons screen.
+        // The secondary icon is the button to switch in and out of info mode.
         setSecondaryIcon(
           <Animated.View
             style={{
@@ -236,9 +239,6 @@ const SetItem: FC<Props> = ({
                   // Keeps the rotation centered instead of around a pivot.
                   translateX: 2.5 * scaleMultiplier,
                 },
-                // {
-                //   translateY: 20 * scaleMultiplier
-                // }
               ],
             }}
           >
@@ -273,8 +273,8 @@ const SetItem: FC<Props> = ({
         )
         break
       case SetItemMode.ADD_SET_SCREEN:
-        // Primary icon for the SetItem on the AddSet screen is a slightly altered version of the set's SVG without any progress shown.
-        setPrimaryIcon(
+        // Album Art is a slightly altered version of the set's SVG without any progress shown.
+        setAlbumArt(
           <View
             style={{
               ...styles.primaryIconContainer,
@@ -295,7 +295,7 @@ const SetItem: FC<Props> = ({
             />
           </View>
         )
-        // Secondary icon for the SetItem on the AddSet screen is a small sideways arrow inviting the user to click on the item to open up a new screen in order to add it.
+        // Secondary icon is a small sideways arrow inviting the user to click on the item to open up a new screen in order to save it.
         setSecondaryIcon(
           <View style={styles.secondaryIconContainer}>
             <Icon
@@ -307,8 +307,8 @@ const SetItem: FC<Props> = ({
         )
         break
       case SetItemMode.SET_INFO_MODAL:
-        // Primary icon for the SetItem on the SetInfo modal screen is similar to the one on the AddSet screen, with some slightly style variations.
-        setPrimaryIcon(
+        // Album Art is similar to the one on the <AddSet />  screen with some slight style variations.
+        setAlbumArt(
           <View
             style={{
               ...styles.primaryIconContainer,
@@ -329,7 +329,7 @@ const SetItem: FC<Props> = ({
             />
           </View>
         )
-        // There is no secondary icon for the SetItem on the SetInfo modal screen.
+        // There is no secondary icon here.
         setSecondaryIcon(<View style={styles.secondaryIconContainer} />)
         break
     }
@@ -353,7 +353,7 @@ const SetItem: FC<Props> = ({
       // Disable the touch feedback if there's no onSetSelect function.
       activeOpacity={onSetItemSelect ? 0.2 : 1}
     >
-      {primaryIcon}
+      {albumArt}
       <View
         style={{
           ...styles.textContainer,

@@ -12,7 +12,6 @@ interface Props extends CommonProps {
 
 /**
  * A component that displays a full-width image. Used to display gifs on the Mobilization Tools and Security Mode screens.
- * @param {string} source - The source for the image to display.
  */
 const WahaHero: FC<Props> = ({ source, isDark }): ReactElement => {
   return (

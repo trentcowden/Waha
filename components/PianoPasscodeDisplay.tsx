@@ -10,7 +10,7 @@ interface Props extends CommonProps {
 }
 
 /**
- * A component that shows the passcode that is currently entered on the piano in a series of dots.
+ * A component that shows the passcode that is currently entered on the piano in a series of <PianoKeyLabel />s.
  */
 const PianoPasscodeDisplay: FC<Props> = ({
   passcode,

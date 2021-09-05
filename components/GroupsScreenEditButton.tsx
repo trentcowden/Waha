@@ -10,7 +10,7 @@ interface Props extends CommonProps, AGProps, TProps {
 }
 
 /**
- * The edit button that is displayed in the header on the Groups screen. Switches editingMode on or off when pressed.
+ * The edit button that is displayed in the header on the <GroupsScreen />.
  */
 const GroupsScreenEditButton: FC<Props> = ({
   onPress,

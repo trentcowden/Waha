@@ -42,12 +42,18 @@ interface Props {
 
 /**
  * A screen that allows the user to set/change/confirm their piano passcode.
- * @param {string} passcode - (Optional) If the user is confirming their passcode, this is the passcode already entered so we can verify that they match.
  */
 const PianoPasscodeSetScreen: FC<Props> = ({
   navigation: { setOptions, navigate, goBack },
-  route: { name: routeName, params: { passcode } = { passcode: null } },
+  route: {
+    name: routeName,
+    params: {
+      // If the user is confirming their passcode, this is the passcode already entered so we can verify that they match.
+      passcode,
+    } = { passcode: null },
+  },
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -65,7 +71,9 @@ const PianoPasscodeSetScreen: FC<Props> = ({
     PianoPasscodeChangeConfirm: t.security.confirm_passcode,
   }
 
-  /** useEffect function that sets the navigation options for this screen. */
+  /**
+   * Sets the navigation options for this screen.
+   */
   useEffect(() => {
     setOptions({
       title: t.security.security,
@@ -96,7 +104,9 @@ const PianoPasscodeSetScreen: FC<Props> = ({
     })
   }, [])
 
-  /** useEffect function that triggers whenever the user's passcode input changes and handles all necessary situations. */
+  /**
+   * Handles all necessary situations whenever the user's passcode input changes.
+   */
   useEffect(() => {
     // If the user has entered in a full 6-digit passcode (each digit takes up 2 characters in the passcode string)...
     if (localPasscode.length === 12)

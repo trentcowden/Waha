@@ -22,7 +22,7 @@ interface Props extends CommonProps, AGProps {
 }
 
 /**
- * A component that shows the play/pause and skip buttons on the Play Screen.
+ * A component that shows the play/pause and skip buttons on the <PlayScreen />.
  */
 const PlaybackControls: FC<Props> = ({
   isMediaPlaying,

@@ -8,11 +8,11 @@ export type LanguageInstallationState = {
   hasOnboarded: boolean
   // Whether the app has finished fetching Language data from Firestore.
   hasFetchedLanguageData: boolean
-  // Whether the user has finished installing their first language instance, including selecting their language, going through the onboarding, and downloading all of the necessary core files.
+  // Whether the user has finished installing their first language instance, including selecting their language, going through the onboarding, and downloading all of the necessary Core Files.
   hasInstalledFirstLanguageInstance: boolean
-  // The total number of core files to download for a language.
+  // The total number of Core Files to download for a language.
   totalLanguageCoreFilesToDownload: number
-  // The progress of the core files download from 0 to the number of total files to download.
+  // The progress of the Core Files download from 0 to the number of total files to download.
   languageCoreFilesDownloadProgress: number
   // An array of file names that need to be updated because they're outdated or missing.
   languageCoreFilesToUpdate: string[]
@@ -20,7 +20,7 @@ export type LanguageInstallationState = {
   actingLanguageID: LanguageID | undefined
   // When adding a subsequent language, we need to keep track of which Group the user was on before installing a subsequent one in case they cancel and we need to revert back to the original Group.
   recentActiveGroup: string | undefined
-  // Stores the created times of the core files so that we know if we need have updated versions to download.
+  // Stores the created times of the Core Files so that we know if we need have updated versions to download.
   languageCoreFilesCreatedTimes: Record<string, string>
 }
 

@@ -33,12 +33,14 @@ type PianoAppScreenNavigationProp = StackNavigationProp<
 interface Props {
   navigation: PianoAppScreenNavigationProp
 }
+
 /**
  * A screen that shows a dummy piano app meant to convince non-users who are looking at the app that it's just a harmless piano app and not a Christian disciple making tool >:)
  */
 const PianoAppScreen: FC<Props> = ({
   navigation: { canGoBack, goBack, reset },
 }) => {
+  // Redux state/dispatch.
   const security = selector((state) => state.security)
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
@@ -62,7 +64,9 @@ const PianoAppScreen: FC<Props> = ({
   /** Ref for the unlock sound. */
   const unlockSound = useRef(new Audio.Sound())
 
-  /** useEffect function that dismisses the keyboard on first render in case the user had the keyboard open before exiting the app and enabling security mode. It also loads/unloads the unlock sound. */
+  /**
+   * Dismisses the keyboard on first render in case the user had the keyboard open before exiting the app and enabling security mode. It also loads/unloads the unlock sound.
+   */
   useEffect(() => {
     Keyboard.dismiss()
 
@@ -75,7 +79,9 @@ const PianoAppScreen: FC<Props> = ({
     }
   }, [])
 
-  /** useEffect function that updates whenever the user plays a piano note. */
+  /**
+   * Checks for the right code entered whenever the user plays a piano note.
+   */
   useEffect(() => {
     // If the user has entered in their passcode...
     if (security.code && playedNotes.includes(security.code)) {
@@ -96,7 +102,7 @@ const PianoAppScreen: FC<Props> = ({
     }
   }, [playedNotes])
 
-  /** Disables the back button in this screen */
+  // Disables the back button in this screen.
   useBackHandler(() => true)
 
   return (

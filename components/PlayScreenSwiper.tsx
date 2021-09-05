@@ -39,7 +39,7 @@ interface Props extends CommonProps, TProps, ADBProps, AGProps {
 }
 
 /**
- * A component that shows the album art for a lesson as well as the text on either side of it in a swipable carousel.
+ * A component that renders a <PagerView /> containing a Lesson's title and Album Art on one page, and its text content on the other.
  */
 const PlayScreenSwiper: FC<Props> = ({
   playScreenSwiperRef,

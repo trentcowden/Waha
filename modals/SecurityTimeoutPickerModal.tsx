@@ -18,8 +18,6 @@ interface Props extends CommonProps, AGProps, TProps {
 
 /**
  * A modal that allows the user to change the security timeout. Displays a list of options using the OptionsModal component.
- * @param {boolean} isVisible - Whether the modal should be visible or not.
- * @param {Function} hideModal - Function to hide the modal.
  */
 const SecurityTimeoutPickerModal: FC<Props> = ({
   isVisible,

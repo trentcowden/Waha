@@ -28,7 +28,7 @@ interface Props {
 }
 
 /**
- * A component that shows a playable piano. Used on the PianoApp screen for Security mode.
+ * A component that shows a playable piano. Used on the <PianoApp /> screen for Security mode.
  */
 const Piano: FC<Props> = ({
   setPlayedNotes,
@@ -41,9 +41,11 @@ const Piano: FC<Props> = ({
 
   /**
    * Plays a specific piano note.
-   * @param {number} number - The key number to play the note of. Each piano key is numbered.
    */
-  const playNote = async (number: number) => {
+  const playNote = async (
+    // The key number to play the note of. Each piano key is numbered.
+    number: number
+  ) => {
     if (!isMuted && shouldPlayNote.current) {
       shouldPlayNote.current = false
       await note.current

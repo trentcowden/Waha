@@ -52,19 +52,19 @@ const GroupsScreen: FC<Props> = ({
   const groups = selector((state) => state.groups)
   const dispatch = useAppDispatch()
 
-  // Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen.
+  /** Keeps track of whether the screen is in editing mode or not. Editing mode is enabled via a button in the header and switches a lot of functionality on the screen. */
   const [isEditing, setIsEditing] = useState(false)
 
-  // When adding a new group, this state keeps track of the language instance that the user is adding a group in so it can be passed into the CreateGroup() function.
+  /** When adding a new group, this state keeps track of the language instance that the user is adding a group in so it can be passed into the CreateGroup() function. */
   const [languageID, setLanguageID] = useState(activeGroup.language)
 
-  // When editing a specific group, this component stores the object for the group that is being edited.
+  /** When editing a specific group, this component stores the object for the group that is being edited. */
   const [editingGroup, setEditingGroup] = useState(activeGroup)
 
-  // Keeps track of whether the add group modal is visible.
+  /** Keeps track of whether the add group modal is visible. */
   const [showAddGroupModal, setShowAddGroupModal] = useState(false)
 
-  // Keeps track of whether the edit group modal is visible.
+  /** Keeps track of whether the edit group modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
   // Memoize the group data so that the expensive function isn't run on every re-render.
@@ -73,7 +73,9 @@ const GroupsScreen: FC<Props> = ({
     [database, groups]
   )
 
-  // Update header whenever the active group changes and when isEditing changes.
+  /**
+   * Updates the header whenever the Active Group (to handle Language changes) changes and when isEditing changes.
+   */
   useEffect(() => {
     setOptions({
       headerStyle: {
@@ -132,6 +134,9 @@ const GroupsScreen: FC<Props> = ({
     })
   }, [isEditing, isRTL, activeGroup])
 
+  /**
+   * Deletes all Groups, downloaded Core Files, downloaded Lesson Story Chapter audio, downloaded Lesson Training Chapter videos, and redux database data for a Language.
+   */
   const handleDeleteLanguageButtonPress = (languageID: LanguageID) => {
     // Delete every group for this language instance.
     groups.map((group) => {
@@ -157,6 +162,9 @@ const GroupsScreen: FC<Props> = ({
     dispatch(deleteLanguageData({ languageID }))
   }
 
+  /**
+   * Takes the user to the <LanguageSelectScreen /> so they can add a subsequent Language.
+   */
   const handleAddNewLanguageButtonPress = () => {
     navigate('SubsequentLanguageSelect', {
       // Send over the currently installed language instances so that we can filter those out from the options.
@@ -167,10 +175,16 @@ const GroupsScreen: FC<Props> = ({
     })
   }
 
+  /**
+   * Deletes a Group from redux.
+   */
   const handleDeleteGroupButtonPress = (groupName: string) => {
     dispatch(deleteGroup({ groupName }))
   }
 
+  /**
+   * Changes the Active Group if isEditing is false or opens the <AddEditGroupModal /> for the Group if isEditing is true.
+   */
   const handleGroupItemPress = (group: Group) => {
     if (isEditing) {
       setEditingGroup(group)
@@ -178,6 +192,9 @@ const GroupsScreen: FC<Props> = ({
     } else dispatch(changeActiveGroup({ groupName: group.name }))
   }
 
+  /**
+   * Renders a <GroupListHeader /> component.
+   */
   const renderGroupListHeader = ({
     section,
   }: {
@@ -195,6 +212,9 @@ const GroupsScreen: FC<Props> = ({
     />
   )
 
+  /**
+   * Renders a <GroupItem /> component.
+   */
   const renderGroupItem = ({ item }: { item: Group }) => (
     <GroupItem
       thisGroup={item}

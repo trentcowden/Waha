@@ -30,10 +30,6 @@ interface Props {
 
 /**
  * A modal that displays the various lessons in a set and their scripture references. Uses <ModalScreen /> under the hood.
- * @param {boolean} isVisible - Whether the modal is visible.
- * @param {Function} hideModal - Function to hide the modal.
- * @param {Object} thisSet - The object for the set we're displaying the information about.
- * @param {boolean} showSnackbar - Whether to show the "Set Added!" Snackbar component or not.
  */
 const SetInfoModal: FC<Props> = ({
   isVisible,
@@ -41,6 +37,7 @@ const SetInfoModal: FC<Props> = ({
   thisSet,
   showSnackbar,
 }): ReactElement => {
+  // Redux state/dispatch.
   const activeGroup = selector((state) => activeGroupSelector(state))
   const isRTL = info(activeGroup.language).isRTL
   const t = getTranslations(activeGroup.language)

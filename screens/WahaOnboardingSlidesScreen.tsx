@@ -42,20 +42,22 @@ interface Props {
 }
 
 /**
- * Screen that takes the user through a couple onboarding slides describing what Waha is and allows them to customize their first group.
- * @param {string} selectedLanguage - The language that the user selected just before going into the onboarding slides.
+ * Screen that takes the user through a couple onboarding slides describing what Waha is and allows them to customize their first Group.
  */
 const WahaOnboardingSlidesScreen: FC<Props> = ({
   navigation: { navigate },
   route: {
-    params: { selectedLanguage },
+    params: {
+      // The language that the user selected just before going into the onboarding slides.
+      selectedLanguage,
+    },
   },
 }): ReactElement => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
   const isRTL = info(activeGroup.language).isRTL
-
   const dispatch = useAppDispatch()
 
   /** The ref for the pager view. Used to manually swipe pages. */
@@ -71,7 +73,9 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
   const [groupNameInput, setGroupNameInput] = useState('')
   const [emojiInput, setEmojiInput] = useState<Emoji>('default')
 
-  /** Edits a group and sets it as the active group. */
+  /**
+   * Edits a group and sets it as the active group.
+   */
   const editGroupAndFinish = () => {
     // If the name of the new group is blank, just finish onboarding and leave the group as default.
     if (groupNameInput === '') {
@@ -100,7 +104,9 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     })
   }
 
-  /** Skips onboarding and just goes straight to the loading screen. */
+  /**
+   * Skips onboarding and just goes straight to the loading screen.
+   */
   const skipOnboarding = () => {
     dispatch(setHasOnboarded({ toSet: true }))
     navigate('Loading', {
@@ -108,6 +114,9 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     })
   }
 
+  /**
+   * Handles pressing the continue button.
+   */
   const onContinueButtonPress = () => {
     // This button goes to the next page or finishes onboarding if we're on the last page.
     if (isRTL) {
@@ -121,10 +130,16 @@ const WahaOnboardingSlidesScreen: FC<Props> = ({
     }
   }
 
+  /**
+   * Handles when the user types in something to the <GroupNameTextInput />.
+   */
   const handleGroupNameInputChangeText = (text: string) => {
     setGroupNameInput(text)
   }
 
+  /**
+   * Handles when the user selects an emoji in the <EmojiViewer />.
+   */
   const handleEmojiPress = (emoji: Emoji) => {
     setEmojiInput(emoji)
   }

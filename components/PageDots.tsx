@@ -4,6 +4,9 @@ import { scaleMultiplier } from '../constants'
 import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
+/**
+ * A component that renders a single dot representing a page of something that is horizontally scrollable.
+ */
 const Dot = ({ isActive, isDark }: { isActive: boolean; isDark: boolean }) => (
   <View
     style={{

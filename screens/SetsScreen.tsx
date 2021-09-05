@@ -79,13 +79,13 @@ const SetsScreen: FC<Props> = ({
   )
   const dispatch = useAppDispatch()
 
-  // Keeps track of the text displayed on the add set button. Changes depending on what category we're in.
+  /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')
 
-  // Keeps track of all of the files the user has downloaded to the user's device. This is used to verify that all the required question set mp3s are downloaded for the sets that have been added.
+  /** Keeps track of all of the files the user has downloaded to the user's device. This is used to verify that all the required question set mp3s are downloaded for the sets that have been added. */
   const [downloadedFiles, setDownloadedFiles] = useState<string[]>([])
 
-  // Memoize the set data so that the expensive function isn't run on every re-render.
+  /** Memoize the set data so that the expensive function isn't run on every re-render. */
   const setData = useMemo(
     () =>
       getSetData(
@@ -98,7 +98,9 @@ const SetsScreen: FC<Props> = ({
     [activeGroup.addedSets, downloadedFiles]
   )
 
-  // Update the <AddNewSetButton /> label whenever the active group changes.
+  /**
+   * Updates the <AddNewSetButton /> label whenever the active group changes.
+   */
   useEffect(() => {
     setAddNewSetLabel(
       category === 'Foundational'
@@ -109,7 +111,9 @@ const SetsScreen: FC<Props> = ({
     )
   }, [activeGroup])
 
-  // Retrieve all downloaded files and store in state.
+  /**
+   * Retrieves all downloaded files and store in state.
+   */
   useEffect(() => {
     if (FileSystem.documentDirectory)
       FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
@@ -119,6 +123,9 @@ const SetsScreen: FC<Props> = ({
       )
   }, [])
 
+  /**
+   * Handles pressing a <SetItem />.
+   */
   const handleSetItemSelect = (set: StorySet) => {
     if (
       areMobilizationToolsUnlocked &&
@@ -130,6 +137,9 @@ const SetsScreen: FC<Props> = ({
     navigate('Lessons', { setID: set.id })
   }
 
+  /**
+   * Renders a <SetItem /> component.
+   */
   const renderSetItem = ({ item }: { item: StorySet }) => {
     return (
       <SetItem
@@ -150,7 +160,9 @@ const SetsScreen: FC<Props> = ({
     )
   }
 
-  // We know the height of these items ahead of time so we can use getItemLayout to make our FlatList perform better.
+  /**
+   * We know the height of these items ahead of time so we can use getItemLayout to make our FlatList perform better.
+   */
   const getItemLayout = (data: any, index: number) => ({
     length: itemHeights[font].SetItem,
     offset: itemHeights[font].SetItem * index,

@@ -38,7 +38,7 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
   /** Keeps track of whether the edit group modal is visible. */
   const [showEditGroupModal, setShowEditGroupModal] = useState(false)
 
-  /** Handles the updating of language core files. */
+  /** Handles the updating of language Core Files. */
   const handleUpdateButtonPress = () => {
     // Set setIsInstallingLanguageInstance redux variable to true so that the app knows to switch to the loading screen.
     dispatch(setIsInstallingLanguageInstance({ toSet: true }))
@@ -46,7 +46,7 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
     // Even though we're not fetching any Firebase data here, set this variable to true anyways just to allow the user to cancel the update if they want.
     // setHasFetchedLanguageData(true)
 
-    // Update the language core files.
+    // Update the language Core Files.
     dispatch(updateLanguageCoreFiles())
   }
 
@@ -89,7 +89,7 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
           flex: 1,
         }}
       >
-        {/* Show an update button if we have any core files to update. */}
+        {/* Show an update button if we have any Core Files to update. */}
         <DrawerDownloadUpdateButton
           onUpdateButtonPress={handleUpdateButtonPress}
           activeGroup={activeGroup}

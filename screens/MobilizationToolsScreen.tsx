@@ -33,6 +33,7 @@ interface Props {
  * Screen that shows information about the Mobilization Tools and a button to unlock them.
  */
 const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
+  // Redux state/dispatch.
   const isDark = selector((state) => state.settings.isDarkModeEnabled)
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
@@ -44,8 +45,13 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
   const database = selector((state) => state.database)
   const dispatch = useAppDispatch()
 
-  const [showSnackbar, setShowSnackbar] = useState(false)
+  /** Keeps track of whether the */
+  const [showCopiedToClipboardSnackbar, setShowCopiedToClipboardSnackbar] =
+    useState(false)
 
+  /**
+   * Handles when the user taps the switch that shows/hides the Mobilization Tools tab for a Group.
+   */
   const handleSwitchChange = (
     oldGroupName: string,
     newGroupName: string,
@@ -62,6 +68,9 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
     )
   }
 
+  /**
+   * Renders a <GroupItemMT /> component.
+   */
   const renderGroupItem = ({ item }: { item: Group }) => {
     return (
       <GroupItemMT
@@ -75,6 +84,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
     )
   }
 
+  // The components to display at the top of the <MobilizationToolsScreen /> only after it's unlocked.
   const topComponents = (
     <View style={{ width: '100%' }}>
       <WahaHero
@@ -126,7 +136,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
                 isDark={isDark}
                 t={t}
                 activeGroup={activeGroup}
-                setShowSnackbar={setShowSnackbar}
+                setShowSnackbar={setShowCopiedToClipboardSnackbar}
                 isRTL={isRTL}
               />
               <Text
@@ -177,7 +187,7 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
         </View>
       )}
       <SnackBar
-        visible={showSnackbar}
+        visible={showCopiedToClipboardSnackbar}
         textMessage={t.general.copied_to_clipboard}
         messageStyle={{
           color: colors(isDark).textOnColor,

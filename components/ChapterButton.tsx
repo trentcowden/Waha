@@ -87,23 +87,31 @@ const ChapterButton: FC<Props> = ({
     colors(isDark, activeGroup.language).accent
   )
 
-  // Whenever the active chapter or the user's internet connection status changes, get the most updated mode.
+  /**
+   * Gets the most updated mode whenever the Active Chapter or the user's internet connection status changes.
+   */
   useEffect(() => {
     setChapterButtonMode()
   }, [activeChapter, isConnected])
 
-  // Also get the most updated mode whenever the download progress changes for this lesson.
+  /**
+   * Gets the most updated mode whenever the download progress changes for this lesson AND we're in the Story or Training chapter.
+   */
   useEffect(() => {
     if (chapter === Chapter.STORY || chapter === Chapter.TRAINING)
       setChapterButtonMode()
   }, [downloads[lessonID], downloads[lessonID + 'v']])
 
-  // Every time the mode changes, reset the styles for the button.
+  /**
+   * Resets the styles for the button every time the mode changes.
+   */
   useEffect(() => {
     setStyles()
   }, [mode])
 
-  /** Sets the mode for this chapter button. */
+  /**
+   * Sets the mode for this chapter button.
+   */
   const setChapterButtonMode = () => {
     switch (chapter) {
       case Chapter.FELLOWSHIP:
@@ -152,7 +160,9 @@ const ChapterButton: FC<Props> = ({
     }
   }
 
-  /** Sets the various style states based on the current mode. */
+  /**
+   * Sets the various style states based on the current mode.
+   */
   const setStyles = () => {
     switch (mode) {
       case ChapterButtonMode.ACTIVE:

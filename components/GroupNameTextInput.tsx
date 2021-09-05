@@ -15,6 +15,9 @@ interface Props extends CommonProps, AGProps, TProps {
   isDuplicate?: boolean
 }
 
+/**
+ * Component that renders a form and allows the user to type in a Group name.
+ */
 const GroupNameTextInput: FC<Props> = ({
   groupNameInput,
   onGroupNameInputChangeText,

@@ -14,10 +14,6 @@ interface Props extends CommonProps, AGProps {
 
 /**
  * A modal component that displays a list of buttons. Very similar to the standard iOS action sheet.
- * @param {boolean} isVisible - Whether the modal is visible.
- * @param {Function} hideModal - Function to hide the modal.
- * @param {string} closeText - The text to display on the button that closes the modal.
- * @param {Component} children - The list of buttons to display in the modal.
  */
 const OptionsModal: FC<Props> = ({
   isVisible,
