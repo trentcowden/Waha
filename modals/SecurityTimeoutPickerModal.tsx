@@ -1,6 +1,6 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { ViewStyle } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import { SecurityState } from 'redux/reducers/security'
 import Icon from '../assets/fonts/icon_font_config'
 import OptionsModalButton from '../components/OptionsModalButton'

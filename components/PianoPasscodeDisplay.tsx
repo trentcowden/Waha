@@ -1,6 +1,6 @@
-import { CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { scaleMultiplier } from '../constants'
 import { colors, keyColors } from '../styles/colors'
 import PianoKeyLabel from './PianoKeyLabel'

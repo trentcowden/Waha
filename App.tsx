@@ -20,7 +20,7 @@ if (!global.atob) {
 }
 
 /**
- * App.js is the most root level component and is the start of all rendering for Waha.
+ * App.tsx is the most root level component and is the start of all rendering for Waha.
  */
 export default function App() {
   /**  Keeps track of whether all the fonts are loaded. */

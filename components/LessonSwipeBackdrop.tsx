@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { CommonProps } from '../interfaces/common'
+import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {

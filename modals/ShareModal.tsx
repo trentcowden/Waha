@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
-import { LessonType } from 'interfaces/setAndLessonInfo'
+import { LessonType } from 'functions/setAndLessonDataFunctions'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { Share, View } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
@@ -11,7 +11,7 @@ import {
   logShareAudio,
   logShareText,
 } from '../functions/analyticsFunctions'
-import { AGProps, CommonProps, DLProps, TProps } from '../interfaces/common'
+import { AGProps, CommonProps, DLProps, TProps } from '../redux/common'
 import OptionsModal from './OptionsModal'
 
 enum ShareType {

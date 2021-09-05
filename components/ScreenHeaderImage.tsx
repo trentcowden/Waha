@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system'
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Image } from 'react-native'
+import { AGProps, CommonProps } from 'redux/common'
 
 interface Props extends CommonProps, AGProps {}
 

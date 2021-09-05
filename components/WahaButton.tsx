@@ -9,10 +9,16 @@ import {
   ViewStyle,
 } from 'react-native'
 import { scaleMultiplier } from '../constants'
-import { CommonProps } from '../interfaces/common'
-import { WahaButtonMode } from '../interfaces/components'
+import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+export enum WahaButtonMode {
+  SUCCESS = 1,
+  ERROR = 2,
+  ERROR_SECONDARY = 3,
+  DISABLED = 4,
+}
 
 interface Props extends CommonProps {
   mode: WahaButtonMode

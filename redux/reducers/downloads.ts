@@ -23,7 +23,7 @@ export interface AddUpdateDownloadPayload {
 const initialState: Downloads = {}
 
 /**
- * The downloads reducer stores the progress for any active lesson downloads. Downloads that happen during the initial install of a language are NOT stored here. They are handled by the database.js reducer and the databaseActions.js. This is only for downloading lesson scripture audio files or lesson video files. This state NOT is persisted across app restarts, so all downloads are cancelled if the user quits the app.
+ * The downloads reducer stores the progress for any active lesson Story chapter mp3s or Training chapter mp4s downloads. Core File downloads that happen during the initial install of a language are NOT stored here. They are handled by the database. This state NOT is persisted across app restarts, so all downloads are cancelled if the user quits the app.
  */
 const downloads = createSlice({
   name: 'downloads',

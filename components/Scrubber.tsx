@@ -3,7 +3,7 @@ import React, { FC, MutableRefObject, ReactElement } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import TimeDisplay from '../components/TimeDisplay'
 import { gutterSize, isTablet } from '../constants'
-import { CommonProps } from '../interfaces/common'
+import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {

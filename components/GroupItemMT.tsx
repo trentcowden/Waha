@@ -1,7 +1,7 @@
 import { Emoji } from 'assets/groupIcons/_groupIcons'
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Switch, Text, View } from 'react-native'
+import { AGProps, CommonProps } from 'redux/common'
 import GroupAvatar from '../components/GroupAvatar'
 import { scaleMultiplier } from '../constants'
 import { Group } from '../redux/reducers/groups'

@@ -1,4 +1,4 @@
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import { SetCategory } from '../functions/setAndLessonDataFunctions'
 import { DBLanguageData, StorySet } from '../redux/reducers/database'
 import { Group, SavedSet } from '../redux/reducers/groups'
 import { getSetInfo } from './setAndLessonDataFunctions'

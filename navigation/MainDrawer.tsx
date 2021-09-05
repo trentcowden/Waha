@@ -11,12 +11,12 @@ import React, { FC, ReactElement, useEffect } from 'react'
 import { isTablet, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
 import { appVersion } from '../modeSwitch'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
-  storeLanguageData,
   storeLanguageSets,
+  storeOtherLanguageContent,
   StorySet,
 } from '../redux/reducers/database'
 import { addLanguageCoreFileToUpdate } from '../redux/reducers/languageInstallation'
@@ -74,11 +74,9 @@ const MainDrawer: FC = ({}): ReactElement => {
 
                 // Store our language info in redux.
                 dispatch(
-                  storeLanguageData({
-                    languageData: {
-                      files: languageData.files,
-                      questions: languageData.questions,
-                    },
+                  storeOtherLanguageContent({
+                    files: languageData.files,
+                    questionSets: languageData.questions,
                     languageID,
                   })
                 )
@@ -150,11 +148,9 @@ const MainDrawer: FC = ({}): ReactElement => {
             // console.log(t.groups)
             // Store our language info in redux.
             dispatch(
-              storeLanguageData({
-                languageData: {
-                  files: languageData.files,
-                  questions: languageData.questions,
-                },
+              storeOtherLanguageContent({
+                files: languageData.files,
+                questionSets: languageData.questions,
                 languageID: activeGroup.language,
               })
             )

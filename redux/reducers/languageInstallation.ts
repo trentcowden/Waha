@@ -37,6 +37,9 @@ const initialState: LanguageInstallationState = {
   totalLanguageCoreFilesToDownload: 0
 }
 
+/**
+ * This reducer stores a bunch of info related to the installation of a language.
+ */
 const languageInstallation = createSlice({
   name: 'languageInstallation',
   initialState,

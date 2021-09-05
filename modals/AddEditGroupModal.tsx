@@ -8,8 +8,8 @@ import GroupAvatar from '../components/GroupAvatar'
 import GroupNameTextInput from '../components/GroupNameTextInput'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
 import ModalScreen from '../modals/ModalScreen'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeGroupSelector,
   changeActiveGroup,

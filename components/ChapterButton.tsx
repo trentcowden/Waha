@@ -1,19 +1,26 @@
+import React, { FC, ReactElement, useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import {
   AGProps,
   CommonProps,
   DLProps,
   NetworkProps,
   TProps,
-} from 'interfaces/common'
-import React, { FC, ReactElement, useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { AnimatedCircularProgress } from 'react-native-circular-progress'
+} from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
-import { ChapterButtonMode } from '../interfaces/components'
-import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
+import { Chapter, LessonType } from '../functions/setAndLessonDataFunctions'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+export enum ChapterButtonMode {
+  INCOMPLETE = 1,
+  COMPLETE = 2,
+  ACTIVE = 3,
+  DOWNLOADING = 4,
+  DISABLED = 5,
+}
 
 interface Props extends CommonProps, AGProps, TProps, NetworkProps, DLProps {
   // The chapter to display on this button.

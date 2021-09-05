@@ -20,30 +20,47 @@ import {
 import { storeDownloads } from '../reducers/storedDownloads'
 import { AppDispatch, RootState } from '../store'
 
-// Waha's local database is an object where the 2-character language ID's are keys and the language's data are the values.
+/**
+ * TYPES FOR THE LOCAL DATABASE
+ */
+
+/**
+ * Waha's local database is an object where the 2-character language ID's are keys and the language's data are the values.
+ */
 export type Database = Record<string, DBLanguageData>
 
-// This is all of a language's data, except for all of its Story Sets, that is stored in the Firestore database.
-export interface FirestoreLanguageData {
-  // The core files that must be downloaded to the device when a language is installed.
-  files: string[]
-  // Every question set for a language. Keys are the names of the question sets.
-  questions: {
-    // A question set contains an array of strings, one for each question.
-    [questionSetName: string]: string[]
-  }
-}
-
-// This is all of the data that is stored for a language in the local database.
-export type DBLanguageData = FirestoreLanguageData & {
+/**
+ * This is all of the data that is stored for a language in the local database. It includes the data retrieved from Firestore (Question Sets, files, and Story Sets) and the install time of the language.
+ */
+export interface DBLanguageData {
+  files: LanguageCoreFiles
+  questionSets: LanguageQuestionsSets
+  sets: StorySet[]
   // The install time for a language so that they can be ordered appropriately when listed in the app.
   installTime: number
-  // All of the Story Sets for a language.
-  sets: StorySet[]
 }
 
+/**
+ * The core files that must be downloaded to the device when a language is installed. Each string in the array is the name of a file.
+ */
+export type LanguageCoreFiles = string[]
+
+// The name of a Question Set is simply a string.
+export type QuestionSetName = string
+// A Question Set is an array of strings where each string is a question.
+export type QuestionSet = string[]
+
+/**
+ * All Question Sets for a language. Keys are the names of the Question Sets.
+ */
+export type LanguageQuestionsSets = Record<QuestionSetName, QuestionSet>
+
+/**
+ * The types for a Story Set, Lesson, and Scripture Passage in Waha. These are the same as how the data is stored in Firestore.
+ */
+
 export interface StorySet {
-  // The ID of a set in the format xx.1.1, where xx is the language ID.
+  // The ID of a Story Set in the format xx.1.1, where xx is the language ID.
   id: string
   // The ID of the language that a Story Set is a part of.
   languageID: LanguageID
@@ -58,15 +75,16 @@ export interface StorySet {
 }
 
 export interface Lesson {
+  // The ID of a Lesson in the format xx.1.1.1, where xx is the language ID.
   id: string
   title: string
   // Whether a lesson has an audio file stored in Firebase storage.
   hasAudio: boolean
   // Whether a lesson has a video file stored in Firebase storage.
   hasVideo: boolean
-  // For lessons that have questions, this is the question set to be used with a lesson's Fellowship chapter.
+  // For lessons that have questions, this is the Question Set to be used with a lesson's Fellowship chapter.
   fellowshipType?: string
-  // For lessons that have questions, this is the question set to be used with a lesson's Application chapter.
+  // For lessons that have questions, this is the Question Set to be used with a lesson's Application chapter.
   applicationType?: string
   // For book or audiobook lessons, this is the text content for the book.
   text?: string
@@ -77,36 +95,23 @@ export interface Lesson {
 }
 
 export interface ScripturePassage {
-  // The header to be displayed above the Scripture text.
+  // The header to be displayed above the Scripture text. Ex: "Genesis 1:1-25".
   header: string
-  // The API.Bible ID used to dynamically import the Scripture text and header, and is also handy for knowing what Scripture a ScripturePassage is for, since the header will likely not be in English. From https://docs.api.bible/guides/passages: "Capture a range of verses when looking for a grouping (i.e. MAT.1.12-MAT.1.20)".
+  // The API.Bible ID used to dynamically import the Scripture text and header, and is also handy for uniquely identifying and recognizing a ScripturePassage, since the header will likely not be in English. From https://docs.api.bible/guides/passages: "Capture a range of verses when looking for a grouping (i.e. MAT.1.12-MAT.1.20)".
   addressID: string
-  // The Scripture text.
+  // The Scripture text. Ex: "[1] In the beginning, God created the heavens and the earth...".
   text: string
 }
 
 const initialState: Database = {}
 
+/**
+ * This reducer stores all of the data for the various installed languages in Waha.
+ */
 const database = createSlice({
   name: 'database',
   initialState,
   reducers: {
-    storeLanguageData: (
-      state,
-      action: PayloadAction<{
-        languageData: FirestoreLanguageData
-        languageID: LanguageID
-      }>
-    ) => {
-      state[action.payload.languageID] = {
-        ...state[action.payload.languageID],
-        files: action.payload.languageData.files,
-        questions: action.payload.languageData.questions,
-        installTime: state[action.payload.languageID].installTime
-          ? state[action.payload.languageID].installTime
-          : Date.now()
-      }
-    },
     storeLanguageSets: (
       state,
       action: PayloadAction<{
@@ -119,6 +124,23 @@ const database = createSlice({
         sets: action.payload.sets
       }
     },
+    storeOtherLanguageContent: (
+      state,
+      action: PayloadAction<{
+        questionSets: LanguageQuestionsSets
+        files: LanguageCoreFiles
+        languageID: LanguageID
+      }>
+    ) => {
+      state[action.payload.languageID] = {
+        ...state[action.payload.languageID],
+        files: action.payload.files,
+        questionSets: action.payload.questionSets,
+        installTime: state[action.payload.languageID].installTime
+          ? state[action.payload.languageID].installTime
+          : Date.now()
+      }
+    },
     deleteLanguageData: (
       state,
       action: PayloadAction<{ languageID: LanguageID }>
@@ -129,14 +151,14 @@ const database = createSlice({
 })
 
 export const {
-  storeLanguageData,
+  storeOtherLanguageContent,
   storeLanguageSets,
   deleteLanguageData
 } = database.actions
 export default database.reducer
 
 /**
- * Downloads all the core files for a single language instance and does a whole bunch of stuff once they're done downloading. The core files include the header image, the dummy story mp3, and every question set mp3.
+ * Downloads all the core files for a single language instance and does a whole bunch of stuff once they're done downloading. The core files include the header image, the dummy story mp3, and every Question Set mp3.
  */
 export function downloadLanguageCoreFiles (
   language: LanguageID

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { scaleMultiplier } from '../constants'
-import { selector } from '../hooks'
+import { selector } from '../redux/hooks'
 import { colors } from '../styles/colors'
 
 /**

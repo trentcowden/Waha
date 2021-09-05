@@ -18,24 +18,23 @@ import { SavedSet } from 'redux/reducers/groups'
 import LessonItem from '../components/LessonItem'
 import LessonSwipeBackdrop from '../components/LessonSwipeBackdrop'
 import OptionsModalButton from '../components/OptionsModalButton'
-import SetItem from '../components/SetItem'
+import SetItem, { SetItemMode } from '../components/SetItem'
 import { itemHeights } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import {
   getDownloadedLessons,
   getLessonInfo,
   getLessonType,
+  LessonType,
 } from '../functions/setAndLessonDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetItemMode } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
 import MessageModal from '../modals/MessageModal'
 import OptionsModal from '../modals/OptionsModal'
 import ShareModal from '../modals/ShareModal'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,

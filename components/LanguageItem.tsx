@@ -1,7 +1,7 @@
-import { CommonProps } from 'interfaces/common'
 import { LanguageID } from 'languages'
 import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { LanguageMetadata } from '../languages'

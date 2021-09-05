@@ -8,15 +8,13 @@ import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { StorySet } from 'redux/reducers/database'
 import AddSetButton from '../components/AddSetButton'
-import SetItem from '../components/SetItem'
+import SetItem, { SetItemMode } from '../components/SetItem'
 import { itemHeights, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetData } from '../functions/setAndLessonDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetItemMode } from '../interfaces/components'
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import { getSetData, SetCategory } from '../functions/setAndLessonDataFunctions'
 import MessageModal from '../modals/MessageModal'
 import { SetsTabsParams } from '../navigation/SetsTabs'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,

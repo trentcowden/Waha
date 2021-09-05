@@ -2,6 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = false
 
+/**
+ * This reducer stores whether the Mobilization Tools have been globally unlocked or not.
+ */
 const areMobilizationToolsUnlocked = createSlice({
   name: 'areMobilizationToolsUnlocked',
   initialState,

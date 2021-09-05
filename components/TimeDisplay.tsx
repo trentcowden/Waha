@@ -1,6 +1,6 @@
-import { CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { Text, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

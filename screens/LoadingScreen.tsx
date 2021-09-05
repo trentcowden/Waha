@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { selector, useAppDispatch } from '../hooks'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeGroupSelector,
   changeActiveGroup,

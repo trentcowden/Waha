@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { scaleMultiplier } from '../constants'
-import { AGProps, CommonProps } from '../interfaces/common'
+import { AGProps, CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

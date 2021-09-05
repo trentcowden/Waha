@@ -3,8 +3,12 @@ import { RootState } from 'redux/store'
 import { DBLanguageData } from '../reducers/database'
 import { Group } from '../reducers/groups'
 
+// No active group exists at the start.
 const initialState = ''
 
+/**
+ * This reducer stores the name of the active group. It's used in combination with some functions below to get the whole active Group object, including name, progress, emoji, etc.
+ */
 const activeGroup = createSlice({
   name: 'activeGroup',
   initialState,
@@ -68,7 +72,7 @@ export function activeGroupSelector (state: RootState): Group {
 }
 
 /**
- * Takes in state and returns the database of the active group's language.
+ * Takes in state and returns the database language data of the active group's language.
  */
 export function activeDatabaseSelector (
   state: RootState

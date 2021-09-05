@@ -1,5 +1,4 @@
 import Constants from 'expo-constants'
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import {
   Platform,
@@ -9,6 +8,7 @@ import {
   View,
 } from 'react-native'
 import Modal from 'react-native-modal'
+import { AGProps, CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'

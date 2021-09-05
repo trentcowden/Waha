@@ -1,4 +1,3 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import {
   Clipboard,
@@ -8,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'

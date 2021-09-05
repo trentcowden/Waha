@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Modal from 'react-native-modal'
 import { scaleMultiplier } from '../constants'
-import { AGProps, CommonProps } from '../interfaces/common'
+import { AGProps, CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 

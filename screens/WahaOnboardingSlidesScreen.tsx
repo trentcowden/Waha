@@ -11,11 +11,10 @@ import GroupNameTextInput from '../components/GroupNameTextInput'
 import OnboardingImage from '../components/OnboardingImage'
 import OnboardingPage from '../components/OnboardingPage'
 import PageDots from '../components/PageDots'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeGroupSelector,
   changeActiveGroup,

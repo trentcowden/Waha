@@ -15,9 +15,9 @@ import {
   getInstalledLanguagesInfoAndGroups,
   info,
 } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
 import { InfoAndGroupsForLanguage } from '../languages'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeGroupSelector,
   changeActiveGroup,

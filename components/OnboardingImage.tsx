@@ -1,4 +1,3 @@
-import { CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
 import React, { FC } from 'react'
 import {
@@ -8,6 +7,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { isTablet } from '../constants'
 import { colors } from '../styles/colors'
 

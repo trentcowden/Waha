@@ -3,7 +3,6 @@ import { Video } from 'expo-av'
 import { AVPlaybackStatus } from 'expo-av/build/AV'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { DeviceMotion } from 'expo-sensors'
-import { CommonProps } from 'interfaces/common'
 import React, {
   FC,
   MutableRefObject,
@@ -13,10 +12,11 @@ import React, {
   useState,
 } from 'react'
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, scaleMultiplier } from '../constants'
 import { lockLandscape, lockPortrait } from '../functions/orientationFunctions'
-import { Chapter } from '../interfaces/setAndLessonInfo'
+import { Chapter } from '../functions/setAndLessonDataFunctions'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps {

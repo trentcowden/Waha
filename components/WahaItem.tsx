@@ -1,6 +1,6 @@
-import { AGProps, CommonProps } from 'interfaces/common'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AGProps, CommonProps } from 'redux/common'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'

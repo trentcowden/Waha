@@ -5,8 +5,10 @@ import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { AppDispatch, RootState } from 'redux/store'
 import { logCompleteStorySet } from '../../functions/analyticsFunctions'
-import { getSetInfo } from '../../functions/setAndLessonDataFunctions'
-import { SetCategory } from '../../interfaces/setAndLessonInfo'
+import {
+  getSetInfo,
+  SetCategory
+} from '../../functions/setAndLessonDataFunctions'
 import { StorySet } from '../reducers/database'
 
 export interface Group {
@@ -24,7 +26,7 @@ export interface Group {
   setBookmark: string
   // Whether or not the Mobilization Tools tab should be visible when a Group is selected.
   shouldShowMobilizationToolsTab: boolean
-  // An array of Saved Sets that have been saved.
+  // An array of Saved Sets that have been saved/added. SavedSet is the proper term but because this reducer is persisted, addedSets must stay as the key name.
   addedSets: SavedSet[]
 }
 
@@ -38,47 +40,26 @@ export interface SavedSet {
   bookmark: number
 }
 
-interface CreateGroupPayload {
-  groupName: string
-  language: LanguageID
-  emoji: Emoji
-  shouldShowMobilizationToolsTab: boolean
-  groupID: number
-  groupNumber: number
-}
-
-interface EditGroupPayload {
-  oldGroupName: string
-  newGroupName: string
-  emoji: Emoji
-  shouldShowMobilizationToolsTab: boolean
-}
-
-interface DeleteGroupPayload {
-  groupName: string
-}
-
-interface UpdateProgressPayload {
-  groupName: string
-  set: StorySet
-  nextSet: StorySet
-  lessonIndex: number
-  setLength: number
-}
-
-interface AddSetPayload {
-  groupName: string
-  groupID: number
-  set: StorySet
-}
-
 const initialState: Group[] = []
 
+/**
+ * This reducer stores all the Groups that have been added. This state is persisted across app restarts.
+ */
 const groups = createSlice({
   name: 'groups',
   initialState,
   reducers: {
-    createGroup: (state, action: PayloadAction<CreateGroupPayload>) => {
+    createGroup: (
+      state,
+      action: PayloadAction<{
+        groupName: string
+        language: LanguageID
+        emoji: Emoji
+        shouldShowMobilizationToolsTab: boolean
+        groupID: number
+        groupNumber: number
+      }>
+    ) => {
       state.push({
         name: action.payload.groupName,
         id: action.payload.groupID,
@@ -114,7 +95,15 @@ const groups = createSlice({
         ]
       })
     },
-    editGroup: (state, action: PayloadAction<EditGroupPayload>) => {
+    editGroup: (
+      state,
+      action: PayloadAction<{
+        oldGroupName: string
+        newGroupName: string
+        emoji: Emoji
+        shouldShowMobilizationToolsTab: boolean
+      }>
+    ) => {
       const thisGroup = state.find(
         group => group.name === action.payload.oldGroupName
       )
@@ -126,10 +115,20 @@ const groups = createSlice({
           action.payload.shouldShowMobilizationToolsTab
       }
     },
-    deleteGroup: (state, action: PayloadAction<DeleteGroupPayload>) => {
+    deleteGroup: (state, action: PayloadAction<{ groupName: string }>) => {
       return state.filter(group => group.name != action.payload.groupName)
     },
-    addSet: (state, action: PayloadAction<AddSetPayload>) => {
+    /**
+     * Adds a specific SavedSet to a specific group.
+     */
+    addSet: (
+      state,
+      action: PayloadAction<{
+        groupName: string
+        groupID: number
+        set: StorySet
+      }>
+    ) => {
       const thisGroup = state.find(
         group => group.name === action.payload.groupName
       )
@@ -145,7 +144,19 @@ const groups = createSlice({
           }
         ]
     },
-    updateProgress: (state, action: PayloadAction<UpdateProgressPayload>) => {
+    /**
+     * Marks a lesson as complete or incomplete.
+     */
+    updateProgress: (
+      state,
+      action: PayloadAction<{
+        groupName: string
+        set: StorySet
+        nextSet: StorySet
+        lessonIndex: number
+        setLength: number
+      }>
+    ) => {
       const thisGroup = state.find(
         group => group.name === action.payload.groupName
       )

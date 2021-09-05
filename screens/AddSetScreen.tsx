@@ -7,15 +7,17 @@ import { FlatList, LogBox, StyleSheet, Text, View } from 'react-native'
 import SnackBar from 'react-native-snackbar-component'
 import TagGroup from 'react-native-tag-group'
 import { StorySet } from 'redux/reducers/database'
-import SetItem from '../components/SetItem'
+import SetItem, { SetItemMode } from '../components/SetItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { getSetData, getSetInfo } from '../functions/setAndLessonDataFunctions'
-import { selector } from '../hooks'
-import { SetItemMode } from '../interfaces/components'
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import {
+  getSetData,
+  getSetInfo,
+  SetCategory,
+} from '../functions/setAndLessonDataFunctions'
 import SetInfoModal from '../modals/SetInfoModal'
+import { selector } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,

@@ -17,10 +17,10 @@ import {
   View,
 } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
+import { Layouts, SectionOffset } from '../components/LessonTextContent'
 import { scaleMultiplier } from '../constants'
-import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
-import { Layouts, SectionOffset } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { ADBProps, AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import LessonTextContent from './LessonTextContent'
 

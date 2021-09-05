@@ -25,15 +25,14 @@ import Icon from '../assets/fonts/icon_font_config'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
 import LanguageItem from '../components/LanguageItem'
 import LanguageVersionItem from '../components/LanguageVersionItem'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeGroupSelector,
   changeActiveGroup,
@@ -41,8 +40,8 @@ import {
 import {
   deleteLanguageData,
   downloadLanguageCoreFiles,
-  storeLanguageData,
   storeLanguageSets,
+  storeOtherLanguageContent,
 } from '../redux/reducers/database'
 import { createGroup } from '../redux/reducers/groups'
 import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
@@ -281,11 +280,9 @@ const LanguageSelectScreen: FC<Props> = ({
         if (doc.exists && languageData !== undefined) {
           // Store our language info in redux.
           dispatch(
-            storeLanguageData({
-              languageData: {
-                files: languageData.files,
-                questions: languageData.questions,
-              },
+            storeOtherLanguageContent({
+              files: languageData.files,
+              questionSets: languageData.questions,
               languageID,
             })
           )

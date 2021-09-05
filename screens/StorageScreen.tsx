@@ -3,14 +3,13 @@ import { LanguageID } from 'languages'
 import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, SafeAreaView, StyleSheet, View } from 'react-native'
 import LanguageStorageItem from '../components/LanguageStorageItem'
-import WahaButton from '../components/WahaButton'
+import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import {
   getInstalledLanguagesInfoAndGroups,
   info,
 } from '../functions/languageDataFunctions'
-import { selector } from '../hooks'
-import { WahaButtonMode } from '../interfaces/components'
 import { InfoAndGroupsForLanguage } from '../languages'
+import { selector } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 const initialState = false
 
 /**
- * This reducer simply stores whether the app is currently installing a language instance or not. This is stored in a separate reducer from languageInstallation.ts so that it isn't persisted.
+ * This reducer simply stores whether the app is currently installing a language instance or not. This is stored in a separate reducer from languageInstallation.ts because we don't want to persist it.
  */
 const isInstallingLanguageInstance = createSlice({
   name: 'isInstallingLanguageInstance',

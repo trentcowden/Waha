@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { View } from 'react-native'
 import { scaleMultiplier } from '../constants'
-import { CommonProps } from '../interfaces/common'
+import { CommonProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
 const Dot = ({ isActive, isDark }: { isActive: boolean; isDark: boolean }) => (

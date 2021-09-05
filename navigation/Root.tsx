@@ -2,7 +2,7 @@ import NetInfo from '@react-native-community/netinfo'
 import { StatusBar as StatusBarExpo } from 'expo-status-bar'
 import React, { FC, ReactElement, useEffect } from 'react'
 import { StatusBar as StatusBarRN, View } from 'react-native'
-import { selector, useAppDispatch } from '../hooks'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   setGlobalGroupCounter,
   setHasInstalledFirstLanguageInstance,

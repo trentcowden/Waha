@@ -1,7 +1,7 @@
-import { CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { CommonProps } from 'redux/common'
 import { scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import WahaSeparator from './WahaSeparator'

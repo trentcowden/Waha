@@ -10,8 +10,8 @@ import WahaItem from '../components/WahaItem'
 import WahaSeparator from '../components/WahaSeparator'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
 import SecurityTimeoutPickerModal from '../modals/SecurityTimeoutPickerModal'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setSecurityEnabled,

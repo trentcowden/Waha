@@ -1,4 +1,3 @@
-import { AGProps, CommonProps, TProps } from 'interfaces/common'
 import React, { FC, ReactElement, useState } from 'react'
 import {
   FlatList,
@@ -8,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { AGProps, CommonProps, TProps } from 'redux/common'
 import {
   Emoji,
   groupIcons,

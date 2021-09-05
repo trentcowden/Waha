@@ -1,5 +1,4 @@
 // import SvgUri from 'expo-svg-uri'
-import { AGProps, CommonProps } from 'interfaces/common'
 import LottieView from 'lottie-react-native'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
@@ -13,13 +12,20 @@ import {
   View,
 } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { AGProps, CommonProps } from 'redux/common'
 import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { isTablet, itemHeights, scaleMultiplier } from '../constants'
-import { SetItemMode } from '../interfaces/components'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import SVG from './SVG'
+
+export enum SetItemMode {
+  SETS_SCREEN = 1,
+  LESSONS_SCREEN = 2,
+  ADD_SET_SCREEN = 3,
+  SET_INFO_MODAL = 4,
+}
 
 interface Props extends CommonProps, AGProps {
   thisSet: StorySet

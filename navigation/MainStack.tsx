@@ -8,7 +8,7 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack'
 import * as StoreReview from 'expo-store-review'
-import { LessonType } from 'interfaces/setAndLessonInfo'
+import { LessonType } from 'functions/setAndLessonDataFunctions'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { AppState, LogBox, Platform, View } from 'react-native'
 import { Lesson, StorySet } from 'redux/reducers/database'
@@ -18,10 +18,10 @@ import TestModeDisplay from '../components/TestModeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
 import { scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SetCategory } from '../interfaces/setAndLessonInfo'
+import { SetCategory } from '../functions/setAndLessonDataFunctions'
 import { InfoAndGroupsForAllLanguages, LanguageMetadata } from '../languages'
 import SetsTabs, { SetsTabsParams } from '../navigation/SetsTabs'
+import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
   setHasUsedPlayScreen,
@@ -100,7 +100,7 @@ interface Props {
 }
 
 /*
- This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.js is because this component has access to the navigation prop.
+ This component renders the main navigation stack used for almost all the screens in Waha. It also contains some logic related to things that happen globally in the background. The reason some logic would be here instead of in MainDrawer.tsx is because this component has access to the navigation prop.
  */
 const MainStack: FC<Props> = ({
   navigation: { navigate, goBack, toggleDrawer },

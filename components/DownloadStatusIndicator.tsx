@@ -4,8 +4,8 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { Lesson } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
-import { CommonProps, DLProps, NetworkProps } from '../interfaces/common'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { CommonProps, DLProps, NetworkProps } from '../redux/common'
 import { colors } from '../styles/colors'
 
 interface Props extends CommonProps, NetworkProps, DLProps {

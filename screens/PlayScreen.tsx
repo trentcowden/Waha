@@ -25,6 +25,7 @@ import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { Media } from '../classes/media'
 import ChapterSelector from '../components/ChapterSelector'
+import { SectionOffset } from '../components/LessonTextContent'
 import PlaybackControls from '../components/PlaybackControls'
 import PlayScreenSwiper from '../components/PlayScreenSwiper'
 import Scrubber from '../components/Scrubber'
@@ -34,17 +35,19 @@ import { gutterSize, isTablet, scaleMultiplier } from '../constants'
 import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { lockPortrait } from '../functions/orientationFunctions'
-import { getLessonInfo } from '../functions/setAndLessonDataFunctions'
+import {
+  Chapter,
+  getLessonInfo,
+  LessonType,
+} from '../functions/setAndLessonDataFunctions'
 import {
   checkForAlmostCompleteSet,
   checkForFullyCompleteSet,
 } from '../functions/setProgressFunctions'
-import { selector, useAppDispatch } from '../hooks'
-import { SectionOffset } from '../interfaces/components'
-import { Chapter, LessonType } from '../interfaces/setAndLessonInfo'
 import CopyrightsModal from '../modals/CopyrightsModal'
 import MessageModal from '../modals/MessageModal'
 import ShareModal from '../modals/ShareModal'
+import { selector, useAppDispatch } from '../redux/hooks'
 import {
   activeDatabaseSelector,
   activeGroupSelector,

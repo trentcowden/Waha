@@ -10,11 +10,21 @@ import {
 } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
 import { gutterSize, scaleMultiplier } from '../constants'
-import { ADBProps, AGProps, CommonProps, TProps } from '../interfaces/common'
-import { Layouts, SectionOffset } from '../interfaces/components'
-import { LessonType } from '../interfaces/setAndLessonInfo'
+import { LessonType } from '../functions/setAndLessonDataFunctions'
+import { ADBProps, AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
+
+export interface SectionOffset {
+  title: string
+  globalOffset: number
+  localOffset?: number
+}
+
+export interface Layouts {
+  contentHeight: number
+  windowHeight: number
+}
 
 interface LessonTextProps extends CommonProps, AGProps {
   text: string
@@ -199,7 +209,7 @@ const LessonTextContent: FC<Props> = ({
           />
           {/* Fellowship questions. */}
           {activeDatabase && thisLesson.fellowshipType
-            ? activeDatabase.questions[thisLesson.fellowshipType].map(
+            ? activeDatabase.questionSets[thisLesson.fellowshipType].map(
                 (question, index) => (
                   <View key={index}>
                     <HeaderSmall
@@ -312,7 +322,7 @@ const LessonTextContent: FC<Props> = ({
           {/* Application questions. */}
           {activeDatabase &&
             thisLesson.applicationType &&
-            activeDatabase.questions[thisLesson.applicationType].map(
+            activeDatabase.questionSets[thisLesson.applicationType].map(
               (question, index) => (
                 <View key={index}>
                   <HeaderSmall
