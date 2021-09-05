@@ -116,6 +116,7 @@ const Root: FC<Props> = ({}): ReactElement => {
   const languageCoreFilesToUpdate = selector(
     (state) => state.database.languageCoreFilesToUpdate
   )
+  const groups = selector((state) => state.groups)
 
   useEffect(() => {
     // Below are some logs for testing.
@@ -136,6 +137,7 @@ const Root: FC<Props> = ({}): ReactElement => {
     //     languageCoreFilesCreatedTimes
     //   )}\n`
     // )
+    // console.log(groups)
   }, [])
 
   /*

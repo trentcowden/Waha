@@ -165,6 +165,9 @@ const groups = createSlice({
         savedSet => savedSet.id === action.payload.set.id
       )
 
+      // Reset the set bookmark back to index 0 so we can find the correct spot for it again.
+      if (thisSavedSet) thisSavedSet.bookmark = 0
+
       if (thisGroup && thisSavedSet) {
         // Update the setBookmark to be the updating set.
         thisGroup.setBookmark = action.payload.set.id

@@ -54,15 +54,15 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
   ) => {
     dispatch(
       editGroup({
-        oldGroupName,
-        newGroupName,
-        emoji,
-        shouldShowMobilizationToolsTab,
+        oldGroupName: oldGroupName,
+        newGroupName: newGroupName,
+        emoji: emoji,
+        shouldShowMobilizationToolsTab: shouldShowMobilizationToolsTab,
       })
     )
   }
 
-  function renderGroupItem({ item }: { item: Group }) {
+  const renderGroupItem = ({ item }: { item: Group }) => {
     return (
       <GroupItemMT
         thisGroup={item}
@@ -107,7 +107,11 @@ const MobilizationToolsScreen: FC<Props> = ({ navigation: { navigate } }) => {
         <FlatList
           bounces={false}
           data={groups
-            .sort((group1, group2) => group1.id - group2.id)
+            .slice()
+            .sort((group1, group2) => {
+              if (group1.id && group2.id) return group1.id - group2.id
+              else return 1
+            })
             .sort(
               (group1, group2) =>
                 database[group1.language].installTime -

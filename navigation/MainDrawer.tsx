@@ -199,7 +199,7 @@ const MainDrawer: FC = ({}): ReactElement => {
               // Read the contents of Waha's file directory to check which core files are downloaded.
               FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
                 (contents) => {
-                  console.log(contents)
+                  // console.log(contents)
                   // For each core file listed in Firestore, verify that it's already downloaded.
                   if (languageData !== undefined)
                     languageData.files.forEach((fileName: string) => {
