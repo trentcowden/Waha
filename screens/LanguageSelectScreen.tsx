@@ -11,7 +11,6 @@ import {
   Animated,
   Dimensions,
   FlatList,
-  SafeAreaView,
   SectionList,
   StyleSheet,
   Text,
@@ -20,6 +19,7 @@ import {
   View,
 } from 'react-native'
 import { useColorScheme } from 'react-native-appearance'
+import SafeAreaView from 'react-native-safe-area-view'
 import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
 import { languageT2S } from '../assets/languageT2S/_languageT2S'
@@ -514,11 +514,12 @@ const LanguageSelectScreen: FC<Props> = ({
     />
   )
   return (
-    <View
+    <SafeAreaView
       style={{
         ...styles.screen,
         backgroundColor: isDark ? colors(isDark).bg1 : colors(isDark).bg3,
       }}
+      // forceInset={{ top: 'always', bottom: 'never', horizontal: 'never' }}
     >
       {/* Render a back button only if we're selecting a version for our first Language. If we're selecting a version for a subsequent Language, the header will already contain a back button. */}
       {routeName === 'InitialLanguageVersionSelect' && (
@@ -540,7 +541,7 @@ const LanguageSelectScreen: FC<Props> = ({
         </SafeAreaView>
       )}
       {routeConfig[routeName].heading1 !== undefined && (
-        <SafeAreaView style={styles.headerTextContainer}>
+        <View style={styles.headerTextContainer}>
           <Text
             style={{
               ...type(
@@ -567,7 +568,7 @@ const LanguageSelectScreen: FC<Props> = ({
           >
             {routeConfig[routeName].heading2}
           </Text>
-        </SafeAreaView>
+        </View>
       )}
       {routeConfig[routeName].shouldShowSearchBar && (
         <View
@@ -685,7 +686,7 @@ const LanguageSelectScreen: FC<Props> = ({
           screenLanguage={screenLanguage}
         />
       </Animated.View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -724,7 +725,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 25 * scaleMultiplier,
+    marginTop: 20 * scaleMultiplier,
   },
   searchIconContainer: {
     height: '100%',
