@@ -1,11 +1,5 @@
 import React, { FC, ReactElement } from 'react'
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AGProps, CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
 import { scaleMultiplier } from '../constants'
@@ -40,8 +34,9 @@ const AddNewGroupButton: FC<Props> = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          width: 80 * scaleMultiplier,
-          height: 80 * scaleMultiplier,
+          // width: 80 * scaleMultiplier,
+          // height: 80 * scaleMultiplier,
+          paddingHorizontal: 10,
         }}
       >
         <Icon
@@ -55,8 +50,7 @@ const AddNewGroupButton: FC<Props> = ({
           flex: 1,
           justifyContent: 'center',
           flexDirection: 'column',
-          marginRight: isRTL ? 20 : 0,
-          marginLeft: isRTL ? 0 : 20,
+          paddingHorizontal: 20,
         }}
       >
         <Text
@@ -81,10 +75,7 @@ const styles = StyleSheet.create({
     height: 80 * scaleMultiplier,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    flexDirection: 'row',
-    // These are different because of some strange behavior between ios and android and text wrapping of this button.
-    padding: Platform.OS === 'android' ? 20 : undefined,
-    marginHorizontal: Platform.OS === 'ios' ? 20 : undefined,
+    paddingHorizontal: 20,
   },
 })
 
