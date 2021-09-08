@@ -16,3 +16,4 @@ firebase/testConfig.ts
 firebase/prodConfig.ts
 firebase/google-services.json
 firebase/GoogleService-Info.plist
+.vscode
