@@ -30,7 +30,9 @@
     },
     "locales": {
       "en": "./appStoreLocales/en.json",
-      "ar": "./appStoreLocales/ar.json"
+      "ar": "./appStoreLocales/ar.json",
+      "hi": "./appStoreLocales/hi.json",
+      "fr": "./appStoreLocales/fr.json"
     },
     "android": {
       "package": "com.kingdomstrategies.waha",
