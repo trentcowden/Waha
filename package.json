@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "build-offline": "node -r esm scripts/build-offline.js"
   },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
@@ -40,6 +41,7 @@
     "expo-status-bar": "~1.0.4",
     "expo-store-review": "~4.1.0",
     "expo-web-browser": "~9.2.0",
+    "esm": "^3.2.25",
     "firebase": "8.2.3",
     "js-to-ts-converter": "^0.18.1",
     "lottie-react-native": "4.0.2",
@@ -75,6 +77,7 @@
     "babel-preset-expo": "8.3.0",
     "better-docs": "^2.3.2",
     "react-native-smooth-pincode-input": "^1.0.9",
+    "firebase-admin": "^9.10.0",
     "reactotron-react-native": "^5.0.0"
   },
   "private": true
