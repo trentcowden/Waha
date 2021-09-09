@@ -7,6 +7,7 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+assets/downloaded/*
 web-build/
 web-report/
 app.json
@@ -17,3 +18,4 @@ firebase/prodConfig.ts
 firebase/google-services.json
 firebase/GoogleService-Info.plist
 .vscode
+scripts/service-account.json
