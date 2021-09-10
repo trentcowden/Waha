@@ -18,4 +18,5 @@ firebase/prodConfig.ts
 firebase/google-services.json
 firebase/GoogleService-Info.plist
 .vscode
-scripts/service-account.json
+scripts/service-account-TEST.json
+scripts/service-account-PROD.json

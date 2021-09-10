@@ -1,135 +1,172 @@
 #!/usr/bin/env node
-
-import "firebase/firestore";
-import languages from '../languages';
-import { getAssetInfo } from '../assetInfo';
-import { requestPromise, spawnPromise } from './util';
-
-const fs = require('fs');
-// NOTE: must initialize this with a service account for the target Firebase environment
-const serviceAccount = require("./service-account.json");
-const admin = require('firebase-admin');
-
+"use strict";
+exports.__esModule = true;
+var firebaseAdmin = require("firebase-admin");
+require("firebase/firestore");
+var fs = require("fs");
+var setAndLessonDataFunctions_1 = require("../functions/setAndLessonDataFunctions");
+var modeSwitch_1 = require("../modeSwitch");
+var util_1 = require("./util");
+var serviceAccount = modeSwitch_1.dbMode === 'test'
+    ? require('./service-account-TEST.json')
+    : require('./service-account-PROD.json');
+var admin = firebaseAdmin;
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://" + serviceAccount.project_id + ".firebaseio.com"
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: 'https://' + serviceAccount.project_id + '.firebaseio.com'
 });
-
-const firestore = admin.firestore();
-
-const bundledLanguages = process.argv.slice(2);
+var firestore = admin.firestore();
+var bundledLanguages = process.argv.slice(2);
 process.env.BUNDLED_LANGUAGES = bundledLanguages.join(',');
-const releaseChannel = "offline-"+process.env.BUNDLED_LANGUAGES.replace(',','');
-
-// Clear existing downloads folder
-const targetDirectory = './assets/downloaded';
+var releaseChannel = 'offline-' + process.env.BUNDLED_LANGUAGES.replace(',', '');
+// Clear existing downloads folder.
+var targetDirectory = './assets/downloaded';
 if (fs.existsSync(targetDirectory)) {
-    fs.rmdirSync(targetDirectory,{
-        recursive: true,
-        force: true
+    fs.rmdirSync(targetDirectory, {
+        recursive: true
+        // force: true
     });
 }
+// Make a fresh downloads folder.
 fs.mkdirSync(targetDirectory);
-
-const assetListFile = fs.createWriteStream('./assets/downloaded/master-list.js');
-assetListFile.write('module.exports = [');
-
-const bundle = firestore.bundle(releaseChannel);
-
-Promise.all(bundledLanguages.map((value, _, array) => {
-    // Determine full list of assets to download
-    const lang = languages.find(lang => lang.languageCode == value);
-    if (!lang) {
-        throw new Error("Invalid language: " + value);
-    }
-    const promises = [];
-    promises.push(firestore.collection('languages').doc(value).get().then(doc => {
+// Create a new file called master-list. This will be full of require statements for the various Question Set mp3 and Lesson content assets to be used offline.
+var assetListFile = fs.createWriteStream('./assets/downloaded/master-list.js');
+// Add the start of the module exports to the new file.
+assetListFile.write('module.exports = {');
+var bundle = firestore.bundle(releaseChannel);
+Promise.all(bundledLanguages.map(function (languageID) {
+    // Determine full list of assets to download.
+    // TODO: make this work for Language versions.
+    var promises = [];
+    promises.push(firestore
+        .collection('languages')
+        .doc(languageID)
+        .get()
+        .then(function (doc) {
         if (doc.exists && doc.data()) {
             bundle.add(doc);
         }
     }));
-    promises.push(firestore.collection('sets').where('languageID','==',value).get().then(result => {
-        const assets = [];
-        bundle.add(`language-${value}`,result);
-        result.docs.map(set => {
+    promises.push(firestore
+        .collection('sets')
+        .where('languageID', '==', languageID)
+        .get()
+        .then(function (result) {
+        var assets = [];
+        bundle.add("language-" + languageID, result);
+        result.docs.map(function (set) {
             if (set.exists && set.data()) {
-
                 // Queue download of video/audio for lesson if available
-                set.data().lessons.forEach(lesson => {
+                set.data().lessons.forEach(function (lesson) {
                     if (lesson.hasAudio) {
-                        assets.push(getAssetInfo("audioSource", lesson.id));
+                        assets.push({
+                            lessonID: lesson.id,
+                            assetType: 'audio',
+                            assetURL: setAndLessonDataFunctions_1.getLessonInfo('audioSource', lesson.id)
+                        });
                     }
                     if (lesson.hasVideo) {
-                        assets.push(getAssetInfo("videoSource", lesson.id));
+                        assets.push({
+                            lessonID: lesson.id,
+                            assetType: 'video',
+                            assetURL: setAndLessonDataFunctions_1.getLessonInfo('videoSource', lesson.id)
+                        });
                     }
-                })
+                });
             }
         });
         return assets;
     }));
     return Promise.all(promises);
-})).then(results => {
-    // Coalesce into actual array of files to download
-    var files = [];
-    const coalesce = (fileOrFiles) => {
-        if (typeof fileOrFiles === 'string') {
-            files.push(fileOrFiles);
-        } else if (typeof fileOrFiles === 'object') {
-            fileOrFiles.forEach(object => {
-                coalesce(object);
-            })
-        }
-    };
-    coalesce(results);
-    return files;
-}).then(files => {
-    // Write bundle to file
-    const file = `./assets/downloaded/all.firebase-bundle`;
-    assetListFile.write(`\r\n\trequire('../.${file}')`);
-    fs.writeFile(file, bundle.build(),  "binary", function(err) {
+}))
+    .then(function (results) {
+    // Flatten the nested arrays of URLs into one array.
+    var allLessonURLs = [];
+    results.forEach(function (languageData) {
+        languageData.forEach(function (lessonURLs) {
+            if (lessonURLs)
+                lessonURLs.forEach(function (url) {
+                    allLessonURLs.push(url);
+                });
+        });
+    });
+    // const coalesce = (fileOrFiles: (void | LessonURLsForALanguage)[][] | string | LessonURLsForALanguage | LessonURLsForALanguage[]) => {
+    //   if (typeof fileOrFiles === 'string') {
+    //     files.push(fileOrFiles)
+    //   } else if (typeof fileOrFiles === 'object') {
+    //     fileOrFiles.forEach(object => {
+    //       coalesce(object)
+    //     })
+    //   }
+    // }
+    // coalesce(results)
+    return allLessonURLs;
+})
+    .then(function (allLessonURLs) {
+    // Write bundle to file.
+    var file = "./assets/downloaded/all.firebase-bundle";
+    assetListFile.write("\r\n\tbundle: require('../." + file + "')");
+    fs.writeFile(file, bundle.build(), { encoding: 'binary' }, function (err) {
         if (err) {
             throw err;
-        } else {
-            console.log(`Built Firebase bundle: ${file}`);
+        }
+        else {
+            console.log("Built Firebase bundle: " + file);
         }
     });
-
-    // Download audio/video files
-    const fileDownloads = [];
+    // Download audio/video files.
+    var fileDownloads = [];
     console.log('Downloading audio/video files...');
-    files.forEach(remoteFileName => {
-        // NOTE: Path is relative to project root, not scripts folder
-        const localFileName = targetDirectory + "/" + decodeURIComponent(remoteFileName.split('/').pop().split('?')[0]);
-        fileDownloads.push(requestPromise(remoteFileName).then(response => {
-            const buffer = Buffer.from(response.body);
-            fs.mkdirSync(localFileName.split('/').slice(0,-1).join('/'), {recursive: true});
-            const file = fs.createWriteStream(localFileName);
+    allLessonURLs.forEach(function (lessonURL) {
+        // Get the information from the lesson URL object.
+        var lessonID = lessonURL.lessonID, assetType = lessonURL.assetType, assetURL = lessonURL.assetURL;
+        // Get the correct file end based on the asset type.
+        var fileEnd = assetType === 'audio' ? '.mp3' : '.mp4';
+        // Finally, create a local path to download the lesson content mp3 or mp4 to.
+        var localFilePath = targetDirectory + "/" + lessonID + fileEnd;
+        fileDownloads.push(util_1.requestPromise(lessonURL.assetURL).then(function (response) {
+            var buffer = Buffer.from(response.body);
+            // fs.mkdirSync(
+            //   localFilePath
+            //     .split('/')
+            //     .slice(0, -1)
+            //     .join('/'),
+            //   { recursive: true }
+            // )
+            var file = fs.createWriteStream(localFilePath);
             file.write(buffer);
             file.close();
-            assetListFile.write(`,\r\n\trequire('../.${localFileName}')`);
-        },reason => {
-            console.log('WARN: Failed to download ' + remoteFileName);
+            assetListFile.write(",\r\n\t" + lessonID + ": require('../." + localFilePath + "')");
+        }, function (reason) {
+            console.log('WARN: Failed to download ' + lessonURL);
         }));
-    })
+    });
     return Promise.all(fileDownloads);
-}).then(_ => {
-    assetListFile.write('];');
+})
+    .then(function (_) {
+    assetListFile.write('}');
     assetListFile.close();
     // Publish to update assets
-    return spawnPromise("expo", ["publish",
-        "--release-channel",releaseChannel]);
-}).then(_ => {
+    // return spawnPromise('expo', [
+    //   'publish',
+    //   '--release-channel',
+    //   releaseChannel
+    // ])
+})
+    .then(function (_) {
     // Run APK build
-    return spawnPromise("expo", ["build:android",
-        "-t","apk",
-        "--release-channel",releaseChannel]);
-}).then(
-    _ => {
-        process.exit(0);
-    },
-    (error) => {
-        // Handle all the errors here.
-        console.error(error);
-        process.exit(1);
-    }
-);
+    // return spawnPromise('expo', [
+    //   'build:android',
+    //   '-t',
+    //   'apk',
+    //   '--release-channel',
+    //   releaseChannel
+    // ])
+})
+    .then(function (_) {
+    process.exit(0);
+}, function (error) {
+    // Handle all the errors here.
+    console.error(error);
+    process.exit(1);
+});

@@ -2,7 +2,6 @@ import * as FileSystem from 'expo-file-system'
 import { DBLanguageData, Lesson, StorySet } from 'redux/reducers/database'
 import { Group } from '../redux/reducers/groups'
 import { Translations } from '../translations/translationsConfig'
-import { getAssetInfo } from './assetInfo'
 
 export enum LessonType {
   STANDARD_DBS = 'Questions, Audio',
@@ -141,8 +140,16 @@ export const getLessonInfo = <T extends LessonInfoRequest>(
           return SetCategory.FOUNDATIONAL as LessonInfo<T>
       }
     case 'audioSource':
+      return `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${
+        idComponents[0]
+      }%2Fsets%2F${idComponents[1] +
+        '.' +
+        idComponents[2]}%2F${lessonID}.mp3?alt=media` as LessonInfo<T>
     case 'videoSource':
-      return getAssetInfo(type, lessonID);
+      return `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${
+        idComponents[0]
+      }%2Fsets%2F${idComponents[1] + '.' + idComponents[2]}%2F${lessonID +
+        'v'}.mp4?alt=media` as LessonInfo<T>
     default:
       return undefined as LessonInfo<T>
   }
