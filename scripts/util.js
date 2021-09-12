@@ -3,7 +3,7 @@ import { request } from 'https'
 
 // Helper function to do an HTTP request and return a promise for its completion
 // from https://gist.github.com/ktheory/df3440b01d4b9d3197180d5254d7fb65 (modified slightly)
-export const requestPromise = (urlOptions, data) => {
+export const requestPromise = (urlOptions, file) => {
   return new Promise((resolve, reject) => {
     const req = request(urlOptions, res => {
       let body = ''
@@ -11,10 +11,14 @@ export const requestPromise = (urlOptions, data) => {
       res.on('error', reject)
       res.on('end', () => {
         if (res.statusCode >= 200 && res.statusCode <= 299) {
-          resolve({
-            statusCode: res.statusCode,
-            headers: res.headers,
-            body: body
+          res.pipe(file)
+          file.on('finish', () => {
+            file.close()
+            resolve({
+              statusCode: res.statusCode,
+              headers: res.headers,
+              body: body
+            })
           })
         } else {
           reject(
@@ -24,9 +28,9 @@ export const requestPromise = (urlOptions, data) => {
       })
     })
     req.on('error', reject)
-    if (data) {
-      req.write(data, 'binary')
-    }
+    // if (data) {
+    //   req.write(data, 'binary')
+    // }
     req.end()
   })
 }
