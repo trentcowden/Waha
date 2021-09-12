@@ -5,6 +5,7 @@ import * as Localization from 'expo-localization'
 import firebase from 'firebase'
 import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
+import { isInOfflineMode } from '../../constants'
 import { logInstallLanguage } from '../../functions/analyticsFunctions'
 import { LanguageID } from '../../languages'
 import { setIsInstallingLanguageInstance } from '../reducers/isInstallingLanguageInstance'
@@ -19,7 +20,6 @@ import {
 } from '../reducers/languageInstallation'
 import { storeDownloads } from '../reducers/storedDownloads'
 import { AppDispatch, RootState } from '../store'
-
 /**
  * TYPES FOR THE LOCAL DATABASE
  */
@@ -180,6 +180,7 @@ export function downloadLanguageCoreFiles (
     // This array is used to store the various Expo DownloadResumable objects for the Core Files we must download for a language. See https://docs.expo.dev/versions/latest/sdk/filesystem/ for more info.
     var filesToDownload: DownloadResumable[] = []
 
+    // if (!isInOfflineMode) {
     // Run some code for each file we have to download for a language instance. The names for the files we have to download are stored in our redux database (which we fetched from Firestore).
     getState().database[language].files.forEach((fileName: string) => {
       // Create a new download object.
@@ -222,24 +223,37 @@ export function downloadLanguageCoreFiles (
 
     // Store our download resumables array in redux so that we can cancel them later if necessary.
     dispatch(storeDownloads({ resumables: filesToDownload }))
-
+    // }
     /**
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
      */
     function downloadFile (resumable: DownloadResumable) {
-      return resumable
-        .downloadAsync()
-        .catch(error => console.log(error))
-        .then(status => {
-          if (status) {
-            totalDownloaded += 1
-            dispatch(
-              setLanguageCoreFilesDownloadProgress({
-                progress: totalDownloaded
-              })
-            )
-          }
+      if (isInOfflineMode) {
+        return new Promise<void>(resolve => {
+          totalDownloaded += 1
+          console.log(totalDownloaded)
+          dispatch(
+            setLanguageCoreFilesDownloadProgress({
+              progress: totalDownloaded
+            })
+          )
+          resolve()
         })
+      } else {
+        return resumable
+          .downloadAsync()
+          .catch(error => console.log(error))
+          .then(status => {
+            if (status) {
+              totalDownloaded += 1
+              dispatch(
+                setLanguageCoreFilesDownloadProgress({
+                  progress: totalDownloaded
+                })
+              )
+            }
+          })
+      }
     }
 
     // Create an array of all of our download resumable objects. This is what allows us to execute some code once all the downloads finish using Promise.all.
@@ -250,6 +264,7 @@ export function downloadLanguageCoreFiles (
     // Start all the downloads in the download resumables array in parallel.
     Promise.all(downloadFunctions)
       .then(() => {
+        console.log('beep')
         // Once all the downloads have finished...
         if (
           getState().database[language] &&
@@ -369,19 +384,32 @@ export function updateLanguageCoreFiles (): ThunkAction<
      * Downloads one file. Updates the total files downloaded redux variable once it's finished so we know how many files we've downloaded.
      */
     function downloadFile (resumable: DownloadResumable) {
-      return resumable
-        .downloadAsync()
-        .catch(error => console.log(error))
-        .then(status => {
-          if (status) {
-            totalDownloaded += 1
-            dispatch(
-              setLanguageCoreFilesDownloadProgress({
-                progress: totalDownloaded
-              })
-            )
-          }
+      if (isInOfflineMode) {
+        return new Promise<void>(resolve => {
+          totalDownloaded += 1
+          console.log(totalDownloaded)
+          dispatch(
+            setLanguageCoreFilesDownloadProgress({
+              progress: totalDownloaded
+            })
+          )
+          resolve()
         })
+      } else {
+        return resumable
+          .downloadAsync()
+          .catch(error => console.log(error))
+          .then(status => {
+            if (status) {
+              totalDownloaded += 1
+              dispatch(
+                setLanguageCoreFilesDownloadProgress({
+                  progress: totalDownloaded
+                })
+              )
+            }
+          })
+      }
     }
 
     // Create an array of all of our download resumable objects. This is what allows us to execute some code once all the downloads finish using Promise.all.
