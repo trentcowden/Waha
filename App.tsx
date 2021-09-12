@@ -2,6 +2,8 @@ import { decode, encode } from 'base-64'
 import { Audio } from 'expo-av'
 import * as Font from 'expo-font'
 import * as ScreenOrientation from 'expo-screen-orientation'
+// This is required for the build-offline script to work properly.
+import 'fastestsmallesttextencoderdecoder'
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
