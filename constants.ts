@@ -1,8 +1,19 @@
+import * as FileSystem from 'expo-file-system'
 import { Dimensions, PixelRatio } from 'react-native'
 
 /**
  * This file contains a bunch of constants and a few miscellaneous functions that are used globally throughout Waha.
  */
+
+const bundledAssets = require('./assets/downloaded/master-list')
+
+export const isInOfflineMode =
+  Object.keys(bundledAssets).length > 2 ? true : false
+
+export const getFileSource = (fileName: string) => {
+  if (isInOfflineMode) return bundledAssets[fileName]
+  else return { uri: FileSystem.documentDirectory + fileName }
+}
 
 /** Set the max font scaling allowed. This is based on the system font scaling that the user sets in their phone's accessibility settings. We limit it so that the text in the app isn't allowed scale above 1.2 times normal size, which would not be good for the UI. */
 const fontScale =
