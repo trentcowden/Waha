@@ -18,7 +18,7 @@ export class Media {
   }
 
   load (
-    source: string,
+    source: any,
     shouldAutoPlay: boolean,
     activeChapter: Chapter | undefined
   ): Promise<AVPlaybackStatus> {
@@ -27,15 +27,12 @@ export class Media {
 
     const media = activeChapter === Chapter.TRAINING ? this.video : this.audio
     if (media !== null)
-      return media.loadAsync(
-        { uri: source },
-        {
-          // Initial play status depends on whether we should autoplay or not.
-          shouldPlay: shouldAutoPlay ? true : false,
-          // Call the onPlaybackStatusUpdate function once every second.
-          progressUpdateIntervalMillis: 1000
-        }
-      )
+      return media.loadAsync(source, {
+        // Initial play status depends on whether we should autoplay or not.
+        shouldPlay: shouldAutoPlay ? true : false,
+        // Call the onPlaybackStatusUpdate function once every second.
+        progressUpdateIntervalMillis: 1000
+      })
     else return new Promise((): AVPlaybackStatus => ({ isLoaded: false }))
   }
 
