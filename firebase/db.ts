@@ -1,6 +1,8 @@
 import '@firebase/firestore'
-import Constants from 'expo-constants'
+import { Asset } from 'expo-asset'
+import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
+import 'firebase/firestore/bundle'
 import { dbMode } from '../modeSwitch'
 import { prodConfig } from './prodConfig'
 import { testConfig } from './testConfig'
@@ -18,11 +20,21 @@ firebase.initializeApp(config)
 // Create the database object for Firestore.
 const db = firebase.firestore()
 
-if (Constants.manifest?.extra?.bundledLanguages) {
-  const bundledAssets = require('../assets/downloaded/master-list')
+// Get the bundled assets from the master list.
+const bundledAssets = require('../assets/downloaded/master-list')
+
+// If we have many bundled assets, we must be in an offline build. In that case, we need to load a Firestore bundle for offline use.
+if (Object.keys(bundledAssets).length > 2) {
   db.disableNetwork()
-  // TODO: this probably won't work; how to get actual content from file?
-  db.loadBundle(bundledAssets[0])
+
+  Asset.loadAsync(bundledAssets.bundle).then(response => {
+    if (response[0].localUri !== null)
+      FileSystem.readAsStringAsync(response[0].localUri).then(contents => {
+        db.loadBundle(contents)
+          .then(response => console.log(response))
+          .catch(error => console.log(error))
+      })
+  })
 }
 
 // Finally, export the Firestore database object so that other files can have access to it.
