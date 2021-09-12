@@ -27,7 +27,7 @@ import LanguageItem from '../components/LanguageItem'
 import LanguageVersionItem from '../components/LanguageVersionItem'
 import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { getAllLanguagesData, info } from '../functions/languageDataFunctions'
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
@@ -245,7 +245,7 @@ const LanguageSelectScreen: FC<Props> = ({
     await db
       .collection('sets')
       .where('languageID', '==', languageID)
-      .get()
+      .get({ source: isInOfflineMode ? 'cache' : 'server' })
       .then((querySnapshot) => {
         // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
         if (!querySnapshot.empty) {
@@ -279,7 +279,7 @@ const LanguageSelectScreen: FC<Props> = ({
     await db
       .collection('languages')
       .doc(languageID)
-      .get()
+      .get({ source: isInOfflineMode ? 'cache' : 'server' })
       .then(async (doc) => {
         var languageData = doc.data()
 
@@ -653,9 +653,13 @@ const LanguageSelectScreen: FC<Props> = ({
         }}
       >
         <WahaButton
-          mode={isConnected ? WahaButtonMode.SUCCESS : WahaButtonMode.DISABLED}
+          mode={
+            isInOfflineMode || isConnected
+              ? WahaButtonMode.SUCCESS
+              : WahaButtonMode.DISABLED
+          }
           label={
-            isConnected
+            isInOfflineMode || isConnected
               ? isFetchingFirebaseData
                 ? ''
                 : routeName === 'InitialLanguageSelect'
@@ -664,12 +668,13 @@ const LanguageSelectScreen: FC<Props> = ({
               : ''
           }
           onPress={
-            isConnected && !isFetchingFirebaseData
+            (isInOfflineMode && !isFetchingFirebaseData) ||
+            (isConnected && !isFetchingFirebaseData)
               ? handleContinuePress
               : undefined
           }
           extraComponent={
-            isConnected ? (
+            isInOfflineMode || isConnected ? (
               isFetchingFirebaseData ? (
                 <ActivityIndicator color={colors(isDark).bg4} />
               ) : undefined
