@@ -12,15 +12,16 @@ export type LanguageID =
   | 'en' // English, live
   | 'ga' // Gulf Arabic, live
   | 'ma' // Moroccan Arabic, in-progress
-  | 'hc' // Hindi (Muslim version), in-progress
-  | 'hi' // Hindi (Hindu version), in-progress
-  | 'mr' // Marathi, in-progress
+  | 'hc' // Hindi (Muslim version), live
+  | 'hi' // Hindi (Hindu version), live
+  | 'mr' // Marathi, live
   | 'ro' // Romanian, in-progress
   | 'ru' // Russian, in-progress
   | 'tr' // Turkish, in-progress
   | 'tu' // Tunisian Arabic, in-progress
   | 'ta' // Tarifit, in-progress
-  | 'fr' // French, in-progress
+  | 'fr' // French, live
+  | 'te' // For a test language.
 
 export type LanguageMetadata = {
   // The ID for a language.
@@ -81,6 +82,22 @@ export const languages: LanguageFamilyMetadata[] = [
       {
         languageID: 'en',
         nativeName: 'English',
+        brandName: 'Discovering God',
+        contactEmail: 'developer@waha.app',
+        colors: {
+          light: '#E74D3D',
+          dark: '#EA8E84'
+        },
+        headers: {
+          light:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+          dark:
+            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+        }
+      },
+      {
+        languageID: 'te',
+        nativeName: 'English (Test)',
         brandName: 'Discovering God',
         contactEmail: 'developer@waha.app',
         colors: {
