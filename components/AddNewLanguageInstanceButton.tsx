@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import { getTotalNumberOfLanguages } from '../functions/languageDataFunctions'
 import { AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
@@ -23,37 +23,43 @@ const AddNewLanguageInstanceButton: FC<Props> = ({
   t,
   activeGroup,
 }): ReactElement => {
-  // Hide this button if every language has already been added.
-  return numInstalledLanguages !== getTotalNumberOfLanguages() ? (
-    <TouchableOpacity
-      style={{
-        ...styles.addNewLanguageButtonContainer,
-        flexDirection: isRTL ? 'row-reverse' : 'row',
-      }}
-      onPress={onAddNewLanguageButtonPress}
-    >
-      <View style={styles.iconContainer}>
-        <Icon
-          name='language-add'
-          size={40 * scaleMultiplier}
-          color={colors(isDark).disabled}
-        />
-      </View>
-      <Text
-        style={type(
-          activeGroup.language,
-          'h3',
-          'Bold',
-          'left',
-          colors(isDark).secondaryText
-        )}
-      >
-        {t.groups.add_language}
-      </Text>
-    </TouchableOpacity>
-  ) : (
-    <View />
+  const bundledAssets = require('../assets/downloaded/master-list')
+  if (
+    (!isInOfflineMode &&
+      numInstalledLanguages !== getTotalNumberOfLanguages()) ||
+    (isInOfflineMode &&
+      numInstalledLanguages !== bundledAssets.languages.length)
   )
+    // Hide this button if every language has already been added.
+    return (
+      <TouchableOpacity
+        style={{
+          ...styles.addNewLanguageButtonContainer,
+          flexDirection: isRTL ? 'row-reverse' : 'row',
+        }}
+        onPress={onAddNewLanguageButtonPress}
+      >
+        <View style={styles.iconContainer}>
+          <Icon
+            name='language-add'
+            size={40 * scaleMultiplier}
+            color={colors(isDark).disabled}
+          />
+        </View>
+        <Text
+          style={type(
+            activeGroup.language,
+            'h3',
+            'Bold',
+            'left',
+            colors(isDark).secondaryText
+          )}
+        >
+          {t.groups.add_language}
+        </Text>
+      </TouchableOpacity>
+    )
+  else return <View />
 }
 
 const styles = StyleSheet.create({

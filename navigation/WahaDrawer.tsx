@@ -6,7 +6,7 @@ import DrawerDownloadUpdateButton from '../components/DrawerDownloadUpdateButton
 import DrawerItem from '../components/DrawerItem'
 import GroupAvatar from '../components/GroupAvatar'
 import WahaSeparator from '../components/WahaSeparator'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import AddEditGroupModal from '../modals/AddEditGroupModal'
 import { selector, useAppDispatch } from '../redux/hooks'
@@ -142,14 +142,16 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
         >
           {t.general.other}
         </Text>
-        <DrawerItem
-          icon='storage'
-          label={t.storage.storage}
-          onPress={() => navigate('Storage')}
-          isRTL={isRTL}
-          isDark={isDark}
-          activeGroup={activeGroup}
-        />
+        {!isInOfflineMode && (
+          <DrawerItem
+            icon='storage'
+            label={t.storage.storage}
+            onPress={() => navigate('Storage')}
+            isRTL={isRTL}
+            isDark={isDark}
+            activeGroup={activeGroup}
+          />
+        )}
         <DrawerItem
           icon={isDark ? 'sun' : 'moon'}
           onPress={() =>
@@ -160,14 +162,16 @@ const WahaDrawer: FC<DrawerContentComponentProps> = ({
           isDark={isDark}
           activeGroup={activeGroup}
         />
-        <DrawerItem
-          icon='email'
-          label={t.contact_us.contact_us}
-          onPress={() => navigate('ContactUs')}
-          isRTL={isRTL}
-          isDark={isDark}
-          activeGroup={activeGroup}
-        />
+        {!isInOfflineMode && (
+          <DrawerItem
+            icon='email'
+            label={t.contact_us.contact_us}
+            onPress={() => navigate('ContactUs')}
+            isRTL={isRTL}
+            isDark={isDark}
+            activeGroup={activeGroup}
+          />
+        )}
         <DrawerItem
           icon='info'
           onPress={() => navigate('Information')}

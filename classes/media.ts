@@ -1,6 +1,12 @@
 import { Audio, AVPlaybackStatus, Video } from 'expo-av'
 import { Chapter } from '../functions/setAndLessonDataFunctions'
 
+export type MediaSource =
+  | number
+  | {
+      uri: string
+    }
+
 /**
  * Class for media used on the <PlayScreen />. This just removes some code on the <PlayScreen /> and simplifies media usage.
  */
@@ -18,7 +24,7 @@ export class Media {
   }
 
   load (
-    source: any,
+    source: MediaSource,
     shouldAutoPlay: boolean,
     activeChapter: Chapter | undefined
   ): Promise<AVPlaybackStatus> {

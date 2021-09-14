@@ -2,73 +2,16 @@
 
 // Imports.
 import 'firebase/firestore'
+import {
+  downloadAsset,
+  getCoreFileURL,
+  getLessonAssetURL,
+  spawnPromise
+} from './util'
 var admin = require('firebase-admin')
 var fs = require('fs')
-var axios = require('axios')
 
 // Note: to reset the app and make it ready for online mode again, run this script without any arguments.
-
-/**
- * Downloads an asset from a URL and saves it to a path. Used to download audio, video, and image files.
- */
-const downloadAsset = (url, path, callback) => {
-  var file = fs.createWriteStream(path)
-  return axios({
-    url,
-    responseType: 'stream'
-  }).then(
-    response =>
-      new Promise((resolve, reject) => {
-        response.data
-          .pipe(file)
-          .on('finish', () => {
-            file.close(() => {
-              callback()
-              resolve()
-            })
-          })
-          .on('error', e => reject(e))
-      })
-  )
-}
-
-/**
- * Gets the URL for a piece of Lesson content.
- */
-export const getLessonAssetURL = (type, lessonID) => {
-  // Split the ID up into separate sections.
-  var idComponents = lessonID.split('.')
-
-  // An example lessonID is "en.1.1.1".
-  switch (type) {
-    case 'audioSource':
-      return `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${
-        idComponents[0]
-      }%2Fsets%2F${idComponents[1] +
-        '.' +
-        idComponents[2]}%2F${lessonID}.mp3?alt=media`
-    case 'videoSource':
-      return `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${
-        idComponents[0]
-      }%2Fsets%2F${idComponents[1] + '.' + idComponents[2]}%2F${lessonID +
-        'v'}.mp4?alt=media`
-    default:
-      return undefined
-  }
-}
-
-/**
- * Gets the URL for a Language Core File.
- */
-const getCoreFileURL = (fileName, languageID) => {
-  const urlStart = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${languageID}%2Fother%2F`
-
-  const urlEnd = fileName.includes('header')
-    ? '.png?alt=media'
-    : '.mp3?alt=media'
-
-  return `${urlStart}${fileName}${urlEnd}`
-}
 
 // TODO: Figure out how to use this with modeSwitch.ts so we can distinguish between test and prod.
 const serviceAccount =
@@ -108,21 +51,43 @@ fs.mkdirSync(targetDirectory)
 
 // Create a new file called master-list. This will be full of require statements for all the assets for a Language so they will be included when Expo builds the app bundle.
 const assetListFile = fs.createWriteStream('./assets/downloaded/master-list.js')
-const setsFile = fs.createWriteStream('./assets/downloaded/sets.js')
-const languageConfigsFile = fs.createWriteStream(
-  './assets/downloaded/languageConfigs.js'
-)
 
 // Add the start of the module exports to the new file.
 assetListFile.write('module.exports = {')
-setsFile.write('module.exports = [')
-languageConfigsFile.write('module.exports = {')
+assetListFile.write(`\n\tlanguages: [`)
+bundledLanguages.forEach((languageID, index) => {
+  assetListFile.write(`'${languageID}'`)
+  if (index !== bundledLanguages.length - 1) assetListFile.write(`, `)
+})
+assetListFile.write(`],`)
+
+// An array to store the async operations to run.
+const promises = []
+
+// 1. Add the Languages and Story Sets data to our Firestore bundle.
+promises.push(
+  firestore
+    .collection('languages')
+    .get()
+    .then(result => {
+      bundle.add('languages-query', result)
+      return []
+    })
+)
+promises.push(
+  firestore
+    .collection('sets')
+    .get()
+    .then(result => {
+      bundle.add('sets-query', result)
+      return []
+    })
+)
 
 // Fetch all the assets we need to download and store some info about them.
 Promise.all(
   bundledLanguages.map(languageID => {
-    // Determine full list of assets to download.
-    const promises = []
+    // 2. Add the Question Set mp3s and header images to the list of assets to download.
     promises.push(
       firestore
         .collection('languages')
@@ -131,31 +96,6 @@ Promise.all(
         .then(doc => {
           var assets = []
           if (doc.exists && doc.data()) {
-            // Write the language config info to a file.
-            const files = doc.data().files
-            const questions = doc.data().questions
-
-            bundle.add(doc)
-            languageConfigsFile.write(
-              `\n\t${languageID}: {\n\t\tfiles: [\n\t\t\t`
-            )
-
-            files.forEach(fileName => {
-              languageConfigsFile.write(`"${fileName}",\n\t\t\t`)
-            })
-            languageConfigsFile.write(`],\n\t\tquestions: {\n\t\t\t`)
-
-            Object.keys(questions).forEach(questionSet => {
-              languageConfigsFile.write(`"${questionSet}": [\n\t\t\t\t`)
-              questions[questionSet].forEach(question => {
-                languageConfigsFile.write(
-                  `"${question.replace(/"/g, '\\"')}",\n\t\t\t\t`
-                )
-              })
-              languageConfigsFile.write(`], \n\t\t\t`)
-            })
-            languageConfigsFile.write(`}\n\t\t}`)
-
             // Store info about all Core Files.
             doc.data().files.forEach(fileName => {
               if (fileName.includes('header'))
@@ -175,29 +115,8 @@ Promise.all(
           return assets
         })
     )
-    // var languagesSnapshot = await firestore.collection('languages').get()
-    // var setsSnapshot = await firestore.collection('sets').get()
-    // bundle.add('languages-query', languagesSnapshot)
-    // bundle.add('sets-query', setsSnapshot)
-    promises.push(
-      firestore
-        .collection('languages')
-        .get()
-        .then(result => {
-          bundle.add('languages-query', result)
-          return []
-        })
-    )
-    promises.push(
-      firestore
-        .collection('sets')
-        .get()
-        .then(result => {
-          bundle.add('sets-query', result)
-          return []
-        })
-    )
 
+    // 3. Add all of the Lesson content mp3s/mp4s to the list of assets to download.
     promises.push(
       firestore
         .collection('sets')
@@ -205,22 +124,9 @@ Promise.all(
         .get()
         .then(result => {
           var assets = []
-          bundle.add(`${languageID}`, result)
+          // bundle.add(`${languageID}`, result)
           result.docs.map(doc => {
             if (doc.exists && doc.data()) {
-              // const set = doc.data()
-              /*
-                id: doc.id,
-                languageID: doc.data().languageID,
-                title: doc.data().title,
-                subtitle: doc.data().subtitle,
-                iconName: doc.data().iconName,
-                lessons: doc.data().lessons,
-                tags: doc.data().tags,
-              */
-              // Write the set to a js file.
-              // setsFile.write(`\n\t{\n\t\tid: ${doc.id},\n\t\tlanguageID: ${set.languageID},\n\t\ttitle: ${set.title},\n\t\tsubtitle: ${set.subtitle},\n\t\t`)
-
               // Store info about every Lesson's assets.
               doc.data().lessons.forEach(lesson => {
                 if (lesson.hasAudio) {
@@ -247,10 +153,9 @@ Promise.all(
   })
 )
   .then(results => {
-    languageConfigsFile.write(`\n}`)
-    // Flatten the nested arrays of asset info into one array.
     var allAssets = []
 
+    // Add all of the assets into one flattened array.
     results.forEach(languageData => {
       languageData.forEach(assets => {
         if (assets)
@@ -263,20 +168,22 @@ Promise.all(
     return allAssets
   })
   .then(allAssets => {
-    // Write bundle to file.
+    // Location for the Firebase bundle to write.
     const file = `./assets/downloaded/all.firebase-bundle`
+
+    // Add bundle to master list of assets to be required.
     assetListFile.write(`\r\n\tbundle: require('../.${file}')`)
+
+    // Write bundle to file.
     fs.writeFile(file, bundle.build(), { encoding: 'binary' }, err => {
-      if (err) {
-        throw err
-      } else {
-        console.log(`Built Firebase bundle: ${file}`)
-      }
+      if (err) throw err
+      else console.log(`Built Firebase bundle: ${file}`)
     })
 
-    // Download audio/video files.
+    // Create array of files to download.
     const fileDownloads = []
 
+    // Go through each asset we must download.
     allAssets.forEach(asset => {
       // Get the information from the asset object.
       const { name, type, url } = asset
@@ -284,18 +191,16 @@ Promise.all(
       // Get the correct file end based on the asset type.
       var fileEnd
       if (type === 'audio') fileEnd = '.mp3'
-      else if (type === 'video') fileEnd = '.mp4'
+      else if (type === 'video') fileEnd = 'v.mp4'
       else fileEnd = '.png'
 
-      // Finally, create a local path to download the lesson content mp3 or mp4 to.
+      // Finally, create a local path to download the Lesson content mp3 or mp4 to.
       const localFilePath = `${targetDirectory}/${name}${fileEnd}`
-      // const localFilePath = `${targetDirectory}/${name}`
 
-      // const file = fs.createWriteStream(localFilePath)
-
+      // Add download to the fileDownloads array.
       fileDownloads.push(
         downloadAsset(url, localFilePath, () => {
-          // file.close()
+          // Once the asset download finishes, adding it to the master list.
           assetListFile.write(
             `,\r\n\t'${name}${fileEnd}': require('../.${localFilePath}')`
           )
@@ -309,26 +214,24 @@ Promise.all(
     console.log('\nAll files successfully downloaded.')
 
     assetListFile.write(`}`)
-    assetListFile.close(() => {
-      'file closed successfully'
-    })
+    assetListFile.close()
     // Publish to update assets
-    // return spawnPromise('expo', [
-    //   'publish',
-    //   '--release-channel',
-    //   releaseChannel
-    // ])
+    return spawnPromise('expo', [
+      'publish',
+      '--release-channel',
+      releaseChannel
+    ])
   })
-// .then(_ => {
-// Run APK build
-// return spawnPromise('expo', [
-//   'build:android',
-//   '-t',
-//   'apk',
-//   '--release-channel',
-//   releaseChannel
-// ])
-// })
+  .then(_ => {
+    // Run APK build
+    return spawnPromise('expo', [
+      'build:android',
+      '-t',
+      'apk',
+      '--release-channel',
+      releaseChannel
+    ])
+  })
 // .then(
 //   _ => {
 //     process.exit(0)

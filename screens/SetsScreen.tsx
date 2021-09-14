@@ -77,7 +77,10 @@ const SetsScreen: FC<Props> = ({
   const showTrailerHighlights = selector(
     (state) => state.persistedPopups.showTrailerHighlights
   )
+  const database = selector((state) => state.database)
   const dispatch = useAppDispatch()
+
+  console.log(Object.keys(database))
 
   /** Keeps track of the text displayed on the add set button. Changes depending on what category we're in. */
   const [addNewSetLabel, setAddNewSetLabel] = useState('')

@@ -1,7 +1,7 @@
-import { isInOfflineMode } from 'constants'
 import * as Analytics from 'expo-firebase-analytics'
 import { LanguageID } from 'languages'
 import { Lesson, StorySet } from 'redux/reducers/database'
+import { isInOfflineMode } from '../constants'
 import { analyticsMode } from '../modeSwitch'
 import { getLessonInfo, getSetInfo } from './setAndLessonDataFunctions'
 

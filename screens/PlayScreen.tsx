@@ -23,7 +23,7 @@ import {
 import PagerView from 'react-native-pager-view'
 import { StorySet } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
-import { Media } from '../classes/media'
+import { Media, MediaSource } from '../classes/media'
 import ChapterSelector from '../components/ChapterSelector'
 import { SectionOffset } from '../components/LessonTextContent'
 import PlaybackControls from '../components/PlaybackControls'
@@ -31,7 +31,13 @@ import PlayScreenSwiper from '../components/PlayScreenSwiper'
 import Scrubber from '../components/Scrubber'
 import VideoPlayer from '../components/VideoPlayer'
 import WahaBackButton from '../components/WahaBackButton'
-import { gutterSize, isTablet, scaleMultiplier } from '../constants'
+import {
+  getFileSource,
+  gutterSize,
+  isInOfflineMode,
+  isTablet,
+  scaleMultiplier,
+} from '../constants'
 import { logCompleteLesson } from '../functions/analyticsFunctions'
 import { info } from '../functions/languageDataFunctions'
 import { lockPortrait } from '../functions/orientationFunctions'
@@ -77,9 +83,6 @@ const middleAreaVisibility = {
   HIDE: 0,
   SHOW: 1,
 }
-
-// Path to the file system directory for convenience.
-const path = FileSystem.documentDirectory
 
 /**
  * A screen where the user listens to (or watches) the different parts of a lesson. Because of its size, this file is organized into some sections. The sections are as follows:
@@ -134,12 +137,16 @@ const PlayScreen: FC<Props> = ({
 
   /** Keeps track of the potential sources for every chapter. */
   const [potentialSources] = useState({
-    fellowshipLocal: `${path}${activeGroup.language}-${thisLesson.fellowshipType}.mp3`,
-    applicationLocal: `${path}${activeGroup.language}-${thisLesson.applicationType}.mp3`,
-    storyLocal: `${path}${thisLesson.id}.mp3`,
+    fellowshipLocal: getFileSource(
+      `${activeGroup.language}-${thisLesson.fellowshipType}.mp3`
+    ),
+    applicationLocal: getFileSource(
+      `${activeGroup.language}-${thisLesson.applicationType}.mp3`
+    ),
+    storyLocal: getFileSource(`${thisLesson.id}.mp3`),
     storyStream: getLessonInfo('audioSource', thisLesson.id),
-    storyDummy: `${path}${activeGroup.language}-dummy-story.mp3`,
-    trainingLocal: `${path}${thisLesson.id}v.mp4`,
+    storyDummy: getFileSource(`${activeGroup.language}-dummy-story.mp3`),
+    trainingLocal: getFileSource(`${thisLesson.id}v.mp4`),
     trainingStream: getLessonInfo('videoSource', thisLesson.id),
   })
 
@@ -416,6 +423,8 @@ const PlayScreen: FC<Props> = ({
         break
     }
 
+    console.log(trainingSource)
+
     setChapterSources({
       [Chapter.FELLOWSHIP]: fellowshipSource,
       [Chapter.STORY]: storySource,
@@ -569,7 +578,7 @@ const PlayScreen: FC<Props> = ({
    * Loads audio or video for playing.
    * @param source - The source URI of the media to load.
    */
-  const loadMedia = async (source: string) => {
+  const loadMedia = async (source: MediaSource) => {
     media
       .load(
         source,
@@ -788,14 +797,16 @@ const PlayScreen: FC<Props> = ({
     else isVideoDownloading.current = false
 
     // Checks whether a lesson's audio or video is downloaded.
-    if (path)
-      FileSystem.readDirectoryAsync(path).then((contents) => {
-        if (contents.includes(thisLesson.id + '.mp3'))
-          setIsAudioDownloaded(true)
-        if (contents.includes(thisLesson.id + 'v.mp4')) {
-          setIsVideoDownloaded(true)
+    if (FileSystem.documentDirectory)
+      FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+        (contents) => {
+          if (contents.includes(thisLesson.id + '.mp3'))
+            setIsAudioDownloaded(true)
+          if (contents.includes(thisLesson.id + 'v.mp4')) {
+            setIsVideoDownloaded(true)
+          }
         }
-      })
+      )
   }, [Object.keys(downloads).length])
 
   /** useEffect function that removes a download record from the download tracker redux object once it's finished. Removes audio and video download records when necessary. */
@@ -993,8 +1004,8 @@ const PlayScreen: FC<Props> = ({
             <ChapterSelector
               activeChapter={activeChapter ? activeChapter : Chapter.FELLOWSHIP}
               changeChapter={changeChapter}
-              isAudioDownloaded={isAudioDownloaded}
-              isVideoDownloaded={isVideoDownloaded}
+              isAudioDownloaded={isInOfflineMode ? true : isAudioDownloaded}
+              isVideoDownloaded={isInOfflineMode ? true : isVideoDownloaded}
               lessonType={lessonType}
               lessonID={thisLesson.id}
               isDark={isDark}
