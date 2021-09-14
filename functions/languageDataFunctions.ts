@@ -1,6 +1,4 @@
 import * as Localization from 'expo-localization'
-import { setIsInstallingLanguageInstance } from 'redux/reducers/isInstallingLanguageInstance'
-import { AppDispatch } from 'redux/store'
 import db from '../firebase/db'
 import {
   InfoAndGroupsForAllLanguages,
@@ -10,14 +8,27 @@ import {
   LanguageInfo,
   languages
 } from '../languages'
+import { changeActiveGroup } from '../redux/reducers/activeGroup'
 import {
   Database,
+  downloadLanguageCoreFiles,
   storeLanguageSets,
   storeOtherLanguageContent,
   StorySet
 } from '../redux/reducers/database'
-import { Group } from '../redux/reducers/groups'
-import { Translations } from '../translations/translationsConfig'
+import { createGroup, Group } from '../redux/reducers/groups'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
+import {
+  incrementGlobalGroupCounter,
+  LanguageInstallationState,
+  setHasFetchedLanguageData,
+  setRecentActiveGroup
+} from '../redux/reducers/languageInstallation'
+import { AppDispatch } from '../redux/store'
+import {
+  getTranslations,
+  Translations
+} from '../translations/translationsConfig'
 
 /**
  * Gets various information about a language.
@@ -87,7 +98,10 @@ export const info = (languageID: LanguageID): LanguageInfo => {
 export const fetchLanguageData = async (
   languageID: LanguageID,
   dispatch: AppDispatch,
-  setIsFetchingLanguageData: (isFetching: boolean) => void
+  setIsFetchingLanguageData: (isFetching: boolean) => void,
+  activeGroup: Group,
+  groups: Group[],
+  globalGroupCounter: LanguageInstallationState['globalGroupCounter']
 ) => {
   // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
   dispatch(setIsInstallingLanguageInstance({ toSet: true }))
@@ -153,6 +167,49 @@ export const fetchLanguageData = async (
       console.log(error)
       throw error
     })
+
+  // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
+  dispatch(setHasFetchedLanguageData({ toSet: true }))
+
+  // If we're adding a subsequent language instance, then we need to store the active group's language
+  if (activeGroup)
+    dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
+
+  // Start downloading the Core Files for this language.
+  dispatch(downloadLanguageCoreFiles(languageID))
+
+  // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
+  if (
+    !groups.some(
+      group =>
+        group.name === getTranslations(languageID).other.default_group_name
+    )
+  ) {
+    dispatch(incrementGlobalGroupCounter())
+
+    // Create the default Group for the new Language.
+    dispatch(
+      createGroup({
+        groupName: getTranslations(languageID).other.default_group_name,
+        language: languageID,
+        emoji: 'default',
+        shouldShowMobilizationToolsTab: true,
+        groupID: globalGroupCounter,
+        groupNumber: groups.length + 1
+      })
+    )
+  }
+
+  // Change the Active Group to the new Group we just created.
+  dispatch(
+    changeActiveGroup({
+      groupName: getTranslations(languageID).other.default_group_name
+    })
+  )
+
+  // Set the local isFetchingFirebaseData state to false.
+  setIsFetchingLanguageData(false)
+
   return
 }
 

@@ -35,20 +35,8 @@ import {
 import { LanguageFamilyMetadata, LanguageMetadata } from '../languages'
 import { OnboardingParams } from '../navigation/Onboarding'
 import { selector, useAppDispatch } from '../redux/hooks'
-import {
-  activeGroupSelector,
-  changeActiveGroup,
-} from '../redux/reducers/activeGroup'
-import {
-  deleteLanguageData,
-  downloadLanguageCoreFiles,
-} from '../redux/reducers/database'
-import { createGroup } from '../redux/reducers/groups'
-import {
-  incrementGlobalGroupCounter,
-  setHasFetchedLanguageData,
-  setRecentActiveGroup,
-} from '../redux/reducers/languageInstallation'
+import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { deleteLanguageData } from '../redux/reducers/database'
 import { setIsDarkModeEnabled } from '../redux/reducers/settings'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -236,9 +224,6 @@ const LanguageSelectScreen: FC<Props> = ({
   const handleContinuePress = () => {
     // Only do something if the user has actually selected a Language or version.
     if (selectedLanguage) {
-      // For convenience.
-      const selectedLanguageID = selectedLanguage.languageID
-
       // If a Language has versions, navigate to the relevant version select screen.
       if (selectedLanguage.versions !== undefined) {
         if (routeName === 'InitialLanguageSelect')
@@ -253,64 +238,21 @@ const LanguageSelectScreen: FC<Props> = ({
         // Otherwise, get the data for a Language.
       } else
         fetchLanguageData(
-          selectedLanguageID,
+          selectedLanguage.languageID,
           dispatch,
-          setIsFetchingLanguageData
+          setIsFetchingLanguageData,
+          activeGroup,
+          groups,
+          languageInstallation.globalGroupCounter
         )
           .then(() => {
-            // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
-            dispatch(setHasFetchedLanguageData({ toSet: true }))
-
-            // If we're adding a subsequent language instance, then we need to store the active group's language
-            if (activeGroup)
-              dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
-
-            // Start downloading the Core Files for this language.
-            dispatch(downloadLanguageCoreFiles(selectedLanguageID))
-
-            // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
-            if (
-              !groups.some(
-                (group) =>
-                  group.name ===
-                  getTranslations(selectedLanguageID).other.default_group_name
-              )
-            ) {
-              dispatch(incrementGlobalGroupCounter())
-
-              // Create the default Group for the new Language.
-              dispatch(
-                createGroup({
-                  groupName:
-                    getTranslations(selectedLanguageID).other
-                      .default_group_name,
-                  language: selectedLanguageID,
-                  emoji: 'default',
-                  shouldShowMobilizationToolsTab: true,
-                  groupID: languageInstallation.globalGroupCounter,
-                  groupNumber: groups.length + 1,
-                })
-              )
-            }
-
-            // Change the Active Group to the new Group we just created.
-            dispatch(
-              changeActiveGroup({
-                groupName:
-                  getTranslations(selectedLanguageID).other.default_group_name,
-              })
-            )
-
-            // Set the local isFetchingFirebaseData state to false.
-            setIsFetchingLanguageData(false)
-
             // Navigate to the onboarding slides if this is the first language instance install.
             if (
               routeName === 'InitialLanguageSelect' ||
               routeName === 'InitialLanguageVersionSelect'
             ) {
               navigate('WahaOnboardingSlides', {
-                selectedLanguage: selectedLanguageID,
+                selectedLanguage: selectedLanguage.languageID,
               })
             }
           })
@@ -319,7 +261,9 @@ const LanguageSelectScreen: FC<Props> = ({
 
             // If we get an error, reset the isFetching state, delete any data that might have still come through, and show the user an alert that there was an error.
             setIsFetchingLanguageData(false)
-            dispatch(deleteLanguageData({ languageID: selectedLanguageID }))
+            dispatch(
+              deleteLanguageData({ languageID: selectedLanguage.languageID })
+            )
 
             Alert.alert(
               t.language_select.fetch_error_title,
