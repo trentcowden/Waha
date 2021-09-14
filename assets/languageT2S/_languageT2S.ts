@@ -9,6 +9,7 @@ export const languageT2S = {
   hc: require('./hi.mp3'),
   mr: require('./mr.mp3'),
   fr: require('./fr.mp3'),
+  rf: require('./en.mp3'),
   hi_brandname: require('./hi_brandname.mp3'),
   hc_brandname: require('./hc_brandname.mp3')
 }
