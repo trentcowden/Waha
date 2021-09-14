@@ -1,4 +1,7 @@
 import * as Localization from 'expo-localization'
+import { setIsInstallingLanguageInstance } from 'redux/reducers/isInstallingLanguageInstance'
+import { AppDispatch } from 'redux/store'
+import db from '../firebase/db'
 import {
   InfoAndGroupsForAllLanguages,
   InfoAndGroupsForLanguage,
@@ -7,7 +10,12 @@ import {
   LanguageInfo,
   languages
 } from '../languages'
-import { Database } from '../redux/reducers/database'
+import {
+  Database,
+  storeLanguageSets,
+  storeOtherLanguageContent,
+  StorySet
+} from '../redux/reducers/database'
 import { Group } from '../redux/reducers/groups'
 import { Translations } from '../translations/translationsConfig'
 
@@ -71,6 +79,81 @@ export const info = (languageID: LanguageID): LanguageInfo => {
       })
   })
   return languageInfo
+}
+
+/**
+ * Fetches all the data for a language from the Firestore Database. This includes the various Story Sets from the 'sets' collection and the Language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
+ */
+export const fetchLanguageData = async (
+  languageID: LanguageID,
+  dispatch: AppDispatch,
+  setIsFetchingLanguageData: (isFetching: boolean) => void
+) => {
+  // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
+  dispatch(setIsInstallingLanguageInstance({ toSet: true }))
+
+  // Set the isFetchingFirebaseData local state to true so that the continue button shows the activity indicator.
+  setIsFetchingLanguageData(true)
+
+  // Fetch all the Story Sets with the language ID of the selected language and store them in redux.
+  await db
+    .collection('sets')
+    .where('languageID', '==', languageID)
+    .get()
+    .then(querySnapshot => {
+      // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
+      if (!querySnapshot.empty) {
+        // Create a temp array to hold Story Sets.
+        var sets: StorySet[] = []
+
+        // Add Story Sets to our temp array.
+        querySnapshot.forEach(doc => {
+          var storySetItem: StorySet = {
+            id: doc.id,
+            languageID: doc.data().languageID,
+            title: doc.data().title,
+            subtitle: doc.data().subtitle,
+            iconName: doc.data().iconName,
+            lessons: doc.data().lessons,
+            tags: doc.data().tags
+          }
+          sets.push(storySetItem)
+        })
+
+        // Write all of the Story Sets to redux.
+        dispatch(storeLanguageSets({ sets, languageID }))
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      throw error
+    })
+
+  // Fetch the Language info for the selected language and store it in redux.
+  await db
+    .collection('languages')
+    .doc(languageID)
+    .get()
+    .then(async doc => {
+      var languageData = doc.data()
+
+      // If we get some legitimate data back...
+      if (doc.exists && languageData !== undefined) {
+        // Store our Language info in redux.
+        dispatch(
+          storeOtherLanguageContent({
+            files: languageData.files,
+            questionSets: languageData.questions,
+            languageID
+          })
+        )
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      throw error
+    })
+  return
 }
 
 /**
