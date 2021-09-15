@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import { DBLanguageData, Lesson, StorySet } from 'redux/reducers/database'
+import { isInOfflineMode } from '../constants'
 import { Group } from '../redux/reducers/groups'
 import { Translations } from '../translations/translationsConfig'
 
@@ -216,6 +217,7 @@ export const getSetData = (
     downloadedFiles: string[],
     activeGroup: Group
   ): boolean => {
+    if (isInOfflineMode) return true
     // Create an array to store the necessary question set mp3s for this set.
     var requiredQuestionSets: string[] = []
 

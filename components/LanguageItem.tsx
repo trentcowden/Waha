@@ -3,7 +3,7 @@ import React, { FC, ReactElement } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { CommonProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
-import { scaleMultiplier } from '../constants'
+import { getFileSource, isInOfflineMode, scaleMultiplier } from '../constants'
 import { LanguageMetadata } from '../languages'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
@@ -119,7 +119,13 @@ const LanguageItem: FC<Props> = ({
           ) : (
             <Image
               style={styles.headerImage}
-              source={{ uri: isDark ? headers.dark : headers.light }}
+              source={
+                isInOfflineMode
+                  ? isDark
+                    ? getFileSource(languageID + '-header-dark.png')
+                    : getFileSource(languageID + '-header.png')
+                  : { uri: isDark ? headers.dark : headers.light }
+              }
             />
           )}
         </View>

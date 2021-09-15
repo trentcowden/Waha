@@ -26,7 +26,7 @@ import LanguageItem from '../components/LanguageItem'
 import LanguageVersionItem from '../components/LanguageVersionItem'
 import WahaButton, { WahaButtonMode } from '../components/WahaButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import {
   fetchLanguageData,
   getAllLanguagesData,
@@ -529,9 +529,13 @@ const LanguageSelectScreen: FC<Props> = ({
         }}
       >
         <WahaButton
-          mode={isConnected ? WahaButtonMode.SUCCESS : WahaButtonMode.DISABLED}
+          mode={
+            isInOfflineMode || isConnected
+              ? WahaButtonMode.SUCCESS
+              : WahaButtonMode.DISABLED
+          }
           label={
-            isConnected
+            isInOfflineMode || isConnected
               ? isFetchingLanguageData
                 ? ''
                 : routeName === 'InitialLanguageSelect'
@@ -540,12 +544,13 @@ const LanguageSelectScreen: FC<Props> = ({
               : ''
           }
           onPress={
-            isConnected && !isFetchingLanguageData
+            (isInOfflineMode && !isFetchingLanguageData) ||
+            (isConnected && !isFetchingLanguageData)
               ? handleContinuePress
               : undefined
           }
           extraComponent={
-            isConnected ? (
+            isInOfflineMode || isConnected ? (
               isFetchingLanguageData ? (
                 <ActivityIndicator color={colors(isDark).bg4} />
               ) : undefined

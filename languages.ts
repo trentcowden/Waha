@@ -19,9 +19,9 @@ export type LanguageID =
   | 'ru' // Russian, in-progress
   | 'tr' // Turkish, in-progress
   | 'tu' // Tunisian Arabic, in-progress
-  | 'ta' // Tarifit, in-progress
-  | 'fr' // French, live
   | 'rf' // Tarifit, in-progress
+  | 'fr' // French, live
+  | 'te' // For a test language.
 
 export type LanguageMetadata = {
   // The ID for a language.
@@ -96,8 +96,8 @@ export const languages: LanguageFamilyMetadata[] = [
         }
       },
       {
-        languageID: 'rf',
-        nativeName: 'Tarifit',
+        languageID: 'te',
+        nativeName: 'English (Test)',
         brandName: 'Discovering God',
         contactEmail: 'developer@waha.app',
         colors: {

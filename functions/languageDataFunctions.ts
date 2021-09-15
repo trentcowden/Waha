@@ -1,4 +1,5 @@
 import * as Localization from 'expo-localization'
+import { isInOfflineMode } from '../constants'
 import db from '../firebase/db'
 import {
   InfoAndGroupsForAllLanguages,
@@ -29,6 +30,7 @@ import {
   getTranslations,
   Translations
 } from '../translations/translationsConfig'
+const bundledAssets = require('../assets/downloaded/master-list')
 
 /**
  * Gets various information about a language.
@@ -221,6 +223,35 @@ export const getAllLanguagesData = (
   installedLanguageInstances: InfoAndGroupsForAllLanguages,
   searchTextInput: string
 ) => {
+  const filterForOfflineBundledLanguages = (
+    languageFamily: LanguageFamilyMetadata
+  ) => {
+    if (isInOfflineMode) {
+      return {
+        ...languageFamily,
+        data: languageFamily.data.filter(language => {
+          if (language.versions !== undefined) {
+            return !language.versions.every(
+              version =>
+                !bundledAssets.languages.some(
+                  (languageID: LanguageID) => languageID === version.languageID
+                )
+            )
+          }
+          if (
+            !bundledAssets.languages.some(
+              (languageID: LanguageID) => languageID === language.languageID
+            )
+          ) {
+            return false
+          } else {
+            return true
+          }
+        })
+      }
+    } else return languageFamily
+  }
+
   // Sort the languages to put the language family of the phone's current locale at the top.
   const sortByLocale = (
     language1: LanguageFamilyMetadata,
@@ -300,6 +331,7 @@ export const getAllLanguagesData = (
   sections = languages
     .sort(sortByLocale)
     .map(filterInstalledLanguages)
+    .map(filterForOfflineBundledLanguages)
     .map(filterBySearch)
     .filter(filterEmptyLanguageFamilies)
 
@@ -316,6 +348,14 @@ export const getInstalledLanguagesInfoAndGroups = (
 ): InfoAndGroupsForAllLanguages => {
   var installedLanguageInstances: InfoAndGroupsForLanguage[] = []
 
+  // if (isInOfflineMode) {
+  //   bundledAssets.languages.forEach((languageID: LanguageID) => {
+  //     installedLanguageInstances.push({
+  //       ...info(languageID),
+  //       data: groups.filter(group => group.language === languageID)
+  //     })
+  //   })
+  // } else {
   Object.keys(database).forEach(key => {
     if (key.length === 2)
       // Add all of this to the installedLanguageInstances array.
@@ -324,6 +364,7 @@ export const getInstalledLanguagesInfoAndGroups = (
         data: groups.filter(group => group.language === key)
       })
   })
+  // }
 
   // If we have the install times stored, sort the languages by the time installed.
   installedLanguageInstances = installedLanguageInstances.some(
