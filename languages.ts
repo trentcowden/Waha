@@ -19,7 +19,7 @@ export type LanguageID =
   | 'ru' // Russian, in-progress
   | 'tr' // Turkish, in-progress
   | 'tu' // Tunisian Arabic, in-progress
-  | 'ta' // Tarifit, in-progress
+  | 'rf' // Tarifit, in-progress
   | 'fr' // French, live
   | 'te' // For a test language.
 

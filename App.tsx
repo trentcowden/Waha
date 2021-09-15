@@ -35,6 +35,9 @@ export default function App() {
     // Load up all the fonts.
     loadFonts()
 
+    // Load up assets for offline mode.
+    loadAssets()
+
     // Lock orientation to portrait if we're not using a tablet.
     isTablet ? ScreenOrientation.unlockAsync() : lockPortrait()
 
@@ -81,6 +84,14 @@ export default function App() {
 
     // Once we finish loading every font, set our fontsLoaded state to true so we know we can render the app now.
     setFontsLoaded(true)
+  }
+
+  const loadAssets = async () => {
+    // if (!isInOfflineMode) return
+    // const bundledAssets = require('./assets/downloaded/master-list')
+    // await Object.keys(bundledAssets).forEach(async (assetName) => {
+    //   await Asset.loadAsync(bundledAssets[assetName])
+    // })
   }
 
   if (fontsLoaded) {
