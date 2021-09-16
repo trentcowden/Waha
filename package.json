@@ -6,7 +6,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "build-offline": "node -r esm scripts/build-offline.js"
+    "build-offline": "node -r esm scripts/build-offline.js",
+    "publish-tester": "node -r esm scripts/publish-tester.js",
+    "build": "node -r esm scripts/build.js"
   },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
@@ -25,10 +27,12 @@
     "@use-it/interval": "^0.1.3",
     "axios": "^0.21.4",
     "base-64": "^0.1.0",
+    "dotenv": "^10.0.0",
     "esm": "^3.2.25",
     "expo": "^42.0.3",
     "expo-asset": "~8.3.3",
     "expo-av": "~9.2.3",
+    "expo-cli": "^4.11.0",
     "expo-constants": "~11.0.1",
     "expo-device": "~3.3.0",
     "expo-file-system": "~11.1.3",

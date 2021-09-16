@@ -149,7 +149,7 @@ const ShareModal: FC<Props> = ({
       {/* Include a "Share Text" button if a lesson has questions. If it has questions, then it also has Scripture text. */}
       {lessonType.includes('Questions') ? (
         <View>
-          {!isInOfflineMode && <WahaSeparat or isDark={isDark} />}
+          {!isInOfflineMode && <WahaSeparator isDark={isDark} />}
           <OptionsModalButton
             label={t.general.share_passage_text}
             onPress={() => shareLessonContent(ShareType.TEXT)}

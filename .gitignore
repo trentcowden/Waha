@@ -21,3 +21,6 @@ firebase/GoogleService-Info.plist
 assets/downloaded/*
 scripts/service-account-PROD.json
 scripts/service-account-TEST.json
+scripts/expo-logins.js
+scripts/apple-dev-login.js
+scripts/sudo-login.js
