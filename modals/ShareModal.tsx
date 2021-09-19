@@ -6,6 +6,7 @@ import { Share, View } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
+import { isInOfflineMode } from '../constants'
 import {
   logShareApp,
   logShareAudio,
@@ -134,17 +135,21 @@ const ShareModal: FC<Props> = ({
       activeGroup={activeGroup}
       isRTL={isRTL}
     >
-      <OptionsModalButton
-        label={t.general.share_app}
-        onPress={() => shareLessonContent(ShareType.APP)}
-        isDark={isDark}
-        activeGroup={activeGroup}
-        isRTL={isRTL}
-      />
+      {!isInOfflineMode ? (
+        <OptionsModalButton
+          label={t.general.share_app}
+          onPress={() => shareLessonContent(ShareType.APP)}
+          isDark={isDark}
+          activeGroup={activeGroup}
+          isRTL={isRTL}
+        />
+      ) : (
+        <View />
+      )}
       {/* Include a "Share Text" button if a lesson has questions. If it has questions, then it also has Scripture text. */}
       {lessonType.includes('Questions') ? (
         <View>
-          <WahaSeparator isDark={isDark} />
+          {!isInOfflineMode && <WahaSeparator isDark={isDark} />}
           <OptionsModalButton
             label={t.general.share_passage_text}
             onPress={() => shareLessonContent(ShareType.TEXT)}

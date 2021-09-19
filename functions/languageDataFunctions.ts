@@ -1,4 +1,6 @@
 import * as Localization from 'expo-localization'
+import { isInOfflineMode } from '../constants'
+import db from '../firebase/db'
 import {
   InfoAndGroupsForAllLanguages,
   InfoAndGroupsForLanguage,
@@ -7,9 +9,28 @@ import {
   LanguageInfo,
   languages
 } from '../languages'
-import { Database } from '../redux/reducers/database'
-import { Group } from '../redux/reducers/groups'
-import { Translations } from '../translations/translationsConfig'
+import { changeActiveGroup } from '../redux/reducers/activeGroup'
+import {
+  Database,
+  downloadLanguageCoreFiles,
+  storeLanguageSets,
+  storeOtherLanguageContent,
+  StorySet
+} from '../redux/reducers/database'
+import { createGroup, Group } from '../redux/reducers/groups'
+import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
+import {
+  incrementGlobalGroupCounter,
+  LanguageInstallationState,
+  setHasFetchedLanguageData,
+  setRecentActiveGroup
+} from '../redux/reducers/languageInstallation'
+import { AppDispatch } from '../redux/store'
+import {
+  getTranslations,
+  Translations
+} from '../translations/translationsConfig'
+const bundledAssets = require('../assets/downloaded/master-list')
 
 /**
  * Gets various information about a language.
@@ -74,6 +95,127 @@ export const info = (languageID: LanguageID): LanguageInfo => {
 }
 
 /**
+ * Fetches all the data for a language from the Firestore Database. This includes the various Story Sets from the 'sets' collection and the Language info from the 'languages' collection. It's an async function and doesn't resolve until all the information has been fetched and stored. If any fetch fails, it throws an error.
+ */
+export const fetchLanguageData = async (
+  languageID: LanguageID,
+  dispatch: AppDispatch,
+  setIsFetchingLanguageData: (isFetching: boolean) => void,
+  activeGroup: Group,
+  groups: Group[],
+  globalGroupCounter: LanguageInstallationState['globalGroupCounter']
+) => {
+  // Set the installingLanguageInstance redux variable to true since we're now installing a language instance.
+  dispatch(setIsInstallingLanguageInstance({ toSet: true }))
+
+  // Set the isFetchingFirebaseData local state to true so that the continue button shows the activity indicator.
+  setIsFetchingLanguageData(true)
+
+  // Fetch all the Story Sets with the language ID of the selected language and store them in redux.
+  await db
+    .collection('sets')
+    .where('languageID', '==', languageID)
+    .get()
+    .then(querySnapshot => {
+      // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
+      if (!querySnapshot.empty) {
+        // Create a temp array to hold Story Sets.
+        var sets: StorySet[] = []
+
+        // Add Story Sets to our temp array.
+        querySnapshot.forEach(doc => {
+          var storySetItem: StorySet = {
+            id: doc.id,
+            languageID: doc.data().languageID,
+            title: doc.data().title,
+            subtitle: doc.data().subtitle,
+            iconName: doc.data().iconName,
+            lessons: doc.data().lessons,
+            tags: doc.data().tags
+          }
+          sets.push(storySetItem)
+        })
+
+        // Write all of the Story Sets to redux.
+        dispatch(storeLanguageSets({ sets, languageID }))
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      throw error
+    })
+
+  // Fetch the Language info for the selected language and store it in redux.
+  await db
+    .collection('languages')
+    .doc(languageID)
+    .get()
+    .then(async doc => {
+      var languageData = doc.data()
+
+      // If we get some legitimate data back...
+      if (doc.exists && languageData !== undefined) {
+        // Store our Language info in redux.
+        dispatch(
+          storeOtherLanguageContent({
+            files: languageData.files,
+            questionSets: languageData.questions,
+            languageID
+          })
+        )
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      throw error
+    })
+
+  // Set the hasFetchedLanguageData redux variable to true since we're done fetching from Firebase.
+  dispatch(setHasFetchedLanguageData({ toSet: true }))
+
+  // If we're adding a subsequent language instance, then we need to store the active group's language
+  if (activeGroup)
+    dispatch(setRecentActiveGroup({ groupName: activeGroup.name }))
+
+  // Start downloading the Core Files for this language.
+  dispatch(downloadLanguageCoreFiles(languageID))
+
+  // Create a new group using the default group name stored in constants.js, assuming a group hasn't already been created with the same name. We don't want any duplicates.
+  if (
+    !groups.some(
+      group =>
+        group.name === getTranslations(languageID).other.default_group_name
+    )
+  ) {
+    dispatch(incrementGlobalGroupCounter())
+
+    // Create the default Group for the new Language.
+    dispatch(
+      createGroup({
+        groupName: getTranslations(languageID).other.default_group_name,
+        language: languageID,
+        emoji: 'default',
+        shouldShowMobilizationToolsTab: true,
+        groupID: globalGroupCounter,
+        groupNumber: groups.length + 1
+      })
+    )
+  }
+
+  // Change the Active Group to the new Group we just created.
+  dispatch(
+    changeActiveGroup({
+      groupName: getTranslations(languageID).other.default_group_name
+    })
+  )
+
+  // Set the local isFetchingFirebaseData state to false.
+  setIsFetchingLanguageData(false)
+
+  return
+}
+
+/**
  * Gets a list of all the languages and language families available in Waha after passing the data through some filters. All languages are stored in the languages.ts file.
  */
 export const getAllLanguagesData = (
@@ -81,6 +223,35 @@ export const getAllLanguagesData = (
   installedLanguageInstances: InfoAndGroupsForAllLanguages,
   searchTextInput: string
 ) => {
+  const filterForOfflineBundledLanguages = (
+    languageFamily: LanguageFamilyMetadata
+  ) => {
+    if (isInOfflineMode) {
+      return {
+        ...languageFamily,
+        data: languageFamily.data.filter(language => {
+          if (language.versions !== undefined) {
+            return !language.versions.every(
+              version =>
+                !bundledAssets.languages.some(
+                  (languageID: LanguageID) => languageID === version.languageID
+                )
+            )
+          }
+          if (
+            !bundledAssets.languages.some(
+              (languageID: LanguageID) => languageID === language.languageID
+            )
+          ) {
+            return false
+          } else {
+            return true
+          }
+        })
+      }
+    } else return languageFamily
+  }
+
   // Sort the languages to put the language family of the phone's current locale at the top.
   const sortByLocale = (
     language1: LanguageFamilyMetadata,
@@ -160,6 +331,7 @@ export const getAllLanguagesData = (
   sections = languages
     .sort(sortByLocale)
     .map(filterInstalledLanguages)
+    .map(filterForOfflineBundledLanguages)
     .map(filterBySearch)
     .filter(filterEmptyLanguageFamilies)
 

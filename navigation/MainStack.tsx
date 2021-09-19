@@ -16,7 +16,7 @@ import GroupAvatar from '../components/GroupAvatar'
 import ScreenHeaderImage from '../components/ScreenHeaderImage'
 import TestModeDisplay from '../components/TestModeDisplay'
 import WahaBackButton from '../components/WahaBackButton'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import { info } from '../functions/languageDataFunctions'
 import { SetCategory } from '../functions/setAndLessonDataFunctions'
 import { InfoAndGroupsForAllLanguages, LanguageMetadata } from '../languages'
@@ -247,7 +247,8 @@ const MainStack: FC<Props> = ({
                       isDark={isDark}
                       isRTL={isRTL}
                     />
-                    {languageCoreFilesToUpdate.length !== 0 ? (
+                    {languageCoreFilesToUpdate.length !== 0 &&
+                    !isInOfflineMode ? (
                       <View
                         style={{
                           zIndex: 100,
@@ -268,7 +269,9 @@ const MainStack: FC<Props> = ({
                         />
                         <View style={{ width: 5 }} />
                       </View>
-                    ) : null}
+                    ) : (
+                      <View />
+                    )}
                   </View>
                 ),
             headerRight: isRTL
@@ -283,7 +286,8 @@ const MainStack: FC<Props> = ({
                       isDark={isDark}
                       isRTL={isRTL}
                     />
-                    {languageCoreFilesToUpdate.length !== 0 && (
+                    {languageCoreFilesToUpdate.length !== 0 &&
+                    !isInOfflineMode ? (
                       <View
                         style={{
                           zIndex: 100,
@@ -304,6 +308,8 @@ const MainStack: FC<Props> = ({
                         />
                         <View style={{ width: 5 }} />
                       </View>
+                    ) : (
+                      <View />
                     )}
                   </View>
                 )

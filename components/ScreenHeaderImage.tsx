@@ -1,7 +1,7 @@
-import * as FileSystem from 'expo-file-system'
 import React, { FC, ReactElement } from 'react'
 import { Image } from 'react-native'
 import { AGProps, CommonProps } from 'redux/common'
+import { getFileSource } from '../constants'
 
 interface Props extends CommonProps, AGProps {}
 
@@ -19,13 +19,11 @@ const ScreenHeaderImage: FC<Props> = ({
       flex: 1,
       alignSelf: 'center',
     }}
-    source={{
-      uri: isDark
-        ? FileSystem.documentDirectory +
-          activeGroup.language +
-          '-header-dark.png'
-        : FileSystem.documentDirectory + activeGroup.language + '-header.png',
-    }}
+    source={
+      isDark
+        ? getFileSource(activeGroup.language + '-header-dark.png')
+        : getFileSource(activeGroup.language + '-header.png')
+    }
   />
 )
 

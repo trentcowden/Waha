@@ -1,4 +1,3 @@
-import * as FileSystem from 'expo-file-system'
 import { LanguageID } from 'languages'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
@@ -12,7 +11,7 @@ import {
 } from 'react-native'
 import { AGProps, CommonProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
-import { scaleMultiplier } from '../constants'
+import { getFileSource, scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -147,11 +146,11 @@ const GroupListHeader: FC<Props> = ({
       </Animated.View>
       <Image
         style={styles.languageLogoImage}
-        source={{
-          uri: isDark
-            ? FileSystem.documentDirectory + languageID + '-header-dark.png'
-            : FileSystem.documentDirectory + languageID + '-header.png',
-        }}
+        source={
+          isDark
+            ? getFileSource(languageID + '-header-dark.png')
+            : getFileSource(languageID + '-header.png')
+        }
       />
     </View>
   )

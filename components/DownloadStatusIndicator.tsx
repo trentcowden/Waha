@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { Lesson } from 'redux/reducers/database'
 import Icon from '../assets/fonts/icon_font_config'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import { LessonType } from '../functions/setAndLessonDataFunctions'
 import { CommonProps, DLProps, NetworkProps } from '../redux/common'
 import { colors } from '../styles/colors'
@@ -38,6 +38,8 @@ const DownloadStatusIndicator: FC<Props> = ({
   removeDownload,
   thisLesson,
 }): ReactElement => {
+  if (isInOfflineMode) return <View />
+
   /** Keeps track of the percentage of the download for this lesson if it's currently downloading. */
   const [downloadPercentage, setDownloadPercentage] = useState(0)
 

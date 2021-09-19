@@ -11,7 +11,6 @@ import React, { FC, ReactElement, useEffect } from 'react'
 import { isTablet, scaleMultiplier } from '../constants'
 import db from '../firebase/db'
 import { info } from '../functions/languageDataFunctions'
-import { appVersion } from '../modeSwitch'
 import { selector, useAppDispatch } from '../redux/hooks'
 import { activeGroupSelector } from '../redux/reducers/activeGroup'
 import {
@@ -56,8 +55,6 @@ const MainDrawer: FC = ({}): ReactElement => {
     Object.keys(database).forEach((key) => {
       if (key.length === 2 && key !== activeGroup.language) {
         var languageID = key as LanguageID
-        // Whether the app should write the new Firestore changes to redux or not. The only reason that it wouldn't is if the app version is behind the database version.
-        var shouldWrite = false
 
         // Fetch data from the languages Firestore collection.
         db.collection('languages')
@@ -67,20 +64,14 @@ const MainDrawer: FC = ({}): ReactElement => {
             var languageData = doc.data()
             // If we get some legitimate data back...
             if (doc.exists && languageData !== undefined) {
-              // If the Waha version is greater than or equal to the app version in the database...
-              if (languageData.appVersion <= appVersion) {
-                // Set shouldWrite to true. This way, when we fetch data for the Story Sets for this language, we know we're safe to write to redux.
-                shouldWrite = true
-
-                // Store our language info in redux.
-                dispatch(
-                  storeOtherLanguageContent({
-                    files: languageData.files,
-                    questionSets: languageData.questions,
-                    languageID,
-                  })
-                )
-              }
+              // Store our language info in redux.
+              dispatch(
+                storeOtherLanguageContent({
+                  files: languageData.files,
+                  questionSets: languageData.questions,
+                  languageID,
+                })
+              )
             }
           })
           .catch((error) => {
@@ -93,28 +84,26 @@ const MainDrawer: FC = ({}): ReactElement => {
           .where('languageID', '==', languageID)
           .get()
           .then((querySnapshot) => {
-            // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
+            // If the data is valid...
             if (!querySnapshot.empty) {
-              if (shouldWrite) {
-                // Add each Story Set to a temporary set array...
-                var sets: StorySet[] = []
+              // Add each Story Set to a temporary set array...
+              var sets: StorySet[] = []
 
-                querySnapshot.forEach((doc) => {
-                  var storySetItem: StorySet = {
-                    id: doc.id,
-                    languageID: doc.data().languageID,
-                    title: doc.data().title,
-                    subtitle: doc.data().subtitle,
-                    iconName: doc.data().iconName,
-                    lessons: doc.data().lessons,
-                    tags: doc.data().tags,
-                  }
+              querySnapshot.forEach((doc) => {
+                var storySetItem: StorySet = {
+                  id: doc.id,
+                  languageID: doc.data().languageID,
+                  title: doc.data().title,
+                  subtitle: doc.data().subtitle,
+                  iconName: doc.data().iconName,
+                  lessons: doc.data().lessons,
+                  tags: doc.data().tags,
+                }
 
-                  sets.push(storySetItem)
-                })
-                /// ...and write all of them to redux.
-                dispatch(storeLanguageSets({ sets, languageID }))
-              }
+                sets.push(storySetItem)
+              })
+              /// ...and write all of them to redux.
+              dispatch(storeLanguageSets({ sets, languageID }))
             }
           })
           .catch((error) => {
@@ -127,9 +116,6 @@ const MainDrawer: FC = ({}): ReactElement => {
 
   /** useEffect function that checks for database updates for the active language. This function gets triggered whenever a user downloads a new lesson and whenever the active group changes. */
   useEffect(() => {
-    // Whether the app should write the new Firestore changes to redux or not. The only reason that it wouldn't is if the app version is behind the database version.
-    var shouldWrite = false
-
     // Fetch data from the languages Firestore collection.
     db.collection('languages')
       .doc(activeGroup.language)
@@ -140,96 +126,90 @@ const MainDrawer: FC = ({}): ReactElement => {
 
         // If we get some legitimate data back...
         if (doc.exists && languageData !== undefined) {
-          // If the Waha version is greater than or equal to the app version in the database...
-          if (languageData.appVersion <= appVersion) {
-            // Set shouldWrite to true. This way, when we fetch data for the Story Sets for this language, we know we're safe to write to redux.
-            shouldWrite = true
+          // console.log(t.groups)
+          // Store our language info in redux.
+          dispatch(
+            storeOtherLanguageContent({
+              files: languageData.files,
+              questionSets: languageData.questions,
+              languageID: activeGroup.language,
+            })
+          )
 
-            // console.log(t.groups)
-            // Store our language info in redux.
-            dispatch(
-              storeOtherLanguageContent({
-                files: languageData.files,
-                questionSets: languageData.questions,
-                languageID: activeGroup.language,
-              })
-            )
+          // Check if we need replacements for already downloaded Core Files by comparing the created times of downloaded Core Files in redux with the created times of the current Firebase storage Core Files. If the created times don't match, it means a Core File has been updated and we need to queue the new Core File to download.
+          languageData.files.forEach((fileName: string) => {
+            // Set the file extension for the Core File we're currently checking.
+            var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
 
-            // Check if we need replacements for already downloaded Core Files by comparing the created times of downloaded Core Files in redux with the created times of the current Firebase storage Core Files. If the created times don't match, it means a Core File has been updated and we need to queue the new Core File to download.
-            languageData.files.forEach((fileName: string) => {
-              // Set the file extension for the Core File we're currently checking.
-              var fileExtension = fileName.includes('header') ? 'png' : 'mp3'
+            var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
 
-              var url = `https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/${activeGroup.language}%2Fother%2F${fileName}.${fileExtension}?alt=media`
-
-              // Check the timeCreated of this Core File in Firebase storage.
-              firebase
-                .storage()
-                .refFromURL(url)
-                .getMetadata()
-                .then(({ timeCreated }) => {
-                  // If the created time of this Core File has already been stored previously AND the created time of the Core File in Firebase is different from the created time that's stored in redux...
-                  if (
+            // Check the timeCreated of this Core File in Firebase storage.
+            firebase
+              .storage()
+              .refFromURL(url)
+              .getMetadata()
+              .then(({ timeCreated }) => {
+                // If the created time of this Core File has already been stored previously AND the created time of the Core File in Firebase is different from the created time that's stored in redux...
+                if (
+                  languageCoreFilesCreatedTimes[
+                    `${activeGroup.language}-${fileName}`
+                  ] &&
+                  timeCreated !==
                     languageCoreFilesCreatedTimes[
                       `${activeGroup.language}-${fileName}`
-                    ] &&
-                    timeCreated !==
-                      languageCoreFilesCreatedTimes[
-                        `${activeGroup.language}-${fileName}`
-                      ]
+                    ]
+                ) {
+                  // Add the Core File to our redux array of files to update, assuming that it hasn't already been added.
+                  if (
+                    !languageCoreFilesToUpdate.includes(
+                      `${activeGroup.language}-${fileName}`
+                    )
                   ) {
-                    // Add the Core File to our redux array of files to update, assuming that it hasn't already been added.
+                    console.log(`${fileName} needs to be replaced.\n`)
+                    dispatch(
+                      addLanguageCoreFileToUpdate({
+                        fileName: `${activeGroup.language}-${fileName}`,
+                      })
+                    )
+                  }
+                }
+              })
+          })
+
+          if (FileSystem.documentDirectory !== null) {
+            // Read the contents of Waha's file directory to check which Core Files are downloaded.
+            FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+              (contents) => {
+                // console.log(contents)
+                // For each Core File listed in Firestore, verify that it's already downloaded.
+                if (languageData !== undefined)
+                  languageData.files.forEach((fileName: string) => {
+                    var fileExtension = fileName.includes('header')
+                      ? 'png'
+                      : 'mp3'
+                    // If it isn't downloaded...
                     if (
-                      !languageCoreFilesToUpdate.includes(
-                        `${activeGroup.language}-${fileName}`
+                      !contents.includes(
+                        `${activeGroup.language}-${fileName}.${fileExtension}`
                       )
                     ) {
-                      console.log(`${fileName} needs to be replaced.\n`)
-                      dispatch(
-                        addLanguageCoreFileToUpdate({
-                          fileName: `${activeGroup.language}-${fileName}`,
-                        })
-                      )
-                    }
-                  }
-                })
-            })
-
-            if (FileSystem.documentDirectory !== null) {
-              // Read the contents of Waha's file directory to check which Core Files are downloaded.
-              FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-                (contents) => {
-                  // console.log(contents)
-                  // For each Core File listed in Firestore, verify that it's already downloaded.
-                  if (languageData !== undefined)
-                    languageData.files.forEach((fileName: string) => {
-                      var fileExtension = fileName.includes('header')
-                        ? 'png'
-                        : 'mp3'
-                      // If it isn't downloaded...
+                      // Add the Core File to our redux array of files to download, assuming that it hasn't already been added.
                       if (
-                        !contents.includes(
-                          `${activeGroup.language}-${fileName}.${fileExtension}`
+                        !languageCoreFilesToUpdate.includes(
+                          `${activeGroup.language}-${fileName}`
                         )
                       ) {
-                        // Add the Core File to our redux array of files to download, assuming that it hasn't already been added.
-                        if (
-                          !languageCoreFilesToUpdate.includes(
-                            `${activeGroup.language}-${fileName}`
-                          )
-                        ) {
-                          console.log(`${fileName} needs to be added.`)
-                          dispatch(
-                            addLanguageCoreFileToUpdate({
-                              fileName: `${activeGroup.language}-${fileName}`,
-                            })
-                          )
-                        }
+                        console.log(`${fileName} needs to be added.`)
+                        dispatch(
+                          addLanguageCoreFileToUpdate({
+                            fileName: `${activeGroup.language}-${fileName}`,
+                          })
+                        )
                       }
-                    })
-                }
-              )
-            }
+                    }
+                  })
+              }
+            )
           }
         }
       })
@@ -245,30 +225,28 @@ const MainDrawer: FC = ({}): ReactElement => {
       .where('languageID', '==', activeGroup.language)
       .get()
       .then((querySnapshot) => {
-        // If the data is valid and the current Waha version is greater than or equal to the version in Firebase (we set the shouldWrite variable earlier)...
+        // If the data is valid...
         if (!querySnapshot.empty) {
-          if (shouldWrite) {
-            // Add each Story Set to a temporary set array...
-            var sets: StorySet[] = []
+          // Add each Story Set to a temporary set array...
+          var sets: StorySet[] = []
 
-            querySnapshot.forEach((doc) => {
-              var storySetItem: StorySet = {
-                id: doc.id,
-                languageID: doc.data().languageID,
-                title: doc.data().title,
-                subtitle: doc.data().subtitle,
-                iconName: doc.data().iconName,
-                lessons: doc.data().lessons,
-                tags: doc.data().tags,
-              }
+          querySnapshot.forEach((doc) => {
+            var storySetItem: StorySet = {
+              id: doc.id,
+              languageID: doc.data().languageID,
+              title: doc.data().title,
+              subtitle: doc.data().subtitle,
+              iconName: doc.data().iconName,
+              lessons: doc.data().lessons,
+              tags: doc.data().tags,
+            }
 
-              sets.push(storySetItem)
-            })
-            /// ...and write all of them to redux.
-            dispatch(
-              storeLanguageSets({ sets, languageID: activeGroup.language })
-            )
-          }
+            sets.push(storySetItem)
+          })
+          /// ...and write all of them to redux.
+          dispatch(
+            storeLanguageSets({ sets, languageID: activeGroup.language })
+          )
         }
       })
       .catch((error) => {

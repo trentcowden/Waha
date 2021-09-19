@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AGProps, CommonProps, NetworkProps, TProps } from 'redux/common'
 import Icon from '../assets/fonts/icon_font_config'
-import { scaleMultiplier } from '../constants'
+import { isInOfflineMode, scaleMultiplier } from '../constants'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -23,7 +23,9 @@ const DrawerDownloadUpdateButton: FC<Props> = ({
   isConnected,
   languageCoreFilesToUpdate,
 }): ReactElement => {
-  return languageCoreFilesToUpdate.length !== 0 ? (
+  return languageCoreFilesToUpdate.length !== 0 &&
+    // Disable update button in offline mode.
+    !isInOfflineMode ? (
     <TouchableOpacity
       style={styles.drawerDownloadUpdateButtonContainer}
       onPress={() => {

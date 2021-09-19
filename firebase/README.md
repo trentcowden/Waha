@@ -20,7 +20,27 @@ The organization for Firestore is similar to the organization for the Database t
 
 Firestore's data in general is organized into collections. Each collection contains various documents, with each document being basically a JSON file. In our case, we have 3 collections:
 
-`collections/languages`: Each document is named the ID of a language available in Waha and contains the Question Sets (see `LanguageQuestionSets` type in `redux/reducers/database`), Core Files (see `LanguageCoreFiles` type in `redux/reducers/database`), and app version that this version of the Database data should match up with. This app version exists so that we can have some Database data update on a user's phone only AFTER they update Waha to the version in this Firebase key. This was useful when App Translations were stored in Firestore but may no longer be necessary.
+`collections/languages`: Each document is named the ID of a language available in Waha and contains the Question Sets (see `LanguageQuestionSets` type in `redux/reducers/database`) and Core Files (see `LanguageCoreFiles` type in `redux/reducers/database`).
+
+Here's what the layout of a document in the `languages` collection would look like.
+
+```json
+"en": {
+  "files": [
+    "fileName1",
+    "fileName2"
+    // etc.
+  ],
+  "questions": {
+    "questionSetName": [
+      "question1",
+      "question2"
+      // etc.
+    ]
+    // etc.
+  }
+}
+```
 
 `collections/sets`: Each document is named the ID of a Story Set for a language in Waha. All Story Sets for all languages are stored in this collection. See the `StorySet` type in `redux/reducers/database`.
 

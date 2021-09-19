@@ -2,6 +2,8 @@ import { decode, encode } from 'base-64'
 import { Audio } from 'expo-av'
 import * as Font from 'expo-font'
 import * as ScreenOrientation from 'expo-screen-orientation'
+// This is required for the build-offline script to work properly.
+import 'fastestsmallesttextencoderdecoder'
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
@@ -32,6 +34,9 @@ export default function App() {
   useEffect(() => {
     // Load up all the fonts.
     loadFonts()
+
+    // Load up assets for offline mode.
+    // loadAssets()
 
     // Lock orientation to portrait if we're not using a tablet.
     isTablet ? ScreenOrientation.unlockAsync() : lockPortrait()
@@ -80,6 +85,14 @@ export default function App() {
     // Once we finish loading every font, set our fontsLoaded state to true so we know we can render the app now.
     setFontsLoaded(true)
   }
+
+  // const loadAssets = async () => {
+  // if (!isInOfflineMode) return
+  // const bundledAssets = require('./assets/downloaded/master-list')
+  // await Object.keys(bundledAssets).forEach(async (assetName) => {
+  //   await Asset.loadAsync(bundledAssets[assetName])
+  // })
+  // }
 
   if (fontsLoaded) {
     return (

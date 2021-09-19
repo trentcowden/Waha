@@ -2,7 +2,12 @@ import LottieView from 'lottie-react-native'
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import { isTablet, itemHeights, scaleMultiplier } from '../constants'
+import {
+  isInOfflineMode,
+  isTablet,
+  itemHeights,
+  scaleMultiplier,
+} from '../constants'
 import {
   getLessonInfo,
   LessonType,
@@ -158,11 +163,13 @@ const LessonItem: FC<Props> = ({
 
           onLessonItemPress({
             thisLesson: thisLesson,
-            isAudioAlreadyDownloaded: downloadedLessons.includes(thisLesson.id),
-            isVideoAlreadyDownloaded: downloadedLessons.includes(
-              thisLesson.id + 'v'
-            ),
-            isAlreadyDownloading: isDownloading,
+            isAudioAlreadyDownloaded: isInOfflineMode
+              ? true
+              : downloadedLessons.includes(thisLesson.id),
+            isVideoAlreadyDownloaded: isInOfflineMode
+              ? true
+              : downloadedLessons.includes(thisLesson.id + 'v'),
+            isAlreadyDownloading: isInOfflineMode ? false : isDownloading,
             lessonType: lessonType,
           })
         }}

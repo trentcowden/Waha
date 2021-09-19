@@ -105,7 +105,7 @@
 		"blurb_pre_unlock": "L'activation des outils de mobilisation ajoute du contenu supplémentaire à Waha. Le code de déverrouillage est transmis d'un utilisateur à un autre. Vous devrez donc trouver un utilisateur possédant le code pour déverrouiller ce contenu.",
 		"enter_code": "Entrez le code pour déverrouiller les outils de mobilisation",
 		"minutes": "minutes",
-		"mobilization_tools": "Outiils de Mobilisation",
+		"mobilization_tools": "Outils de Mobilisation",
 		"one_attempt_remaining": "Il vous reste 1 tentative",
 		"share_message_1": "Voici comment accéder aux outils de mobilisation Waha:",
 		"share_message_2": "1. Téléchargez Waha sur Google Play Store ou Apple App Store",
@@ -173,9 +173,9 @@
 		"security_mode_blurb": "Le mode sécurisé verrouille Waha au moyen d'un écran de code d'accès déguisé en application piano. Déverrouillez en saisissant votre code d'accès sur les touches. Ce mode est destiné à ceux qui maintiennent un haut niveau de vigilance."
 	},
 	"sets": {
-		"add_foundational_set": "Ajouter une série d'histoires fondatrices",
+		"add_foundational_set": "Ajouter une série fondamentale",
 		"add_mobilization_tool": "Ajouter outil de Mobilisation",
-		"add_new_story_set": "Ajouter une nouvelle série d'histoires",
+		"add_new_story_set": "Ajouter cette série",
 		"add_topical_set": "Ajouter une série thématique",
 		"foundations": "Fondations",
 		"mobilization": "Mobilisation",
