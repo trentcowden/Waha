@@ -1,7 +1,8 @@
-const { getDefaultConfig } = require('@expo/metro-config');
+const { getDefaultConfig } = require('@expo/metro-config')
 
-const defaultConfig = getDefaultConfig(__dirname);
+const defaultConfig = getDefaultConfig(__dirname)
 
-defaultConfig.resolver.assetExts.push('firebase-bundle');
+defaultConfig.resolver.assetExts.push('firebase-bundle')
+defaultConfig.resolver.assetExts.push('ttf')
 
-module.exports = defaultConfig;
+module.exports = defaultConfig

@@ -16,7 +16,18 @@
     "updates": {
       "enabled": false
     },
-    "assetBundlePatterns": ["assets/downloaded/*", "assets/fonts/*"],
+    "assetBundlePatterns": [
+      "./assets/downloaded/*",
+      "./assets/fonts/NotoSansArabic/*",
+      "./assets/fonts/Roboto/*",
+      "./assets/groupIcons/*",
+      "./assets/icons/*",
+      "./assets/languageT2S/*",
+      "./assets/lotties/*",
+      "./assets/onboardingImages/*",
+      "./assets/pianoNotes/*",
+      "./assets/securityMode/*"
+    ],
     "ios": {
       "requireFullScreen": true,
       "bundleIdentifier": "com.kingdomstrategies.waha",

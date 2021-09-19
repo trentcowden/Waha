@@ -20,3 +20,6 @@ firebase/GoogleService-Info.plist
 .vscode
 scripts/service-account-TEST.json
 scripts/service-account-PROD.json
+scripts/apple-dev-login.js
+scripts/expo-logins.js
+scripts/sudo-login.js
