@@ -18,7 +18,6 @@ firebase/prodConfig.ts
 firebase/google-services.json
 firebase/GoogleService-Info.plist
 .vscode
-assets/downloaded/*
 scripts/service-account-PROD.json
 scripts/service-account-TEST.json
 scripts/expo-logins.js
