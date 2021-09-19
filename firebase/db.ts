@@ -1,4 +1,5 @@
 import '@firebase/firestore'
+import { isInOfflineMode } from 'constants'
 import { Asset } from 'expo-asset'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
@@ -24,7 +25,7 @@ const db = firebase.firestore()
 const bundledAssets = require('../assets/downloaded/master-list')
 
 // If we have many bundled assets, we must be in an offline build. In that case, we need to load a Firestore bundle for offline use.
-if (Object.keys(bundledAssets).length > 2) {
+if (isInOfflineMode) {
   db.disableNetwork()
 
   Asset.loadAsync(bundledAssets.bundle).then(response => {

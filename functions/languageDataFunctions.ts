@@ -348,14 +348,6 @@ export const getInstalledLanguagesInfoAndGroups = (
 ): InfoAndGroupsForAllLanguages => {
   var installedLanguageInstances: InfoAndGroupsForLanguage[] = []
 
-  // if (isInOfflineMode) {
-  //   bundledAssets.languages.forEach((languageID: LanguageID) => {
-  //     installedLanguageInstances.push({
-  //       ...info(languageID),
-  //       data: groups.filter(group => group.language === languageID)
-  //     })
-  //   })
-  // } else {
   Object.keys(database).forEach(key => {
     if (key.length === 2)
       // Add all of this to the installedLanguageInstances array.
@@ -364,7 +356,6 @@ export const getInstalledLanguagesInfoAndGroups = (
         data: groups.filter(group => group.language === key)
       })
   })
-  // }
 
   // If we have the install times stored, sort the languages by the time installed.
   installedLanguageInstances = installedLanguageInstances.some(

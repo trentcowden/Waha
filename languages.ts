@@ -94,23 +94,23 @@ export const languages: LanguageFamilyMetadata[] = [
           dark:
             'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
         }
-      },
-      {
-        languageID: 'te',
-        nativeName: 'English (Test)',
-        brandName: 'Discovering God',
-        contactEmail: 'developer@waha.app',
-        colors: {
-          light: '#E74D3D',
-          dark: '#EA8E84'
-        },
-        headers: {
-          light:
-            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
-          dark:
-            'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
-        }
       }
+      // {
+      //   languageID: 'te',
+      //   nativeName: 'English (Test)',
+      //   brandName: 'Discovering God',
+      //   contactEmail: 'developer@waha.app',
+      //   colors: {
+      //     light: '#E74D3D',
+      //     dark: '#EA8E84'
+      //   },
+      //   headers: {
+      //     light:
+      //       'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader.png?alt=media',
+      //     dark:
+      //       'https://firebasestorage.googleapis.com/v0/b/waha-app-db.appspot.com/o/en%2Fother%2Fheader-dark.png?alt=media'
+      //   }
+      // }
     ]
   },
   {
