@@ -9,6 +9,7 @@ import {
   LanguageInfo,
   languages
 } from '../languages'
+import { useAppDispatch } from '../redux/hooks'
 import { changeActiveGroup } from '../redux/reducers/activeGroup'
 import {
   Database,
@@ -25,7 +26,6 @@ import {
   setHasFetchedLanguageData,
   setRecentActiveGroup
 } from '../redux/reducers/languageInstallation'
-import { AppDispatch } from '../redux/store'
 import {
   getTranslations,
   Translations
@@ -99,7 +99,7 @@ export const info = (languageID: LanguageID): LanguageInfo => {
  */
 export const fetchLanguageData = async (
   languageID: LanguageID,
-  dispatch: AppDispatch,
+  dispatch: ReturnType<typeof useAppDispatch>,
   setIsFetchingLanguageData: (isFetching: boolean) => void,
   activeGroup: Group,
   groups: Group[],
