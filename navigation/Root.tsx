@@ -78,18 +78,19 @@ const Root: FC<Props> = ({}): ReactElement => {
           })
         )
 
-      Object.keys(
-        oldLanguageCoreFilesCreatedTimes as Record<string, string>
-      ).forEach((fileName) => {
-        if (newLanguageCoreFilesCreatedTimes[fileName] === undefined) {
-          dispatch(
-            storeLanguageCoreFileCreatedTime({
-              fileName,
-              createdTime: oldLanguageCoreFilesCreatedTimes[fileName],
-            })
-          )
-        }
-      })
+      if (oldLanguageCoreFilesCreatedTimes)
+        Object.keys(
+          oldLanguageCoreFilesCreatedTimes as Record<string, string>
+        ).forEach((fileName) => {
+          if (newLanguageCoreFilesCreatedTimes[fileName] === undefined) {
+            dispatch(
+              storeLanguageCoreFileCreatedTime({
+                fileName,
+                createdTime: oldLanguageCoreFilesCreatedTimes[fileName],
+              })
+            )
+          }
+        })
     }
   }, [])
 

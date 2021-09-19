@@ -136,7 +136,8 @@ const PlayScreen: FC<Props> = ({
   */
 
   /** Keeps track of the potential sources for every chapter. */
-  const [potentialSources] = useState({
+  type Sources = Record<string, MediaSource>
+  const [potentialSources] = useState<Sources>({
     fellowshipLocal: getFileSource(
       `${activeGroup.language}-${thisLesson.fellowshipType}.mp3`
     ),
@@ -144,10 +145,10 @@ const PlayScreen: FC<Props> = ({
       `${activeGroup.language}-${thisLesson.applicationType}.mp3`
     ),
     storyLocal: getFileSource(`${thisLesson.id}.mp3`),
-    storyStream: getLessonInfo('audioSource', thisLesson.id),
+    storyStream: { uri: getLessonInfo('audioSource', thisLesson.id) },
     storyDummy: getFileSource(`${activeGroup.language}-dummy-story.mp3`),
     trainingLocal: getFileSource(`${thisLesson.id}v.mp4`),
-    trainingStream: getLessonInfo('videoSource', thisLesson.id),
+    trainingStream: { uri: getLessonInfo('videoSource', thisLesson.id) },
   })
 
   /** State for the audio and video refs. */

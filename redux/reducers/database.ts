@@ -34,7 +34,7 @@ export type Database = Record<string, DBLanguageData>
  */
 export interface DBLanguageData {
   files: LanguageCoreFiles
-  questionSets: LanguageQuestionsSets
+  questions: LanguageQuestionsSets
   sets: StorySet[]
   // The install time for a language so that they can be ordered appropriately when listed in the app.
   installTime: number
@@ -135,7 +135,7 @@ const database = createSlice({
       state[action.payload.languageID] = {
         ...state[action.payload.languageID],
         files: action.payload.files,
-        questionSets: action.payload.questionSets,
+        questions: action.payload.questionSets,
         installTime: state[action.payload.languageID].installTime
           ? state[action.payload.languageID].installTime
           : Date.now()

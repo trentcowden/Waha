@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import { Dimensions, PixelRatio } from 'react-native'
+import { MediaSource } from './classes/media'
 
 /**
  * This file contains a bunch of constants and a few miscellaneous functions that are used globally throughout Waha.
@@ -10,7 +11,7 @@ const bundledAssets = require('./assets/downloaded/master-list')
 export const isInOfflineMode =
   Object.keys(bundledAssets).length > 2 ? true : false
 
-export const getFileSource = (fileName: string) => {
+export const getFileSource = (fileName: string): MediaSource => {
   if (isInOfflineMode) return bundledAssets[fileName]
   else return { uri: FileSystem.documentDirectory + fileName }
 }

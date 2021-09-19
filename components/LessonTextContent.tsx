@@ -122,8 +122,10 @@ const LessonTextContent: FC<Props> = ({
             }
           />
           {/* Fellowship questions. */}
-          {activeDatabase && thisLesson.fellowshipType
-            ? activeDatabase.questionSets[thisLesson.fellowshipType].map(
+          {activeDatabase &&
+          activeDatabase.questions &&
+          thisLesson.fellowshipType
+            ? activeDatabase.questions[thisLesson.fellowshipType].map(
                 (question, index) => (
                   <View key={index}>
                     <HeaderSmall
@@ -235,25 +237,27 @@ const LessonTextContent: FC<Props> = ({
           />
           {/* Application questions. */}
           {activeDatabase &&
-            thisLesson.applicationType &&
-            activeDatabase.questionSets[thisLesson.applicationType].map(
-              (question, index) => (
-                <View key={index}>
-                  <HeaderSmall
-                    text={t.play.question + ' ' + (index + 1).toString()}
-                    activeGroup={activeGroup}
-                    isDark={isDark}
-                    isRTL={isRTL}
-                  />
-                  <StandardText
-                    text={question + '\n'}
-                    activeGroup={activeGroup}
-                    isDark={isDark}
-                    isRTL={isRTL}
-                  />
-                </View>
+          activeDatabase.questions &&
+          thisLesson.applicationType
+            ? activeDatabase.questions[thisLesson.applicationType].map(
+                (question, index) => (
+                  <View key={index}>
+                    <HeaderSmall
+                      text={t.play.question + ' ' + (index + 1).toString()}
+                      activeGroup={activeGroup}
+                      isDark={isDark}
+                      isRTL={isRTL}
+                    />
+                    <StandardText
+                      text={question + '\n'}
+                      activeGroup={activeGroup}
+                      isDark={isDark}
+                      isRTL={isRTL}
+                    />
+                  </View>
+                )
               )
-            )}
+            : ''}
           <View style={{ height: 25 }} />
         </View>
       ) : (
