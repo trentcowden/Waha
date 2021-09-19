@@ -16,7 +16,7 @@
     "updates": {
       "enabled": false
     },
-    "assetBundlePatterns": ["assets/downloaded/*", "assets/fonts/*"],
+    "assetBundlePatterns": ["assets/**"],
     "ios": {
       "requireFullScreen": true,
       "bundleIdentifier": "com.kingdomstrategies.waha",
