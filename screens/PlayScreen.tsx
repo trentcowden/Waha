@@ -424,8 +424,6 @@ const PlayScreen: FC<Props> = ({
         break
     }
 
-    console.log(trainingSource)
-
     setChapterSources({
       [Chapter.FELLOWSHIP]: fellowshipSource,
       [Chapter.STORY]: storySource,

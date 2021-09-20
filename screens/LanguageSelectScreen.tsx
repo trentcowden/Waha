@@ -491,7 +491,7 @@ const LanguageSelectScreen: FC<Props> = ({
             style={{ height: '100%' }}
             sections={getAllLanguagesData(
               t,
-              installedLanguageInstances ? installedLanguageInstances : [],
+              installedLanguageInstances,
               searchTextInput
             )}
             ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}

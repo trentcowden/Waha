@@ -57,6 +57,10 @@ const Onboarding: FC = ({}): ReactElement => {
           <Stack.Screen
             name='InitialLanguageSelect'
             component={LanguageSelectScreen}
+            initialParams={{
+              languageWithVersions: undefined,
+              installedLanguageInstances: undefined,
+            }}
           />
           <Stack.Screen
             name='InitialLanguageVersionSelect'

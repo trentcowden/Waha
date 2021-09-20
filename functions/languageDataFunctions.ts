@@ -220,7 +220,7 @@ export const fetchLanguageData = async (
  */
 export const getAllLanguagesData = (
   t: Translations,
-  installedLanguageInstances: InfoAndGroupsForAllLanguages,
+  installedLanguageInstances: InfoAndGroupsForAllLanguages | undefined,
   searchTextInput: string
 ) => {
   const filterForOfflineBundledLanguages = (
@@ -290,7 +290,7 @@ export const getAllLanguagesData = (
 
   // Filter out language instances that are already installed. Only on SubsequentLanguageInstanceInstallScreen.
   const filterInstalledLanguages = (languageFamily: LanguageFamilyMetadata) => {
-    if (installedLanguageInstances)
+    if (installedLanguageInstances) {
       return {
         ...languageFamily,
         data: languageFamily.data.filter(language => {
@@ -314,7 +314,7 @@ export const getAllLanguagesData = (
           }
         })
       }
-    else return languageFamily
+    } else return languageFamily
   }
 
   // Filter our language families that are empty.
