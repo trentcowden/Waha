@@ -87,9 +87,6 @@ const LanguageSelectScreen: FC<Props> = ({
       installedLanguageInstances,
       // If a Language is selected that has multiple versions, this screen is rendered again, this time with a list of the versions to select. This param is the object for the Language that has multiple versions.
       languageWithVersions,
-    } = {
-      installedLanguageInstances: [],
-      languageWithVersions: {},
     },
   },
 }) => {
@@ -229,11 +226,14 @@ const LanguageSelectScreen: FC<Props> = ({
         if (routeName === 'InitialLanguageSelect')
           navigate('InitialLanguageVersionSelect', {
             languageWithVersions: selectedLanguage,
+            installedLanguageInstances: undefined,
           })
         else if (routeName === 'SubsequentLanguageSelect')
           navigate('SubsequentLanguageVersionSelect', {
             languageWithVersions: selectedLanguage,
-            installedLanguageInstances: installedLanguageInstances,
+            installedLanguageInstances: installedLanguageInstances
+              ? installedLanguageInstances
+              : [],
           })
         // Otherwise, get the data for a Language.
       } else
@@ -491,7 +491,7 @@ const LanguageSelectScreen: FC<Props> = ({
             style={{ height: '100%' }}
             sections={getAllLanguagesData(
               t,
-              installedLanguageInstances,
+              installedLanguageInstances ? installedLanguageInstances : [],
               searchTextInput
             )}
             ItemSeparatorComponent={() => <WahaSeparator isDark={isDark} />}
@@ -514,7 +514,11 @@ const LanguageSelectScreen: FC<Props> = ({
               paddingVertical: 20 * scaleMultiplier,
             }}
             keyExtractor={(item) => item.languageID}
-            data={getLanguageVersions(languageWithVersions)}
+            data={
+              languageWithVersions !== undefined
+                ? getLanguageVersions(languageWithVersions)
+                : []
+            }
             renderItem={renderLanguageVersionItem}
             ItemSeparatorComponent={() => (
               <View style={{ height: 20 * scaleMultiplier }} />

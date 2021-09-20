@@ -167,6 +167,7 @@ const GroupsScreen: FC<Props> = ({
    */
   const handleAddNewLanguageButtonPress = () => {
     navigate('SubsequentLanguageSelect', {
+      languageWithVersions: undefined,
       // Send over the currently installed language instances so that we can filter those out from the options.
       installedLanguageInstances: getInstalledLanguagesInfoAndGroups(
         database,

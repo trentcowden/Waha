@@ -151,6 +151,7 @@ const MainDrawer: FC = ({}): ReactElement => {
               .then(({ timeCreated }) => {
                 // If the created time of this Core File has already been stored previously AND the created time of the Core File in Firebase is different from the created time that's stored in redux...
                 if (
+                  languageCoreFilesCreatedTimes &&
                   languageCoreFilesCreatedTimes[
                     `${activeGroup.language}-${fileName}`
                   ] &&

@@ -10,9 +10,13 @@ import WahaOnboardingSlidesScreen from '../screens/WahaOnboardingSlidesScreen'
 import { colors } from '../styles/colors'
 
 export type OnboardingParams = {
-  InitialLanguageSelect: undefined
+  InitialLanguageSelect: {
+    languageWithVersions: undefined
+    installedLanguageInstances: undefined
+  }
   InitialLanguageVersionSelect: {
     languageWithVersions: LanguageMetadata
+    installedLanguageInstances: undefined
   }
   WahaOnboardingSlides: {
     selectedLanguage: LanguageID

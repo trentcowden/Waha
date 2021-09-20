@@ -50,25 +50,19 @@ const Root: FC<Props> = ({}): ReactElement => {
   const newHasInstalledFirstLanguageInstance = selector(
     (state) => state.languageInstallation.hasInstalledFirstLanguageInstance
   )
-  const oldLanguageCoreFilesCreatedTimes: unknown = selector(
-    (state) => state.database.languageCoreFilesCreatedTimes
-  )
-  const newLanguageCoreFilesCreatedTimes = selector(
-    (state) => state.languageInstallation.languageCoreFilesCreatedTimes
-  )
 
   useEffect(() => {
-    if (oldHasOnboarded !== undefined) {
-      if ((oldGlobalGroupCounter as unknown) !== newGlobalGroupCounter) {
+      if (oldGlobalGroupCounter !== undefined && (oldGlobalGroupCounter as unknown) !== newGlobalGroupCounter) {
         dispatch(
           setGlobalGroupCounter({ counter: oldGlobalGroupCounter as number })
         )
       }
 
-      if ((oldHasOnboarded as unknown) !== newHasOnboarded)
+      if (oldHasOnboarded !== undefined && (oldHasOnboarded as unknown) !== newHasOnboarded)
         dispatch(setHasOnboarded({ toSet: oldHasOnboarded as boolean }))
 
       if (
+        oldHasInstalledFirstLanguageInstance !== undefined &&
         oldHasInstalledFirstLanguageInstance !==
         newHasInstalledFirstLanguageInstance
       )
@@ -77,21 +71,6 @@ const Root: FC<Props> = ({}): ReactElement => {
             toSet: oldHasInstalledFirstLanguageInstance as boolean,
           })
         )
-
-      if (oldLanguageCoreFilesCreatedTimes)
-        Object.keys(
-          oldLanguageCoreFilesCreatedTimes as Record<string, string>
-        ).forEach((fileName) => {
-          if (newLanguageCoreFilesCreatedTimes[fileName] === undefined) {
-            dispatch(
-              storeLanguageCoreFileCreatedTime({
-                fileName,
-                createdTime: oldLanguageCoreFilesCreatedTimes[fileName],
-              })
-            )
-          }
-        })
-    }
   }, [])
 
   /** useEffect function that adds a listener for listening to network changes. */

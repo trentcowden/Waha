@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "ES6"
-    ],
+    "lib": ["ES6"],
     "isolatedModules": false,
     "allowUnreachableCode": false,
     "module": "commonjs",
@@ -28,9 +26,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "exclude": [
-    "node_modules",
-    "babel.config.js"
-  ],
+  "exclude": ["node_modules", "babel.config.js"],
   "extends": "expo/tsconfig.base",
+  "include": ["**/*", "dec.d.ts"]
 }

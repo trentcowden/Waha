@@ -42,7 +42,7 @@ const MobilizationToolsUnlockScreen: FC<Props> = ({
   const [passcode, setPasscode] = useState('')
 
   /** A reference to the passcode entry component. */
-  const pinRef = useRef<SmoothPinCodeInput>(null)
+  const pinRef = useRef<any>(null)
 
   const [pinInputColor, setPinInputColor] = useState(
     isDark ? colors(isDark).bg4 : colors(isDark).bg1

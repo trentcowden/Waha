@@ -66,6 +66,7 @@ export type MainStackParams = {
   Groups: undefined
   AddSet: { category: SetCategory }
   SubsequentLanguageSelect: {
+    languageWithVersions: undefined
     installedLanguageInstances: InfoAndGroupsForAllLanguages
   }
   SubsequentLanguageVersionSelect: {
