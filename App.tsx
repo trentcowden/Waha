@@ -65,8 +65,6 @@ export default function App() {
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
       playThroughEarpieceAndroid: false,
     })
-
-    throw new Error('My first Sentry error!')
   }, [])
 
   /**
