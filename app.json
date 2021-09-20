@@ -54,7 +54,7 @@
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "kingdom-strategies",
+            "organization": "kingdomstrategies",
             "project": "waha",
             "authToken": "e8ed0039fd3246d682d799edebdc06080ddeee45aa58441fb2a8655145294f95"
           }
