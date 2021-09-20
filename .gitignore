@@ -23,3 +23,4 @@ scripts/service-account-TEST.json
 scripts/expo-logins.js
 scripts/apple-dev-login.js
 scripts/sudo-login.js
+.vscode/settings.json
