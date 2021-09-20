@@ -76,7 +76,10 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
-    "ts-node": "^10.2.1"
+    "ts-node": "^10.2.1",
+    "sentry-expo": "^4.0.0",
+    "expo-application": "~3.2.0",
+    "expo-updates": "~0.8.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

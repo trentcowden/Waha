@@ -47,6 +47,19 @@
       "permissions": []
     },
     "githubUrl": "https://github.com/kingdomstrategies/Waha",
-    "icon": "./assets/icons/waha_icon.png"
+    "icon": "./assets/icons/waha_icon.png",
+    "plugins": ["sentry-expo"],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "kingdom-strategies",
+            "project": "waha",
+            "authToken": "e8ed0039fd3246d682d799edebdc06080ddeee45aa58441fb2a8655145294f95"
+          }
+        }
+      ]
+    }
   }
 }

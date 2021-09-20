@@ -8,10 +8,24 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/lib/integration/react'
+import * as Sentry from 'sentry-expo'
 import { isTablet } from './constants'
 import { lockPortrait } from './functions/orientationFunctions'
+import { dbMode } from './modeSwitch'
 import Root from './navigation/Root'
 import { persistor, store } from './redux/store'
+
+Sentry.init({
+  dsn: 'https://30801dab903b4ac89c06b7d8002cba88@o1007561.ingest.sentry.io/5970472',
+  enableInExpoDevelopment: false,
+  debug: dbMode === 'test' ? true : false,
+})
+
+// Access any @sentry/react-native exports via:
+// Sentry.Native.*
+
+// Access any @sentry/browser exports via:
+// Sentry.Browser.*
 
 // These are only here because of some wack errors. Please do not delete.
 if (!global.btoa) {
@@ -51,6 +65,8 @@ export default function App() {
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
       playThroughEarpieceAndroid: false,
     })
+
+    throw new Error('My first Sentry error!')
   }, [])
 
   /**
