@@ -37,7 +37,7 @@ const security = createSlice({
     setSecurityEnabled: (state, action: PayloadAction<{ toSet: boolean }>) => {
       state.securityEnabled = action.payload.toSet
     },
-    setCode: (state, action: PayloadAction<{ code: string }>) => {
+    setCode: (state, action: PayloadAction<{ code: string | undefined }>) => {
       state.code = action.payload.code
     },
     setIsMuted: (state, action: PayloadAction<{ toSet: boolean }>) => {

@@ -1,3 +1,4 @@
+import * as FileSystem from 'expo-file-system'
 import * as Localization from 'expo-localization'
 import { isInOfflineMode } from '../constants'
 import db from '../firebase/db'
@@ -13,12 +14,14 @@ import { useAppDispatch } from '../redux/hooks'
 import { changeActiveGroup } from '../redux/reducers/activeGroup'
 import {
   Database,
+  deleteLanguageData,
   downloadLanguageCoreFiles,
   storeLanguageSets,
   storeOtherLanguageContent,
   StorySet
 } from '../redux/reducers/database'
-import { createGroup, Group } from '../redux/reducers/groups'
+import { removeDownload } from '../redux/reducers/downloads'
+import { createGroup, deleteGroup, Group } from '../redux/reducers/groups'
 import { setIsInstallingLanguageInstance } from '../redux/reducers/isInstallingLanguageInstance'
 import {
   incrementGlobalGroupCounter,
@@ -30,6 +33,7 @@ import {
   getTranslations,
   Translations
 } from '../translations/translationsConfig'
+
 const bundledAssets = require('../assets/downloaded/master-list')
 
 /**
@@ -385,4 +389,36 @@ export const getTotalNumberOfLanguages = () => {
     })
   })
   return numLanguages
+}
+
+/**
+ * Deletes all Groups, downloaded Core Files, downloaded Lesson Story Chapter audio, downloaded Lesson Training Chapter videos, and redux database data for a Language.
+ */
+export const deleteLanguage = (
+  languageID: LanguageID,
+  groups: Group[],
+  dispatch: ReturnType<typeof useAppDispatch>
+) => {
+  // Delete every group for this language instance.
+  groups.map(group => {
+    if (group.language === languageID) {
+      dispatch(deleteGroup({ groupName: group.name }))
+    }
+  })
+
+  // Delete all downloaded files for this language instance.
+  if (FileSystem.documentDirectory !== null)
+    FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
+      contents => {
+        for (const item of contents) {
+          if (item.slice(0, 2) === languageID) {
+            FileSystem.deleteAsync(FileSystem.documentDirectory + item)
+            dispatch(removeDownload({ lessonID: item.slice(0, 5) }))
+          }
+        }
+      }
+    )
+
+  // Delete redux data for this language instance.
+  dispatch(deleteLanguageData({ languageID }))
 }

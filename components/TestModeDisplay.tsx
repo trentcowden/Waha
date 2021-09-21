@@ -1,7 +1,12 @@
 import React, { FC, ReactElement } from 'react'
 import { Text, View } from 'react-native'
 import { AGProps, CommonProps } from 'redux/common'
-import { analyticsMode, dbMode, reduxMode } from '../modeSwitch'
+import {
+  analyticsMode,
+  dbMode,
+  reduxMode,
+  resetButtonMode,
+} from '../modeSwitch'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 
@@ -24,7 +29,10 @@ const TestModeDisplay: FC<Props> = ({
         marginHorizontal: 20,
       }}
     >
-      {dbMode === 'test' || reduxMode === 'test' || analyticsMode === 'test' ? (
+      {dbMode === 'test' ||
+      reduxMode === 'test' ||
+      analyticsMode === 'test' ||
+      resetButtonMode === 'test' ? (
         <Text
           style={{
             ...type(

@@ -1,5 +1,4 @@
 import { StackNavigationProp } from '@react-navigation/stack'
-import * as FileSystem from 'expo-file-system'
 import { LanguageID } from 'languages'
 import { MainStackParams } from 'navigation/MainStack'
 import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react'
@@ -12,6 +11,7 @@ import GroupsScreenEditButton from '../components/GroupsScreenEditButton'
 import WahaBackButton from '../components/WahaBackButton'
 import WahaSeparator from '../components/WahaSeparator'
 import {
+  deleteLanguage,
   getInstalledLanguagesInfoAndGroups,
   info,
 } from '../functions/languageDataFunctions'
@@ -22,8 +22,6 @@ import {
   activeGroupSelector,
   changeActiveGroup,
 } from '../redux/reducers/activeGroup'
-import { deleteLanguageData } from '../redux/reducers/database'
-import { removeDownload } from '../redux/reducers/downloads'
 import { deleteGroup, Group } from '../redux/reducers/groups'
 import { colors } from '../styles/colors'
 import { getTranslations } from '../translations/translationsConfig'
@@ -135,32 +133,10 @@ const GroupsScreen: FC<Props> = ({
   }, [isEditing, isRTL, activeGroup])
 
   /**
-   * Deletes all Groups, downloaded Core Files, downloaded Lesson Story Chapter audio, downloaded Lesson Training Chapter videos, and redux database data for a Language.
+   * Handles the press of the delete language button and deletes a language.
    */
-  const handleDeleteLanguageButtonPress = (languageID: LanguageID) => {
-    // Delete every group for this language instance.
-    groups.map((group) => {
-      if (group.language === languageID) {
-        dispatch(deleteGroup({ groupName: group.name }))
-      }
-    })
-
-    // Delete all downloaded files for this language instance.
-    if (FileSystem.documentDirectory !== null)
-      FileSystem.readDirectoryAsync(FileSystem.documentDirectory).then(
-        (contents) => {
-          for (const item of contents) {
-            if (item.slice(0, 2) === languageID) {
-              FileSystem.deleteAsync(FileSystem.documentDirectory + item)
-              dispatch(removeDownload({ lessonID: item.slice(0, 5) }))
-            }
-          }
-        }
-      )
-
-    // Delete redux data for this language instance.
-    dispatch(deleteLanguageData({ languageID }))
-  }
+  const handleDeleteLanguageButtonPress = (languageID: LanguageID) =>
+    deleteLanguage(languageID, groups, dispatch)
 
   /**
    * Takes the user to the <LanguageSelectScreen /> so they can add a subsequent Language.

@@ -1,4 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
+import { LanguageID } from 'languages'
 import React, { FC, ReactElement, useState } from 'react'
 import {
   Clipboard,
@@ -14,11 +15,33 @@ import Icon from '../assets/fonts/icon_font_config'
 import InformationItem from '../components/InformationItem'
 import { scaleMultiplier } from '../constants'
 import { logShareApp } from '../functions/analyticsFunctions'
-import { info } from '../functions/languageDataFunctions'
+import { deleteLanguage, info } from '../functions/languageDataFunctions'
 import CopyrightsModal from '../modals/CopyrightsModal'
-import { appVersion } from '../modeSwitch'
-import { selector } from '../redux/hooks'
-import { activeGroupSelector } from '../redux/reducers/activeGroup'
+import { appVersion, resetButtonMode } from '../modeSwitch'
+import { selector, useAppDispatch } from '../redux/hooks'
+import {
+  activeGroupSelector,
+  changeActiveGroup,
+} from '../redux/reducers/activeGroup'
+import { setAreMobilizationToolsUnlocked } from '../redux/reducers/areMobilizationToolsUnlocked'
+import {
+  setHasInstalledFirstLanguageInstance,
+  setHasOnboarded,
+} from '../redux/reducers/languageInstallation'
+import {
+  setHasUsedPlayScreen,
+  setLessonCounter,
+  setNumLessonsTilReview,
+  setReviewTimeout,
+  setShowTrailerHighlights,
+} from '../redux/reducers/persistedPopups'
+import {
+  setCode,
+  setIsMuted,
+  setIsTimedOut,
+  setSecurityEnabled,
+} from '../redux/reducers/security'
+import { setIsDarkModeEnabled } from '../redux/reducers/settings'
 import { colors } from '../styles/colors'
 import { type } from '../styles/typography'
 import { getTranslations } from '../translations/translationsConfig'
@@ -32,6 +55,9 @@ const InformationScreen: FC = ({}): ReactElement => {
   const activeGroup = selector((state) => activeGroupSelector(state))
   const t = getTranslations(activeGroup.language)
   const isRTL = info(activeGroup.language).isRTL
+  const database = selector((state) => state.database)
+  const groups = selector((state) => state.groups)
+  const dispatch = useAppDispatch()
 
   /** Keeps track of whether the snackbar that pops up is visible or not.  */
   const [showSnackbar, setShowSnackbar] = useState(false)
@@ -44,6 +70,32 @@ const InformationScreen: FC = ({}): ReactElement => {
    */
   const openBrowser = async (url: string) =>
     await WebBrowser.openBrowserAsync(url, { dismissButtonStyle: 'close' })
+
+  /**
+   * Dev-mode only function that deletes all languages and resets the app as if it's been opened for the first time.
+   */
+  const handleResetButtonPress = () => {
+    // Reset some redux variables.
+    dispatch(setHasInstalledFirstLanguageInstance({ toSet: false }))
+    dispatch(setHasOnboarded({ toSet: false }))
+    dispatch(changeActiveGroup({ groupName: '' }))
+    dispatch(setAreMobilizationToolsUnlocked({ toSet: false }))
+    dispatch(setShowTrailerHighlights({ toSet: false }))
+    dispatch(setHasUsedPlayScreen({ toSet: false }))
+    dispatch(setReviewTimeout({ timeout: undefined }))
+    dispatch(setLessonCounter({ counter: 0 }))
+    dispatch(setNumLessonsTilReview({ numLessons: 2 }))
+    dispatch(setCode({ code: undefined }))
+    dispatch(setIsMuted({ toSet: false }))
+    dispatch(setSecurityEnabled({ toSet: false }))
+    dispatch(setIsTimedOut({ toSet: false }))
+    dispatch(setIsDarkModeEnabled({ toSet: false }))
+
+    // Delete every installed language.
+    Object.keys(database).forEach((languageID) => {
+      deleteLanguage(languageID as LanguageID, groups, dispatch)
+    })
+  }
 
   return (
     <SafeAreaView
@@ -128,6 +180,16 @@ const InformationScreen: FC = ({}): ReactElement => {
         isDark={isDark}
         activeGroup={activeGroup}
       />
+      {resetButtonMode === 'test' && (
+        <InformationItem
+          onPress={handleResetButtonPress}
+          label='Reset App & Delete Everything'
+          icon={isRTL ? 'arrow-left' : 'arrow-right'}
+          isRTL={isRTL}
+          isDark={isDark}
+          activeGroup={activeGroup}
+        />
+      )}
       {/* Cheeky little easter egg :) */}
       <View style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View style={styles.easterEggContainer}>
