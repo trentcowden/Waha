@@ -3,7 +3,7 @@ import { Asset } from 'expo-asset'
 import * as FileSystem from 'expo-file-system'
 import firebase from 'firebase'
 import 'firebase/firestore/bundle'
-import { isInOfflineMode } from '../constants'
+import { bundledAssets, isInOfflineMode } from '../constants'
 import { dbMode } from '../modeSwitch'
 import { prodConfig } from './prodConfig'
 import { testConfig } from './testConfig'
@@ -20,9 +20,6 @@ firebase.initializeApp(config)
 
 // Create the database object for Firestore.
 const db = firebase.firestore()
-
-// Get the bundled assets from the master list.
-const bundledAssets = require('../assets/downloaded/master-list')
 
 // If we have many bundled assets, we must be in an offline build. In that case, we need to load a Firestore bundle for offline use.
 if (isInOfflineMode) {

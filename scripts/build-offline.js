@@ -229,7 +229,8 @@ Promise.all(
       '-t',
       'apk',
       '--release-channel',
-      releaseChannel
+      releaseChannel,
+      '--no-wait'
     ])
   })
 // .then(

@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system'
 import * as Localization from 'expo-localization'
-import { isInOfflineMode } from '../constants'
+import { bundledAssets, isInOfflineMode } from '../constants'
 import db from '../firebase/db'
 import {
   InfoAndGroupsForAllLanguages,
@@ -33,8 +33,6 @@ import {
   getTranslations,
   Translations
 } from '../translations/translationsConfig'
-
-const bundledAssets = require('../assets/downloaded/master-list')
 
 /**
  * Gets various information about a language.
