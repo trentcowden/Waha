@@ -1,3 +1,4 @@
+import { Asset } from 'expo-asset'
 import * as FileSystem from 'expo-file-system'
 import * as Sharing from 'expo-sharing'
 import { LessonType } from 'functions/setAndLessonDataFunctions'
@@ -6,7 +7,7 @@ import { Share, View } from 'react-native'
 import { Lesson } from 'redux/reducers/database'
 import OptionsModalButton from '../components/OptionsModalButton'
 import WahaSeparator from '../components/WahaSeparator'
-import { isInOfflineMode } from '../constants'
+import { bundledAssets, isInOfflineMode } from '../constants'
 import {
   logShareApp,
   logShareAudio,
@@ -61,7 +62,7 @@ const ShareModal: FC<Props> = ({
    * Opens the share sheet to share a piece of content from a lesson.
    * @param {number} type - The type of content to share. See shareTypes at the top of this page.
    */
-  const shareLessonContent = (type: ShareType) => {
+  const shareLessonContent = async (type: ShareType) => {
     switch (type) {
       // Share links to Waha's app store pages.
       case ShareType.APP:
@@ -93,13 +94,24 @@ const ShareModal: FC<Props> = ({
         break
       // Share the Scripture audio for a lesson if it exists.
       case ShareType.AUDIO:
-        if (lesson)
-          Sharing.shareAsync(
+        if (lesson) {
+          // Default file source is the location of the downloaded Story chapter mp3.
+          var fileSource: string =
             FileSystem.documentDirectory + lesson.id + '.mp3'
-          ).then(() => {
+
+          // If we're in offline mode, the asset is already bundled, so we need to get its location manually and update the file source.
+          if (isInOfflineMode) {
+            const localURI = await Asset.fromModule(
+              bundledAssets[lesson.id + '.mp3']
+            ).localUri
+            if (localURI) fileSource = localURI
+          }
+
+          Sharing.shareAsync(fileSource).then(() => {
             logShareAudio(lesson, activeGroup.id)
             hideModal()
           })
+        }
         break
       // Share a link to the video for this lesson if there is one.
       case ShareType.VIDEO:
@@ -149,7 +161,7 @@ const ShareModal: FC<Props> = ({
       {/* Include a "Share Text" button if a lesson has questions. If it has questions, then it also has Scripture text. */}
       {lessonType.includes('Questions') ? (
         <View>
-          {!isInOfflineMode && <WahaSeparat or isDark={isDark} />}
+          {!isInOfflineMode && <WahaSeparator isDark={isDark} />}
           <OptionsModalButton
             label={t.general.share_passage_text}
             onPress={() => shareLessonContent(ShareType.TEXT)}
@@ -162,8 +174,7 @@ const ShareModal: FC<Props> = ({
       {/* Include a "Share Audio" button if a lesson has audio and it's not currently downloading. */}
       {lesson &&
         lessonType.includes('Audio') &&
-        !downloads[lesson.id] &&
-        isLessonDownloaded && (
+        ((!downloads[lesson.id] && isLessonDownloaded) || isInOfflineMode) && (
           <View>
             <WahaSeparator isDark={isDark} />
             <OptionsModalButton

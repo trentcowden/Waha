@@ -1,5 +1,5 @@
 import * as Localization from 'expo-localization'
-import { isInOfflineMode } from '../constants'
+import { bundledAssets, isInOfflineMode } from '../constants'
 import {
   InfoAndGroupsForAllLanguages,
   InfoAndGroupsForLanguage,
@@ -11,7 +11,6 @@ import {
 import { Database } from '../redux/reducers/database'
 import { Group } from '../redux/reducers/groups'
 import { Translations } from '../translations/translationsConfig'
-const bundledAssets = require('../assets/downloaded/master-list')
 
 /**
  * Gets various information about a language.

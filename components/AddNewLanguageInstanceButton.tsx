@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from '../assets/fonts/icon_font_config'
-import { isInOfflineMode, scaleMultiplier } from '../constants'
+import { bundledAssets, isInOfflineMode, scaleMultiplier } from '../constants'
 import { getTotalNumberOfLanguages } from '../functions/languageDataFunctions'
 import { AGProps, CommonProps, TProps } from '../redux/common'
 import { colors } from '../styles/colors'
@@ -23,7 +23,6 @@ const AddNewLanguageInstanceButton: FC<Props> = ({
   t,
   activeGroup,
 }): ReactElement => {
-  const bundledAssets = require('../assets/downloaded/master-list')
   if (
     (!isInOfflineMode &&
       numInstalledLanguages !== getTotalNumberOfLanguages()) ||

@@ -5,7 +5,7 @@ import { Dimensions, PixelRatio } from 'react-native'
  * This file contains a bunch of constants and a few miscellaneous functions that are used globally throughout Waha.
  */
 
-const bundledAssets = require('./assets/downloaded/master-list')
+export const bundledAssets = require('./assets/downloaded/master-list')
 
 export const isInOfflineMode =
   Object.keys(bundledAssets).length > 2 ? true : false
