@@ -23,3 +23,4 @@ scripts/service-account-PROD.json
 scripts/apple-dev-login.js
 scripts/expo-logins.js
 scripts/sudo-login.js
+.tmp/sentry
